@@ -50,10 +50,10 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
             // Answer
             CollapseItem.answer(
               v-for="question in questions"
-              :key="question.letter"
-              :value="question.letter"
+              :key="question.letter.name"
+              :value="question.letter.name"
               :class="[answerClasses(question)]"
-              :name="question.letter"
+              :name="question.letter.name"
               :title="question.answer"
             )
               p.answer__question
@@ -193,9 +193,9 @@ export default defineComponent({
     }
 
     const answerClasses = question => {
-      const correct = correctAnswers.value.some(item => question.letter === item.letter)
-      const wrong = wrongAnswers.value.some(item => question.letter === item.letter)
-      const passed = passedAnswers.value.some(item => question.letter === item.letter)
+      const correct = correctAnswers.value.some(item => question.letter.name === item.letter)
+      const wrong = wrongAnswers.value.some(item => question.letter.name === item.letter)
+      const passed = passedAnswers.value.some(item => question.letter.name === item.letter)
 
       if (correct) {
         return 'answer--correct'
@@ -214,7 +214,7 @@ export default defineComponent({
       const storedAnswers = JSON.parse(window.localStorage.getItem('unlimitedMyAnswers'))
 
       if (storedAnswers && storedAnswers.length > 0) {
-        return storedAnswers.filter(item => question.letter === item.letter).reverse()[0]
+        return storedAnswers.filter(item => question.letter.name === item.letter).reverse()[0]
       } else {
         return {
           field: '-'
