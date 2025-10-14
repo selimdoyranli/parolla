@@ -10,51 +10,20 @@ Dialog.dialog.player-dialog(
   @closed="onClosed"
   @opened="$emit('opened')"
 )
-  template(v-if="player && Object.keys(player).length > 0")
-    .profile-view
-      PlayerAvatar.profile-view__avatar(with-username :user="player")
-
-      .profile-view-created-at
-        AppIcon.profile-view-created-at__icon(name="tabler:clock" color="var(--color-text-03)" :width="16" :height="16")
-        Timeago.profile-view-created-at__value(:datetime="player.createdAt" :auto-update="60" :locale="$i18n.locale")
-        label.profile-view-created-at__label &nbsp;{{ $t('general.joined').toLowerCase() }}
-
-      .tour-scores(v-if="player.tourScore && Object.keys(player.tourScore).length > 0")
-        strong.tour-scores__title Tur modu skorları
-
-        table.tour-scores-table
-          thead
-            tr
-              th Periyot
-              th Skor
-              th Sıra
-          tbody
-            tr.tour-scores-table-item
-              td.tour-scores-table-item-title Günlük
-              td.tour-scores-table-item-score {{ player.tourScore.daily.score }}
-              td.tour-scores-table-item-rank {{ player.tourScore.daily.rank }}
-
-            tr.tour-scores-table-item
-              td.tour-scores-table-item-title Haftalık
-              td.tour-scores-table-item-score {{ player.tourScore.weekly.score }}
-              td.tour-scores-table-item-rank {{ player.tourScore.weekly.rank }}
-
-            tr.tour-scores-table-item
-              td.tour-scores-table-item-title Aylık
-              td.tour-scores-table-item-score {{ player.tourScore.monthly.score }}
-              td.tour-scores-table-item-rank {{ player.tourScore.monthly.rank }}
-
-            tr.tour-scores-table-item
-              td.tour-scores-table-item-title Tüm zamanlar
-              td.tour-scores-table-item-score {{ player.tourScore.allTime.score }}
-              td.tour-scores-table-item-rank {{ player.tourScore.allTime.rank }}
-
-  template(v-else)
-    Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
+  ProfileView(
+    :player-loading="playerLoading"
+    :player-error="playerError"
+    :tour-score-loading="tourScoreLoading"
+    :tour-score-error="tourScoreError"
+    :tour-score="tourScoreOfUser"
+    :player="player"
+    @player-error-click="fetchPlayer"
+    @tour-score-error-click="fetchTourScore"
+  )
 </template>
 
 <script>
-import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, computed, watch, useFetch, ref } from '@nuxtjs/composition-api'
 import { Dialog, Loading } from 'vant'
 
 export default defineComponent({
@@ -73,23 +42,74 @@ export default defineComponent({
     const store = useStore()
 
     const isOpenPlayerDialog = computed(() => store.getters['profile/isOpenPlayerDialog'])
+    const playerUsername = computed(() => store.getters['profile/username'])
     const player = computed(() => store.getters['profile/player'])
+    const tourScoreOfUser = computed(() => store.getters['tour/tourScoreOfUser'])
 
-    const handleDialogInput = value => {
+    const playerLoading = ref(false)
+    const playerError = ref(null)
+    const tourScoreLoading = ref(false)
+    const tourScoreError = ref(null)
+
+    const fetchPlayer = async () => {
+      const { data, error } = await store.dispatch('profile/fetchPlayer', { username: playerUsername.value })
+
+      if (error) {
+        playerError.value = error
+      }
+
+      playerLoading.value = false
+    }
+
+    const fetchTourScore = async () => {
+      const { data, error } = await store.dispatch('tour/fetchTourScoreOfUser', {
+        username: playerUsername.value
+      })
+
+      if (error) {
+        tourScoreError.value = error
+      }
+
+      tourScoreLoading.value = false
+    }
+
+    watch(
+      () => isOpenPlayerDialog.value,
+      async value => {
+        if (value) {
+          playerLoading.value = true
+          playerError.value = null
+          tourScoreLoading.value = true
+          tourScoreError.value = null
+
+          fetchPlayer()
+          fetchTourScore()
+        }
+      }
+    )
+
+    const handleDialogInput = async value => {
       if (!value) {
         store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', false)
       }
     }
 
     const onClosed = () => {
-      store.commit('profile/CLEAR_PLAYER')
+      //store.commit('profile/CLEAR_PLAYER')
     }
 
     return {
       isOpenPlayerDialog,
       player,
+      tourScoreOfUser,
       handleDialogInput,
-      onClosed
+      onClosed,
+      playerLoading,
+      playerError,
+      tourScoreLoading,
+      tourScoreError,
+      fetchPlayer,
+      fetchTourScore
     }
   }
 })

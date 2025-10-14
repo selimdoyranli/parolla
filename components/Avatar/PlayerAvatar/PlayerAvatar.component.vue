@@ -11,8 +11,8 @@
     .player-avatar-badge.player-avatar-badge--gm(v-if="isGm")
       AppIcon.player-avatar-badge__icon(name="tabler:crown" color="#fff" :width="16" :height="16")
 
-    Avatar.player-avatar__avatar(v-if="user" variant="beam" :name="name || user.username" :size="size")
-    Avatar.player-avatar__avatar.player-avatar__avatar--anon(v-else variant="beam" :name="name || $t('general.anon')" :size="size")
+    img.player-avatar__avatar(v-if="user" :src="avatarSrc" :style="{ width: `inherit`, height: `inherit` }")
+    img.player-avatar__avatar.player-avatar__avatar--anon(v-else :src="avatarSrc" :style="{ width: `inherit`, height: `inherit` }")
 
   span.player-avatar__username(v-if="withUsername")
     template(v-if="user") {{ user.username }}
@@ -24,12 +24,12 @@
 
 <script>
 import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
-import Avatar from 'vue2-boring-avatars'
 import { Notify } from 'vant'
+import { createAvatar } from '@dicebear/core'
+import * as adventurer from '@dicebear/adventurer'
 
 export default defineComponent({
   components: {
-    Avatar,
     Notify
   },
   props: {
@@ -68,22 +68,8 @@ export default defineComponent({
     const store = useStore()
 
     const openPlayerDialog = async () => {
+      store.commit('profile/SET_PLAYER_USERNAME', props.user.username)
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
-
-      const { data, error } = await store.dispatch('profile/fetchPlayer', { id: props.user.id })
-
-      if (data) {
-        store.commit('profile/SET_PLAYER', data)
-      }
-
-      if (error) {
-        Notify({
-          message: `Oyuncu bilgileri getirilemedi`,
-          color: 'var(--color-text-04)',
-          background: 'var(--color-danger-01)',
-          duration: 3000
-        })
-      }
     }
 
     const handleClickPlayerAvatar = async () => {
@@ -100,7 +86,24 @@ export default defineComponent({
       return false
     })
 
-    return { handleClickPlayerAvatar, isGm }
+    const generateAvatarDataImage = () => {
+      return createAvatar(adventurer, {
+        seed: 'Mason',
+        backgroundColor: ['ff7878']
+      }).toDataUri()
+    }
+
+    const avatarSrc = computed(() => {
+      if (props.user) {
+        if (props.user.diceBear?.dataImage) {
+          return props.user.diceBear.dataImage
+        }
+      }
+
+      return generateAvatarDataImage()
+    })
+
+    return { handleClickPlayerAvatar, isGm, avatarSrc }
   }
 })
 </script>

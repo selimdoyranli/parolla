@@ -56,6 +56,11 @@
 
   &__avatar {
     position: relative;
+    border-radius: 100%;
+
+    svg {
+      border-radius: 100%;
+    }
 
     &--anon {
       filter: grayscale(100%);

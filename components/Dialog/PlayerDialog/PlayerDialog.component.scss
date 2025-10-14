@@ -51,53 +51,5 @@
       margin-block-start: $spacer * 6;
       margin-block-end: $spacer * 4;
     }
-
-    .tour-scores-table {
-      width: 100%;
-
-      @include media-breakpoint-up(tablet) {
-        max-width: var(--mobile-l);
-      }
-
-      th,
-      td {
-        padding-inline-end: $spacer * 3;
-        padding-block-end: $spacer * 3;
-      }
-
-      th {
-        padding: $spacer * 2;
-        background-color: var(--color-ui-01);
-      }
-
-      td {
-        padding-block-start: $spacer * 3;
-      }
-
-      tr td:last-child {
-        text-align: right;
-      }
-
-      &-item {
-        position: relative;
-
-        &-score {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 28px;
-          margin-block-start: $spacer * 2;
-          padding: 0 $spacer * 2;
-          color: var(--color-text-02);
-          font-size: var(--font-size-text-9);
-          text-align: center;
-          background-color: var(--color-ui-01);
-          border-radius: var(--border-radius-01);
-          box-shadow: var(--box-shadow-03);
-          font-variant-numeric: tabular-nums;
-        }
-      }
-    }
   }
 }

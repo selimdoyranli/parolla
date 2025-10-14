@@ -23,6 +23,7 @@ export default {
     no: 'No',
     ok: 'OK',
     cancel: 'Cancel',
+    save: 'Save',
     apply: 'Apply',
     question: 'Question',
     answer: 'Answer',
@@ -141,6 +142,8 @@ export default {
   },
   dialog: {
     menu: {
+      profileEdit: 'Edit profile',
+      profileView: 'View profile',
       title: 'More',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
@@ -266,6 +269,27 @@ export default {
     player: {
       title: 'Profile',
       loading: 'Fetching player information'
+    },
+    avatarEditor: {
+      title: 'Edit avatar',
+      livePreview: 'Live Preview',
+      mouth: 'Mouth',
+      eyes: 'Eyes',
+      eyebrows: 'Eyebrows',
+      hair: 'Hair Style',
+      hairColor: 'Hair Color',
+      earrings: 'Earrings',
+      features: 'Features',
+      glasses: 'Glasses',
+      featureOptions: {
+        none: 'None',
+        birthmark: 'Birthmark',
+        blush: 'Blush',
+        freckles: 'Freckles',
+        mustache: 'Mustache'
+      },
+      skinColor: 'Skin Color',
+      backgroundColor: 'Background Color'
     }
   },
   clipboard: {
@@ -363,6 +387,7 @@ export default {
   },
   form: {
     isRequired: '{model} is required',
+    isInvalid: '{model} is invalid',
     creatorModeCompose: {
       title: 'COMPOSE A ROOM',
       roomInformations: 'ROOM INFORMATIONS',
@@ -462,6 +487,23 @@ export default {
       },
       error: {
         submit: 'This player name is not available please type another'
+      }
+    },
+    profileEdit: {
+      usernameField: {
+        label: 'Username',
+        placeholder: 'Type a username'
+      },
+      fullnameField: {
+        label: 'Fullname',
+        placeholder: 'Type a fullname'
+      },
+      bioField: {
+        label: 'Bio',
+        placeholder: 'Type a bio'
+      },
+      callback: {
+        success: 'Profile information updated'
       }
     }
   },

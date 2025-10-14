@@ -10,7 +10,25 @@ Dialog.dialog.menu-dialog(
 )
   template(v-if="$auth.loggedIn && $auth.user")
     span.menu-dialog__title Profil
-    UsernameEditForm.mb-base
+
+    .menu-dialog-profile
+      PlayerAvatar(with-username :user="$auth.user" :size="32")
+
+    CellGroup.menu-dialog-nav
+      Cell.menu-dialog-nav__item(
+        icon="edit"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.profileEdit')"
+        @click.native="handleClickProfileEdit"
+      )
+      Cell.menu-dialog-nav__item(
+        icon="manager"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.profileView')"
+        @click.native="handleClickProfileView"
+      )
 
   Button.menu-dialog__logoutButton(v-if="$auth.loggedIn && $auth.user" @click="handleClickLogout") Çıkış Yap
   LoginForm(v-else)
@@ -95,7 +113,7 @@ Dialog.dialog.menu-dialog(
 </template>
 
 <script>
-import { defineComponent, useRoute, useStore, useContext, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter, useStore, useContext, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums'
 import { Dialog, CellGroup, Cell, Switch, Toast, Button } from 'vant'
@@ -122,8 +140,9 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute()
+    const router = useRouter()
     const store = useStore()
-    const { localePath, i18n, $colorMode } = useContext()
+    const { localePath, i18n, $colorMode, $auth } = useContext()
 
     const { activeGameMode } = useGameMode()
 
@@ -227,6 +246,18 @@ export default defineComponent({
       }
     }
 
+    const handleClickProfileEdit = () => {
+      router.push(localePath({ name: 'Profile-ProfileEdit', query: { username: $auth.user.username } }))
+
+      state.isOpen = false
+    }
+
+    const handleClickProfileView = () => {
+      router.push(localePath({ name: 'Profile', query: { username: $auth.user.username } }))
+
+      state.isOpen = false
+    }
+
     const handleClickLogout = async () => {
       await store.dispatch('auth/logout')
 
@@ -244,6 +275,8 @@ export default defineComponent({
       openSuggestQuestion,
       openRoomSharer,
       openAppSharer,
+      handleClickProfileEdit,
+      handleClickProfileView,
       handleClickLogout
     }
   }

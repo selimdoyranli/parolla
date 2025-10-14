@@ -1,177 +1,178 @@
 <template lang="pug">
 Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
-  h2.creator-mode-compose-.mt-base(align="center")
+  span.creator-mode-compose-form__title(align="center")
     template(v-if="room") {{ $t('form.creatorModeEdit.title') }}
     template(v-else) {{ $t('form.creatorModeCompose.title') }}
-  br
-  h3.creator-mode-compose-form__title.mt-1 {{ $t('form.creatorModeCompose.roomInformations') }}
-  .creator-mode-compose-form__roomInfo
-    Field.creator-mode-compose-form__roomTitle(
-      v-model="form.roomTitle"
-      name="roomTitle"
-      :label="$t('form.creatorModeCompose.room.roomTitle.label')"
-      :placeholder="$t('form.creatorModeCompose.room.roomTitle.placeholder')"
-      maxlength="64"
-      show-word-limit
-      :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.room.roomTitle.label') }) }]"
-    )
 
-    Cell.creator-mode-compose-form__.creator-mode-compose-form__isListed
-      template(#title)
-        span {{ $t('form.creatorModeCompose.room.isListed.label') }}
+  template
+    span.creator-mode-compose-form__fieldsTitle {{ $t('form.creatorModeCompose.roomInformations') }}
+    .creator-mode-compose-form__fields
+      Field.creator-mode-compose-form__roomTitle(
+        v-model="form.roomTitle"
+        name="roomTitle"
+        :label="$t('form.creatorModeCompose.room.roomTitle.label')"
+        :placeholder="$t('form.creatorModeCompose.room.roomTitle.placeholder')"
+        maxlength="64"
+        show-word-limit
+        :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.room.roomTitle.label') }) }]"
+      )
 
-      template(#right-icon)
-        VanSwitch(v-model="form.isListed" :size="24")
-
-    template(v-if="$auth.loggedIn && $auth.user")
-      Cell.creator-mode-compose-form__isAnon
+      Cell.creator-mode-compose-form__.creator-mode-compose-form__isListed
         template(#title)
-          span {{ $t('form.creatorModeCompose.room.isAnon.label') }} &nbsp;
-          small(v-if="user") ({{ user.username }})
+          span {{ $t('form.creatorModeCompose.room.isListed.label') }}
 
         template(#right-icon)
-          VanSwitch(v-model="form.isAnon" :size="24")
+          VanSwitch(v-model="form.isListed" :size="24")
 
-    Field.creator-mode-compose-form__roomTag(
-      v-model="form.tag"
-      name="roomTag"
-      :label="$t('form.creatorModeCompose.room.tag.label')"
-      :placeholder="$t('form.creatorModeCompose.room.tag.placeholder')"
-      maxlength="64"
-      show-word-limit
-      @input="handleInputTag"
-      @keydown.enter.prevent="addTag"
-    )
-      template(#button)
-        Button(
-          type="info"
-          native-type="button"
-          round
-          size="small"
-          :disabled="form.tag.length <= 0 || form.tags.length >= 5"
-          @click="addTag"
-        )
-          | +
+      template(v-if="$auth.loggedIn && $auth.user")
+        Cell.creator-mode-compose-form__isAnon
+          template(#title)
+            span {{ $t('form.creatorModeCompose.room.isAnon.label') }} &nbsp;
+            small(v-if="user") ({{ user.username }})
 
-    Cell.creator-mode-compose-form-tags(v-if="form.tags && form.tags.length > 0")
-      .creator-mode-compose-form-tags__tags
-        template(v-for="tag in form.tags")
-          Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="removeTag(tag)") {{ tag }}
+          template(#right-icon)
+            VanSwitch(v-model="form.isAnon" :size="24")
 
-  template(v-if="!$auth.loggedIn && !$auth.user")
-    small.creator-mode-compose-form__anonNotice
-      AppIcon(name="tabler:info-circle" :width="16" :height="16")
-      | Giriş yapmadığın için oluşturacağın odayı tekrar düzenleyemez ya da silemezsin.
-
-  h3.creator-mode-compose-form__title {{ $t('form.creatorModeCompose.qaSet') }}
-
-  .compose-qa-list
-    template(v-if="form.qaList && form.qaList.length > 0")
-      // List
-      .compose-qa-card(v-for="(item, index) in form.qaList")
-        Field.creator-mode-compose-form__questionField(
-          v-model="item.question"
-          name="question"
-          :label="$t('form.creatorModeCompose.qa.question.label')"
-          :placeholder="$t('form.creatorModeCompose.qa.question.placeholder')"
-          maxlength="120"
-          rows="2"
-          autosize
-          show-word-limit
-          :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.question.label') }) }]"
-        )
-        Field.creator-mode-compose-form__answerField(
-          name="answer"
-          :label="$t('form.creatorModeCompose.qa.answer.label')"
-          :placeholder="$t('form.creatorModeCompose.qa.answer.label')"
-          maxlength="120"
-          show-word-limit
-          rows="2"
-          :formatter="formatAnswerField"
-          :error-message="item.isMatched === false ? $t('form.creatorModeCompose.qa.answer.error.nonMatched') : null"
-          :error="item.isMatched === false"
-        )
-          template(#input)
-            input.van-field__control(
-              :value="item.answer"
-              :placeholder="$t('form.creatorModeCompose.qa.answer.placeholder')"
-              maxlength="120"
-              @input="e => getCharacter(e.target.value, { item, index })"
-            )
-        Field.creator-mode-compose-form__characterField(
-          v-model="item.character"
-          name="character"
-          :label="$t('form.creatorModeCompose.qa.character.label')"
-          :placeholder="$t('form.creatorModeCompose.qa.character.placeholder')"
-          maxlength="1"
-          readonly
-          disabled
-          :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.character.label') }) }]"
-          @input="validateAnswer({ item, index })"
-        )
-
-        .compose-qa-card__actions
-          template(v-if="form.qaList && form.qaList.length > 1")
-            Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
-              icon="arrow-up"
-              round
-              size="small"
-              native-type="button"
-              :disabled="disableMoveUp(index)"
-              @click="moveUp(index)"
-            )
-            Button.compose-qa-card__moveButton.compose-qa-card__moveButton--down(
-              icon="arrow-down"
-              round
-              size="small"
-              native-type="button"
-              :disabled="disableMoveDown(index)"
-              @click="moveDown(index)"
-            )
-
-          Button.compose-qa-card__removeButton(
-            type="danger"
-            icon="cross"
-            plain
+      Field.creator-mode-compose-form__roomTag(
+        v-model="form.tag"
+        name="roomTag"
+        :label="$t('form.creatorModeCompose.room.tag.label')"
+        :placeholder="$t('form.creatorModeCompose.room.tag.placeholder')"
+        maxlength="64"
+        show-word-limit
+        @input="handleInputTag"
+        @keydown.enter.prevent="addTag"
+      )
+        template(#button)
+          Button(
+            type="info"
             native-type="button"
             round
             size="small"
-            @click="removeItem(index)"
-          ) {{ $t('general.remove') }}
+            :disabled="form.tag.length <= 0 || form.tags.length >= 5"
+            @click="addTag"
+          )
+            | +
 
-    // Empty List
-    template(v-else)
-      Empty(:description="$t('form.creatorModeCompose.qa.empty.description')")
+      Cell.creator-mode-compose-form-tags(v-if="form.tags && form.tags.length > 0")
+        .creator-mode-compose-form-tags__tags
+          template(v-for="tag in form.tags")
+            Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="removeTag(tag)") {{ tag }}
+
+    template(v-if="!$auth.loggedIn && !$auth.user")
+      small.creator-mode-compose-form__anonNotice
+        AppIcon(name="tabler:info-circle" :width="16" :height="16")
+        | Giriş yapmadığın için oluşturacağın odayı tekrar düzenleyemez ya da silemezsin.
+
+    span.creator-mode-compose-form__fieldsTitle {{ $t('form.creatorModeCompose.qaSet') }}
+    .creator-mode-compose-form__fields
+      .compose-qa-list
+        template(v-if="form.qaList && form.qaList.length > 0")
+          // List
+          .compose-qa-card(v-for="(item, index) in form.qaList")
+            Field.creator-mode-compose-form__questionField(
+              v-model="item.question"
+              name="question"
+              :label="$t('form.creatorModeCompose.qa.question.label')"
+              :placeholder="$t('form.creatorModeCompose.qa.question.placeholder')"
+              maxlength="120"
+              rows="2"
+              autosize
+              show-word-limit
+              :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.question.label') }) }]"
+            )
+            Field.creator-mode-compose-form__answerField(
+              name="answer"
+              :label="$t('form.creatorModeCompose.qa.answer.label')"
+              :placeholder="$t('form.creatorModeCompose.qa.answer.label')"
+              maxlength="120"
+              show-word-limit
+              rows="2"
+              :formatter="formatAnswerField"
+              :error-message="item.isMatched === false ? $t('form.creatorModeCompose.qa.answer.error.nonMatched') : null"
+              :error="item.isMatched === false"
+            )
+              template(#input)
+                input.van-field__control(
+                  :value="item.answer"
+                  :placeholder="$t('form.creatorModeCompose.qa.answer.placeholder')"
+                  maxlength="120"
+                  @input="e => getCharacter(e.target.value, { item, index })"
+                )
+            Field.creator-mode-compose-form__characterField(
+              v-model="item.character"
+              name="character"
+              :label="$t('form.creatorModeCompose.qa.character.label')"
+              :placeholder="$t('form.creatorModeCompose.qa.character.placeholder')"
+              maxlength="1"
+              readonly
+              disabled
+              :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.character.label') }) }]"
+              @input="validateAnswer({ item, index })"
+            )
+
+            .compose-qa-card__actions
+              template(v-if="form.qaList && form.qaList.length > 1")
+                Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
+                  icon="arrow-up"
+                  round
+                  size="small"
+                  native-type="button"
+                  :disabled="disableMoveUp(index)"
+                  @click="moveUp(index)"
+                )
+                Button.compose-qa-card__moveButton.compose-qa-card__moveButton--down(
+                  icon="arrow-down"
+                  round
+                  size="small"
+                  native-type="button"
+                  :disabled="disableMoveDown(index)"
+                  @click="moveDown(index)"
+                )
+
+              Button.compose-qa-card__removeButton(
+                type="danger"
+                icon="cross"
+                plain
+                native-type="button"
+                round
+                size="small"
+                @click="removeItem(index)"
+              ) {{ $t('general.remove') }}
+
+        // Empty List
+        template(v-else)
+          Empty(:description="$t('form.creatorModeCompose.qa.empty.description')")
+            // Add qa button
+            Button.compose-qa-list__addQaButton(type="info" icon="plus" native-type="button" round @click="addItem")
+              | {{ $t('form.creatorModeCompose.qa.empty.action') }}
+
         // Add qa button
-        Button.compose-qa-list__addQaButton(type="info" icon="plus" native-type="button" round @click="addItem")
-          | {{ $t('form.creatorModeCompose.qa.empty.action') }}
+        Button.compose-qa-list__addQaButton(
+          v-if="form.qaList && form.qaList.length > 0"
+          type="info"
+          icon="plus"
+          plain
+          native-type="button"
+          round
+          :loading="form.isBusy"
+          :disabled="form.isBusy"
+          @click="addItem"
+        ) {{ $t('form.creatorModeCompose.qa.addMoreQuestion') }}
 
-    // Add qa button
-    Button.compose-qa-list__addQaButton(
-      v-if="form.qaList && form.qaList.length > 0"
-      type="info"
-      icon="plus"
-      plain
-      native-type="button"
-      round
-      :loading="form.isBusy"
-      :disabled="form.isBusy"
-      @click="addItem"
-    ) {{ $t('form.creatorModeCompose.qa.addMoreQuestion') }}
+        Button(
+          v-if="form.qaList && form.qaList.length > 1 && room === null"
+          type="warning"
+          plain
+          native-type="button"
+          round
+          :loading="form.isBusy"
+          :disabled="form.isBusy"
+          @click="handleClickDeleteDraft"
+        ) {{ $t('form.creatorModeCompose.deleteDraft.action') }}
 
-    Button(
-      v-if="form.qaList && form.qaList.length > 1 && room === null"
-      type="warning"
-      plain
-      native-type="button"
-      round
-      :loading="form.isBusy"
-      :disabled="form.isBusy"
-      @click="handleClickDeleteDraft"
-    ) {{ $t('form.creatorModeCompose.deleteDraft.action') }}
-
-    p.creator-mode-compose-form__termsDescription(v-if="form.qaList && form.qaList.length > 0")
-      | {{ $t('form.creatorModeCompose.termsDescription') }}
+        p.creator-mode-compose-form__termsDescription(v-if="form.qaList && form.qaList.length > 0")
+          | {{ $t('form.creatorModeCompose.termsDescription') }}
 
     // Save list button
     Button.compose-qa-list__submitButton(

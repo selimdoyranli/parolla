@@ -1,4 +1,8 @@
 export default {
+  tourScoreOfUser(state) {
+    return state.tourScoreOfUser
+  },
+
   tour(state) {
     return state.tour
   },

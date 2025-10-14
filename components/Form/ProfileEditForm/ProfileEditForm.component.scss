@@ -1,0 +1,43 @@
+.profile-edit-form {
+  position: relative;
+
+  &__title {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    color: var(--color-text-01);
+    margin-inline: auto;
+    margin-block: var(--base-m-y);
+    font-size: var(--font-size-text-4);
+    text-align: center;
+
+    @include font-weight-bold;
+  }
+
+  &__avatarEdit {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-block: calc(var(--base-m-y) * 2);
+    margin-inline: auto;
+  }
+
+  &__avatarEditButton {
+    margin-block-start: var(--base-m-y);
+  }
+
+  &__fields {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-01);
+  }
+
+  &__submitButton {
+    display: block;
+    margin-block: var(--base-m-y);
+    margin-inline-start: auto;
+  }
+}

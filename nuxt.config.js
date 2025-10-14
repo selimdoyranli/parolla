@@ -15,6 +15,12 @@ module.exports = {
   ssr: false,
 
   /*
+   ** Nuxt devtools
+   ** See https://nuxtjs.org/docs/configuration-glossary/configuration-devtools
+   */
+  devtools: process.env.NODE_ENV === 'development' ? true : false,
+
+  /*
    ** Nuxt environments
    ** See https://nuxtjs.org/docs/configuration-glossary/configuration-env
    */
@@ -288,6 +294,14 @@ module.exports = {
           'Leaderboard/index': {
             tr: '/liderlik',
             en: '/leaderboard'
+          },
+          'Profile/index': {
+            tr: '/profil',
+            en: '/profile'
+          },
+          'Profile/ProfileEdit/index': {
+            tr: '/profil/duzenle',
+            en: '/profile/edit'
           }
         }
       }
