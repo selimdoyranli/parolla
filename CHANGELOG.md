@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.21.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.20.3...v2.21.0)
+
+
+### 🚀 Enhancements
+
+  - Player profiles ([a9ae713](https://github.com/selimdoyranli/parolla/commit/a9ae713))
+
+### 🏡 Chore
+
+  - Update apple app site association ([d47fb21](https://github.com/selimdoyranli/parolla/commit/d47fb21))
+  - Apple app site association updates ([387b705](https://github.com/selimdoyranli/parolla/commit/387b705))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.20.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.20.2...v2.20.3)
