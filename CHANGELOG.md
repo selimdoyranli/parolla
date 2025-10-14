@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.21.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.21.0...v2.21.1)
+
+
+### 🩹 Fixes
+
+  - Update api url ([7bceb32](https://github.com/selimdoyranli/parolla/commit/7bceb32))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.21.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.20.3...v2.21.0)
