@@ -78,7 +78,7 @@ export default {
   },
 
   async updateUser({ commit, state }, params) {
-    const { username } = params
+    const { username, fullname, bio, diceBear } = params
 
     const token = this.$auth.strategy.token.get()
 
@@ -89,7 +89,10 @@ export default {
       },
       method: 'PUT',
       data: {
-        username
+        username,
+        fullname,
+        bio,
+        diceBear
       }
     })
 

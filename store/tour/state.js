@@ -1,4 +1,23 @@
 export default () => ({
+  tourScoreOfUser: {
+    daily: {
+      score: 0,
+      rank: 0
+    },
+    weekly: {
+      score: 0,
+      rank: 0
+    },
+    monthly: {
+      score: 0,
+      rank: 0
+    },
+    allTime: {
+      score: 0,
+      rank: 0
+    },
+    total: 0
+  },
   tour: {
     question: null,
     countdown: {

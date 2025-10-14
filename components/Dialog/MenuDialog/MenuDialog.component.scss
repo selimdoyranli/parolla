@@ -28,13 +28,29 @@
     @include font-weight-semi-bold;
   }
 
+  &-profile {
+    padding: calc(var(--base-p-y) / 2) var(--base-p-x);
+
+    .player-avatar {
+      margin-block-end: $spacer * 2;
+    }
+
+    &__editButton {
+      margin-inline-end: $spacer * 2;
+    }
+
+    &__viewButton {
+      margin-inline-end: $spacer * 2;
+    }
+  }
+
   &__logoutButton {
     display: block;
     color: #fff;
     background-color: var(--color-danger-01);
     border-radius: var(--border-radius-01);
     box-shadow: var(--box-shadow-02);
-    margin-block-end: var(--base-m-y);
+    margin-block: var(--base-m-y);
     margin-inline-start: auto;
   }
 

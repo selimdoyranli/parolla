@@ -1,4 +1,8 @@
 export default {
+  SET_TOUR_SCORE_OF_USER(state, tourScoreOfUser) {
+    state.tourScoreOfUser = tourScoreOfUser
+  },
+
   SET_TOUR(state, tour) {
     state.tour = {
       ...state.tour,

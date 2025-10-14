@@ -4,12 +4,35 @@
   &__title {
     position: relative;
     display: block;
+    width: 100%;
+    max-width: 100%;
     color: var(--color-text-01);
+    margin-inline: auto;
+    margin-block: var(--base-m-y);
+    font-size: var(--font-size-text-4);
+    text-align: center;
+
+    @include font-weight-bold;
   }
 
-  &__roomInfo {
+  &__fields {
+    position: relative;
     overflow: hidden;
     border-radius: var(--border-radius-01);
+  }
+
+  &__fieldsTitle {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    color: var(--color-text-01);
+    margin-block-start: calc(var(--base-m-y) * 2);
+    margin-block-end: var(--base-m-y);
+    font-size: var(--font-size-text-7);
+    text-align: left;
+
+    @include font-weight-semi-bold;
   }
 
   .creator-mode-compose-form-tags {

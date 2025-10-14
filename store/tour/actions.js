@@ -27,6 +27,14 @@ export default {
     }
   },
 
+  emitWebSocketEvent({ commit }, { type, data }) {
+    window.dispatchEvent(
+      new CustomEvent('ws-event', {
+        detail: { type, data }
+      })
+    )
+  },
+
   async fetchLeaderboard({ commit }, { period = 'allTime', limit = 10, page = 1 }) {
     const { data, error } = await this.$appFetch({
       path: `tour-scores/tour-leaderboard`,
@@ -47,11 +55,37 @@ export default {
     }
   },
 
-  emitWebSocketEvent({ commit }, { type, data }) {
-    window.dispatchEvent(
-      new CustomEvent('ws-event', {
-        detail: { type, data }
-      })
-    )
+  async fetchTotalTourScoreOfUser({ commit }, { id, username }) {
+    const { data, error } = await this.$appFetch({
+      path: `tour-scores/total-tour-score-of-user`,
+      query: {
+        id,
+        username
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchTourScoreOfUser({ commit }, { id, username }) {
+    const { data, error } = await this.$appFetch({
+      path: `tour-scores/tour-score-of-user`,
+      query: {
+        id,
+        username
+      }
+    })
+
+    if (data) {
+      commit('SET_TOUR_SCORE_OF_USER', data.data)
+    }
+
+    return {
+      data,
+      error
+    }
   }
 }

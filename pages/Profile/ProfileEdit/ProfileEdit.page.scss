@@ -1,0 +1,10 @@
+.profile-edit-page {
+  position: relative;
+
+  .profile-edit-form {
+    width: calc(100% - (var(--base-p-x) * 2));
+    margin: calc(var(--base-m-y) * 2) auto;
+    margin-bottom: 25vh;
+    padding-bottom: calc(var(--base-m-y) * 4);
+  }
+}

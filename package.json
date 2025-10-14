@@ -47,6 +47,8 @@
     ]
   },
   "dependencies": {
+    "@dicebear/adventurer": "^9.2.4",
+    "@dicebear/core": "^9.2.4",
     "@iconify/vue2": "^2.1.0",
     "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
     "@nuxtjs/axios": "^5.13.6",

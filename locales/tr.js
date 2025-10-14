@@ -23,6 +23,7 @@ export default {
     no: 'Hayır',
     ok: 'Tamam',
     cancel: 'Vazgeç',
+    save: 'Kaydet',
     apply: 'Uygula',
     question: 'Soru',
     answer: 'Cevap',
@@ -143,6 +144,8 @@ export default {
   },
   dialog: {
     menu: {
+      profileEdit: 'Profili düzenle',
+      profileView: 'Profili görüntüle',
       title: 'Daha fazla',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
@@ -269,6 +272,27 @@ export default {
     player: {
       title: 'Profil',
       loading: 'Oyuncu bilgileri getiriliyor'
+    },
+    avatarEditor: {
+      title: 'Avatar düzenle',
+      livePreview: 'Canlı Önizleme',
+      mouth: 'Ağız',
+      eyes: 'Gözler',
+      eyebrows: 'Kaşlar',
+      hair: 'Saç Modeli',
+      hairColor: 'Saç Rengi',
+      earrings: 'Küpeler',
+      features: 'Özellikler',
+      glasses: 'Gözlükler',
+      featureOptions: {
+        none: 'Yok',
+        birthmark: 'Ben',
+        blush: 'Allık',
+        freckles: 'Çiller',
+        mustache: 'Bıyık'
+      },
+      skinColor: 'Cilt Rengi',
+      backgroundColor: 'Arkaplan Rengi'
     }
   },
   clipboard: {
@@ -366,6 +390,7 @@ export default {
   },
   form: {
     isRequired: '{model} gereklidir',
+    isInvalid: '{model} geçersiz',
     creatorModeCompose: {
       title: 'ODA OLUŞTUR',
       clearForm: 'Formu Temizle',
@@ -465,6 +490,23 @@ export default {
       },
       error: {
         submit: 'Bu oyuncu adı uygun değil lütfen başka yaz'
+      }
+    },
+    profileEdit: {
+      usernameField: {
+        label: 'Kullanıcı Adı',
+        placeholder: 'Kullanıcı adını yaz'
+      },
+      fullnameField: {
+        label: 'Ad Soyad',
+        placeholder: 'Ad soyadını yaz'
+      },
+      bioField: {
+        label: 'Kendini tanıt',
+        placeholder: 'Hakkında bir şeyler yaz'
+      },
+      callback: {
+        success: 'Profil bilgileriniz güncellendi'
       }
     }
   },
