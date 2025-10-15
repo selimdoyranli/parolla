@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.24.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.1...v2.24.2)
+
+
+### 💅 Refactors
+
+  - Defensive player fetch ([d9e5b76](https://github.com/selimdoyranli/parolla/commit/d9e5b76))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.24.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.0...v2.24.1)
