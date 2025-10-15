@@ -7,7 +7,7 @@
           v-if="!message.isSystem"
           with-username
           open-player-dialog-on-click
-          :user="{ username: message.playerName, id: message.playerId }"
+          :user="{ username: message.playerName, id: message.playerId, diceBear: message.diceBear }"
           :size="24"
         )
           template(#append)
