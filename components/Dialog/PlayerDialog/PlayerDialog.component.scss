@@ -14,6 +14,13 @@
       overflow-y: auto;
     }
   }
+
+  &-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block-start: $spacer * 2;
+  }
 }
 
 .profile-view {

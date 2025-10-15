@@ -23,8 +23,10 @@ Dialog.dialog.player-dialog(
   )
 
   template(v-else)
-    Empty(image="error" :description="$t('dialog.player.callback.error.title')")
-      Button(@click="fetchPlayer(), fetchTourScore()") {{ $t('dialog.player.callback.error.action') }}
+    .player-dialog-loading
+      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
+      Button(@click="fetchPlayer(), fetchTourScore()")
+        AppIcon(name="tabler:refresh" :width="16" :height="16")
 </template>
 
 <script>
