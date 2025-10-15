@@ -1,3 +1,5 @@
+import { userTransformer } from '@/transformers'
+
 export default {
   SET_TOUR_SCORE_OF_USER(state, tourScoreOfUser) {
     state.tourScoreOfUser = tourScoreOfUser
@@ -39,8 +41,7 @@ export default {
   SET_LEADERBOARD(state, leaderboard) {
     const mappedLeaderboard = leaderboard => {
       return leaderboard?.map(scorer => ({
-        id: scorer.user.id,
-        username: scorer.user.username,
+        ...userTransformer(scorer.user),
         score: scorer.score
       }))
     }
