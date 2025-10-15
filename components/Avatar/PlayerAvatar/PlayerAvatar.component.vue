@@ -27,6 +27,7 @@ import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { Notify } from 'vant'
 import { createAvatar } from '@dicebear/core'
 import * as adventurer from '@dicebear/adventurer'
+import parollaConfig from '@/system/parolla.config'
 
 export default defineComponent({
   components: {
@@ -88,8 +89,7 @@ export default defineComponent({
 
     const generateAvatarDataImage = () => {
       return createAvatar(adventurer, {
-        seed: 'Mason',
-        backgroundColor: ['ff7878']
+        ...parollaConfig.avatar.defaultConfig
       }).toDataUri()
     }
 

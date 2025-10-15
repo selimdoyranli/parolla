@@ -150,6 +150,7 @@ import { defineComponent, useStore, computed, reactive, ref } from '@nuxtjs/comp
 import { Dialog, Loading, Toast } from 'vant'
 import { createAvatar } from '@dicebear/core'
 import * as adventurer from '@dicebear/adventurer'
+import parollaConfig from '@/system/parolla.config'
 
 export default defineComponent({
   components: {
@@ -177,8 +178,7 @@ export default defineComponent({
 
     // Default avatar configuration
     const defaultConfig = {
-      seed: 'Mason',
-      backgroundColor: ['ff7878']
+      ...parollaConfig.avatar.defaultConfig
     }
 
     // Avatar Configuration
@@ -264,8 +264,7 @@ export default defineComponent({
     // Generate avatar SVG
     const generateAvatarSvg = cfg => {
       const avatarOptions = {
-        seed: 'Mason',
-        backgroundColor: ['ff7878']
+        ...parollaConfig.avatar.defaultConfig
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
@@ -302,8 +301,7 @@ export default defineComponent({
 
     const generateAvatarDataImage = cfg => {
       const avatarOptions = {
-        seed: 'Mason',
-        backgroundColor: ['ff7878']
+        ...parollaConfig.avatar.defaultConfig
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
