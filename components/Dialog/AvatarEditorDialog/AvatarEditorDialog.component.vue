@@ -264,7 +264,8 @@ export default defineComponent({
     // Generate avatar SVG
     const generateAvatarSvg = cfg => {
       const avatarOptions = {
-        seed: cfg.seed || 'Mason'
+        seed: 'Mason',
+        backgroundColor: ['ff7878']
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
@@ -301,7 +302,8 @@ export default defineComponent({
 
     const generateAvatarDataImage = cfg => {
       const avatarOptions = {
-        seed: cfg.seed || 'Mason'
+        seed: 'Mason',
+        backgroundColor: ['ff7878']
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
