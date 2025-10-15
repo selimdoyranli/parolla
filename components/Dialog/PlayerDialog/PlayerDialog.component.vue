@@ -11,6 +11,7 @@ Dialog.dialog.player-dialog(
   @opened="$emit('opened')"
 )
   ProfileView(
+    v-if="player && Object.keys(player).length > 0"
     :player-loading="playerLoading"
     :player-error="playerError"
     :tour-score-loading="tourScoreLoading"
@@ -20,16 +21,22 @@ Dialog.dialog.player-dialog(
     @player-error-click="fetchPlayer"
     @tour-score-error-click="fetchTourScore"
   )
+
+  template(v-else)
+    Empty(image="error" :description="$t('dialog.player.callback.error.title')")
+      Button(@click="fetchPlayer(), fetchTourScore()") {{ $t('dialog.player.callback.error.action') }}
 </template>
 
 <script>
 import { defineComponent, useStore, computed, watch, useFetch, ref } from '@nuxtjs/composition-api'
-import { Dialog, Loading } from 'vant'
+import { Dialog, Loading, Empty, Button } from 'vant'
 
 export default defineComponent({
   components: {
     Dialog: Dialog.Component,
-    Loading
+    Loading,
+    Empty,
+    Button
   },
   props: {
     cancelButtonText: {
@@ -42,7 +49,7 @@ export default defineComponent({
     const store = useStore()
 
     const isOpenPlayerDialog = computed(() => store.getters['profile/isOpenPlayerDialog'])
-    const playerUsername = computed(() => store.getters['profile/username'])
+    const playerId = computed(() => store.getters['profile/id'])
     const player = computed(() => store.getters['profile/player'])
     const tourScoreOfUser = computed(() => store.getters['tour/tourScoreOfUser'])
 
@@ -52,7 +59,7 @@ export default defineComponent({
     const tourScoreError = ref(null)
 
     const fetchPlayer = async () => {
-      const { data, error } = await store.dispatch('profile/fetchPlayer', { username: playerUsername.value })
+      const { data, error } = await store.dispatch('profile/fetchPlayer', { id: playerId.value })
 
       if (error) {
         playerError.value = error
@@ -63,7 +70,7 @@ export default defineComponent({
 
     const fetchTourScore = async () => {
       const { data, error } = await store.dispatch('tour/fetchTourScoreOfUser', {
-        username: playerUsername.value
+        id: playerId.value
       })
 
       if (error) {
@@ -95,7 +102,9 @@ export default defineComponent({
     }
 
     const onClosed = () => {
-      //store.commit('profile/CLEAR_PLAYER')
+      store.commit('profile/SET_PLAYER_ID', null)
+      store.commit('profile/SET_PLAYER_USERNAME', '')
+      store.commit('profile/CLEAR_PLAYER')
     }
 
     return {

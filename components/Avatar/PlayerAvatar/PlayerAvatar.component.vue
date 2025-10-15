@@ -69,6 +69,7 @@ export default defineComponent({
     const store = useStore()
 
     const openPlayerDialog = async () => {
+      store.commit('profile/SET_PLAYER_ID', props.user.id)
       store.commit('profile/SET_PLAYER_USERNAME', props.user.username)
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
     }

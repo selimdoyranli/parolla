@@ -268,7 +268,24 @@ export default {
     },
     player: {
       title: 'Profile',
-      loading: 'Fetching player information'
+      myBio: 'About',
+      tourScore: {
+        title: 'Tour mode scores',
+        loading: 'Fetching tour scores',
+        callback: {
+          error: {
+            title: 'Tour scores could not be fetched',
+            action: 'Try again'
+          }
+        }
+      },
+      loading: 'Fetching player information',
+      callback: {
+        error: {
+          title: 'Player information could not be fetched',
+          action: 'Try again'
+        }
+      }
     },
     avatarEditor: {
       title: 'Edit avatar',

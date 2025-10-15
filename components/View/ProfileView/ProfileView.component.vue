@@ -2,11 +2,11 @@
 .page.profile-view
   .profile-view-player
     template(v-if="playerLoading")
-      Loading(color="var(--color-brand-02)") Profil getiriliyor...
+      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
 
     template(v-else-if="playerError")
-      Empty(image="error" :description="$t('error.anErrorOccurred')")
-        Button(@click="$emit('player-error-click')") {{ $t('error.tryAgain') }}
+      Empty(image="error" :description="$t('dialog.player.callback.error.title')")
+        Button(@click="$emit('player-error-click')") {{ $t('dialog.player.callback.error.action') }}
 
     template(v-else)
       PlayerAvatar.profile-view__avatar(with-username :user="player")
@@ -17,7 +17,7 @@
         label.profile-view-created-at__label &nbsp;{{ $t('general.joined').toLowerCase() }}
 
       .profile-view-info
-        span.profile-view-info__title Hakkımda
+        span.profile-view-info__title {{ $t('dialog.player.myBio') }}
         .profile-view-info__separator
         span(v-if="!player.fullname && !player.bio") -
         span.profile-view-info__fullname(v-if="player.fullname") {{ player.fullname }}
@@ -25,14 +25,14 @@
 
   .profile-view-tour-score
     template(v-if="tourScoreLoading")
-      Loading(color="var(--color-brand-02)") Tur skorları getiriliyor...
+      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.tourScore.loading') }}
 
     template(v-else-if="tourScoreError")
-      Empty(image="error" :description="$t('error.anErrorOccurred')")
-        Button(@click="$emit('tour-score-error-click')") {{ $t('error.tryAgain') }}
+      Empty(image="error" :description="$t('dialog.player.tourScore.callback.error.title')")
+        Button(@click="$emit('tour-score-error-click')") {{ $t('dialog.player.tourScore.callback.error.action') }}
 
     template(v-else)
-      strong.profile-view-tour-score__title Tur modu skorları
+      strong.profile-view-tour-score__title {{ $t('dialog.player.tourScore.title') }}
       PlayerTourScoreTable.profile-view-tour-score__table(:tourScore="tourScore")
 </template>
 

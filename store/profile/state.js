@@ -1,4 +1,5 @@
 export default () => ({
+  id: null,
   username: '',
   player: {},
   dialog: {

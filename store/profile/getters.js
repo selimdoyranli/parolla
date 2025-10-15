@@ -1,4 +1,7 @@
 export default {
+  id(state) {
+    return state.id
+  },
   username(state) {
     return state.username
   },

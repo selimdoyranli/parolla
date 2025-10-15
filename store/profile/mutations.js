@@ -1,6 +1,10 @@
 import { userTransformer } from '@/transformers'
 
 export default {
+  SET_PLAYER_ID(state, id) {
+    state.id = id
+  },
+
   SET_PLAYER_USERNAME(state, username) {
     state.username = username
   },

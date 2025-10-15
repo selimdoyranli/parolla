@@ -271,7 +271,24 @@ export default {
     },
     player: {
       title: 'Profil',
-      loading: 'Oyuncu bilgileri getiriliyor'
+      myBio: 'Hakkımda',
+      tourScore: {
+        title: 'Tur modu skorları',
+        loading: 'Tur skorları getiriliyor',
+        callback: {
+          error: {
+            title: 'Tur skorları getirilemedi',
+            action: 'Tekrar dene'
+          }
+        }
+      },
+      loading: 'Oyuncu bilgileri getiriliyor',
+      callback: {
+        error: {
+          title: 'Oyuncu bilgileri getirilemedi',
+          action: 'Tekrar dene'
+        }
+      }
     },
     avatarEditor: {
       title: 'Avatar düzenle',
