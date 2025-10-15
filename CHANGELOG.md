@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.22.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.21.1...v2.22.0)
+
+
+### 🚀 Enhancements
+
+  - Full user info on tour leaderboard ([45b2665](https://github.com/selimdoyranli/parolla/commit/45b2665))
+  - Get dicebear avatar on tour chat message ([ec27bfb](https://github.com/selimdoyranli/parolla/commit/ec27bfb))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.21.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.21.0...v2.21.1)
