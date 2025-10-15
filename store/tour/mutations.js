@@ -29,6 +29,7 @@ export default {
     const mappedPlayers = userList.players.map(player => ({
       id: player.id,
       username: player.name,
+      diceBear: player.diceBear,
       avatarUrl: player.avatarUrl,
       lives: player.lives
     }))
