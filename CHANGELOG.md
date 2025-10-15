@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.23.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.22.0...v2.23.0)
+
+
+### 🚀 Enhancements
+
+  - Add dicebear avatar into tour user list ([589ec87](https://github.com/selimdoyranli/parolla/commit/589ec87))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.22.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.21.1...v2.22.0)
