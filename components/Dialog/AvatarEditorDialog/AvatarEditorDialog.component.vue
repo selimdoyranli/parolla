@@ -7,10 +7,10 @@ Dialog.dialog.avatar-editor-dialog(
   :show-confirm-button="true"
   :show-cancel-button="true"
   :close-on-click-overlay="false"
-  @input="handleDialogInput"
   @closed="onClosed"
   @opened="$emit('opened')"
   @confirm="handleConfirm"
+  @cancel="handleCancel"
 )
   .avatar-editor-content
     template(v-if="player && Object.keys(player).length > 0")
@@ -410,17 +410,15 @@ export default defineComponent({
 
     const handleConfirm = async () => {
       store.commit('profile/SET_AVATAR_EDITOR_DIALOG_IS_OPEN', false)
+
+      emit('on-confirm', {
+        dataImage: generateAvatarDataImage(config),
+        config: config
+      })
     }
 
-    const handleDialogInput = value => {
-      if (!value) {
-        store.commit('profile/SET_AVATAR_EDITOR_DIALOG_IS_OPEN', false)
-
-        emit('on-confirm', {
-          dataImage: generateAvatarDataImage(config),
-          config: config
-        })
-      }
+    const handleCancel = () => {
+      store.commit('profile/SET_AVATAR_EDITOR_DIALOG_IS_OPEN', false)
     }
 
     const onClosed = () => {
@@ -430,14 +428,14 @@ export default defineComponent({
     return {
       isOpenAvatarEditorDialog,
       player,
-      handleDialogInput,
       onClosed,
       config,
       options,
       previewSvg,
       handleOptionChange,
       getThumbnailSvg,
-      handleConfirm
+      handleConfirm,
+      handleCancel
     }
   }
 })
