@@ -69,7 +69,7 @@ export default defineComponent({
     const ws = store.getters['app/ws']
 
     const handleWsMessage = data => {
-      const { type, chatHistory, playerId, playerName, message, isSystem, timestamp } = JSON.parse(data.data)
+      const { type, chatHistory, playerId, playerName, diceBear, message, isSystem, timestamp } = JSON.parse(data.data)
 
       if (type === wsTypeEnum.CONNECTED) {
         store.commit('tour/SET_CHAT_MESSAGES', chatHistory)
@@ -91,6 +91,7 @@ export default defineComponent({
               isSystem,
               playerId,
               playerName,
+              diceBear,
               message,
               timestamp
             }

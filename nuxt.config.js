@@ -363,6 +363,12 @@ module.exports = {
           }
         }
       }
+    },
+    extend(config, { isDev, isClient }) {
+      if (!isDev && isClient) {
+        config.output.filename = '[name].[contenthash].js'
+        config.output.chunkFilename = '[name].[contenthash].js'
+      }
     }
   },
 
