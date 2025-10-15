@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.24.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.23.0...v2.24.0)
+
+
+### 🚀 Enhancements
+
+  - Add dicebear avatar into related with tour socket ([587a223](https://github.com/selimdoyranli/parolla/commit/587a223))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.23.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.22.0...v2.23.0)
