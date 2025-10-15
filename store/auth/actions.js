@@ -23,7 +23,7 @@ export default {
 
   async fetchGoogleUser({ commit, state }, callbackParams) {
     const { data, error } = await this.$appFetch({
-      path: `auth/google/callback?${callbackParams}`,
+      path: `auth/google/callback?${callbackParams}&populate=diceBear`,
       headers: {
         Authorization: `${callbackParams}`
       }

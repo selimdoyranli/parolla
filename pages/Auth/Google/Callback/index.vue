@@ -35,6 +35,12 @@ export default defineComponent({
       if (data) {
         await store.dispatch('auth/setGoogleUser', { callbackParams, googleResponse: data })
       }
+
+      const { data: meData } = await store.dispatch('auth/fetchMe')
+
+      if (meData) {
+        store.commit('auth/SET_USER', meData)
+      }
     }
 
     onMounted(async () => {

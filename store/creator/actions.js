@@ -133,7 +133,7 @@ export default {
       'pagination[page]': page || queryDefault.page,
       'pagination[pageSize]': limit || queryDefault.perPage,
       sort: getSort(state.room.sort) || queryDefault.sort,
-      populate: '*',
+      'populate[user][populate]': 'diceBear',
       locale: locale || queryDefault.locale
     }
 
