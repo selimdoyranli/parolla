@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.25.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.0...v2.25.1)
+
+
+### 🩹 Fixes
+
+  - Player avatar show fixes ([623549c](https://github.com/selimdoyranli/parolla/commit/623549c))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.25.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.2...v2.25.0)
