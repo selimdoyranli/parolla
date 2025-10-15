@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.25.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.2...v2.25.0)
+
+
+### 🚀 Enhancements
+
+  - Ux improvements ([30cd404](https://github.com/selimdoyranli/parolla/commit/30cd404))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.24.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.1...v2.24.2)
