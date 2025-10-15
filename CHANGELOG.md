@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.24.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.24.0...v2.24.1)
+
+
+### 🩹 Fixes
+
+  - Fix cancel fn on avatar editor dialog ([ca03357](https://github.com/selimdoyranli/parolla/commit/ca03357))
+  - Fix avatar preview on avatar editor ([c3787e2](https://github.com/selimdoyranli/parolla/commit/c3787e2))
+
+### 💅 Refactors
+
+  - Clean code ([8152d40](https://github.com/selimdoyranli/parolla/commit/8152d40))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.24.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.23.0...v2.24.0)
