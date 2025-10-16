@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { defineComponent, useContext, useStore, onMounted, computed, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, onMounted, computed } from '@nuxtjs/composition-api'
 import { Button, Notify } from 'vant'
 
 export default defineComponent({
@@ -98,7 +98,6 @@ export default defineComponent({
   },
   setup() {
     const { i18n } = useContext()
-    const router = useRouter()
     const store = useStore()
 
     const localeAvailabilityMessage = () => {

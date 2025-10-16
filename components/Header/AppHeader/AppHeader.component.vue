@@ -8,7 +8,7 @@
       li.app-header-nav__item(@click="handleClickBackButton")
         AppIcon(name="tabler:arrow-left")
 
-  LazyAppLogo(type="title" @click.native.prevent.capture="handleClickAppLogo")
+  AppLogo(type="title" @click.native.prevent.capture="handleClickAppLogo")
 
   nav.app-header-nav
     li.app-header-nav__item.app-header-nav__item--tourModeOnline.me-3(

@@ -8,7 +8,7 @@
     AppAd(:data-ad-slot="2717771834")
 
   // Inner
-  .layout__inner(:class="{ 'layout__inner--pulseBg': $route.path === localePath({ name: 'Main' }) }")
+  .layout__inner
     // App Header
     AppHeader
 
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onBeforeUnmount, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, onBeforeUnmount, reactive } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {

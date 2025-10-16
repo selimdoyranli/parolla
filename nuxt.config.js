@@ -179,7 +179,7 @@ module.exports = {
     [
       '@nuxtjs/partytown',
       {
-        debug: true
+        debug: false
       }
     ]
   ],

@@ -7,8 +7,8 @@ module.exports = {
   title,
   link: [
     { rel: 'icon', type: 'image/x-icon', href: '/meta/icon/favicon.ico' },
-    { rel: 'dns-prefetch', href: '//fonts.googleapis.com' },
-    { rel: 'dns-prefetch', href: '//fonts.gstatic.com' },
+    { rel: 'preconnect', href: '//fonts.googleapis.com', crossorigin: 'anonymous' },
+    { rel: 'preconnect', href: '//fonts.gstatic.com', crossorigin: 'anonymous' },
     { rel: 'dns-prefetch', href: '//strapi.parolla.app' },
     { rel: 'dns-prefetch', href: '//pagead2.googlesyndication.com' },
     { rel: 'dns-prefetch', href: '//googleads.g.doubleclick.net' },
