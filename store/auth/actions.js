@@ -1,5 +1,3 @@
-import { RADKOD_API_URL } from '@/system/constant'
-
 export default {
   async fetchMe({ commit, state }) {
     const token = this.$auth.strategy.token.get()
@@ -133,7 +131,7 @@ export default {
     }
 
     try {
-      const response = await fetch(`${RADKOD_API_URL}/global/ipinfo.php`)
+      const response = await fetch(`https://ipinfo.io/json`)
       const ipData = await response.json()
 
       if (ipData) {

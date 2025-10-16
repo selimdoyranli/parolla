@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent, useStore, useRouter, useContext, onMounted } from '@nuxtjs/composition-api'
-import { Notify } from 'vant'
 const { getQuery, stringifyQuery } = require('ufo')
 
 export default defineComponent({

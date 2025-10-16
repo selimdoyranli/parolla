@@ -78,7 +78,7 @@
   // How To Play Dialog
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
-  CreatorModeStatsDialog(
+  LazyCreatorModeStatsDialog(
     :cancelButtonText="$t('general.close')"
     :confirmButtonText="$t('general.playAgain')"
     :isOpen="creatorDialog.stats.isOpen"

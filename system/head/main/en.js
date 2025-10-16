@@ -12,7 +12,7 @@ export const meta = [
     content: 'word game, play word game, daily word game, play daily word game'
   },
   {
-    name: 'apple-mobile-web-app-capable',
+    name: 'mobile-web-app-capable',
     content: 'yes'
   },
   {

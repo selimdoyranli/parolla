@@ -35,7 +35,7 @@
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")
-        LazyPlayerAvatar(:user="user" :is-visitor="!$auth.loggedIn")
+        PlayerAvatar(:user="user" :is-visitor="!$auth.loggedIn")
 
       template(v-else)
         AppIcon(name="tabler:user-circle")

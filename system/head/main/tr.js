@@ -12,7 +12,7 @@ export const meta = [
     content: 'kelime oyunu, kelime oyunu oyna, günlük kelime oyunu, günlük kelime oyunu oyna'
   },
   {
-    name: 'apple-mobile-web-app-capable',
+    name: 'mobile-web-app-capable',
     content: 'yes'
   },
   {

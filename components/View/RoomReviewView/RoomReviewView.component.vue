@@ -1,6 +1,6 @@
 <template lang="pug">
 .room-review-view
-  RoomReviewForm(v-if="isOpenRoomReviewForm" @onClickBackButton="closeRoomReviewForm" @onSuccess="handleSuccessRoomReviewForm")
+  LazyRoomReviewForm(v-if="isOpenRoomReviewForm" @onClickBackButton="closeRoomReviewForm" @onSuccess="handleSuccessRoomReviewForm")
 
   template(v-else)
     template(v-if="fetchState.pending")

@@ -18,11 +18,6 @@ module.exports = {
   meta: [
     { charset: 'utf-8' },
     {
-      hid: 'viewport',
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content'
-    },
-    {
       hid: 'robots',
       name: 'robots',
       content: 'index,follow'
@@ -33,8 +28,8 @@ module.exports = {
       content: 'Selim Doyranlı'
     },
     {
-      hid: 'apple-mobile-web-app-capable',
-      name: 'apple-mobile-web-app-capable',
+      hid: 'mobile-web-app-capable',
+      name: 'mobile-web-app-capable',
       content: 'yes'
     },
     { name: 'Classification', content: 'Game' },

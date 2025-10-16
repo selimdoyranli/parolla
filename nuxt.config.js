@@ -176,7 +176,12 @@ module.exports = {
       }
     ],
     // https://github.com/nuxt-modules/partytown
-    ['@nuxtjs/partytown', {}]
+    [
+      '@nuxtjs/partytown',
+      {
+        debug: true
+      }
+    ]
   ],
 
   /*
@@ -330,18 +335,7 @@ module.exports = {
       analyzerMode: 'static'
     }, */
     standalone: true, // for ESM import
-    extractCSS:
-      process.env.NODE_ENV === 'production'
-        ? {
-            ignoreOrder: true
-          }
-        : false,
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-        maxSize: 244000
-      }
-    },
+    extractCSS: false,
     babel: {
       plugins: [
         [
