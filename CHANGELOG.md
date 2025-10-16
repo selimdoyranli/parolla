@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.25.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.2...v2.25.3)
+
+
+### 🔥 Performance
+
+  - Performance improvements ([64e4fed](https://github.com/selimdoyranli/parolla/commit/64e4fed))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.25.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.1...v2.25.2)
