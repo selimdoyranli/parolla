@@ -134,6 +134,7 @@ export default {
       'pagination[pageSize]': limit || queryDefault.perPage,
       sort: getSort(state.room.sort) || queryDefault.sort,
       'populate[user][populate]': 'diceBear',
+      populate: 'roomTags',
       locale: locale || queryDefault.locale
     }
 
