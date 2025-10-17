@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.25.4
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.3...v2.25.4)
+
+
+### 🩹 Fixes
+
+  - Add roomTags parameter into fetch room fn ([edc46dc](https://github.com/selimdoyranli/parolla/commit/edc46dc))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.25.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.2...v2.25.3)
