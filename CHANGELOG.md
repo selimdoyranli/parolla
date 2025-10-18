@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.25.5
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.4...v2.25.5)
+
+
+### 💅 Refactors
+
+  - Add accept language into request header on app fetch ([1943ced](https://github.com/selimdoyranli/parolla/commit/1943ced))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.25.4
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.3...v2.25.4)
