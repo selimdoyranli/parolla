@@ -108,7 +108,8 @@ export default defineComponent({
       addLetter,
       resetGame,
       setTargetWord,
-      getGameData
+      getGameData,
+      updateKeyboardStates
     } = useWordblock()
 
     // Turkish keyboard layout (F klavye düzeni)
@@ -196,7 +197,7 @@ export default defineComponent({
     const getKeyState = key => {
       const normalizedKey = key.toLocaleUpperCase('tr-TR')
 
-      return letterStates[normalizedKey] || null
+      return letterStates.value[normalizedKey] || null
     }
 
     // Handle key press from virtual keyboard
@@ -215,6 +216,9 @@ export default defineComponent({
     const handleSubmit = () => {
       if (currentGuess.value.length !== WORD_LENGTH.value) return
 
+      // Store current attempt index before it gets incremented
+      const attemptIndex = currentAttempt.value
+
       const result = submitGuess()
 
       if (!result.success) {
@@ -223,6 +227,20 @@ export default defineComponent({
 
         return
       }
+
+      // Calculate animation duration based on word length
+      // Each cell has 0.6s animation + staggered delay (0.2s per cell)
+      // Last cell finishes at: 0.6s + ((wordLength - 1) * 0.2s)
+      const animationDuration = 600 + (WORD_LENGTH.value - 1) * 200
+
+      // Update keyboard states after all animations complete
+      setTimeout(() => {
+        const submittedGuess = guesses.value[attemptIndex]
+
+        if (submittedGuess && submittedGuess.word) {
+          updateKeyboardStates(submittedGuess.word, submittedGuess.states)
+        }
+      }, animationDuration)
 
       // Log result for API integration
       if (result.status === 'won' || result.status === 'lost') {

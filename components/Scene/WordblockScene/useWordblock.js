@@ -19,7 +19,7 @@ export default () => {
   const currentGuess = ref('')
   const guesses = ref([])
   const gameStatus = ref('playing') // 'playing', 'won', 'lost'
-  const letterStates = reactive({}) // Track letter states for visual feedback
+  const letterStates = ref({}) // Track letter states for visual feedback
   const startTime = ref(null)
   const endTime = ref(null)
 
@@ -89,18 +89,35 @@ export default () => {
       const letter = normalizedGuess[i]
       const state = checkLetterState(letter, i, normalizedGuess)
       states.push(state)
-
-      // Update letter states for keyboard coloring (priority: correct > present > absent)
-      if (
-        !letterStates[letter] ||
-        (letterStates[letter] === 'absent' && state !== 'absent') ||
-        (letterStates[letter] === 'present' && state === 'correct')
-      ) {
-        letterStates[letter] = state
-      }
     }
 
     return states
+  }
+
+  /**
+   * Update keyboard letter states after animation delay
+   * Called after cell reveal animations are complete
+   */
+  const updateKeyboardStates = (guess, states) => {
+    const normalizedGuess = normalizeTurkish(guess)
+    const newStates = { ...letterStates.value }
+
+    for (let i = 0; i < normalizedGuess.length; i++) {
+      const letter = normalizedGuess[i]
+      const state = states[i]
+
+      // Update letter states for keyboard coloring (priority: correct > present > absent)
+      if (
+        !newStates[letter] ||
+        (newStates[letter] === 'absent' && state !== 'absent') ||
+        (newStates[letter] === 'present' && state === 'correct')
+      ) {
+        newStates[letter] = state
+      }
+    }
+
+    // Update the ref value with new object to trigger reactivity
+    letterStates.value = newStates
   }
 
   /**
@@ -202,7 +219,7 @@ export default () => {
     gameStatus.value = 'playing'
     startTime.value = null
     endTime.value = null
-    Object.keys(letterStates).forEach(key => delete letterStates[key])
+    letterStates.value = {}
     initializeGuesses()
   }
 
@@ -287,6 +304,7 @@ export default () => {
     resetGame,
     setTargetWord,
     getGameData,
-    normalizeTurkish
+    normalizeTurkish,
+    updateKeyboardStates
   }
 }
