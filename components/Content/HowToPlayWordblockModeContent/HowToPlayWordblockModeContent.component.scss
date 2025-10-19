@@ -1,0 +1,71 @@
+.how-to-play-wordblock-mode-content {
+  position: relative;
+
+  .instructions {
+    p {
+      margin-bottom: 16px;
+      line-height: 1.6;
+
+      strong {
+        font-weight: 700;
+      }
+    }
+
+    .examples {
+      margin: 24px 0;
+
+      > p {
+        margin-bottom: 16px;
+      }
+
+      .example {
+        margin-bottom: 24px;
+
+        .row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .game-tile {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          color: #000;
+          font-weight: bold;
+          font-size: 20px;
+          text-transform: uppercase;
+          background-color: #fff;
+          border: 2px solid #d3d6da;
+
+          &.reveal {
+            color: #fff;
+            border-color: transparent;
+          }
+
+          &.correct {
+            background-color: #6aaa64;
+          }
+
+          &.present {
+            background-color: #c9b458;
+          }
+
+          &.absent {
+            background-color: #787c7e;
+          }
+
+          span {
+            display: block;
+          }
+        }
+
+        p {
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+}

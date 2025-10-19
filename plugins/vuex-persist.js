@@ -14,6 +14,12 @@ export default ({ store }) => {
         isGameOver: state.daily.isGameOver,
         currentDate: state.daily.currentDate,
         questions: state.daily.questions
+      },
+      wordblock: {
+        isGameOver: state.wordblock.isGameOver,
+        currentDate: state.wordblock.currentDate,
+        targetWord: state.wordblock.targetWord,
+        result: state.wordblock.result
       }
     })
   }).plugin(store)

@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.26.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.4...v2.26.0)
+
+
+### 🚀 Enhancements
+
+  - Wordblock mode ([026552b](https://github.com/selimdoyranli/parolla/commit/026552b))
+
+### 🩹 Fixes
+
+  - Key state assign delay on wordblock ([c9b54ff](https://github.com/selimdoyranli/parolla/commit/c9b54ff))
+
+### 💅 Refactors
+
+  - Wordblock structure ([818db44](https://github.com/selimdoyranli/parolla/commit/818db44))
+  - Renames ([a6b44c5](https://github.com/selimdoyranli/parolla/commit/a6b44c5))
+  - Renames ([893dbf2](https://github.com/selimdoyranli/parolla/commit/893dbf2))
+  - Clean code on wordblock ([5f6a91f](https://github.com/selimdoyranli/parolla/commit/5f6a91f))
+  - Word block mode structure improvements ([f534e96](https://github.com/selimdoyranli/parolla/commit/f534e96))
+  - Daily store logic on word block mode ([7867a90](https://github.com/selimdoyranli/parolla/commit/7867a90))
+  - Wordblock mode on tr currently ([09e077f](https://github.com/selimdoyranli/parolla/commit/09e077f))
+
 ## v2.25.5
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.4...v2.25.5)

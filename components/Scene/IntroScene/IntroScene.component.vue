@@ -83,6 +83,16 @@
           span.intro-scene-mode-list-item-title {{ $t('introScene.modeList.creator.title') }}
           p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.creator.description') }}
 
+      Button.intro-scene-mode-list-item(
+        v-if="$i18n.locale === $i18n.defaultLocale"
+        size="large"
+        :to="localePath({ name: 'WordblockMode' })"
+      )
+        .prepend
+          AppIcon.intro-scene-mode-list-item__icon(name="icon-park:view-grid-card" :width="24" :height="24")
+          span.intro-scene-mode-list-item-title {{ $t('introScene.modeList.wordblock.title') }}
+          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.wordblock.description') }}
+
     .intro-scene__keywords.d-none
       h3.intro-scene__subtitle {{ $t('introScene.subtitle') }}
       p.intro-scene__description {{ $t('introScene.description') }}

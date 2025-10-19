@@ -23,8 +23,6 @@ export default () => {
     rootRef.value = element
   }
 
-  const user = computed(() => store.getters['auth/user'])
-
   const isGameStarted = ref(false)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])

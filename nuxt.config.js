@@ -307,6 +307,10 @@ module.exports = {
           'Profile/ProfileEdit/index': {
             tr: '/profil/duzenle',
             en: '/profile/edit'
+          },
+          'WordblockMode/index': {
+            tr: '/kelimeblok',
+            en: '/wordblock'
           }
         }
       }

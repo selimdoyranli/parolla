@@ -1,0 +1,318 @@
+.wordblock-scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    padding-inline: 0;
+    padding-block: var(--base-p-y);
+
+    @include media-breakpoint-up(tablet) {
+      padding-block: 10vh;
+    }
+  }
+
+  &__header {
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 0.95rem;
+  }
+
+  &__board {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  &__row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+  }
+
+  &__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 2px solid light-dark(#ccc, #666);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &--filled {
+      border-color: var(--color-text-02);
+      animation: pop 0.1s ease;
+    }
+
+    &--revealed {
+      animation: flip 0.6s ease-in-out forwards;
+
+      &[data-state='correct'] {
+        animation: flip 0.6s ease-in-out forwards, revealCorrect 0.6s ease-in-out forwards;
+      }
+
+      &[data-state='present'] {
+        animation: flip 0.6s ease-in-out forwards, revealPresent 0.6s ease-in-out forwards;
+      }
+
+      &[data-state='absent'] {
+        animation: flip 0.6s ease-in-out forwards, revealAbsent 0.6s ease-in-out forwards;
+      }
+    }
+  }
+
+  &__row--current {
+    .wordblock-scene__cell {
+      border-color: var(--color-brand-02);
+    }
+  }
+
+  &__keyboard {
+    position: fixed !important;
+    width: 100%;
+    max-width: 500px;
+    padding: 0 0.5rem;
+    user-select: none;
+    touch-action: manipulation;
+    inset-block-end: var(--base-p-y);
+    inset-inline-start: 0;
+
+    @include center(true, false);
+  }
+
+  &__keyboardRow {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__spacer {
+    &--half {
+      flex: 0.5;
+    }
+  }
+
+  @keyframes scaleKey {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  &__key {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    height: 58px;
+    padding: 0 8px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 0.813rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background-color: light-dark(#f3f3f3, #272727);
+    border: 1px solid light-dark(#ddd, #444);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    @media (hover: none) {
+      &:hover {
+        animation: scaleKey 0.15s ease forwards;
+      }
+    }
+
+    &:active {
+      animation: scaleKey 0.15s ease forwards;
+    }
+
+    &--wide {
+      flex: 1.5;
+      min-width: 0;
+      font-size: 0.75rem;
+    }
+
+    // Key states - color feedback based on guess results with delay
+    &[data-state='correct'] {
+      color: var(--color-text-04);
+      background-color: var(--color-success-01);
+    }
+
+    &[data-state='present'] {
+      color: var(--color-text-04);
+      background-color: var(--color-warning-01);
+    }
+
+    &[data-state='absent'] {
+      color: var(--color-text-04);
+      background-color: var(--color-text-03);
+      opacity: 0.5;
+    }
+  }
+
+  // Animations
+  @keyframes pop {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.1);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes flip {
+    0% {
+      transform: rotateX(0);
+    }
+
+    50% {
+      transform: rotateX(90deg);
+    }
+
+    100% {
+      transform: rotateX(0);
+    }
+  }
+
+  @keyframes revealCorrect {
+    0%,
+    50% {
+      color: var(--color-text-01);
+      background-color: transparent;
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: #fff;
+      background: var(--color-success-01);
+      border-color: var(--color-success-01);
+    }
+  }
+
+  @keyframes revealPresent {
+    0%,
+    50% {
+      color: var(--color-text-01);
+      background-color: transparent;
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: #fff;
+      background: var(--color-warning-01);
+      border-color: var(--color-warning-01);
+    }
+  }
+
+  @keyframes revealAbsent {
+    0%,
+    50% {
+      color: var(--color-text-01);
+      background-color: transparent;
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: #fff;
+      background: var(--color-text-03);
+      border-color: var(--color-text-03);
+      opacity: 0.6;
+    }
+  }
+
+  // Klavye tuşları için animasyonlar
+  @keyframes revealKeyCorrect {
+    0% {
+      color: var(--color-text-01);
+      background-color: transparent;
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: #fff;
+      background: var(--color-success-01);
+      border-color: var(--color-success-01);
+    }
+  }
+
+  @keyframes revealKeyPresent {
+    0% {
+      color: var(--color-text-01);
+      background-color: transparent;
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: #fff;
+      background: var(--color-warning-01);
+      border-color: var(--color-warning-01);
+    }
+  }
+
+  @keyframes revealKeyAbsent {
+    0% {
+      color: var(--color-text-03);
+      background-color: var(--color-disabled-01);
+      border-color: var(--color-border-01);
+    }
+
+    100% {
+      color: var(--color-text-04);
+      background-color: var(--color-disabled-01);
+      border-color: var(--color-border-01);
+      opacity: 0.5;
+    }
+  }
+}
