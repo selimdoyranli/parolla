@@ -102,6 +102,10 @@ export default {
       creator: {
         title: 'CREATOR',
         description: 'Create your own Q&A set and solve fun questions created by players'
+      },
+      wordblock: {
+        title: 'WORDBLOCK',
+        description: 'Guess the daily word'
       }
     }
   },

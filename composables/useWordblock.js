@@ -27,6 +27,7 @@ export default () => {
   const MAX_ATTEMPTS = 5
 
   const isGameOver = computed(() => store.getters['wordblock/isGameOver'])
+  const gameResult = computed(() => store.getters['wordblock/result'])
 
   // Game state
   const currentAttempt = ref(0)
@@ -69,6 +70,47 @@ export default () => {
   }
 
   initializeGuesses()
+
+  /**
+   * Restore game state from persistStore when game is over
+   * Populates the board cells with user's previous answers
+   */
+  const restoreGameState = () => {
+    if (isGameOver.value && gameResult.value && gameResult.value.guesses && gameResult.value.guesses.length > 0) {
+      // Restore guesses from store
+      gameResult.value.guesses.forEach((guess, index) => {
+        if (guess && guess.word && guess.states) {
+          guesses.value[index] = {
+            word: guess.word,
+            states: guess.states,
+            timestamp: guess.timestamp || null
+          }
+        }
+      })
+
+      // Restore game status
+      if (gameResult.value.status === gameStatusEnum.WON) {
+        gameStatus.value = gameStatusEnum.WON
+      } else if (gameResult.value.status === gameStatusEnum.LOST) {
+        gameStatus.value = gameStatusEnum.LOST
+      }
+
+      // Restore current attempt count
+      currentAttempt.value = gameResult.value.attempts || gameResult.value.guesses.length
+
+      // Restore keyboard letter states
+      gameResult.value.guesses.forEach((guess, index) => {
+        if (guess && guess.word && guess.states) {
+          updateKeyboardStates(guess.word, guess.states)
+        }
+      })
+
+      // Restore time data if available
+      if (gameResult.value.elapsedTime) {
+        endTime.value = gameResult.value.elapsedTime
+      }
+    }
+  }
 
   /**
    * Normalize Turkish characters for comparison
@@ -330,13 +372,19 @@ export default () => {
   }
 
   onMounted(() => {
-    openHowToPlayDialog()
+    // Restore game state if game was already completed
+    if (isGameOver.value) {
+      restoreGameState()
+    } else {
+      openHowToPlayDialog()
+    }
   })
 
   return {
     // State
     targetWord,
     isGameOver,
+    gameResult,
     WORD_LENGTH,
     MAX_ATTEMPTS,
     currentAttempt,
@@ -363,6 +411,7 @@ export default () => {
     getGameData,
     normalizeTurkish,
     updateKeyboardStates,
+    restoreGameState,
     openHowToPlayDialog,
     closeHowToPlayDialog,
     openStatsDialog,

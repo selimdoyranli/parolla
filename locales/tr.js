@@ -104,6 +104,10 @@ export default {
       creator: {
         title: 'YARATICI',
         description: 'Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+      },
+      wordblock: {
+        title: 'KELİMEBLOK',
+        description: 'Günlük kelimeyi tahmin et'
       }
     }
   },

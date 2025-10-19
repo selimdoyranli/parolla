@@ -114,6 +114,7 @@ export default defineComponent({
 
     const {
       isGameOver,
+      gameResult,
       startGame,
       endGame,
       targetWord,
@@ -134,6 +135,7 @@ export default defineComponent({
       setTargetWord,
       getGameData,
       updateKeyboardStates,
+      restoreGameState,
       openHowToPlayDialog,
       closeHowToPlayDialog,
       openStatsDialog,
@@ -283,9 +285,7 @@ export default defineComponent({
         endGame()
 
         if (gameStatus.value === gameStatusEnum.WON) {
-          console.log('won', gameStatus.value)
           const getWonToastMessage = message => {
-            console.log('message', message)
             Toast({
               message: message,
               position: 'bottom',
@@ -318,8 +318,7 @@ export default defineComponent({
           openStatsDialog()
         }, animationDuration + 100)
 
-        console.log('Game ended:', result)
-        console.log('Game data for API:', getGameData())
+        console.info('Game data for API:', getGameData())
       }
     }
 
@@ -342,8 +341,9 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      // Check game over state - if game was already completed today, show stats
+      // Check game over state - if game was already completed today, restore state and show stats
       if (isGameOver.value) {
+        restoreGameState()
         openStatsDialog()
       }
 
