@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.26.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.26.0...v2.26.1)
+
+
+### 🩹 Fixes
+
+  - Style fix on wordblock mode stats dialog ([4b162db](https://github.com/selimdoyranli/parolla/commit/4b162db))
+
+### 💅 Refactors
+
+  - Add accept language into request header on app fetch ([1943ced](https://github.com/selimdoyranli/parolla/commit/1943ced))
+
+### 🏡 Chore
+
+  - **release:** V2.25.5 ([5435aa9](https://github.com/selimdoyranli/parolla/commit/5435aa9))
+  - **merge:** Merge master ([c140d1a](https://github.com/selimdoyranli/parolla/commit/c140d1a))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.26.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.4...v2.26.0)
