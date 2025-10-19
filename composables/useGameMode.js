@@ -21,6 +21,10 @@ export default () => {
     if (route.value.path === localePath({ name: 'TourMode-TourModeGame' })) {
       return gameModeKeyEnum.TOUR
     }
+
+    if (route.value.path === localePath({ name: 'WordblockMode' })) {
+      return gameModeKeyEnum.WORDBLOCK
+    }
   })
 
   return {

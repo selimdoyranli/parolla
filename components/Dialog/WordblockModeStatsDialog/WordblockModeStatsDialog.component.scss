@@ -1,0 +1,49 @@
+.wordblock-mode-stats-dialog {
+  .results {
+    position: relative;
+    max-height: 40vh;
+    overflow: auto;
+  }
+
+  .status-card {
+    position: relative;
+
+    &-title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: var(--font-size-text-2);
+      margin-block-end: var(--base-m-y);
+
+      @include font-weight-semi-bold;
+
+      &__icon {
+        margin-inline-end: calc(var(--base-m-x) / 2);
+      }
+    }
+
+    &--won {
+      .status-card-title {
+        color: var(--color-success-01);
+      }
+    }
+
+    &--lost {
+      .status-card-title {
+        color: var(--color-danger-01);
+      }
+    }
+
+    &__description {
+      margin-block-end: var(--base-m-y);
+      font-size: var(--font-size-text-8);
+    }
+  }
+
+  .stats-dialog {
+    &__actions {
+      margin-block-start: calc(var(--base-m-y) * 4);
+      margin-block-end: var(--base-m-y);
+    }
+  }
+}

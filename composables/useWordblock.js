@@ -1,4 +1,14 @@
-import { ref, reactive, computed } from '@nuxtjs/composition-api'
+import { useStore, ref, computed, onMounted } from '@nuxtjs/composition-api'
+
+/**
+ * Game Status Enum
+ */
+const gameStatusEnum = Object.freeze({
+  FIRST_START: 'firstStart',
+  PLAYING: 'playing',
+  WON: 'won',
+  LOST: 'lost'
+})
 
 /**
  * Wordblock Game Logic
@@ -9,19 +19,41 @@ import { ref, reactive, computed } from '@nuxtjs/composition-api'
  * @returns {Object} Game state and methods
  */
 export default () => {
+  const store = useStore()
+
   // Demo word - will be replaced with API data
-  const targetWord = ref('ABARTILIŞ')
+  const targetWord = computed(() => store.getters['wordblock/targetWord'])
   const WORD_LENGTH = computed(() => targetWord.value.length)
   const MAX_ATTEMPTS = 5
+
+  const isGameOver = computed(() => store.getters['wordblock/isGameOver'])
 
   // Game state
   const currentAttempt = ref(0)
   const currentGuess = ref('')
   const guesses = ref([])
-  const gameStatus = ref('playing') // 'playing', 'won', 'lost'
+  const gameStatus = ref(gameStatusEnum.FIRST_START) // 'firstStart', 'playing', 'won', 'lost'
   const letterStates = ref({}) // Track letter states for visual feedback
   const startTime = ref(null)
   const endTime = ref(null)
+
+  const startGame = () => {
+    closeHowToPlayDialog()
+    gameStatus.value = gameStatusEnum.PLAYING
+    startTime.value = Date.now()
+    store.commit('wordblock/SET_IS_GAME_OVER', false)
+  }
+
+  const endGame = () => {
+    store.commit('wordblock/SET_IS_GAME_OVER', true)
+    store.commit('wordblock/SET_GAME_RESULT', {
+      status: gameStatus.value,
+      attempts: currentAttempt.value,
+      word: targetWord.value,
+      guesses: guesses.value,
+      elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
+    })
+  }
 
   // Initialize guesses array
   const initializeGuesses = () => {
@@ -129,11 +161,6 @@ export default () => {
       return { success: false, error: 'incomplete', message: 'Kelime tamamlanmamış' }
     }
 
-    // Start timer on first guess
-    if (currentAttempt.value === 0 && !startTime.value) {
-      startTime.value = Date.now()
-    }
-
     const normalizedGuess = normalizeTurkish(currentGuess.value)
     const states = evaluateGuess(normalizedGuess)
 
@@ -145,16 +172,16 @@ export default () => {
 
     // Check if won
     if (normalizedGuess === normalizeTurkish(targetWord.value)) {
-      gameStatus.value = 'won'
+      gameStatus.value = gameStatusEnum.WON
       endTime.value = Date.now()
       currentAttempt.value++ // Increment to show the winning row
       currentGuess.value = ''
 
       return {
         success: true,
-        status: 'won',
+        status: gameStatusEnum.WON,
         attempts: currentAttempt.value,
-        duration: endTime.value - startTime.value
+        elapsedTime: endTime.value - startTime.value
       }
     }
 
@@ -164,14 +191,14 @@ export default () => {
 
     // Check if lost
     if (currentAttempt.value >= MAX_ATTEMPTS) {
-      gameStatus.value = 'lost'
+      gameStatus.value = gameStatusEnum.LOST
       endTime.value = Date.now()
 
       return {
         success: true,
-        status: 'lost',
+        status: gameStatusEnum.LOST,
         attempts: MAX_ATTEMPTS,
-        duration: endTime.value - startTime.value,
+        elapsedTime: endTime.value - startTime.value,
         correctWord: targetWord.value
       }
     }
@@ -192,7 +219,7 @@ export default () => {
    * Add letter to current guess
    */
   const addLetter = letter => {
-    if (currentGuess.value.length < WORD_LENGTH.value && gameStatus.value === 'playing') {
+    if (currentGuess.value.length < WORD_LENGTH.value && gameStatus.value === gameStatusEnum.PLAYING) {
       currentGuess.value += normalizeTurkish(letter)
     }
   }
@@ -216,7 +243,7 @@ export default () => {
   const resetGame = () => {
     currentAttempt.value = 0
     currentGuess.value = ''
-    gameStatus.value = 'playing'
+    gameStatus.value = gameStatusEnum.PLAYING
     startTime.value = null
     endTime.value = null
     letterStates.value = {}
@@ -255,8 +282,8 @@ export default () => {
       totalAttempts: MAX_ATTEMPTS,
       guessedWords: guesses.value.filter(g => g.word).length,
       gameStatus: gameStatus.value,
-      duration: endTime.value && startTime.value ? endTime.value - startTime.value : null,
-      isComplete: gameStatus.value !== 'playing'
+      elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null,
+      isComplete: gameStatus.value !== gameStatusEnum.PLAYING && gameStatus.value !== gameStatusEnum.FIRST_START
     }
   })
 
@@ -267,7 +294,7 @@ export default () => {
     return {
       targetWord: targetWord.value,
       attempts: currentAttempt.value,
-      won: gameStatus.value === 'won',
+      won: gameStatus.value === gameStatusEnum.WON,
       guesses: guesses.value
         .filter(g => g.word)
         .map(g => ({
@@ -277,34 +304,65 @@ export default () => {
         })),
       startTime: startTime.value,
       endTime: endTime.value,
-      duration: endTime.value && startTime.value ? endTime.value - startTime.value : null
+      elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
     }
   }
+
+  const dialog = computed(() => store.getters['wordblock/dialog'])
+
+  const openHowToPlayDialog = () => {
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', true)
+  }
+
+  const closeHowToPlayDialog = () => {
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', false)
+  }
+
+  const openStatsDialog = () => {
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', true)
+  }
+
+  const closeStatsDialog = () => {
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', false)
+  }
+
+  onMounted(() => {
+    openHowToPlayDialog()
+  })
 
   return {
     // State
     targetWord,
+    isGameOver,
     WORD_LENGTH,
     MAX_ATTEMPTS,
     currentAttempt,
     currentGuess,
     guesses,
     gameStatus,
+    gameStatusEnum,
     letterStates,
 
     // Computed
     getCurrentRowDisplay,
     getGameStats,
+    dialog,
 
     // Methods
     submitGuess,
     deleteLetter,
     addLetter,
     handleInputChange,
+    startGame,
+    endGame,
     resetGame,
     setTargetWord,
     getGameData,
     normalizeTurkish,
-    updateKeyboardStates
+    updateKeyboardStates,
+    openHowToPlayDialog,
+    closeHowToPlayDialog,
+    openStatsDialog,
+    closeStatsDialog
   }
 }

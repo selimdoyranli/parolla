@@ -116,6 +116,7 @@ export default {
     wrong: 'Incorrect',
     pass: 'Pass',
     remainTime: 'Remain time',
+    elapsedTime: 'Elapsed time',
     scoreStats: 'Score chart',
     answerKey: 'Answer key',
     correctAnswer: 'Correct answer',
@@ -217,7 +218,10 @@ export default {
         <strong>Parolla</strong> tour mode is a game mode where multiple players see the same question in each round and try to give the same correct answer. The question changes each round and players collect points by trying to give the correct answer in each round.<br><br>
         Each round is <strong>30</strong> seconds and you have <strong>3</strong> chances to give the correct answer each round.`
       },
-      cancelButtonText: 'Close and Play'
+      cancelButtonText: 'Close and Play',
+      wordblock: {
+        title: 'How to play parolla wordblock?'
+      }
     },
     stats: {
       clipboard: {
@@ -232,6 +236,21 @@ export default {
       },
       daily: {
         nextGame: 'Next game'
+      },
+      won: {
+        title: 'Congratulations!',
+        description: '{attempts}. guess <strong>{targetWord}</strong> word.',
+        attempts: {
+          one: 'One shot!',
+          two: 'Excellent!',
+          three: 'Super!',
+          four: 'Nice!',
+          five: 'Not bad!'
+        }
+      },
+      lost: {
+        title: 'Game over!',
+        description: 'Unfortunately, you did not guess the <strong>{targetWord}</strong> word.'
       }
     },
     interstitialAd: {
@@ -331,6 +350,9 @@ export default {
     },
     creatorModeStats: {
       description: `parolla - Word game \n\nI played the player-generated Q&A set of {questionCount} questions in room "{roomTitle}" \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
+    },
+    wordblockModeStats: {
+      description: `parolla - Word game \n\nMy score in Wordblock mode\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nElapsed Time: {elapsedTime} \n \n{url}`
     }
   },
   creatorModeIntro: {

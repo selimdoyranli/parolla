@@ -197,44 +197,6 @@
     }
   }
 
-  &__gameOver {
-    margin-top: 2rem;
-    animation: fadeIn 0.5s ease;
-  }
-
-  &__message {
-    padding: 2rem;
-    text-align: center;
-    background-color: transparent;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  &__messageIcon {
-    margin-bottom: 1rem;
-    font-size: 4rem;
-  }
-
-  &__messageTitle {
-    margin: 0 0 0.5rem;
-    color: var(--color-text-01);
-    font-weight: 700;
-    font-size: 1.75rem;
-  }
-
-  &__messageText {
-    margin: 0 0 1.5rem;
-    color: var(--color-text-02);
-    font-size: 1rem;
-  }
-
-  &__resetButton {
-    width: 100%;
-    max-width: 200px;
-    font-weight: 600;
-    border-radius: 8px;
-  }
-
   // Animations
   @keyframes pop {
     0% {
@@ -351,30 +313,6 @@
       background-color: var(--color-disabled-01);
       border-color: var(--color-border-01);
       opacity: 0.5;
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      transform: translateY(10px);
-      opacity: 0;
-    }
-
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(10px);
-      opacity: 0;
-    }
-
-    to {
-      transform: translateX(0);
-      opacity: 1;
     }
   }
 }

@@ -1,33 +1,36 @@
 <template lang="pug">
-.scene.wordblock-scene(
-  ref="rootRef"
-  :class="{ 'wordblock-scene--won': gameStatus === 'won', 'wordblock-scene--lost': gameStatus === 'lost' }"
-)
+.scene.game-scene.wordblock-scene(ref="rootRef" :class="sceneClasses")
   // Scene Inner
-  .scene__inner.wordblock-scene__inner
-    // Game Board
-    .wordblock-scene__board
-      // Guess Rows
-      .wordblock-scene__row(
-        v-for="(guess, rowIndex) in guesses"
-        :key="rowIndex"
-        :class="getRowClass(rowIndex)"
-        :data-word="getRowWord(rowIndex)"
-      )
-        .wordblock-scene__cell(
-          v-for="(letter, cellIndex) in getCellsForRow(rowIndex)"
-          :key="cellIndex"
-          :class="getCellClass(rowIndex, cellIndex)"
-          :style="getCellStyle(rowIndex, cellIndex)"
-          :data-state="getCellState(rowIndex, cellIndex)"
-          :data-letter="letter"
-        ) {{ letter }}
+  .scene__inner.game-scene__inner.wordblock-scene__inner
+    // Fetch State
+    template(v-if="fetchState.pending")
+      Empty(:description="$t('gameScene.pendingQuestions')")
+
+    template(v-else-if="fetchState.error")
+      Empty(image="error" :description="$t('gameScene.error.fetchQuestions.description')")
+        Button(@click="reFetch") {{ $t('gameScene.error.fetchQuestions.action') }}
+
+    template(v-else)
+      // Game Board
+      .wordblock-scene__board
+        // Guess Rows
+        .wordblock-scene__row(
+          v-for="(guess, rowIndex) in guesses"
+          :key="rowIndex"
+          :class="getRowClass(rowIndex)"
+          :data-word="getRowWord(rowIndex)"
+        )
+          .wordblock-scene__cell(
+            v-for="(letter, cellIndex) in getCellsForRow(rowIndex)"
+            :key="cellIndex"
+            :class="getCellClass(rowIndex, cellIndex)"
+            :style="getCellStyle(rowIndex, cellIndex)"
+            :data-state="getCellState(rowIndex, cellIndex)"
+            :data-letter="letter"
+          ) {{ letter }}
 
     // Keyboard Section
-    section.wordblock-scene__keyboard(
-      v-if="gameStatus === 'playing'"
-      :class="{ 'wordblock-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }"
-    )
+    section.wordblock-scene__keyboard(:class="{ 'wordblock-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }")
       .wordblock-scene__keyboardRow
         button.wordblock-scene__key(
           v-for="key in keyboardLayout[0]"
@@ -64,34 +67,33 @@
         button.wordblock-scene__key.wordblock-scene__key--wide(data-key="backspace" @click="handleBackspace")
           AppIcon(name="tabler:backspace")
 
-    // Game Over Messages
-    .wordblock-scene__gameOver(v-if="gameStatus === 'won'")
-      .wordblock-scene__message
-        AppIcon.wordblock-scene__messageIcon(name="tabler:trophy" color="var(--color-success-01)")
-        h2.wordblock-scene__messageTitle Tebrikler!
-        p.wordblock-scene__messageText {{ currentAttempt }}/{{ MAX_ATTEMPTS }} denemede buldunuz
-        Button.wordblock-scene__resetButton(color="var(--color-brand-02)" @click="resetGame") Yeniden Oyna
-
-    .wordblock-scene__gameOver(v-if="gameStatus === 'lost'")
-      .wordblock-scene__message
-        AppIcon.wordblock-scene__messageIcon(name="tabler:x" color="var(--color-danger-01)")
-        h2.wordblock-scene__messageTitle Oyun Bitti
-        p.wordblock-scene__messageText Doğru kelime: {{ targetWord }}
-        Button.wordblock-scene__resetButton(color="var(--color-brand-02)" @click="resetGame") Yeniden Oyna
+  HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="handleHowToPlayDialogClose")
+  WordblockModeStatsDialog(:isOpen="dialog.stats.isOpen" @closed="handleStatsDialogClose")
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { Button } from 'vant'
+import { defineComponent, useFetch, useStore, useContext, ref, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { Button, Empty, Toast } from 'vant'
 
 export default defineComponent({
   components: {
-    Button
+    Button,
+    Empty
   },
   setup() {
     const rootRef = ref(null)
 
+    const store = useStore()
+    const { i18n } = useContext()
+
+    const { fetch, fetchState } = useFetch(async () => {
+      await store.dispatch('wordblock/fetchWord')
+    })
+
     const {
+      isGameOver,
+      startGame,
+      endGame,
       targetWord,
       WORD_LENGTH,
       MAX_ATTEMPTS,
@@ -99,6 +101,7 @@ export default defineComponent({
       currentGuess,
       guesses,
       gameStatus,
+      gameStatusEnum,
       letterStates,
       getCurrentRowDisplay,
       getGameStats,
@@ -108,20 +111,32 @@ export default defineComponent({
       resetGame,
       setTargetWord,
       getGameData,
-      updateKeyboardStates
+      updateKeyboardStates,
+      openHowToPlayDialog,
+      closeHowToPlayDialog,
+      openStatsDialog,
+      closeStatsDialog,
+      dialog
     } = useWordblock()
 
-    // Turkish keyboard layout (F klavye düzeni)
+    // Turkish keyboard layout
     const keyboardLayout = [
       ['e', 'r', 't', 'y', 'u', 'ı', 'o', 'p', 'ğ', 'ü'],
       ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ş', 'i'],
       ['z', 'c', 'v', 'b', 'n', 'm', 'ö', 'ç']
     ]
 
+    // Scene classes computed
+    const sceneClasses = computed(() => ({
+      'game-scene--gameOver': isGameOver.value,
+      'wordblock-scene--won': gameStatus.value === gameStatusEnum.WON,
+      'wordblock-scene--lost': gameStatus.value === gameStatusEnum.LOST
+    }))
+
     // Get row class
     const getRowClass = rowIndex => {
       return {
-        'wordblock-scene__row--current': rowIndex === currentAttempt && gameStatus === 'playing',
+        'wordblock-scene__row--current': rowIndex === currentAttempt && gameStatus.value === gameStatusEnum.PLAYING,
         'wordblock-scene__row--completed': rowIndex < currentAttempt
       }
     }
@@ -131,7 +146,7 @@ export default defineComponent({
       if (rowIndex < currentAttempt.value) {
         // Completed row
         return guesses.value[rowIndex].word.split('')
-      } else if (rowIndex === currentAttempt.value && gameStatus.value === 'playing') {
+      } else if (rowIndex === currentAttempt.value && gameStatus.value === gameStatusEnum.PLAYING) {
         // Current row
         return getCurrentRowDisplay.value
       } else {
@@ -145,7 +160,7 @@ export default defineComponent({
       if (rowIndex < currentAttempt.value) {
         // Completed row - return the guessed word
         return guesses.value[rowIndex].word
-      } else if (rowIndex === currentAttempt.value && gameStatus.value === 'playing') {
+      } else if (rowIndex === currentAttempt.value && gameStatus.value === gameStatusEnum.PLAYING) {
         // Current row - return current guess
         return currentGuess.value
       } else {
@@ -201,13 +216,13 @@ export default defineComponent({
 
     // Handle key press from virtual keyboard
     const handleKeyPress = key => {
-      if (gameStatus.value !== 'playing') return
+      if (gameStatus.value !== gameStatusEnum.PLAYING) return
       addLetter(key)
     }
 
     // Handle backspace from virtual keyboard
     const handleBackspace = () => {
-      if (gameStatus.value !== 'playing') return
+      if (gameStatus.value !== gameStatusEnum.PLAYING) return
       deleteLetter()
     }
 
@@ -243,17 +258,52 @@ export default defineComponent({
 
       // Log result for API integration
       if (result.status === 'won' || result.status === 'lost') {
+        endGame()
+
+        if (gameStatus.value === gameStatusEnum.WON) {
+          console.log('won', gameStatus.value)
+          const getWonToastMessage = message => {
+            console.log('message', message)
+            Toast({
+              message: message,
+              position: 'bottom',
+              duration: 3000
+            })
+          }
+
+          if (result.attempts === 1) {
+            getWonToastMessage(i18n.t('dialog.stats.won.attempts.one'))
+          }
+
+          if (result.attempts === 2) {
+            getWonToastMessage(i18n.t('dialog.stats.won.attempts.two'))
+          }
+
+          if (result.attempts === 3) {
+            getWonToastMessage(i18n.t('dialog.stats.won.attempts.three'))
+          }
+
+          if (result.attempts === 4) {
+            getWonToastMessage(i18n.t('dialog.stats.won.attempts.four'))
+          }
+
+          if (result.attempts === 5) {
+            getWonToastMessage(i18n.t('dialog.stats.won.attempts.five'))
+          }
+        }
+
+        setTimeout(() => {
+          openStatsDialog()
+        }, animationDuration + 100)
+
         console.log('Game ended:', result)
         console.log('Game data for API:', getGameData())
-
-        // TODO: Send to API
-        // await store.dispatch('wordblock/submitGameResult', getGameData())
       }
     }
 
     // Handle physical keyboard events
     const handleKeydown = event => {
-      if (gameStatus.value !== 'playing') return
+      if (gameStatus.value !== gameStatusEnum.PLAYING) return
 
       if (event.key === 'Backspace') {
         deleteLetter()
@@ -279,8 +329,21 @@ export default defineComponent({
       window.removeEventListener('keydown', handleKeydown)
     })
 
+    const handleHowToPlayDialogClose = () => {
+      startGame()
+    }
+
+    const handleStatsDialogClose = () => {
+      closeStatsDialog()
+    }
+
     return {
+      fetch,
+      fetchState,
       rootRef,
+      isGameOver,
+      startGame,
+      endGame,
       targetWord,
       WORD_LENGTH,
       MAX_ATTEMPTS,
@@ -288,8 +351,10 @@ export default defineComponent({
       currentGuess,
       guesses,
       gameStatus,
+      gameStatusEnum,
       letterStates,
       keyboardLayout,
+      sceneClasses,
       getRowClass,
       getGameStats,
       getCellsForRow,
@@ -303,7 +368,14 @@ export default defineComponent({
       handleSubmit,
       resetGame,
       setTargetWord,
-      getGameData
+      getGameData,
+      openHowToPlayDialog,
+      closeHowToPlayDialog,
+      dialog,
+      handleHowToPlayDialogClose,
+      handleStatsDialogClose,
+      openStatsDialog,
+      closeStatsDialog
     }
   }
 })

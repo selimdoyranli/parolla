@@ -20,10 +20,7 @@
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
       AppIcon(name="tabler:info-circle")
 
-    li.app-header-nav__item.app-header-nav__item--stats(
-      v-if="activeGameMode === gameModeKeyEnum.DAILY || activeGameMode === gameModeKeyEnum.UNLIMITED || activeGameMode === gameModeKeyEnum.CREATOR"
-      @click="toggleStatsDialog"
-    )
+    li.app-header-nav__item.app-header-nav__item--stats(v-if="isVisibleStatsButton" @click="toggleStatsDialog")
       AppIcon(name="tabler:chart-bar")
 
     li.app-header-nav__item.app-header-nav__item--roomReviews(
@@ -117,6 +114,7 @@ export default defineComponent({
     const dailyDialog = computed(() => store.getters['daily/dialog'])
     const unlimitedDialog = computed(() => store.getters['unlimited/dialog'])
     const creatorDialog = computed(() => store.getters['creator/dialog'])
+    const wordblockDialog = computed(() => store.getters['wordblock/dialog'])
 
     const toggleStatsDialog = () => {
       if (activeGameMode.value === gameModeKeyEnum.DAILY) {
@@ -130,6 +128,10 @@ export default defineComponent({
       if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
         store.commit('creator/SET_IS_OPEN_STATS_DIALOG', !creatorDialog.value.stats.isOpen)
       }
+
+      if (activeGameMode.value === gameModeKeyEnum.WORDBLOCK) {
+        store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', !wordblockDialog.value.stats.isOpen)
+      }
     }
 
     const isVisibleHowToPlay = computed(() => {
@@ -137,7 +139,8 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
         activeGameMode.value === gameModeKeyEnum.CREATOR ||
-        activeGameMode.value === gameModeKeyEnum.TOUR
+        activeGameMode.value === gameModeKeyEnum.TOUR ||
+        activeGameMode.value === gameModeKeyEnum.WORDBLOCK
       )
     })
 
@@ -228,7 +231,19 @@ export default defineComponent({
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit' }) ||
-        route.value.path === localePath({ name: 'TourMode-TourModeGame' })
+        route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
+        route.value.path === localePath({ name: 'WordblockMode' })
+      ) {
+        return true
+      }
+    })
+
+    const isVisibleStatsButton = computed(() => {
+      if (
+        activeGameMode.value === gameModeKeyEnum.DAILY ||
+        activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
+        activeGameMode.value === gameModeKeyEnum.CREATOR ||
+        activeGameMode.value === gameModeKeyEnum.WORDBLOCK
       ) {
         return true
       }
@@ -242,6 +257,7 @@ export default defineComponent({
       activeGameMode,
       dialog,
       formatMillions,
+      isVisibleStatsButton,
       toggleStatsDialog,
       isVisibleHowToPlay,
       toggleHowToPlayDialog,

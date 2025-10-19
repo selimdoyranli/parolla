@@ -118,6 +118,7 @@ export default {
     wrong: 'Yanlış',
     pass: 'Pas',
     remainTime: 'Kalan süre',
+    elapsedTime: 'Geçen süre',
     scoreStats: 'Skor dağılımı',
     answerKey: 'Cevap anahtarı',
     correctAnswer: 'Doğru cevap',
@@ -220,7 +221,10 @@ export default {
         <strong>parolla</strong> tur modu aynı anda birden fazla oyuncunun her turda aynı soruyu gördüğü ve aynı doğru cevabı vermeye çalıştığı, her tur sorunun değiştiği ve her tur oyuncuların doğru cevabı vermeye çalışıp puan topladığı bir oyun modudur.<br><br>
         Her tur <strong>30</strong> saniyedir ve her tur doğru cevabı vermek için <strong>3</strong> hakkın vardır.`
       },
-      cancelButtonText: 'Kapat ve Başla'
+      cancelButtonText: 'Kapat ve Başla',
+      wordblock: {
+        title: 'parolla kelimeblok nasıl oynanır?'
+      }
     },
     stats: {
       clipboard: {
@@ -235,6 +239,21 @@ export default {
       },
       daily: {
         nextGame: 'Sonraki oyun'
+      },
+      won: {
+        title: 'Tebrikler!',
+        description: '{attempts}. tahmininde <strong>{targetWord}</strong> kelimesini buldun.',
+        attempts: {
+          one: 'Tek attın be!',
+          two: 'Helal, kaçar öyle bi tane boşver',
+          three: 'Efsosun',
+          four: 'Gayet iyi',
+          five: 'Eh işte'
+        }
+      },
+      lost: {
+        title: 'Oyun bitti!',
+        description: 'Malesef <strong>{targetWord}</strong> kelimesini bulamadın.'
       }
     },
     interstitialAd: {
@@ -334,6 +353,9 @@ export default {
     },
     creatorModeStats: {
       description: `parolla - Kelime oyunu \n\n"{roomTitle}" odasında {questionCount} soruluk özel soru-cevap setini oynadım \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
+    },
+    wordblockModeStats: {
+      description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
     }
   },
   creatorModeIntro: {
