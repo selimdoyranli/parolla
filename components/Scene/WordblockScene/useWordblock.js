@@ -1,0 +1,292 @@
+import { ref, reactive, computed } from '@nuxtjs/composition-api'
+
+/**
+ * Wordblock Game Logic
+ *
+ * A composable hook that manages the game state and logic for the Wordblock game.
+ * Supports Turkish characters and provides clean methods for API integration.
+ *
+ * @returns {Object} Game state and methods
+ */
+export default () => {
+  // Demo word - will be replaced with API data
+  const targetWord = ref('PARLA')
+  const WORD_LENGTH = computed(() => targetWord.value.length)
+  const MAX_ATTEMPTS = 5
+
+  // Game state
+  const currentAttempt = ref(0)
+  const currentGuess = ref('')
+  const guesses = ref([])
+  const gameStatus = ref('playing') // 'playing', 'won', 'lost'
+  const letterStates = reactive({}) // Track letter states for visual feedback
+  const startTime = ref(null)
+  const endTime = ref(null)
+
+  // Initialize guesses array
+  const initializeGuesses = () => {
+    guesses.value = Array(MAX_ATTEMPTS)
+      .fill(null)
+      .map(() => ({
+        word: '',
+        states: [] // 'correct', 'present', 'absent'
+      }))
+  }
+
+  initializeGuesses()
+
+  /**
+   * Normalize Turkish characters for comparison
+   * Converts to uppercase Turkish locale
+   */
+  const normalizeTurkish = text => {
+    return text.toLocaleUpperCase('tr-TR')
+  }
+
+  /**
+   * Check if letter exists and count occurrences
+   * Handles duplicate letters
+   */
+  const checkLetterState = (letter, position, guess) => {
+    const targetLetter = targetWord.value[position]
+
+    // Exact match - always correct
+    if (letter === targetLetter) {
+      return 'correct'
+    }
+
+    // Count occurrences in target word
+    const targetLetterCount = targetWord.value.split('').filter(l => l === letter).length
+
+    // Count how many times we've already marked this letter as correct
+    const correctCount = guess.split('').filter((l, i) => l === letter && targetWord.value[i] === letter).length
+
+    // Count how many times we've marked this letter as present before this position
+    let presentCount = 0
+
+    for (let i = 0; i < position; i++) {
+      if (guess[i] === letter && targetWord.value[i] !== letter) {
+        presentCount++
+      }
+    }
+
+    // If letter exists in target and we haven't exceeded the count
+    if (targetWord.value.includes(letter) && correctCount + presentCount < targetLetterCount) {
+      return 'present'
+    }
+
+    return 'absent'
+  }
+
+  /**
+   * Evaluate the guess and return states for each letter
+   */
+  const evaluateGuess = guess => {
+    const states = []
+    const normalizedGuess = normalizeTurkish(guess)
+
+    for (let i = 0; i < normalizedGuess.length; i++) {
+      const letter = normalizedGuess[i]
+      const state = checkLetterState(letter, i, normalizedGuess)
+      states.push(state)
+
+      // Update letter states for keyboard coloring (priority: correct > present > absent)
+      if (
+        !letterStates[letter] ||
+        (letterStates[letter] === 'absent' && state !== 'absent') ||
+        (letterStates[letter] === 'present' && state === 'correct')
+      ) {
+        letterStates[letter] = state
+      }
+    }
+
+    return states
+  }
+
+  /**
+   * Submit the current guess
+   * Returns result object with success status and game state
+   */
+  const submitGuess = () => {
+    if (currentGuess.value.length !== WORD_LENGTH.value) {
+      return { success: false, error: 'incomplete', message: 'Kelime tamamlanmamış' }
+    }
+
+    // Start timer on first guess
+    if (currentAttempt.value === 0 && !startTime.value) {
+      startTime.value = Date.now()
+    }
+
+    const normalizedGuess = normalizeTurkish(currentGuess.value)
+    const states = evaluateGuess(normalizedGuess)
+
+    guesses.value[currentAttempt.value] = {
+      word: normalizedGuess,
+      states,
+      timestamp: Date.now()
+    }
+
+    // Check if won
+    if (normalizedGuess === normalizeTurkish(targetWord.value)) {
+      gameStatus.value = 'won'
+      endTime.value = Date.now()
+      currentAttempt.value++ // Increment to show the winning row
+      currentGuess.value = ''
+
+      return {
+        success: true,
+        status: 'won',
+        attempts: currentAttempt.value,
+        duration: endTime.value - startTime.value
+      }
+    }
+
+    // Move to next attempt
+    currentAttempt.value++
+    currentGuess.value = ''
+
+    // Check if lost
+    if (currentAttempt.value >= MAX_ATTEMPTS) {
+      gameStatus.value = 'lost'
+      endTime.value = Date.now()
+
+      return {
+        success: true,
+        status: 'lost',
+        attempts: MAX_ATTEMPTS,
+        duration: endTime.value - startTime.value,
+        correctWord: targetWord.value
+      }
+    }
+
+    return { success: true, status: 'continue' }
+  }
+
+  /**
+   * Delete last letter from current guess
+   */
+  const deleteLetter = () => {
+    if (currentGuess.value.length > 0) {
+      currentGuess.value = currentGuess.value.slice(0, -1)
+    }
+  }
+
+  /**
+   * Add letter to current guess
+   */
+  const addLetter = letter => {
+    if (currentGuess.value.length < WORD_LENGTH.value && gameStatus.value === 'playing') {
+      currentGuess.value += normalizeTurkish(letter)
+    }
+  }
+
+  /**
+   * Handle input change with Turkish character support
+   * Filters out invalid characters
+   */
+  const handleInputChange = value => {
+    // Allow Turkish characters: A-Z, Ç, Ğ, İ, Ö, Ş, Ü
+    const normalized = normalizeTurkish(value).replace(/[^A-ZÇĞİÖŞÜ]/g, '')
+
+    if (normalized.length <= WORD_LENGTH.value) {
+      currentGuess.value = normalized
+    }
+  }
+
+  /**
+   * Reset game to initial state
+   */
+  const resetGame = () => {
+    currentAttempt.value = 0
+    currentGuess.value = ''
+    gameStatus.value = 'playing'
+    startTime.value = null
+    endTime.value = null
+    Object.keys(letterStates).forEach(key => delete letterStates[key])
+    initializeGuesses()
+  }
+
+  /**
+   * Set new target word (for API integration)
+   * Automatically resets the game
+   */
+  const setTargetWord = word => {
+    targetWord.value = normalizeTurkish(word)
+    resetGame()
+  }
+
+  /**
+   * Get current row display array
+   * Shows current guess with empty cells
+   */
+  const getCurrentRowDisplay = computed(() => {
+    const display = Array(WORD_LENGTH.value).fill('')
+
+    for (let i = 0; i < currentGuess.value.length; i++) {
+      display[i] = currentGuess.value[i]
+    }
+
+    return display
+  })
+
+  /**
+   * Get game statistics
+   */
+  const getGameStats = computed(() => {
+    return {
+      currentAttempt: currentAttempt.value,
+      totalAttempts: MAX_ATTEMPTS,
+      guessedWords: guesses.value.filter(g => g.word).length,
+      gameStatus: gameStatus.value,
+      duration: endTime.value && startTime.value ? endTime.value - startTime.value : null,
+      isComplete: gameStatus.value !== 'playing'
+    }
+  })
+
+  /**
+   * Get game data for API submission
+   */
+  const getGameData = () => {
+    return {
+      targetWord: targetWord.value,
+      attempts: currentAttempt.value,
+      won: gameStatus.value === 'won',
+      guesses: guesses.value
+        .filter(g => g.word)
+        .map(g => ({
+          word: g.word,
+          states: g.states,
+          timestamp: g.timestamp
+        })),
+      startTime: startTime.value,
+      endTime: endTime.value,
+      duration: endTime.value && startTime.value ? endTime.value - startTime.value : null
+    }
+  }
+
+  return {
+    // State
+    targetWord,
+    WORD_LENGTH,
+    MAX_ATTEMPTS,
+    currentAttempt,
+    currentGuess,
+    guesses,
+    gameStatus,
+    letterStates,
+
+    // Computed
+    getCurrentRowDisplay,
+    getGameStats,
+
+    // Methods
+    submitGuess,
+    deleteLetter,
+    addLetter,
+    handleInputChange,
+    resetGame,
+    setTargetWord,
+    getGameData,
+    normalizeTurkish
+  }
+}

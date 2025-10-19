@@ -30,7 +30,10 @@ const appFetch = async ({ $axios, app }, params) => {
       params: { ...transformedQuery },
       data,
       cache,
-      headers,
+      headers: {
+        ...headers,
+        'Accept-Language': transformLocale(app.i18n?.locale)
+      },
       timeout: 15000,
       config: {}
     })
