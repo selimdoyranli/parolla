@@ -7,6 +7,10 @@ export default {
     return state.isGameOver
   },
 
+  currentDate(state) {
+    return state.currentDate
+  },
+
   result(state) {
     return state.result
   },

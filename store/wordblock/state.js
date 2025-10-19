@@ -1,6 +1,7 @@
 export default () => ({
   targetWord: '',
   isGameOver: false,
+  currentDate: null,
   result: {
     status: null,
     attempts: 0,

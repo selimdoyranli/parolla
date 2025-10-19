@@ -45,7 +45,10 @@ export default () => {
   }
 
   const endGame = () => {
+    const day = new Date().toLocaleDateString('tr').slice(0, 10)
+
     store.commit('wordblock/SET_IS_GAME_OVER', true)
+    store.commit('wordblock/SET_CURRENT_DATE', day)
     store.commit('wordblock/SET_GAME_RESULT', {
       status: gameStatus.value,
       attempts: currentAttempt.value,
@@ -243,7 +246,7 @@ export default () => {
   const resetGame = () => {
     currentAttempt.value = 0
     currentGuess.value = ''
-    gameStatus.value = gameStatusEnum.PLAYING
+    gameStatus.value = gameStatusEnum.FIRST_START
     startTime.value = null
     endTime.value = null
     letterStates.value = {}

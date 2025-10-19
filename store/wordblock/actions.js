@@ -1,16 +1,11 @@
 export default {
   async fetchWord({ commit }) {
     /* const { data, error } = await this.$appFetch({
-      path: `modes/wordblock/daily-word`,
-      query: {
-        length: 5
-      }
+      path: `modes/wordblock`
     })
 
     if (data) {
-      commit('SET_TARGET_WORD', {
-        word: data.word
-      })
+      commit('SET_TARGET_WORD', data.word)
     }
 
     return {

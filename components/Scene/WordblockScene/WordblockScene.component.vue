@@ -86,6 +86,28 @@ export default defineComponent({
     const store = useStore()
     const { i18n } = useContext()
 
+    // Check if it's a new day and reset game if needed
+    const day = new Date().toLocaleDateString('tr').slice(0, 10)
+    let storedDay = null
+
+    if (process.browser) {
+      const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
+      storedDay = persistStore && persistStore.wordblock && persistStore.wordblock.currentDate
+
+      if (day !== storedDay) {
+        // New day - reset game
+        store.commit('wordblock/SET_IS_GAME_OVER', false)
+        store.commit('wordblock/SET_CURRENT_DATE', day)
+        store.commit('wordblock/SET_GAME_RESULT', {
+          status: null,
+          attempts: 0,
+          word: '',
+          guesses: [],
+          elapsedTime: null
+        })
+      }
+    }
+
     const { fetch, fetchState } = useFetch(async () => {
       await store.dispatch('wordblock/fetchWord')
     })
@@ -320,6 +342,11 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      // Check game over state - if game was already completed today, show stats
+      if (isGameOver.value) {
+        openStatsDialog()
+      }
+
       // Add keyboard listener for physical keyboard
       window.addEventListener('keydown', handleKeydown)
     })
@@ -337,9 +364,18 @@ export default defineComponent({
       closeStatsDialog()
     }
 
+    const reFetch = async () => {
+      await fetch()
+
+      if (targetWord.value) {
+        openHowToPlayDialog()
+      }
+    }
+
     return {
       fetch,
       fetchState,
+      reFetch,
       rootRef,
       isGameOver,
       startGame,
