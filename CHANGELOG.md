@@ -23,6 +23,15 @@
   - Daily store logic on word block mode ([7867a90](https://github.com/selimdoyranli/parolla/commit/7867a90))
   - Wordblock mode on tr currently ([09e077f](https://github.com/selimdoyranli/parolla/commit/09e077f))
 
+## v2.25.5
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.25.4...v2.25.5)
+
+
+### 💅 Refactors
+
+  - Add accept language into request header on app fetch ([1943ced](https://github.com/selimdoyranli/parolla/commit/1943ced))
+
 ### ❤️  Contributors
 
 - Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
