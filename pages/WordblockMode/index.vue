@@ -1,6 +1,6 @@
 <template lang="pug">
 .page.wordblock-mode-page
-  WordblockScene
+  WordblockModeScene
 </template>
 
 <script>

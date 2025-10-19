@@ -1,4 +1,6 @@
-.wordblock-scene {
+@import '@/assets/style/scss/shared/_game-scene.scss';
+
+.wordblock-mode-scene {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -90,7 +92,7 @@
   }
 
   &__row--current {
-    .wordblock-scene__cell {
+    .wordblock-mode-scene__cell {
       border-color: var(--color-brand-02);
     }
   }

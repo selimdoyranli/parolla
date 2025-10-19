@@ -1,7 +1,7 @@
 <template lang="pug">
-.scene.game-scene.wordblock-scene(ref="rootRef" :class="sceneClasses")
+.scene.game-scene.wordblock-mode-scene(ref="rootRef" :class="sceneClasses")
   // Scene Inner
-  .scene__inner.game-scene__inner.wordblock-scene__inner
+  .scene__inner.game-scene__inner.wordblock-mode-scene__inner
     // Fetch State
     template(v-if="fetchState.pending")
       Empty(:description="$t('gameScene.pendingQuestions')")
@@ -12,15 +12,15 @@
 
     template(v-else)
       // Game Board
-      .wordblock-scene__board
+      .wordblock-mode-scene__board
         // Guess Rows
-        .wordblock-scene__row(
+        .wordblock-mode-scene__row(
           v-for="(guess, rowIndex) in guesses"
           :key="rowIndex"
           :class="getRowClass(rowIndex)"
           :data-word="getRowWord(rowIndex)"
         )
-          .wordblock-scene__cell(
+          .wordblock-mode-scene__cell(
             v-for="(letter, cellIndex) in getCellsForRow(rowIndex)"
             :key="cellIndex"
             :class="getCellClass(rowIndex, cellIndex)"
@@ -30,9 +30,9 @@
           ) {{ letter }}
 
     // Keyboard Section
-    section.wordblock-scene__keyboard(:class="{ 'wordblock-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }")
-      .wordblock-scene__keyboardRow
-        button.wordblock-scene__key(
+    section.wordblock-mode-scene__keyboard(:class="{ 'wordblock-mode-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }")
+      .wordblock-mode-scene__keyboardRow
+        button.wordblock-mode-scene__key(
           v-for="key in keyboardLayout[0]"
           :key="key"
           :data-key="key"
@@ -40,31 +40,31 @@
           @click="handleKeyPress(key)"
         ) {{ key }}
 
-      .wordblock-scene__keyboardRow
-        .wordblock-scene__spacer.wordblock-scene__spacer--half
-        button.wordblock-scene__key(
+      .wordblock-mode-scene__keyboardRow
+        .wordblock-mode-scene__spacer.wordblock-mode-scene__spacer--half
+        button.wordblock-mode-scene__key(
           v-for="key in keyboardLayout[1]"
           :key="key"
           :data-key="key"
           :data-state="getKeyState(key)"
           @click="handleKeyPress(key)"
         ) {{ key }}
-        .wordblock-scene__spacer.wordblock-scene__spacer--half
+        .wordblock-mode-scene__spacer.wordblock-mode-scene__spacer--half
 
-      .wordblock-scene__keyboardRow
-        button.wordblock-scene__key.wordblock-scene__key--wide(
+      .wordblock-mode-scene__keyboardRow
+        button.wordblock-mode-scene__key.wordblock-mode-scene__key--wide(
           :disabled="currentGuess.length !== WORD_LENGTH"
           data-key="enter"
           @click="handleSubmit"
         ) enter
-        button.wordblock-scene__key(
+        button.wordblock-mode-scene__key(
           v-for="key in keyboardLayout[2]"
           :key="key"
           :data-key="key"
           :data-state="getKeyState(key)"
           @click="handleKeyPress(key)"
         ) {{ key }}
-        button.wordblock-scene__key.wordblock-scene__key--wide(data-key="backspace" @click="handleBackspace")
+        button.wordblock-mode-scene__key.wordblock-mode-scene__key--wide(data-key="backspace" @click="handleBackspace")
           AppIcon(name="tabler:backspace")
 
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="handleHowToPlayDialogClose")
@@ -153,15 +153,15 @@ export default defineComponent({
     // Scene classes computed
     const sceneClasses = computed(() => ({
       'game-scene--gameOver': isGameOver.value,
-      'wordblock-scene--won': gameStatus.value === gameStatusEnum.WON,
-      'wordblock-scene--lost': gameStatus.value === gameStatusEnum.LOST
+      'wordblock-mode-scene--won': gameStatus.value === gameStatusEnum.WON,
+      'wordblock-mode-scene--lost': gameStatus.value === gameStatusEnum.LOST
     }))
 
     // Get row class
     const getRowClass = rowIndex => {
       return {
-        'wordblock-scene__row--current': rowIndex === currentAttempt && gameStatus.value === gameStatusEnum.PLAYING,
-        'wordblock-scene__row--completed': rowIndex < currentAttempt
+        'wordblock-mode-scene__row--current': rowIndex === currentAttempt && gameStatus.value === gameStatusEnum.PLAYING,
+        'wordblock-mode-scene__row--completed': rowIndex < currentAttempt
       }
     }
 
@@ -207,11 +207,11 @@ export default defineComponent({
       const classes = []
 
       if (rowIndex < currentAttempt.value) {
-        classes.push('wordblock-scene__cell--revealed')
+        classes.push('wordblock-mode-scene__cell--revealed')
       }
 
       if (rowIndex === currentAttempt.value && cellIndex < currentGuess.value.length) {
-        classes.push('wordblock-scene__cell--filled')
+        classes.push('wordblock-mode-scene__cell--filled')
       }
 
       return classes.join(' ')
@@ -417,4 +417,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" src="./WordblockScene.component.scss"></style>
+<style lang="scss" src="./WordblockModeScene.component.scss"></style>

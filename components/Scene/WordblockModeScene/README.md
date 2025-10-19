@@ -1,14 +1,14 @@
-# Wordblock Scene
+# Wordblock Mode Scene
 
 A clean, modern game implementation for Parolla project.
 
 ## 📁 File Structure
 
 ```
-WordblockScene/
-├── WordblockScene.component.vue   # Main component
-├── WordblockScene.component.scss  # Styles
-├── useWordblock.js               # Game logic composable
+WordblockModeScene/
+├── WordblockModeScene.component.vue   # Main component
+├── WordblockModeScene.component.scss  # Styles
+├── /composables/useWordblock.js               # Game logic composable
 └── README.md                     # Documentation
 ```
 
@@ -32,7 +32,7 @@ WordblockScene/
 Currently using a hardcoded demo word: **"PARLA"**
 
 ```javascript
-// In useWordblock.js
+// In /composables/useWordblock.js
 const targetWord = ref('PARLA')
 ```
 
@@ -42,7 +42,7 @@ To integrate with your API, follow these steps:
 
 ### 1. Fetch Word from API
 
-In `WordblockScene.component.vue`, add API call:
+In `WordblockModeScene.component.vue`, add API call:
 
 ```javascript
 import { useFetch, useStore } from '@nuxtjs/composition-api'
@@ -168,7 +168,7 @@ Response: {
 
 ### Change Word Length
 
-Modify in `useWordblock.js`:
+Modify in `/composables/useWordblock.js`:
 
 ```javascript
 const targetWord = ref('KELIME') // 6 letters instead of 5
@@ -176,7 +176,7 @@ const targetWord = ref('KELIME') // 6 letters instead of 5
 
 ### Change Max Attempts
 
-Modify in `useWordblock.js`:
+Modify in `/composables/useWordblock.js`:
 
 ```javascript
 const MAX_ATTEMPTS = 8 // Instead of 6
@@ -184,7 +184,7 @@ const MAX_ATTEMPTS = 8 // Instead of 6
 
 ### Change Colors
 
-Modify in `WordblockScene.component.scss`:
+Modify in `WordblockModeScene.component.scss`:
 
 ```scss
 &[data-state='correct'] {
@@ -225,7 +225,7 @@ To test the game:
 
 ## 🔄 Methods Available
 
-### From `useWordblock.js`:
+### From `/composables/useWordblock.js`:
 
 - `setTargetWord(word)` - Set new target word
 - `submitGuess()` - Submit current guess
