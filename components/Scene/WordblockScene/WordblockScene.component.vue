@@ -83,7 +83,6 @@
 <script>
 import { defineComponent, ref, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
-import useWordblock from './useWordblock'
 
 export default defineComponent({
   components: {

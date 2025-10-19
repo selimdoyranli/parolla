@@ -10,7 +10,7 @@ import { ref, reactive, computed } from '@nuxtjs/composition-api'
  */
 export default () => {
   // Demo word - will be replaced with API data
-  const targetWord = ref('PARLA')
+  const targetWord = ref('ABARTILIŞ')
   const WORD_LENGTH = computed(() => targetWord.value.length)
   const MAX_ATTEMPTS = 5
 
