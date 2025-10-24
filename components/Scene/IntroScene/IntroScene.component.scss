@@ -60,7 +60,6 @@
       display: flex;
       width: 100%;
       height: auto;
-      min-height: 72px;
       margin: 0 auto;
       margin-bottom: calc(var(--base-m-y) / 1.2);
       color: var(--color-text-02);
@@ -92,10 +91,9 @@
       &--tour {
         position: relative;
         overflow: hidden;
-        color: #fff;
         padding-block: $spacer * 5;
         padding-block-end: $spacer * 3;
-        background: linear-gradient(to right, #2563eb, #9333ea, #ec4899);
+        background: linear-gradient(to right, light-dark(#fff, #272727), light-dark(#fff, #272727), light-dark(#ffe4e4, #3d3d3d));
         transform: unset !important;
 
         &::before {
@@ -103,7 +101,7 @@
           z-index: 0;
           width: 200px;
           height: 200px;
-          background: rgba(255, 255, 255, 0.08);
+          background: light-dark(rgba(255, 228, 228, 0.4), rgba(240, 123, 146, 0.04));
           border-radius: 100%;
           transform: unset;
           opacity: 1;
@@ -118,7 +116,7 @@
           z-index: 0;
           width: 200px;
           height: 200px;
-          background: rgba(168, 85, 247, 0.2);
+          background: light-dark(rgba(255, 228, 228, 0.8), rgba(240, 123, 146, 0.02));
           border-radius: 100%;
           content: '';
           inset-inline-end: -50px;
@@ -137,11 +135,11 @@
           }
 
           &__icon {
-            margin-block-start: 6px;
             padding: $spacer * 3;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-color: #e5e7eb;
+            background: rgba(240, 123, 146, 0.08);
+            border-color: light-dark(#888, #e5e7eb);
             border-radius: calc(var(--border-radius-01) / 2);
+            margin-block-start: 6px;
 
             svg {
               animation: rotate 10s linear infinite;
@@ -149,12 +147,10 @@
           }
 
           &-title {
-            color: #fff;
             padding-inline-start: 64px;
           }
 
           &__description {
-            color: #ddd;
             margin-block-start: $spacer * 4;
             margin-inline-start: $spacer;
           }
@@ -163,10 +159,9 @@
             position: absolute;
             display: inline-flex;
             align-items: center;
-            min-width: 92px;
             padding: $spacer * 2 $spacer * 4;
-            color: rgb(17, 24, 39);
-            background-color: #facc15;
+            color: var(--color-text-01);
+            background-color: light-dark(#eee, #333);
             border-radius: var(--border-radius-01);
             inset-inline-end: $spacer * 2;
             inset-block-start: $spacer * 3 + 6px;
@@ -213,7 +208,7 @@
           }
 
           .count {
-            color: #fff;
+            color: var(--color-text-02);
           }
         }
 
@@ -225,7 +220,7 @@
           width: 100%;
           overflow: visible;
           font-size: var(--font-size-text-9);
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(209, 209, 209, 0.1);
           border-radius: calc(var(--border-radius-01) / 2);
           border-bottom-right-radius: 0;
           backdrop-filter: blur(4px);
@@ -246,8 +241,8 @@
               position: absolute;
               padding: calc(#{$spacer} / 2) $spacer * 3;
               font-size: var(--font-size-text-11);
-              background-color: rgba(255, 255, 255, 0.2);
-              border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+              background-color: rgba(209, 209, 20, 0.2);
+              border-block-end: 1px solid rgba(209, 209, 20, 0.1);
               border-top-left-radius: 4px;
               border-top-right-radius: 4px;
               inset-block-start: -17px;
@@ -317,7 +312,7 @@
         .play-now-button {
           height: 42px;
           color: var(--color-brand-02);
-          background-color: rgb(255, 255, 255);
+          background-color: light-dark(#fff, #444);
           border: 0;
           border-radius: calc(var(--border-radius-01) / 2);
           padding-inline: $spacer * 5;
@@ -366,10 +361,10 @@
         .leaderboard-button {
           position: absolute;
           height: 32px;
-          color: #fff;
+          color: var(--color-text-01);
           font-size: var(--font-size-text-10);
           white-space: nowrap;
-          background-color: rgba(255, 255, 255, 0.1) !important;
+          background-color: rgba(209, 209, 20, 0.1) !important;
           border: 0;
           border-radius: calc(var(--border-radius-01) / 2);
           border-top-left-radius: 0;
@@ -383,7 +378,7 @@
           @include font-weight-medium;
 
           &:hover {
-            background-color: rgba(255, 255, 255, 0.2) !important;
+            background-color: rgba(209, 209, 20, 0.2) !important;
           }
 
           @include media-breakpoint-down(tablet) {

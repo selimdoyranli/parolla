@@ -44,6 +44,7 @@ export default {
     ad: 'Reklam',
     send: 'Gönder',
     playNow: 'Hemen Oyna',
+    play: 'Oyna',
     joined: 'Katıldı',
     anon: 'anonim'
   },
@@ -87,7 +88,7 @@ export default {
         title: 'TUR',
         description: 'Her tur diğer oyuncularla anlık rekabet',
         liveCount: `{count} aktif oyuncu`,
-        label: 'YENİ MOD',
+        label: 'CANLI',
         todaysBestScoreByLabel: 'tarafından',
         todaysBestScoreLabel: 'Bugünün en iyi skoru',
         todaysBestScore: `{label} {by} {byLabel} {score} puan`
@@ -95,7 +96,7 @@ export default {
       daily: {
         title: 'GÜNLÜK',
         subtitle: 'REKABETÇİ',
-        description: 'Bugünün soru setini oyna'
+        description: 'Bugünün soru setini oyna, günlük kelime oyunu'
       },
       unlimited: {
         title: 'LİMİTSİZ',
@@ -107,7 +108,7 @@ export default {
       },
       wordblock: {
         title: 'KELİMEBLOK',
-        description: 'Günlük kelimeyi tahmin et'
+        description: 'Günün kelimesini tahmin et, günlük kelime oyunu'
       }
     }
   },

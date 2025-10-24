@@ -44,6 +44,7 @@ export default {
     ad: 'Ad',
     send: 'Send',
     playNow: 'Play now',
+    play: 'Play',
     joined: 'Joined',
     anon: 'anonym'
   },
@@ -87,17 +88,19 @@ export default {
         title: 'TOUR',
         description: 'Play with other players in real time',
         liveCount: `{count} active player`,
-        label: 'NEW 🥳',
+        label: 'LIVE',
         todaysBestScoreByLabel: 'by',
         todaysBestScoreLabel: "Today's best score",
         todaysBestScore: `{label} {by} {byLabel} {score} points`
       },
       daily: {
         title: 'DAILY',
-        subtitle: 'COMPETITIVE'
+        subtitle: 'COMPETITIVE',
+        description: `Play today's question set, daily word game`
       },
       unlimited: {
-        title: 'UNLIMITED'
+        title: 'UNLIMITED',
+        description: 'Unlimited question set'
       },
       creator: {
         title: 'CREATOR',
@@ -105,7 +108,7 @@ export default {
       },
       wordblock: {
         title: 'WORDBLOCK',
-        description: 'Guess the daily word'
+        description: 'Guess the daily word, daily word game'
       }
     }
   },
