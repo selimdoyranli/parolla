@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.27.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.26.1...v2.27.0)
+
+
+### 🚀 Enhancements
+
+  - Ui improvements ([f89a6a4](https://github.com/selimdoyranli/parolla/commit/f89a6a4))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.26.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.26.0...v2.26.1)
