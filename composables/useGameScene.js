@@ -489,6 +489,19 @@ export default () => {
     // Post Stats
     const { correctAnswers, wrongAnswers, passedAnswers, remainTime, remainTimeAsMs } = await getStats()
 
+    if (activeGameMode.value === gameModeKeyEnum.DAILY) {
+      await store.dispatch('daily/postStats', {
+        stats: {
+          correctAnswers,
+          wrongAnswers,
+          passedAnswers,
+          gamersAnswers: myAnswers.value,
+          remainTime,
+          remainTimeAsMs
+        }
+      })
+    }
+
     if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
       const room = computed(() => store.getters['creator/room'])
 
