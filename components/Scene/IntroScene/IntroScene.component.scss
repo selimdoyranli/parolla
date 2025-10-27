@@ -346,8 +346,8 @@
           }
 
           &__moreCount {
-            color: #ddd;
-            margin-inline-start: 16px;
+            color: var(--color-text-03);
+            margin-inline-start: $spacer * 4;
 
             @include font-weight-medium;
 
