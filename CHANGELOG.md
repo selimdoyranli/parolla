@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.28.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.27.1...v2.28.0)
+
+
+### 🚀 Enhancements
+
+  - Ux improvements on tour leaderboard ([55aaf75](https://github.com/selimdoyranli/parolla/commit/55aaf75))
+
+### 🩹 Fixes
+
+  - Leaderboard redirect fix ([2cb2dc0](https://github.com/selimdoyranli/parolla/commit/2cb2dc0))
+  - Ui fixes on intro scene ([677220a](https://github.com/selimdoyranli/parolla/commit/677220a))
+
+### 💅 Refactors
+
+  - Do not post daily mode score for non authed user ([5145798](https://github.com/selimdoyranli/parolla/commit/5145798))
+  - Seo improvements on worblock mode ([cb60d0c](https://github.com/selimdoyranli/parolla/commit/cb60d0c))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.27.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.27.0...v2.27.1)
