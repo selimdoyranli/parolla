@@ -32,7 +32,7 @@ export default defineComponent({
       ]
     }))
 
-    //redirect(localePath({ name: 'TourMode-Leaderboard-period', params: { period: i18n.t('period.daily.slug') } }))
+    redirect(localePath({ name: 'TourMode-Leaderboard-period', params: { period: i18n.t('period.daily.slug') } }))
   },
   head: {}
 })

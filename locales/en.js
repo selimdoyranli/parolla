@@ -622,6 +622,7 @@ export default {
     }
   },
   leaderboard: {
+    title: 'Leaderboard',
     modeTitle: '{mode} mode leaderboard',
     daily: {
       short: 'Daily',

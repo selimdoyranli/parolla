@@ -627,6 +627,7 @@ export default {
     }
   },
   leaderboard: {
+    title: 'Liderlik tablosu',
     modeTitle: '{mode} modu lider sıralaması',
     daily: {
       short: 'Günlük',

@@ -62,9 +62,13 @@
                   label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
                 template(#score)
                   strong &nbsp; {{ todaysTourBestScorer.score }} &nbsp;
-              Button.leaderboard-button(size="small" plain :to="localePath({ name: 'TourMode-Leaderboard' })")
+              Button.leaderboard-button(
+                size="small"
+                plain
+                :to="localePath({ name: 'TourMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+              )
                 AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
-                | Liderlik tablosu
+                | {{ $t('leaderboard.title') }}
 
           p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.tour.description') }}
 
