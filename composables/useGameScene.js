@@ -12,7 +12,7 @@ import textfit from 'textfit'
 import { Notify, Toast } from 'vant'
 
 export default () => {
-  const { i18n, $ua } = useContext()
+  const { i18n, $ua, $auth } = useContext()
   const store = useStore()
 
   const { activeGameMode } = useGameMode()
@@ -490,16 +490,18 @@ export default () => {
     const { correctAnswers, wrongAnswers, passedAnswers, remainTime, remainTimeAsMs } = await getStats()
 
     if (activeGameMode.value === gameModeKeyEnum.DAILY) {
-      await store.dispatch('daily/postStats', {
-        stats: {
-          correctAnswers,
-          wrongAnswers,
-          passedAnswers,
-          gamersAnswers: myAnswers.value,
-          remainTime,
-          remainTimeAsMs
-        }
-      })
+      if ($auth.loggedIn && $auth.user) {
+        await store.dispatch('daily/postStats', {
+          stats: {
+            correctAnswers,
+            wrongAnswers,
+            passedAnswers,
+            gamersAnswers: myAnswers.value,
+            remainTime,
+            remainTimeAsMs
+          }
+        })
+      }
     }
 
     if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
