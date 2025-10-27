@@ -7,24 +7,24 @@ table.player-tour-score-table
       th Sıra
   tbody
     tr.player-tour-score-table-item
-      td.player-tour-score-table-item-title Günlük
+      td.player-tour-score-table-item-title {{ $t('leaderboard.daily.short') }}
       td.player-tour-score-table-item-score {{ tourScore.daily.score }}
       td.player-tour-score-table-item-rank {{ tourScore.daily.rank }}
 
     tr.player-tour-score-table-item
-      td.player-tour-score-table-item-title Haftalık
+      td.player-tour-score-table-item-title {{ $t('leaderboard.weekly.short') }}
       td.player-tour-score-table-item-score {{ tourScore.weekly.score }}
       td.player-tour-score-table-item-rank {{ tourScore.weekly.rank }}
 
     tr.player-tour-score-table-item
-      td.player-tour-score-table-item-title Aylık
+      td.player-tour-score-table-item-title {{ $t('leaderboard.monthly.short') }}
       td.player-tour-score-table-item-score {{ tourScore.monthly.score }}
       td.player-tour-score-table-item-rank {{ tourScore.monthly.rank }}
 
     tr.player-tour-score-table-item
-      td.player-tour-score-table-item-title Tüm zamanlar
-      td.player-tour-score-table-item-score {{ tourScore.allTime.score }}
-      td.player-tour-score-table-item-rank {{ tourScore.allTime.rank }}
+      td.player-tour-score-table-item-title {{ $t('leaderboard.season.short', { seasonYear }) }}
+      td.player-tour-score-table-item-score {{ tourScore.season.score }}
+      td.player-tour-score-table-item-rank {{ tourScore.season.rank }}
 </template>
 
 <script>
@@ -35,6 +35,13 @@ export default defineComponent({
     tourScore: {
       type: Object,
       required: true
+    }
+  },
+  setup() {
+    const { seasonYear } = useFormatter()
+
+    return {
+      seasonYear
     }
   }
 })

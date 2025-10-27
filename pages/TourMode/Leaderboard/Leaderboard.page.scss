@@ -24,6 +24,10 @@
       justify-content: center;
     }
 
+    .button-link {
+      text-decoration: none;
+    }
+
     .van-button {
       padding: $spacer * 2 $spacer * 4;
       color: var(--color-text-01);

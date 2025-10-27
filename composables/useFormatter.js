@@ -1,4 +1,4 @@
-import { useContext } from '@nuxtjs/composition-api'
+import { useContext, computed } from '@nuxtjs/composition-api'
 
 export default () => {
   const context = useContext()
@@ -111,10 +111,19 @@ export default () => {
     return date.toLocaleString(context.i18n.locale, localeOptions)
   }
 
+  /**
+   * Formats the current year and the next year as a season year
+   * @returns {string} The formatted season year
+   */
+  const seasonYear = computed(() => {
+    return `${new Date().getFullYear().toString().slice(2)}-${(new Date().getFullYear() + 1).toString().slice(2)}`
+  })
+
   return {
     encodeEnglish,
     formatRating,
     formatMillions,
-    isoToHumanDate
+    isoToHumanDate,
+    seasonYear
   }
 }

@@ -12,7 +12,7 @@ export default () => ({
       score: 0,
       rank: 0
     },
-    allTime: {
+    season: {
       score: 0,
       rank: 0
     },

@@ -608,23 +608,45 @@ export default {
       description: `<h2>💔 &nbsp; TAHMİN HAKKIN BİTTİ!</h2> <p>Turun bitmesine kadar bekle</p>`
     }
   },
+  period: {
+    daily: {
+      title: 'Günlük',
+      slug: 'gunluk'
+    },
+    weekly: {
+      short: 'Haftalık',
+      slug: 'haftalik'
+    },
+    monthly: {
+      title: 'Aylık',
+      slug: 'aylik'
+    },
+    season: {
+      title: '{seasonYear} Sezonu',
+      slug: 'sezon'
+    }
+  },
   leaderboard: {
     modeTitle: '{mode} modu lider sıralaması',
     daily: {
       short: 'Günlük',
-      full: 'Günlük lider sıralaması'
+      full: 'Günlük lider sıralaması',
+      scoredPoints: 'Bugün kazanılan puanlar'
     },
     weekly: {
       short: 'Haftalık',
-      full: 'Haftalık lider sıralaması'
+      full: 'Haftalık lider sıralaması',
+      scoredPoints: 'Bu hafta kazanılan puanlar'
     },
     monthly: {
       short: 'Aylık',
-      full: 'Aylık lider sıralaması'
+      full: 'Aylık lider sıralaması',
+      scoredPoints: 'Bu ay kazanılan puanlar'
     },
-    allTime: {
-      short: 'Tüm zamanlar',
-      full: 'Tüm zamanlar lider sıralaması'
+    season: {
+      short: '{seasonYear} Sezonu',
+      full: '{seasonYear} sezonu lider sıralaması',
+      scoredPoints: 'Bu sezon kazanılan puanlar'
     },
     pending: 'Sıralama getiriliyor',
     error: {

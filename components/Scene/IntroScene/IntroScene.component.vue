@@ -62,7 +62,7 @@
                   label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
                 template(#score)
                   strong &nbsp; {{ todaysTourBestScorer.score }} &nbsp;
-              Button.leaderboard-button(size="small" plain :to="localePath({ name: 'Leaderboard' })")
+              Button.leaderboard-button(size="small" plain :to="localePath({ name: 'TourMode-Leaderboard' })")
                 AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
                 | Liderlik tablosu
 

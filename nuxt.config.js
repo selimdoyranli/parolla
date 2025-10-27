@@ -172,7 +172,7 @@ module.exports = {
       'unplugin-auto-import/nuxt',
       {
         dirs: ['./composables/**'],
-        dts: false
+        dts: true
       }
     ],
     // https://github.com/nuxt-modules/partytown
@@ -296,9 +296,13 @@ module.exports = {
             tr: '/tur',
             en: '/tour'
           },
-          'Leaderboard/index': {
-            tr: '/liderlik',
-            en: '/leaderboard'
+          'TourMode/Leaderboard/index': {
+            tr: '/tur/liderlik',
+            en: '/tour/leaderboard'
+          },
+          'TourMode/Leaderboard/_period/index': {
+            tr: '/tur/liderlik/:period',
+            en: '/tour/leaderboard/:period'
           },
           'Profile/index': {
             tr: '/profil',

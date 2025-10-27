@@ -568,9 +568,91 @@ export default {
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
   },
   chat: {
-    chat: 'Sohbet',
+    chat: 'Chat',
     online: 'Online',
     system: 'System'
+  },
+  tourMode: {
+    onlineUsers: 'Online players',
+    player: 'Player',
+    viewer: 'Viewer',
+    results: {
+      title: 'Tour Results',
+      correctAnswer: 'Correct Answer:',
+      empty: {
+        description: 'No one has answered yet'
+      }
+    },
+    lastAnswers: {
+      title: 'Last Answers',
+      empty: {
+        title: '',
+        description: 'No one has answered yet'
+      }
+    },
+    guessingChance: {
+      title: 'GUESSING CHANCE'
+    },
+    correctAnswer: {
+      description: `<h2>✅ &nbsp; CORRECT ANSWER!</h2> <p>Wait for other players' answers</p>`
+    },
+    wrongAnswer: {
+      description: `WRONG ANSWER`
+    },
+    playerFinishedTheTour: {
+      description: `<h2>💔 &nbsp; GUESSING CHANCE ENDED!</h2> <p>Wait until the tour ends</p>`
+    }
+  },
+  period: {
+    daily: {
+      title: 'Daily',
+      slug: 'daily'
+    },
+    weekly: {
+      title: 'Weekly',
+      slug: 'weekly'
+    },
+    monthly: {
+      title: 'Monthly',
+      slug: 'monthly'
+    },
+    season: {
+      title: '{seasonYear} Season',
+      slug: 'season'
+    }
+  },
+  leaderboard: {
+    modeTitle: '{mode} mode leaderboard',
+    daily: {
+      short: 'Daily',
+      full: 'Daily leaderboard',
+      scoredPoints: 'Points scored today'
+    },
+    weekly: {
+      short: 'Weekly',
+      full: 'Weekly leaderboard',
+      scoredPoints: 'Points scored this week'
+    },
+    monthly: {
+      short: 'Monthly',
+      full: 'Monthly leaderboard',
+      scoredPoints: 'Points scored this month'
+    },
+    season: {
+      short: '{seasonYear} Season',
+      full: '{seasonYear} season leaderboard',
+      scoredPoints: 'Points scored this season'
+    },
+    pending: 'Leaderboard is being fetched',
+    error: {
+      fetch: {
+        description: 'Leaderboard could not be fetched',
+        action: 'Try again'
+      }
+    },
+    empty: {
+      description: 'No one has entered the leaderboard yet'
+    }
   },
   seo: {
     main: {

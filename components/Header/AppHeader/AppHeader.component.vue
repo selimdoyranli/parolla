@@ -71,7 +71,6 @@
 <script>
 import { defineComponent, useRouter, useRoute, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums'
-import useFormatter from '@/composables/useFormatter'
 
 export default defineComponent({
   setup() {

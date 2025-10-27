@@ -52,10 +52,10 @@ export default model => {
             rank: model.tourScore.monthly.rank
           }
         }),
-        ...(model.tourScore.allTime && {
-          allTime: {
-            score: model.tourScore.allTime.score,
-            rank: model.tourScore.allTime.rank
+        ...(model.tourScore.season && {
+          season: {
+            score: model.tourScore.season.score,
+            rank: model.tourScore.season.rank
           }
         }),
 
