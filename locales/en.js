@@ -659,6 +659,10 @@ export default {
     main: {
       title: 'parolla - Word game',
       description: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players'
+    },
+    wordblockMode: {
+      title: 'Wordblock',
+      description: `Guess the today's word, daily word game`
     }
   }
 }

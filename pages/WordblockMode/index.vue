@@ -4,29 +4,31 @@
 </template>
 
 <script>
-import { defineComponent, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useMeta } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
+    const { i18n } = useContext()
+
     useMeta(() => ({
-      title: 'parolla - Kelime oyunu - Kelimeblok',
-      description: 'Günlük kelimeyi tahmin et',
+      title: `${i18n.t('seo.wordblockMode.title')} - ${i18n.t('seo.main.title')}`,
+      description: i18n.t('seo.wordblockMode.description'),
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: 'parolla - Kelime oyunu - Kelimeblok'
+          content: `${i18n.t('seo.wordblockMode.title')} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: 'Günlük kelimeyi tahmin et'
+          content: i18n.t('seo.wordblockMode.description')
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: 'Günlük kelimeyi tahmin et'
+          content: i18n.t('seo.wordblockMode.description')
         }
       ]
     }))

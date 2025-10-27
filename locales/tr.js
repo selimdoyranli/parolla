@@ -664,6 +664,10 @@ export default {
     main: {
       title: 'parolla - Kelime oyunu',
       description: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+    },
+    wordblockMode: {
+      title: 'Kelimeblok',
+      description: 'Günün kelimesini tahmin et, günlük kelime oyunu'
     }
   }
 }
