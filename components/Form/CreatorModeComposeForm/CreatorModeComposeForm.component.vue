@@ -28,7 +28,9 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
         Cell.creator-mode-compose-form__isAnon
           template(#title)
             span {{ $t('form.creatorModeCompose.room.isAnon.label') }} &nbsp;
-            small(v-if="user") ({{ user.username }})
+            small(v-if="user")
+              template(v-if="form.isAnon") ({{ $t('general.anon') }})
+              template(v-else) ({{ user.username }})
 
           template(#right-icon)
             VanSwitch(v-model="form.isAnon" :size="24")

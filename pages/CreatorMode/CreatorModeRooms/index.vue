@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, useFetch, useRouter, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, useRouter, useContext, useStore, reactive, computed, useMeta } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
 import { Field, Button, Divider, Empty, Notify } from 'vant'
 
@@ -187,6 +187,38 @@ export default defineComponent({
       }
     })
 
+    useMeta(() => ({
+      title: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`,
+      description: i18n.t('seo.creatorModeQuizzes.description'),
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: i18n.t('seo.creatorModeQuizzes.description')
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: i18n.t('seo.creatorModeQuizzes.description')
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: i18n.t('seo.creatorModeQuizzes.keywords')
+        }
+      ]
+    }))
+
     return {
       APP_URL,
       fetch,
@@ -201,7 +233,8 @@ export default defineComponent({
       handleFeaturedTagClick,
       isEmptyRoomList
     }
-  }
+  },
+  head: {}
 })
 </script>
 

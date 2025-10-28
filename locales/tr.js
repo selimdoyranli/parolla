@@ -2,7 +2,7 @@ export default {
   app: {
     name: 'parolla',
     domain: 'parolla.app',
-    description: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz',
+    description: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
     publisher: 'Selim Doyranlı',
     copyright: '{logo} {spacer} {text}'
   },
@@ -62,10 +62,10 @@ export default {
       list: {
         title: 'Giriş yaparak',
         item1: {
-          title: 'Oda oluştur'
+          title: 'Quiz oluştur'
         },
         item2: {
-          title: 'Odaları değerlendir'
+          title: 'Quizleri değerlendir'
         },
         item3: {
           title: 'Skor tablosunda yer al'
@@ -82,11 +82,11 @@ export default {
   introScene: {
     title: 'Kelime oyunu',
     subtitle: 'Günlük kelime oyunu',
-    description: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz',
+    description: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
     modeList: {
       tour: {
         title: 'TUR',
-        description: 'Her tur diğer oyuncularla anlık rekabet',
+        description: 'Her tur bir soruyu cevapla, anlık rekabet',
         liveCount: `{count} aktif oyuncu`,
         label: 'CANLI',
         todaysBestScoreByLabel: 'tarafından',
@@ -104,7 +104,7 @@ export default {
       },
       creator: {
         title: 'YARATICI',
-        description: 'Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+        description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
       },
       wordblock: {
         title: 'KELİMEBLOK',
@@ -161,8 +161,8 @@ export default {
       suggestQa: 'Soru önermek ister misin?',
       howToPLay: 'Nasıl oynanır?',
       howToCalculateStats: 'Skoru nasıl hesaplıyoruz',
-      shareRoom: 'Odayı paylaş',
-      reviewRoom: 'Odayı değerlendir',
+      shareRoom: `Quiz'i paylaş`,
+      reviewRoom: `Quiz'i değerlendir`,
       shareApp: `parolla'yı paylaş`,
       credits: 'Yapımcılar',
       contact: 'Bize ulaşın'
@@ -183,15 +183,15 @@ export default {
         'Öneri, şikayet ya da işbirliği için; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> veya <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> twitter hesabımızdan ulaşabilirsin.'
     },
     createdRoom: {
-      title: 'Oda oluşturuldu',
-      joinRoom: 'Odaya git',
-      isListedMessage: `Odan {isListed}. <br> <br> Yanlış seçenekle yayınladıysan bu pencereyi kapattıktan sonra düzenleyip tekrar gönderebilirsin.`,
-      public: '<strong>ODA LİSTESİNDE GÖRÜNECEK</strong> şekilde oluşturuldu',
+      title: 'Quiz oluşturuldu',
+      joinRoom: 'Quize git',
+      isListedMessage: `Quizin {isListed}. <br> <br> Yanlış seçenekle yayınladıysan bu pencereyi kapattıktan sonra düzenleyip tekrar gönderebilirsin.`,
+      public: '<strong>QUIZ LİSTESİNDE GÖRÜNECEK</strong> şekilde oluşturuldu',
       private:
-        '<strong>ODA LİSTESİNDE GÖRÜNMEYECEK</strong> şekilde oluşturuldu, ama oda bağlantını bilen arkadaşların hala odana girebilir',
+        '<strong>QUIZ LİSTESİNDE GÖRÜNMEYECEK</strong> şekilde oluşturuldu, ama quiz bağlantını bilen arkadaşların hala quizine girebilir',
       copyUrl: {
         callback: {
-          success: 'Oda bağlantısı kopyalandı'
+          success: 'Quiz bağlantısı kopyalandı'
         }
       }
     },
@@ -217,7 +217,7 @@ export default {
       },
       creator: {
         extra:
-          'Bu soru cevap seti başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
+          'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
       },
       tour: {
         extra: `
@@ -273,7 +273,7 @@ export default {
       description: 'Yaptığın şeyleri tekrar yapmak zorunda kalabilirsin'
     },
     roomReview: {
-      title: 'Oda değerlendirmeleri',
+      title: 'Quiz değerlendirmeleri',
       review: 'Değerlendir',
       loginToReview: 'Değerlendirmek için <u>giriş yapın</u>',
       pendingReviews: 'Yorumlar getiriliyor',
@@ -345,10 +345,10 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz \n\nhttps://parolla.app`
+      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://parolla.app`
     },
     room: {
-      description: `parolla - Kelime oyunu \n\n"{roomTitle}" odasında {questionCount} soruluk özel soru-cevap setini oyna! \n \n{url}`
+      description: `parolla - Kelime oyunu \n\n"{roomTitle}" quizini çöz! \n \n{url}`
     },
     dailyModeStats: {
       description: `parolla - Kelime oyunu \n\n{day} \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
@@ -357,7 +357,7 @@ export default {
       description: `parolla - Kelime oyunu \n\n(Limitsiz oyun modu) \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
     },
     creatorModeStats: {
-      description: `parolla - Kelime oyunu \n\n"{roomTitle}" odasında {questionCount} soruluk özel soru-cevap setini oynadım \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
+      description: `parolla - Kelime oyunu \n\n"{roomTitle}" quizini çözdüm \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
     },
     wordblockModeStats: {
       description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
@@ -365,70 +365,70 @@ export default {
   },
   creatorModeIntro: {
     description:
-      '<strong>Oyuncular tarafından oluşturulmuş soru-cevap setleri</strong> &nbsp; <br> Hemen <strong>odalara bak</strong> ya da <strong>kendi soru-cevap setini oluştur</strong>',
+      '<strong>Oyuncular tarafından oluşturulmuş quizler</strong> &nbsp; <br> Hemen <strong>quizlere bak</strong> ya da <strong>quiz oluştur</strong>',
     list: {
       rooms: {
-        title: 'ODALARA BAK'
+        title: 'QUIZLERE BAK'
       },
       compose: {
-        title: 'ODA OLUŞTUR'
+        title: 'QUIZ OLUŞTUR'
       },
       myRooms: {
-        title: 'SON OLUŞTURDUĞUM ODALAR'
+        title: 'SON OLUŞTURDUĞUM QUIZLER'
       }
     }
   },
   creatorModeRooms: {
-    title: 'ODALAR',
+    title: 'QUIZLER',
     joinRoom: {
-      typeUrl: 'ODA BAĞLANTISINI GİR',
+      typeUrl: 'QUIZ BAĞLANTISINI GİR',
       url: {
-        action: 'ODAYA GİT'
+        action: 'QUIZE GİT'
       }
     },
     divider: 'YA DA',
     rooms: {
-      pendingRooms: 'Odalar getiriliyor',
+      pendingRooms: 'Quizler getiriliyor',
       selectFromList: 'LİSTEDEN SEÇ',
       filters: {
         title: 'SIRALA',
-        recently: 'En yeni odalar',
-        oldest: 'En eski odalar',
-        byViewCount: 'En çok oynanan odalar'
+        recently: 'En yeni quizler',
+        oldest: 'En eski quizler',
+        byViewCount: 'En çok oynanan quizler'
       },
       refresh: 'TAZELE',
       searchField: {
         searchRoom: {
-          placeholder: 'Oda ara'
+          placeholder: 'Quiz ara'
         },
         searchRoomOrTag: {
-          placeholder: 'Oda ya da #etiket ara'
+          placeholder: 'Quiz ya da #etiket ara'
         }
       },
       empty: {
-        description: 'Oda bulunamadı, kendi soru-cevap setini oluşturmak için hemen oda kur!',
-        action: 'Oda oluştur'
+        description: 'Quiz bulunamadı, hemen quiz oluştur!',
+        action: 'Quiz oluştur'
       }
     },
     error: {
       rooms: {
         fetch: {
-          description: 'Odalar getirilirken bir sorun çıktı',
+          description: 'Quizler getirilirken bir sorun çıktı',
           action: 'Tekrar dene'
         }
       },
-      joinRoom: 'Odaya gidilemedi, lütfen girdiğin bağlantıyı kontrol et'
+      joinRoom: 'Quize gidilemedi, lütfen girdiğin bağlantıyı kontrol et'
     }
   },
   creatorModeMyRooms: {
-    title: 'Son oluşturduğum odalar',
+    title: 'Son oluşturduğum quizler',
     description: {
       authed: '',
-      nonAuthed: '* Son oluşturduğun odalar tarayıcı belleğine kaydedilir, tarayıcı verileri sıfırlandığında bu liste temizlenir'
+      nonAuthed: '* Son oluşturduğun quizler tarayıcı belleğine kaydedilir, tarayıcı verileri sıfırlandığında bu liste temizlenir'
     },
     delete: {
       callback: {
-        success: 'Oda silindi'
+        success: 'Quiz silindi'
       }
     }
   },
@@ -436,20 +436,20 @@ export default {
     isRequired: '{model} gereklidir',
     isInvalid: '{model} geçersiz',
     creatorModeCompose: {
-      title: 'ODA OLUŞTUR',
+      title: 'QUIZ OLUŞTUR',
       clearForm: 'Formu Temizle',
-      roomInformations: 'ODA BİLGİLERİ',
+      roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
       room: {
         roomTitle: {
-          label: 'Oda başlığı',
-          placeholder: 'Oda başlığı yaz'
+          label: 'Quiz başlığı',
+          placeholder: 'Quiz başlığı yaz'
         },
         isListed: {
-          label: 'Odalar listesinde görünsün mü?'
+          label: 'Quizler listesinde görünsün mü?'
         },
         isAnon: {
-          label: 'Oluşturan oyuncu adın gizlensin mi?'
+          label: 'Adın gizlensin mi?'
         },
         tag: {
           label: 'Etiketler',
@@ -458,7 +458,7 @@ export default {
       },
       qa: {
         empty: {
-          description: 'Soru-cevap setin şu anda boş',
+          description: 'Quizin şu anda boş',
           action: 'Soru ekle'
         },
         question: {
@@ -497,14 +497,14 @@ export default {
         }
       },
       termsDescription:
-        '* Oda oluştururken spam, nefret söylemi içeren, ırkçı ve aşağılayacı içeriklerden kaçının. Bu gibi odalar moderasyon tespitinde silinecektir. Oda oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
+        '* Quiz oluştururken spam, nefret söylemi içeren, ırkçı ve aşağılayacı içeriklerden kaçının. Bu gibi quizler moderasyon tespitinde silinecektir. Quiz oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
       submit: 'Bitir ve yayınla',
       error: {
-        couldNotCreate: 'Oda oluşturulamadı, lütfen kontrol edip tekrar dene'
+        couldNotCreate: 'Quiz oluşturulamadı, lütfen kontrol edip tekrar dene'
       }
     },
     creatorModeEdit: {
-      title: 'ODA DÜZENLE',
+      title: 'QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -555,7 +555,7 @@ export default {
     }
   },
   roomReviewList: {
-    ratingTitle: 'Oda puanı',
+    ratingTitle: 'Quiz puanı',
     reviewsTitle: 'Yorumlar',
     empty: {
       description: 'Henüz kimse değerlendirme yapmadı',
@@ -565,7 +565,7 @@ export default {
   scoreboard: {
     scoreboard: 'Skor tablosu',
     pendingScoreboard: 'Skorlar getiriliyor',
-    loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan odaya ait skor tablosunda yer alırsın',
+    loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
     loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
   },
   chat: {
@@ -663,11 +663,39 @@ export default {
   seo: {
     main: {
       title: 'parolla - Kelime oyunu',
-      description: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+      description: 'Günlük soruları çöz ve rekabete katıl. quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
+    },
+    dailyMode: {
+      title: 'Günlük kelime oyunu',
+      description: 'parolla - Kelime oyunu - Günlük kelime oyunu, günlük bulmaca gibi!'
+    },
+    unlimitedMode: {
+      title: 'Limitsiz',
+      description: 'Sınırsız soru seti, bulmaca çöz, kelime oyunu oyna'
+    },
+    creatorModeCompose: {
+      title: 'Quiz oluştur',
+      description: 'Quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
+      keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
+    },
+    creatorModeQuizzes: {
+      title: 'Quizler, quiz çöz ya da quiz oluştur',
+      description: 'Oyuncuların oluşturduğu quizleri çöz ya da quiz oluştur',
+      keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
+    },
+    creatorModeQuiz: {
+      title: '{quizTitle} quiz',
+      description: '{quizTitle} quizini çöz!',
+      keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
+    },
+    tourMode: {
+      title: 'Tur',
+      description: 'Her tur bir soruyu cevapla, anlık rekabet'
     },
     wordblockMode: {
       title: 'Kelimeblok',
-      description: 'Günün kelimesini tahmin et, günlük kelime oyunu'
+      description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
+      keywords: 'günlük kelime oyunu, wordle türkçe, wordle türkçe uyarlaması, kelime tahmi oyunu'
     }
   }
 }

@@ -21,17 +21,35 @@ export default defineComponent({
     const room = computed(() => store.getters['creator/room'])
 
     useMeta(() => ({
-      title: room.value?.title && `${room.value.title} - ${i18n.t('seo.main.title')}`,
+      title: room.value?.title && `${i18n.t('seo.creatorModeQuiz.title', { quizTitle: room.value.title })} - ${i18n.t('seo.main.title')}`,
+      description: room.value?.title && `${i18n.t('seo.creatorModeQuiz.description', { quizTitle: room.value.title })}`,
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: room.value?.title && `${room.value.title} - ${i18n.t('seo.main.title')}`
+          content:
+            room.value?.title && `${i18n.t('seo.creatorModeQuiz.title', { quizTitle: room.value.title })} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: room.value?.title && `${room.value.title} - ${i18n.t('seo.main.title')}`
+          content:
+            room.value?.title && `${i18n.t('seo.creatorModeQuiz.title', { quizTitle: room.value.title })} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: room.value?.title && `${i18n.t('seo.creatorModeQuiz.description', { quizTitle: room.value.title })}`
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: room.value?.title && `${i18n.t('seo.creatorModeQuiz.description', { quizTitle: room.value.title })}`
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: room.value?.title && `${i18n.t('seo.creatorModeQuiz.keywords', { quizTitle: room.value.title })}`
         }
       ]
     }))

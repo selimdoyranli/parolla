@@ -2,7 +2,7 @@ export default {
   app: {
     name: 'parolla',
     domain: 'parolla.app',
-    description: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players',
+    description: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players',
     publisher: 'Selim Doyranlı',
     copyright: '{text} {spacer} {logo}'
   },
@@ -62,10 +62,10 @@ export default {
       list: {
         title: 'By logging in',
         item1: {
-          title: 'Create a room'
+          title: 'Create a quiz'
         },
         item2: {
-          title: 'Review rooms'
+          title: 'Review quizzes'
         },
         item3: {
           title: 'Be in the scoreboard'
@@ -82,11 +82,11 @@ export default {
   introScene: {
     title: 'Word game',
     subtitle: 'Daily word game',
-    description: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players',
+    description: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players',
     modeList: {
       tour: {
         title: 'TOUR',
-        description: 'Play with other players in real time',
+        description: 'Answer the question in each round, instant competition',
         liveCount: `{count} active player`,
         label: 'LIVE',
         todaysBestScoreByLabel: 'by',
@@ -104,11 +104,11 @@ export default {
       },
       creator: {
         title: 'CREATOR',
-        description: 'Create your own Q&A set and solve fun questions created by players'
+        description: 'Create your own quiz and solve quizzes created by players'
       },
       wordblock: {
         title: 'WORDBLOCK',
-        description: 'Guess the daily word, daily word game'
+        description: `Guess the today's word, daily word game`
       }
     }
   },
@@ -161,8 +161,8 @@ export default {
       suggestQa: 'Do you want to suggest a question?',
       howToPLay: 'How to play?',
       howToCalculateStats: 'How we calculate the score',
-      shareRoom: 'Share room',
-      reviewRoom: 'Review room',
+      shareRoom: 'Share quiz',
+      reviewRoom: 'Review quiz',
       shareApp: `Share the parolla`,
       credits: 'Credits',
       contact: 'Contact'
@@ -183,14 +183,14 @@ export default {
         'For suggestions, complaint, collaborations; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> or <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> You can reach us on our twitter account.'
     },
     createdRoom: {
-      title: 'Room created',
-      joinRoom: 'Join room',
-      isListedMessage: `Your room {isListed} has been created. If you published with the wrong option, you can close this window, edit, and send it again.`,
-      public: '<strong>WILL APPEAR IN ROOM LIST</strong>',
+      title: 'Quiz created',
+      joinRoom: 'Join quiz',
+      isListedMessage: `Your quiz {isListed} has been created. If you published with the wrong option, you can close this window, edit, and send it again.`,
+      public: '<strong>WILL APPEAR IN QUIZ LIST</strong>',
       private: '<strong>PRIVATE</strong>',
       copyUrl: {
         callback: {
-          success: 'Copied room URL'
+          success: 'Copied quiz URL'
         }
       }
     },
@@ -217,7 +217,7 @@ export default {
       },
       creator: {
         extra:
-          'This Q&A set was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
+          'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
       },
       tour: {
         extra: `You have to find the answer to the question corresponding to each character, the answer starts with that character.<br><br>
@@ -272,7 +272,7 @@ export default {
       description: 'You may have to do the things you did again'
     },
     roomReview: {
-      title: 'Room reviews',
+      title: 'Quiz reviews',
       review: 'Review',
       loginToReview: '<u>Login</u> to review',
       pendingReviews: 'Fetching reviews',
@@ -344,10 +344,10 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players \n\nhttps://parolla.app`
+      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://parolla.app`
     },
     room: {
-      description: `parolla - Word game \n\nPlay the player-generated Q&A set of {questionCount} questions in room "{roomTitle}"! \n \n{url}`
+      description: `parolla - Word game \n\nPlay the "{quizTitle}" quiz! \n \n{url}`
     },
     dailyModeStats: {
       description: `parolla - Word game \n\n{day} \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
@@ -356,7 +356,7 @@ export default {
       description: `parolla - Word game \n\n(Unlimited game mode) \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
     },
     creatorModeStats: {
-      description: `parolla - Word game \n\nI played the player-generated Q&A set of {questionCount} questions in room "{roomTitle}" \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
+      description: `parolla - Word game \n\nI played the "{quizTitle}" quiz \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
     },
     wordblockModeStats: {
       description: `parolla - Word game \n\nMy score in Wordblock mode\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nElapsed Time: {elapsedTime} \n \n{url}`
@@ -364,70 +364,70 @@ export default {
   },
   creatorModeIntro: {
     description:
-      '<strong>Player-generated question-answer sets</strong> &nbsp; <br> <strong>check out the rooms</strong> or create <strong>your own question-answer set</strong>',
+      '<strong>Player-generated quizzes</strong> &nbsp; <br> <strong>check out the quizzes</strong> or create <strong>your own question-answer set</strong>',
     list: {
       rooms: {
-        title: 'SEE ROOMS'
+        title: 'SEE QUIZZES'
       },
       compose: {
-        title: 'COMPOSE A ROOM'
+        title: 'CREATE A QUIZ'
       },
       myRooms: {
-        title: 'MY RECENTLY CREATED ROOMS'
+        title: 'MY RECENTLY CREATED QUIZZES'
       }
     }
   },
   creatorModeRooms: {
-    title: 'ROOMS',
+    title: 'QUIZZES',
     joinRoom: {
-      typeUrl: 'TYPE ROOM URL',
+      typeUrl: 'TYPE QUIZ URL',
       url: {
-        action: 'JOIN ROOM'
+        action: 'JOIN QUIZ'
       }
     },
     divider: 'OR',
     rooms: {
-      pendingRooms: 'Fetching rooms',
+      pendingRooms: 'Fetching quizzes',
       selectFromList: 'SELECT FROM LIST',
       filters: {
         title: 'FILTERS',
-        recently: 'Recent rooms',
-        oldest: 'Old rooms',
+        recently: 'Recent quizzes',
+        oldest: 'Old quizzes',
         byViewCount: 'Most viewed'
       },
       refresh: 'REFRESH',
       searchField: {
         searchRoom: {
-          placeholder: 'Search room'
+          placeholder: 'Search quiz'
         },
         searchRoomOrTag: {
-          placeholder: 'Search room or #tag'
+          placeholder: 'Search quiz or #tag'
         }
       },
       empty: {
-        description: 'No rooms found, create your own question-answer set!',
-        action: 'Compose a room'
+        description: 'No quizzes found, create your own quiz!',
+        action: 'Create a quiz'
       }
     },
     error: {
       rooms: {
         fetch: {
-          description: 'There was a problem getting the rooms',
+          description: 'There was a problem getting the quizzes',
           action: 'Try again'
         }
       },
-      joinRoom: 'Could not go to the room, please check the link you entered'
+      joinRoom: 'Could not go to the quiz, please check the link you entered'
     }
   },
   creatorModeMyRooms: {
-    title: 'My recently created rooms',
+    title: 'My recently created quizzes',
     description: {
       authed: '',
-      nonAuthed: 'Your recently created rooms are saved in the browser storage, this list will be cleared when the browser data is reset'
+      nonAuthed: 'Your recently created quizzes are saved in the browser storage, this list will be cleared when the browser data is reset'
     },
     delete: {
       callback: {
-        success: 'Room deleted'
+        success: 'Quiz deleted'
       }
     }
   },
@@ -435,17 +435,17 @@ export default {
     isRequired: '{model} is required',
     isInvalid: '{model} is invalid',
     creatorModeCompose: {
-      title: 'COMPOSE A ROOM',
-      roomInformations: 'ROOM INFORMATIONS',
+      title: 'CREATE A QUIZ',
+      roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
       clearForm: 'Clear Form',
       room: {
         roomTitle: {
-          label: 'Room title',
-          placeholder: 'Type room title'
+          label: 'Quiz title',
+          placeholder: 'Type quiz title'
         },
         isListed: {
-          label: 'Wanna you listing on public rooms?'
+          label: 'Wanna you listing on public quizzes?'
         },
         isAnon: {
           label: 'Hide creator player name?'
@@ -496,14 +496,14 @@ export default {
         }
       },
       termsDescription:
-        '* Avoid spam, hate speech, racist and insulting content when creating rooms. Such rooms will be deleted upon moderation detection. While creating a room, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
+        '* Avoid spam, hate speech, racist and insulting content when creating quizzes. Such quizzes will be deleted upon moderation detection. While creating a quiz, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
       submit: 'Finish and publish',
       error: {
-        couldNotCreate: 'Could not create room, please check and try again'
+        couldNotCreate: 'Could not create quiz, please check and try again'
       }
     },
     creatorModeEdit: {
-      title: 'EDIT A ROOM',
+      title: 'EDIT A QUIZ',
       submit: 'Update and publish'
     },
     roomReview: {
@@ -554,7 +554,7 @@ export default {
     }
   },
   roomReviewList: {
-    ratingTitle: 'Room rating',
+    ratingTitle: 'Quiz rating',
     reviewsTitle: 'Comments',
     empty: {
       description: 'No review yet',
@@ -564,7 +564,7 @@ export default {
   scoreboard: {
     scoreboard: 'Scoreboard',
     pendingScoreboard: 'Fetching scores',
-    loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the room scoreboard',
+    loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
   },
   chat: {
@@ -658,11 +658,39 @@ export default {
   seo: {
     main: {
       title: 'parolla - Word game',
-      description: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players'
+      description: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
+    },
+    dailyMode: {
+      title: 'Daily word game',
+      description: 'parolla - Word game - Daily word game, solve daily questions and join the competition'
+    },
+    unlimitedMode: {
+      title: 'Unlimited',
+      description: 'Unlimited question set, solve questions, play word game'
+    },
+    creatorModeCompose: {
+      title: 'Create a quiz',
+      description: 'Create a quiz or solve quizzes created by players',
+      keywords: 'quiz game, quiz solve, quiz create'
+    },
+    creatorModeQuizzes: {
+      title: 'Quizzes, solve quizzes or create your own quiz',
+      description: 'Solve quizzes created by players or create your own quiz',
+      keywords: 'quiz game, quiz solve, quiz create'
+    },
+    creatorModeQuiz: {
+      title: '{quizTitle} quiz',
+      description: 'Solve the "{quizTitle}" quiz!',
+      keywords: 'quiz game, quiz solve, quiz create'
+    },
+    tourMode: {
+      title: 'Tour',
+      description: 'Answer the question in each round, instant competition'
     },
     wordblockMode: {
       title: 'Wordblock',
-      description: `Guess the today's word, daily word game`
+      description: `Guess the today's word, daily word game`,
+      keywords: 'daily word game, wordle, like wordle, word guess game'
     }
   }
 }

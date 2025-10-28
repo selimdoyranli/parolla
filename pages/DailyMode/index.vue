@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { defineComponent, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useMeta } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
@@ -15,7 +15,30 @@ export default defineComponent({
     if (i18n.locale !== i18n.defaultLocale) {
       redirect(localePath({ name: 'Main' }))
     }
-  }
+
+    useMeta(() => ({
+      title: `${i18n.t('seo.dailyMode.title')} - ${i18n.t('seo.main.title')}`,
+      description: i18n.t('seo.dailyMode.description'),
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `${i18n.t('seo.dailyMode.title')} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: i18n.t('seo.dailyMode.description')
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: i18n.t('seo.dailyMode.description')
+        }
+      ]
+    }))
+  },
+  head: {}
 })
 </script>
 

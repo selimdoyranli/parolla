@@ -29,6 +29,11 @@ export default defineComponent({
           hid: 'twitter:description',
           name: 'twitter:description',
           content: i18n.t('seo.wordblockMode.description')
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: i18n.t('seo.wordblockMode.keywords')
         }
       ]
     }))

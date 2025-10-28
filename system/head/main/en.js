@@ -4,7 +4,7 @@ export const meta = [
   {
     hid: 'description',
     name: 'description',
-    content: 'Play daily word game, create your own word game questions, solve fun questions created by players'
+    content: 'Play daily word game, create your own word game quiz, solve quizzes created by players'
   },
   {
     hid: 'keywords',
@@ -28,7 +28,7 @@ export const meta = [
   {
     hid: 'og:description',
     property: 'og:description',
-    content: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players'
+    content: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
   },
   {
     hid: 'og:url',
@@ -53,7 +53,7 @@ export const meta = [
   {
     hid: 'twitter:description',
     property: 'twitter:description',
-    content: 'Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players'
+    content: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
   },
   {
     hid: 'twitter:url',

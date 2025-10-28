@@ -15,7 +15,7 @@
     <b>parolla - Kelime oyunu</b>
   </p>
   <p align="center">
-  Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz
+  Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz
   </p>
 </p>
 
@@ -35,7 +35,7 @@
     <b>parolla - Word game</b>
   </p>
   <p align="center">
-  Solve daily questions and join the competition. Create your own Q&A set and solve fun questions created by players
+  Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players
   </p>
 </p>
 

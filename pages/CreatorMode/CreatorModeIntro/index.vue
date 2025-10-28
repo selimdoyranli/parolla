@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useMeta } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 
 export default defineComponent({
@@ -23,7 +23,42 @@ export default defineComponent({
     Button
   },
   layout: 'Default/Default.layout',
-  setup() {}
+  setup() {
+    const { i18n } = useContext()
+
+    useMeta(() => ({
+      title: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`,
+      description: i18n.t('seo.creatorModeQuizzes.description'),
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: i18n.t('seo.creatorModeQuizzes.description')
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: i18n.t('seo.creatorModeQuizzes.description')
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: i18n.t('seo.creatorModeQuizzes.keywords')
+        }
+      ]
+    }))
+  },
+  head: {}
 })
 </script>
 

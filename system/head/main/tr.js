@@ -4,7 +4,7 @@ export const meta = [
   {
     hid: 'description',
     name: 'description',
-    content: 'Günlük kelime oyunu oyna, kendi kelime oyunu sorularını oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+    content: 'Günlük kelime oyunu oyna, kendi kelime oyunu quizini oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'keywords',
@@ -28,7 +28,7 @@ export const meta = [
   {
     hid: 'og:description',
     property: 'og:description',
-    content: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+    content: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'og:url',
@@ -53,7 +53,7 @@ export const meta = [
   {
     hid: 'twitter:description',
     property: 'twitter:description',
-    content: 'Günlük soruları çöz ve rekabete katıl. Kendi soru-cevap setini oluştur, oyuncuların oluşturduğu eğlenceli soruları çöz'
+    content: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'twitter:url',
