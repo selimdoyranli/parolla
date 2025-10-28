@@ -10,6 +10,18 @@ export default {
       })
     }
 
+    commit('SET_ALPHABET', {
+      activeIndex: 0,
+      items: data.flatMap(question => {
+        return {
+          letter: question.letter.name,
+          isPassed: false,
+          isWrong: false,
+          isCorrect: false
+        }
+      })
+    })
+
     return {
       data,
       error

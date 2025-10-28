@@ -30,7 +30,6 @@ Dialog.dialog.how-to-play-dialog(
 
 <script>
 import { defineComponent, useContext, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { ALPHABET_LENGTH } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums'
 import { Dialog } from 'vant'
 
@@ -75,7 +74,6 @@ export default defineComponent({
     })
 
     return {
-      ALPHABET_LENGTH,
       gameModeKeyEnum,
       activeGameMode,
       state,

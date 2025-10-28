@@ -5,17 +5,20 @@
       div(v-html="$t('dialog.howToPlay.description')")
     template(#extra)
       <br>
-      div(v-html="$t('dialog.howToPlay.unlimited.extra', { questionCount: String(ALPHABET_LENGTH) })")
+      div(v-html="$t('dialog.howToPlay.unlimited.extra', { questionCount: String(alphabet.items.length) })")
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
-import { ALPHABET_LENGTH } from '@/system/constant'
+import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
+    const store = useStore()
+
+    const alphabet = computed(() => store.getters['unlimited/alphabet'])
+
     return {
-      ALPHABET_LENGTH
+      alphabet
     }
   }
 })

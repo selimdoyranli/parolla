@@ -5,6 +5,10 @@ export default {
     state.currentDate = date
   },
 
+  SET_ALPHABET(state, alphabet) {
+    state.alphabet = alphabet
+  },
+
   SET_IS_GAME_OVER(state, { isGameOver }) {
     state.isGameOver = isGameOver
   },
