@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.28.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.28.0...v2.28.1)
+
+
+### 💅 Refactors
+
+  - Dynamic alphabet state ([6fca135](https://github.com/selimdoyranli/parolla/commit/6fca135))
+  - Seo updates ([ac60a64](https://github.com/selimdoyranli/parolla/commit/ac60a64))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.28.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.27.1...v2.28.0)
