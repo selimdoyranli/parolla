@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.29.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.0...v2.29.1)
+
+
+### 🩹 Fixes
+
+  - I18n fix ([53a52cb](https://github.com/selimdoyranli/parolla/commit/53a52cb))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.29.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.28.1...v2.29.0)
