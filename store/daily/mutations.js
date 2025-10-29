@@ -1,4 +1,5 @@
 import { GAME_TIME_LIMIT } from '@/system/constant'
+import { userTransformer } from '@/transformers'
 
 export default {
   SET_CURRENT_DATE(state, date) {
@@ -45,5 +46,27 @@ export default {
 
   SET_IS_OPEN_STATS_DIALOG(state, isOpen) {
     state.dialog.stats.isOpen = isOpen
+  },
+
+  SET_DAILY_PLAYING_COUNT(state, count) {
+    state.dailyPlayingCount = count
+  },
+
+  SET_DAILY_SCORES(state, dailyScore) {
+    state.dailyScore = {
+      items: dailyScore.data,
+      meta: dailyScore.meta
+    }
+  },
+
+  SET_LEADERBOARD(state, leaderboard) {
+    const mappedLeaderboard = leaderboard => {
+      return leaderboard?.map(scorer => ({
+        ...userTransformer(scorer.user),
+        ...(scorer.results && { results: scorer.results })
+      }))
+    }
+
+    state.leaderboard = mappedLeaderboard(leaderboard)
   }
 }

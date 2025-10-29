@@ -16,5 +16,11 @@ export default () => ({
     stats: {
       isOpen: false
     }
-  }
+  },
+  dailyPlayingCount: 0,
+  dailyScore: {
+    items: [],
+    meta: {}
+  },
+  leaderboard: []
 })

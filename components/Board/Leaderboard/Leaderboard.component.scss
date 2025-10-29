@@ -162,6 +162,75 @@
           color: var(--color-text-02);
           margin-inline-end: calc(var(--base-m-x) / 4);
         }
+
+        &--results {
+          position: relative;
+          flex-wrap: wrap;
+          height: auto;
+          line-height: unset;
+          margin-block-start: $spacer * 3;
+          margin-block-end: $spacer * 3;
+
+          @include media-breakpoint-down(mobile) {
+            margin-block-start: $spacer;
+          }
+
+          .top-scorer-list-item-score__value--correct {
+            color: var(--color-success-01);
+          }
+
+          .top-scorer-list-item-score__value--wrong {
+            color: var(--color-danger-01);
+          }
+
+          .top-scorer-list-item-score__value--passed {
+            color: var(--color-warning-01);
+          }
+
+          .top-scorer-list-item-score {
+            &__value {
+              strong {
+                margin: 0;
+                color: inherit;
+              }
+            }
+          }
+
+          .time {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-block-start: $spacer * 2;
+
+            @include media-breakpoint-down(mobile) {
+              position: absolute;
+              inset-block-end: -20px;
+            }
+
+            .app-icon {
+              svg {
+                width: 14px !important;
+                height: 14px !important;
+              }
+            }
+
+            &__value {
+              display: flex;
+              align-items: flex-end;
+              margin-inline-start: $spacer;
+
+              small {
+                position: relative;
+                bottom: 0;
+
+                @include media-breakpoint-up(mobile) {
+                  bottom: 1px;
+                }
+              }
+            }
+          }
+        }
       }
 
       &-rank {
@@ -205,7 +274,7 @@
   }
 
   .player-list {
-    max-height: 25vh;
+    max-height: 30vh;
     counter-reset: user-counter 3;
     margin-block-end: var(--base-m-y);
 

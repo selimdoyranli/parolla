@@ -29,5 +29,17 @@ export default {
 
   dialog(state) {
     return state.dialog
+  },
+
+  dailyPlayingCount(state) {
+    return state.dailyPlayingCount
+  },
+
+  dailyScores(state) {
+    return state.dailyScore
+  },
+
+  leaderboard(state) {
+    return state.leaderboard
   }
 }

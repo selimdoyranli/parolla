@@ -24,5 +24,32 @@ export default {
       data,
       error
     }
+  },
+
+  async increaseWordblockPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/wordblock/view-count`,
+      method: 'POST'
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchDailyPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/wordblock/view-count`
+    })
+
+    if (data) {
+      commit('SET_DAILY_PLAYING_COUNT', data.count)
+    }
+
+    return {
+      data,
+      error
+    }
   }
 }

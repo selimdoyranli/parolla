@@ -53,5 +53,13 @@ export default {
 
   scoreboardPagination(state) {
     return state.scoreboard.pagination
+  },
+
+  todaysSolvedTotalQuiz(state) {
+    return state.todaysSolvedTotalQuiz
+  },
+
+  todaysQuiz(state) {
+    return state.todaysQuiz
   }
 }

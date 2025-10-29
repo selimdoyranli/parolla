@@ -84,6 +84,25 @@ export default {
     subtitle: 'Günlük kelime oyunu',
     description: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
     modeList: {
+      daily: {
+        title: 'GÜNLÜK',
+        subtitle: 'REKABETÇİ',
+        description: 'Bugünün soru setini oyna, günlük kelime oyunu',
+        todaysBestScoreLabel: 'Günün lideri',
+        todaysBestScore: '{label} {player}',
+        label: 'Bugün {count} kez oynandı'
+      },
+      unlimited: {
+        title: 'LİMİTSİZ',
+        description: 'Sonraki günü bekleme, rekabeti boşver',
+        label: 'Limitsiz soru seti'
+      },
+      creator: {
+        title: 'YARATICI',
+        description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
+        label: 'Bugün {count} quiz çözüldü',
+        todaysQuizLabel: 'Günün quizi'
+      },
       tour: {
         title: 'TUR',
         description: 'Her tur bir soruyu cevapla, anlık rekabet',
@@ -93,22 +112,10 @@ export default {
         todaysBestScoreLabel: 'Bugünün en iyi skoru',
         todaysBestScore: `{label} {by} {byLabel} {score} puan`
       },
-      daily: {
-        title: 'GÜNLÜK',
-        subtitle: 'REKABETÇİ',
-        description: 'Bugünün soru setini oyna, günlük kelime oyunu'
-      },
-      unlimited: {
-        title: 'LİMİTSİZ',
-        description: 'Sınırsız soru seti'
-      },
-      creator: {
-        title: 'YARATICI',
-        description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
-      },
       wordblock: {
         title: 'KELİMEBLOK',
-        description: 'Günün kelimesini tahmin et, günlük kelime oyunu'
+        description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
+        label: 'Bugün {count} kez oynandı'
       }
     }
   },
@@ -611,15 +618,15 @@ export default {
   period: {
     daily: {
       title: 'Günlük',
-      slug: 'gunluk'
+      slug: 'gun'
     },
     weekly: {
       short: 'Haftalık',
-      slug: 'haftalik'
+      slug: 'hafta'
     },
     monthly: {
       title: 'Aylık',
-      slug: 'aylik'
+      slug: 'ay'
     },
     season: {
       title: '{seasonYear} Sezonu',

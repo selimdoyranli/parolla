@@ -3,6 +3,8 @@
 
   .scene {
     &__inner {
+      display: block;
+
       @include media-breakpoint-down(mobile) {
         height: auto;
         padding-block-start: 5vh;

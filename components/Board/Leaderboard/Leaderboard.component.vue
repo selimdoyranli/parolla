@@ -7,7 +7,26 @@
       .top-scorer-list-item(v-for="(scorer, index) in scorers.slice(0, 3)" :key="scorer.username" :data-rank="index + 1")
         PlayerAvatar(with-username open-player-dialog-on-click :size="48" :user="scorer")
 
-        .top-scorer-list-item-score(v-if="scorer.score")
+        .top-scorer-list-item-score.top-scorer-list-item-score--results(v-if="scorer.results")
+          span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--correct
+            strong {{ scorer.results.correctAnswers?.length }}
+          span.divider &nbsp;/&nbsp;
+          span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--wrong
+            strong {{ scorer.results.wrongAnswers?.length }}
+          span.divider &nbsp;/&nbsp;
+          span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--passed
+            strong {{ scorer.results.passedAnswers?.length }}
+
+          .time
+            AppIcon(name="tabler:clock" :width="16" :height="16")
+            span.time__value
+              span {{ scorer.results.remainTime.minutes }}
+              | :
+              span {{ scorer.results.remainTime.seconds }}
+              | .
+              small {{ scorer.results.remainTime.milliseconds }}
+
+        .top-scorer-list-item-score(v-if="!scorer.results && scorer.score")
           span.top-scorer-list-item-score__value
             strong {{ scorer.score }}
             | puan

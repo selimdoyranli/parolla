@@ -15,10 +15,6 @@ export default {
     return state.leaderboard
   },
 
-  todaysBestScorer(state) {
-    return state.leaderboard?.[0]
-  },
-
   chatMessages(state) {
     return state.chat.messages
   },

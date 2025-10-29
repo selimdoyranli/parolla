@@ -45,7 +45,7 @@ export default () => {
     store.commit('wordblock/SET_IS_GAME_OVER', false)
   }
 
-  const endGame = () => {
+  const endGame = async () => {
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
     store.commit('wordblock/SET_IS_GAME_OVER', true)
@@ -57,6 +57,8 @@ export default () => {
       guesses: guesses.value,
       elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
     })
+
+    await store.dispatch('wordblock/increaseWordblockPlayingCount')
   }
 
   // Initialize guesses array

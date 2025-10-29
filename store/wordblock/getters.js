@@ -17,5 +17,9 @@ export default {
 
   dialog(state) {
     return state.dialog
+  },
+
+  dailyPlayingCount(state) {
+    return state.dailyPlayingCount
   }
 }

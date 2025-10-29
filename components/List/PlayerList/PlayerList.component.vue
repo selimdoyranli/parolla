@@ -1,7 +1,11 @@
 <template lang="pug">
 .player-list
   template(v-if="items?.length > 0")
-    Cell.player-list-item(v-for="(item, index) in items" :key="index" :class="[answerStatusClass(item.isCorrect)]")
+    Cell.player-list-item(
+      v-for="(item, index) in items"
+      :key="index"
+      :class="[answerStatusClass(item.isCorrect), { 'player-list-item--results': item.results }]"
+    )
       template(#title)
         .player-list-item-user
           strong.player-list-item-user__username
@@ -16,7 +20,16 @@
             | .
             sub {{ item.time.split(':')[2] }}
 
-        .player-list-item-score(v-if="item.score")
+        .player-list-item-time.player-list-item-time--results(v-if="item.results?.remainTime")
+          AppIcon.player-list-item-time__icon(name="tabler:clock" :width="16" :height="16")
+          span.player-list-item-time__value
+            strong {{ item.results.remainTime.minutes }}
+            | :
+            strong {{ item.results.remainTime.seconds }}
+            | .
+            sub {{ item.results.remainTime.milliseconds }}
+
+        .player-list-item-score(v-if="!item.results && item.score")
           span.player-list-item-score__value
             strong {{ item.score }}
             label puan
@@ -25,6 +38,16 @@
           span.player-list-item-score__value
             strong {{ item.globalScore }}
             label puan
+
+        .player-list-item-score.player-list-item-score--results(v-if="item.results")
+          span.player-list-item-score__value.player-list-item-score__value--correct
+            strong {{ item.results.correctAnswers?.length }}
+          span.divider /&nbsp;
+          span.player-list-item-score__value.player-list-item-score__value--wrong
+            strong {{ item.results.wrongAnswers?.length }}
+          span.divider /&nbsp;
+          span.player-list-item-score__value.player-list-item-score__value--passed
+            strong {{ item.results.passedAnswers?.length }}
 
   template(v-else)
     .player-list__empty

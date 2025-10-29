@@ -84,15 +84,6 @@ export default {
     subtitle: 'Daily word game',
     description: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players',
     modeList: {
-      tour: {
-        title: 'TOUR',
-        description: 'Answer the question in each round, instant competition',
-        liveCount: `{count} active player`,
-        label: 'LIVE',
-        todaysBestScoreByLabel: 'by',
-        todaysBestScoreLabel: "Today's best score",
-        todaysBestScore: `{label} {by} {byLabel} {score} points`
-      },
       daily: {
         title: 'DAILY',
         subtitle: 'COMPETITIVE',
@@ -104,7 +95,18 @@ export default {
       },
       creator: {
         title: 'CREATOR',
-        description: 'Create your own quiz and solve quizzes created by players'
+        description: 'Create your own quiz and solve quizzes created by players',
+        label: 'Today {count} quiz solved',
+        todaysQuizLabel: `Today's quiz`
+      },
+      tour: {
+        title: 'TOUR',
+        description: 'Answer the question in each round, instant competition',
+        liveCount: `{count} active player`,
+        label: 'LIVE',
+        todaysBestScoreByLabel: 'by',
+        todaysBestScoreLabel: "Today's best score",
+        todaysBestScore: `{label} {by} {byLabel} {score} points`
       },
       wordblock: {
         title: 'WORDBLOCK',
@@ -606,15 +608,15 @@ export default {
   period: {
     daily: {
       title: 'Daily',
-      slug: 'daily'
+      slug: 'day'
     },
     weekly: {
       title: 'Weekly',
-      slug: 'weekly'
+      slug: 'week'
     },
     monthly: {
       title: 'Monthly',
-      slug: 'monthly'
+      slug: 'month'
     },
     season: {
       title: '{seasonYear} Season',

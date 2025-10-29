@@ -6,96 +6,94 @@
     h2.intro-scene__title {{ $t('introScene.title') }}
 
     .intro-scene-mode-list
-      Button.intro-scene-mode-list-item(
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--daily(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        size="large"
-        :to="$i18n.locale === $i18n.defaultLocale ? localePath({ name: 'DailyMode' }) : localePath('/')"
-        :class="[{ 'intro-scene-mode-list-item--disabled': $i18n.locale !== $i18n.defaultLocale }]"
-        @click="localeAvailabilityMessage"
+        icon="noto:calendar"
+        :to="localePath({ name: 'DailyMode' })"
+        :title="`${$t('introScene.modeList.daily.title')} (${$t('introScene.modeList.daily.subtitle')})`"
+        :description="$t('introScene.modeList.daily.description')"
+        :headLabel="{ title: $t('introScene.modeList.daily.label', { count: dailyPlayingCount }) }"
+        :playerList="dailyLeaderboard"
       )
-        .prepend
-          AppIcon.intro-scene-mode-list-item__icon(name="noto:calendar" :width="24" :height="24")
-          .title-group
-            a.intro-scene-mode-list-item-title(href="https://parolla.app" :title="$t('introScene.subtitle')" @click.prevent.stop.capture)
-              | {{ $t('introScene.modeList.daily.title') }}
-            span.ms-1 ({{ $t('introScene.modeList.daily.subtitle') }})
-          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.daily.description') }}
+        template(#avatarsMoreCount)
+          | +{{ dailyLeaderboard?.length - 4 }}
+        template(#body)
+          .top-scorer(v-if="todaysDailyBestScorer")
+            AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
+            i18n(tag="p" path="introScene.modeList.daily.todaysBestScore")
+              template(#label)
+                label.best-score-label {{ $t('introScene.modeList.daily.todaysBestScoreLabel') }}
+              template(#player)
+                PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysDailyBestScorer" :size="22")
+            Button.leaderboard-button(
+              size="small"
+              plain
+              :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+            )
+              AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
+              | {{ $t('leaderboard.title') }}
 
-      Button.intro-scene-mode-list-item(
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--unlimited(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        size="large"
-        :to="$i18n.locale === $i18n.defaultLocale ? localePath({ name: 'UnlimitedMode' }) : localePath('/')"
-        :class="[{ 'intro-scene-mode-list-item--disabled': $i18n.locale !== $i18n.defaultLocale }]"
-        @click="localeAvailabilityMessage"
+        icon="noto:infinity"
+        :to="localePath({ name: 'UnlimitedMode' })"
+        :title="$t('introScene.modeList.unlimited.title')"
+        :headLabel="{ title: $t('introScene.modeList.unlimited.label', { count: tourUserList?.totalPlayers }) }"
+        :description="$t('introScene.modeList.unlimited.description')"
       )
-        .prepend
-          AppIcon.intro-scene-mode-list-item__icon(name="noto:infinity" :width="24" :height="24")
-          span.intro-scene-mode-list-item-title {{ $t('introScene.modeList.unlimited.title') }}
-          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.unlimited.description') }}
 
-      Button.intro-scene-mode-list-item(size="large" :to="localePath({ name: 'CreatorMode-CreatorModeIntro' })")
-        .prepend
-          AppIcon.intro-scene-mode-list-item__icon(name="noto:pencil" :width="24" :height="24")
-          span.intro-scene-mode-list-item-title {{ $t('introScene.modeList.creator.title') }}
-          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.creator.description') }}
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--creator(
+        icon="noto:pencil"
+        :to="localePath({ name: 'CreatorMode-CreatorModeIntro' })"
+        :title="$t('introScene.modeList.creator.title')"
+        :headLabel="{ title: $t('introScene.modeList.creator.label', { count: todaysSolvedTotalQuiz?.meta?.pagination?.total }) }"
+        :description="$t('introScene.modeList.creator.description')"
+      )
+        template(v-if="todaysQuiz && Object.keys(todaysQuiz).length > 0" #body)
+          .todaysQuiz
+            span {{ $t('introScene.modeList.creator.todaysQuizLabel') }}&nbsp;
+            NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: todaysQuiz.id } })") "{{ todaysQuiz.title }}"
 
-      .intro-scene-mode-list-item.intro-scene-mode-list-item--tour(v-if="$i18n.locale === $i18n.defaultLocale" size="large")
-        .prepend
-          AppIcon.intro-scene-mode-list-item__icon(name="akar-icons:arrow-cycle" color="var(--color-text-01)" :width="24" :height="24")
-          span.intro-scene-mode-list-item-title
-            | {{ $t('introScene.modeList.tour.title') }}
-
-          span.live-count
-            AppIcon.icon(name="tabler:users" :width="16" :height="16")
-            span.count {{ $t('introScene.modeList.tour.liveCount', { count: userList.totalPlayers }) }}
-            span.pulse
-
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
+        v-if="$i18n.locale === $i18n.defaultLocale"
+        :label="$t('introScene.modeList.tour.label')"
+        icon="akar-icons:arrow-cycle"
+        :to="localePath({ name: 'TourMode-TourModeGame' })"
+        :headLabel="{ title: $t('introScene.modeList.tour.liveCount', { count: tourUserList?.totalPlayers }), icon: 'tabler:users', pulse: true }"
+        :title="$t('introScene.modeList.tour.title')"
+        :description="$t('introScene.modeList.tour.description')"
+        :playerList="tourUserList.players"
+      )
+        template(#avatarsMoreCount)
+          | +{{ tourUserList?.totalPlayers - 4 }}
+        template(#body)
           .top-scorer(v-if="todaysTourBestScorer")
-            .top-scorer__content
-              AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
-              i18n(tag="p" path="introScene.modeList.tour.todaysBestScore")
-                template(#label)
-                  label.best-score-label {{ $t('introScene.modeList.tour.todaysBestScoreLabel') }}
-                template(#by)
-                  PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysTourBestScorer" :size="22")
-                template(#byLabel)
-                  label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
-                template(#score)
-                  strong &nbsp; {{ todaysTourBestScorer.score }} &nbsp;
-              Button.leaderboard-button(
-                size="small"
-                plain
-                :to="localePath({ name: 'TourMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
-              )
-                AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
-                | {{ $t('leaderboard.title') }}
+            AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
+            i18n(tag="p" path="introScene.modeList.tour.todaysBestScore")
+              template(#label)
+                label.best-score-label {{ $t('introScene.modeList.tour.todaysBestScoreLabel') }}
+              template(#by)
+                PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysTourBestScorer" :size="22")
+              template(#byLabel)
+                label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
+              template(#score)
+                strong &nbsp; {{ todaysTourBestScorer.score }} &nbsp;
+            Button.leaderboard-button(
+              size="small"
+              plain
+              :to="localePath({ name: 'TourMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+            )
+              AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
+              | {{ $t('leaderboard.title') }}
 
-          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.tour.description') }}
-
-          .intro-scene-mode-list-item.intro-scene-mode-list-item__footer
-            Button.play-now-button(:to="localePath({ name: 'TourMode-TourModeGame' })") {{ $t('general.play') }}
-            .avatar-group(v-if="userList.players.length > 0")
-              PlayerAvatar(
-                v-for="player in userList.players.slice(0, 4)"
-                :key="player.id"
-                :user="{ username: player.username, diceBear: player.diceBear }"
-              )
-              .avatar-group__moreCount(v-if="userList.totalPlayers > 4") +{{ userList.totalPlayers - 4 }}
-
-        .append
-          label.intro-scene-mode-list-item__label
-            AppIcon(name="tabler:sparkles" :width="16" :height="16")
-            | {{ $t('introScene.modeList.tour.label') }}
-
-      Button.intro-scene-mode-list-item(
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--wordblock(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        size="large"
+        icon="icon-park:view-grid-card"
         :to="localePath({ name: 'WordblockMode' })"
+        :title="$t('introScene.modeList.wordblock.title')"
+        :headLabel="{ title: $t('introScene.modeList.wordblock.label', { count: wordblockDailyPlayingCount }) }"
+        :description="$t('introScene.modeList.wordblock.description')"
       )
-        .prepend
-          AppIcon.intro-scene-mode-list-item__icon(name="icon-park:view-grid-card" :width="24" :height="24")
-          span.intro-scene-mode-list-item-title {{ $t('introScene.modeList.wordblock.title') }}
-          p.intro-scene-mode-list-item__description {{ $t('introScene.modeList.wordblock.description') }}
 
     .intro-scene__keywords.d-none
       h3.intro-scene__subtitle {{ $t('introScene.subtitle') }}
@@ -125,18 +123,40 @@ export default defineComponent({
       }
     }
 
-    const userList = computed(() => store.getters['tour/userList'])
-    const leaderboard = computed(() => store.getters['tour/leaderboard'])
-    const todaysTourBestScorer = computed(() => store.getters['tour/todaysBestScorer'])
+    const dailyPlayingCount = computed(() => store.getters['daily/dailyPlayingCount'])
+    const dailyLeaderboard = computed(() => store.getters['daily/leaderboard'])
+    const todaysDailyBestScorer = computed(() => dailyLeaderboard.value?.[0])
+
+    const tourUserList = computed(() => store.getters['tour/userList'])
+    const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
+    const todaysTourBestScorer = computed(() => tourLeaderboard.value?.[0])
+
+    const todaysSolvedTotalQuiz = computed(() => store.getters['creator/todaysSolvedTotalQuiz'])
+    const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
+
+    const wordblockDailyPlayingCount = computed(() => store.getters['wordblock/dailyPlayingCount'])
 
     onMounted(async () => {
-      await store.dispatch('tour/fetchLeaderboard', { period: 'daily', limit: 1 })
+      await Promise.all([
+        store.dispatch('daily/fetchDailyPlayingCount'),
+        store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 }),
+        store.dispatch('tour/fetchLeaderboard', { period: 'daily', limit: 1 }),
+        store.dispatch('creator/fetchTodaysSolvedTotalQuiz', { limit: 1 }),
+        store.dispatch('creator/fetchTodaysQuiz'),
+        store.dispatch('wordblock/fetchDailyPlayingCount')
+      ])
     })
 
     return {
-      userList,
-      leaderboard,
+      dailyPlayingCount,
+      dailyLeaderboard,
+      todaysDailyBestScorer,
+      tourUserList,
+      tourLeaderboard,
       todaysTourBestScorer,
+      todaysSolvedTotalQuiz,
+      todaysQuiz,
+      wordblockDailyPlayingCount,
       localeAvailabilityMessage
     }
   }

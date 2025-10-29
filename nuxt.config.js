@@ -260,6 +260,14 @@ module.exports = {
             tr: '/gunluk',
             en: '/daily'
           },
+          'DailyMode/Leaderboard/index': {
+            tr: '/gunluk/liderlik',
+            en: '/daily/leaderboard'
+          },
+          'DailyMode/Leaderboard/_period/index': {
+            tr: '/gunluk/liderlik/:period',
+            en: '/daily/leaderboard/:period'
+          },
           'UnlimitedMode/index': {
             tr: '/limitsiz',
             en: '/unlimited'

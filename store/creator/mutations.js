@@ -103,5 +103,16 @@ export default {
     }
 
     state.scoreboard.total = Number(total)
+  },
+
+  SET_TODAYS_SOLVED_TOTAL_QUIZ(state, todaysSolvedTotalQuiz) {
+    state.todaysSolvedTotalQuiz = {
+      items: todaysSolvedTotalQuiz.data,
+      meta: todaysSolvedTotalQuiz.meta
+    }
+  },
+
+  SET_TODAYS_QUIZ(state, todaysQuiz) {
+    state.todaysQuiz = todaysQuiz
   }
 }

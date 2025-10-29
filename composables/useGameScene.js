@@ -502,6 +502,8 @@ export default () => {
           }
         })
       }
+
+      await store.dispatch('daily/increaseDailyPlayingCount')
     }
 
     if (activeGameMode.value === gameModeKeyEnum.CREATOR) {

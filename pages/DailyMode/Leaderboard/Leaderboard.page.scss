@@ -1,0 +1,54 @@
+.leaderboard-page {
+  position: relative;
+  padding: var(--base-p-y) var(--base-p-x);
+  text-align: center;
+
+  &-header {
+    &__title {
+      font-size: var(--font-size-text-4);
+
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-8) !important;
+      }
+    }
+
+    &__description {
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-10);
+      }
+    }
+  }
+
+  .button-group {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: $spacer * 4;
+    justify-content: flex-start;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-inline: $spacer * 4;
+    padding-block: $spacer * 2;
+    margin-block-end: $spacer * 4;
+
+    @include media-breakpoint-up(mobile-m) {
+      justify-content: center;
+    }
+
+    .button-link {
+      text-decoration: none;
+    }
+
+    .van-button {
+      padding: $spacer * 2 $spacer * 4;
+      color: var(--color-text-01);
+      background-color: var(--color-ui-02);
+      border: 0;
+      border-radius: var(--border-radius-01);
+    }
+
+    .active {
+      color: light-dark(#fff, #222);
+      background-color: light-dark(#222, #fff);
+    }
+  }
+}

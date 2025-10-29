@@ -27,5 +27,10 @@ export default () => ({
     list: [],
     pagination: {},
     total: null
-  }
+  },
+  todaysSolvedTotalQuiz: {
+    items: [],
+    meta: {}
+  },
+  todaysQuiz: {}
 })

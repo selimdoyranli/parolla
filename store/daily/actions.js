@@ -64,5 +64,74 @@ export default {
       data,
       error
     }
+  },
+
+  async increaseDailyPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/daily/view-count`,
+      method: 'POST'
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchDailyPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/daily/view-count`
+    })
+
+    if (data) {
+      commit('SET_DAILY_PLAYING_COUNT', data.count)
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchDailyScores({ commit }, { limit = 10, page = 1 }) {
+    const { data, error } = await this.$appFetch({
+      path: `daily-scores`,
+      query: {
+        'pagination[pageSize]': limit,
+        'pagination[page]': page
+      }
+    })
+
+    if (data) {
+      commit('SET_DAILY_SCORES', {
+        data: data.data,
+        meta: data.meta
+      })
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchLeaderboard({ commit }, { period = 'season', limit = 10, page = 1 }) {
+    const { data, error } = await this.$appFetch({
+      path: `daily-scores/daily-leaderboard`,
+      query: {
+        period,
+        'pagination[pageSize]': limit,
+        'pagination[page]': page
+      }
+    })
+
+    if (data) {
+      commit('SET_LEADERBOARD', data.data)
+    }
+
+    return {
+      data,
+      error
+    }
   }
 }
