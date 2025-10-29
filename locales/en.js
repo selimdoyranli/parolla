@@ -629,22 +629,26 @@ export default {
     daily: {
       short: 'Daily',
       full: 'Daily leaderboard',
-      scoredPoints: 'Points scored today'
+      scoredPoints: 'Points scored today',
+      leaderSorting: `Today's leaderboard`
     },
     weekly: {
       short: 'Weekly',
       full: 'Weekly leaderboard',
-      scoredPoints: 'Points scored this week'
+      scoredPoints: 'Points scored this week',
+      leaderSorting: `This week's leaderboard`
     },
     monthly: {
       short: 'Monthly',
       full: 'Monthly leaderboard',
-      scoredPoints: 'Points scored this month'
+      scoredPoints: 'Points scored this month',
+      leaderSorting: `This month's leaderboard`
     },
     season: {
       short: '{seasonYear} Season',
       full: '{seasonYear} season leaderboard',
-      scoredPoints: 'Points scored this season'
+      scoredPoints: 'Points scored this season',
+      leaderSorting: `This season's leaderboard`
     },
     pending: 'Leaderboard is being fetched',
     error: {

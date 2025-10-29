@@ -639,22 +639,26 @@ export default {
     daily: {
       short: 'Günlük',
       full: 'Günlük lider sıralaması',
-      scoredPoints: 'Bugün kazanılan puanlar'
+      scoredPoints: 'Bugün kazanılan puanlar',
+      leaderSorting: 'Bugünün lider sıralaması'
     },
     weekly: {
       short: 'Haftalık',
       full: 'Haftalık lider sıralaması',
-      scoredPoints: 'Bu hafta kazanılan puanlar'
+      scoredPoints: 'Bu hafta kazanılan puanlar',
+      leaderSorting: 'Bu haftanın lider sıralaması'
     },
     monthly: {
       short: 'Aylık',
       full: 'Aylık lider sıralaması',
-      scoredPoints: 'Bu ay kazanılan puanlar'
+      scoredPoints: 'Bu ay kazanılan puanlar',
+      leaderSorting: 'Bu ayın lider sıralaması'
     },
     season: {
       short: '{seasonYear} Sezonu',
       full: '{seasonYear} sezonu lider sıralaması',
-      scoredPoints: 'Bu sezon kazanılan puanlar'
+      scoredPoints: 'Bu sezon kazanılan puanlar',
+      leaderSorting: 'Bu sezonun lider sıralaması'
     },
     pending: 'Sıralama getiriliyor',
     error: {

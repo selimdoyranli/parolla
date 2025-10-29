@@ -77,25 +77,25 @@ export default defineComponent({
     const pageDescription = computed(() => {
       const currentPeriod = mapPeriod(period.value)
 
-      return i18n.t(`leaderboard.${currentPeriod}.scoredPoints`)
+      return i18n.t(`leaderboard.${currentPeriod}.leaderSorting`)
     })
 
     useMeta(() => ({
-      title: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+      title: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.leaderSorting`)} - ${i18n.t('leaderboard.modeTitle', {
         mode: i18n.t('introScene.modeList.daily.title')
       })} - ${i18n.t('seo.main.title')}`,
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.leaderSorting`)} - ${i18n.t('leaderboard.modeTitle', {
             mode: i18n.t('introScene.modeList.daily.title')
           })} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.leaderSorting`)} - ${i18n.t('leaderboard.modeTitle', {
             mode: i18n.t('introScene.modeList.daily.title')
           })} - ${i18n.t('seo.main.title')}`
         }
