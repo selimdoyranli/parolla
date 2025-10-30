@@ -6,7 +6,7 @@
         AppIcon(name="tabler:world-cog")
     template(v-if="isVisibleAnnouncementsButton")
       li.app-header-nav__item(@click="toggleAnnouncementsDialog")
-        AppIcon(name="tabler:speakerphone" :label="todaysAnnouncementsCount")
+        AppIcon(name="tabler:speakerphone" :label="announcementsCount")
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         AppIcon(name="tabler:arrow-left")
@@ -184,14 +184,14 @@ export default defineComponent({
       dialog.localeSwitch.isOpen = !dialog.localeSwitch.isOpen
     }
 
-    const todaysAnnouncementsCount = ref(0)
+    const announcementsCount = ref(0)
 
     const toggleAnnouncementsDialog = () => {
       dialog.announcements.isOpen = !dialog.announcements.isOpen
     }
 
     const handleFetchAnnouncementsSuccess = count => {
-      todaysAnnouncementsCount.value = count
+      announcementsCount.value = count
     }
 
     const toggleRoomReviewDialog = () => {
@@ -307,7 +307,7 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
-      todaysAnnouncementsCount,
+      announcementsCount,
       toggleAnnouncementsDialog,
       handleFetchAnnouncementsSuccess,
       openTourModeOnlineDialog,

@@ -31,7 +31,7 @@ Dialog.dialog.announcements-dialog(
 </template>
 
 <script>
-import { defineComponent, useFetch, useStore, reactive, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, useContext, useStore, reactive, watch } from '@nuxtjs/composition-api'
 import { Dialog, Loading, Empty, Button, Cell, CellGroup } from 'vant'
 
 export default defineComponent({
@@ -67,10 +67,15 @@ export default defineComponent({
 
         if (value) {
           fetch()
+
+          if (announcements.items.length > 0) {
+            setAnnouncementsToLocalStorage(announcements.items)
+          }
         }
       }
     )
 
+    const { i18n } = useContext()
     const store = useStore()
     const { isoToHumanDate } = useFormatter()
 
@@ -81,6 +86,20 @@ export default defineComponent({
       todaysAnnouncementsCount: 0
     })
 
+    const setAnnouncementsToLocalStorage = announcements => {
+      window.localStorage.setItem(`announcements_${i18n.locale}`, JSON.stringify(announcements))
+    }
+
+    const checkNewAnnouncements = announcements => {
+      const storedAnnouncements = JSON.parse(window.localStorage.getItem(`announcements_${i18n.locale}`)) || []
+
+      const newAnnouncements = announcements.filter(
+        newAnnouncement => !storedAnnouncements.some(storedAnnouncement => storedAnnouncement.id === newAnnouncement.id)
+      )
+
+      return newAnnouncements.length
+    }
+
     const { fetch, fetchState } = useFetch(async () => {
       const { data, error } = await store.dispatch('app/fetchAnnouncements')
 
@@ -88,13 +107,14 @@ export default defineComponent({
         announcements.items = data.data
         announcements.meta = data.meta
 
-        const todaysDate = new Date().setHours(0, 0, 0, 0)
-        const todaysAnnouncements = data.data.filter(announcement => new Date(announcement.createdAt).setHours(0, 0, 0, 0) === todaysDate)
+        let count = 0
 
-        announcements.todaysAnnouncements = todaysAnnouncements
-        announcements.todaysAnnouncementsCount = todaysAnnouncements?.length || 0
-
-        emit('on-fetch-success', announcements.todaysAnnouncementsCount)
+        if (checkNewAnnouncements(data.data) > 0) {
+          count = checkNewAnnouncements(data.data)
+        } else {
+          count = 0
+        }
+        emit('on-fetch-success', count)
       }
     })
 
