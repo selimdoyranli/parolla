@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.30.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.0...v2.30.1)
+
+
+### 💅 Refactors
+
+  - Localstorage for announcements ([1fc668c](https://github.com/selimdoyranli/parolla/commit/1fc668c))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.30.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.3...v2.30.0)
