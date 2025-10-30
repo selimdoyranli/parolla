@@ -382,6 +382,7 @@ export default {
     const query = {
       'filters[createdAt][$gte]': startOfDay.toISOString(),
       'filters[createdAt][$lt]': endOfDay.toISOString(),
+      'filters[isPublic][$eq]': true,
       'sort[0]': 'viewCount:desc',
       'pagination[pageSize]': 1,
       locale: this.$i18n.locale
