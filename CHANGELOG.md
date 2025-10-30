@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.30.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.1...v2.30.2)
+
+
+### 💅 Refactors
+
+  - Update creator routes ([83b590e](https://github.com/selimdoyranli/parolla/commit/83b590e))
+  - Update creator routes on en ([e2bc8a8](https://github.com/selimdoyranli/parolla/commit/e2bc8a8))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.30.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.0...v2.30.1)
