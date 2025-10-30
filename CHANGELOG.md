@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.29.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.2...v2.29.3)
+
+
+### 🔥 Performance
+
+  - Performance improvements ([b451e9a](https://github.com/selimdoyranli/parolla/commit/b451e9a))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.29.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.1...v2.29.2)
