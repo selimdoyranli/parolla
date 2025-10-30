@@ -140,7 +140,7 @@ export default defineComponent({
 
     // Fetch Room
     const { fetch, fetchState } = useFetch(async () => {
-      const { data, error } = await store.dispatch('creator/fetchRoom', route.value.query.id)
+      const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
 
       if (error) {
         Notify({

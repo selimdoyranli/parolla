@@ -14,7 +14,7 @@ export default defineComponent({
     const { localePath, redirect, i18n } = useContext()
     const store = useStore()
 
-    if (!route.value.query.id) {
+    if (!route.value.params.slug) {
       redirect(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
     }
 

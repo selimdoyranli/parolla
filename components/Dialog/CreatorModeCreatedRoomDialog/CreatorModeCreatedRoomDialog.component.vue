@@ -20,7 +20,7 @@ Dialog.dialog.creator-mode-created-room-dialog(
     p(v-html="$t('dialog.createdRoom.isListedMessage', { isListed: $t('dialog.createdRoom.private') })")
 
   Field.creator-mode-created-room-dialog__roomIdField(
-    :value="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: room.id } })}`"
+    :value="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })}`"
     disabled
   )
     template(#left-icon)
@@ -79,7 +79,7 @@ export default defineComponent({
     )
 
     const copyRoomUrl = async () => {
-      const url = `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: props.room.id } })}`
+      const url = `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: props.room.id } })}`
       window.postMessage({ type: 'sharer', data: url })
 
       try {

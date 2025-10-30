@@ -90,7 +90,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const { localePath } = useContext()
+    const { localePath, getRouteBaseName } = useContext()
     const store = useStore()
 
     const userList = computed(() => store.getters['tour/userList'])
@@ -208,10 +208,10 @@ export default defineComponent({
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })
+          route.value.path.startsWith(localePath('/quiz'))
         ) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeIntro' }))
-        } else if (route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit' })) {
+        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
         } else {
           router.replace(localePath({ name: 'Main' }))
@@ -243,7 +243,7 @@ export default defineComponent({
 
     const logoClasses = computed(() => {
       return {
-        'app-logo--pushedToStart': route.value.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })
+        'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))
       }
     })
 
@@ -269,7 +269,7 @@ export default defineComponent({
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit' }) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' })) ||
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
         route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
         route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' }))

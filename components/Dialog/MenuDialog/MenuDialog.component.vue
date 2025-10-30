@@ -66,7 +66,7 @@ Dialog.dialog.menu-dialog(
       @click.native="$emit('clickedHowToCalculateStats')"
     )
     Cell.menu-dialog-nav__item(
-      v-if="$route.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })"
+      v-if="$route.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))"
       icon="smile-comment-o"
       size="large"
       is-link
@@ -74,7 +74,7 @@ Dialog.dialog.menu-dialog(
       @click.native="openRoomSharer"
     )
     Cell.menu-dialog-nav__item(
-      v-if="$route.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })"
+      v-if="$route.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))"
       icon="chat-o"
       size="large"
       is-link
@@ -142,7 +142,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const { localePath, i18n, $colorMode, $auth } = useContext()
+    const { localePath, getRouteBaseName, i18n, $colorMode, $auth } = useContext()
 
     const { activeGameMode } = useGameMode()
 
@@ -201,7 +201,7 @@ export default defineComponent({
       const shareText = i18n.t('sharer.room.description', {
         roomTitle: room.value.title,
         questionCount: questions.value.length,
-        url: `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: route.value.query.id } })}`
+        url: `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: route.value.params.slug } })}`
       })
 
       try {
@@ -265,6 +265,7 @@ export default defineComponent({
     }
 
     return {
+      getRouteBaseName,
       gameModeKeyEnum,
       activeGameMode,
       state,

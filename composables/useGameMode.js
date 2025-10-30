@@ -3,7 +3,7 @@ import { gameModeKeyEnum } from '@/enums'
 
 export default () => {
   const route = useRoute()
-  const { localePath } = useContext()
+  const { localePath, getRouteBaseName } = useContext()
 
   const activeGameMode = computed(() => {
     if (route.value.path === localePath({ name: 'DailyMode' })) {
@@ -14,7 +14,7 @@ export default () => {
       return gameModeKeyEnum.UNLIMITED
     }
 
-    if (route.value.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })) {
+    if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))) {
       return gameModeKeyEnum.CREATOR
     }
 

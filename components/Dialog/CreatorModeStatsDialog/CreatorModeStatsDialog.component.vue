@@ -201,7 +201,7 @@ export default defineComponent({
         wrongAnswerCount: wrongAnswers.value.length,
         passedAnswerCount: passedAnswers.value.length,
         remainTime: remainTime.value,
-        url: `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: route.value.query.id } })}`
+        url: `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: route.value.params.slug } })}`
       })
 
       window.postMessage({ type: 'sharer', data: shareText })

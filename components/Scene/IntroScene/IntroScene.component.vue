@@ -52,7 +52,7 @@
         template(v-if="todaysQuiz && Object.keys(todaysQuiz).length > 0" #body)
           .todaysQuiz
             span {{ $t('introScene.modeList.creator.todaysQuizLabel') }}&nbsp;
-            NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: todaysQuiz.id } })") "{{ todaysQuiz.title }}"
+            NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: todaysQuiz.id } })") "{{ todaysQuiz.title }}"
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"

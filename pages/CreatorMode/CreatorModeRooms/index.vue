@@ -9,7 +9,7 @@
       h3.creator-mode-rooms-page__title {{ $t('creatorModeRooms.joinRoom.typeUrl') }}
       Field.creator-mode-rooms-page-join-room__urlField(
         v-model="form.roomUrl.url"
-        :placeholder="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: 'a12345b' } })}`"
+        :placeholder="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: 'a12345b' } })}`"
         @input="validateRoomUrl"
         @keypress.native.enter="gotoRoom"
       )
@@ -105,7 +105,7 @@ export default defineComponent({
     const form = reactive({
       roomUrl: {
         isClear: false,
-        pattern: /^(https?:\/\/)?(www\.)?parolla\.app\/(oda|en\/room)\?id=.+$/,
+        pattern: /^(https?:\/\/)?(www\.)?parolla\.app\/quiz\/[a-zA-Z0-9_-]+(?:-\d+)?$/,
         url: ''
       }
     })
@@ -120,12 +120,14 @@ export default defineComponent({
 
     const gotoRoom = () => {
       if (form.roomUrl.isClear) {
-        const id = form.roomUrl.url.split('id=')[1]
+        const id = form.roomUrl.url.split('/').pop()
+
+        console.log(id)
 
         router.push(
           localePath({
-            name: 'CreatorMode-CreatorModeRoom',
-            query: { id }
+            name: 'CreatorMode-CreatorModeRoom-slug',
+            params: { slug: id }
           })
         )
       } else {

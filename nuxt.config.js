@@ -281,24 +281,24 @@ module.exports = {
             en: '/creator'
           },
           'CreatorMode/CreatorModeRooms/index': {
-            tr: '/yaratici/odalar',
-            en: '/creator/rooms'
+            tr: '/quizler',
+            en: '/quizzes'
           },
           'CreatorMode/CreatorModeMyRooms/index': {
-            tr: '/yaratici/odalarim',
-            en: '/creator/my-rooms'
+            tr: '/quizlerim',
+            en: '/my-quizzes'
           },
           'CreatorMode/CreatorModeCompose/index': {
-            tr: '/yaratici/olustur',
-            en: '/creator/compose'
+            tr: '/quiz-olustur',
+            en: '/quiz-create'
           },
-          'CreatorMode/CreatorModeEdit/index': {
-            tr: '/yaratici/duzenle',
-            en: '/creator/edit'
+          'CreatorMode/CreatorModeEdit/_slug': {
+            tr: '/quiz-duzenle/:slug',
+            en: '/quiz-edit/:slug'
           },
-          'CreatorMode/CreatorModeRoom/index': {
-            tr: '/oda',
-            en: '/room'
+          'CreatorMode/CreatorModeRoom/_slug': {
+            tr: '/quiz/:slug',
+            en: '/quiz/:slug'
           },
           'TourMode/TourModeGame/index': {
             tr: '/tur',

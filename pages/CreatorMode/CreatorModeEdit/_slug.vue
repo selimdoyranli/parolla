@@ -26,7 +26,7 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore()
 
-    const roomId = computed(() => route.value.query.id)
+    const roomId = computed(() => route.value.params.slug)
 
     const { fetch, fetchState } = useFetch(async () => {
       await store.dispatch('creator/fetchRoom', roomId.value)

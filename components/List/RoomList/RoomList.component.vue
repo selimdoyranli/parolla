@@ -23,11 +23,11 @@
     List
       template(v-for="(room, index) in list.items")
         NuxtLink(
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: room.id } })"
+          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
           :title="room.title"
-          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: room.id } })"
+          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
         )
-          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom', query: { id: room.id } })")
+          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })")
             template(#title)
               span.room-list-item__title {{ room.title }}
 
@@ -80,7 +80,7 @@
                   plain
                   size="normal"
                   round
-                  @click.native.stop.prevent.capture="$router.push(localePath({ name: 'CreatorMode-CreatorModeEdit', query: { id: room.id } }))"
+                  @click.native.stop.prevent.capture="handleEditRoom({ room })"
                 ) {{ $t('general.edit') }}
                 Button(
                   type="danger"
@@ -251,6 +251,10 @@ export default defineComponent({
       await fetchRooms()
     }
 
+    const handleEditRoom = async ({ room }) => {
+      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: room.id } }))
+    }
+
     const handleDeleteRoom = async ({ room }) => {
       Dialog.confirm({
         title: i18n.t('general.delete'),
@@ -304,6 +308,7 @@ export default defineComponent({
       handleInfiniteLoading,
       form,
       handleSearchRoom,
+      handleEditRoom,
       handleDeleteRoom,
       searchFieldPlaceholder
     }

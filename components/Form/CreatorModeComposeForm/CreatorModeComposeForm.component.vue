@@ -496,8 +496,8 @@ export default defineComponent({
     const handleConfirmRoomDialog = () => {
       router.push(
         localePath({
-          name: 'CreatorMode-CreatorModeRoom',
-          query: { id: createdRoom.id }
+          name: 'CreatorMode-CreatorModeRoom-slug',
+          params: { slug: createdRoom.id }
         })
       )
     }
