@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.30.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.3...v2.30.0)
+
+
+### 🚀 Enhancements
+
+  - Generate avatar by username if avatar is null ([178f428](https://github.com/selimdoyranli/parolla/commit/178f428))
+  - Announcements ([1f455ce](https://github.com/selimdoyranli/parolla/commit/1f455ce))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.29.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.2...v2.29.3)
