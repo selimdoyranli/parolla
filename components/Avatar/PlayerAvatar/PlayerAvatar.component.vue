@@ -11,8 +11,13 @@
     .player-avatar-badge.player-avatar-badge--gm(v-if="isGm")
       AppIcon.player-avatar-badge__icon(name="tabler:crown" color="#fff" :width="16" :height="16")
 
-    img.player-avatar__avatar(v-if="user" :src="avatarSrc" :style="{ width: `inherit`, height: `inherit` }")
-    img.player-avatar__avatar.player-avatar__avatar--anon(v-else :src="avatarSrc" :style="{ width: `inherit`, height: `inherit` }")
+    img.player-avatar__avatar(v-if="user" :src="avatarSrc" :alt="user.username" :style="{ width: `inherit`, height: `inherit` }")
+    img.player-avatar__avatar.player-avatar__avatar--anon(
+      v-else
+      :src="avatarSrc"
+      :alt="$t('general.anon')"
+      :style="{ width: `inherit`, height: `inherit` }"
+    )
 
   span.player-avatar__username(v-if="withUsername")
     template(v-if="user") {{ user.username }}

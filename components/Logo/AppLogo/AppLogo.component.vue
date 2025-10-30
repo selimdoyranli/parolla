@@ -2,7 +2,13 @@
 .app-logo(:class="`app-logo--${type}`")
   NuxtLink.app-logo-link(:to="localePath('/')" :title="APP_NAME")
     span.app-logo-title(v-if="type === 'title'") {{ APP_NAME }}
-    img.app-logo-circle(v-else src="/meta/logo.png" alt="parolla - kelime oyunu" :style="`width: ${width}px; height: ${height}px;`")
+    img.app-logo-circle(
+      v-else
+      src="/img/core/logo.webp"
+      fetchPriority="high"
+      :alt="$t('seo.main.title')"
+      :style="`width: ${width}px; height: ${height}px;`"
+    )
 </template>
 
 <script>

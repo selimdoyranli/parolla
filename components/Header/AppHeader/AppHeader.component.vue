@@ -1,6 +1,6 @@
 <template lang="pug">
 .app-header
-  nav.app-header-nav
+  menu.app-header-nav
     template(v-if="isVisibleLocaleSwitchButton")
       li.app-header-nav__item(@click="toggleLocaleSwitchDialog")
         AppIcon(name="tabler:world-cog")
@@ -10,7 +10,7 @@
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
 
-  nav.app-header-nav
+  menu.app-header-nav
     li.app-header-nav__item.app-header-nav__item--tourModeOnline.me-3(
       v-if="activeGameMode === gameModeKeyEnum.TOUR"
       @click="openTourModeOnlineDialog"

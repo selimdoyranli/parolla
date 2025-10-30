@@ -132,6 +132,7 @@
       border-radius: 50%;
       animation: livePulse 1.5s ease-in-out infinite;
       margin-block-end: 2px;
+      will-change: transform, box-shadow;
     }
   }
 
