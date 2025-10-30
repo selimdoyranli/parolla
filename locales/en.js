@@ -46,7 +46,8 @@ export default {
     playNow: 'Play now',
     play: 'Play',
     joined: 'Joined',
-    anon: 'anonym'
+    anon: 'anonym',
+    refresh: 'Refresh'
   },
   auth: {
     google: {
@@ -183,6 +184,10 @@ export default {
       title: 'Contact',
       description:
         'For suggestions, complaint, collaborations; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> or <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> You can reach us on our twitter account.'
+    },
+    announcements: {
+      title: 'Announcements',
+      description: 'Announcements'
     },
     createdRoom: {
       title: 'Quiz created',

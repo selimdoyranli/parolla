@@ -46,7 +46,8 @@ export default {
     playNow: 'Hemen Oyna',
     play: 'Oyna',
     joined: 'Katıldı',
-    anon: 'anonim'
+    anon: 'anonim',
+    refresh: 'Tazele'
   },
   auth: {
     google: {
@@ -188,6 +189,10 @@ export default {
       title: 'Bize ulaşın',
       description:
         'Öneri, şikayet ya da işbirliği için; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> veya <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> twitter hesabımızdan ulaşabilirsin.'
+    },
+    announcements: {
+      title: 'Duyurular',
+      description: 'Duyurular'
     },
     createdRoom: {
       title: 'Quiz oluşturuldu',

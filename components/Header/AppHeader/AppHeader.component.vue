@@ -4,6 +4,9 @@
     template(v-if="isVisibleLocaleSwitchButton")
       li.app-header-nav__item(@click="toggleLocaleSwitchDialog")
         AppIcon(name="tabler:world-cog")
+    template(v-if="isVisibleAnnouncementsButton")
+      li.app-header-nav__item(@click="toggleAnnouncementsDialog")
+        AppIcon(name="tabler:speakerphone" :label="todaysAnnouncementsCount")
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         AppIcon(name="tabler:arrow-left")
@@ -63,13 +66,24 @@
   // Contact Dialog
   LazyContactDialog(:isOpen="dialog.contact.isOpen" @closed="dialog.contact.isOpen = false")
   // Locale Switch Dialog
-  LazyLocaleSwitchDialog(:isOpen="dialog.localeSwitch.isOpen" @closed="dialog.localeSwitch.isOpen = false")
+  LazyLocaleSwitchDialog(
+    v-if="$route.path === localePath({ name: 'Main' })"
+    :isOpen="dialog.localeSwitch.isOpen"
+    @closed="dialog.localeSwitch.isOpen = false"
+  )
+  // Announcements Dialog
+  LazyAnnouncementsDialog(
+    v-if="$route.path === localePath({ name: 'Main' })"
+    :isOpen="dialog.announcements.isOpen"
+    @closed="dialog.announcements.isOpen = false"
+    @on-fetch-success="handleFetchAnnouncementsSuccess"
+  )
   // Room Review Dialog
   LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" @closed="dialog.roomReview.isOpen = false")
 </template>
 
 <script>
-import { defineComponent, useRouter, useRoute, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums'
 
 export default defineComponent({
@@ -103,6 +117,9 @@ export default defineComponent({
         isOpen: false
       },
       localeSwitch: {
+        isOpen: false
+      },
+      announcements: {
         isOpen: false
       },
       roomReview: {
@@ -167,6 +184,16 @@ export default defineComponent({
       dialog.localeSwitch.isOpen = !dialog.localeSwitch.isOpen
     }
 
+    const todaysAnnouncementsCount = ref(0)
+
+    const toggleAnnouncementsDialog = () => {
+      dialog.announcements.isOpen = !dialog.announcements.isOpen
+    }
+
+    const handleFetchAnnouncementsSuccess = count => {
+      todaysAnnouncementsCount.value = count
+    }
+
     const toggleRoomReviewDialog = () => {
       dialog.roomReview.isOpen = !dialog.roomReview.isOpen
     }
@@ -226,6 +253,12 @@ export default defineComponent({
       }
     })
 
+    const isVisibleAnnouncementsButton = computed(() => {
+      if (route.value.path === localePath({ name: 'Main' })) {
+        return true
+      }
+    })
+
     const isVisibleBackButton = computed(() => {
       if (
         activeGameMode.value === gameModeKeyEnum.DAILY ||
@@ -274,11 +307,15 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
+      todaysAnnouncementsCount,
+      toggleAnnouncementsDialog,
+      handleFetchAnnouncementsSuccess,
       openTourModeOnlineDialog,
       handleClickBackButton,
       handleClickAppLogo,
       logoClasses,
       isVisibleLocaleSwitchButton,
+      isVisibleAnnouncementsButton,
       isVisibleBackButton,
       user,
       room,
