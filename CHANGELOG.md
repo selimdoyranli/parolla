@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.30.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.2...v2.30.3)
+
+
+### 🩹 Fixes
+
+  - Get public quiz for todays quiz ([8e40e3e](https://github.com/selimdoyranli/parolla/commit/8e40e3e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.30.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.1...v2.30.2)
