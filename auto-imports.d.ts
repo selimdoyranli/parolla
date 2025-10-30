@@ -7,6 +7,7 @@
 export {}
 declare global {
   const useAuth: typeof import('./composables/useAuth.js')['default']
+  const useAvatar: typeof import('./composables/useAvatar.js')['default']
   const useDeviceInfo: typeof import('./composables/useDeviceInfo.js')['default']
   const useDialog: typeof import('./composables/useDialog.js')['default']
   const useFormatter: typeof import('./composables/useFormatter.js')['default']

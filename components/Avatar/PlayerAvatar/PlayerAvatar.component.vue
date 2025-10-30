@@ -72,6 +72,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
+    const { generateAvatarConfigByUsername } = useAvatar()
 
     const openPlayerDialog = async () => {
       store.commit('profile/SET_PLAYER_ID', props.user.id)
@@ -95,7 +96,7 @@ export default defineComponent({
 
     const generateAvatarDataImage = () => {
       return createAvatar(adventurer, {
-        ...parollaConfig.avatar.defaultConfig
+        ...generateAvatarConfigByUsername(props.user?.username)
       }).toDataUri()
     }
 

@@ -171,6 +171,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
+    const { generateAvatarConfigByUsername } = useAvatar()
 
     const player = computed(() => props.user)
 
@@ -178,7 +179,7 @@ export default defineComponent({
 
     // Default avatar configuration
     const defaultConfig = {
-      ...parollaConfig.avatar.defaultConfig
+      ...generateAvatarConfigByUsername(player.value?.username)
     }
 
     // Avatar Configuration
@@ -252,19 +253,25 @@ export default defineComponent({
         { id: '8d5524', label: 'Very Dark' }
       ],
       backgroundColor: [
+        { id: 'ff7878', label: 'Parolla Pink' },
         { id: '65c9ff', label: 'Blue' },
         { id: 'ff6b9d', label: 'Pink' },
         { id: 'ffd93d', label: 'Yellow' },
         { id: '6bcf7f', label: 'Green' },
         { id: 'a78bfa', label: 'Purple' },
-        { id: 'f59e0b', label: 'Orange' }
+        { id: 'f59e0b', label: 'Orange' },
+        { id: 'ff4757', label: 'Red' },
+        { id: '00d4aa', label: 'Teal' },
+        { id: '3742fa', label: 'Indigo' },
+        { id: 'ff7f50', label: 'Coral' },
+        { id: '9b6755', label: 'Brown' }
       ]
     }
 
     // Generate avatar SVG
     const generateAvatarSvg = cfg => {
       const avatarOptions = {
-        ...parollaConfig.avatar.defaultConfig
+        ...generateAvatarConfigByUsername(player.value?.username)
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
@@ -301,7 +308,7 @@ export default defineComponent({
 
     const generateAvatarDataImage = cfg => {
       const avatarOptions = {
-        ...parollaConfig.avatar.defaultConfig
+        ...generateAvatarConfigByUsername(player.value?.username)
       }
 
       if (cfg.mouth) avatarOptions.mouth = [cfg.mouth]
