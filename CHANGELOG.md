@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.29.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.1...v2.29.2)
+
+
+### 🩹 Fixes
+
+  - Ui fixes ([18c3693](https://github.com/selimdoyranli/parolla/commit/18c3693))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.29.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.29.0...v2.29.1)
