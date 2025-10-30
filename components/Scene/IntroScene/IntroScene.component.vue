@@ -77,7 +77,7 @@
               template(#byLabel)
                 label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
               template(#score)
-                strong &nbsp; {{ todaysTourBestScorer.score }} &nbsp;
+                strong &nbsp;{{ todaysTourBestScorer.score }}&nbsp;
             Button.leaderboard-button(
               size="small"
               plain

@@ -21,10 +21,6 @@
   padding-block: $spacer * 5;
   padding-block-end: $spacer * 3;
 
-  &:hover {
-    transform: scale(1.02);
-  }
-
   &::before {
     position: absolute;
     z-index: 0;

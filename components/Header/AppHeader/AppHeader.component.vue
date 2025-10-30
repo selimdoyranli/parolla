@@ -8,7 +8,7 @@
       li.app-header-nav__item(@click="handleClickBackButton")
         AppIcon(name="tabler:arrow-left")
 
-  AppLogo(type="title" @click.native.prevent.capture="handleClickAppLogo")
+  AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
 
   nav.app-header-nav
     li.app-header-nav__item.app-header-nav__item--tourModeOnline.me-3(
@@ -214,6 +214,12 @@ export default defineComponent({
       }
     }
 
+    const logoClasses = computed(() => {
+      return {
+        'app-logo--pushedToStart': route.value.path === localePath({ name: 'CreatorMode-CreatorModeRoom' })
+      }
+    })
+
     const isVisibleLocaleSwitchButton = computed(() => {
       if (route.value.path === localePath({ name: 'Main' })) {
         return true
@@ -225,13 +231,15 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
         activeGameMode.value === gameModeKeyEnum.CREATOR ||
+        activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeIntro' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit' }) ||
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
-        route.value.path === localePath({ name: 'WordblockMode' })
+        route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
+        route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' }))
       ) {
         return true
       }
@@ -269,6 +277,7 @@ export default defineComponent({
       openTourModeOnlineDialog,
       handleClickBackButton,
       handleClickAppLogo,
+      logoClasses,
       isVisibleLocaleSwitchButton,
       isVisibleBackButton,
       user,

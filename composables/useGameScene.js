@@ -595,10 +595,22 @@ export default () => {
 
     const titleElement = activeQuestion.querySelector('.question__title')
 
+    const breakLongWords = (text, limit = 25) => {
+      return text.replace(/\S+/g, word => {
+        if (word.length > limit) {
+          return `<span style="word-break: break-all;">${word}</span>`
+        }
+
+        return word
+      })
+    }
+
     if (titleElement) {
       if (originalContent.length > 0) {
         titleElement.innerHTML = originalContent
       }
+
+      titleElement.innerHTML = breakLongWords(titleElement.innerText)
 
       textfit(activeQuestion, {
         minFontSize: 16,

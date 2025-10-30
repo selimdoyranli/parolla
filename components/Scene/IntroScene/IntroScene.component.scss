@@ -78,8 +78,8 @@
       &--creator {
         .intro-button-body {
           height: auto;
-          border-top-right-radius: calc(var(--border-radius-01) / 2);
-          border-bottom-right-radius: calc(var(--border-radius-01) / 2);
+          border-top-right-radius: calc(var(--border-radius-01) / 2) !important;
+          border-bottom-right-radius: calc(var(--border-radius-01) / 2) !important;
 
           @include media-breakpoint-down(mobile) {
             margin-block-end: $spacer * 4;
@@ -87,8 +87,8 @@
         }
 
         .intro-button-body__content {
-          height: auto;
-          min-height: 40px;
+          height: auto !important;
+          min-height: 40px !important;
         }
 
         &:has(.todaysQuiz) {
@@ -102,7 +102,7 @@
             color: var(--color-text-01);
 
             &:hover {
-              color: var(--color-brand-02) !important;
+              text-decoration: underline !important;
             }
           }
         }
@@ -174,10 +174,6 @@
             overflow: hidden;
             text-wrap: nowrap;
             text-overflow: ellipsis;
-
-            @include media-breakpoint-down(mobile) {
-              margin-block-end: 2px;
-            }
           }
         }
       }

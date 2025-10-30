@@ -11,10 +11,19 @@
   .app-logo {
     &--default {
       position: relative;
-      top: -4px;
+      inset-block-start: -4px;
       display: flex;
       align-items: center;
       height: 100%;
+    }
+
+    &--pushedToStart {
+      @include media-breakpoint-down(mobile) {
+        inset-inline-start: 60px !important;
+        inset-block-start: 1px !important;
+        transform: none !important;
+        transition: all 0.4s ease-in-out;
+      }
     }
 
     &--title {
