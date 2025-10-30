@@ -290,11 +290,11 @@ module.exports = {
           },
           'CreatorMode/CreatorModeCompose/index': {
             tr: '/quiz-olustur',
-            en: '/quiz-create'
+            en: '/create-quiz'
           },
           'CreatorMode/CreatorModeEdit/_slug': {
             tr: '/quiz-duzenle/:slug',
-            en: '/quiz-edit/:slug'
+            en: '/edit-quiz/:slug'
           },
           'CreatorMode/CreatorModeRoom/_slug': {
             tr: '/quiz/:slug',
