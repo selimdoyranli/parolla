@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.30.4
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.3...v2.30.4)
+
+
+### 🩹 Fixes
+
+  - Leaderboard style fix ([c3b62da](https://github.com/selimdoyranli/parolla/commit/c3b62da))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.30.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.2...v2.30.3)
