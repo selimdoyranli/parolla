@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.31.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.4...v2.31.0)
+
+
+### 🚀 Enhancements
+
+  - Ux improvements on leaderboards ([68ed747](https://github.com/selimdoyranli/parolla/commit/68ed747))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.30.4
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.3...v2.30.4)
