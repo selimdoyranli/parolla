@@ -640,14 +640,14 @@ export default {
     weekly: {
       short: 'Weekly',
       full: 'Weekly leaderboard',
-      scoredPoints: 'Points scored this week',
-      leaderSorting: `This week's leaderboard`
+      scoredPoints: 'Points scored this week (Monday-Sunday)',
+      leaderSorting: `This week's (Monday-Sunday) leaderboard`
     },
     monthly: {
       short: 'Monthly',
       full: 'Monthly leaderboard',
-      scoredPoints: 'Points scored this month',
-      leaderSorting: `This month's leaderboard`
+      scoredPoints: 'Points scored this month ({startDate} - {endDate})',
+      leaderSorting: `This month's ({startDate} - {endDate}) leaderboard`
     },
     season: {
       short: '{seasonYear} Season',

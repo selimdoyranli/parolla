@@ -32,12 +32,12 @@
         .player-list-item-score(v-if="!item.results && item.score")
           span.player-list-item-score__value
             strong {{ item.score }}
-            label puan
+            label &nbsp;puan
 
         .player-list-item-score(v-if="item.globalScore != null || item.globalScore != undefined")
           span.player-list-item-score__value
             strong {{ item.globalScore }}
-            label puan
+            label &nbsp;puan
 
         .player-list-item-score.player-list-item-score--results(v-if="item.results")
           span.player-list-item-score__value.player-list-item-score__value--correct

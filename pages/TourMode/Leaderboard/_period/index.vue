@@ -33,11 +33,17 @@
       Leaderboard(:scorers="leaderboard")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
+
+  // Ad
+  AppAd.my-base.pt-base(:data-ad-slot="6048083070")
 </template>
 
 <script lang="ts">
 import { defineComponent, useContext, useStore, useRoute, useFetch, computed, useMeta } from '@nuxtjs/composition-api'
 import { Empty, Button } from 'vant'
+import dayjs from 'dayjs'
+import 'dayjs/locale/tr'
+import 'dayjs/locale/en'
 
 export default defineComponent({
   name: 'PeriodLeaderboardPage',
@@ -77,25 +83,28 @@ export default defineComponent({
     const pageDescription = computed(() => {
       const currentPeriod = mapPeriod(period.value)
 
-      return i18n.t(`leaderboard.${currentPeriod}.scoredPoints`)
+      return i18n.t(`leaderboard.${currentPeriod}.scoredPoints`, {
+        startDate: dayjs().locale(i18n.locale).startOf('month').format('D MMMM'),
+        endDate: dayjs().locale(i18n.locale).endOf('month').format('D MMMM')
+      })
     })
 
     useMeta(() => ({
-      title: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+      title: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
         mode: i18n.t('introScene.modeList.tour.title')
       })} - ${i18n.t('seo.main.title')}`,
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
             mode: i18n.t('introScene.modeList.tour.title')
           })} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.scoredPoints`)} - ${i18n.t('leaderboard.modeTitle', {
+          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
             mode: i18n.t('introScene.modeList.tour.title')
           })} - ${i18n.t('seo.main.title')}`
         }

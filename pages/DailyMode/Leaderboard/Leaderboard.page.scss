@@ -1,9 +1,15 @@
 .leaderboard-page {
   position: relative;
-  padding: var(--base-p-y) var(--base-p-x);
+  overflow-x: clip;
   text-align: center;
 
   &-header {
+    position: sticky;
+    z-index: 3;
+    background-color: var(--color-ui-01);
+    inset-block-start: 0;
+    padding-block: $spacer * 2;
+
     &__title {
       font-size: var(--font-size-text-4);
 
@@ -49,6 +55,13 @@
     .active {
       color: light-dark(#fff, #222);
       background-color: light-dark(#222, #fff);
+    }
+  }
+
+  .leaderboard {
+    .player-list {
+      max-height: unset;
+      overflow-y: unset;
     }
   }
 }

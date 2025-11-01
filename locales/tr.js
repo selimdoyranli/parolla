@@ -650,14 +650,14 @@ export default {
     weekly: {
       short: 'Haftalık',
       full: 'Haftalık lider sıralaması',
-      scoredPoints: 'Bu hafta kazanılan puanlar',
-      leaderSorting: 'Bu haftanın lider sıralaması'
+      scoredPoints: 'Bu hafta (Pazartesi-Pazar) kazanılan puanlar',
+      leaderSorting: 'Bu haftanın (Pazartesi-Pazar) lider sıralaması'
     },
     monthly: {
       short: 'Aylık',
       full: 'Aylık lider sıralaması',
-      scoredPoints: 'Bu ay kazanılan puanlar',
-      leaderSorting: 'Bu ayın lider sıralaması'
+      scoredPoints: 'Bu ay ({startDate} - {endDate}) kazanılan puanlar',
+      leaderSorting: 'Bu ayın ({startDate} - {endDate}) lider sıralaması'
     },
     season: {
       short: '{seasonYear} Sezonu',

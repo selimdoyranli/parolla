@@ -60,6 +60,7 @@
     "canvas-confetti": "^1.9.3",
     "cookie-universal-nuxt": "^2.2.2",
     "cross-env": "^5.2.0",
+    "dayjs": "^1.11.19",
     "express": "^4.17.1",
     "get-browser-fingerprint": "^3.0.0",
     "howler": "^2.2.3",
