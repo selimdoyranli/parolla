@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.31.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.31.0...v2.31.1)
+
+
+### 💅 Refactors
+
+  - Add cloudflare infra ([b622029](https://github.com/selimdoyranli/parolla/commit/b622029))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.31.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.30.4...v2.31.0)
