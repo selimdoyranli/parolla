@@ -116,6 +116,16 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                     Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
                       AppIcon(name="tabler:x" :width="14" :height="14")
 
+                  Cell.creator-mode-compose-form-media-note
+                    small.creator-mode-compose-form-media-note__description {{ $t('form.creatorModeCompose.qa.question.mediaNote.description') }}
+                    Field.creator-mode-compose-form-media-note-field(
+                      v-model="item.mediaNote"
+                      name="mediaNote"
+                      :placeholder="$t('form.creatorModeCompose.qa.question.mediaNote.placeholder')"
+                      maxlength="64"
+                      show-word-limit
+                    )
+
             Field.creator-mode-compose-form__questionField(
               v-if="item.questionType === questionTypeEnum.TEXT"
               v-model="item.question"
@@ -149,6 +159,8 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                 )
 
             .compose-qa-card__actions
+              label.compose-qa-card__index {{ index + 1 }}. {{ $t('general.question') }}
+
               template(v-if="form.qaList && form.qaList.length > 1")
                 Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
                   icon="arrow-up"
@@ -175,7 +187,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                 round
                 size="small"
                 @click="removeItem(index)"
-              ) {{ $t('general.remove') }}
+              ) {{ $t('form.creatorModeCompose.qa.question.removeQuestion') }}
 
         // Empty List
         template(v-else)

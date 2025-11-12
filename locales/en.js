@@ -503,7 +503,13 @@ export default {
             }
           },
           label: 'Question',
-          placeholder: 'Type question'
+          placeholder: 'Type question',
+          mediaNote: {
+            label: 'Media note',
+            placeholder: 'Type media note (optional)',
+            description: 'The player will see the note related to the photo/video'
+          },
+          removeQuestion: 'Remove question'
         },
         answer: {
           answerType: {

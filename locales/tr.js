@@ -509,7 +509,13 @@ export default {
             }
           },
           label: 'Soru',
-          placeholder: 'Soruyu yaz'
+          placeholder: 'Soruyu yaz',
+          mediaNote: {
+            label: 'Medya notu',
+            placeholder: 'Medya notunu yaz (isteğe bağlı)',
+            description: 'Oyuncuya fotoğraf/video ile ilgili notun gösterilir'
+          },
+          removeQuestion: 'Soruyu kaldır'
         },
         answer: {
           answerType: {

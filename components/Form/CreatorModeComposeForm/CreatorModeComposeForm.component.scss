@@ -35,6 +35,26 @@
     @include font-weight-semi-bold;
   }
 
+  .van-field {
+    flex-direction: column;
+
+    &__label {
+      margin-block-end: $spacer * 2;
+    }
+
+    &__control:not(.van-field__control--custom) {
+      padding: $spacer * 2 $spacer * 4 !important;
+      border: 1px solid var(--color-border-02) !important;
+      border-radius: calc(var(--border-radius-01) / 2) !important;
+    }
+  }
+
+  .creator-mode-compose-form__roomTag {
+    .van-field__word-limit {
+      padding-inline-end: $spacer * 9;
+    }
+  }
+
   .creator-mode-compose-form-tags {
     &__tag {
       margin-inline-end: calc(var(--base-m-x) / 2);
@@ -49,21 +69,6 @@
         background-color: var(--color-danger-01);
         margin-inline-start: 4px;
       }
-    }
-  }
-
-  &__anonNotice {
-    display: inline-flex;
-    align-items: center;
-    margin-block-start: var(--base-m-y);
-    margin-inline: var(--base-m-x);
-    color: var(--color-text-03);
-    font-size: var(--font-size-text-10);
-    text-align: left;
-    text-wrap: balance;
-
-    .app-icon {
-      margin-inline-end: calc(var(--base-m-x) / 2);
     }
   }
 
@@ -89,6 +94,25 @@
     overflow: hidden;
     background-color: var(--color-ui-02);
     border-radius: var(--border-radius-01);
+
+    &__index {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 24px;
+      padding: $spacer $spacer * 2;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-11);
+      text-transform: lowercase;
+      background-color: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: calc(var(--border-radius-01) / 2);
+      inset-block-start: calc(24px / 2) * -1;
+      inset-inline-start: 0;
+
+      @include center(true, false);
+    }
 
     &__actions {
       position: relative;
@@ -220,6 +244,19 @@
       &:hover {
         background-color: transparent;
       }
+    }
+  }
+
+  .creator-mode-compose-form-media-note {
+    &__description {
+      display: block;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      padding-block: $spacer;
+    }
+
+    &-field {
+      padding: 0;
     }
   }
 
