@@ -83,7 +83,7 @@
 <script>
 import { defineComponent, useContext, useStore, ref, onMounted, onUnmounted, computed, nextTick, watch } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
-import { wsTypeEnum } from '@/enums'
+import { wsTypeEnum } from '@/enums/wsType.enum'
 import { Button, Field, Empty, CountDown, Progress, Popover, Notify, Toast } from 'vant'
 
 export default defineComponent({

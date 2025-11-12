@@ -1,5 +1,5 @@
 import { useRoute, useContext, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 
 export default () => {
   const route = useRoute()

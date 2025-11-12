@@ -1,4 +1,4 @@
-import { wsTypeEnum } from '@/enums'
+import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default {
   async listenWs({ commit, dispatch }, { ws }) {

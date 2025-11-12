@@ -84,7 +84,7 @@
 
 <script>
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 
 export default defineComponent({
   setup() {

@@ -1,6 +1,6 @@
 import { useContext, useStore, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
 import { UNSUPPORTED_HEIGHT, WEB_CDN } from '@/system/constant'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 // Swiper
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.min.css'

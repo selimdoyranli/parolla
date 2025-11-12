@@ -30,7 +30,7 @@ Dialog.dialog.how-to-play-dialog(
 
 <script>
 import { defineComponent, useContext, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { Dialog } from 'vant'
 
 export default defineComponent({

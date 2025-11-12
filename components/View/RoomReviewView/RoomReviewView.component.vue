@@ -38,7 +38,7 @@
 
 <script>
 import { defineComponent, useStore, useFetch, ref, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { roomReviewTransformer } from '@/transformers'
 import { Button, Empty, NoticeBar } from 'vant'
 

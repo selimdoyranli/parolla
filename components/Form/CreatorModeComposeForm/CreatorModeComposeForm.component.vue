@@ -81,7 +81,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                     template(#icon="{ props }")
                       AppIcon.question-type-radio__icon(name="tabler:photo")
 
-            Cell.media-list(v-if="item.questionType === 'media'")
+            Cell.media-list(v-if="item.questionType === questionTypeEnum.MEDIA")
               template(#title)
                 span {{ $t('form.creatorModeCompose.qa.question.photoOrVideo') }}
 
@@ -117,7 +117,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                       AppIcon(name="tabler:x" :width="14" :height="14")
 
             Field.creator-mode-compose-form__questionField(
-              v-if="item.questionType === 'text'"
+              v-if="item.questionType === questionTypeEnum.TEXT"
               v-model="item.question"
               name="question"
               :label="$t('form.creatorModeCompose.qa.question.label')"
@@ -236,6 +236,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
 <script>
 import { defineComponent, useRouter, useContext, useStore, ref, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX } from '@/system/constant'
+import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
 import { Form, Field, Cell, Switch, Button, Empty, Notify, Dialog, Tag, Tabs, Tab, NoticeBar, RadioGroup, Radio, Toast } from 'vant'
 
@@ -325,9 +326,9 @@ export default defineComponent({
     const addItem = () => {
       form.qaList.push({
         character: '',
-        questionType: 'text',
+        questionType: questionTypeEnum.TEXT,
         question: '',
-        answerType: 'textField',
+        answerType: answerTypeEnum.TEXT_FIELD,
         answer: '',
         isMatched: null,
         media: null,
@@ -685,6 +686,8 @@ export default defineComponent({
     }
 
     return {
+      questionTypeEnum,
+      answerTypeEnum,
       user,
       form,
       handleInputTag,

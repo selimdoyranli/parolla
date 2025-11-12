@@ -1,4 +1,4 @@
-export default Object.freeze({
+export const wsTypeEnum = Object.freeze({
   CONNECTED: 'connected',
   CHAT_MESSAGE: 'chat_message',
   TOUR_QUESTION: 'question',
