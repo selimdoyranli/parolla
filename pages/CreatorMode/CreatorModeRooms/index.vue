@@ -122,8 +122,6 @@ export default defineComponent({
       if (form.roomUrl.isClear) {
         const id = form.roomUrl.url.split('/').pop()
 
-        console.log(id)
-
         router.push(
           localePath({
             name: 'CreatorMode-CreatorModeRoom-slug',

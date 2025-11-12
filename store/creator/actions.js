@@ -12,11 +12,25 @@ export default {
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         roomTags: form.tags,
         qaList: form.qaList.map(item => {
-          return {
+          const qaItem = {
             character: item.character,
+            questionType: item.questionType,
             question: item.question,
+            answerType: item.answerType,
             answer: item.answer
           }
+
+          if (item.media?.file) {
+            qaItem.selectedMedia = item.media
+          }
+
+          if (item.youtube) {
+            qaItem.youtube = item.youtube
+          } else if (item.media && item.media.id) {
+            qaItem.media = item.media
+          }
+
+          return qaItem
         }),
         deviceInfo
       }
@@ -53,11 +67,25 @@ export default {
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         roomTags: form.tags,
         qaList: form.qaList.map(item => {
-          return {
+          const qaItem = {
             character: item.character,
+            questionType: item.questionType,
             question: item.question,
+            answerType: item.answerType,
             answer: item.answer
           }
+
+          if (item.media?.file) {
+            qaItem.selectedMedia = item.media
+          }
+
+          if (item.youtube) {
+            qaItem.youtube = item.youtube
+          } else if (item.media && item.media.id) {
+            qaItem.media = item.media
+          }
+
+          return qaItem
         }),
         deviceInfo
       }
@@ -94,6 +122,35 @@ export default {
       },
       headers: {
         Authorization: `${token}`
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async uploadQuizMedia({ commit }, { files, path, ref, refId, field }) {
+    const token = this.$auth.strategy.token.get()
+
+    const formData = new FormData()
+    files.forEach(file => {
+      formData.append('files', file)
+    })
+
+    formData.append('path', path)
+    formData.append('ref', ref)
+    formData.append('refId', refId)
+    formData.append('field', field)
+
+    const { data, error } = await this.$appFetch({
+      path: `rooms/upload-media`,
+      method: 'POST',
+      data: formData,
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
       }
     })
 

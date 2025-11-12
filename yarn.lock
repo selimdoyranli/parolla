@@ -6298,6 +6298,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"convert-pro@npm:*":
+  version: 1.3.2
+  resolution: "convert-pro@npm:1.3.2"
+  checksum: 10c0/3eec785b1c2fda4d45f6a04d85a815e6dbfa8e3a2c407eebdd4547bdcc3aa515217a75abce4d7345cb6943fbd8c08bf333637d85c5a45f319ab389870bde1a5c
+  languageName: node
+  linkType: hard
+
+"convert-size@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "convert-size@npm:1.2.1"
+  dependencies:
+    convert-pro: "npm:*"
+  checksum: 10c0/929436c59453883c40c6e4d146f6bb8c1c34e22e178b674ed337580a1961d8a1fc29eca736b963e70bd011cd65a74692c1870f087ac69a8f438f708d69857d59
+  languageName: node
+  linkType: hard
+
 "convert-source-map@npm:^1.7.0":
   version: 1.9.0
   resolution: "convert-source-map@npm:1.9.0"
@@ -13189,6 +13205,7 @@ __metadata:
     canvas-confetti: "npm:^1.9.3"
     changelogen: "npm:^0.5.2"
     commitizen: "npm:^4.3.0"
+    convert-size: "npm:^1.2.1"
     cookie-universal-nuxt: "npm:^2.2.2"
     cross-env: "npm:^5.2.0"
     cz-conventional-changelog: "npm:^3.3.0"

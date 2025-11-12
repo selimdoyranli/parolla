@@ -12,7 +12,12 @@ export default {
     tryAgain: 'Tekrar dene',
     goToHome: 'Ana sayfaya git',
     unAuthorized: 'Yetkisiz erişim',
-    loginRequired: 'Giriş yapınız'
+    loginRequired: 'Giriş yapınız',
+    mediaError: {
+      uploadFailed: 'Medya yükleme hatası',
+      limitExceeded: 'Medya boyutu sınırı aşıldı',
+      mimeTypeNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
+    }
   },
   success: {
     success: 'Başarılı'
@@ -196,8 +201,9 @@ export default {
     },
     createdRoom: {
       title: 'Quiz oluşturuldu',
+      quizUpdated: 'Quiz güncellendi',
       joinRoom: 'Quize git',
-      isListedMessage: `Quizin {isListed}. <br> <br> Yanlış seçenekle yayınladıysan bu pencereyi kapattıktan sonra düzenleyip tekrar gönderebilirsin.`,
+      isListedMessage: `Quizin {isListed}.`,
       public: '<strong>QUIZ LİSTESİNDE GÖRÜNECEK</strong> şekilde oluşturuldu',
       private:
         '<strong>QUIZ LİSTESİNDE GÖRÜNMEYECEK</strong> şekilde oluşturuldu, ama quiz bağlantını bilen arkadaşların hala quizine girebilir',
@@ -205,6 +211,23 @@ export default {
         callback: {
           success: 'Quiz bağlantısı kopyalandı'
         }
+      }
+    },
+    mediaUpload: {
+      title: 'Medya yükle',
+      uploadArea: {
+        description: 'Dosya seç veya sürükleyip bırak'
+      },
+      selectFile: 'Medya seç',
+      selectPhotoOrVideo: 'Fotoğraf ya da video seç',
+      tabs: {
+        file: 'Dosya',
+        youtube: 'YouTube'
+      },
+      youtubeUrl: {
+        label: 'URL',
+        placeholder: 'https://www.youtube.com/watch?v=...',
+        error: "Geçerli bir YouTube URL'si giriniz"
       }
     },
     howToPlay: {
@@ -452,6 +475,8 @@ export default {
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
+      creatingQuiz: 'Quiz oluşturuluyor...',
+      updatingQuiz: 'Quiz güncelleniyor...',
       room: {
         roomTitle: {
           label: 'Quiz başlığı',
@@ -474,10 +499,25 @@ export default {
           action: 'Soru ekle'
         },
         question: {
+          photoOrVideo: 'Fotoğraf/Video',
+          addMedia: 'Medya ekle',
+          questionType: {
+            title: 'Soru tipi',
+            options: {
+              text: 'Metin',
+              media: 'Medya'
+            }
+          },
           label: 'Soru',
           placeholder: 'Soruyu yaz'
         },
         answer: {
+          answerType: {
+            title: 'Cevap tipi',
+            options: {
+              textField: 'Metin alanı'
+            }
+          },
           label: 'Cevap',
           placeholder: 'Cevapları virgül ile ayırabilirsin',
           error: {

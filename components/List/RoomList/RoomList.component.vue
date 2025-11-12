@@ -23,11 +23,11 @@
     List
       template(v-for="(room, index) in list.items")
         NuxtLink(
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
+          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
           :title="room.title"
-          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
+          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
         )
-          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })")
+          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
             template(#title)
               span.room-list-item__title {{ room.title }}
 
@@ -69,7 +69,7 @@
                 template(v-for="tag in room.tags")
                   Tag.room-list-item__tag(:key="tag.id" type="primary") {{ tag.title }}
 
-              span.room-list-item__id ID: {{ room.id }}
+              span.room-list-item__id ID: {{ room.roomId }}
 
               // Actions
               .room-list-item__actions(v-if="user && isOwner({ user: room.user })")
@@ -252,7 +252,7 @@ export default defineComponent({
     }
 
     const handleEditRoom = async ({ room }) => {
-      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: room.id } }))
+      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: room.roomId } }))
     }
 
     const handleDeleteRoom = async ({ room }) => {

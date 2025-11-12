@@ -65,25 +65,15 @@ export default defineComponent({
     const usersRooms = computed(() => store.getters['creator/rooms'])
     const usersRoomTotal = computed(() => store.getters['creator/roomTotal'])
 
-    const parseStoragedMyRooms = JSON.parse(window.localStorage.getItem('myRooms')) || []
-
-    const storagedMyRooms = computed(() => {
-      return parseStoragedMyRooms.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    })
-
     const rooms = computed(() => {
       if (context.$auth.loggedIn && context.$auth.user) {
         return usersRooms.value
-      } else {
-        return storagedMyRooms.value.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       }
     })
 
     const roomsTotal = computed(() => {
       if (context.$auth.loggedIn && context.$auth.user) {
         return usersRoomTotal.value
-      } else {
-        return storagedMyRooms.value.length
       }
     })
 

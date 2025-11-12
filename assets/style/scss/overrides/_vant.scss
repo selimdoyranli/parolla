@@ -107,3 +107,13 @@
 .van-notice-bar {
   border-radius: var(--border-radius-01) !important;
 }
+
+.van-switch:not(.van-switch--on) {
+  background-color: light-dark(#ccc, #666) !important;
+}
+
+.van-image-preview {
+  &__close-icon {
+    font-size: 42px !important;
+  }
+}

@@ -61,18 +61,63 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
           template(v-for="tag in form.tags")
             Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="removeTag(tag)") {{ tag }}
 
-    template(v-if="!$auth.loggedIn && !$auth.user")
-      small.creator-mode-compose-form__anonNotice
-        AppIcon(name="tabler:info-circle" :width="16" :height="16")
-        | Giriş yapmadığın için oluşturacağın odayı tekrar düzenleyemez ya da silemezsin.
-
     span.creator-mode-compose-form__fieldsTitle {{ $t('form.creatorModeCompose.qaSet') }}
     .creator-mode-compose-form__fields
       .compose-qa-list
         template(v-if="form.qaList && form.qaList.length > 0")
           // List
           .compose-qa-card(v-for="(item, index) in form.qaList")
+            Cell.creator-mode-compose-form__questionType
+              template(#title)
+                span {{ $t('form.creatorModeCompose.qa.question.questionType.title') }}
+              template(#right-icon)
+                RadioGroup.question-type-radio-group(v-model="form.qaList[index].questionType" direction="horizontal")
+                  Radio.question-type-radio(name="text")
+                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.text') }}
+                    template(#icon="{ props }")
+                      AppIcon.question-type-radio__icon(name="tabler:pencil")
+                  Radio.question-type-radio(name="media")
+                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.media') }}
+                    template(#icon="{ props }")
+                      AppIcon.question-type-radio__icon(name="tabler:photo")
+
+            Cell.media-list(v-if="item.questionType === 'media'")
+              template(#title)
+                span {{ $t('form.creatorModeCompose.qa.question.photoOrVideo') }}
+
+              template(v-if="(!item.media || item.media === null) && (!item.youtube || item.youtube === null)" #right-icon)
+                Button.compose-qa-card-add-media-button(
+                  type="secondary"
+                  plain
+                  native-type="button"
+                  round
+                  size="small"
+                  @click="handleAddMedia(index)"
+                )
+                  AppIcon.compose-qa-card-add-media-button__icon(name="tabler:upload")
+                  span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addMedia') }}
+
+              template(#label)
+                .media-thumbnail(v-if="item.media || item.youtube")
+                  template(v-if="item.youtube")
+                    iframe.media-thumbnail__youtube(:src="item.youtube.embedUrl" frameborder="0" allowfullscreen)
+                    Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
+                      AppIcon(name="tabler:x" :width="14" :height="14")
+
+                    Cell
+                      template(#title)
+                        span Video başlığı görünsün mü? {{ item.youtube.titleIsVisible }}
+                      template(#label)
+                        span Seçimine göre oyuncuya cevaplarken başlık görünür ya da görünmez
+                      template(#right-icon)
+                        VanSwitch(v-model="item.youtube.titleIsVisible" :size="24")
+                  template(v-else-if="item.media")
+                    img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
+                    Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
+                      AppIcon(name="tabler:x" :width="14" :height="14")
+
             Field.creator-mode-compose-form__questionField(
+              v-if="item.questionType === 'text'"
               v-model="item.question"
               name="question"
               :label="$t('form.creatorModeCompose.qa.question.label')"
@@ -84,6 +129,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
               :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.question.label') }) }]"
             )
             Field.creator-mode-compose-form__answerField(
+              v-model="item.answer"
               name="answer"
               :label="$t('form.creatorModeCompose.qa.answer.label')"
               :placeholder="$t('form.creatorModeCompose.qa.answer.label')"
@@ -101,17 +147,6 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                   maxlength="120"
                   @input="e => getCharacter(e.target.value, { item, index })"
                 )
-            Field.creator-mode-compose-form__characterField(
-              v-model="item.character"
-              name="character"
-              :label="$t('form.creatorModeCompose.qa.character.label')"
-              :placeholder="$t('form.creatorModeCompose.qa.character.placeholder')"
-              maxlength="1"
-              readonly
-              disabled
-              :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.character.label') }) }]"
-              @input="validateAnswer({ item, index })"
-            )
 
             .compose-qa-card__actions
               template(v-if="form.qaList && form.qaList.length > 1")
@@ -162,17 +197,6 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
           @click="addItem"
         ) {{ $t('form.creatorModeCompose.qa.addMoreQuestion') }}
 
-        Button(
-          v-if="form.qaList && form.qaList.length > 1 && room === null"
-          type="warning"
-          plain
-          native-type="button"
-          round
-          :loading="form.isBusy"
-          :disabled="form.isBusy"
-          @click="handleClickDeleteDraft"
-        ) {{ $t('form.creatorModeCompose.deleteDraft.action') }}
-
         p.creator-mode-compose-form__termsDescription(v-if="form.qaList && form.qaList.length > 0")
           | {{ $t('form.creatorModeCompose.termsDescription') }}
 
@@ -191,23 +215,29 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
       template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
       template(v-else) {{ $t('form.creatorModeCompose.submit') }}
 
+  small {{ form }}
+
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
+    :title="room ? $t('dialog.createdRoom.quizUpdated') : $t('dialog.createdRoom.title')"
     :confirmButtonText="$t('dialog.createdRoom.joinRoom')"
     :room="createdRoom"
-    @onConfirm="handleConfirmRoomDialog"
-    @closed="handleCloseRoomDialog"
+    @onConfirm="handleConfirmCreatedRoomDialog"
+    @onCancel="handleCancelCreatedRoomDialog"
+    @closed="handleCloseCreatedRoomDialog"
   )
+
+  MediaUploadDialog(:isOpen="dialog.mediaUpload.isOpen" @closed="handleCloseMediaUploadDialog")
 
   // Ad
   AppAd.my-base.pt-base(:data-ad-slot="6048083070")
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, useStore, reactive, set, watch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, useStore, ref, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX } from '@/system/constant'
 import { roomTransformer } from '@/transformers'
-import { Form, Field, Cell, Switch, Button, Empty, Notify, Dialog, Tag } from 'vant'
+import { Form, Field, Cell, Switch, Button, Empty, Notify, Dialog, Tag, Tabs, Tab, NoticeBar, RadioGroup, Radio, Toast } from 'vant'
 
 export default defineComponent({
   components: {
@@ -218,7 +248,12 @@ export default defineComponent({
     Button,
     Empty,
     Dialog,
-    Tag
+    Tag,
+    Tabs,
+    Tab,
+    NoticeBar,
+    RadioGroup,
+    Radio
   },
   props: {
     room: {
@@ -241,23 +276,28 @@ export default defineComponent({
     const form = reactive({
       isBusy: false,
       isClear: false,
-      roomTitle: '',
-      isListed: false,
-      isAnon: false,
+      roomTitle: props.room?.title || '',
+      isListed: props.room?.isListed || false,
+      isAnon: props.room?.isAnon || false,
       tag: '',
-      tags: [],
-      qaList: []
+      tags: props.room?.tags.map(tag => tag.title) || [],
+      qaList: props.room?.questions || [],
+      mediaList: []
     })
 
     const createdRoom = reactive({
       title: '',
-      id: '',
+      roomId: '',
       isListed: form.isListed
     })
 
     const dialog = reactive({
       room: {
         isOpen: false
+      },
+      mediaUpload: {
+        isOpen: false,
+        currentQaIndex: null
       }
     })
 
@@ -285,30 +325,62 @@ export default defineComponent({
     const addItem = () => {
       form.qaList.push({
         character: '',
+        questionType: 'text',
         question: '',
+        answerType: 'textField',
         answer: '',
-        isMatched: null
+        isMatched: null,
+        media: null,
+        youtube: null
       })
     }
 
     const removeItem = index => {
       form.qaList.splice(index, 1)
+      // Update mediaList for removed question
+      updateMediaListForRemovedQuestion(index)
     }
 
     const moveUp = index => {
-      const temp = form.qaList[index]
-      set(form.qaList, index, form.qaList[index - 1])
-      set(form.qaList, index - 1, temp)
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index - 1, 0, item)
+
+      // Update mediaList for swapped questions
+      updateMediaListForSwappedQuestions(index - 1, index)
     }
 
     const moveDown = index => {
-      const temp = form.qaList[index]
-      set(form.qaList, index, form.qaList[index + 1])
-      set(form.qaList, index + 1, temp)
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index + 1, 0, item)
+
+      // Update mediaList for swapped questions
+      updateMediaListForSwappedQuestions(index, index + 1)
     }
 
     const disableMoveUp = index => index === 0
     const disableMoveDown = index => index === form.qaList.length - 1
+
+    const updateMediaListForRemovedQuestion = removedIndex => {
+      // Remove media item at the specified index
+      form.mediaList = form.mediaList.filter(media => media.questionIndex !== removedIndex)
+      // Update questionIndex for remaining media items that were after the removed index
+      form.mediaList.forEach(media => {
+        if (media.questionIndex > removedIndex) {
+          media.questionIndex--
+        }
+      })
+    }
+
+    const updateMediaListForSwappedQuestions = (index1, index2) => {
+      // Swap questionIndex values for media items at the specified indices
+      form.mediaList.forEach(media => {
+        if (media.questionIndex === index1) {
+          media.questionIndex = index2
+        } else if (media.questionIndex === index2) {
+          media.questionIndex = index1
+        }
+      })
+    }
 
     const formatAnswerField = value => {
       const formattedValue = value.startsWith(' ') ? '' : value
@@ -374,6 +446,85 @@ export default defineComponent({
       }
     }
 
+    const handleAddMedia = qaIndex => {
+      dialog.mediaUpload.currentQaIndex = qaIndex
+      dialog.mediaUpload.isOpen = true
+    }
+
+    const handleCloseMediaUploadDialog = fileList => {
+      if (fileList && fileList.length > 0 && dialog.mediaUpload.currentQaIndex !== null) {
+        const selectedMedia = fileList[0]
+
+        if (selectedMedia) {
+          // Handle YouTube video
+          if (selectedMedia.videoId) {
+            const youtubeData = {
+              videoId: selectedMedia.videoId,
+              url: selectedMedia.url,
+              embedUrl: selectedMedia.embedUrl,
+              titleIsVisible: false
+            }
+
+            form.qaList[dialog.mediaUpload.currentQaIndex].youtube = reactive({ ...youtubeData })
+          } else {
+            // Handle file upload
+            const mediaData = {
+              file: selectedMedia.file || selectedMedia,
+              url:
+                selectedMedia.url ||
+                (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
+            }
+
+            form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
+
+            if (mediaData.file && !selectedMedia.youtube) {
+              // Add to mediaList
+              form.mediaList.push({ ...mediaData, questionIndex: dialog.mediaUpload.currentQaIndex })
+            }
+          }
+        }
+      }
+
+      dialog.mediaUpload.isOpen = false
+      dialog.mediaUpload.currentQaIndex = null
+    }
+
+    const handleDeleteMedia = qaIndex => {
+      // Clear both media and youtube
+      form.qaList[qaIndex].media = null
+      form.qaList[qaIndex].youtube = null
+      // Remove from mediaList as well
+      form.mediaList = form.mediaList.filter(media => media.questionIndex !== qaIndex)
+    }
+
+    const getMediaSrc = media => {
+      if (!media) return ''
+
+      // If we have a direct URL, use it
+      if (media.url) return media.url
+
+      // If we have a file object, create object URL safely
+      if (media.file && typeof URL !== 'undefined' && URL.createObjectURL) {
+        try {
+          return URL.createObjectURL(media.file)
+        } catch (error) {
+          console.warn('Failed to create object URL for media:', error)
+
+          return ''
+        }
+      }
+
+      return ''
+    }
+
+    const getMediaAlt = media => {
+      if (!media) return 'Media'
+
+      if (media.file && media.file.name) return media.file.name
+
+      return 'Media'
+    }
+
     const handleFailed = errorInfo => {
       if (errorInfo && errorInfo.values.length > 0) {
         form.isClear = false
@@ -382,17 +533,35 @@ export default defineComponent({
       }
     }
 
-    const getErrorNotify = () => {
+    const getErrorNotify = error => {
       Notify({
-        message: i18n.t('form.creatorModeCompose.error.couldNotCreate'),
+        message: error
+          ? `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}. \n${error.error.message}`
+          : `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}.`,
         color: 'var(--color-text-04)',
         background: 'var(--color-danger-01)',
-        duration: 1000
+        duration: 3000
       })
+    }
+
+    const showCreatingRoomToast = () => {
+      Toast.loading({
+        className: 'toast-creating-quiz',
+        message: props.room ? i18n.t('form.creatorModeCompose.updatingQuiz') : i18n.t('form.creatorModeCompose.creatingQuiz'),
+        duration: 0,
+        forbidClick: true,
+        overlay: true,
+        closeOnClickOverlay: false
+      })
+    }
+
+    const clearCreatingRoomToast = () => {
+      Toast.clear()
     }
 
     const handleSubmit = async () => {
       form.isBusy = true
+      showCreatingRoomToast()
 
       const nonMatchedItems = form.qaList.filter(item => {
         return item.isMatched === false
@@ -404,6 +573,10 @@ export default defineComponent({
         form.isClear = true
       }
 
+      const resetMediaList = () => {
+        form.mediaList = []
+      }
+
       if (form.isClear) {
         const deviceInfo = await getDeviceInfo()
 
@@ -412,105 +585,104 @@ export default defineComponent({
           : await store.dispatch('creator/postRoom', { form, deviceInfo })
 
         if (data) {
-          const room = data.data
+          const room = roomTransformer(data.data)
 
           createdRoom.title = room.title
-          createdRoom.id = room.roomId
+          createdRoom.roomId = room.roomId
           createdRoom.isListed = form.isListed
 
-          dialog.room.isOpen = true
+          const mediaListItems = form.mediaList.map(media => media.file).filter(file => file != null)
 
-          let storagedMyRooms = JSON.parse(window.localStorage.getItem('myRooms'))
+          if (mediaListItems.length > 0) {
+            const { data: uploadedMediaListData, error: uploadedMediaListError } = await store.dispatch('creator/uploadQuizMedia', {
+              files: mediaListItems,
+              path: `quiz/${room.id}`,
+              ref: 'api::room.room',
+              refId: room.id,
+              field: 'mediaList'
+            })
 
-          if (storagedMyRooms && storagedMyRooms.length > 0) {
-            window.localStorage.setItem('myRooms', JSON.stringify([...storagedMyRooms, roomTransformer(room)]))
-          } else {
-            window.localStorage.setItem('myRooms', JSON.stringify([roomTransformer(room)]))
+            if (uploadedMediaListData) {
+              uploadedMediaListData.forEach((uploadedMedia, index) => {
+                // Use the original questionIndex to set media to the correct qaList item
+                const originalQuestionIndex = form.mediaList[index].questionIndex
+                form.qaList[originalQuestionIndex].media = uploadedMedia
+              })
+
+              await store.dispatch('creator/editRoom', { documentId: room.documentId, form, deviceInfo })
+              await resetMediaList()
+            }
+
+            if (uploadedMediaListError) {
+              const questionIndex = form.qaList.findIndex(item => {
+                return item?.media?.file?.name === uploadedMediaListError.details.file.originalFilename
+              })
+
+              getErrorNotify({
+                error: {
+                  ...uploadedMediaListError,
+                  message:
+                    questionIndex !== -1
+                      ? `${questionIndex + 1}. ${i18n.t('general.question')}: ${uploadedMediaListError.message}`
+                      : uploadedMediaListError.message
+                }
+              })
+
+              setTimeout(() => {
+                dialog.room.isOpen = false
+              }, 1)
+            }
           }
+
+          dialog.room.isOpen = true
         }
 
         if (error) {
-          getErrorNotify()
+          getErrorNotify({ error })
         }
       } else {
         getErrorNotify()
       }
 
       form.isBusy = false
+      clearCreatingRoomToast()
     }
 
-    const resetForm = () => {
-      form.roomTitle = ''
-      form.isListed = false
-      form.isAnon = false
-      form.qaList = []
-      form.tags = []
+    const handleBeforeUnload = e => {
+      const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.tags.length > 0
+
+      if (hasContent) {
+        e.preventDefault()
+        e.returnValue = ''
+
+        return ''
+      }
     }
 
-    const handleClickDeleteDraft = () => {
-      Dialog.confirm({
-        title: i18n.t('form.creatorModeCompose.deleteDraft.confirm.title'),
-        message: i18n.t('form.creatorModeCompose.deleteDraft.confirm.description'),
-        cancelButtonText: i18n.t('form.creatorModeCompose.deleteDraft.confirm.cancel'),
-        confirmButtonText: i18n.t('form.creatorModeCompose.deleteDraft.confirm.confirm')
-      }).then(() => {
-        deleteDraft()
-      })
-    }
-
-    const saveDraft = () => {
-      window.localStorage.setItem('creatorFormDraft', JSON.stringify(form))
-    }
-
-    const storagedForm = JSON.parse(window.localStorage.getItem('creatorFormDraft'))
-
-    if (storagedForm && props.room === null) {
-      form.roomTitle = storagedForm.roomTitle
-      form.isListed = storagedForm.isListed
-      form.isAnon = storagedForm.isAnon
-      form.qaList = storagedForm.qaList
-      form.tags = storagedForm.tags
-    }
-
-    const deleteDraft = () => {
-      window.localStorage.removeItem('creatorFormDraft')
-      resetForm()
-    }
-
-    const setForm = value => {
-      form.roomTitle = value.title
-      form.isListed = value.isListed
-      form.isAnon = value.isAnon
-      form.qaList = value.questions
-      form.tags = value.tags.map(tag => tag.title)
-    }
-
-    if (props.room) {
-      setForm(props.room)
-    }
-
-    watch(props.room, value => {
-      setForm(value)
+    onMounted(() => {
+      window.addEventListener('beforeunload', handleBeforeUnload)
     })
 
-    const handleConfirmRoomDialog = () => {
+    onUnmounted(() => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    })
+
+    const handleConfirmCreatedRoomDialog = () => {
       router.push(
         localePath({
           name: 'CreatorMode-CreatorModeRoom-slug',
-          params: { slug: createdRoom.id }
+          params: { slug: createdRoom.roomId }
         })
       )
     }
 
-    const handleCloseRoomDialog = () => {
-      dialog.room.isOpen = false
+    const handleCancelCreatedRoomDialog = () => {
+      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: createdRoom.roomId } }))
     }
 
-    watch(form, value => {
-      if (value.qaList && value.qaList.length > 0) {
-        saveDraft()
-      }
-    })
+    const handleCloseCreatedRoomDialog = () => {
+      dialog.room.isOpen = false
+    }
 
     return {
       user,
@@ -527,15 +699,18 @@ export default defineComponent({
       formatAnswerField,
       getCharacter,
       validateAnswer,
+      handleAddMedia,
+      handleCloseMediaUploadDialog,
+      handleDeleteMedia,
+      getMediaSrc,
+      getMediaAlt,
       handleFailed,
       handleSubmit,
-      handleClickDeleteDraft,
-      saveDraft,
-      deleteDraft,
       createdRoom,
       dialog,
-      handleConfirmRoomDialog,
-      handleCloseRoomDialog
+      handleConfirmCreatedRoomDialog,
+      handleCancelCreatedRoomDialog,
+      handleCloseCreatedRoomDialog
     }
   }
 })

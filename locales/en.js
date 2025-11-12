@@ -12,7 +12,12 @@ export default {
     tryAgain: 'Try again',
     goToHome: 'Go to home',
     unAuthorized: 'Unauthorized access',
-    loginRequired: 'Login required'
+    loginRequired: 'Login required',
+    mediaError: {
+      uploadFailed: 'Media upload failed',
+      limitExceeded: 'Media size limit exceeded',
+      mimeTypeNotAllowed: 'Media mime type not allowed'
+    }
   },
   success: {
     success: 'Success'
@@ -191,14 +196,32 @@ export default {
     },
     createdRoom: {
       title: 'Quiz created',
+      quizUpdated: 'Quiz updated',
       joinRoom: 'Join quiz',
-      isListedMessage: `Your quiz {isListed} has been created. If you published with the wrong option, you can close this window, edit, and send it again.`,
+      isListedMessage: `Your quiz {isListed} has been created.`,
       public: '<strong>WILL APPEAR IN QUIZ LIST</strong>',
       private: '<strong>PRIVATE</strong>',
       copyUrl: {
         callback: {
           success: 'Copied quiz URL'
         }
+      }
+    },
+    mediaUpload: {
+      title: 'Upload media',
+      uploadArea: {
+        description: 'Select file or drag and drop'
+      },
+      selectFile: 'Select file',
+      selectPhotoOrVideo: 'Select photo or video',
+      tabs: {
+        file: 'File',
+        youtube: 'YouTube'
+      },
+      youtubeUrl: {
+        label: 'URL',
+        placeholder: 'https://www.youtube.com/watch?v=...',
+        error: 'Enter a valid YouTube URL'
       }
     },
     howToPlay: {
@@ -445,6 +468,8 @@ export default {
       title: 'CREATE A QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
+      creatingQuiz: 'Creating quiz...',
+      updatingQuiz: 'Updating quiz...',
       clearForm: 'Clear Form',
       room: {
         roomTitle: {
@@ -468,10 +493,25 @@ export default {
           action: 'Add questions'
         },
         question: {
+          photoOrVideo: 'Photo/Video',
+          addMedia: 'Add media',
+          questionType: {
+            title: 'Question type',
+            options: {
+              text: 'Text',
+              media: 'Media'
+            }
+          },
           label: 'Question',
           placeholder: 'Type question'
         },
         answer: {
+          answerType: {
+            title: 'Answer type',
+            options: {
+              textField: 'Text field'
+            }
+          },
           label: 'Answer',
           placeholder: 'You can separate the answers with commas',
           error: {
