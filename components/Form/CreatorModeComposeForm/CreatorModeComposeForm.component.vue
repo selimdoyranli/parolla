@@ -104,13 +104,6 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                     Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
                       AppIcon(name="tabler:x" :width="14" :height="14")
 
-                    Cell
-                      template(#title)
-                        span Video başlığı görünsün mü? {{ item.youtube.titleIsVisible }}
-                      template(#label)
-                        span Seçimine göre oyuncuya cevaplarken başlık görünür ya da görünmez
-                      template(#right-icon)
-                        VanSwitch(v-model="item.youtube.titleIsVisible" :size="24")
                   template(v-else-if="item.media")
                     img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
                     Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
@@ -226,8 +219,6 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
     )
       template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
       template(v-else) {{ $t('form.creatorModeCompose.submit') }}
-
-  small {{ form }}
 
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
@@ -474,8 +465,7 @@ export default defineComponent({
             const youtubeData = {
               videoId: selectedMedia.videoId,
               url: selectedMedia.url,
-              embedUrl: selectedMedia.embedUrl,
-              titleIsVisible: false
+              embedUrl: selectedMedia.embedUrl
             }
 
             form.qaList[dialog.mediaUpload.currentQaIndex].youtube = reactive({ ...youtubeData })

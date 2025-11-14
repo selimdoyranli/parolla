@@ -465,6 +465,8 @@
               margin: 0;
               font-size: var(--font-size-text-3);
               font-variant-numeric: tabular-nums;
+              user-select: none;
+              pointer-events: none;
             }
 
             &__spinner {

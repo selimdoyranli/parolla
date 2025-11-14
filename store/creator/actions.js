@@ -17,7 +17,8 @@ export default {
             questionType: item.questionType,
             question: item.question,
             answerType: item.answerType,
-            answer: item.answer
+            answer: item.answer,
+            ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
 
           if (item.media?.file) {
@@ -73,7 +74,8 @@ export default {
             questionType: item.questionType,
             question: item.question,
             answerType: item.answerType,
-            answer: item.answer
+            answer: item.answer,
+            ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
 
           if (item.media?.file) {

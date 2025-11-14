@@ -2,6 +2,7 @@
 .how-to-play-creator-mode-content
   i18n(tag="p" path="dialog.howToPlay.body")
     template(#description)
+      h3 {{ room.title }}
       div(v-html="$t('dialog.howToPlay.description')")
     template(#extra)
       <br>
@@ -23,9 +24,11 @@ export default defineComponent({
   setup() {
     const store = useStore()
 
+    const room = computed(() => store.getters['creator/room'])
     const alphabet = computed(() => store.getters['creator/alphabet'])
 
     return {
+      room,
       alphabet
     }
   }
