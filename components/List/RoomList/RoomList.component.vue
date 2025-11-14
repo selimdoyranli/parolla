@@ -105,7 +105,7 @@
 <script>
 import { defineComponent, useContext, useRouter, useStore, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { useDebounceFn } from '@vueuse/core'
-import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag } from 'vant'
+import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 import StarRating from 'vue-star-rating'
 
@@ -121,7 +121,8 @@ export default defineComponent({
     StarRating,
     Dialog,
     Notify,
-    Tag
+    Tag,
+    Toast
   },
   props: {
     items: {
@@ -165,6 +166,7 @@ export default defineComponent({
 
     const handleInfiniteLoading = async $state => {
       const { data, error } = await store.dispatch('creator/fetchRooms', {
+        isVisible: true,
         isLoadMore: true,
         page: pagination.value.page + 1,
         keyword: form.search.keyword,
@@ -224,6 +226,7 @@ export default defineComponent({
           }
 
           await store.dispatch('creator/fetchRooms', {
+            isVisible: true,
             keyword: form.search.keyword,
             user: props.user?.id
           })
@@ -267,6 +270,14 @@ export default defineComponent({
     }
 
     const deleteRoom = async ({ documentId }) => {
+      Toast.loading({
+        message: i18n.t('creatorModeMyRooms.delete.deleting'),
+        duration: 0,
+        forbidClick: true,
+        overlay: true,
+        closeOnClickOverlay: false
+      })
+
       const { data, error } = await store.dispatch('creator/deleteRoom', { documentId })
 
       if (data) {
@@ -274,7 +285,7 @@ export default defineComponent({
           message: i18n.t('creatorModeMyRooms.delete.callback.success'),
           color: 'var(--color-text-04)',
           background: 'var(--color-success-01)',
-          duration: 1000
+          duration: 3000
         })
 
         list.items = list.items.filter(room => room.documentId !== documentId)
@@ -290,6 +301,8 @@ export default defineComponent({
           duration: 1000
         })
       }
+
+      Toast.clear()
     }
 
     const searchFieldPlaceholder = computed(() => {

@@ -69,6 +69,7 @@ export default defineComponent({
     const { fetch, fetchState } = useFetch(async () => {
       await store.dispatch('creator/fetchRooms', {
         tags: route.value.query.tags ? route.value.query.tags.split(',') : [],
+        isVisible: true,
         isLoadMore: false
       })
     })
@@ -177,6 +178,7 @@ export default defineComponent({
 
       await store.dispatch('creator/fetchRooms', {
         tags: _tags,
+        isVisible: true,
         isLoadMore: false
       })
     }

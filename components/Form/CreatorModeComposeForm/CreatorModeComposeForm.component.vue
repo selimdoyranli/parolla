@@ -548,9 +548,7 @@ export default defineComponent({
 
     const getErrorNotify = error => {
       Notify({
-        message: error
-          ? `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}. \n${error.error.message}`
-          : `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}.`,
+        message: error ? `${error.error.message}` : `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}.`,
         color: 'var(--color-text-04)',
         background: 'var(--color-danger-01)',
         duration: 3000
@@ -593,9 +591,24 @@ export default defineComponent({
       if (form.isClear) {
         const deviceInfo = await getDeviceInfo()
 
+        /**
+         * If the quiz has media, set the visibility to false, set to true after media is uploaded successfully
+         */
+        const getQuizVisibility = () => {
+          if (form.qaList.some(item => item.media)) {
+            return false
+          } else {
+            return true
+          }
+        }
+
         const { data, error } = props.room
-          ? await store.dispatch('creator/editRoom', { documentId: props.room.documentId, form, deviceInfo })
-          : await store.dispatch('creator/postRoom', { form, deviceInfo })
+          ? await store.dispatch('creator/editRoom', {
+              documentId: props.room.documentId,
+              form: { ...form, isVisible: getQuizVisibility() },
+              deviceInfo
+            })
+          : await store.dispatch('creator/postRoom', { form: { ...form, isVisible: getQuizVisibility() }, deviceInfo })
 
         if (data) {
           const room = roomTransformer(data.data)
@@ -622,22 +635,23 @@ export default defineComponent({
                 form.qaList[originalQuestionIndex].media = uploadedMedia
               })
 
-              await store.dispatch('creator/editRoom', { documentId: room.documentId, form, deviceInfo })
+              await store.dispatch('creator/editRoom', { documentId: room.documentId, form: { ...form, isVisible: true }, deviceInfo })
               await resetMediaList()
             }
 
             if (uploadedMediaListError) {
               const questionIndex = form.qaList.findIndex(item => {
-                return item?.media?.file?.name === uploadedMediaListError.details.file.originalFilename
+                return item?.media?.file?.name === uploadedMediaListError.details?.file?.originalFilename
               })
 
               getErrorNotify({
                 error: {
                   ...uploadedMediaListError,
-                  message:
+                  message: `Medya yüklenirken hata oldu \n ${
                     questionIndex !== -1
                       ? `${questionIndex + 1}. ${i18n.t('general.question')}: ${uploadedMediaListError.message}`
                       : uploadedMediaListError.message
+                  }`
                 }
               })
 

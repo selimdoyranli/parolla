@@ -462,6 +462,7 @@ export default {
       nonAuthed: '* Son oluşturduğun quizler tarayıcı belleğine kaydedilir, tarayıcı verileri sıfırlandığında bu liste temizlenir'
     },
     delete: {
+      deleting: 'Quiz siliniyor...',
       callback: {
         success: 'Quiz silindi'
       }

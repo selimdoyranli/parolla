@@ -456,6 +456,7 @@ export default {
       nonAuthed: 'Your recently created quizzes are saved in the browser storage, this list will be cleared when the browser data is reset'
     },
     delete: {
+      deleting: 'Deleting quiz...',
       callback: {
         success: 'Quiz deleted'
       }

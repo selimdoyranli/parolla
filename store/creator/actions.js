@@ -7,10 +7,10 @@ export default {
     const transform = form => {
       return {
         user: this.$auth.user?.id,
-        title: form.roomTitle,
+        isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
-        roomTags: form.tags,
+        title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
             character: item.character,
@@ -32,6 +32,7 @@ export default {
 
           return qaItem
         }),
+        roomTags: form.tags,
         deviceInfo
       }
     }
@@ -62,10 +63,10 @@ export default {
     const transform = form => {
       return {
         user: this.$auth.user?.id,
-        title: form.roomTitle,
+        isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
-        roomTags: form.tags,
+        title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
             character: item.character,
@@ -87,6 +88,7 @@ export default {
 
           return qaItem
         }),
+        roomTags: form.tags,
         deviceInfo
       }
     }
@@ -161,7 +163,7 @@ export default {
   },
 
   async fetchRooms({ commit, state }, params) {
-    const { isLoadMore = false, page, limit, keyword, tags, user, locale } = params
+    const { isVisible, isLoadMore = false, page, limit, keyword, tags, user, locale } = params
 
     const getSort = _sort => {
       if (_sort === 'oldest') {
@@ -176,6 +178,7 @@ export default {
     }
 
     const queryDefault = {
+      isVisible: null,
       page: 1,
       perPage: 10,
       search: '',
@@ -187,12 +190,17 @@ export default {
     }
 
     const query = {
+      'filters[isVisible][$eq]': isVisible || queryDefault.isVisible,
       'pagination[page]': page || queryDefault.page,
       'pagination[pageSize]': limit || queryDefault.perPage,
       sort: getSort(state.room.sort) || queryDefault.sort,
       'populate[user][populate]': 'diceBear',
       populate: 'roomTags',
       locale: locale || queryDefault.locale
+    }
+
+    if (isVisible) {
+      query['filters[isVisible][$eq]'] = isVisible
     }
 
     // Check if keyword contains # to search in roomTags instead of title
