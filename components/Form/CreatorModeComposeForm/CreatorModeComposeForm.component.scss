@@ -21,6 +21,23 @@
     border-radius: var(--border-radius-01);
   }
 
+  &__fields,
+  .media-upload-dialog {
+    .van-field {
+      flex-direction: column;
+
+      &__label {
+        margin-block-end: $spacer * 2;
+      }
+
+      &__control:not(.van-field__control--custom) {
+        padding: $spacer * 2 $spacer * 4 !important;
+        border: 1px solid var(--color-border-02) !important;
+        border-radius: calc(var(--border-radius-01) / 2) !important;
+      }
+    }
+  }
+
   &__fieldsTitle {
     position: relative;
     display: block;
@@ -33,20 +50,6 @@
     text-align: left;
 
     @include font-weight-semi-bold;
-  }
-
-  .van-field {
-    flex-direction: column;
-
-    &__label {
-      margin-block-end: $spacer * 2;
-    }
-
-    &__control:not(.van-field__control--custom) {
-      padding: $spacer * 2 $spacer * 4 !important;
-      border: 1px solid var(--color-border-02) !important;
-      border-radius: calc(var(--border-radius-01) / 2) !important;
-    }
   }
 
   .creator-mode-compose-form__roomTag {
