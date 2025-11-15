@@ -3,7 +3,8 @@
 
   &__title {
     position: relative;
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     max-width: 100%;
     color: var(--color-text-01);
@@ -13,6 +14,20 @@
     text-align: center;
 
     @include font-weight-bold;
+  }
+
+  &__draftTag {
+    padding: $spacer $spacer * 2;
+    color: var(--color-warning-01);
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-text-10);
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 1px solid var(--color-warning-01);
+    border-radius: calc(var(--border-radius-01) / 2);
+    margin-inline-start: $spacer * 4;
   }
 
   &__fields {
@@ -75,6 +90,15 @@
     }
   }
 
+  &__saveDraftButton {
+    padding: $spacer $spacer * 2;
+    color: var(--color-text-03);
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-text-10);
+    background-color: transparent !important;
+    border: 1px solid var(--color-border-02);
+  }
+
   .compose-qa-list {
     position: relative;
 
@@ -86,8 +110,10 @@
 
     &__submitButton {
       display: block;
-      margin-top: var(--base-m-y);
-      margin-left: auto;
+      margin-inline-start: auto;
+      background-color: rgb(5, 90, 5);
+
+      @include font-weight-medium;
     }
   }
 

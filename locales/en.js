@@ -52,7 +52,8 @@ export default {
     play: 'Play',
     joined: 'Joined',
     anon: 'anonym',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    draft: 'Draft'
   },
   auth: {
     google: {
@@ -538,19 +539,7 @@ export default {
       saveDraft: {
         action: 'Save draft',
         callback: {
-          success: 'Saving for later, when it comes back it will be the same form'
-        }
-      },
-      deleteDraft: {
-        action: 'Clear saved form',
-        confirm: {
-          title: 'Sure?',
-          description: 'You are clearing the form, what you see on the form now will be deleted',
-          confirm: 'Clear',
-          cancel: 'Cancel'
-        },
-        callback: {
-          success: 'Cleared saved form'
+          success: 'Saved as draft'
         }
       },
       termsDescription:

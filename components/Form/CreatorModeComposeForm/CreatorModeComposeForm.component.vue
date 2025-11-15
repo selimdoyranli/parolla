@@ -1,7 +1,9 @@
 <template lang="pug">
-Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
+Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="onFormFailed" @submit="onFormSubmit")
   span.creator-mode-compose-form__title(align="center")
-    template(v-if="room") {{ $t('form.creatorModeEdit.title') }}
+    template(v-if="room")
+      | {{ $t('form.creatorModeEdit.title') }}
+      Tag.creator-mode-compose-form__draftTag(v-if="form.isDraft" type="warning") {{ $t('general.draft') }}
     template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   template
@@ -199,20 +201,30 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
         p.creator-mode-compose-form__termsDescription(v-if="form.qaList && form.qaList.length > 0")
           | {{ $t('form.creatorModeCompose.termsDescription') }}
 
-    // Save list button
-    Button.compose-qa-list__submitButton(
-      v-if="form.qaList && form.qaList.length > 0"
-      type="primary"
-      icon="success"
-      plain
-      native-type="button"
-      round
-      :loading="form.isBusy"
-      :disabled="form.isBusy"
-      @click="handleSubmit"
-    )
-      template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
-      template(v-else) {{ $t('form.creatorModeCompose.submit') }}
+    .d-flex.align-items-center.mt-base
+      // Save draft button
+      Button.creator-mode-compose-form__saveDraftButton(
+        v-if="isVisibleSaveDraftButton"
+        plain
+        native-type="button"
+        round
+        size="small"
+        @click="saveAsDraft"
+      )
+        | {{ $t('form.creatorModeCompose.saveDraft.action') }}
+
+      // Submit button
+      Button.compose-qa-list__submitButton(
+        v-if="form.qaList && form.qaList.length > 0"
+        type="primary"
+        icon="success"
+        native-type="submit"
+        round
+        :loading="form.isBusy"
+        :disabled="form.isBusy"
+      )
+        template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
+        template(v-else) {{ $t('form.creatorModeCompose.submit') }}
 
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
@@ -277,8 +289,9 @@ export default defineComponent({
     const user = computed(() => store.getters['auth/user'])
 
     const form = reactive({
+      isDraft: props.room?.isVisible ? false : true,
       isBusy: false,
-      isClear: false,
+      isClear: true,
       roomTitle: props.room?.title || '',
       isListed: props.room?.isListed || false,
       isAnon: props.room?.isAnon || false,
@@ -514,12 +527,16 @@ export default defineComponent({
       return 'Media'
     }
 
-    const handleFailed = errorInfo => {
-      if (errorInfo && errorInfo.values.length > 0) {
+    const onFormFailed = async errorInfo => {
+      if (errorInfo && errorInfo.errors.length > 0) {
         form.isClear = false
       } else {
         form.isClear = true
       }
+    }
+
+    const onFormSubmit = async () => {
+      await handleSubmit({ isDraft: false })
     }
 
     const getErrorNotify = error => {
@@ -546,7 +563,7 @@ export default defineComponent({
       Toast.clear()
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async ({ isDraft = false }) => {
       form.isBusy = true
       showCreatingRoomToast()
 
@@ -571,10 +588,14 @@ export default defineComponent({
          * If the quiz has media, set the visibility to false, set to true after media is uploaded successfully
          */
         const getQuizVisibility = () => {
-          if (form.mediaList.length > 0) {
+          if (isDraft) {
             return false
           } else {
-            return true
+            if (form.mediaList.length > 0) {
+              return false
+            } else {
+              return true
+            }
           }
         }
 
@@ -588,6 +609,11 @@ export default defineComponent({
 
         if (data) {
           const room = roomTransformer(data.data)
+
+          if (room.isVisible) {
+            form.isDraft = false
+            document.querySelector('.creator-mode-compose-form__saveDraftButton').classList.add('d-none')
+          }
 
           createdRoom.title = room.title
           createdRoom.roomId = room.roomId
@@ -611,7 +637,11 @@ export default defineComponent({
                 form.qaList[originalQuestionIndex].media = uploadedMedia
               })
 
-              await store.dispatch('creator/editRoom', { documentId: room.documentId, form: { ...form, isVisible: true }, deviceInfo })
+              await store.dispatch('creator/editRoom', {
+                documentId: room.documentId,
+                form: { ...form, isVisible: isDraft ? false : true },
+                deviceInfo
+              })
               await resetMediaList()
             }
 
@@ -650,6 +680,14 @@ export default defineComponent({
       form.isBusy = false
       clearCreatingRoomToast()
     }
+
+    const saveAsDraft = async () => {
+      await handleSubmit({ isDraft: true })
+    }
+
+    const isVisibleSaveDraftButton = computed(() => {
+      return form.qaList && form.qaList.length > 0 && (!props.room || (props.room && !props.room.isVisible))
+    })
 
     const handleBeforeUnload = e => {
       const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.tags.length > 0
@@ -709,8 +747,11 @@ export default defineComponent({
       handleDeleteMedia,
       getMediaSrc,
       getMediaAlt,
-      handleFailed,
+      onFormFailed,
+      onFormSubmit,
       handleSubmit,
+      saveAsDraft,
+      isVisibleSaveDraftButton,
       createdRoom,
       dialog,
       handleConfirmCreatedRoomDialog,

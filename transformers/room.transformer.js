@@ -7,6 +7,7 @@ export default model => {
     updatedAt: model.updatedAt,
     publishedAt: model.publishedAt,
     title: model.title,
+    isVisible: model.isVisible,
     isListed: model.isPublic,
     isAnon: model.isAnon,
     questionCount: model.questionCount,

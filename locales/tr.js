@@ -52,7 +52,8 @@ export default {
     play: 'Oyna',
     joined: 'Katıldı',
     anon: 'anonim',
-    refresh: 'Tazele'
+    refresh: 'Tazele',
+    draft: 'Taslak'
   },
   auth: {
     google: {
@@ -544,19 +545,7 @@ export default {
       saveDraft: {
         action: 'Taslak kaydet',
         callback: {
-          success: 'Sonrası için kaydediliyor, geri döndüğünde aynı form olacak'
-        }
-      },
-      deleteDraft: {
-        action: 'Kayıtlı formu temizle',
-        confirm: {
-          title: 'Emin misin?',
-          description: 'Formu temizliyorsun şu anda formda gördüklerin silinecek',
-          confirm: 'Temizle',
-          cancel: 'Vazgeç'
-        },
-        callback: {
-          success: 'Kayıtlı form temizlendi'
+          success: 'Taslak olarak kaydedildi'
         }
       },
       termsDescription:

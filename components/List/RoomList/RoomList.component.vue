@@ -30,6 +30,7 @@
           Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
             template(#title)
               span.room-list-item__title {{ room.title }}
+                Tag.ms-2(v-if="user && !room.isVisible" type="warning") {{ $t('general.draft') }}
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
