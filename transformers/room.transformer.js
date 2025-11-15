@@ -16,6 +16,7 @@ export default model => {
     rating: model.rating,
     user: model.user,
     alphabet: model.alphabet,
+    hasMedia: model.hasMedia,
     questions: model.qaList,
     tags: model.roomTags
       ? model.roomTags.map(tag => {

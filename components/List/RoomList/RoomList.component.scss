@@ -59,14 +59,18 @@
       }
     }
 
-    &__title {
-      display: block;
-      margin-bottom: calc(var(--base-m-y) / 2);
-      padding-bottom: calc(var(--base-p-y) / 2);
-      color: var(--color-text-02);
-      font-size: var(--font-size-text-8);
+    &-title {
+      position: relative;
 
-      @include font-weight-semi-bold;
+      &__text {
+        display: block;
+        margin-bottom: calc(var(--base-m-y) / 2);
+        padding-bottom: calc(var(--base-p-y) / 2);
+        color: var(--color-text-02);
+        font-size: var(--font-size-text-8);
+
+        @include font-weight-semi-bold;
+      }
     }
 
     &__badges {
@@ -145,6 +149,26 @@
 
     &__tags {
       margin-block-end: 8px;
+    }
+
+    &-has-media-tag {
+      position: relative;
+      inset-block-start: -1px;
+      background-color: transparent;
+
+      &__galleryIcon {
+        margin-inline-end: $spacer * 2;
+
+        svg {
+          width: 20px !important;
+          height: 20px !important;
+        }
+      }
+
+      &__text {
+        color: var(--color-text-03);
+        font-size: var(--font-size-text-9);
+      }
     }
 
     &__tag {

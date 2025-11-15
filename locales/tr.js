@@ -53,7 +53,9 @@ export default {
     joined: 'Katıldı',
     anon: 'anonim',
     refresh: 'Tazele',
-    draft: 'Taslak'
+    draft: 'Taslak',
+    quiz: 'Quiz',
+    photoQuiz: 'Foto quiz'
   },
   auth: {
     google: {

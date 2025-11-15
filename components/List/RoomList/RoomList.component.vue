@@ -29,8 +29,9 @@
         )
           Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
             template(#title)
-              span.room-list-item__title {{ room.title }}
-                Tag.ms-2(v-if="user && !room.isVisible" type="warning") {{ $t('general.draft') }}
+              .room-list-item-title
+                span.room-list-item-title__text {{ room.title }}
+                  Tag.ms-2(v-if="user && !room.isVisible" type="warning") {{ $t('general.draft') }}
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
@@ -46,6 +47,11 @@
                     template(v-if="room.user") {{ room.user.username }}
                     template(v-else) {{ $t('general.anon') }}
 
+                .room-list-item-badge(v-if="room.hasMedia")
+                  Tag.room-list-item-has-media-tag
+                    AppIcon.room-list-item-has-media-tag__galleryIcon(v-if="room.hasMedia" name="streamline-flex-color:gallery-flat")
+                    span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
+
                 .room-list-item-badge(v-if="room.questionCount")
                   AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.questionCount }}
@@ -53,18 +59,6 @@
                 .room-list-item-badge(v-if="room.viewCount && room.viewCount > 0")
                   AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.viewCount }}
-
-                .room-list-item-badge.room-list-item-badge--rating(v-if="room.rating")
-                  StarRating(
-                    read-only
-                    inline
-                    :show-rating="false"
-                    :rating="room.rating"
-                    :increment="0.1"
-                    :rounded-corners="false"
-                    :star-size="14"
-                  )
-                  label {{ String(formatRating(room.rating)) }}
 
               .room-list-item__tags(v-if="room.tags && room.tags.length > 0")
                 template(v-for="tag in room.tags")
@@ -108,7 +102,6 @@ import { defineComponent, useContext, useRouter, useStore, reactive, computed, w
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
-import StarRating from 'vue-star-rating'
 
 export default defineComponent({
   components: {
@@ -119,7 +112,6 @@ export default defineComponent({
     Button,
     Empty,
     Loading,
-    StarRating,
     Dialog,
     Notify,
     Tag,
@@ -147,8 +139,6 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore()
     const { isOwner } = useAuth()
-
-    const { formatRating } = useFormatter()
 
     const pagination = computed(() => store.getters['creator/roomsPagination'])
 
@@ -316,7 +306,6 @@ export default defineComponent({
 
     return {
       isOwner,
-      formatRating,
       list,
       pagination,
       handleInfiniteLoading,

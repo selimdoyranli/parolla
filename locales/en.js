@@ -53,7 +53,9 @@ export default {
     joined: 'Joined',
     anon: 'anonym',
     refresh: 'Refresh',
-    draft: 'Draft'
+    draft: 'Draft',
+    quiz: 'Quiz',
+    photoQuiz: 'Photo quiz'
   },
   auth: {
     google: {
