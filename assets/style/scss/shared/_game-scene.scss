@@ -672,6 +672,21 @@
         left: 0;
       }
 
+      .answer__question {
+        img {
+          display: block;
+          max-width: 100%;
+          height: auto;
+          max-height: 25vh;
+          padding: $spacer * 2;
+          object-fit: scale-down;
+          border: 1px solid var(--color-border-02);
+          border-radius: var(--border-radius-01);
+          aspect-ratio: 16/9;
+          margin-block-start: $spacer * 2;
+        }
+      }
+
       &--correct {
         #{$van-cell} {
           &__title {
