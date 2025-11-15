@@ -1,7 +1,7 @@
 <template lang="pug">
 Dialog.dialog.media-upload-dialog(
   v-model="state.isOpen"
-  :title="$t('dialog.mediaUpload.title')"
+  :title="title || $t('dialog.mediaUpload.title')"
   :cancel-button-text="cancelButtonText || $t('general.ok')"
   :show-confirm-button="false"
   :show-cancel-button="true"
@@ -10,7 +10,7 @@ Dialog.dialog.media-upload-dialog(
   @opened="$emit('opened')"
 )
   Tabs(v-model="activeTab")
-    Tab(name="file" :title="$t('dialog.mediaUpload.tabs.file')")
+    Tab(v-if="activeMediaTypes.includes('file')" name="file" :title="$t('dialog.mediaUpload.tabs.file')")
       .uploader
         Uploader#media-uploader(
           v-model="fileList"
@@ -28,7 +28,7 @@ Dialog.dialog.media-upload-dialog(
           small(v-if="uploaderOptions?.maxSize || parollaConfig.upload.maxFileSize")
             | Max: {{ convertSize(uploaderOptions?.maxSize || parollaConfig.upload.maxFileSize, { unit: 'mb' }) }}
 
-    Tab(name="youtube" :title="$t('dialog.mediaUpload.tabs.youtube')")
+    Tab(v-if="activeMediaTypes.includes('youtube')" name="youtube" :title="$t('dialog.mediaUpload.tabs.youtube')")
       .youtube-uploader
         Field.youtube-url-field(
           v-model="youtubeUrl"
@@ -61,6 +61,11 @@ export default defineComponent({
       required: false,
       default: false
     },
+    title: {
+      type: String,
+      required: false,
+      default: null
+    },
     cancelButtonText: {
       type: String,
       required: false,
@@ -70,6 +75,11 @@ export default defineComponent({
       type: Object,
       required: false,
       default: null
+    },
+    activeMediaTypes: {
+      type: Array,
+      required: false,
+      default: () => ['file', 'youtube']
     }
   },
   setup(props, { emit }) {

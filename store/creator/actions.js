@@ -25,9 +25,7 @@ export default {
             qaItem.selectedMedia = item.media
           }
 
-          if (item.youtube) {
-            qaItem.youtube = item.youtube
-          } else if (item.media && item.media.id) {
+          if (item.media && item.media.id) {
             qaItem.media = item.media
           }
 
@@ -82,9 +80,7 @@ export default {
             qaItem.selectedMedia = item.media
           }
 
-          if (item.youtube) {
-            qaItem.youtube = item.youtube
-          } else if (item.media && item.media.id) {
+          if (item.media && item.media.id) {
             qaItem.media = item.media
           }
 

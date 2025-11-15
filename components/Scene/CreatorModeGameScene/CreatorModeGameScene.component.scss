@@ -12,7 +12,6 @@
 
   .question-media {
     --image-aspect-ratio: 1/1;
-    --youtube-aspect-ratio: 16/9;
 
     width: 100%;
 
@@ -20,16 +19,7 @@
       position: relative;
     }
 
-    &-youtube {
-      position: relative;
-    }
-
-    iframe {
-      aspect-ratio: var(--youtube-aspect-ratio) !important;
-    }
-
-    img,
-    iframe {
+    img {
       position: relative;
       display: block;
       width: 100%;

@@ -83,9 +83,9 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
 
             Cell.media-list(v-if="item.questionType === questionTypeEnum.MEDIA")
               template(#title)
-                span {{ $t('form.creatorModeCompose.qa.question.photoOrVideo') }}
+                span {{ $t('form.creatorModeCompose.qa.question.photo') }}
 
-              template(v-if="(!item.media || item.media === null) && (!item.youtube || item.youtube === null)" #right-icon)
+              template(v-if="!item.media || item.media === null" #right-icon)
                 Button.compose-qa-card-add-media-button(
                   type="secondary"
                   plain
@@ -94,20 +94,14 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                   size="small"
                   @click="handleAddMedia(index)"
                 )
-                  AppIcon.compose-qa-card-add-media-button__icon(name="tabler:upload")
-                  span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addMedia') }}
+                  AppIcon.compose-qa-card-add-media-button__icon(name="tabler:plus")
+                  span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addPhoto') }}
 
               template(#label)
-                .media-thumbnail(v-if="item.media || item.youtube")
-                  template(v-if="item.youtube")
-                    iframe.media-thumbnail__youtube(:src="item.youtube.embedUrl" frameborder="0" allowfullscreen)
-                    Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
-                      AppIcon(name="tabler:x" :width="14" :height="14")
-
-                  template(v-else-if="item.media")
-                    img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
-                    Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
-                      AppIcon(name="tabler:x" :width="14" :height="14")
+                .media-thumbnail(v-if="item.media")
+                  img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
+                  Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
+                    AppIcon(name="tabler:x" :width="14" :height="14")
 
                   Cell.creator-mode-compose-form-media-note
                     small.creator-mode-compose-form-media-note__description {{ $t('form.creatorModeCompose.qa.question.mediaNote.description') }}
@@ -230,14 +224,19 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
     @closed="handleCloseCreatedRoomDialog"
   )
 
-  MediaUploadDialog(:isOpen="dialog.mediaUpload.isOpen" @closed="handleCloseMediaUploadDialog")
+  MediaUploadDialog(
+    :title="$t('form.creatorModeCompose.qa.question.addPhoto')"
+    :isOpen="dialog.mediaUpload.isOpen"
+    :activeMediaTypes="['file']"
+    @closed="handleCloseMediaUploadDialog"
+  )
 
   // Ad
   AppAd.my-base.pt-base(:data-ad-slot="6048083070")
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, useStore, ref, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, useStore, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
@@ -334,8 +333,7 @@ export default defineComponent({
         answerType: answerTypeEnum.TEXT_FIELD,
         answer: '',
         isMatched: null,
-        media: null,
-        youtube: null
+        media: null
       })
     }
 
@@ -460,30 +458,19 @@ export default defineComponent({
         const selectedMedia = fileList[0]
 
         if (selectedMedia) {
-          // Handle YouTube video
-          if (selectedMedia.videoId) {
-            const youtubeData = {
-              videoId: selectedMedia.videoId,
-              url: selectedMedia.url,
-              embedUrl: selectedMedia.embedUrl
-            }
+          // Handle file upload
+          const mediaData = {
+            file: selectedMedia.file || selectedMedia,
+            url:
+              selectedMedia.url ||
+              (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
+          }
 
-            form.qaList[dialog.mediaUpload.currentQaIndex].youtube = reactive({ ...youtubeData })
-          } else {
-            // Handle file upload
-            const mediaData = {
-              file: selectedMedia.file || selectedMedia,
-              url:
-                selectedMedia.url ||
-                (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
-            }
+          form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
 
-            form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
-
-            if (mediaData.file && !selectedMedia.youtube) {
-              // Add to mediaList
-              form.mediaList.push({ ...mediaData, questionIndex: dialog.mediaUpload.currentQaIndex })
-            }
+          if (mediaData.file) {
+            // Add to mediaList
+            form.mediaList.push({ ...mediaData, questionIndex: dialog.mediaUpload.currentQaIndex })
           }
         }
       }
@@ -493,9 +480,8 @@ export default defineComponent({
     }
 
     const handleDeleteMedia = qaIndex => {
-      // Clear both media and youtube
+      // Clear media
       form.qaList[qaIndex].media = null
-      form.qaList[qaIndex].youtube = null
       // Remove from mediaList as well
       form.mediaList = form.mediaList.filter(media => media.questionIndex !== qaIndex)
     }

@@ -216,7 +216,7 @@ export default {
     mediaUpload: {
       title: 'Medya yükle',
       uploadArea: {
-        description: 'Dosya seç veya sürükleyip bırak'
+        description: 'Cihazından dosya seç veya sürükleyip bırak'
       },
       selectFile: 'Medya seç',
       selectPhotoOrVideo: 'Fotoğraf ya da video seç',
@@ -500,21 +500,25 @@ export default {
           action: 'Soru ekle'
         },
         question: {
+          photo: 'Fotoğraf',
+          video: 'Video',
           photoOrVideo: 'Fotoğraf/Video',
           addMedia: 'Medya ekle',
+          addPhoto: 'Fotoğraf ekle',
+          addVideo: 'Video ekle',
           questionType: {
             title: 'Soru tipi',
             options: {
               text: 'Metin',
-              media: 'Medya'
+              media: 'Fotoğraf'
             }
           },
           label: 'Soru',
           placeholder: 'Soruyu yaz',
           mediaNote: {
-            label: 'Medya notu',
-            placeholder: 'Medya notunu yaz (isteğe bağlı)',
-            description: 'Oyuncuya fotoğraf/video ile ilgili notun gösterilir'
+            label: 'Fotoğraf notu',
+            placeholder: 'Fotoğraf notunu yaz (isteğe bağlı)',
+            description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
           },
           removeQuestion: 'Soruyu kaldır'
         },

@@ -210,7 +210,7 @@ export default {
     mediaUpload: {
       title: 'Upload media',
       uploadArea: {
-        description: 'Select file or drag and drop'
+        description: 'Select file from your device or drag and drop'
       },
       selectFile: 'Select file',
       selectPhotoOrVideo: 'Select photo or video',
@@ -494,21 +494,25 @@ export default {
           action: 'Add questions'
         },
         question: {
+          photo: 'Photo',
+          video: 'Video',
           photoOrVideo: 'Photo/Video',
           addMedia: 'Add media',
+          addPhoto: 'Add photo',
+          addVideo: 'Add video',
           questionType: {
             title: 'Question type',
             options: {
               text: 'Text',
-              media: 'Media'
+              media: 'Photo'
             }
           },
           label: 'Question',
           placeholder: 'Type question',
           mediaNote: {
-            label: 'Media note',
-            placeholder: 'Type media note (optional)',
-            description: 'The player will see the note related to the photo/video'
+            label: 'Photo note',
+            placeholder: 'Type photo note (optional)',
+            description: 'The player will see the note related to the photo'
           },
           removeQuestion: 'Remove question'
         },

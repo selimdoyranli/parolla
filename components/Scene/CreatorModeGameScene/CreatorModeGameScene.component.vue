@@ -42,17 +42,9 @@
         )
           strong.question__title(v-if="question.question?.length > 0") {{ question.question }}
 
-          .question-media.do-not-hide-keyboard(v-if="question.media || question.youtube")
-            .question-media-image.do-not-hide-keyboard(v-if="question.media")
+          .question-media.do-not-hide-keyboard(v-if="question.media")
+            .question-media-image.do-not-hide-keyboard
               img.question-media-image__img.do-not-hide-keyboard(:src="question.media.url" :alt="question.media.name")
-
-            .question-media-youtube.do-not-hide-keyboard(v-if="question.youtube")
-              iframe.question-media-youtube__iframe.do-not-hide-keyboard(
-                v-if="questions[alphabet.activeIndex].youtube?.embedUrl?.length > 0"
-                :src="`${question.youtube.embedUrl}?controls=1&autoplay=1&mute=1&loop=1`"
-                frameborder="0"
-                allowfullscreen
-              )
 
             span.question-media__note.do-not-hide-keyboard(v-if="question.mediaNote?.length > 0") {{ question.mediaNote }}
 
