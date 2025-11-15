@@ -612,7 +612,7 @@ export default defineComponent({
 
           if (room.isVisible) {
             form.isDraft = false
-            document.querySelector('.creator-mode-compose-form__saveDraftButton').classList.add('d-none')
+            document.querySelector('.creator-mode-compose-form__saveDraftButton')?.classList.add('d-none')
           }
 
           createdRoom.title = room.title
