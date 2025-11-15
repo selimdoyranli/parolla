@@ -571,7 +571,7 @@ export default defineComponent({
          * If the quiz has media, set the visibility to false, set to true after media is uploaded successfully
          */
         const getQuizVisibility = () => {
-          if (form.qaList.some(item => item.media)) {
+          if (form.mediaList.length > 0) {
             return false
           } else {
             return true
