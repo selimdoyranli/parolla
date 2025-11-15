@@ -34,7 +34,7 @@
 
     template(v-else)
       // Questions
-      .questions(:class="`active-question-type-${questions[alphabet.activeIndex].questionType || questionTypeEnum.TEXT}`")
+      .questions(:class="[questionsClasses]")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
@@ -215,6 +215,15 @@ export default defineComponent({
       }
     })
 
+    const questionsClasses = computed(() => {
+      if (!questions.value[alphabet.value.activeIndex]) return {}
+
+      return {
+        'active-question-type-media': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.MEDIA,
+        'active-question-type-text': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.TEXT
+      }
+    })
+
     return {
       questionTypeEnum,
       rootRef,
@@ -239,7 +248,8 @@ export default defineComponent({
       listenCountdown,
       handleCountdownFinish,
       isTouchEnabled,
-      resetGame
+      resetGame,
+      questionsClasses
     }
   }
 })
