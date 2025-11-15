@@ -34,7 +34,7 @@
 
     template(v-else)
       // Questions
-      .questions(:class="`active-question-type-${questions[alphabet.activeIndex].questionType}`")
+      .questions(:class="`active-question-type-${questions[alphabet.activeIndex].questionType || questionTypeEnum.TEXT}`")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
@@ -98,6 +98,7 @@
 <script>
 import { defineComponent, useFetch, useRoute, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
+import { questionTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown, Notify } from 'vant'
 
 export default defineComponent({
@@ -215,6 +216,7 @@ export default defineComponent({
     })
 
     return {
+      questionTypeEnum,
       rootRef,
       ANSWER_CHAR_LENGTH,
       fetch,
