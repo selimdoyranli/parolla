@@ -339,9 +339,12 @@ export default defineComponent({
     }
 
     const addItem = () => {
+      // Get the last question's questionType if exists
+      const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
+
       form.qaList.push({
         character: '',
-        questionType: questionTypeEnum.TEXT,
+        questionType: lastQuestionType,
         question: '',
         answerType: answerTypeEnum.TEXT_FIELD,
         answer: '',
