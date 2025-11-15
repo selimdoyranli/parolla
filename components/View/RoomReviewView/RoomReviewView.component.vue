@@ -65,7 +65,7 @@ export default defineComponent({
     const fetchReviews = async () => {
       if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
         const { data, error } = await store.dispatch('creator/fetchReviews', {
-          roomId: room.value.id
+          roomId: room.value.roomId
         })
 
         if (data) {

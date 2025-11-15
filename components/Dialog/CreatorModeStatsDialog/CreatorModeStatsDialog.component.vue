@@ -267,7 +267,7 @@ export default defineComponent({
             pendingScoreboard.value = true
 
             await store.dispatch('creator/fetchScoreboard', {
-              roomId: room.value.id
+              roomId: room.value.roomId
             })
 
             pendingScoreboard.value = false
@@ -282,7 +282,7 @@ export default defineComponent({
       const { data, error } = await store.dispatch('creator/fetchScoreboard', {
         isLoadMore: true,
         page: pagination.value.page + 1,
-        roomId: room.value.id
+        roomId: room.value.roomId
       })
 
       $state.loaded()
