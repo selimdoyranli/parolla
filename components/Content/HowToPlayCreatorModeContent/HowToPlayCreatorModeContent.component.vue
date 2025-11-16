@@ -32,8 +32,8 @@ export default defineComponent({
 
     const gameTimeLimitMinutes = computed(() => {
       return room.value.gameTimeLimit
-        ? String(convertMsToTime(room.value.gameTimeLimit).minutes)
-        : String(convertMsToTime(GAME_TIME_LIMIT).minutes).slice(1, 2)
+        ? String(Number(convertMsToTime(room.value.gameTimeLimit).minutes))
+        : String(Number(convertMsToTime(GAME_TIME_LIMIT).minutes))
     })
 
     const descriptionHtml = computed(() => {
