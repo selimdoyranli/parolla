@@ -520,6 +520,8 @@ export default () => {
           remainTimeAsMs
         }
       })
+
+      await store.dispatch('creator/increaseDailyPlayingCount')
     }
 
     setTimeout(() => {

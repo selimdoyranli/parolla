@@ -26,7 +26,7 @@ export default {
     }
   },
 
-  async increaseWordblockPlayingCount({ commit }) {
+  async increaseDailyPlayingCount({ commit }) {
     const { data, error } = await this.$appFetch({
       path: `modes/wordblock/view-count`,
       method: 'POST'

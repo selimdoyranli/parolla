@@ -46,7 +46,7 @@
         icon="noto:pencil"
         :to="localePath({ name: 'CreatorMode-CreatorModeIntro' })"
         :title="$t('introScene.modeList.creator.title')"
-        :headLabel="{ title: $t('introScene.modeList.creator.label', { count: todaysSolvedTotalQuiz?.meta?.pagination?.total }) }"
+        :headLabel="{ title: $t('introScene.modeList.creator.label', { count: creatorDailyPlayingCount }) }"
         :description="$t('introScene.modeList.creator.description')"
       )
         template(v-if="todaysQuiz && Object.keys(todaysQuiz).length > 0" #body)
@@ -131,8 +131,8 @@ export default defineComponent({
     const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
     const todaysTourBestScorer = computed(() => tourLeaderboard.value?.[0])
 
-    const todaysSolvedTotalQuiz = computed(() => store.getters['creator/todaysSolvedTotalQuiz'])
     const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
+    const creatorDailyPlayingCount = computed(() => store.getters['creator/dailyPlayingCount'])
 
     const wordblockDailyPlayingCount = computed(() => store.getters['wordblock/dailyPlayingCount'])
 
@@ -141,7 +141,7 @@ export default defineComponent({
         store.dispatch('daily/fetchDailyPlayingCount'),
         store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 }),
         store.dispatch('tour/fetchLeaderboard', { period: 'daily', limit: 1 }),
-        store.dispatch('creator/fetchTodaysSolvedTotalQuiz', { limit: 1 }),
+        store.dispatch('creator/fetchDailyPlayingCount'),
         store.dispatch('creator/fetchTodaysQuiz'),
         store.dispatch('wordblock/fetchDailyPlayingCount')
       ])
@@ -154,7 +154,7 @@ export default defineComponent({
       tourUserList,
       tourLeaderboard,
       todaysTourBestScorer,
-      todaysSolvedTotalQuiz,
+      creatorDailyPlayingCount,
       todaysQuiz,
       wordblockDailyPlayingCount,
       localeAvailabilityMessage

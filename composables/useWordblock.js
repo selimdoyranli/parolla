@@ -58,7 +58,7 @@ export default () => {
       elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
     })
 
-    await store.dispatch('wordblock/increaseWordblockPlayingCount')
+    await store.dispatch('wordblock/increaseDailyPlayingCount')
   }
 
   // Initialize guesses array

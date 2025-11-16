@@ -28,9 +28,6 @@ export default () => ({
     pagination: {},
     total: null
   },
-  todaysSolvedTotalQuiz: {
-    items: [],
-    meta: {}
-  },
-  todaysQuiz: {}
+  todaysQuiz: {},
+  dailyPlayingCount: 0
 })

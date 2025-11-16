@@ -410,36 +410,6 @@ export default {
     }
   },
 
-  async fetchTodaysSolvedTotalQuiz({ commit, state }, params = {}) {
-    const { limit = 1, page = 1 } = params
-
-    // Get today's date range
-    const today = new Date()
-    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
-
-    const query = {
-      'filters[createdAt][$gte]': startOfDay.toISOString(),
-      'filters[createdAt][$lt]': endOfDay.toISOString(),
-      'pagination[pageSize]': limit,
-      'pagination[page]': page
-    }
-
-    const { data, error } = await this.$appFetch({
-      path: `room-scores`,
-      query: query
-    })
-
-    if (data) {
-      commit('SET_TODAYS_SOLVED_TOTAL_QUIZ', data)
-    }
-
-    return {
-      data,
-      error
-    }
-  },
-
   async fetchTodaysQuiz({ commit, state }, params = {}) {
     // Get today's date range
     const today = new Date()
@@ -462,6 +432,33 @@ export default {
 
     if (data && data.data && data.data.length > 0) {
       commit('SET_TODAYS_QUIZ', roomTransformer(data.data[0]))
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async increaseDailyPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/creator/view-count`,
+      method: 'POST'
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async fetchDailyPlayingCount({ commit }) {
+    const { data, error } = await this.$appFetch({
+      path: `modes/creator/view-count`
+    })
+
+    if (data) {
+      commit('SET_DAILY_PLAYING_COUNT', data.count)
     }
 
     return {

@@ -55,11 +55,11 @@ export default {
     return state.scoreboard.pagination
   },
 
-  todaysSolvedTotalQuiz(state) {
-    return state.todaysSolvedTotalQuiz
-  },
-
   todaysQuiz(state) {
     return state.todaysQuiz
+  },
+
+  dailyPlayingCount(state) {
+    return state.dailyPlayingCount
   }
 }
