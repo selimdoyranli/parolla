@@ -236,8 +236,6 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
         template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
         template(v-else) {{ $t('form.creatorModeCompose.submit') }}
 
-  p {{ form.gameTimeLimit }}
-
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
     :title="room ? $t('dialog.createdRoom.quizUpdated') : $t('dialog.createdRoom.title')"
