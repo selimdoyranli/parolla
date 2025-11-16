@@ -26,7 +26,7 @@ const appFetch = async ({ $axios, app }, params) => {
   try {
     const promise = await $axios({
       method,
-      url: url || `http://localhost:1337/api/${path}`,
+      url: url || `https://strapi.parolla.app/api/${path}`,
       params: { ...transformedQuery },
       data,
       cache,
