@@ -234,7 +234,7 @@ export default {
         For example: <strong>The fruit that fell on Newton's head?</strong> active character in question <strong>A</strong> and the answer is <strong>Apple</strong>.<br><br>
         Your answer may be <strong>🟩 Correct</strong> or <strong>🟥 Incorrect</strong>. <br> If you don't know the answer press the <strong>🟨 PASS</strong>
         button or type pass and send it. You can come back to that question later. You can answer the questions you pass until your time runs out.
-        <br><br> The total duration of the game is <strong>5 minutes</strong>.
+        <br><br> The total duration of the game is <strong>{gameTimeLimitMinutes} minutes</strong>.
         <br><small>If you refresh the page the game starts from the beginning</small>`,
       body: `
         {description}
@@ -489,6 +489,11 @@ export default {
         tag: {
           label: 'Tags',
           placeholder: 'Type a tag'
+        },
+        gameTimeLimit: {
+          label: 'Game time',
+          minutes: 'Minutes',
+          seconds: 'Seconds'
         }
       },
       qa: {

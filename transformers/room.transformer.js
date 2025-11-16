@@ -29,6 +29,7 @@ export default model => {
             isFeatured: tag.isFeatured
           }
         })
-      : []
+      : [],
+    gameTimeLimit: Number(model.gameTimeLimit)
   }
 }

@@ -32,6 +32,7 @@ export default {
           return qaItem
         }),
         roomTags: form.tags,
+        gameTimeLimit: Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -87,6 +88,7 @@ export default {
           return qaItem
         }),
         roomTags: form.tags,
+        gameTimeLimit: Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -273,6 +275,8 @@ export default {
       })
 
       commit('SET_ALPHABET_ITEMS', room.alphabet)
+
+      commit('SET_GAME_TIME_LIMIT', room.gameTimeLimit)
     }
 
     return {

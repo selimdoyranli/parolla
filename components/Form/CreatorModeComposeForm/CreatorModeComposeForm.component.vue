@@ -63,6 +63,16 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
           template(v-for="tag in form.tags")
             Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="removeTag(tag)") {{ tag }}
 
+      Cell.creator-mode-compose-form__gameTimeLimit
+        template(#title)
+          span {{ $t('form.creatorModeCompose.room.gameTimeLimit.label') }}
+
+        template(#right-icon)
+          .game-time-limit-steppers
+            .game-time-limit-stepper
+              Stepper(v-model="gameTimeLimitMinutes" :min="1" :max="60" :step="1" :integer="true")
+              span.game-time-limit-label {{ $t('form.creatorModeCompose.room.gameTimeLimit.minutes') }}
+
     span.creator-mode-compose-form__fieldsTitle {{ $t('form.creatorModeCompose.qaSet') }}
     .creator-mode-compose-form__fields
       .compose-qa-list
@@ -226,6 +236,8 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
         template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
         template(v-else) {{ $t('form.creatorModeCompose.submit') }}
 
+  p {{ form.gameTimeLimit }}
+
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
     :title="room ? $t('dialog.createdRoom.quizUpdated') : $t('dialog.createdRoom.title')"
@@ -249,10 +261,27 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 
 <script>
 import { defineComponent, useRouter, useContext, useStore, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { ROOM_TAG_REGEX } from '@/system/constant'
+import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
-import { Form, Field, Cell, Switch, Button, Empty, Notify, Dialog, Tag, Tabs, Tab, NoticeBar, RadioGroup, Radio, Toast } from 'vant'
+import {
+  Form,
+  Field,
+  Cell,
+  Switch,
+  Button,
+  Empty,
+  Notify,
+  Dialog,
+  Tag,
+  Tabs,
+  Tab,
+  NoticeBar,
+  RadioGroup,
+  Radio,
+  Stepper,
+  Toast
+} from 'vant'
 
 export default defineComponent({
   components: {
@@ -268,7 +297,8 @@ export default defineComponent({
     Tab,
     NoticeBar,
     RadioGroup,
-    Radio
+    Radio,
+    Stepper
   },
   props: {
     room: {
@@ -288,6 +318,14 @@ export default defineComponent({
 
     const user = computed(() => store.getters['auth/user'])
 
+    const gameTimeLimitMinutes = computed({
+      get: () => Math.floor(form.gameTimeLimit / (60 * 1000)),
+      set: value => {
+        // Convert minutes to milliseconds (minimum 1 minute = 60000ms)
+        form.gameTimeLimit = value * 60 * 1000
+      }
+    })
+
     const form = reactive({
       isDraft: props.room?.isVisible ? false : true,
       isBusy: false,
@@ -298,7 +336,8 @@ export default defineComponent({
       tag: '',
       tags: props.room?.tags.map(tag => tag.title) || [],
       qaList: props.room?.questions || [],
-      mediaList: []
+      mediaList: [],
+      gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
     })
 
     const createdRoom = reactive({
@@ -733,6 +772,7 @@ export default defineComponent({
       answerTypeEnum,
       user,
       form,
+      gameTimeLimitMinutes,
       handleInputTag,
       addTag,
       removeTag,

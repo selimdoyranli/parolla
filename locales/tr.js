@@ -240,7 +240,7 @@ export default {
         Örneğin: <strong>Bal yapan hayvan?</strong> sorusunda aktif karakter <strong>A</strong> ve bunun cevabı <strong>Arı</strong>'dır gibi.<br><br>
         Cevabın <strong>🟩 Doğru</strong> ya da <strong>🟥 Yanlış</strong> olabilir. <br> Eğer cevabı bilmiyorsan <strong>🟨 PAS</strong>
         butonuna bas ya da pas yazıp gönder. Daha sonra o soruya dönebileceksin. Pasladığın soruları süren bitene kadar cevaplayabilirsin.
-        <br><br> Oyunun toplam süresi <strong>5 dakika</strong>'dır.
+        <br><br> Oyunun toplam süresi <strong>{gameTimeLimitMinutes} dakika</strong>'dır.
         <br><small>Eğer sayfayı yenilersen oyun en baştan başlar</small>`,
       body: `
         {description}
@@ -495,6 +495,11 @@ export default {
         tag: {
           label: 'Etiketler',
           placeholder: 'Etiket yaz'
+        },
+        gameTimeLimit: {
+          label: 'Oyun süresi',
+          minutes: 'Dakika',
+          seconds: 'Saniye'
         }
       },
       qa: {

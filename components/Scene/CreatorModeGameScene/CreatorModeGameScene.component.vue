@@ -145,6 +145,8 @@ export default defineComponent({
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
+    const room = computed(() => store.getters['creator/room'])
+
     // Fetch Room
     const { fetch, fetchState } = useFetch(async () => {
       const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
@@ -176,7 +178,7 @@ export default defineComponent({
       await store.commit('creator/SET_IS_GAME_OVER', {
         isGameOver: false
       })
-      await store.commit('creator/RESET_COUNTDOWN_TIMER')
+      await store.commit('creator/RESET_COUNTDOWN_TIMER', room.value.gameTimeLimit)
       await store.commit('creator/RESET_ALPHABET')
       await store.commit('creator/SET_IS_OPEN_STATS_DIALOG', false)
 

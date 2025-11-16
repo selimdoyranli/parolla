@@ -90,6 +90,25 @@
     }
   }
 
+  .game-time-limit-steppers {
+    display: flex;
+    gap: var(--base-m-x);
+    align-items: center;
+
+    .game-time-limit-stepper {
+      display: flex;
+      gap: calc(var(--base-m-x) / 2);
+      align-items: center;
+    }
+
+    .game-time-limit-label {
+      color: var(--color-text-02);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-text-9);
+      white-space: nowrap;
+    }
+  }
+
   &__saveDraftButton {
     padding: $spacer $spacer * 2;
     color: var(--color-text-03);
