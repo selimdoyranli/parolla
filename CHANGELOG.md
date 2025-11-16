@@ -1,5 +1,42 @@
 # Changelog
 
+## v2.32.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.31.1...v2.32.0)
+
+
+### 🚀 Enhancements
+
+  - Media support on creator quiz ([3861e0a](https://github.com/selimdoyranli/parolla/commit/3861e0a))
+
+### 🩹 Fixes
+
+  - Ui fixes on quiz compose form ([cdead46](https://github.com/selimdoyranli/parolla/commit/cdead46))
+  - Quiz visibility update fixes ([53b4449](https://github.com/selimdoyranli/parolla/commit/53b4449))
+  - Null check dom element on quiz save draft ([0fac58d](https://github.com/selimdoyranli/parolla/commit/0fac58d))
+  - Questions class null check on creator game scene ([22f5a27](https://github.com/selimdoyranli/parolla/commit/22f5a27))
+  - Update incorrect room id model ([e633cb5](https://github.com/selimdoyranli/parolla/commit/e633cb5))
+  - Update app fetch base url ([f107d85](https://github.com/selimdoyranli/parolla/commit/f107d85))
+
+### 💅 Refactors
+
+  - Quiz media list structure ([869be00](https://github.com/selimdoyranli/parolla/commit/869be00))
+  - Renames on enums ([eefd33c](https://github.com/selimdoyranli/parolla/commit/eefd33c))
+  - Ux updates on compose quiz form ([b594cdc](https://github.com/selimdoyranli/parolla/commit/b594cdc))
+  - Quiz visibility flag ([f610b78](https://github.com/selimdoyranli/parolla/commit/f610b78))
+  - Media question ui structure ([8d9e316](https://github.com/selimdoyranli/parolla/commit/8d9e316))
+  - Remove youtube media type support on creator quiz ([391f7ce](https://github.com/selimdoyranli/parolla/commit/391f7ce))
+  - Quiz draft api ([cabbde2](https://github.com/selimdoyranli/parolla/commit/cabbde2))
+  - Defensive code on creator quiz game scene ([0318b84](https://github.com/selimdoyranli/parolla/commit/0318b84))
+  - Add photo quiz badge into room list item ([1fbb8b6](https://github.com/selimdoyranli/parolla/commit/1fbb8b6))
+  - Ui updates on creator stats dialog ([c941e5a](https://github.com/selimdoyranli/parolla/commit/c941e5a))
+  - Ux updates on creator mode compose form ([88cdb77](https://github.com/selimdoyranli/parolla/commit/88cdb77))
+  - Custom game time limit on creator quiz ([8b2a913](https://github.com/selimdoyranli/parolla/commit/8b2a913))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.31.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.31.1...v2.31.2)
