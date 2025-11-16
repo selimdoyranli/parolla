@@ -69,15 +69,68 @@
 
   &.game-scene {
     &--osk {
-      .questions {
-        &.active-question-type-media {
+      &.game-scene--activeQuestionTypeMedia {
+        .questions {
           padding-inline: 0 !important;
           padding-block: $spacer * 10 !important;
         }
 
-        &.active-question-type-text {
-          padding-inline: $spacer * 4 !important;
-          padding-block: $spacer * 12 !important;
+        .alphabet {
+          @include media-breakpoint-down(mobile) {
+            position: absolute !important;
+            opacity: 1;
+            inset-block-start: -8px;
+          }
+
+          .swiper-slide {
+            @include media-breakpoint-down(mobile) {
+              width: 24px !important;
+              height: 24px !important;
+            }
+          }
+
+          .alphabet__item {
+            @include media-breakpoint-down(mobile) {
+              font-size: 10px !important;
+              border-width: 1px !important;
+            }
+
+            &--selected {
+              @include media-breakpoint-down(mobile) {
+                box-shadow: 0 2px var(--color-highlight-01) !important;
+              }
+            }
+          }
+        }
+
+        .countdown {
+          @include media-breakpoint-down(mobile) {
+            position: fixed !important;
+            z-index: 1;
+            padding: 2px 6px;
+            background-color: var(--color-ui-02);
+            border-radius: var(--border-radius-01);
+            inset-block-start: 0;
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
+
+            &__icon {
+              margin-inline-end: $spacer !important;
+
+              svg {
+                width: 14px !important;
+                height: 14px !important;
+              }
+            }
+
+            &__timer {
+              font-size: var(--font-size-text-11) !important;
+            }
+
+            @include media-breakpoint-down(mobile) {
+              @include center(true, false);
+            }
+          }
         }
       }
 
@@ -85,64 +138,6 @@
         img {
           @include media-breakpoint-down(mobile) {
             aspect-ratio: 16/9 !important;
-          }
-        }
-      }
-
-      .alphabet {
-        @include media-breakpoint-down(mobile) {
-          position: absolute !important;
-          opacity: 1;
-          inset-block-start: -8px;
-        }
-
-        .swiper-slide {
-          @include media-breakpoint-down(mobile) {
-            width: 24px !important;
-            height: 24px !important;
-          }
-        }
-
-        .alphabet__item {
-          @include media-breakpoint-down(mobile) {
-            font-size: 10px !important;
-            border-width: 1px !important;
-          }
-
-          &--selected {
-            @include media-breakpoint-down(mobile) {
-              box-shadow: 0 2px var(--color-highlight-01) !important;
-            }
-          }
-        }
-      }
-
-      .countdown {
-        @include media-breakpoint-down(mobile) {
-          position: fixed !important;
-          z-index: 1;
-          padding: 2px 6px;
-          background-color: var(--color-ui-02);
-          border-radius: var(--border-radius-01);
-          inset-block-start: 0;
-          border-top-left-radius: 0 !important;
-          border-top-right-radius: 0 !important;
-
-          &__icon {
-            margin-inline-end: $spacer !important;
-
-            svg {
-              width: 14px !important;
-              height: 14px !important;
-            }
-          }
-
-          &__timer {
-            font-size: var(--font-size-text-11) !important;
-          }
-
-          @include media-breakpoint-down(mobile) {
-            @include center(true, false);
           }
         }
       }

@@ -1,9 +1,5 @@
 <template lang="pug">
-.scene.game-scene.creator-mode-game-scene(
-  ref="rootRef"
-  tabindex="1"
-  :class="{ 'game-scene--isMobileDevice': $ua.isFromMobilephone(), 'game-scene--gameOver': isGameOver, 'game-scene--osk': answer.isFocused }"
-)
+.scene.game-scene.creator-mode-game-scene(ref="rootRef" tabindex="1" :class="[gameSceneClasses]")
   // Scene Inner
   .scene__inner.game-scene__inner
     // Alphabet
@@ -34,7 +30,7 @@
 
     template(v-else)
       // Questions
-      .questions(:class="[questionsClasses]")
+      .questions
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
@@ -112,7 +108,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const store = useStore()
-    const { localePath, redirect } = useContext()
+    const { localePath, redirect, $ua } = useContext()
 
     const rootRef = ref(null)
 
@@ -217,12 +213,14 @@ export default defineComponent({
       }
     })
 
-    const questionsClasses = computed(() => {
-      if (!questions.value[alphabet.value.activeIndex]) return {}
-
+    const gameSceneClasses = computed(() => {
       return {
-        'active-question-type-media': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.MEDIA,
-        'active-question-type-text': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.TEXT
+        'game-scene--isMobileDevice': $ua.isFromMobilephone(),
+        'game-scene--gameOver': isGameOver.value,
+        'game-scene--osk': answer.isFocused,
+        'game-scene--activeQuestionTypeMedia': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.MEDIA,
+        'game-scene--hasMedia': room.value.hasMedia,
+        'game-scene--activeQuestionTypeText': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.TEXT
       }
     })
 
@@ -251,7 +249,7 @@ export default defineComponent({
       handleCountdownFinish,
       isTouchEnabled,
       resetGame,
-      questionsClasses
+      gameSceneClasses
     }
   }
 })

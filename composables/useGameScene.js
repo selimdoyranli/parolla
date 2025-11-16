@@ -625,6 +625,8 @@ export default () => {
         maxFontSize: 30
       })
     }
+
+    carousels.alphabet.update()
   }
 
   const handleBeforeUnload = event => {
