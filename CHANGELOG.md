@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.32.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.0...v2.32.1)
+
+
+### 🩹 Fixes
+
+  - Remove debug text ([0b6116a](https://github.com/selimdoyranli/parolla/commit/0b6116a))
+  - Anon label ui fixes on room list ([9e44878](https://github.com/selimdoyranli/parolla/commit/9e44878))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.31.1...v2.32.0)
