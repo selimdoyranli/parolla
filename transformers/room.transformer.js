@@ -1,11 +1,13 @@
 export default model => {
   return {
-    id: model.roomId,
+    id: model.id,
+    roomId: model.roomId,
     documentId: model.documentId,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
     publishedAt: model.publishedAt,
     title: model.title,
+    isVisible: model.isVisible,
     isListed: model.isPublic,
     isAnon: model.isAnon,
     questionCount: model.questionCount,
@@ -14,6 +16,7 @@ export default model => {
     rating: model.rating,
     user: model.user,
     alphabet: model.alphabet,
+    hasMedia: model.hasMedia,
     questions: model.qaList,
     tags: model.roomTags
       ? model.roomTags.map(tag => {
@@ -26,6 +29,7 @@ export default model => {
             isFeatured: tag.isFeatured
           }
         })
-      : []
+      : [],
+    gameTimeLimit: Number(model.gameTimeLimit)
   }
 }

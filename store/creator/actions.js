@@ -7,17 +7,32 @@ export default {
     const transform = form => {
       return {
         user: this.$auth.user?.id,
-        title: form.roomTitle,
+        isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
-        roomTags: form.tags,
+        title: form.roomTitle,
         qaList: form.qaList.map(item => {
-          return {
+          const qaItem = {
             character: item.character,
+            questionType: item.questionType,
             question: item.question,
-            answer: item.answer
+            answerType: item.answerType,
+            answer: item.answer,
+            ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
+
+          if (item.media?.file) {
+            qaItem.selectedMedia = item.media
+          }
+
+          if (item.media && item.media.id) {
+            qaItem.media = item.media
+          }
+
+          return qaItem
         }),
+        roomTags: form.tags,
+        gameTimeLimit: Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -48,17 +63,32 @@ export default {
     const transform = form => {
       return {
         user: this.$auth.user?.id,
-        title: form.roomTitle,
+        isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
-        roomTags: form.tags,
+        title: form.roomTitle,
         qaList: form.qaList.map(item => {
-          return {
+          const qaItem = {
             character: item.character,
+            questionType: item.questionType,
             question: item.question,
-            answer: item.answer
+            answerType: item.answerType,
+            answer: item.answer,
+            ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
+
+          if (item.media?.file) {
+            qaItem.selectedMedia = item.media
+          }
+
+          if (item.media && item.media.id) {
+            qaItem.media = item.media
+          }
+
+          return qaItem
         }),
+        roomTags: form.tags,
+        gameTimeLimit: Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -103,8 +133,37 @@ export default {
     }
   },
 
+  async uploadQuizMedia({ commit }, { files, path, ref, refId, field }) {
+    const token = this.$auth.strategy.token.get()
+
+    const formData = new FormData()
+    files.forEach(file => {
+      formData.append('files', file)
+    })
+
+    formData.append('path', path)
+    formData.append('ref', ref)
+    formData.append('refId', refId)
+    formData.append('field', field)
+
+    const { data, error } = await this.$appFetch({
+      path: `rooms/upload-media`,
+      method: 'POST',
+      data: formData,
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
   async fetchRooms({ commit, state }, params) {
-    const { isLoadMore = false, page, limit, keyword, tags, user, locale } = params
+    const { isVisible, isLoadMore = false, page, limit, keyword, tags, user, locale } = params
 
     const getSort = _sort => {
       if (_sort === 'oldest') {
@@ -119,6 +178,7 @@ export default {
     }
 
     const queryDefault = {
+      isVisible: null,
       page: 1,
       perPage: 10,
       search: '',
@@ -130,12 +190,17 @@ export default {
     }
 
     const query = {
+      'filters[isVisible][$eq]': isVisible || queryDefault.isVisible,
       'pagination[page]': page || queryDefault.page,
       'pagination[pageSize]': limit || queryDefault.perPage,
       sort: getSort(state.room.sort) || queryDefault.sort,
       'populate[user][populate]': 'diceBear',
       populate: 'roomTags',
       locale: locale || queryDefault.locale
+    }
+
+    if (isVisible) {
+      query['filters[isVisible][$eq]'] = isVisible
     }
 
     // Check if keyword contains # to search in roomTags instead of title
@@ -210,6 +275,8 @@ export default {
       })
 
       commit('SET_ALPHABET_ITEMS', room.alphabet)
+
+      commit('SET_GAME_TIME_LIMIT', room.gameTimeLimit)
     }
 
     return {

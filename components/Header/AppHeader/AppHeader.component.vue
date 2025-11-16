@@ -84,7 +84,7 @@
 
 <script>
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 
 export default defineComponent({
   setup() {
@@ -218,7 +218,11 @@ export default defineComponent({
         }
       }
 
-      if (activeGameMode.value && activeGameMode.value.length > 0) {
+      if (
+        (activeGameMode.value && activeGameMode.value.length > 0) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' })
+      ) {
         openLeaveDialog({
           confirm: () => {
             triggerRoute()
@@ -230,7 +234,11 @@ export default defineComponent({
     }
 
     const handleClickAppLogo = () => {
-      if (activeGameMode.value && activeGameMode.value.length > 0) {
+      if (
+        (activeGameMode.value && activeGameMode.value.length > 0) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' })
+      ) {
         openLeaveDialog({
           confirm: () => {
             router.push(localePath({ name: 'Main' }))

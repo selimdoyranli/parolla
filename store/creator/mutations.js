@@ -61,6 +61,10 @@ export default {
     state.alphabet.activeIndex = index
   },
 
+  SET_GAME_TIME_LIMIT(state, gameTimeLimit) {
+    state.countdown.time = gameTimeLimit
+  },
+
   UPDATE_COUNTDOWN_REMAIN_TIME(state, remainTime) {
     state.countdown.remainTime = remainTime
   },
@@ -69,8 +73,8 @@ export default {
     state.countdown.time = ms
   },
 
-  RESET_COUNTDOWN_TIMER(state) {
-    state.countdown.time = GAME_TIME_LIMIT
+  RESET_COUNTDOWN_TIMER(state, gameTimeLimit) {
+    state.countdown.time = gameTimeLimit ? Number(gameTimeLimit) : GAME_TIME_LIMIT
   },
 
   RESET_ALPHABET(state) {

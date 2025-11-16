@@ -23,13 +23,15 @@
     List
       template(v-for="(room, index) in list.items")
         NuxtLink(
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
+          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
           :title="room.title"
-          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })"
+          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
         )
-          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })")
+          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
             template(#title)
-              span.room-list-item__title {{ room.title }}
+              .room-list-item-title
+                span.room-list-item-title__text {{ room.title }}
+                  Tag.ms-2(v-if="user && !room.isVisible" type="warning") {{ $t('general.draft') }}
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
@@ -45,6 +47,11 @@
                     template(v-if="room.user") {{ room.user.username }}
                     template(v-else) {{ $t('general.anon') }}
 
+                .room-list-item-badge(v-if="room.hasMedia")
+                  Tag.room-list-item-has-media-tag
+                    AppIcon.room-list-item-has-media-tag__galleryIcon(v-if="room.hasMedia" name="streamline-flex-color:gallery-flat")
+                    span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
+
                 .room-list-item-badge(v-if="room.questionCount")
                   AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.questionCount }}
@@ -53,23 +60,11 @@
                   AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.viewCount }}
 
-                .room-list-item-badge.room-list-item-badge--rating(v-if="room.rating")
-                  StarRating(
-                    read-only
-                    inline
-                    :show-rating="false"
-                    :rating="room.rating"
-                    :increment="0.1"
-                    :rounded-corners="false"
-                    :star-size="14"
-                  )
-                  label {{ String(formatRating(room.rating)) }}
-
               .room-list-item__tags(v-if="room.tags && room.tags.length > 0")
                 template(v-for="tag in room.tags")
                   Tag.room-list-item__tag(:key="tag.id" type="primary") {{ tag.title }}
 
-              span.room-list-item__id ID: {{ room.id }}
+              span.room-list-item__id ID: {{ room.roomId }}
 
               // Actions
               .room-list-item__actions(v-if="user && isOwner({ user: room.user })")
@@ -105,9 +100,8 @@
 <script>
 import { defineComponent, useContext, useRouter, useStore, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { useDebounceFn } from '@vueuse/core'
-import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag } from 'vant'
+import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
-import StarRating from 'vue-star-rating'
 
 export default defineComponent({
   components: {
@@ -118,10 +112,10 @@ export default defineComponent({
     Button,
     Empty,
     Loading,
-    StarRating,
     Dialog,
     Notify,
-    Tag
+    Tag,
+    Toast
   },
   props: {
     items: {
@@ -146,8 +140,6 @@ export default defineComponent({
     const store = useStore()
     const { isOwner } = useAuth()
 
-    const { formatRating } = useFormatter()
-
     const pagination = computed(() => store.getters['creator/roomsPagination'])
 
     const list = reactive({
@@ -165,6 +157,7 @@ export default defineComponent({
 
     const handleInfiniteLoading = async $state => {
       const { data, error } = await store.dispatch('creator/fetchRooms', {
+        isVisible: true,
         isLoadMore: true,
         page: pagination.value.page + 1,
         keyword: form.search.keyword,
@@ -224,6 +217,7 @@ export default defineComponent({
           }
 
           await store.dispatch('creator/fetchRooms', {
+            isVisible: true,
             keyword: form.search.keyword,
             user: props.user?.id
           })
@@ -252,7 +246,7 @@ export default defineComponent({
     }
 
     const handleEditRoom = async ({ room }) => {
-      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: room.id } }))
+      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: room.roomId } }))
     }
 
     const handleDeleteRoom = async ({ room }) => {
@@ -267,6 +261,14 @@ export default defineComponent({
     }
 
     const deleteRoom = async ({ documentId }) => {
+      Toast.loading({
+        message: i18n.t('creatorModeMyRooms.delete.deleting'),
+        duration: 0,
+        forbidClick: true,
+        overlay: true,
+        closeOnClickOverlay: false
+      })
+
       const { data, error } = await store.dispatch('creator/deleteRoom', { documentId })
 
       if (data) {
@@ -274,7 +276,7 @@ export default defineComponent({
           message: i18n.t('creatorModeMyRooms.delete.callback.success'),
           color: 'var(--color-text-04)',
           background: 'var(--color-success-01)',
-          duration: 1000
+          duration: 3000
         })
 
         list.items = list.items.filter(room => room.documentId !== documentId)
@@ -290,6 +292,8 @@ export default defineComponent({
           duration: 1000
         })
       }
+
+      Toast.clear()
     }
 
     const searchFieldPlaceholder = computed(() => {
@@ -302,7 +306,6 @@ export default defineComponent({
 
     return {
       isOwner,
-      formatRating,
       list,
       pagination,
       handleInfiniteLoading,

@@ -3,7 +3,8 @@
 
   &__title {
     position: relative;
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     max-width: 100%;
     color: var(--color-text-01);
@@ -15,10 +16,41 @@
     @include font-weight-bold;
   }
 
+  &__draftTag {
+    padding: $spacer $spacer * 2;
+    color: var(--color-warning-01);
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-text-10);
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 1px solid var(--color-warning-01);
+    border-radius: calc(var(--border-radius-01) / 2);
+    margin-inline-start: $spacer * 4;
+  }
+
   &__fields {
     position: relative;
     overflow: hidden;
     border-radius: var(--border-radius-01);
+  }
+
+  &__fields,
+  .media-upload-dialog {
+    .van-field {
+      flex-direction: column;
+
+      &__label {
+        margin-block-end: $spacer * 2;
+      }
+
+      &__control:not(.van-field__control--custom) {
+        padding: $spacer * 2 $spacer * 4 !important;
+        border: 1px solid var(--color-border-02) !important;
+        border-radius: calc(var(--border-radius-01) / 2) !important;
+      }
+    }
   }
 
   &__fieldsTitle {
@@ -33,6 +65,12 @@
     text-align: left;
 
     @include font-weight-semi-bold;
+  }
+
+  .creator-mode-compose-form__roomTag {
+    .van-field__word-limit {
+      padding-inline-end: $spacer * 9;
+    }
   }
 
   .creator-mode-compose-form-tags {
@@ -52,19 +90,32 @@
     }
   }
 
-  &__anonNotice {
-    display: inline-flex;
+  .game-time-limit-steppers {
+    display: flex;
+    gap: var(--base-m-x);
     align-items: center;
-    margin-block-start: var(--base-m-y);
-    margin-inline: var(--base-m-x);
-    color: var(--color-text-03);
-    font-size: var(--font-size-text-10);
-    text-align: left;
-    text-wrap: balance;
 
-    .app-icon {
-      margin-inline-end: calc(var(--base-m-x) / 2);
+    .game-time-limit-stepper {
+      display: flex;
+      gap: calc(var(--base-m-x) / 2);
+      align-items: center;
     }
+
+    .game-time-limit-label {
+      color: var(--color-text-02);
+      font-weight: var(--font-weight-medium);
+      font-size: var(--font-size-text-9);
+      white-space: nowrap;
+    }
+  }
+
+  &__saveDraftButton {
+    padding: $spacer $spacer * 2;
+    color: var(--color-text-03);
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-text-10);
+    background-color: transparent !important;
+    border: 1px solid var(--color-border-02);
   }
 
   .compose-qa-list {
@@ -78,8 +129,10 @@
 
     &__submitButton {
       display: block;
-      margin-top: var(--base-m-y);
-      margin-left: auto;
+      margin-inline-start: auto;
+      background-color: rgb(5, 90, 5);
+
+      @include font-weight-medium;
     }
   }
 
@@ -89,6 +142,25 @@
     overflow: hidden;
     background-color: var(--color-ui-02);
     border-radius: var(--border-radius-01);
+
+    &__index {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 24px;
+      padding: $spacer $spacer * 2;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-11);
+      text-transform: lowercase;
+      background-color: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: calc(var(--border-radius-01) / 2);
+      inset-block-start: calc(24px / 2) * -1;
+      inset-inline-start: 0;
+
+      @include center(true, false);
+    }
 
     &__actions {
       position: relative;
@@ -109,6 +181,130 @@
       display: block;
       margin-left: auto;
     }
+
+    &-add-media-button {
+      color: var(--color-text-02);
+
+      .van-button__text {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &__icon {
+        margin-inline-end: calc(var(--base-m-x) / 2);
+
+        svg {
+          width: 16px !important;
+          height: 16px !important;
+        }
+      }
+
+      &__text {
+        font-size: var(--font-size-text-10);
+      }
+    }
+  }
+
+  .creator-mode-compose-form__questionType {
+    &::after {
+      display: none;
+    }
+  }
+
+  .question-type-radio-group {
+    .question-type-radio {
+      padding: $spacer $spacer * 2;
+      border: 1px solid var(--color-border-02);
+      margin-inline-end: 0;
+      margin-inline-start: 0;
+
+      &:first-child {
+        border-top-left-radius: calc(var(--border-radius-01) / 2);
+        border-bottom-left-radius: calc(var(--border-radius-01) / 2);
+      }
+
+      &:last-child {
+        border-top-right-radius: calc(var(--border-radius-01) / 2);
+        border-bottom-right-radius: calc(var(--border-radius-01) / 2);
+      }
+
+      &__text {
+        display: block;
+        color: var(--color-text-02);
+        font-size: var(--font-size-text-8);
+        margin-block-start: 1px;
+      }
+
+      &[aria-checked='true'] {
+        border: 1px solid var(--color-brand-02);
+      }
+    }
+
+    .question-type-radio__icon {
+      color: var(--color-icon-01);
+      margin-inline-end: calc(var(--base-m-x) / 2);
+
+      svg {
+        width: 20px !important;
+        height: 20px !important;
+      }
+    }
+  }
+
+  .media-thumbnail {
+    position: relative;
+    display: block;
+    padding: var(--base-p-y) var(--base-p-x);
+
+    &__image {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      padding: $spacer * 2;
+      object-fit: scale-down;
+      border: 1px solid var(--color-border-02);
+      border-radius: var(--border-radius-01);
+      aspect-ratio: 16/9;
+      margin-block-end: calc(var(--base-m-y) / 2);
+    }
+
+    &__delete {
+      position: absolute;
+      inset-block-start: calc(var(--base-p-y) + 8px);
+      inset-inline-end: calc(var(--base-p-x) + 8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: #fff;
+      background-color: transparent;
+      border: none;
+      border-radius: 50%;
+
+      .app-icon {
+        width: 12px;
+        height: 12px;
+      }
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .creator-mode-compose-form-media-note {
+    &__description {
+      display: block;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      padding-block: $spacer;
+    }
+
+    &-field {
+      padding: 0;
+    }
   }
 
   &__termsDescription {
@@ -118,4 +314,10 @@
     font-size: var(--font-size-text-9);
     text-align: justify;
   }
+}
+
+@at-root .toast-creating-quiz {
+  width: 280px;
+  max-width: unset;
+  min-height: 150px;
 }

@@ -69,6 +69,7 @@ export default defineComponent({
     const { fetch, fetchState } = useFetch(async () => {
       await store.dispatch('creator/fetchRooms', {
         tags: route.value.query.tags ? route.value.query.tags.split(',') : [],
+        isVisible: true,
         isLoadMore: false
       })
     })
@@ -121,8 +122,6 @@ export default defineComponent({
     const gotoRoom = () => {
       if (form.roomUrl.isClear) {
         const id = form.roomUrl.url.split('/').pop()
-
-        console.log(id)
 
         router.push(
           localePath({
@@ -179,6 +178,7 @@ export default defineComponent({
 
       await store.dispatch('creator/fetchRooms', {
         tags: _tags,
+        isVisible: true,
         isLoadMore: false
       })
     }

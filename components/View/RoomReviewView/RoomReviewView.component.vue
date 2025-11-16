@@ -38,7 +38,7 @@
 
 <script>
 import { defineComponent, useStore, useFetch, ref, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { roomReviewTransformer } from '@/transformers'
 import { Button, Empty, NoticeBar } from 'vant'
 
@@ -65,7 +65,7 @@ export default defineComponent({
     const fetchReviews = async () => {
       if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
         const { data, error } = await store.dispatch('creator/fetchReviews', {
-          roomId: room.value.id
+          roomId: room.value.roomId
         })
 
         if (data) {

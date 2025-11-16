@@ -1,6 +1,6 @@
 import { useContext, useStore, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
 import { UNSUPPORTED_HEIGHT, WEB_CDN } from '@/system/constant'
-import { gameModeKeyEnum } from '@/enums'
+import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 // Swiper
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.min.css'
@@ -421,7 +421,7 @@ export default () => {
     }, 0) // DOM Bypass
 
     const startGameToastMessage = `
-        <img class='start-game-toast__spinner' src="img/core/loader.svg" />
+        <img class='start-game-toast__spinner' src="/img/core/loader.svg" />
         <div class="start-game-toast-info">
           <strong class='start-game-toast-info__title'>${i18n.t('gameScene.toast.startGame.title')}</strong>
           ${i18n.t('gameScene.toast.startGame.description')}
@@ -585,6 +585,14 @@ export default () => {
   }
 
   const questionFitText = async (params = {}) => {
+    if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
+      const questionsDom = rootRef.value.querySelector('.questions')
+
+      if (questionsDom.classList.contains('active-question-type-media')) {
+        return false
+      }
+    }
+
     const { originalContent = '' } = params
 
     await nextTick()

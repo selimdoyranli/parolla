@@ -45,7 +45,7 @@
 <script>
 import { defineComponent, ref, computed, useStore, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { Field, Button, Empty } from 'vant'
-import { wsTypeEnum } from '@/enums'
+import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
   name: 'Chat',

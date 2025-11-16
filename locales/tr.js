@@ -12,7 +12,12 @@ export default {
     tryAgain: 'Tekrar dene',
     goToHome: 'Ana sayfaya git',
     unAuthorized: 'Yetkisiz erişim',
-    loginRequired: 'Giriş yapınız'
+    loginRequired: 'Giriş yapınız',
+    mediaError: {
+      uploadFailed: 'Medya yükleme hatası',
+      limitExceeded: 'Medya boyutu sınırı aşıldı',
+      mimeTypeNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
+    }
   },
   success: {
     success: 'Başarılı'
@@ -47,7 +52,10 @@ export default {
     play: 'Oyna',
     joined: 'Katıldı',
     anon: 'anonim',
-    refresh: 'Tazele'
+    refresh: 'Tazele',
+    draft: 'Taslak',
+    quiz: 'Quiz',
+    photoQuiz: 'Foto quiz'
   },
   auth: {
     google: {
@@ -196,8 +204,9 @@ export default {
     },
     createdRoom: {
       title: 'Quiz oluşturuldu',
+      quizUpdated: 'Quiz güncellendi',
       joinRoom: 'Quize git',
-      isListedMessage: `Quizin {isListed}. <br> <br> Yanlış seçenekle yayınladıysan bu pencereyi kapattıktan sonra düzenleyip tekrar gönderebilirsin.`,
+      isListedMessage: `Quizin {isListed}.`,
       public: '<strong>QUIZ LİSTESİNDE GÖRÜNECEK</strong> şekilde oluşturuldu',
       private:
         '<strong>QUIZ LİSTESİNDE GÖRÜNMEYECEK</strong> şekilde oluşturuldu, ama quiz bağlantını bilen arkadaşların hala quizine girebilir',
@@ -207,6 +216,23 @@ export default {
         }
       }
     },
+    mediaUpload: {
+      title: 'Medya yükle',
+      uploadArea: {
+        description: 'Cihazından dosya seç veya sürükleyip bırak'
+      },
+      selectFile: 'Medya seç',
+      selectPhotoOrVideo: 'Fotoğraf ya da video seç',
+      tabs: {
+        file: 'Dosya',
+        youtube: 'YouTube'
+      },
+      youtubeUrl: {
+        label: 'URL',
+        placeholder: 'https://www.youtube.com/watch?v=...',
+        error: "Geçerli bir YouTube URL'si giriniz"
+      }
+    },
     howToPlay: {
       title: 'parolla nasıl oynanır?',
       description: `
@@ -214,7 +240,7 @@ export default {
         Örneğin: <strong>Bal yapan hayvan?</strong> sorusunda aktif karakter <strong>A</strong> ve bunun cevabı <strong>Arı</strong>'dır gibi.<br><br>
         Cevabın <strong>🟩 Doğru</strong> ya da <strong>🟥 Yanlış</strong> olabilir. <br> Eğer cevabı bilmiyorsan <strong>🟨 PAS</strong>
         butonuna bas ya da pas yazıp gönder. Daha sonra o soruya dönebileceksin. Pasladığın soruları süren bitene kadar cevaplayabilirsin.
-        <br><br> Oyunun toplam süresi <strong>5 dakika</strong>'dır.
+        <br><br> Oyunun toplam süresi <strong>{gameTimeLimitMinutes} dakika</strong>'dır.
         <br><small>Eğer sayfayı yenilersen oyun en baştan başlar</small>`,
       body: `
         {description}
@@ -439,6 +465,7 @@ export default {
       nonAuthed: '* Son oluşturduğun quizler tarayıcı belleğine kaydedilir, tarayıcı verileri sıfırlandığında bu liste temizlenir'
     },
     delete: {
+      deleting: 'Quiz siliniyor...',
       callback: {
         success: 'Quiz silindi'
       }
@@ -452,6 +479,8 @@ export default {
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
+      creatingQuiz: 'Quiz oluşturuluyor...',
+      updatingQuiz: 'Quiz güncelleniyor...',
       room: {
         roomTitle: {
           label: 'Quiz başlığı',
@@ -466,6 +495,11 @@ export default {
         tag: {
           label: 'Etiketler',
           placeholder: 'Etiket yaz'
+        },
+        gameTimeLimit: {
+          label: 'Oyun süresi',
+          minutes: 'Dakika',
+          seconds: 'Saniye'
         }
       },
       qa: {
@@ -474,10 +508,35 @@ export default {
           action: 'Soru ekle'
         },
         question: {
+          photo: 'Fotoğraf',
+          video: 'Video',
+          photoOrVideo: 'Fotoğraf/Video',
+          addMedia: 'Medya ekle',
+          addPhoto: 'Fotoğraf ekle',
+          addVideo: 'Video ekle',
+          questionType: {
+            title: 'Soru tipi',
+            options: {
+              text: 'Metin',
+              media: 'Fotoğraf'
+            }
+          },
           label: 'Soru',
-          placeholder: 'Soruyu yaz'
+          placeholder: 'Soruyu yaz',
+          mediaNote: {
+            label: 'Fotoğraf notu',
+            placeholder: 'Fotoğraf notunu yaz (isteğe bağlı)',
+            description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
+          },
+          removeQuestion: 'Soruyu kaldır'
         },
         answer: {
+          answerType: {
+            title: 'Cevap tipi',
+            options: {
+              textField: 'Metin alanı'
+            }
+          },
           label: 'Cevap',
           placeholder: 'Cevapları virgül ile ayırabilirsin',
           error: {
@@ -493,19 +552,7 @@ export default {
       saveDraft: {
         action: 'Taslak kaydet',
         callback: {
-          success: 'Sonrası için kaydediliyor, geri döndüğünde aynı form olacak'
-        }
-      },
-      deleteDraft: {
-        action: 'Kayıtlı formu temizle',
-        confirm: {
-          title: 'Emin misin?',
-          description: 'Formu temizliyorsun şu anda formda gördüklerin silinecek',
-          confirm: 'Temizle',
-          cancel: 'Vazgeç'
-        },
-        callback: {
-          success: 'Kayıtlı form temizlendi'
+          success: 'Taslak olarak kaydedildi'
         }
       },
       termsDescription:

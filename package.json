@@ -59,6 +59,7 @@
     "@vueuse/core": "^10.2.0",
     "bootstrap": "5.2.3",
     "canvas-confetti": "^1.9.3",
+    "convert-size": "^1.2.1",
     "cookie-universal-nuxt": "^2.2.2",
     "cross-env": "^5.2.0",
     "dayjs": "^1.11.19",

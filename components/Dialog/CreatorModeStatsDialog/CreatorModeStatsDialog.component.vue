@@ -66,7 +66,12 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
             )
               p.answer__question
                 strong {{ $t('general.question') }}:
-                span &nbsp;{{ question.question }}
+
+                img(v-if="question.media" :src="question.media.url" :alt="question.question")
+
+                template(v-if="question.question?.length > 0")
+                  span &nbsp;{{ question.question }}
+
               p.answer__correctAnswer
                 strong {{ $t('gameScene.correctAnswer') }}:
                 span &nbsp;{{ question.answer.toLocaleUpperCase('tr') }}
@@ -267,7 +272,7 @@ export default defineComponent({
             pendingScoreboard.value = true
 
             await store.dispatch('creator/fetchScoreboard', {
-              roomId: room.value.id
+              roomId: room.value.roomId
             })
 
             pendingScoreboard.value = false
@@ -282,7 +287,7 @@ export default defineComponent({
       const { data, error } = await store.dispatch('creator/fetchScoreboard', {
         isLoadMore: true,
         page: pagination.value.page + 1,
-        roomId: room.value.id
+        roomId: room.value.roomId
       })
 
       $state.loaded()

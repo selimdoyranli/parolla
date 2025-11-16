@@ -1,9 +1,9 @@
 <template lang="pug">
 Dialog.dialog.creator-mode-created-room-dialog(
   v-model="state.isOpen"
-  :title="$t('dialog.createdRoom.title')"
+  :title="title || $t('dialog.createdRoom.title')"
   :confirm-button-text="confirmButtonText || $t('general.ok')"
-  :cancel-button-text="cancelButtonText || $t('general.close')"
+  :cancel-button-text="cancelButtonText || $t('general.edit')"
   :show-confirm-button="true"
   :show-cancel-button="true"
   :close-on-click-overlay="false"
@@ -14,13 +14,8 @@ Dialog.dialog.creator-mode-created-room-dialog(
 )
   h4.creator-mode-created-room-dialog__roomTitle {{ room.title }}
 
-  template(v-if="room.isListed")
-    p(v-html="$t('dialog.createdRoom.isListedMessage', { isListed: $t('dialog.createdRoom.public') })")
-  template(v-else)
-    p(v-html="$t('dialog.createdRoom.isListedMessage', { isListed: $t('dialog.createdRoom.private') })")
-
   Field.creator-mode-created-room-dialog__roomIdField(
-    :value="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.id } })}`"
+    :value="`${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })}`"
     disabled
   )
     template(#left-icon)
@@ -48,6 +43,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    title: {
+      type: String,
+      required: false,
+      default: null
     },
     confirmButtonText: {
       type: String,
@@ -79,7 +79,7 @@ export default defineComponent({
     )
 
     const copyRoomUrl = async () => {
-      const url = `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: props.room.id } })}`
+      const url = `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: props.room.roomId } })}`
       window.postMessage({ type: 'sharer', data: url })
 
       try {

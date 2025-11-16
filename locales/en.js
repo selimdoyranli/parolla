@@ -12,7 +12,12 @@ export default {
     tryAgain: 'Try again',
     goToHome: 'Go to home',
     unAuthorized: 'Unauthorized access',
-    loginRequired: 'Login required'
+    loginRequired: 'Login required',
+    mediaError: {
+      uploadFailed: 'Media upload failed',
+      limitExceeded: 'Media size limit exceeded',
+      mimeTypeNotAllowed: 'Media mime type not allowed'
+    }
   },
   success: {
     success: 'Success'
@@ -47,7 +52,10 @@ export default {
     play: 'Play',
     joined: 'Joined',
     anon: 'anonym',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    draft: 'Draft',
+    quiz: 'Quiz',
+    photoQuiz: 'Photo quiz'
   },
   auth: {
     google: {
@@ -191,14 +199,32 @@ export default {
     },
     createdRoom: {
       title: 'Quiz created',
+      quizUpdated: 'Quiz updated',
       joinRoom: 'Join quiz',
-      isListedMessage: `Your quiz {isListed} has been created. If you published with the wrong option, you can close this window, edit, and send it again.`,
+      isListedMessage: `Your quiz {isListed} has been created.`,
       public: '<strong>WILL APPEAR IN QUIZ LIST</strong>',
       private: '<strong>PRIVATE</strong>',
       copyUrl: {
         callback: {
           success: 'Copied quiz URL'
         }
+      }
+    },
+    mediaUpload: {
+      title: 'Upload media',
+      uploadArea: {
+        description: 'Select file from your device or drag and drop'
+      },
+      selectFile: 'Select file',
+      selectPhotoOrVideo: 'Select photo or video',
+      tabs: {
+        file: 'File',
+        youtube: 'YouTube'
+      },
+      youtubeUrl: {
+        label: 'URL',
+        placeholder: 'https://www.youtube.com/watch?v=...',
+        error: 'Enter a valid YouTube URL'
       }
     },
     howToPlay: {
@@ -208,7 +234,7 @@ export default {
         For example: <strong>The fruit that fell on Newton's head?</strong> active character in question <strong>A</strong> and the answer is <strong>Apple</strong>.<br><br>
         Your answer may be <strong>🟩 Correct</strong> or <strong>🟥 Incorrect</strong>. <br> If you don't know the answer press the <strong>🟨 PASS</strong>
         button or type pass and send it. You can come back to that question later. You can answer the questions you pass until your time runs out.
-        <br><br> The total duration of the game is <strong>5 minutes</strong>.
+        <br><br> The total duration of the game is <strong>{gameTimeLimitMinutes} minutes</strong>.
         <br><small>If you refresh the page the game starts from the beginning</small>`,
       body: `
         {description}
@@ -433,6 +459,7 @@ export default {
       nonAuthed: 'Your recently created quizzes are saved in the browser storage, this list will be cleared when the browser data is reset'
     },
     delete: {
+      deleting: 'Deleting quiz...',
       callback: {
         success: 'Quiz deleted'
       }
@@ -445,6 +472,8 @@ export default {
       title: 'CREATE A QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
+      creatingQuiz: 'Creating quiz...',
+      updatingQuiz: 'Updating quiz...',
       clearForm: 'Clear Form',
       room: {
         roomTitle: {
@@ -460,6 +489,11 @@ export default {
         tag: {
           label: 'Tags',
           placeholder: 'Type a tag'
+        },
+        gameTimeLimit: {
+          label: 'Game time',
+          minutes: 'Minutes',
+          seconds: 'Seconds'
         }
       },
       qa: {
@@ -468,10 +502,35 @@ export default {
           action: 'Add questions'
         },
         question: {
+          photo: 'Photo',
+          video: 'Video',
+          photoOrVideo: 'Photo/Video',
+          addMedia: 'Add media',
+          addPhoto: 'Add photo',
+          addVideo: 'Add video',
+          questionType: {
+            title: 'Question type',
+            options: {
+              text: 'Text',
+              media: 'Photo'
+            }
+          },
           label: 'Question',
-          placeholder: 'Type question'
+          placeholder: 'Type question',
+          mediaNote: {
+            label: 'Photo note',
+            placeholder: 'Type photo note (optional)',
+            description: 'The player will see the note related to the photo'
+          },
+          removeQuestion: 'Remove question'
         },
         answer: {
+          answerType: {
+            title: 'Answer type',
+            options: {
+              textField: 'Text field'
+            }
+          },
           label: 'Answer',
           placeholder: 'You can separate the answers with commas',
           error: {
@@ -487,19 +546,7 @@ export default {
       saveDraft: {
         action: 'Save draft',
         callback: {
-          success: 'Saving for later, when it comes back it will be the same form'
-        }
-      },
-      deleteDraft: {
-        action: 'Clear saved form',
-        confirm: {
-          title: 'Sure?',
-          description: 'You are clearing the form, what you see on the form now will be deleted',
-          confirm: 'Clear',
-          cancel: 'Cancel'
-        },
-        callback: {
-          success: 'Cleared saved form'
+          success: 'Saved as draft'
         }
       },
       termsDescription:

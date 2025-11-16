@@ -1,4 +1,4 @@
-export default Object.freeze({
+export const gameModeKeyEnum = Object.freeze({
   DAILY: 'daily',
   UNLIMITED: 'unlimited',
   CREATOR: 'creator',

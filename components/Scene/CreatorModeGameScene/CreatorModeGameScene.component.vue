@@ -34,13 +34,19 @@
 
     template(v-else)
       // Questions
-      .questions
+      .questions(:class="[questionsClasses]")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
           :class="{ 'question--active': index === alphabet.activeIndex, 'question--osk': answer.isFocused }"
         )
-          strong.question__title {{ question.question }}
+          strong.question__title(v-if="question.question?.length > 0") {{ question.question }}
+
+          .question-media.do-not-hide-keyboard(v-if="question.media")
+            .question-media-image.do-not-hide-keyboard
+              img.question-media-image__img.do-not-hide-keyboard(:src="question.media.url" :alt="question.media.name")
+
+            span.question-media__note.do-not-hide-keyboard(v-if="question.mediaNote?.length > 0") {{ question.mediaNote }}
 
       // Field Section
       section.game-scene__fieldSection(:class="{ 'game-scene__fieldSection--disabled': !isGameStarted }")
@@ -92,6 +98,7 @@
 <script>
 import { defineComponent, useFetch, useRoute, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
+import { questionTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown, Notify } from 'vant'
 
 export default defineComponent({
@@ -138,6 +145,8 @@ export default defineComponent({
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
+    const room = computed(() => store.getters['creator/room'])
+
     // Fetch Room
     const { fetch, fetchState } = useFetch(async () => {
       const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
@@ -169,7 +178,7 @@ export default defineComponent({
       await store.commit('creator/SET_IS_GAME_OVER', {
         isGameOver: false
       })
-      await store.commit('creator/RESET_COUNTDOWN_TIMER')
+      await store.commit('creator/RESET_COUNTDOWN_TIMER', room.value.gameTimeLimit)
       await store.commit('creator/RESET_ALPHABET')
       await store.commit('creator/SET_IS_OPEN_STATS_DIALOG', false)
 
@@ -208,7 +217,17 @@ export default defineComponent({
       }
     })
 
+    const questionsClasses = computed(() => {
+      if (!questions.value[alphabet.value.activeIndex]) return {}
+
+      return {
+        'active-question-type-media': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.MEDIA,
+        'active-question-type-text': questions.value[alphabet.value.activeIndex].questionType === questionTypeEnum.TEXT
+      }
+    })
+
     return {
+      questionTypeEnum,
       rootRef,
       ANSWER_CHAR_LENGTH,
       fetch,
@@ -231,7 +250,8 @@ export default defineComponent({
       listenCountdown,
       handleCountdownFinish,
       isTouchEnabled,
-      resetGame
+      resetGame,
+      questionsClasses
     }
   }
 })

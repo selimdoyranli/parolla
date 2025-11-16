@@ -1,7 +1,9 @@
 <template lang="pug">
-Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
+Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="onFormFailed" @submit="onFormSubmit")
   span.creator-mode-compose-form__title(align="center")
-    template(v-if="room") {{ $t('form.creatorModeEdit.title') }}
+    template(v-if="room")
+      | {{ $t('form.creatorModeEdit.title') }}
+      Tag.creator-mode-compose-form__draftTag(v-if="form.isDraft" type="warning") {{ $t('general.draft') }}
     template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   template
@@ -61,10 +63,15 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
           template(v-for="tag in form.tags")
             Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="removeTag(tag)") {{ tag }}
 
-    template(v-if="!$auth.loggedIn && !$auth.user")
-      small.creator-mode-compose-form__anonNotice
-        AppIcon(name="tabler:info-circle" :width="16" :height="16")
-        | Giriş yapmadığın için oluşturacağın odayı tekrar düzenleyemez ya da silemezsin.
+      Cell.creator-mode-compose-form__gameTimeLimit
+        template(#title)
+          span {{ $t('form.creatorModeCompose.room.gameTimeLimit.label') }}
+
+        template(#right-icon)
+          .game-time-limit-steppers
+            .game-time-limit-stepper
+              Stepper(v-model="gameTimeLimitMinutes" :min="1" :max="60" :step="1" :integer="true")
+              span.game-time-limit-label {{ $t('form.creatorModeCompose.room.gameTimeLimit.minutes') }}
 
     span.creator-mode-compose-form__fieldsTitle {{ $t('form.creatorModeCompose.qaSet') }}
     .creator-mode-compose-form__fields
@@ -72,7 +79,54 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
         template(v-if="form.qaList && form.qaList.length > 0")
           // List
           .compose-qa-card(v-for="(item, index) in form.qaList")
+            Cell.creator-mode-compose-form__questionType
+              template(#title)
+                span {{ $t('form.creatorModeCompose.qa.question.questionType.title') }}
+              template(#right-icon)
+                RadioGroup.question-type-radio-group(v-model="form.qaList[index].questionType" direction="horizontal")
+                  Radio.question-type-radio(name="text")
+                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.text') }}
+                    template(#icon="{ props }")
+                      AppIcon.question-type-radio__icon(name="tabler:pencil")
+                  Radio.question-type-radio(name="media")
+                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.media') }}
+                    template(#icon="{ props }")
+                      AppIcon.question-type-radio__icon(name="tabler:photo")
+
+            Cell.media-list(v-if="item.questionType === questionTypeEnum.MEDIA")
+              template(#title)
+                span {{ $t('form.creatorModeCompose.qa.question.photo') }}
+
+              template(v-if="!item.media || item.media === null" #right-icon)
+                Button.compose-qa-card-add-media-button(
+                  type="secondary"
+                  plain
+                  native-type="button"
+                  round
+                  size="small"
+                  @click="handleAddMedia(index)"
+                )
+                  AppIcon.compose-qa-card-add-media-button__icon(name="tabler:plus")
+                  span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addPhoto') }}
+
+              template(#label)
+                .media-thumbnail(v-if="item.media")
+                  img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
+                  Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
+                    AppIcon(name="tabler:x" :width="14" :height="14")
+
+                  Cell.creator-mode-compose-form-media-note
+                    small.creator-mode-compose-form-media-note__description {{ $t('form.creatorModeCompose.qa.question.mediaNote.description') }}
+                    Field.creator-mode-compose-form-media-note-field(
+                      v-model="item.mediaNote"
+                      name="mediaNote"
+                      :placeholder="$t('form.creatorModeCompose.qa.question.mediaNote.placeholder')"
+                      maxlength="64"
+                      show-word-limit
+                    )
+
             Field.creator-mode-compose-form__questionField(
+              v-if="item.questionType === questionTypeEnum.TEXT"
               v-model="item.question"
               name="question"
               :label="$t('form.creatorModeCompose.qa.question.label')"
@@ -84,6 +138,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
               :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.question.label') }) }]"
             )
             Field.creator-mode-compose-form__answerField(
+              v-model="item.answer"
               name="answer"
               :label="$t('form.creatorModeCompose.qa.answer.label')"
               :placeholder="$t('form.creatorModeCompose.qa.answer.label')"
@@ -101,19 +156,10 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                   maxlength="120"
                   @input="e => getCharacter(e.target.value, { item, index })"
                 )
-            Field.creator-mode-compose-form__characterField(
-              v-model="item.character"
-              name="character"
-              :label="$t('form.creatorModeCompose.qa.character.label')"
-              :placeholder="$t('form.creatorModeCompose.qa.character.placeholder')"
-              maxlength="1"
-              readonly
-              disabled
-              :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.character.label') }) }]"
-              @input="validateAnswer({ item, index })"
-            )
 
             .compose-qa-card__actions
+              label.compose-qa-card__index {{ index + 1 }}. {{ $t('general.question') }}
+
               template(v-if="form.qaList && form.qaList.length > 1")
                 Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
                   icon="arrow-up"
@@ -140,7 +186,7 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
                 round
                 size="small"
                 @click="removeItem(index)"
-              ) {{ $t('general.remove') }}
+              ) {{ $t('form.creatorModeCompose.qa.question.removeQuestion') }}
 
         // Empty List
         template(v-else)
@@ -162,41 +208,51 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
           @click="addItem"
         ) {{ $t('form.creatorModeCompose.qa.addMoreQuestion') }}
 
-        Button(
-          v-if="form.qaList && form.qaList.length > 1 && room === null"
-          type="warning"
-          plain
-          native-type="button"
-          round
-          :loading="form.isBusy"
-          :disabled="form.isBusy"
-          @click="handleClickDeleteDraft"
-        ) {{ $t('form.creatorModeCompose.deleteDraft.action') }}
-
         p.creator-mode-compose-form__termsDescription(v-if="form.qaList && form.qaList.length > 0")
           | {{ $t('form.creatorModeCompose.termsDescription') }}
 
-    // Save list button
-    Button.compose-qa-list__submitButton(
-      v-if="form.qaList && form.qaList.length > 0"
-      type="primary"
-      icon="success"
-      plain
-      native-type="button"
-      round
-      :loading="form.isBusy"
-      :disabled="form.isBusy"
-      @click="handleSubmit"
-    )
-      template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
-      template(v-else) {{ $t('form.creatorModeCompose.submit') }}
+    .d-flex.align-items-center.mt-base
+      // Save draft button
+      Button.creator-mode-compose-form__saveDraftButton(
+        v-if="isVisibleSaveDraftButton"
+        plain
+        native-type="button"
+        round
+        size="small"
+        @click="saveAsDraft"
+      )
+        | {{ $t('form.creatorModeCompose.saveDraft.action') }}
+
+      // Submit button
+      Button.compose-qa-list__submitButton(
+        v-if="form.qaList && form.qaList.length > 0"
+        type="primary"
+        icon="success"
+        native-type="submit"
+        round
+        :loading="form.isBusy"
+        :disabled="form.isBusy"
+      )
+        template(v-if="room") {{ $t('form.creatorModeEdit.submit') }}
+        template(v-else) {{ $t('form.creatorModeCompose.submit') }}
+
+  p {{ form.gameTimeLimit }}
 
   CreatorModeCreatedRoomDialog(
     :isOpen="dialog.room.isOpen"
+    :title="room ? $t('dialog.createdRoom.quizUpdated') : $t('dialog.createdRoom.title')"
     :confirmButtonText="$t('dialog.createdRoom.joinRoom')"
     :room="createdRoom"
-    @onConfirm="handleConfirmRoomDialog"
-    @closed="handleCloseRoomDialog"
+    @onConfirm="handleConfirmCreatedRoomDialog"
+    @onCancel="handleCancelCreatedRoomDialog"
+    @closed="handleCloseCreatedRoomDialog"
+  )
+
+  MediaUploadDialog(
+    :title="$t('form.creatorModeCompose.qa.question.addPhoto')"
+    :isOpen="dialog.mediaUpload.isOpen"
+    :activeMediaTypes="['file']"
+    @closed="handleCloseMediaUploadDialog"
   )
 
   // Ad
@@ -204,10 +260,28 @@ Form.creator-mode-compose-form(@keypress.enter.prevent @failed="handleFailed")
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, useStore, reactive, set, watch, computed } from '@nuxtjs/composition-api'
-import { ROOM_TAG_REGEX } from '@/system/constant'
+import { defineComponent, useRouter, useContext, useStore, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
+import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
-import { Form, Field, Cell, Switch, Button, Empty, Notify, Dialog, Tag } from 'vant'
+import {
+  Form,
+  Field,
+  Cell,
+  Switch,
+  Button,
+  Empty,
+  Notify,
+  Dialog,
+  Tag,
+  Tabs,
+  Tab,
+  NoticeBar,
+  RadioGroup,
+  Radio,
+  Stepper,
+  Toast
+} from 'vant'
 
 export default defineComponent({
   components: {
@@ -218,7 +292,13 @@ export default defineComponent({
     Button,
     Empty,
     Dialog,
-    Tag
+    Tag,
+    Tabs,
+    Tab,
+    NoticeBar,
+    RadioGroup,
+    Radio,
+    Stepper
   },
   props: {
     room: {
@@ -238,26 +318,41 @@ export default defineComponent({
 
     const user = computed(() => store.getters['auth/user'])
 
+    const gameTimeLimitMinutes = computed({
+      get: () => Math.floor(form.gameTimeLimit / (60 * 1000)),
+      set: value => {
+        // Convert minutes to milliseconds (minimum 1 minute = 60000ms)
+        form.gameTimeLimit = value * 60 * 1000
+      }
+    })
+
     const form = reactive({
+      isDraft: props.room?.isVisible ? false : true,
       isBusy: false,
-      isClear: false,
-      roomTitle: '',
-      isListed: false,
-      isAnon: false,
+      isClear: true,
+      roomTitle: props.room?.title || '',
+      isListed: props.room?.isListed || false,
+      isAnon: props.room?.isAnon || false,
       tag: '',
-      tags: [],
-      qaList: []
+      tags: props.room?.tags.map(tag => tag.title) || [],
+      qaList: props.room?.questions || [],
+      mediaList: [],
+      gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
     })
 
     const createdRoom = reactive({
       title: '',
-      id: '',
+      roomId: '',
       isListed: form.isListed
     })
 
     const dialog = reactive({
       room: {
         isOpen: false
+      },
+      mediaUpload: {
+        isOpen: false,
+        currentQaIndex: null
       }
     })
 
@@ -283,32 +378,66 @@ export default defineComponent({
     }
 
     const addItem = () => {
+      // Get the last question's questionType if exists
+      const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
+
       form.qaList.push({
         character: '',
+        questionType: lastQuestionType,
         question: '',
+        answerType: answerTypeEnum.TEXT_FIELD,
         answer: '',
-        isMatched: null
+        isMatched: null,
+        media: null
       })
     }
 
     const removeItem = index => {
       form.qaList.splice(index, 1)
+      // Update mediaList for removed question
+      updateMediaListForRemovedQuestion(index)
     }
 
     const moveUp = index => {
-      const temp = form.qaList[index]
-      set(form.qaList, index, form.qaList[index - 1])
-      set(form.qaList, index - 1, temp)
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index - 1, 0, item)
+
+      // Update mediaList for swapped questions
+      updateMediaListForSwappedQuestions(index - 1, index)
     }
 
     const moveDown = index => {
-      const temp = form.qaList[index]
-      set(form.qaList, index, form.qaList[index + 1])
-      set(form.qaList, index + 1, temp)
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index + 1, 0, item)
+
+      // Update mediaList for swapped questions
+      updateMediaListForSwappedQuestions(index, index + 1)
     }
 
     const disableMoveUp = index => index === 0
     const disableMoveDown = index => index === form.qaList.length - 1
+
+    const updateMediaListForRemovedQuestion = removedIndex => {
+      // Remove media item at the specified index
+      form.mediaList = form.mediaList.filter(media => media.questionIndex !== removedIndex)
+      // Update questionIndex for remaining media items that were after the removed index
+      form.mediaList.forEach(media => {
+        if (media.questionIndex > removedIndex) {
+          media.questionIndex--
+        }
+      })
+    }
+
+    const updateMediaListForSwappedQuestions = (index1, index2) => {
+      // Swap questionIndex values for media items at the specified indices
+      form.mediaList.forEach(media => {
+        if (media.questionIndex === index1) {
+          media.questionIndex = index2
+        } else if (media.questionIndex === index2) {
+          media.questionIndex = index1
+        }
+      })
+    }
 
     const formatAnswerField = value => {
       const formattedValue = value.startsWith(' ') ? '' : value
@@ -374,25 +503,111 @@ export default defineComponent({
       }
     }
 
-    const handleFailed = errorInfo => {
-      if (errorInfo && errorInfo.values.length > 0) {
+    const handleAddMedia = qaIndex => {
+      dialog.mediaUpload.currentQaIndex = qaIndex
+      dialog.mediaUpload.isOpen = true
+    }
+
+    const handleCloseMediaUploadDialog = fileList => {
+      if (fileList && fileList.length > 0 && dialog.mediaUpload.currentQaIndex !== null) {
+        const selectedMedia = fileList[0]
+
+        if (selectedMedia) {
+          // Handle file upload
+          const mediaData = {
+            file: selectedMedia.file || selectedMedia,
+            url:
+              selectedMedia.url ||
+              (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
+          }
+
+          form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
+
+          if (mediaData.file) {
+            // Add to mediaList
+            form.mediaList.push({ ...mediaData, questionIndex: dialog.mediaUpload.currentQaIndex })
+          }
+        }
+      }
+
+      dialog.mediaUpload.isOpen = false
+      dialog.mediaUpload.currentQaIndex = null
+    }
+
+    const handleDeleteMedia = qaIndex => {
+      // Clear media
+      form.qaList[qaIndex].media = null
+      // Remove from mediaList as well
+      form.mediaList = form.mediaList.filter(media => media.questionIndex !== qaIndex)
+    }
+
+    const getMediaSrc = media => {
+      if (!media) return ''
+
+      // If we have a direct URL, use it
+      if (media.url) return media.url
+
+      // If we have a file object, create object URL safely
+      if (media.file && typeof URL !== 'undefined' && URL.createObjectURL) {
+        try {
+          return URL.createObjectURL(media.file)
+        } catch (error) {
+          console.warn('Failed to create object URL for media:', error)
+
+          return ''
+        }
+      }
+
+      return ''
+    }
+
+    const getMediaAlt = media => {
+      if (!media) return 'Media'
+
+      if (media.file && media.file.name) return media.file.name
+
+      return 'Media'
+    }
+
+    const onFormFailed = async errorInfo => {
+      if (errorInfo && errorInfo.errors.length > 0) {
         form.isClear = false
       } else {
         form.isClear = true
       }
     }
 
-    const getErrorNotify = () => {
+    const onFormSubmit = async () => {
+      await handleSubmit({ isDraft: false })
+    }
+
+    const getErrorNotify = error => {
       Notify({
-        message: i18n.t('form.creatorModeCompose.error.couldNotCreate'),
+        message: error ? `${error.error.message}` : `${i18n.t('form.creatorModeCompose.error.couldNotCreate')}.`,
         color: 'var(--color-text-04)',
         background: 'var(--color-danger-01)',
-        duration: 1000
+        duration: 3000
       })
     }
 
-    const handleSubmit = async () => {
+    const showCreatingRoomToast = () => {
+      Toast.loading({
+        className: 'toast-creating-quiz',
+        message: props.room ? i18n.t('form.creatorModeCompose.updatingQuiz') : i18n.t('form.creatorModeCompose.creatingQuiz'),
+        duration: 0,
+        forbidClick: true,
+        overlay: true,
+        closeOnClickOverlay: false
+      })
+    }
+
+    const clearCreatingRoomToast = () => {
+      Toast.clear()
+    }
+
+    const handleSubmit = async ({ isDraft = false }) => {
       form.isBusy = true
+      showCreatingRoomToast()
 
       const nonMatchedItems = form.qaList.filter(item => {
         return item.isMatched === false
@@ -404,117 +619,160 @@ export default defineComponent({
         form.isClear = true
       }
 
+      const resetMediaList = () => {
+        form.mediaList = []
+      }
+
       if (form.isClear) {
         const deviceInfo = await getDeviceInfo()
 
-        const { data, error } = props.room
-          ? await store.dispatch('creator/editRoom', { documentId: props.room.documentId, form, deviceInfo })
-          : await store.dispatch('creator/postRoom', { form, deviceInfo })
-
-        if (data) {
-          const room = data.data
-
-          createdRoom.title = room.title
-          createdRoom.id = room.roomId
-          createdRoom.isListed = form.isListed
-
-          dialog.room.isOpen = true
-
-          let storagedMyRooms = JSON.parse(window.localStorage.getItem('myRooms'))
-
-          if (storagedMyRooms && storagedMyRooms.length > 0) {
-            window.localStorage.setItem('myRooms', JSON.stringify([...storagedMyRooms, roomTransformer(room)]))
+        /**
+         * If the quiz has media, set the visibility to false, set to true after media is uploaded successfully
+         */
+        const getQuizVisibility = () => {
+          if (isDraft) {
+            return false
           } else {
-            window.localStorage.setItem('myRooms', JSON.stringify([roomTransformer(room)]))
+            if (form.mediaList.length > 0) {
+              return false
+            } else {
+              return true
+            }
           }
         }
 
+        const { data, error } = props.room
+          ? await store.dispatch('creator/editRoom', {
+              documentId: props.room.documentId,
+              form: { ...form, isVisible: getQuizVisibility() },
+              deviceInfo
+            })
+          : await store.dispatch('creator/postRoom', { form: { ...form, isVisible: getQuizVisibility() }, deviceInfo })
+
+        if (data) {
+          const room = roomTransformer(data.data)
+
+          if (room.isVisible) {
+            form.isDraft = false
+            document.querySelector('.creator-mode-compose-form__saveDraftButton')?.classList.add('d-none')
+          }
+
+          createdRoom.title = room.title
+          createdRoom.roomId = room.roomId
+          createdRoom.isListed = form.isListed
+
+          const mediaListItems = form.mediaList.map(media => media.file).filter(file => file != null)
+
+          if (mediaListItems.length > 0) {
+            const { data: uploadedMediaListData, error: uploadedMediaListError } = await store.dispatch('creator/uploadQuizMedia', {
+              files: mediaListItems,
+              path: `quiz/${room.id}`,
+              ref: 'api::room.room',
+              refId: room.id,
+              field: 'mediaList'
+            })
+
+            if (uploadedMediaListData) {
+              uploadedMediaListData.forEach((uploadedMedia, index) => {
+                // Use the original questionIndex to set media to the correct qaList item
+                const originalQuestionIndex = form.mediaList[index].questionIndex
+                form.qaList[originalQuestionIndex].media = uploadedMedia
+              })
+
+              await store.dispatch('creator/editRoom', {
+                documentId: room.documentId,
+                form: { ...form, isVisible: isDraft ? false : true },
+                deviceInfo
+              })
+              await resetMediaList()
+            }
+
+            if (uploadedMediaListError) {
+              const questionIndex = form.qaList.findIndex(item => {
+                return item?.media?.file?.name === uploadedMediaListError.details?.file?.originalFilename
+              })
+
+              getErrorNotify({
+                error: {
+                  ...uploadedMediaListError,
+                  message: `Medya yüklenirken hata oldu \n ${
+                    questionIndex !== -1
+                      ? `${questionIndex + 1}. ${i18n.t('general.question')}: ${uploadedMediaListError.message}`
+                      : uploadedMediaListError.message
+                  }`
+                }
+              })
+
+              setTimeout(() => {
+                dialog.room.isOpen = false
+              }, 1)
+            }
+          }
+
+          dialog.room.isOpen = true
+        }
+
         if (error) {
-          getErrorNotify()
+          getErrorNotify({ error })
         }
       } else {
         getErrorNotify()
       }
 
       form.isBusy = false
+      clearCreatingRoomToast()
     }
 
-    const resetForm = () => {
-      form.roomTitle = ''
-      form.isListed = false
-      form.isAnon = false
-      form.qaList = []
-      form.tags = []
+    const saveAsDraft = async () => {
+      await handleSubmit({ isDraft: true })
     }
 
-    const handleClickDeleteDraft = () => {
-      Dialog.confirm({
-        title: i18n.t('form.creatorModeCompose.deleteDraft.confirm.title'),
-        message: i18n.t('form.creatorModeCompose.deleteDraft.confirm.description'),
-        cancelButtonText: i18n.t('form.creatorModeCompose.deleteDraft.confirm.cancel'),
-        confirmButtonText: i18n.t('form.creatorModeCompose.deleteDraft.confirm.confirm')
-      }).then(() => {
-        deleteDraft()
-      })
-    }
-
-    const saveDraft = () => {
-      window.localStorage.setItem('creatorFormDraft', JSON.stringify(form))
-    }
-
-    const storagedForm = JSON.parse(window.localStorage.getItem('creatorFormDraft'))
-
-    if (storagedForm && props.room === null) {
-      form.roomTitle = storagedForm.roomTitle
-      form.isListed = storagedForm.isListed
-      form.isAnon = storagedForm.isAnon
-      form.qaList = storagedForm.qaList
-      form.tags = storagedForm.tags
-    }
-
-    const deleteDraft = () => {
-      window.localStorage.removeItem('creatorFormDraft')
-      resetForm()
-    }
-
-    const setForm = value => {
-      form.roomTitle = value.title
-      form.isListed = value.isListed
-      form.isAnon = value.isAnon
-      form.qaList = value.questions
-      form.tags = value.tags.map(tag => tag.title)
-    }
-
-    if (props.room) {
-      setForm(props.room)
-    }
-
-    watch(props.room, value => {
-      setForm(value)
+    const isVisibleSaveDraftButton = computed(() => {
+      return form.qaList && form.qaList.length > 0 && (!props.room || (props.room && !props.room.isVisible))
     })
 
-    const handleConfirmRoomDialog = () => {
+    const handleBeforeUnload = e => {
+      const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.tags.length > 0
+
+      if (hasContent) {
+        e.preventDefault()
+        e.returnValue = ''
+
+        return ''
+      }
+    }
+
+    onMounted(() => {
+      window.addEventListener('beforeunload', handleBeforeUnload)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    })
+
+    const handleConfirmCreatedRoomDialog = () => {
       router.push(
         localePath({
           name: 'CreatorMode-CreatorModeRoom-slug',
-          params: { slug: createdRoom.id }
+          params: { slug: createdRoom.roomId }
         })
       )
     }
 
-    const handleCloseRoomDialog = () => {
+    const handleCancelCreatedRoomDialog = () => {
+      router.push(localePath({ name: 'CreatorMode-CreatorModeEdit-slug', params: { slug: createdRoom.roomId } }))
+    }
+
+    const handleCloseCreatedRoomDialog = () => {
       dialog.room.isOpen = false
     }
 
-    watch(form, value => {
-      if (value.qaList && value.qaList.length > 0) {
-        saveDraft()
-      }
-    })
-
     return {
+      questionTypeEnum,
+      answerTypeEnum,
       user,
       form,
+      gameTimeLimitMinutes,
       handleInputTag,
       addTag,
       removeTag,
@@ -527,15 +785,21 @@ export default defineComponent({
       formatAnswerField,
       getCharacter,
       validateAnswer,
-      handleFailed,
+      handleAddMedia,
+      handleCloseMediaUploadDialog,
+      handleDeleteMedia,
+      getMediaSrc,
+      getMediaAlt,
+      onFormFailed,
+      onFormSubmit,
       handleSubmit,
-      handleClickDeleteDraft,
-      saveDraft,
-      deleteDraft,
+      saveAsDraft,
+      isVisibleSaveDraftButton,
       createdRoom,
       dialog,
-      handleConfirmRoomDialog,
-      handleCloseRoomDialog
+      handleConfirmCreatedRoomDialog,
+      handleCancelCreatedRoomDialog,
+      handleCloseCreatedRoomDialog
     }
   }
 })

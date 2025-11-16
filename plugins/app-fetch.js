@@ -50,11 +50,13 @@ const appFetch = async ({ $axios, app }, params) => {
         error: error.response?.data?.error
           ? {
               message: error.response?.data?.error.message,
+              details: error.response?.data?.error.details,
               code: error.response?.status,
               config: error.response?.config
             }
           : {
               message: error.response?.statusText,
+              details: error.response?.data?.details,
               code: error.response?.status,
               config: error.response?.config
             }
@@ -64,6 +66,7 @@ const appFetch = async ({ $axios, app }, params) => {
         data: null,
         error: {
           message: error.message,
+          details: error.details,
           code: error.code
         }
       }
