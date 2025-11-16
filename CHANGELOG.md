@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.1...v2.32.2)
+
+
+### 🩹 Fixes
+
+  - Format fix for time on creator mode how to play ([114e9c4](https://github.com/selimdoyranli/parolla/commit/114e9c4))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.0...v2.32.1)
