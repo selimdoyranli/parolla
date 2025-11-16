@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.4
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.3...v2.32.4)
+
+
+### 💅 Refactors
+
+  - Daily playing count on creator mode ([c6fd7a6](https://github.com/selimdoyranli/parolla/commit/c6fd7a6))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.2...v2.32.3)
