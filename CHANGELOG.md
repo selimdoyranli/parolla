@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.2...v2.32.3)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on creator mode game scene ([e9a4fe3](https://github.com/selimdoyranli/parolla/commit/e9a4fe3))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.1...v2.32.2)
