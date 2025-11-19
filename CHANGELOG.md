@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.5
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.4...v2.32.5)
+
+
+### 🩹 Fixes
+
+  - Model fix on todays quiz ([39a9bba](https://github.com/selimdoyranli/parolla/commit/39a9bba))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.4
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.3...v2.32.4)
