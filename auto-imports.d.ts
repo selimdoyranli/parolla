@@ -10,6 +10,7 @@ declare global {
   const useAvatar: typeof import('./composables/useAvatar.js')['default']
   const useDeviceInfo: typeof import('./composables/useDeviceInfo.js')['default']
   const useDialog: typeof import('./composables/useDialog.js')['default']
+  const useFile: typeof import('./composables/useFile.js')['default']
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
   const useGameMode: typeof import('./composables/useGameMode.js')['default']
   const useGameScene: typeof import('./composables/useGameScene.js')['default']

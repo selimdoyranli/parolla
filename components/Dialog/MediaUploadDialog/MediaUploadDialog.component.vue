@@ -85,6 +85,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { i18n } = useContext()
+    const { getFileExtension } = useFile()
 
     const state = reactive({
       isOpen: props.isOpen
@@ -189,8 +190,10 @@ export default defineComponent({
         }
       }
 
+      const extension = getFileExtension(file.name)
+
       if (parollaConfig.upload.allowedExtensions) {
-        if (!parollaConfig.upload.allowedExtensions.includes(file.name.split('.').pop())) {
+        if (!parollaConfig.upload.allowedExtensions.includes(extension)) {
           Notify({
             message: i18n.t('error.mediaError.extensionNotAllowed'),
             color: 'var(--color-text-04)',
