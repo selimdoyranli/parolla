@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.8
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.7...v2.32.8)
+
+
+### 💅 Refactors
+
+  - Add useFile composable ([9a703ca](https://github.com/selimdoyranli/parolla/commit/9a703ca))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.7
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.6...v2.32.7)
