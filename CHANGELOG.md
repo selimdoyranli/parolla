@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.6
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.5...v2.32.6)
+
+
+### 💅 Refactors
+
+  - Check file extension on quiz upload media ([c8aa721](https://github.com/selimdoyranli/parolla/commit/c8aa721))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.5
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.4...v2.32.5)
