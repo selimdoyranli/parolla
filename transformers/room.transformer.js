@@ -17,6 +17,7 @@ export default model => {
     user: model.user,
     alphabet: model.alphabet,
     hasMedia: model.hasMedia,
+    mediaCount: model.mediaCount,
     questions: model.qaList,
     tags: model.roomTags
       ? model.roomTags.map(tag => {

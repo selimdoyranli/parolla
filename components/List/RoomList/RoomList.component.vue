@@ -47,9 +47,9 @@
                     template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                     template(v-if="room.isAnon") {{ $t('general.anon') }}
 
-                .room-list-item-badge(v-if="room.hasMedia")
+                .room-list-item-badge(v-if="room.hasMedia && room.mediaCount > Math.floor(room.questionCount / 2)")
                   Tag.room-list-item-has-media-tag
-                    AppIcon.room-list-item-has-media-tag__galleryIcon(v-if="room.hasMedia" name="streamline-flex-color:gallery-flat")
+                    AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
                     span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
 
                 .room-list-item-badge(v-if="room.questionCount")
