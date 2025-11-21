@@ -16,7 +16,8 @@ export default {
     mediaError: {
       uploadFailed: 'Media upload failed',
       limitExceeded: 'Media size limit exceeded',
-      mimeTypeNotAllowed: 'Media mime type not allowed'
+      mimeTypeNotAllowed: 'Media mime type not allowed',
+      extensionNotAllowed: 'Media extension not allowed'
     }
   },
   success: {

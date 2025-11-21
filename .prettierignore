@@ -8,3 +8,5 @@ node_modules/*
 package.json
 package-lock.json
 yarn.lock
+.yarn
+node_modules

@@ -16,7 +16,8 @@ export default {
     mediaError: {
       uploadFailed: 'Medya yükleme hatası',
       limitExceeded: 'Medya boyutu sınırı aşıldı',
-      mimeTypeNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
+      mimeTypeNotAllowed: 'İzin verilmiyen medya tipi',
+      extensionNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
     }
   },
   success: {

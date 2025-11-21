@@ -16,10 +16,11 @@ Dialog.dialog.media-upload-dialog(
           v-model="fileList"
           :style="{ opacity: fileList.length != 0 ? 1 : 0 }"
           :preview-options="{ closeable: true }"
-          :accept="uploaderOptions?.accept || parollaConfig.upload.allowedMimeTypes.join(',')"
+          :accept="uploaderOptions?.accept || parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(',')"
           :multiple="uploaderOptions?.multiple || false"
           :max-count="uploaderOptions?.maxCount || 1"
           :max-size="uploaderOptions?.maxSize || parollaConfig.upload.maxFileSize"
+          :before-read="handleBeforeRead"
           @oversize="handleOversize"
         )
         label.uploader-area(for="media-uploader" v-show="fileList.length === 0")
@@ -174,6 +175,36 @@ export default defineComponent({
       }
     }
 
+    const handleBeforeRead = file => {
+      if (parollaConfig.upload.allowedMimeTypes) {
+        if (!parollaConfig.upload.allowedMimeTypes.includes(file.type)) {
+          Notify({
+            message: i18n.t('error.mediaError.mimeTypeNotAllowed'),
+            color: 'var(--color-text-04)',
+            background: 'var(--color-danger-01)',
+            duration: 3000
+          })
+
+          return false
+        }
+      }
+
+      if (parollaConfig.upload.allowedExtensions) {
+        if (!parollaConfig.upload.allowedExtensions.includes(file.name.split('.').pop())) {
+          Notify({
+            message: i18n.t('error.mediaError.extensionNotAllowed'),
+            color: 'var(--color-text-04)',
+            background: 'var(--color-danger-01)',
+            duration: 3000
+          })
+
+          return false
+        }
+      }
+
+      return true
+    }
+
     const handleOversize = error => {
       Notify({
         message: i18n.t('error.mediaError.limitExceeded'),
@@ -198,6 +229,7 @@ export default defineComponent({
       getYoutubeEmbedUrl,
       handleYoutubeUrlBlur,
       handleClose,
+      handleBeforeRead,
       handleOversize
     }
   }
