@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.32.7
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.6...v2.32.7)
+
+
+### 💅 Refactors
+
+  - Add media count to quiz model ([b44dd74](https://github.com/selimdoyranli/parolla/commit/b44dd74))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.6
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.5...v2.32.6)
