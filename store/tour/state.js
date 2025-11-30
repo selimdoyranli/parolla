@@ -41,7 +41,10 @@ export default () => ({
     totalPlayers: 0,
     totalViewers: 0
   },
-  leaderboard: [],
+  leaderboard: {
+    items: [],
+    meta: {}
+  },
   chat: {
     messages: []
   },

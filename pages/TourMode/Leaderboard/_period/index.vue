@@ -29,8 +29,8 @@
       Button(@click="fetch") {{ $t('leaderboard.error.action') }}
 
   template(v-else)
-    template(v-if="leaderboard.length > 0")
-      Leaderboard(:scorers="leaderboard")
+    template(v-if="leaderboard.items.length > 0")
+      Leaderboard(:scorers="leaderboard.items")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
 
