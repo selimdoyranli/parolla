@@ -13,10 +13,10 @@
         :title="`${$t('introScene.modeList.daily.title')} (${$t('introScene.modeList.daily.subtitle')})`"
         :description="$t('introScene.modeList.daily.description')"
         :headLabel="{ title: $t('introScene.modeList.daily.label', { count: dailyPlayingCount }) }"
-        :playerList="dailyLeaderboard"
+        :playerList="dailyLeaderboard.items"
       )
         template(#avatarsMoreCount)
-          | +{{ dailyLeaderboard?.length - 4 }}
+          | +{{ dailyLeaderboard?.meta?.pagination?.total - 4 }}
         template(#body)
           .top-scorer(v-if="todaysDailyBestScorer")
             AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
@@ -125,11 +125,12 @@ export default defineComponent({
 
     const dailyPlayingCount = computed(() => store.getters['daily/dailyPlayingCount'])
     const dailyLeaderboard = computed(() => store.getters['daily/leaderboard'])
-    const todaysDailyBestScorer = computed(() => dailyLeaderboard.value?.[0])
+    const todaysDailyBestScorer = computed(() => dailyLeaderboard.value.items?.[0])
+    const dailyScores = computed(() => store.getters['daily/dailyScores'])
 
     const tourUserList = computed(() => store.getters['tour/userList'])
     const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
-    const todaysTourBestScorer = computed(() => tourLeaderboard.value?.[0])
+    const todaysTourBestScorer = computed(() => tourLeaderboard.value.items?.[0])
 
     const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
     const creatorDailyPlayingCount = computed(() => store.getters['creator/dailyPlayingCount'])
@@ -151,6 +152,7 @@ export default defineComponent({
       dailyPlayingCount,
       dailyLeaderboard,
       todaysDailyBestScorer,
+      dailyScores,
       tourUserList,
       tourLeaderboard,
       todaysTourBestScorer,

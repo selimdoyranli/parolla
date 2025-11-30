@@ -470,6 +470,10 @@ export default {
       callback: {
         success: 'Quiz silindi'
       }
+    },
+    listing: {
+      public: 'Listede',
+      private: 'Liste dışı'
     }
   },
   form: {

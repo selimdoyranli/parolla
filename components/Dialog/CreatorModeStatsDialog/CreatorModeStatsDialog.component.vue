@@ -107,11 +107,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
     footer.stats-dialog__footer
       i18n.d-flex(path="app.copyright")
         template(#logo)
-          SelimDoyranliLogo
-        template(#spacer)
-          span &nbsp;
-        template(#text)
-          span {{ $t('general.by') }}
+          FooterBrandLogo
 
   template(v-else)
     Empty.stats-dialog-empty

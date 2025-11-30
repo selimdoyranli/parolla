@@ -464,6 +464,10 @@ export default {
       callback: {
         success: 'Quiz deleted'
       }
+    },
+    listing: {
+      public: 'Public',
+      private: 'Private'
     }
   },
   form: {

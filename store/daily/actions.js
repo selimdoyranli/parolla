@@ -126,7 +126,10 @@ export default {
     })
 
     if (data) {
-      commit('SET_LEADERBOARD', data.data)
+      commit('SET_LEADERBOARD', {
+        leaderboard: data.data,
+        meta: data.meta
+      })
     }
 
     return {
