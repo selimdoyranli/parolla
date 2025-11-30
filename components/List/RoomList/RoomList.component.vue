@@ -40,6 +40,14 @@
                   template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                   template(v-if="room.isAnon") {{ $t('general.anon') }}
 
+                template(v-if="user")
+                  Tag.room-list-item-listing-tag(v-if="room.isListed")
+                    AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
+                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
+                  Tag.room-list-item-listing-tag(v-else)
+                    AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
+                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
+
               .room-list-item__badges
                 .room-list-item-badge.room-list-item-badge--user
                   PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user")
