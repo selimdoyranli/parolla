@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.33.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.8...v2.33.0)
+
+
+### 🚀 Enhancements
+
+  - Add footer brand logo ([8be594d](https://github.com/selimdoyranli/parolla/commit/8be594d))
+  - Listing tag for quiz cards on my quiz list ([1c1ee80](https://github.com/selimdoyranli/parolla/commit/1c1ee80))
+
+### 🩹 Fixes
+
+  - Player count fix on intro scene daily leaderboard ([9177321](https://github.com/selimdoyranli/parolla/commit/9177321))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.8
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.7...v2.32.8)
