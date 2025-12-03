@@ -323,6 +323,10 @@ module.exports = {
           'WordblockMode/index': {
             tr: '/kelimeblok',
             en: '/wordblock'
+          },
+          'MusicMode/index': {
+            tr: '/muzik',
+            en: '/music'
           }
         }
       }

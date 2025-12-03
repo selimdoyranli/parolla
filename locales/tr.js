@@ -672,6 +672,24 @@ export default {
       description: `<h2>💔 &nbsp; TAHMİN HAKKIN BİTTİ!</h2> <p>Turun bitmesine kadar bekle</p>`
     }
   },
+  musicMode: {
+    title: 'Müzik quiz',
+    subtitle: 'Sevdiğin şarkıları tahmin edebilir misin?',
+    form: {
+      searchArtist: {
+        label: 'Sanatçı ara',
+        placeholder: 'Sanatçı adı yaz',
+        noResult: 'Sonuç bulunamadı',
+        noOptions: 'Arama yapmak için yazmaya başlayın',
+        maxElements: 'Maksimum 3 sanatçı seçebilirsin'
+      }
+    },
+    selectedArtists: {
+      title: 'Seçilen sanatçılar',
+      empty: 'Başlamak için sanatçı seç'
+    },
+    play: 'Oyna'
+  },
   period: {
     daily: {
       title: 'Günlük',
