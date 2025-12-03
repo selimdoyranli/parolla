@@ -1,12 +1,4 @@
 export default {
-  SET_TARGET_WORD(state, word) {
-    state.targetWord = word.toLocaleUpperCase(this.$i18n.locale)
-  },
-
-  SET_CURRENT_DATE(state, date) {
-    state.currentDate = date
-  },
-
   SET_IS_GAME_OVER(state, isGameOver) {
     state.isGameOver = isGameOver
   },
