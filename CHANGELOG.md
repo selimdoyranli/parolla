@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.34.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.1...v2.34.2)
+
+
+### 💅 Refactors
+
+  - Connect ws on tour route ([b4b78ca](https://github.com/selimdoyranli/parolla/commit/b4b78ca))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.34.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.0...v2.34.1)
