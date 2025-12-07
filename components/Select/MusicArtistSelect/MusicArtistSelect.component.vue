@@ -13,12 +13,17 @@
     :close-on-select="true"
     :clear-on-select="false"
     :show-labels="false"
+    :reset-after="true"
     :max="3"
     :loading="isLoading"
     @search-change="handleSearchChange"
     @select="handleSelect"
     @remove="handleRemove"
   )
+    template(#placeholder)
+      .placeholder
+        AppIcon.placeholder__icon(name="tabler:search" :width="20" :height="20")
+        span.placeholder__text {{ $t('musicMode.form.searchArtist.placeholder') }}
     template(slot="option" slot-scope="{ option }")
       .music-artist-select__option
         img.music-artist-select__option-image(v-if="option.artwork?.artworkUrl" :src="option.artwork.artworkUrl" :alt="option.artistName")
@@ -67,11 +72,13 @@ export default defineComponent({
           term: searchQuery.trim()
         })
 
+        if (data?.length) {
+          artists.value = data || []
+        }
+
         if (error) {
           console.error('Error fetching artists:', error)
           artists.value = []
-        } else {
-          artists.value = data || []
         }
       } catch (error) {
         console.error('Error fetching artists:', error)

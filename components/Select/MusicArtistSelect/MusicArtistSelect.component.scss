@@ -9,10 +9,26 @@
     margin-block-end: $spacer * 2;
   }
 
+  .placeholder {
+    display: flex;
+    align-items: center;
+
+    &__icon {
+      margin-inline-end: $spacer * 2;
+    }
+  }
+
   .multiselect {
     color: var(--color-text-02);
 
+    &__select {
+      display: none;
+    }
+
     &__tags {
+      display: flex;
+      align-items: center;
+      height: 56px;
       background-color: var(--color-field-01);
       border: 2px solid var(--color-border-02);
       border-radius: var(--border-radius-01);

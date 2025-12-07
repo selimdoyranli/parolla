@@ -25,6 +25,10 @@ export default () => {
     if (route.value.path === localePath({ name: 'WordblockMode' })) {
       return gameModeKeyEnum.WORDBLOCK
     }
+
+    if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong' }))) {
+      return gameModeKeyEnum.MUSIC
+    }
   })
 
   return {

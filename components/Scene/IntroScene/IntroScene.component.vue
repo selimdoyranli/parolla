@@ -95,6 +95,14 @@
         :description="$t('introScene.modeList.wordblock.description')"
       )
 
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--music(
+        icon="emojione:musical-notes"
+        :to="localePath({ name: 'MusicMode-GuessTheSong' })"
+        :title="$t('introScene.modeList.music.title')"
+        :headLabel="{ title: $t('introScene.modeList.music.label') }"
+        :description="$t('introScene.modeList.music.description')"
+      )
+
     .intro-scene__keywords.d-none
       h3.intro-scene__subtitle {{ $t('introScene.subtitle') }}
       p.intro-scene__description {{ $t('introScene.description') }}
