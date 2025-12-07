@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.34.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.0...v2.34.1)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on guess the song ([6b2f7ff](https://github.com/selimdoyranli/parolla/commit/6b2f7ff))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.34.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.33.0...v2.34.0)
