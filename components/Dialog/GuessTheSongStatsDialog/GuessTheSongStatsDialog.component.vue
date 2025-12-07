@@ -103,7 +103,7 @@ export default defineComponent({
       const shareText = i18n.t('sharer.guessTheSongStats.description', {
         score: `${correctAnswerCount.value}/${totalAnswerCount.value}`,
         artists: selectedArtistsList.value.map(artist => artist.artistName).join(', '),
-        url: APP_URL
+        url: window.location.href
       })
 
       window.postMessage({ type: 'sharer', data: shareText })
