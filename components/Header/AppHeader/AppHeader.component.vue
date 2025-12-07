@@ -221,7 +221,8 @@ export default defineComponent({
       if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' })
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' }) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))
       ) {
         openLeaveDialog({
           confirm: () => {
@@ -236,8 +237,8 @@ export default defineComponent({
     const handleClickAppLogo = () => {
       if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' })
+        route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeCompose' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))
       ) {
         openLeaveDialog({
           confirm: () => {
@@ -280,7 +281,9 @@ export default defineComponent({
         route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' })) ||
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
         route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
-        route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' }))
+        route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' })) ||
+        route.value.path === localePath({ name: 'MusicMode-GuessTheSong' }) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))
       ) {
         return true
       }

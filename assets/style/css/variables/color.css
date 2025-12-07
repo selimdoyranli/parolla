@@ -36,10 +36,13 @@
 
   /* Denotative */
   --color-danger-01: #df585f;
+  --color-danger-02: #f44336;
   --color-success-01: #7da388;
+  --color-success-02: #258f25;
   --color-warning-01: #d3af38;
-  --color-warning-02: #e4c764;
+  --color-warning-02: #ff9800;
   --color-info-01: #4d84fa;
+  --color-info-02: #2196f3;
 
   /* Overlays */
   --color-overlay-01: rgba(80, 69, 69, 0.7);
@@ -90,9 +93,13 @@
 
   /* Denotative */
   --color-danger-01: #df585f;
+  --color-danger-02: #f44336;
   --color-success-01: #7da388;
+  --color-success-02: #258f25;
   --color-warning-01: #d3af38;
+  --color-warning-02: #ff9800;
   --color-info-01: #4d84fa;
+  --color-info-02: #2196f3;
 
   /* Overlays */
   --color-overlay-01: rgba(80, 69, 69, 0.7);
