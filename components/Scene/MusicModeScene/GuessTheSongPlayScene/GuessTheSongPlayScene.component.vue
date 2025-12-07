@@ -277,6 +277,60 @@ export default defineComponent({
         }
       }
 
+      if (roundsAcc.length >= roundCount) return roundsAcc
+
+      // Fallback: reuse songs to ensure full round count even with small lists
+      const fallbackPool = shuffle(filtered)
+      let poolCursor = 0
+
+      const nextSongFromPool = () => {
+        if (!fallbackPool.length) return null
+
+        if (poolCursor >= fallbackPool.length) {
+          poolCursor = 0
+          // Reshuffle to vary order across loops
+          fallbackPool.sort(() => Math.random() - 0.5)
+        }
+
+        const song = fallbackPool[poolCursor]
+        poolCursor += 1
+
+        return song
+      }
+
+      while (roundsAcc.length < roundCount) {
+        const correctSong = nextSongFromPool()
+
+        if (!correctSong) break
+
+        const optionsSet = new Map([[correctSong.trackId, correctSong]])
+
+        while (optionsSet.size < OPTIONS_PER_ROUND) {
+          const candidate = nextSongFromPool()
+
+          if (!candidate) break
+
+          if (!optionsSet.has(candidate.trackId)) {
+            optionsSet.set(candidate.trackId, candidate)
+          }
+        }
+
+        if (optionsSet.size < OPTIONS_PER_ROUND) break
+
+        const [correct, ...alternatives] = [...optionsSet.values()]
+        const options = shuffle([correct, ...alternatives])
+
+        roundsAcc.push({
+          roundId: `${correct.trackId}-${roundsAcc.length}`,
+          artistId: correct.artistId,
+          artistName: correct.artistName,
+          previewUrl: correct.previewUrl,
+          correctTrackId: correct.trackId,
+          trackName: correct.trackName,
+          options
+        })
+      }
+
       return roundsAcc
     }
 
