@@ -628,7 +628,9 @@ export default () => {
       })
     }
 
-    carousels.alphabet.update()
+    if (activeGameMode.value !== gameModeKeyEnum.TOUR) {
+      carousels.alphabet.update()
+    }
   }
 
   const handleBeforeUnload = event => {

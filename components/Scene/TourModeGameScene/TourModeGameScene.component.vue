@@ -124,7 +124,7 @@ export default defineComponent({
       questionFitText
     } = useGameScene()
 
-    const ws = store.getters['app/ws']
+    const ws = computed(() => store.getters['app/ws'])
 
     const tour = computed(() => store.getters['tour/tour'])
 
@@ -303,7 +303,7 @@ export default defineComponent({
         return false
       }
 
-      ws.send(JSON.stringify({ type: wsTypeEnum.TOUR_ANSWER, answer: answerField }))
+      ws.value.send(JSON.stringify({ type: wsTypeEnum.TOUR_ANSWER, answer: answerField }))
     }
 
     const handleAnswerField = $event => {

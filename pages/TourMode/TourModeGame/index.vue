@@ -13,7 +13,7 @@ export default defineComponent({
     const { i18n } = useContext()
 
     // TODO: Implement this after tour mode socket channel is implemented
-    /* const store = useStore()
+    const store = useStore()
 
     const setupWs = async () => {
       await store.dispatch('app/initWs')
@@ -30,7 +30,7 @@ export default defineComponent({
 
     onBeforeUnmount(async () => {
       await destroyWs()
-    }) */
+    })
 
     useMeta(() => ({
       title: `${i18n.t('seo.tourMode.title')} - ${i18n.t('seo.main.title')}`,

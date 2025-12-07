@@ -38,7 +38,7 @@
         icon="noto:infinity"
         :to="localePath({ name: 'UnlimitedMode' })"
         :title="$t('introScene.modeList.unlimited.title')"
-        :headLabel="{ title: $t('introScene.modeList.unlimited.label', { count: tourUserList?.totalPlayers }) }"
+        :headLabel="{ title: $t('introScene.modeList.unlimited.label') }"
         :description="$t('introScene.modeList.unlimited.description')"
       )
 
@@ -56,16 +56,13 @@
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        :label="$t('introScene.modeList.tour.label')"
         icon="akar-icons:arrow-cycle"
         :to="localePath({ name: 'TourMode-TourModeGame' })"
-        :headLabel="{ title: $t('introScene.modeList.tour.liveCount', { count: tourUserList?.totalPlayers }), icon: 'tabler:users', pulse: true }"
+        :headLabel="{ title: $t('introScene.modeList.tour.label'), icon: 'tabler:users', pulse: true }"
         :title="$t('introScene.modeList.tour.title')"
         :description="$t('introScene.modeList.tour.description')"
-        :playerList="tourUserList.players"
+        :playerList="tourUserList"
       )
-        template(#avatarsMoreCount)
-          | +{{ tourUserList?.totalPlayers - 4 }}
         template(#body)
           .top-scorer(v-if="todaysTourBestScorer")
             AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
@@ -136,7 +133,12 @@ export default defineComponent({
     const todaysDailyBestScorer = computed(() => dailyLeaderboard.value.items?.[0])
     const dailyScores = computed(() => store.getters['daily/dailyScores'])
 
-    const tourUserList = computed(() => store.getters['tour/userList'])
+    const tourUserList = computed(() => {
+      return Array.from({ length: 10 }, (_, index) => ({
+        id: index + 1,
+        username: `Player ${Math.random().toString(36).substring(2, 15)}`
+      }))
+    })
     const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
     const todaysTourBestScorer = computed(() => tourLeaderboard.value.items?.[0])
 

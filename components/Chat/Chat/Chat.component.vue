@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, useStore, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch } from '@nuxtjs/composition-api'
 import { Field, Button, Empty } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
@@ -65,7 +65,8 @@ export default defineComponent({
 
     const chatMessages = computed(() => store.getters['tour/chatMessages'])
 
-    const ws = store.getters['app/ws']
+    const ws = computed(() => store.getters['app/ws'])
+    const currentWs = ref(null)
 
     const handleWsMessage = data => {
       const { type, chatHistory, playerId, playerName, diceBear, message, isSystem, timestamp } = JSON.parse(data.data)
@@ -105,15 +106,33 @@ export default defineComponent({
       }
     }
 
-    onMounted(() => {
-      if (ws) {
-        ws.addEventListener('message', handleWsMessage)
+    const attachWsListener = socket => {
+      if (currentWs.value) {
+        currentWs.value.removeEventListener('message', handleWsMessage)
+      }
+
+      currentWs.value = socket
+
+      if (socket) {
+        socket.addEventListener('message', handleWsMessage)
 
         setTimeout(() => {
           scrollToBottom()
         }, 0)
       }
+    }
+
+    onMounted(() => {
+      attachWsListener(ws.value)
     })
+
+    watch(
+      ws,
+      newSocket => {
+        attachWsListener(newSocket)
+      },
+      { immediate: true }
+    )
 
     const scrollToBottom = () => {
       if (messagesRef.value) {
@@ -129,7 +148,7 @@ export default defineComponent({
     const sendMessage = () => {
       if (!messageText.value.trim()) return
 
-      ws.send(
+      ws.value.send(
         JSON.stringify({
           type: wsTypeEnum.CHAT_MESSAGE,
           message: messageText.value
@@ -146,6 +165,12 @@ export default defineComponent({
     const handleBlur = () => {
       emit('on-blur')
     }
+
+    onUnmounted(() => {
+      if (currentWs.value) {
+        currentWs.value.removeEventListener('message', handleWsMessage)
+      }
+    })
 
     return {
       messagesRef,
