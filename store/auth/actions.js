@@ -45,34 +45,6 @@ export default {
     await this.$auth.setUser(googleResponse.user)
 
     await commit('SET_USER', googleResponse.user)
-
-    // Upgrade existing WebSocket connection with token after successful login
-    if (process.client) {
-      try {
-        const existingWs = rootGetters['app/ws']
-
-        // Only reinitialize if WebSocket exists (was created in viewer mode)
-        if (existingWs) {
-          console.info('Upgrading WebSocket connection with authentication token')
-          // Close existing WebSocket connection (viewer mode)
-          await dispatch('app/closeWs', null, { root: true })
-
-          // Small delay to ensure clean closure
-          await new Promise(resolve => setTimeout(resolve, 100))
-
-          // Reinitialize with authenticated token
-          await dispatch('app/initWs', null, { root: true })
-          const ws = rootGetters['app/ws']
-
-          if (ws) {
-            await dispatch('tour/listenWs', { ws }, { root: true })
-            console.info('WebSocket upgraded to authenticated mode')
-          }
-        }
-      } catch (error) {
-        console.error('Failed to upgrade WebSocket after Google login:', error)
-      }
-    }
   },
 
   async updateUser({ commit, state }, params) {
