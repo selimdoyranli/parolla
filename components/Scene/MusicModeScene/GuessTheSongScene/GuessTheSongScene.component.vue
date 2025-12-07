@@ -7,7 +7,7 @@
         AppIcon.guess-the-song-scene-header-title__icon(name="emojione:musical-notes" :width="32" :height="32")
         span.guess-the-song-scene-header-title__text {{ $t('musicMode.title') }}
 
-      p.guess-the-song-scene__subtitle {{ $t('musicMode.subtitle') }}
+      p.guess-the-song-scene__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
 
     form.guess-the-song-scene-form
       MusicArtistSelect(ref="musicArtistSelectRef" @select="handleArtistSelect" @remove="handleArtistRemove")

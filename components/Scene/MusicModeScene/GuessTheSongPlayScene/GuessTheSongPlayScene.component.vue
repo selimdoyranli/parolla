@@ -2,6 +2,13 @@
 .scene.game-scene.guess-the-song-play-scene(ref="rootRef")
   // Scene Inner
   .scene__inner.game-scene__inner.guess-the-song-play-scene__inner
+    header.guess-the-song-play-scene-header
+      h1.guess-the-song-play-scene-header-title
+        AppIcon.guess-the-song-play-scene-header-title__icon(name="emojione:musical-notes")
+        span.guess-the-song-play-scene-header-title__text {{ $t('musicMode.guessTheSong.title') }}
+
+      p.guess-the-song-play-scene-header__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
+
     // Fetch State
     template(v-if="fetchState.pending")
       Empty(:description="$t('general.quizPreparing')")
@@ -11,13 +18,6 @@
         Button(@click="reFetch") {{ $t('error.tryAgain') }}
 
     template(v-else)
-      header.guess-the-song-play-scene-header
-        h1.guess-the-song-play-scene-header-title
-          AppIcon.guess-the-song-play-scene-header-title__icon(name="emojione:musical-notes")
-          span.guess-the-song-play-scene-header-title__text {{ $t('musicMode.guessTheSong.title') }}
-
-        p.guess-the-song-play-scene__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
-
       .guess-the-song-play-scene-rounds
         .guess-the-song-play-scene-round(
           v-for="indicator in roundIndicators"
