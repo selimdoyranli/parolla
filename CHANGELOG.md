@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.34.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.33.0...v2.34.0)
+
+
+### 🚀 Enhancements
+
+  - Music game mode ([f8e6e3d](https://github.com/selimdoyranli/parolla/commit/f8e6e3d))
+
+### 🩹 Fixes
+
+  - Defensive song shuffle on guess the song ([d9a71cf](https://github.com/selimdoyranli/parolla/commit/d9a71cf))
+  - Update url on guess the song sharer ([cf4808d](https://github.com/selimdoyranli/parolla/commit/cf4808d))
+
+### 💅 Refactors
+
+  - Music scene structure ([953aee8](https://github.com/selimdoyranli/parolla/commit/953aee8))
+  - Update music mode mutations ([f25b339](https://github.com/selimdoyranli/parolla/commit/f25b339))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.33.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.8...v2.33.0)
