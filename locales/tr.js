@@ -699,6 +699,7 @@ export default {
       empty: 'Başlamak için sanatçı seç'
     },
     play: 'Oyna',
+    popularArtists: 'Popüler sanatçılar',
     guessTheSong: {
       title: 'Müzik quiz',
       subtitle: 'Şarkıları dinle ve tahmin et',

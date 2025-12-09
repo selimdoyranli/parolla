@@ -213,6 +213,8 @@ export default defineComponent({
           router.replace(localePath({ name: 'CreatorMode-CreatorModeIntro' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
+        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))) {
+          router.replace(localePath({ name: 'MusicMode-GuessTheSong' }))
         } else {
           router.replace(localePath({ name: 'Main' }))
         }

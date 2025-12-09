@@ -689,6 +689,7 @@ export default {
       empty: 'Select an artist to start'
     },
     play: 'Oyna',
+    popularArtists: 'Popular artists',
     guessTheSong: {
       title: 'Music quiz',
       subtitle: 'Listen to songs and guess them',
