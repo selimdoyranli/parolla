@@ -4,7 +4,7 @@
   position: relative;
 
   &__inner {
-    display: block;
+    display: block !important;
     padding-block: $spacer * 12;
   }
 
