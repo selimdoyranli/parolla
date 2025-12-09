@@ -264,10 +264,12 @@
 
     &__elapsed {
       color: var(--color-text-01);
+      font-variant-numeric: tabular-nums;
     }
 
     &__limit {
       color: var(--color-text-01);
+      font-variant-numeric: tabular-nums;
     }
   }
 
