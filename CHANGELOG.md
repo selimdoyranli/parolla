@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.35.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.2...v2.35.0)
+
+
+### 🚀 Enhancements
+
+  - Ux improvements on music mode ([2246b2b](https://github.com/selimdoyranli/parolla/commit/2246b2b))
+
+### 🩹 Fixes
+
+  - Ui fixes on guess the song player ([a554ad1](https://github.com/selimdoyranli/parolla/commit/a554ad1))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.34.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.1...v2.34.2)
