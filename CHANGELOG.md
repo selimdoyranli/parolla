@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.35.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.1...v2.35.2)
+
+
+### 🏡 Chore
+
+  - Disable hwp dialog ad ([939cdc4](https://github.com/selimdoyranli/parolla/commit/939cdc4))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.35.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.0...v2.35.1)
