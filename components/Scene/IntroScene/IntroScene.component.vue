@@ -13,10 +13,10 @@
         :title="`${$t('introScene.modeList.daily.title')} (${$t('introScene.modeList.daily.subtitle')})`"
         :description="$t('introScene.modeList.daily.description')"
         :headLabel="{ title: $t('introScene.modeList.daily.label', { count: dailyPlayingCount }) }"
-        :playerList="dailyLeaderboard"
+        :playerList="dailyLeaderboard.items"
       )
         template(#avatarsMoreCount)
-          | +{{ dailyLeaderboard?.length - 4 }}
+          | +{{ dailyLeaderboard?.meta?.pagination?.total - 4 }}
         template(#body)
           .top-scorer(v-if="todaysDailyBestScorer")
             AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
@@ -38,7 +38,7 @@
         icon="noto:infinity"
         :to="localePath({ name: 'UnlimitedMode' })"
         :title="$t('introScene.modeList.unlimited.title')"
-        :headLabel="{ title: $t('introScene.modeList.unlimited.label', { count: tourUserList?.totalPlayers }) }"
+        :headLabel="{ title: $t('introScene.modeList.unlimited.label') }"
         :description="$t('introScene.modeList.unlimited.description')"
       )
 
@@ -56,16 +56,13 @@
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        :label="$t('introScene.modeList.tour.label')"
         icon="akar-icons:arrow-cycle"
         :to="localePath({ name: 'TourMode-TourModeGame' })"
-        :headLabel="{ title: $t('introScene.modeList.tour.liveCount', { count: tourUserList?.totalPlayers }), icon: 'tabler:users', pulse: true }"
+        :headLabel="{ title: $t('introScene.modeList.tour.label'), icon: 'tabler:users', pulse: true }"
         :title="$t('introScene.modeList.tour.title')"
         :description="$t('introScene.modeList.tour.description')"
-        :playerList="tourUserList.players"
+        :playerList="tourUserList"
       )
-        template(#avatarsMoreCount)
-          | +{{ tourUserList?.totalPlayers - 4 }}
         template(#body)
           .top-scorer(v-if="todaysTourBestScorer")
             AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
@@ -93,6 +90,14 @@
         :title="$t('introScene.modeList.wordblock.title')"
         :headLabel="{ title: $t('introScene.modeList.wordblock.label', { count: wordblockDailyPlayingCount }) }"
         :description="$t('introScene.modeList.wordblock.description')"
+      )
+
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--music(
+        icon="emojione:musical-notes"
+        :to="localePath({ name: 'MusicMode-GuessTheSong' })"
+        :title="$t('introScene.modeList.music.title')"
+        :headLabel="{ title: $t('introScene.modeList.music.label') }"
+        :description="$t('introScene.modeList.music.description')"
       )
 
     .intro-scene__keywords.d-none
@@ -125,11 +130,17 @@ export default defineComponent({
 
     const dailyPlayingCount = computed(() => store.getters['daily/dailyPlayingCount'])
     const dailyLeaderboard = computed(() => store.getters['daily/leaderboard'])
-    const todaysDailyBestScorer = computed(() => dailyLeaderboard.value?.[0])
+    const todaysDailyBestScorer = computed(() => dailyLeaderboard.value.items?.[0])
+    const dailyScores = computed(() => store.getters['daily/dailyScores'])
 
-    const tourUserList = computed(() => store.getters['tour/userList'])
+    const tourUserList = computed(() => {
+      return Array.from({ length: 10 }, (_, index) => ({
+        id: index + 1,
+        username: `Player ${Math.random().toString(36).substring(2, 15)}`
+      }))
+    })
     const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
-    const todaysTourBestScorer = computed(() => tourLeaderboard.value?.[0])
+    const todaysTourBestScorer = computed(() => tourLeaderboard.value.items?.[0])
 
     const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
     const creatorDailyPlayingCount = computed(() => store.getters['creator/dailyPlayingCount'])
@@ -151,6 +162,7 @@ export default defineComponent({
       dailyPlayingCount,
       dailyLeaderboard,
       todaysDailyBestScorer,
+      dailyScores,
       tourUserList,
       tourLeaderboard,
       todaysTourBestScorer,

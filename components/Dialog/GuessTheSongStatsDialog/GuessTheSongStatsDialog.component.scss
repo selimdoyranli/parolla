@@ -1,0 +1,59 @@
+.guess-the-song-stats-dialog {
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 4;
+  }
+
+  .results__score {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer;
+    text-align: center;
+  }
+
+  .results__score-label {
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-8);
+  }
+
+  .results__score-value {
+    color: var(--color-brand-02);
+    font-size: var(--font-size-text-4);
+
+    @include font-weight-bold;
+  }
+
+  .results__selected-artists-title {
+    display: block;
+    margin-block-end: $spacer * 2;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+  }
+
+  .results__selected-artists-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: $spacer * 3;
+  }
+
+  .results__artist {
+    display: flex;
+    gap: $spacer * 2;
+    align-items: center;
+  }
+
+  .results__artist-avatar {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+
+  .results__artist-name {
+    color: var(--color-text-01);
+    font-size: var(--font-size-text-9);
+
+    @include font-weight-medium;
+  }
+}

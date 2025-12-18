@@ -39,7 +39,7 @@ export default {
     state.userList.totalViewers = userList.totalViewers
   },
 
-  SET_LEADERBOARD(state, leaderboard) {
+  SET_LEADERBOARD(state, { leaderboard, meta }) {
     const mappedLeaderboard = leaderboard => {
       return leaderboard?.map(scorer => ({
         ...userTransformer(scorer.user),
@@ -47,7 +47,8 @@ export default {
       }))
     }
 
-    state.leaderboard = mappedLeaderboard(leaderboard)
+    state.leaderboard.items = mappedLeaderboard(leaderboard)
+    state.leaderboard.meta = meta
   },
 
   SET_CHAT_MESSAGES(state, messages) {

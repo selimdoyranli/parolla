@@ -3,5 +3,6 @@ export const gameModeKeyEnum = Object.freeze({
   UNLIMITED: 'unlimited',
   CREATOR: 'creator',
   TOUR: 'tour',
-  WORDBLOCK: 'wordblock'
+  WORDBLOCK: 'wordblock',
+  MUSIC: 'music'
 })

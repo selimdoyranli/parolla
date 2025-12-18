@@ -22,5 +22,8 @@ export default () => ({
     items: [],
     meta: {}
   },
-  leaderboard: []
+  leaderboard: {
+    items: [],
+    meta: {}
+  }
 })

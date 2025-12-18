@@ -58,7 +58,9 @@ export default {
     draft: 'Taslak',
     quiz: 'Quiz',
     photoQuiz: 'Foto quiz',
-    triviaQuiz: 'Trivia'
+    triviaQuiz: 'Trivia',
+    provider: 'Sağlayıcı',
+    quizPreparing: 'Quiz hazırlanıyor'
   },
   auth: {
     google: {
@@ -128,6 +130,11 @@ export default {
         title: 'KELİMEBLOK',
         description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
         label: 'Bugün {count} kez oynandı'
+      },
+      music: {
+        title: 'MÜZİK',
+        description: 'Şarkıları dinle ve tahmin et',
+        label: 'Dilediğin sanatçıya ait şarkılar'
       }
     }
   },
@@ -402,6 +409,9 @@ export default {
     },
     wordblockModeStats: {
       description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
+    },
+    guessTheSongStats: {
+      description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
     }
   },
   creatorModeIntro: {
@@ -472,6 +482,10 @@ export default {
       callback: {
         success: 'Quiz silindi'
       }
+    },
+    listing: {
+      public: 'Listede',
+      private: 'Liste dışı'
     }
   },
   form: {
@@ -677,6 +691,38 @@ export default {
       description: `<h2>💔 &nbsp; TAHMİN HAKKIN BİTTİ!</h2> <p>Turun bitmesine kadar bekle</p>`
     }
   },
+  musicMode: {
+    title: 'Müzik quiz',
+    subtitle: 'Şarkıları veya sanatçıları tahmin et',
+    form: {
+      searchArtist: {
+        label: 'Sanatçı ara',
+        placeholder: 'Sanatçı adı yaz',
+        noResult: 'Sonuç bulunamadı',
+        noOptions: 'Arama yapmak için yazmaya başlayın',
+        maxElements: 'Maksimum 3 sanatçı seçebilirsin'
+      }
+    },
+    selectedArtists: {
+      title: 'Seçilen sanatçılar',
+      empty: 'Başlamak için sanatçı seç'
+    },
+    play: 'Oyna',
+    popularArtists: 'Popüler sanatçılar',
+    guessTheSong: {
+      title: 'Müzik quiz',
+      subtitle: 'Şarkıları dinle ve tahmin et',
+      pickSong: 'Hangi şarkı çalıyor?',
+      stats: {
+        score: 'Skorum',
+        selectedArtists: 'Seçilen sanatçılar',
+        backToMusicMode: "Müzik quiz'e geri dön"
+      }
+    },
+    nextRound: 'Sonraki tur',
+    seeResults: 'Sonuçları gör',
+    appleMusic: 'Apple Music'
+  },
   period: {
     daily: {
       title: 'Günlük',
@@ -769,6 +815,18 @@ export default {
       title: 'Kelimeblok',
       description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
       keywords: 'günlük kelime oyunu, wordle türkçe, wordle türkçe uyarlaması, kelime tahmi oyunu'
+    },
+    musicMode: {
+      guessTheSong: {
+        title: 'Şarkıları dinle ve tahmin et - Müzik quiz',
+        description: "Müzik quiz'de şarkıları dinle ve tahmin et",
+        keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
+      },
+      guessTheSongPlay: {
+        title: '{artists} şarkılarını dinle ve tahmin et - Müzik quiz',
+        description: 'Müzik quizde {artists} şarkılarını dinle ve tahmin et',
+        keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
+      }
     }
   }
 }

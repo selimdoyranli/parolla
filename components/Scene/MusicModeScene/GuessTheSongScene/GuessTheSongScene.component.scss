@@ -1,0 +1,268 @@
+@import '@/assets/style/scss/shared/_game-scene.scss';
+
+.guess-the-song-scene {
+  position: relative;
+
+  &__inner {
+    display: block !important;
+    padding-block: $spacer * 12;
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-1);
+
+      &__icon {
+        margin-inline-end: 0.5rem;
+
+        svg {
+          width: 32px !important;
+          height: 32px !important;
+        }
+      }
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 0.95rem;
+  }
+
+  &-form {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: calc(var(--base-m-y) * 2);
+  }
+
+  &-selected-artists {
+    position: relative;
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: calc(var(--base-m-y) * 2);
+
+    &-title {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-10);
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    &-empty {
+      padding-block-end: 0;
+
+      .van-empty {
+        padding-block-end: 0;
+
+        &__image {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 60px !important;
+          height: 60px !important;
+
+          svg {
+            width: 100% !important;
+            height: 100% !important;
+          }
+
+          @include media-breakpoint-down(mobile) {
+            width: 40px !important;
+            height: 40px !important;
+          }
+        }
+      }
+    }
+
+    &__list {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: $spacer * 4;
+      justify-content: center;
+      margin: 0 auto;
+      margin-block-start: $spacer * 6;
+    }
+  }
+
+  &-selected-artist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+    background-color: transparent;
+    border-radius: var(--border-radius-01);
+
+    &-image-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 4px solid var(--color-brand-02);
+      border-radius: 100%;
+
+      @include media-breakpoint-down(mobile) {
+        width: 60px !important;
+        height: 60px !important;
+      }
+    }
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+
+      @include media-breakpoint-down(mobile) {
+        width: 60px !important;
+        height: 60px !important;
+      }
+    }
+
+    &-remove {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      color: var(--color-text-inverse, #fff);
+      font-size: 14px;
+      line-height: 1;
+      background-color: var(--color-error-01, #f44);
+      border: none;
+      border-radius: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: var(--color-error-02, #c00);
+      }
+    }
+
+    &-text {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-8);
+      text-align: center;
+    }
+  }
+
+  &-play-button {
+    display: block;
+    width: 100%;
+    max-width: var(--mobile);
+    min-height: 64px;
+    margin: 0 auto;
+    color: #fff;
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-text-8);
+    text-transform: uppercase;
+    background-color: var(--color-brand-02);
+    border-color: var(--color-brand-02);
+    border-radius: var(--border-radius-01);
+    cursor: pointer;
+    margin-block-start: $spacer * 12;
+
+    &:disabled {
+      background-color: var(--color-disabled-01);
+      border-color: var(--color-disabled-01);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    @include font-weight-semi-bold;
+  }
+
+  &-popular-artists {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 8;
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: $spacer * 8;
+    }
+
+    &-title {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-10);
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+      margin-block-end: $spacer * 4;
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: $spacer * 4;
+    }
+
+    &.disabled {
+      .guess-the-song-scene-popular-artists__list {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &-popular-artist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+    background-color: transparent;
+    border-radius: var(--border-radius-01);
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+
+    &-icon {
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    &-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 100%;
+    }
+
+    &-text {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+    }
+  }
+}

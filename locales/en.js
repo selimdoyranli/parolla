@@ -58,7 +58,9 @@ export default {
     draft: 'Draft',
     quiz: 'Quiz',
     photoQuiz: 'Photo quiz',
-    triviaQuiz: 'Trivia'
+    triviaQuiz: 'Trivia',
+    provider: 'Provider',
+    quizPreparing: 'Preparing quiz'
   },
   auth: {
     google: {
@@ -123,6 +125,11 @@ export default {
       wordblock: {
         title: 'WORDBLOCK',
         description: `Guess the today's word, daily word game`
+      },
+      music: {
+        title: 'MUSIC',
+        description: 'Listen to songs and guess them',
+        label: 'Songs of the artist you want'
       }
     }
   },
@@ -396,6 +403,9 @@ export default {
     },
     wordblockModeStats: {
       description: `parolla - Word game \n\nMy score in Wordblock mode\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nElapsed Time: {elapsedTime} \n \n{url}`
+    },
+    guessTheSongStats: {
+      description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
     }
   },
   creatorModeIntro: {
@@ -466,6 +476,10 @@ export default {
       callback: {
         success: 'Quiz deleted'
       }
+    },
+    listing: {
+      public: 'Public',
+      private: 'Private'
     }
   },
   form: {
@@ -667,6 +681,38 @@ export default {
       description: `<h2>💔 &nbsp; GUESSING CHANCE ENDED!</h2> <p>Wait until the tour ends</p>`
     }
   },
+  musicMode: {
+    title: 'Music quiz',
+    subtitle: 'Guess the songs or artists',
+    form: {
+      searchArtist: {
+        label: 'Search artist',
+        placeholder: 'Type artist name',
+        noResult: 'No results found',
+        noOptions: 'Start typing to search',
+        maxElements: 'Maximum 3 artists can be selected'
+      }
+    },
+    selectedArtists: {
+      title: 'Selected artists',
+      empty: 'Select an artist to start'
+    },
+    play: 'Oyna',
+    popularArtists: 'Popular artists',
+    guessTheSong: {
+      title: 'Music quiz',
+      subtitle: 'Listen to songs and guess them',
+      pickSong: 'Which song is playing?',
+      stats: {
+        score: 'Score',
+        selectedArtists: 'Selected artists',
+        backToMusicMode: 'Back to music quiz'
+      }
+    },
+    nextRound: 'Next round',
+    seeResults: 'See results',
+    appleMusic: 'Apple Music'
+  },
   period: {
     daily: {
       title: 'Daily',
@@ -759,6 +805,18 @@ export default {
       title: 'Wordblock',
       description: `Guess the today's word, daily word game`,
       keywords: 'daily word game, wordle, like wordle, word guess game'
+    },
+    musicMode: {
+      guessTheSong: {
+        title: 'Listen to songs and guess them - Music quiz',
+        description: 'Listen to songs and guess them in the music quiz',
+        keywords: 'music quiz, music quiz play, listen to songs and guess them'
+      },
+      guessTheSongPlay: {
+        title: '{artists} songs listen and guess them - Music quiz',
+        description: 'Listen to {artists} songs and guess them in the music quiz',
+        keywords: 'music quiz, music quiz play, listen to songs and guess them'
+      }
     }
   }
 }

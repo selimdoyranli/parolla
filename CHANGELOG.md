@@ -1,5 +1,115 @@
 # Changelog
 
+## v2.35.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.1...v2.35.2)
+
+
+### 🏡 Chore
+
+  - Disable hwp dialog ad ([939cdc4](https://github.com/selimdoyranli/parolla/commit/939cdc4))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.35.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.0...v2.35.1)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on guess the song ([c47df77](https://github.com/selimdoyranli/parolla/commit/c47df77))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.35.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.2...v2.35.0)
+
+
+### 🚀 Enhancements
+
+  - Ux improvements on music mode ([2246b2b](https://github.com/selimdoyranli/parolla/commit/2246b2b))
+
+### 🩹 Fixes
+
+  - Ui fixes on guess the song player ([a554ad1](https://github.com/selimdoyranli/parolla/commit/a554ad1))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.34.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.1...v2.34.2)
+
+
+### 💅 Refactors
+
+  - Connect ws on tour route ([b4b78ca](https://github.com/selimdoyranli/parolla/commit/b4b78ca))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.34.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.34.0...v2.34.1)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on guess the song ([6b2f7ff](https://github.com/selimdoyranli/parolla/commit/6b2f7ff))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.34.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.33.0...v2.34.0)
+
+
+### 🚀 Enhancements
+
+  - Music game mode ([f8e6e3d](https://github.com/selimdoyranli/parolla/commit/f8e6e3d))
+
+### 🩹 Fixes
+
+  - Defensive song shuffle on guess the song ([d9a71cf](https://github.com/selimdoyranli/parolla/commit/d9a71cf))
+  - Update url on guess the song sharer ([cf4808d](https://github.com/selimdoyranli/parolla/commit/cf4808d))
+
+### 💅 Refactors
+
+  - Music scene structure ([953aee8](https://github.com/selimdoyranli/parolla/commit/953aee8))
+  - Update music mode mutations ([f25b339](https://github.com/selimdoyranli/parolla/commit/f25b339))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.33.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.8...v2.33.0)
+
+
+### 🚀 Enhancements
+
+  - Add footer brand logo ([8be594d](https://github.com/selimdoyranli/parolla/commit/8be594d))
+  - Listing tag for quiz cards on my quiz list ([1c1ee80](https://github.com/selimdoyranli/parolla/commit/1c1ee80))
+
+### 🩹 Fixes
+
+  - Player count fix on intro scene daily leaderboard ([9177321](https://github.com/selimdoyranli/parolla/commit/9177321))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.32.8
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.32.7...v2.32.8)

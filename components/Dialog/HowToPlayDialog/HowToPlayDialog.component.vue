@@ -15,17 +15,13 @@ Dialog.dialog.how-to-play-dialog(
     HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
     HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
     .how-to-play-dialog__ad
-      AppAd(:data-ad-slot="9964323575")
+      // AppAd(:data-ad-slot="9964323575")
 
   // Footer
   footer.how-to-play-dialog__footer
     i18n.d-flex(path="app.copyright")
       template(#logo)
-        SelimDoyranliLogo
-      template(#spacer)
-        span &nbsp;
-      template(#text)
-        span {{ $t('general.by') }}
+        FooterBrandLogo
 </template>
 
 <script>

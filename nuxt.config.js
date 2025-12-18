@@ -323,6 +323,18 @@ module.exports = {
           'WordblockMode/index': {
             tr: '/kelimeblok',
             en: '/wordblock'
+          },
+          'MusicMode/index': {
+            tr: '/muzik',
+            en: '/music'
+          },
+          'MusicMode/GuessTheSong/index': {
+            tr: '/muzik/sarki-tahmin-et',
+            en: '/music/guess-the-song'
+          },
+          'MusicMode/GuessTheSong/Play/index': {
+            tr: '/muzik/sarki-tahmin-et/oyna',
+            en: '/music/guess-the-song/play'
           }
         }
       }
