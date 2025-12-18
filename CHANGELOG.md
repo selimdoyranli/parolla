@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.36.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.2...v2.36.0)
+
+
+### 🚀 Enhancements
+
+  - Add trivia answer type to creator quiz ([329b517](https://github.com/selimdoyranli/parolla/commit/329b517))
+
+### 🩹 Fixes
+
+  - Ui fixes on quiz list ([dd97fe8](https://github.com/selimdoyranli/parolla/commit/dd97fe8))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.35.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.35.1...v2.35.2)
