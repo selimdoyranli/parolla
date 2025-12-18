@@ -33,6 +33,7 @@ export default {
     apply: 'Apply',
     question: 'Question',
     answer: 'Answer',
+    option: 'Option',
     remove: 'Remove',
     delete: 'Delete',
     edit: 'Edit',
@@ -57,6 +58,7 @@ export default {
     draft: 'Draft',
     quiz: 'Quiz',
     photoQuiz: 'Photo quiz',
+    triviaQuiz: 'Trivia',
     provider: 'Provider',
     quizPreparing: 'Preparing quiz'
   },
@@ -543,7 +545,14 @@ export default {
           answerType: {
             title: 'Answer type',
             options: {
-              textField: 'Text field'
+              textField: 'Text field',
+              trivia: 'Trivia'
+            },
+            trivia: {
+              description: 'The player will select from the answers you prepared',
+              optionPlaceholder: 'Type answer',
+              addOption: 'Add answer',
+              correctOption: 'Correct answer selected'
             }
           },
           label: 'Answer',

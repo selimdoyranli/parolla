@@ -206,14 +206,42 @@
     }
   }
 
-  .creator-mode-compose-form__questionType {
+  .creator-mode-compose-form-answer-label {
+    display: block;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    margin-inline: $spacer * 4;
+    margin-block-start: $spacer * 3;
+  }
+
+  .creator-mode-compose-form__typeSwitchCell {
+    overflow: visible;
+
     &::after {
       display: none;
     }
+
+    .van-cell {
+      &__title {
+        color: var(--color-text-03) !important;
+        font-size: var(--font-size-text-9) !important;
+        margin-inline-start: auto !important;
+      }
+    }
+
+    .filter-dropdown {
+      .filter-dropdown-nav-item {
+        &__icon {
+          margin-block-start: 1px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
   }
 
-  .question-type-radio-group {
-    .question-type-radio {
+  .type-radio-group {
+    .type-radio {
       padding: $spacer $spacer * 2;
       border: 1px solid var(--color-border-02);
       margin-inline-end: 0;
@@ -241,7 +269,7 @@
       }
     }
 
-    .question-type-radio__icon {
+    .type-radio__icon {
       color: var(--color-icon-01);
       margin-inline-end: calc(var(--base-m-x) / 2);
 
@@ -249,6 +277,12 @@
         width: 20px !important;
         height: 20px !important;
       }
+    }
+  }
+
+  .trivia-form {
+    .van-cell {
+      padding: 0;
     }
   }
 

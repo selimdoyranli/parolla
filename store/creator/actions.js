@@ -18,6 +18,7 @@ export default {
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
+            triviaOptions: item.triviaOptions,
             ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
 
@@ -74,6 +75,7 @@ export default {
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
+            triviaOptions: item.triviaOptions,
             ...(item.mediaNote && { mediaNote: item.mediaNote })
           }
 

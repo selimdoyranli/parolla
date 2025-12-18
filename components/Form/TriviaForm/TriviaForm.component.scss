@@ -1,0 +1,71 @@
+.trivia-form {
+  position: relative;
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+    margin-block: $spacer * 2;
+  }
+
+  &__option {
+    margin-block-end: $spacer * 2;
+    display: flex;
+    flex-direction: row !important;
+    overflow: visible;
+
+    &::after {
+      display: none;
+    }
+
+    &--correct {
+      .van-field__control {
+        outline: 1px solid var(--color-success-01) !important;
+      }
+    }
+
+    .trivia-form-correct-option-label {
+      position: absolute;
+      z-index: 2;
+      height: 18px;
+      color: #fff;
+      font-size: var(--font-size-text-11);
+      line-height: 18px;
+      background-color: var(--color-success-01);
+      border-radius: var(--border-radius-01);
+      padding-inline: $spacer * 2;
+      inset-inline-start: 42px;
+      inset-block-start: -8px;
+
+      @include font-weight-medium;
+    }
+
+    .trivia-form-option-select-correct-button {
+      margin-block-start: $spacer;
+      margin-inline-end: $spacer;
+    }
+
+    .trivia-form-option-remove-button {
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-start: -4px;
+      z-index: 2;
+      width: 24px;
+      height: 24px;
+      background-color: var(--color-field-02) !important;
+    }
+  }
+
+  .trivia-form-add-option-button {
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-text-10);
+    border-radius: var(--border-radius-01);
+    margin-inline-start: auto;
+    margin-block-end: $spacer * 2;
+
+    .van-button__text {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

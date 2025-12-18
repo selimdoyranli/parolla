@@ -6,7 +6,7 @@
   user-select: none;
   touch-action: manipulation;
 
-  .textFitted {
+  .question .textFitted {
     width: 100%;
   }
 
@@ -71,8 +71,10 @@
     &--osk {
       &.game-scene--activeQuestionTypeMedia {
         .questions {
-          padding-inline: 0 !important;
-          padding-block: $spacer * 10 !important;
+          @include media-breakpoint-down(tablet) {
+            padding-inline: 0 !important;
+            padding-block: $spacer * 10 !important;
+          }
         }
 
         .alphabet {
@@ -153,9 +155,72 @@
             text-align: center;
             background-color: rgba(0, 0, 0, 0.9);
             border-radius: calc(var(--border-radius-01) / 2);
-            margin-block-start: -32px;
+            margin-block-start: -60px;
 
             @include center(true, false);
+          }
+        }
+      }
+    }
+
+    &--activeAnswerTypeTrivia {
+      .question {
+        img {
+          @include media-breakpoint-down(tablet) {
+            aspect-ratio: 16/9 !important;
+          }
+        }
+      }
+
+      .game-scene__fieldSection {
+        position: fixed !important;
+        top: auto;
+        bottom: 0;
+        height: auto;
+        margin-block-start: auto;
+        padding-block: $spacer * 16;
+        overflow: visible;
+
+        @include media-breakpoint-down(mobile) {
+          padding-block: $spacer * 4;
+        }
+      }
+
+      .answer-field {
+        height: auto;
+        box-shadow: none;
+
+        &__button {
+          &--pass {
+            position: absolute;
+            inset-block-start: -75px;
+            inset-inline-start: 0;
+            width: 200px;
+
+            @include center(true, false);
+
+            @include media-breakpoint-down(mobile) {
+              width: 120px;
+              inset-block-start: -56px;
+            }
+
+            @at-root .game-scene--activeQuestionTypeMedia {
+              &.game-scene--activeAnswerTypeTrivia {
+                .answer-field {
+                  &__button {
+                    &--pass {
+                      @include media-breakpoint-down(mobile) {
+                        width: 100px;
+                        transform: none !important;
+                        inset-inline-end: 0;
+                        inset-inline-start: auto;
+                        inset-block-start: -160px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -15,7 +15,11 @@
           span.filter-dropdown-trigger-button__title {{ selectedOption.label }}
         template(v-else)
           AppIcon.filter-dropdown-trigger-button__icon(name="tabler:list-details")
-          span.filter-dropdown-trigger-button__title {{ title }}
+          span.filter-dropdown-trigger-button__title {{ triggerButtonTitle }}
+
+        AppIcon.filter-dropdown-trigger-button__icon.caret-down(name="tabler:caret-down-filled")
+    template(v-if="headerTitle" #header)
+      span.filter-dropdown-header-title {{ headerTitle }}
     template(#body)
       nav.filter-dropdown-nav(v-if="options?.length > 0")
         template(v-for="(item, index) in options")
@@ -36,8 +40,18 @@ export default defineComponent({
     Button
   },
   props: {
-    title: {
+    triggerTitle: {
       type: String,
+      required: false,
+      default: null
+    },
+    headerTitle: {
+      type: String,
+      required: false,
+      default: null
+    },
+    selected: {
+      type: Object,
       required: false,
       default: null
     },
@@ -56,9 +70,9 @@ export default defineComponent({
       isOpen.value = false
     }
 
-    const triggerTitle = computed(() => props.title || context.i18n.t('general.filter'))
+    const triggerButtonTitle = computed(() => props.triggerTitle || context.i18n.t('general.filter'))
 
-    const selectedOption = ref({})
+    const selectedOption = ref(props.selected || {})
 
     const handleOptionSelect = option => {
       selectedOption.value = option
@@ -69,7 +83,7 @@ export default defineComponent({
     return {
       isOpen,
       onClose,
-      triggerTitle,
+      triggerButtonTitle,
       selectedOption,
       handleOptionSelect
     }

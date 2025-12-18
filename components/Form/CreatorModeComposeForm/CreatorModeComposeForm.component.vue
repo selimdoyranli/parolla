@@ -79,19 +79,20 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
         template(v-if="form.qaList && form.qaList.length > 0")
           // List
           .compose-qa-card(v-for="(item, index) in form.qaList")
-            Cell.creator-mode-compose-form__questionType
+            // Question type switch
+            Cell.creator-mode-compose-form__typeSwitchCell
               template(#title)
                 span {{ $t('form.creatorModeCompose.qa.question.questionType.title') }}
               template(#right-icon)
-                RadioGroup.question-type-radio-group(v-model="form.qaList[index].questionType" direction="horizontal")
-                  Radio.question-type-radio(name="text")
-                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.text') }}
+                RadioGroup.type-radio-group(v-model="form.qaList[index].questionType" direction="horizontal")
+                  Radio.type-radio(name="text")
+                    span.type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.text') }}
                     template(#icon="{ props }")
-                      AppIcon.question-type-radio__icon(name="tabler:pencil")
-                  Radio.question-type-radio(name="media")
-                    span.question-type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.media') }}
+                      AppIcon.type-radio__icon(name="tabler:pencil")
+                  Radio.type-radio(name="media")
+                    span.type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.media') }}
                     template(#icon="{ props }")
-                      AppIcon.question-type-radio__icon(name="tabler:photo")
+                      AppIcon.type-radio__icon(name="tabler:photo")
 
             Cell.media-list(v-if="item.questionType === questionTypeEnum.MEDIA")
               template(#title)
@@ -137,10 +138,35 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
               show-word-limit
               :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.qa.question.label') }) }]"
             )
+
+            // Answer type switch
+            Cell.creator-mode-compose-form__typeSwitchCell
+              template(#title)
+                span {{ $t('form.creatorModeCompose.qa.answer.answerType.title') }}
+              template(#right-icon)
+                FilterDropdown(
+                  :options="answerTypeOptions"
+                  :selected="selectedAnswerTypeOption(index)"
+                  :trigger-title="getAnswerTypeOptionsTriggerTitle(index)"
+                  :header-title="$t('form.creatorModeCompose.qa.answer.answerType.title')"
+                  @on-select-option="handleAnswerTypeChange({ index, option: $event })"
+                )
+
+            span.creator-mode-compose-form-answer-label {{ $t('form.creatorModeCompose.qa.answer.label') }}
+
+            // Trivia type answer
+            Cell.creator-mode-compose-form-trivia-answer(v-if="item.answerType === answerTypeEnum.TRIVIA")
+              TriviaForm(
+                :options="item.triviaOptions"
+                :correct-option-text="item.answer"
+                @on-select-correct-option="triviaHandleSelectCorrectOption({ option: $event, itemIndex: index })"
+                @on-set-options="triviaHandleSetOptions({ options: $event, itemIndex: index })"
+              )
+
             Field.creator-mode-compose-form__answerField(
+              v-if="item.answerType === answerTypeEnum.TEXT_FIELD"
               v-model="item.answer"
               name="answer"
-              :label="$t('form.creatorModeCompose.qa.answer.label')"
               :placeholder="$t('form.creatorModeCompose.qa.answer.label')"
               maxlength="120"
               show-word-limit
@@ -258,7 +284,18 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, useStore, reactive, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useRouter,
+  useContext,
+  useStore,
+  reactive,
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  nextTick
+} from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
@@ -375,15 +412,28 @@ export default defineComponent({
       form.tags = form.tags.filter(t => t.toLowerCase() !== tag.toLowerCase())
     }
 
+    const handleAnswerTypeChange = ({ index, option }) => {
+      // Reset answer, character, isMatched, and triviaOptions when answerType changes
+      form.qaList[index].answer = ''
+      form.qaList[index].character = ''
+      form.qaList[index].isMatched = null
+      form.qaList[index].triviaOptions = []
+      form.qaList[index].answerType = option.value
+    }
+
     const addItem = () => {
       // Get the last question's questionType if exists
       const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
+
+      // Get the last question's answerType if exists
+      const lastAnswerType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].answerType : answerTypeEnum.TEXT_FIELD
 
       form.qaList.push({
         character: '',
         questionType: lastQuestionType,
         question: '',
-        answerType: answerTypeEnum.TEXT_FIELD,
+        answerType: lastAnswerType,
+        triviaOptions: [],
         answer: '',
         isMatched: null,
         media: null
@@ -471,8 +521,18 @@ export default defineComponent({
         form.qaList[index].character = ''
       }
 
-      // Set word limit
-      document.querySelectorAll(`.${baseClassName}__answerField`)[index].querySelector('.van-field__word-num').innerHTML = value.length
+      // Set word limit - use nextTick to ensure DOM is updated
+      nextTick(() => {
+        const answerFields = document.querySelectorAll(`.${baseClassName}__answerField`)
+
+        if (answerFields[index]) {
+          const wordNumElement = answerFields[index].querySelector('.van-field__word-num')
+
+          if (wordNumElement) {
+            wordNumElement.innerHTML = value.length
+          }
+        }
+      })
 
       setTimeout(() => {
         validateAnswer(value, { item, index })
@@ -499,6 +559,57 @@ export default defineComponent({
       } else {
         form.qaList[index].isMatched = false
       }
+    }
+
+    const triviaHandleSelectCorrectOption = ({ option, itemIndex }) => {
+      form.qaList[itemIndex].character = option.text.trim().substring(0, 1).toLocaleLowerCase(i18n.locale).trim().replace(/\s+/g, '')
+      form.qaList[itemIndex].answer = option.text
+    }
+
+    const selectedAnswerTypeOption = index => {
+      return {
+        label: getAnswerTypeOptionsTriggerTitle(index),
+        value: form.qaList[index].answerType,
+        icon: getAnswerTypeOptionsIcon(index)
+      }
+    }
+
+    const getAnswerTypeOptionsTriggerTitle = index => {
+      if (form.qaList[index].answerType === answerTypeEnum.TEXT_FIELD) {
+        return i18n.t('form.creatorModeCompose.qa.answer.answerType.options.textField')
+      } else if (form.qaList[index].answerType === answerTypeEnum.TRIVIA) {
+        return i18n.t('form.creatorModeCompose.qa.answer.answerType.options.trivia')
+      }
+    }
+
+    const getAnswerTypeOptionsIcon = index => {
+      if (form.qaList[index].answerType === answerTypeEnum.TEXT_FIELD) {
+        return 'tabler:pencil'
+      } else if (form.qaList[index].answerType === answerTypeEnum.TRIVIA) {
+        return 'tabler:list'
+      }
+
+      return 'tabler:pencil' // fallback
+    }
+
+    const answerTypeOptions = computed(() => {
+      return [
+        {
+          label: i18n.t('form.creatorModeCompose.qa.answer.answerType.options.textField'),
+          value: answerTypeEnum.TEXT_FIELD,
+          icon: 'tabler:pencil'
+        },
+        {
+          label: i18n.t('form.creatorModeCompose.qa.answer.answerType.options.trivia'),
+          value: answerTypeEnum.TRIVIA,
+          icon: 'tabler:list'
+        }
+      ]
+    })
+
+    const triviaHandleSetOptions = ({ options, itemIndex }) => {
+      form.qaList[itemIndex].triviaOptions = options.map(option => option.text.trim())
+      form.qaList[itemIndex].answer = ''
     }
 
     const handleAddMedia = qaIndex => {
@@ -570,6 +681,28 @@ export default defineComponent({
     const onFormFailed = async errorInfo => {
       if (errorInfo && errorInfo.errors.length > 0) {
         form.isClear = false
+
+        // Scroll to first error field
+        const firstError = errorInfo.errors[0]
+
+        if (firstError && firstError.name) {
+          const errorField = document.querySelector(`[name="${firstError.name}"]`)
+
+          if (errorField) {
+            const layoutMain = document.querySelector('.layout__main')
+
+            if (layoutMain) {
+              const fieldRect = errorField.getBoundingClientRect()
+              const containerRect = layoutMain.getBoundingClientRect()
+              const scrollTop = layoutMain.scrollTop + fieldRect.top - containerRect.top - 20 // 20px offset
+
+              layoutMain.scrollTo({
+                top: scrollTop,
+                behavior: 'smooth'
+              })
+            }
+          }
+        }
       } else {
         form.isClear = true
       }
@@ -774,6 +907,7 @@ export default defineComponent({
       handleInputTag,
       addTag,
       removeTag,
+      handleAnswerTypeChange,
       addItem,
       removeItem,
       moveUp,
@@ -783,6 +917,12 @@ export default defineComponent({
       formatAnswerField,
       getCharacter,
       validateAnswer,
+      triviaHandleSelectCorrectOption,
+      selectedAnswerTypeOption,
+      getAnswerTypeOptionsTriggerTitle,
+      getAnswerTypeOptionsIcon,
+      answerTypeOptions,
+      triviaHandleSetOptions,
       handleAddMedia,
       handleCloseMediaUploadDialog,
       handleDeleteMedia,

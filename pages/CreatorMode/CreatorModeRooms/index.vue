@@ -29,7 +29,7 @@
           Button.creator-mode-rooms-page-rooms__refetchButton.me-1(icon="replay" size="small" round @click="fetch")
             | {{ $t('creatorModeRooms.rooms.refresh') }}
           FilterDropdown(
-            :title="$t('creatorModeRooms.rooms.filters.title')"
+            :trigger-title="$t('creatorModeRooms.rooms.filters.title')"
             :options="filterOptions"
             @on-select-option="handleFilterOptionSelect"
           )

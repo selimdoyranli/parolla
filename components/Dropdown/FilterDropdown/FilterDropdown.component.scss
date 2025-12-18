@@ -45,6 +45,16 @@
     }
   }
 
+  &-header {
+    &-title {
+      display: inline-block;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-9);
+      margin-block: $spacer;
+      margin-inline: $spacer * 2;
+    }
+  }
+
   &-nav {
     position: relative;
 
@@ -75,5 +85,10 @@
         font-size: var(--font-size-text-9);
       }
     }
+  }
+
+  .caret-down {
+    margin-inline-start: $spacer;
+    color: var(--color-icon-03);
   }
 }
