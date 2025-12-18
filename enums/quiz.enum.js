@@ -4,5 +4,6 @@ export const questionTypeEnum = Object.freeze({
 })
 
 export const answerTypeEnum = Object.freeze({
-  TEXT_FIELD: 'textField'
+  TEXT_FIELD: 'textField',
+  TRIVIA: 'trivia'
 })

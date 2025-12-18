@@ -6,7 +6,7 @@
     .alphabet.value.swiper.alphabet-carousel
       .alphabet__inner.swiper-wrapper
         .swiper-slide(v-for="(item, index) in alphabet.items")
-          .alphabet__item(:class="[alphabetItemClasses(item, index)]") {{ item.letter }}
+          .alphabet__item(:class="[alphabetItemClasses(item, index)]") {{ alphabetItemLetter(item, index) }}
 
     // Countdown
     .countdown.game-scene__countdown(:class="{ 'd-none': fetchState.pending || fetchState.error }")
@@ -31,11 +31,7 @@
     template(v-else)
       // Questions
       .questions
-        .question(
-          v-for="(question, index) in questions"
-          v-show="index === alphabet.activeIndex"
-          :class="{ 'question--active': index === alphabet.activeIndex, 'question--osk': answer.isFocused }"
-        )
+        .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
           strong.question__title(v-if="question.question?.length > 0") {{ question.question }}
 
           .question-media.do-not-hide-keyboard(v-if="question.media")
@@ -47,7 +43,7 @@
       // Field Section
       section.game-scene__fieldSection(:class="{ 'game-scene__fieldSection--disabled': !isGameStarted }")
         // Answer Field
-        .answer-field
+        .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TEXT_FIELD")
           input.answer-field__input(
             type="text"
             :value="answer.field"
@@ -77,6 +73,14 @@
               @click="pass"
             ) {{ $t('gameScene.answerField.pass') }}
 
+        .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA")
+          Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
+            color="var(--color-warning-01)"
+            icon="arrow"
+            @click="pass"
+          ) {{ $t('gameScene.answerField.pass') }}
+          TriviaOptionList(:options="getActiveQuestion().triviaOptions" @on-option-select="handleTriviaOptionSelect")
+
   // How To Play Dialog
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
@@ -94,7 +98,7 @@
 <script>
 import { defineComponent, useFetch, useRoute, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
-import { questionTypeEnum } from '@/enums/quiz.enum'
+import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown, Notify } from 'vant'
 
 export default defineComponent({
@@ -181,6 +185,30 @@ export default defineComponent({
       dialog.howToPlay.isOpen = true
     }
 
+    const getActiveQuestion = () => {
+      return questions.value[alphabet.value.activeIndex]
+    }
+
+    const getActiveQuestionAnswerType = () => {
+      return getActiveQuestion()?.answerType || answerTypeEnum.TEXT_FIELD
+    }
+
+    const alphabetItemLetter = (item, index) => {
+      const question = questions.value[index]
+      const isTrivia = question?.answerType === answerTypeEnum.TRIVIA
+      const isAnswered = item.isCorrect || item.isWrong
+
+      if (isTrivia && !isAnswered) {
+        return '?'
+      }
+
+      return item.letter
+    }
+
+    const handleTriviaOptionSelect = (option, index) => {
+      handleAnswer(option)
+    }
+
     onMounted(() => {
       setRootRef(rootRef.value)
       resetGame()
@@ -217,15 +245,25 @@ export default defineComponent({
       return {
         'game-scene--isMobileDevice': $ua.isFromMobilephone(),
         'game-scene--gameOver': isGameOver.value,
-        'game-scene--osk': answer.isFocused,
+        'game-scene--osk': answer.isFocused && getActiveQuestionAnswerType() !== answerTypeEnum.TRIVIA,
         'game-scene--activeQuestionTypeMedia': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.MEDIA,
         'game-scene--hasMedia': room.value.hasMedia,
-        'game-scene--activeQuestionTypeText': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.TEXT
+        'game-scene--activeQuestionTypeText': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.TEXT,
+        'game-scene--activeAnswerTypeTextField': getActiveQuestionAnswerType?.() === answerTypeEnum.TEXT_FIELD,
+        'game-scene--activeAnswerTypeTrivia': getActiveQuestionAnswerType?.() === answerTypeEnum.TRIVIA
       }
     })
 
+    const questionClasses = index => {
+      return {
+        'question--active': index === alphabet.value.activeIndex,
+        'question--osk': answer.isFocused && getActiveQuestionAnswerType() !== answerTypeEnum.TRIVIA
+      }
+    }
+
     return {
       questionTypeEnum,
+      answerTypeEnum,
       rootRef,
       ANSWER_CHAR_LENGTH,
       fetch,
@@ -249,7 +287,12 @@ export default defineComponent({
       handleCountdownFinish,
       isTouchEnabled,
       resetGame,
-      gameSceneClasses
+      getActiveQuestion,
+      getActiveQuestionAnswerType,
+      alphabetItemLetter,
+      handleTriviaOptionSelect,
+      gameSceneClasses,
+      questionClasses
     }
   }
 })

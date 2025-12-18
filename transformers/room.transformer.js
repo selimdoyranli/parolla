@@ -19,6 +19,8 @@ export default model => {
     hasMedia: model.hasMedia,
     mediaCount: model.mediaCount,
     questions: model.qaList,
+    answerTypeDominance: model.answerTypeDominance,
+    questionTypeDominance: model.questionTypeDominance,
     tags: model.roomTags
       ? model.roomTags.map(tag => {
           return {

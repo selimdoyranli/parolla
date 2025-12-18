@@ -1,0 +1,50 @@
+.trivia-option-list {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacer * 6;
+
+  @include media-breakpoint-down(mobile) {
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+    gap: $spacer * 4;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    padding: $spacer * 2;
+    color: var(--color-text-01);
+    font-size: var(--font-size-text-9);
+    background-color: var(--color-ui-02);
+    border: 2px solid var(--color-brand-01);
+    border-radius: var(--border-radius-01);
+    box-shadow: var(--box-shadow-04);
+    cursor: pointer;
+    transition: all 0.1s ease;
+
+    @include font-weight-medium;
+
+    &:hover {
+      outline: 1px solid var(--color-brand-01);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    @include media-breakpoint-down(mobile) {
+      height: 50px;
+      font-size: var(--font-size-text-10);
+    }
+
+    &__text {
+      display: block;
+      text-align: center;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+  }
+}

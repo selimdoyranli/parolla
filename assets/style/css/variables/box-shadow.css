@@ -3,10 +3,12 @@
   --box-shadow-02: 0 4px #e7e7e7;
   --box-shadow-03: 0 4px 8px rgba(41, 41, 41, 0.06), 0 2px 4px rgba(41, 41, 41, 0.04), 0 1px 2px rgba(41, 41, 41, 0.04),
     0 0 0 1px rgba(41, 41, 41, 0.08), inset 0 -0.5px 0.5px rgba(41, 41, 41, 0.08);
+  --box-shadow-04: 0 4px #ff7878;
 }
 
 .dark-mode {
   --box-shadow-01: 0 5px 30px rgba(0, 0, 0, 0.25);
   --box-shadow-02: 0 4px #323232;
   --box-shadow-03: 0 0 0 1px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.12);
+  --box-shadow-04: 0 4px #ff7878;
 }

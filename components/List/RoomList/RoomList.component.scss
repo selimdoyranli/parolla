@@ -171,6 +171,26 @@
       }
     }
 
+    &-has-trivia-tag {
+      position: relative;
+      inset-block-start: -1px;
+      background-color: transparent;
+
+      &__triviaIcon {
+        margin-inline-end: $spacer * 2;
+
+        svg {
+          width: 20px !important;
+          height: 20px !important;
+        }
+      }
+
+      &__text {
+        color: var(--color-text-03);
+        font-size: var(--font-size-text-9);
+      }
+    }
+
     &__tag {
       position: relative;
       color: light-dark(#888, #888);

@@ -1,6 +1,7 @@
 import { useContext, useStore, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
 import { UNSUPPORTED_HEIGHT, WEB_CDN } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
+import { answerTypeEnum } from '@/enums/quiz.enum'
 // Swiper
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.min.css'
@@ -155,9 +156,13 @@ export default () => {
   }
 
   const wrongAnimateAnswerField = () => {
-    rootRef.value.querySelector('.answer-field__input').classList.add('answer-field__input--errorAnimation')
+    const input = rootRef.value?.querySelector('.answer-field__input')
+
+    if (!input) return false
+
+    input.classList.add('answer-field__input--errorAnimation')
     setTimeout(() => {
-      rootRef.value.querySelector('.answer-field__input').classList.remove('answer-field__input--errorAnimation')
+      input.classList.remove('answer-field__input--errorAnimation')
     }, 400)
   }
 
@@ -179,14 +184,16 @@ export default () => {
     return false
   }
 
-  const handleAnswer = () => {
-    if (isGameOver.value || answer.field.trim().length <= 0) return false
+  const handleAnswer = (manualAnswer = null) => {
+    const rawAnswer = typeof manualAnswer === 'string' ? manualAnswer : answer.field
+
+    if (isGameOver.value || !rawAnswer || typeof rawAnswer !== 'string' || rawAnswer.trim().length <= 0) return false
 
     const item = alphabet.value.items[alphabet.value.activeIndex]
 
     item.isPassed = false
 
-    const answerField = formatAnswer(answer.field)
+    const answerField = formatAnswer(rawAnswer)
     const correctAnswers = questions.value[alphabet.value.activeIndex].answer.split(',')
 
     const passKeywords = ['pas', 'pass']
@@ -205,7 +212,10 @@ export default () => {
         return false
       }
 
-      if (!answerField.startsWith(formatAnswer(item.letter))) {
+      const currentQuestion = questions.value[alphabet.value.activeIndex]
+      const isTextField = currentQuestion?.answerType === answerTypeEnum.TEXT_FIELD
+
+      if (isTextField && !answerField.startsWith(formatAnswer(item.letter))) {
         handleNotStartsWithActiveChar({ activeChar: item.letter })
 
         return false
@@ -226,10 +236,11 @@ export default () => {
       soundFx.wrong.play()
     }
 
-    myAnswers.value.push({ ...alphabet.value.items[alphabet.value.activeIndex], field: answer.field })
+    myAnswers.value.push({ ...alphabet.value.items[alphabet.value.activeIndex], field: rawAnswer })
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
     alphabet.value.activeIndex = nextLetter()
+    focusToAnswerFieldInput()
   }
 
   const handleAnswerField = $event => {
@@ -250,8 +261,15 @@ export default () => {
   )
 
   const focusToAnswerFieldInput = () => {
-    rootRef.value.querySelector('.answer-field__input').focus()
-    answer.isFocused = true
+    nextTick(() => {
+      const answerFieldInput = rootRef.value.querySelector('.answer-field__input')
+
+      if (answerFieldInput) {
+        answerFieldInput.focus()
+      }
+
+      answer.isFocused = true
+    })
   }
 
   const resetAnswerField = () => {
@@ -280,6 +298,7 @@ export default () => {
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
     alphabet.value.activeIndex = nextLetter()
+    focusToAnswerFieldInput()
 
     soundFx.pass.play()
   }

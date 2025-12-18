@@ -47,10 +47,15 @@
                     template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                     template(v-if="room.isAnon") {{ $t('general.anon') }}
 
-                .room-list-item-badge(v-if="room.hasMedia && room.mediaCount > Math.floor(room.questionCount / 2)")
+                .room-list-item-badge(v-if="room.questionTypeDominance === questionTypeEnum.MEDIA")
                   Tag.room-list-item-has-media-tag
                     AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
                     span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
+
+                .room-list-item-badge(v-if="room.answerTypeDominance === answerTypeEnum.TRIVIA")
+                  Tag.room-list-item-has-trivia-tag
+                    AppIcon.room-list-item-has-trivia-tag__triviaIcon(name="streamline-flex-color:table-flat")
+                    span.room-list-item-has-trivia-tag__text {{ $t('general.triviaQuiz') }}
 
                 .room-list-item-badge(v-if="room.questionCount")
                   AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
@@ -102,6 +107,7 @@ import { defineComponent, useContext, useRouter, useStore, reactive, computed, w
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
+import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   components: {
@@ -305,6 +311,8 @@ export default defineComponent({
     })
 
     return {
+      questionTypeEnum,
+      answerTypeEnum,
       isOwner,
       list,
       pagination,

@@ -33,6 +33,7 @@ export default {
     apply: 'Uygula',
     question: 'Soru',
     answer: 'Cevap',
+    option: 'Seçenek',
     remove: 'Kaldır',
     delete: 'Sil',
     edit: 'Düzenle',
@@ -56,7 +57,8 @@ export default {
     refresh: 'Tazele',
     draft: 'Taslak',
     quiz: 'Quiz',
-    photoQuiz: 'Foto quiz'
+    photoQuiz: 'Foto quiz',
+    triviaQuiz: 'Trivia'
   },
   auth: {
     google: {
@@ -518,7 +520,7 @@ export default {
           questionType: {
             title: 'Soru tipi',
             options: {
-              text: 'Metin',
+              text: 'Yazı',
               media: 'Fotoğraf'
             }
           },
@@ -535,7 +537,14 @@ export default {
           answerType: {
             title: 'Cevap tipi',
             options: {
-              textField: 'Metin alanı'
+              textField: 'Yazı',
+              trivia: 'Trivia'
+            },
+            trivia: {
+              description: 'Oyuncu hazırladığın cevaplar arasından seçecek',
+              optionPlaceholder: 'Seçenek yaz',
+              addOption: 'Seçenek ekle',
+              correctOption: 'Doğru cevap belirlendi'
             }
           },
           label: 'Cevap',
