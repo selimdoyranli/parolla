@@ -189,6 +189,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
               template(v-if="form.qaList && form.qaList.length > 1")
                 Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
                   icon="arrow-up"
+                  v-show="false"
                   round
                   size="small"
                   native-type="button"
@@ -197,6 +198,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
                 )
                 Button.compose-qa-card__moveButton.compose-qa-card__moveButton--down(
                   icon="arrow-down"
+                  v-show="false"
                   round
                   size="small"
                   native-type="button"
