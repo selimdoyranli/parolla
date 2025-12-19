@@ -78,7 +78,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
       .compose-qa-list
         template(v-if="form.qaList && form.qaList.length > 0")
           // List
-          .compose-qa-card(v-for="(item, index) in form.qaList")
+          .compose-qa-card(v-for="(item, index) in form.qaList" :key="item.id")
             // Question type switch
             Cell.creator-mode-compose-form__typeSwitchCell
               template(#title)
@@ -370,7 +370,7 @@ export default defineComponent({
       isAnon: props.room?.isAnon || false,
       tag: '',
       tags: props.room?.tags.map(tag => tag.title) || [],
-      qaList: props.room?.questions || [],
+      qaList: props.room?.questions.map((q, idx) => ({ ...q, id: q.id || Date.now() + idx })) || [],
       mediaList: [],
       gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
     })
@@ -429,6 +429,7 @@ export default defineComponent({
       const lastAnswerType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].answerType : answerTypeEnum.TEXT_FIELD
 
       form.qaList.push({
+        id: Date.now() + Math.random(),
         character: '',
         questionType: lastQuestionType,
         question: '',
