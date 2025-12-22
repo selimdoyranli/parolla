@@ -33,6 +33,7 @@ export default model => {
           }
         })
       : [],
-    gameTimeLimit: Number(model.gameTimeLimit)
+    gameTimeLimit: Number(model.gameTimeLimit),
+    qaItems: model.qaItems
   }
 }

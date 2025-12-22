@@ -13,6 +13,7 @@ export default {
         title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
+            order: item.order,
             character: item.character,
             questionType: item.questionType,
             question: item.question,
@@ -70,6 +71,8 @@ export default {
         title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
+            documentId: item.documentId,
+            order: item.order,
             character: item.character,
             questionType: item.questionType,
             question: item.question,
@@ -135,14 +138,14 @@ export default {
     }
   },
 
-  async uploadQuizMedia({ commit }, { files, path, ref, refId, field }) {
+  async uploadQuizMedia({ commit }, { file, path, ref, refId, field }) {
     const token = this.$auth.strategy.token.get()
 
     const formData = new FormData()
-    files.forEach(file => {
-      formData.append('files', file)
-    })
 
+    console.log('file in action', file)
+
+    formData.append('files', file)
     formData.append('path', path)
     formData.append('ref', ref)
     formData.append('refId', refId)

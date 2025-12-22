@@ -111,6 +111,8 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
                   span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addPhoto') }}
 
               template(#label)
+                p {{ item.media }}
+                p {{ item }}
                 .media-thumbnail(v-if="item.media")
                   img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
                   Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
@@ -370,7 +372,7 @@ export default defineComponent({
       isAnon: props.room?.isAnon || false,
       tag: '',
       tags: props.room?.tags.map(tag => tag.title) || [],
-      qaList: props.room?.questions.map((q, idx) => ({ ...q, id: q.id || Date.now() + idx })) || [],
+      qaList: props.room?.qaItems.map((q, idx) => ({ ...q, id: q.id || Date.now() + idx, order: idx })) || [],
       mediaList: [],
       gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
     })
@@ -378,6 +380,7 @@ export default defineComponent({
     const createdRoom = reactive({
       title: '',
       roomId: '',
+      qaItems: [],
       isListed: form.isListed
     })
 
@@ -437,7 +440,8 @@ export default defineComponent({
         triviaOptions: [],
         answer: '',
         isMatched: null,
-        media: null
+        media: null,
+        order: form.qaList.length
       })
     }
 
@@ -451,6 +455,11 @@ export default defineComponent({
       const item = form.qaList.splice(index, 1)[0]
       form.qaList.splice(index - 1, 0, item)
 
+      // Update order values after move
+      form.qaList.forEach((item, idx) => {
+        item.order = idx
+      })
+
       // Update mediaList for swapped questions
       updateMediaListForSwappedQuestions(index - 1, index)
     }
@@ -458,6 +467,11 @@ export default defineComponent({
     const moveDown = index => {
       const item = form.qaList.splice(index, 1)[0]
       form.qaList.splice(index + 1, 0, item)
+
+      // Update order values after move
+      form.qaList.forEach((item, idx) => {
+        item.order = idx
+      })
 
       // Update mediaList for swapped questions
       updateMediaListForSwappedQuestions(index, index + 1)
@@ -741,6 +755,9 @@ export default defineComponent({
       form.isBusy = true
       showCreatingRoomToast()
 
+      // Filter invalid media files
+      form.mediaList = form.mediaList.filter(media => media.file && media.file.size !== undefined)
+
       const nonMatchedItems = form.qaList.filter(item => {
         return item.isMatched === false
       })
@@ -784,6 +801,18 @@ export default defineComponent({
         if (data) {
           const room = roomTransformer(data.data)
 
+          if (room.qaItems && Array.isArray(room.qaItems)) {
+            room.qaItems.forEach((item, index) => {
+              if (form.qaList[index]) {
+                form.qaList[index].id = item.id
+
+                if (item.documentId) {
+                  form.qaList[index].documentId = item.documentId
+                }
+              }
+            })
+          }
+
           if (room.isVisible) {
             form.isDraft = false
             document.querySelector('.creator-mode-compose-form__saveDraftButton')?.classList.add('d-none')
@@ -791,55 +820,70 @@ export default defineComponent({
 
           createdRoom.title = room.title
           createdRoom.roomId = room.roomId
+          createdRoom.qaItems = room.qaItems
           createdRoom.isListed = form.isListed
 
-          const mediaListItems = form.mediaList.map(media => media.file).filter(file => file != null)
+          const selectedMediaCount = form.mediaList.length
+          let uploadedMediaCount = 0
 
-          if (mediaListItems.length > 0) {
-            const { data: uploadedMediaListData, error: uploadedMediaListError } = await store.dispatch('creator/uploadQuizMedia', {
-              files: mediaListItems,
-              path: `quiz/${room.id}`,
-              ref: 'api::room.room',
-              refId: room.id,
-              field: 'mediaList'
-            })
-
-            if (uploadedMediaListData) {
-              uploadedMediaListData.forEach((uploadedMedia, index) => {
-                // Use the original questionIndex to set media to the correct qaList item
-                const originalQuestionIndex = form.mediaList[index].questionIndex
-                form.qaList[originalQuestionIndex].media = uploadedMedia
-              })
-
-              await store.dispatch('creator/editRoom', {
-                documentId: room.documentId,
-                form: { ...form, isVisible: isDraft ? false : true },
-                deviceInfo
-              })
-              await resetMediaList()
-            }
-
-            if (uploadedMediaListError) {
-              const questionIndex = form.qaList.findIndex(item => {
-                return item?.media?.file?.name === uploadedMediaListError.details?.file?.originalFilename
-              })
-
-              getErrorNotify({
-                error: {
-                  ...uploadedMediaListError,
-                  message: `Medya yüklenirken hata oldu \n ${
-                    questionIndex !== -1
-                      ? `${questionIndex + 1}. ${i18n.t('general.question')}: ${uploadedMediaListError.message}`
-                      : uploadedMediaListError.message
-                  }`
-                }
-              })
-
-              setTimeout(() => {
-                dialog.room.isOpen = false
-              }, 1)
-            }
+          const getMediaFile = ({ qaItemIndex }) => {
+            return form.mediaList.find(media => media.questionIndex === qaItemIndex)?.file
           }
+
+          createdRoom.qaItems.forEach(async (qaItem, qaItemIndex) => {
+            if (qaItem.questionType === questionTypeEnum.MEDIA) {
+              const file = getMediaFile({ qaItemIndex })
+
+              if (file) {
+                const { data: uploadedMediaListData, error: uploadedMediaListError } = await store.dispatch('creator/uploadQuizMedia', {
+                  file,
+                  path: `quiz/${room.id}`,
+                  ref: 'api::room-qa-item.room-qa-item',
+                  refId: qaItem.id,
+                  field: 'media'
+                })
+
+                if (uploadedMediaListData) {
+                  uploadedMediaCount++
+
+                  console.log('File uploaded successfully')
+                  console.log('uploadedMediaCount', uploadedMediaCount)
+                  console.log('selectedMediaCount', selectedMediaCount)
+
+                  if (uploadedMediaCount === selectedMediaCount) {
+                    console.log('All media uploaded, calling editRoom...')
+
+                    await store.dispatch('creator/editRoom', {
+                      documentId: room.documentId,
+                      form: { ...form, isVisible: isDraft ? false : true },
+                      deviceInfo
+                    })
+
+                    await resetMediaList()
+
+                    console.log('editRoom completed successfully')
+                  }
+                }
+
+                if (uploadedMediaListError) {
+                  getErrorNotify({
+                    error: {
+                      ...uploadedMediaListError,
+                      message: `Medya yüklenirken hata oldu \n ${
+                        qaItemIndex !== -1
+                          ? `${qaItemIndex + 1}. ${i18n.t('general.question')}: ${uploadedMediaListError.message}`
+                          : uploadedMediaListError.message
+                      }`
+                    }
+                  })
+
+                  setTimeout(() => {
+                    dialog.room.isOpen = false
+                  }, 1)
+                }
+              }
+            }
+          })
 
           dialog.room.isOpen = true
         }
