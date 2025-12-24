@@ -20,8 +20,8 @@ export default {
             answerType: item.answerType,
             answer: item.answer,
             media: item.media?.id || null,
-            triviaOptions: item.triviaOptions,
-            ...(item.mediaNote && { mediaNote: item.mediaNote })
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
           }
 
           return qaItem
@@ -72,8 +72,8 @@ export default {
             answerType: item.answerType,
             answer: item.answer,
             media: item.media?.id || null,
-            triviaOptions: item.triviaOptions,
-            ...(item.mediaNote && { mediaNote: item.mediaNote })
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
           }
 
           return qaItem
