@@ -846,22 +846,16 @@ export default defineComponent({
                 if (uploadedMediaListData) {
                   uploadedMediaCount++
 
-                  console.log('File uploaded successfully')
-                  console.log('uploadedMediaCount', uploadedMediaCount)
-                  console.log('selectedMediaCount', selectedMediaCount)
+                  // Set uploaded media into related qa item
+                  form.qaList[qaItemIndex].media = uploadedMediaListData[0]
 
                   if (uploadedMediaCount === selectedMediaCount) {
-                    console.log('All media uploaded, calling editRoom...')
-
-                    await store.dispatch('creator/editRoom', {
+                    await store.dispatch('creator/setRoomVisibility', {
                       documentId: room.documentId,
-                      form: { ...form, isVisible: isDraft ? false : true },
-                      deviceInfo
+                      isVisible: isDraft ? false : true
                     })
 
                     await resetMediaList()
-
-                    console.log('editRoom completed successfully')
                   }
                 }
 

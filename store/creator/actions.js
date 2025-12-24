@@ -19,16 +19,9 @@ export default {
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
+            media: item.media?.id || null,
             triviaOptions: item.triviaOptions,
             ...(item.mediaNote && { mediaNote: item.mediaNote })
-          }
-
-          if (item.media?.file) {
-            qaItem.selectedMedia = item.media
-          }
-
-          if (item.media && item.media.id) {
-            qaItem.media = item.media
           }
 
           return qaItem
@@ -78,16 +71,9 @@ export default {
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
+            media: item.media?.id || null,
             triviaOptions: item.triviaOptions,
             ...(item.mediaNote && { mediaNote: item.mediaNote })
-          }
-
-          if (item.media?.file) {
-            qaItem.selectedMedia = item.media
-          }
-
-          if (item.media && item.media.id) {
-            qaItem.media = item.media
           }
 
           return qaItem
@@ -106,6 +92,32 @@ export default {
       },
       data: {
         data: transform(form)
+      },
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async setRoomVisibility({ commit }, { documentId, isVisible }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: `rooms/${documentId}`,
+      method: 'PUT',
+      query: {
+        locale: this.$i18n.locale
+      },
+      data: {
+        data: {
+          user: this.$auth.user?.id,
+          isVisible: isVisible
+        }
       },
       headers: {
         Authorization: `${token}`
@@ -142,8 +154,6 @@ export default {
     const token = this.$auth.strategy.token.get()
 
     const formData = new FormData()
-
-    console.log('file in action', file)
 
     formData.append('files', file)
     formData.append('path', path)
