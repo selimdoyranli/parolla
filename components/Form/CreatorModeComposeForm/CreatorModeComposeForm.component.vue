@@ -111,8 +111,6 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
                   span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addPhoto') }}
 
               template(#label)
-                p {{ item.media }}
-                p {{ item }}
                 .media-thumbnail(v-if="item.media")
                   img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
                   Button.media-thumbnail__delete(type="danger" size="small" round @click="handleDeleteMedia(index)")
@@ -856,6 +854,7 @@ export default defineComponent({
                     })
 
                     await resetMediaList()
+                    dialog.room.isOpen = true
                   }
                 }
 
@@ -879,7 +878,9 @@ export default defineComponent({
             }
           })
 
-          dialog.room.isOpen = true
+          if (selectedMediaCount === 0) {
+            dialog.room.isOpen = true
+          }
         }
 
         if (error) {
