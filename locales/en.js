@@ -491,6 +491,7 @@ export default {
       qaSet: 'QUESTION-ANSWER SET',
       creatingQuiz: 'Creating quiz...',
       updatingQuiz: 'Updating quiz...',
+      uploadingMedia: 'Uploading media',
       clearForm: 'Clear Form',
       room: {
         roomTitle: {
@@ -539,7 +540,10 @@ export default {
             placeholder: 'Type photo note (optional)',
             description: 'The player will see the note related to the photo'
           },
-          removeQuestion: 'Remove question'
+          removeQuestion: 'Remove question',
+          error: {
+            mediaRequired: 'Photo file is required for photo type questions'
+          }
         },
         answer: {
           answerType: {
@@ -558,7 +562,8 @@ export default {
           label: 'Answer',
           placeholder: 'You can separate the answers with commas',
           error: {
-            nonMatched: 'Every answer must start with the same character'
+            nonMatched: 'Every answer must start with the same character',
+            required: 'Answer field is required'
           }
         },
         character: {

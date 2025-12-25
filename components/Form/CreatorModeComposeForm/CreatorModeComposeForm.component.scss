@@ -341,6 +341,11 @@
     }
   }
 
+  .compose-qa-card__media-warning {
+    padding: $spacer * 2 $spacer * 4;
+    margin-block-start: $spacer;
+  }
+
   &__termsDescription {
     display: block;
     width: 100%;
