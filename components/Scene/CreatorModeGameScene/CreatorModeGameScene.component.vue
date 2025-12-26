@@ -32,7 +32,7 @@
       // Questions
       .questions
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
-          strong.question__title(v-if="question.question?.length > 0") {{ question.question }}
+          strong.question__title(v-if="question.question?.length > 0 && question.questionType !== questionTypeEnum.MEDIA") {{ question.question }}
 
           .question-media.do-not-hide-keyboard(v-if="question.media")
             .question-media-image.do-not-hide-keyboard
@@ -205,8 +205,8 @@ export default defineComponent({
       return item.letter
     }
 
-    const handleTriviaOptionSelect = (option, index) => {
-      handleAnswer(option)
+    const handleTriviaOptionSelect = option => {
+      handleAnswer(option.text)
     }
 
     onMounted(() => {

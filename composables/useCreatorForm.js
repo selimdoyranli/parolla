@@ -22,7 +22,7 @@ export default function useCreatorForm(props) {
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
     qaList:
-      props.room?.qaItems.map((q, idx) => ({
+      props.room?.questions.map((q, idx) => ({
         ...q,
         id: q.id || Date.now() + idx,
         order: idx,
@@ -36,7 +36,7 @@ export default function useCreatorForm(props) {
   const createdRoom = reactive({
     title: '',
     roomId: '',
-    qaItems: [],
+    questions: [],
     isListed: form.isListed
   })
 
@@ -400,8 +400,8 @@ export default function useCreatorForm(props) {
       const room = roomTransformer(data.data)
 
       // Sync IDs back to form list
-      if (room.qaItems && Array.isArray(room.qaItems)) {
-        room.qaItems.forEach((item, index) => {
+      if (room.questions && Array.isArray(room.questions)) {
+        room.questions.forEach((item, index) => {
           if (form.qaList[index]) {
             form.qaList[index].id = item.id
 
@@ -418,14 +418,14 @@ export default function useCreatorForm(props) {
 
       createdRoom.title = room.title
       createdRoom.roomId = room.roomId
-      createdRoom.qaItems = room.qaItems
+      createdRoom.questions = room.questions
       createdRoom.isListed = form.isListed
 
       // Upload Media
       let uploadedMediaCount = 0
 
       // We iterate through our form.qaList to find items with mediaFile
-      // We need to match them to the createdRoom.qaItems to get the refId (qaItem.id)
+      // We need to match them to the createdRoom.questions to get the refId (qaItem.id)
       // Since order is preserved, we can match by index.
       // Upload sequentially to show progress for each media
 
@@ -434,7 +434,7 @@ export default function useCreatorForm(props) {
           const qaItem = form.qaList[index]
 
           if (qaItem.mediaFile) {
-            const createdQaItem = createdRoom.qaItems[index]
+            const createdQaItem = createdRoom.questions[index]
 
             if (createdQaItem) {
               // Update current uploading media for modal display

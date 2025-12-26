@@ -1,8 +1,8 @@
 <template lang="pug">
 .trivia-option-list
-  template(v-for="(option, index) in options")
-    .trivia-option-list-item(@click="handleOptionClick(option, index)")
-      span.trivia-option-list-item__text {{ option }}
+  template(v-for="option in options")
+    .trivia-option-list-item(@click="handleOptionClick(option)")
+      span.trivia-option-list-item__text {{ option.text }}
 </template>
 
 <script>
@@ -17,8 +17,8 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    const handleOptionClick = (option, index) => {
-      emit('on-option-select', option, index)
+    const handleOptionClick = option => {
+      emit('on-option-select', option)
     }
 
     return {
