@@ -69,7 +69,13 @@ export default defineComponent({
 
     const getGamerAnswer = ({ item, question, questionIndex }) => {
       return item.results.gamersAnswers
-        ?.filter(answer => answer.question?.id === question.id || answer.index === questionIndex)
+        ?.filter(answer => {
+          if (answer.question) {
+            return answer.question.id === question.id
+          } else {
+            return answer.index === questionIndex
+          }
+        })
         .reverse()[0]
     }
 
