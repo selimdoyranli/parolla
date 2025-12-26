@@ -1,0 +1,103 @@
+.creating-room-modal {
+  $van-dialog: '.van-dialog';
+
+  width: 85%;
+  max-width: 320px;
+
+  #{$van-dialog} {
+    &__header {
+      display: none;
+    }
+
+    &__content {
+      padding: var(--base-p-y) var(--base-p-x);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 4;
+    align-items: center;
+    padding: $spacer * 4;
+    text-align: center;
+  }
+
+  &__loader {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+  }
+
+  &__spinner {
+    color: var(--color-primary-01);
+  }
+
+  &__message {
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 500;
+    font-size: var(--font-size-text-8);
+  }
+
+  &__media-progress {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    width: 100%;
+    padding-block-start: $spacer * 2;
+    border-block-start: 1px solid var(--color-border-02);
+  }
+
+  &__progress-info {
+    display: flex;
+    gap: $spacer;
+    align-items: center;
+  }
+
+  &__progress-label {
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-7);
+  }
+
+  &__progress-count {
+    color: var(--color-primary-01);
+    font-weight: 600;
+    font-size: var(--font-size-text-8);
+  }
+
+  &__current-media {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__thumbnail-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border: 2px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__thumbnail-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 50%);
+  }
+
+  &__thumbnail-spinner {
+    color: #fff;
+  }
+}

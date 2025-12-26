@@ -498,6 +498,7 @@ export default {
       qaSet: 'SORU-CEVAP SETİ',
       creatingQuiz: 'Quiz oluşturuluyor...',
       updatingQuiz: 'Quiz güncelleniyor...',
+      uploadingMedia: 'Medya yükleniyor',
       room: {
         roomTitle: {
           label: 'Quiz başlığı',
@@ -545,7 +546,10 @@ export default {
             placeholder: 'Fotoğraf notunu yaz (isteğe bağlı)',
             description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
           },
-          removeQuestion: 'Soruyu kaldır'
+          removeQuestion: 'Soruyu kaldır',
+          error: {
+            mediaRequired: 'Fotoğraf tipindeki soruda dosya eksik'
+          }
         },
         answer: {
           answerType: {
@@ -564,7 +568,8 @@ export default {
           label: 'Cevap',
           placeholder: 'Cevapları virgül ile ayırabilirsin',
           error: {
-            nonMatched: 'Her cevap aynı karakterle başlamalı'
+            nonMatched: 'Her cevap aynı karakterle başlamalı',
+            required: 'Cevap alanı zorunludur'
           }
         },
         character: {

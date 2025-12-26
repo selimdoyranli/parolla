@@ -236,7 +236,11 @@ export default () => {
       soundFx.wrong.play()
     }
 
-    myAnswers.value.push({ ...alphabet.value.items[alphabet.value.activeIndex], field: rawAnswer })
+    myAnswers.value.push({
+      ...alphabet.value.items[alphabet.value.activeIndex],
+      field: rawAnswer,
+      question: questions.value[alphabet.value.activeIndex]
+    })
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
     alphabet.value.activeIndex = nextLetter()
@@ -294,7 +298,11 @@ export default () => {
 
     alphabet.value.items[alphabet.value.activeIndex].isPassed = true
 
-    myAnswers.value.push({ ...alphabet.value.items[alphabet.value.activeIndex], field: answer.field })
+    myAnswers.value.push({
+      ...alphabet.value.items[alphabet.value.activeIndex],
+      field: answer.field,
+      question: questions.value[alphabet.value.activeIndex]
+    })
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
     alphabet.value.activeIndex = nextLetter()

@@ -13,21 +13,15 @@ export default {
         title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
+            order: item.order,
             character: item.character,
             questionType: item.questionType,
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
-            triviaOptions: item.triviaOptions,
-            ...(item.mediaNote && { mediaNote: item.mediaNote })
-          }
-
-          if (item.media?.file) {
-            qaItem.selectedMedia = item.media
-          }
-
-          if (item.media && item.media.id) {
-            qaItem.media = item.media
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
           }
 
           return qaItem
@@ -70,21 +64,16 @@ export default {
         title: form.roomTitle,
         qaList: form.qaList.map(item => {
           const qaItem = {
+            documentId: item.documentId,
+            order: item.order,
             character: item.character,
             questionType: item.questionType,
             question: item.question,
             answerType: item.answerType,
             answer: item.answer,
-            triviaOptions: item.triviaOptions,
-            ...(item.mediaNote && { mediaNote: item.mediaNote })
-          }
-
-          if (item.media?.file) {
-            qaItem.selectedMedia = item.media
-          }
-
-          if (item.media && item.media.id) {
-            qaItem.media = item.media
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
           }
 
           return qaItem
@@ -103,6 +92,32 @@ export default {
       },
       data: {
         data: transform(form)
+      },
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async setRoomVisibility({ commit }, { documentId, isVisible }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: `rooms/${documentId}`,
+      method: 'PUT',
+      query: {
+        locale: this.$i18n.locale
+      },
+      data: {
+        data: {
+          user: this.$auth.user?.id,
+          isVisible: isVisible
+        }
       },
       headers: {
         Authorization: `${token}`
@@ -135,14 +150,12 @@ export default {
     }
   },
 
-  async uploadQuizMedia({ commit }, { files, path, ref, refId, field }) {
+  async uploadQuizMedia({ commit }, { file, path, ref, refId, field }) {
     const token = this.$auth.strategy.token.get()
 
     const formData = new FormData()
-    files.forEach(file => {
-      formData.append('files', file)
-    })
 
+    formData.append('files', file)
     formData.append('path', path)
     formData.append('ref', ref)
     formData.append('refId', refId)

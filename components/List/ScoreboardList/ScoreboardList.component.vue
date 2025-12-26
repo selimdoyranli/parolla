@@ -20,14 +20,14 @@ Collapse.list.scoreboard-list(v-model="toggledScoreItem" accordion)
       li.scoreboard-list-gamerAnswers-item(
         v-for="(question, questionIndex) in questions"
         :key="questionIndex"
-        :class="[getGamerAnswerClasses(getGamerAnswer({ item, questionIndex }))]"
+        :class="[getGamerAnswerClasses(getGamerAnswer({ item, question, questionIndex }))]"
       )
         strong.scoreboard-list-gamerAnswers-item__letter {{ question.letter }}
         span.scoreboard-list-gamerAnswers-item__value
           kbd {{ question.answer }}
-          span(v-if="getGamerAnswer({ item, questionIndex })?.isPassed") {{ $t('gameScene.pass').toLocaleUpperCase('tr') }}
-          span(v-else-if="getGamerAnswer({ item, questionIndex })?.field?.length > 0")
-            | {{ getGamerAnswer({ item, questionIndex })?.field?.toLocaleUpperCase('tr') }}
+          span(v-if="getGamerAnswer({ item, question, questionIndex })?.isPassed") {{ $t('gameScene.pass').toLocaleUpperCase('tr') }}
+          span(v-else-if="getGamerAnswer({ item, question, questionIndex })?.field?.length > 0")
+            | {{ getGamerAnswer({ item, question, questionIndex })?.field?.toLocaleUpperCase('tr') }}
           span(v-else) -
 
     template(v-else)
@@ -67,8 +67,16 @@ export default defineComponent({
       await emit('on-infinite-loading', $state)
     }
 
-    const getGamerAnswer = ({ item, questionIndex }) => {
-      return item.results.gamersAnswers?.filter(answer => answer.index === questionIndex).reverse()[0]
+    const getGamerAnswer = ({ item, question, questionIndex }) => {
+      return item.results.gamersAnswers
+        ?.filter(answer => {
+          if (answer.question) {
+            return answer.question.id === question.id
+          } else {
+            return answer.index === questionIndex
+          }
+        })
+        .reverse()[0]
     }
 
     const getGamerAnswerClasses = answer => {
