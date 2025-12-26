@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.36.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.2...v2.36.3)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on question media when active trivia quiz item ([7ad0b03](https://github.com/selimdoyranli/parolla/commit/7ad0b03))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
+## v2.36.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.1...v2.36.2)
+
+
+### 💅 Refactors
+
+  - Disable move button on compose qa card ([2ed7f95](https://github.com/selimdoyranli/parolla/commit/2ed7f95))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.36.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.0...v2.36.1)

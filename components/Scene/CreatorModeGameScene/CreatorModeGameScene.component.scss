@@ -166,8 +166,15 @@
     &--activeAnswerTypeTrivia {
       .question {
         img {
+          max-height: calc(100vh - 300px * 2);
+
+          &:active {
+            max-height: unset;
+          }
+
           @include media-breakpoint-down(tablet) {
             aspect-ratio: 16/9 !important;
+            max-height: unset;
           }
         }
       }
@@ -176,13 +183,17 @@
         position: fixed !important;
         top: auto;
         bottom: 0;
-        height: auto;
-        margin-block-start: auto;
-        padding-block: $spacer * 16;
+        display: flex;
+        align-items: flex-end;
+        height: 300px;
         overflow: visible;
+        margin-block-start: auto;
+        padding-block: 0;
+        padding-block-end: $spacer * 16;
 
         @include media-breakpoint-down(mobile) {
-          padding-block: $spacer * 4;
+          height: auto;
+          padding-block-end: $spacer * 4;
         }
       }
 
