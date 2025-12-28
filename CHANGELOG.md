@@ -1,5 +1,34 @@
 # Changelog
 
+## v2.36.4
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.3...v2.36.4)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on creator mode game scene ([db64d07](https://github.com/selimdoyranli/parolla/commit/db64d07))
+
+### 💅 Refactors
+
+  - Room qa item structure ([263b9a5](https://github.com/selimdoyranli/parolla/commit/263b9a5))
+  - Update logic improvement for quiz ([1216d9a](https://github.com/selimdoyranli/parolla/commit/1216d9a))
+  - Qa item media note ([488ee35](https://github.com/selimdoyranli/parolla/commit/488ee35))
+  - Remove debug logs ([b5a1a3d](https://github.com/selimdoyranli/parolla/commit/b5a1a3d))
+  - Organised creator compose logic & components ([cad4204](https://github.com/selimdoyranli/parolla/commit/cad4204))
+  - Use qaItems instead of qaList on room ([33c0711](https://github.com/selimdoyranli/parolla/commit/33c0711))
+  - Score gamer's answers sort when changed qaItem order ([faf1345](https://github.com/selimdoyranli/parolla/commit/faf1345))
+  - Update app fetch url ([fe0c83c](https://github.com/selimdoyranli/parolla/commit/fe0c83c))
+
+### 🏡 Chore
+
+  - Maintaining ([b390d08](https://github.com/selimdoyranli/parolla/commit/b390d08))
+  - Merge master ([35244d3](https://github.com/selimdoyranli/parolla/commit/35244d3))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.36.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.2...v2.36.3)
