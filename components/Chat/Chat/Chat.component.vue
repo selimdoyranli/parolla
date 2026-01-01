@@ -134,8 +134,16 @@ export default defineComponent({
       { immediate: true }
     )
 
+    const isScrollOnBottom = () => {
+      if (!messagesRef.value) return false
+
+      const threshold = 50
+
+      return messagesRef.value.scrollTop + messagesRef.value.clientHeight >= messagesRef.value.scrollHeight - threshold
+    }
+
     const scrollToBottom = () => {
-      if (messagesRef.value) {
+      if (messagesRef.value && isScrollOnBottom()) {
         setTimeout(() => {
           messagesRef.value.scrollTo({
             top: messagesRef.value.scrollHeight,
@@ -180,7 +188,8 @@ export default defineComponent({
       isoToHumanDate,
       scrollToBottom,
       handleFocus,
-      handleBlur
+      handleBlur,
+      isScrollOnBottom
     }
   }
 })
