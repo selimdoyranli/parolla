@@ -70,8 +70,9 @@
   LazyTourModeOnlineDialog(:isOpen="isTourModeOnlineDialogOpen" :tour="tour" @closed="closeTourModeOnlineDialog")
 
   // Chat Panel
-  ChatPanel(:title="`${$t('chat.chat')} (${userList.totalPlayers})`")
+  ChatPanel(:title="`${$t('chat.chat')} (${userList.totalPlayers})`" @on-focus="handleChatFocus" @on-blur="handleChatBlur")
     template(#content-prepend)
+      p {{ isChatFocused }}
       .section-title {{ $t('tourMode.lastAnswers.title') }}
       .last-answers
         PlayerList(:items="tour.recentAnswers")
@@ -150,15 +151,21 @@ export default defineComponent({
 
         // Only process single character keys (excluding special keys)
         if (pressedKey && pressedKey.length === 1) {
-          focusToAnswerFieldInput()
+          if (!isChatFocused.value) {
+            focusToAnswerFieldInput()
+          }
           // After focusing, add the pressed character to the input
           answer.field = pressedKey + answer.field
         } else {
           // Only focus for special keys
-          focusToAnswerFieldInput()
+          if (!isChatFocused.value) {
+            focusToAnswerFieldInput()
+          }
         }
       }
     }
+
+    const isChatFocused = computed(() => store.getters['tour/isChatFocused'])
 
     const onQuestionGot = ({ question }) => {
       store.commit('tour/SET_TOUR', {
@@ -169,7 +176,9 @@ export default defineComponent({
       })
 
       setTimeout(() => {
-        focusToAnswerFieldInput()
+        if (!isChatFocused.value) {
+          focusToAnswerFieldInput()
+        }
       }, 0)
     }
 
@@ -201,7 +210,9 @@ export default defineComponent({
       })
 
       // Focus out of all focused inputs and close the mobile keyboard
-      document.activeElement.blur()
+      if (!isChatFocused.value) {
+        document.activeElement.blur()
+      }
 
       resetAnswerField()
 
@@ -385,6 +396,14 @@ export default defineComponent({
       }
     }
 
+    const handleChatFocus = () => {
+      store.commit('tour/SET_IS_CHAT_FOCUSED', true)
+    }
+
+    const handleChatBlur = () => {
+      store.commit('tour/SET_IS_CHAT_FOCUSED', false)
+    }
+
     onMounted(() => {
       window.addEventListener('ws-event', handleWsEvent)
 
@@ -433,6 +452,7 @@ export default defineComponent({
     }
 
     return {
+      isChatFocused,
       rootRef,
       ANSWER_CHAR_LENGTH,
       answer,
@@ -441,6 +461,8 @@ export default defineComponent({
       handleAnswer,
       handleTabKey,
       isTouchEnabled,
+      handleChatFocus,
+      handleChatBlur,
       isTourModeOnlineDialogOpen,
       closeTourModeOnlineDialog,
       tour,
