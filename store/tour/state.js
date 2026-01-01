@@ -46,7 +46,8 @@ export default () => ({
     meta: {}
   },
   chat: {
-    messages: []
+    messages: [],
+    isFocused: false
   },
   dialog: {
     tourModeOnline: {

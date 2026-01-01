@@ -55,6 +55,10 @@ export default {
     state.chat.messages = messages
   },
 
+  SET_IS_CHAT_FOCUSED(state, isFocused) {
+    state.chat.isFocused = isFocused
+  },
+
   SET_IS_OPEN_TOUR_MODE_ONLINE_DIALOG(state, isOpen) {
     state.dialog.tourModeOnline.isOpen = isOpen
   }

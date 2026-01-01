@@ -19,6 +19,10 @@ export default {
     return state.chat.messages
   },
 
+  isChatFocused(state) {
+    return state.chat.isFocused
+  },
+
   dialog(state) {
     return state.dialog
   }

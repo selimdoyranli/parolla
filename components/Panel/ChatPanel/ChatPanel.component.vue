@@ -8,7 +8,7 @@
 
   .chat-panel__content
     slot(name="content-prepend")
-    Chat
+    Chat(@on-focus="handleFocus" @on-blur="handleBlur")
     slot(name="content-append")
 </template>
 
@@ -24,16 +24,26 @@ export default defineComponent({
       default: null
     }
   },
-  setup() {
+  setup(_, { emit }) {
     const isExpanded = ref(true)
 
     const collapseChatPanel = () => {
       isExpanded.value = !isExpanded.value
     }
 
+    const handleFocus = () => {
+      emit('on-focus')
+    }
+
+    const handleBlur = () => {
+      emit('on-blur')
+    }
+
     return {
       isExpanded,
-      collapseChatPanel
+      collapseChatPanel,
+      handleFocus,
+      handleBlur
     }
   }
 })
