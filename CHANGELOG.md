@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.36.5
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.4...v2.36.5)
+
+
+### 🩹 Fixes
+
+  - Fix chat focus on tour mode ([57ed2ae](https://github.com/selimdoyranli/parolla/commit/57ed2ae))
+  - Remove debug log on chat panel ([bdf5f4b](https://github.com/selimdoyranli/parolla/commit/bdf5f4b))
+  - Scroll to bottom fix on chat load ([b6638c5](https://github.com/selimdoyranli/parolla/commit/b6638c5))
+  - Scroll fix when route to music page ([60bd0a2](https://github.com/selimdoyranli/parolla/commit/60bd0a2))
+
+### 💅 Refactors
+
+  - Check scroll position on chat ([91ef6c0](https://github.com/selimdoyranli/parolla/commit/91ef6c0))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.36.4
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.3...v2.36.4)
