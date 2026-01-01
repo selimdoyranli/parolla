@@ -72,7 +72,6 @@
   // Chat Panel
   ChatPanel(:title="`${$t('chat.chat')} (${userList.totalPlayers})`" @on-focus="handleChatFocus" @on-blur="handleChatBlur")
     template(#content-prepend)
-      p {{ isChatFocused }}
       .section-title {{ $t('tourMode.lastAnswers.title') }}
       .last-answers
         PlayerList(:items="tour.recentAnswers")
