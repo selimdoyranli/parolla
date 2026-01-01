@@ -98,7 +98,9 @@ export default defineComponent({
           ])
 
           setTimeout(() => {
-            scrollToBottom()
+            if (isScrollOnBottom()) {
+              scrollToBottom()
+            }
           }, 0)
         }
 
@@ -143,7 +145,7 @@ export default defineComponent({
     }
 
     const scrollToBottom = () => {
-      if (messagesRef.value && isScrollOnBottom()) {
+      if (messagesRef.value) {
         setTimeout(() => {
           messagesRef.value.scrollTo({
             top: messagesRef.value.scrollHeight,
