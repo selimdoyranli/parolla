@@ -4,12 +4,18 @@
 </template>
 
 <script>
-import { defineComponent, useContext, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, onMounted, useMeta } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
     const { i18n } = useContext()
+
+    const { layoutScrollToTop } = useScroll()
+
+    onMounted(() => {
+      layoutScrollToTop()
+    })
 
     useMeta(() => ({
       title: `${i18n.t('seo.musicMode.guessTheSong.title')} - ${i18n.t('seo.main.title')}`,

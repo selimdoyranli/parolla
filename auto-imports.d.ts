@@ -15,6 +15,7 @@ declare global {
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
   const useGameMode: typeof import('./composables/useGameMode.js')['default']
   const useGameScene: typeof import('./composables/useGameScene.js')['default']
+  const useScroll: typeof import('./composables/useScroll.js')['default']
   const useTime: typeof import('./composables/useTime.js')['default']
   const useWordblock: typeof import('./composables/useWordblock.js')['default']
 }

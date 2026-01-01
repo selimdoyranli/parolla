@@ -201,9 +201,10 @@
     max-width: var(--mobile);
     margin: 0 auto;
     margin-block-start: $spacer * 8;
+    padding-block-end: $spacer * 8;
 
     @include media-breakpoint-down(mobile) {
-      padding-block-end: $spacer * 8;
+      padding-block-end: 20vh;
     }
 
     &-title {
