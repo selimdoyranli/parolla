@@ -16,7 +16,7 @@
           .chat__message-text(v-if="message.isSystem")
             .chat__message-time {{ $t('chat.system') }} - {{ isoToHumanDate(message.timestamp) }}
             | &nbsp;&nbsp;: &nbsp;{{ message.message }}
-          .chat__message-text(v-else) : {{ message.message }}
+          .chat__message-text(v-else) : {{ censorBadwords(message.message) }}
 
     template(v-else)
       Empty(:description="$t('chat.messagesEmpty')")
@@ -58,6 +58,8 @@ export default defineComponent({
     const store = useStore()
 
     const { isoToHumanDate } = useFormatter()
+
+    const { censorBadwords } = useCensorBadwords()
 
     const messagesRef = ref(null)
 
@@ -183,6 +185,7 @@ export default defineComponent({
     })
 
     return {
+      censorBadwords,
       messagesRef,
       messageText,
       chatMessages,
