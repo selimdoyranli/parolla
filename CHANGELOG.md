@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.37.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.5...v2.37.0)
+
+
+### 🚀 Enhancements
+
+  - Censor badwords ([99bba9d](https://github.com/selimdoyranli/parolla/commit/99bba9d))
+
+### 💅 Refactors
+
+  - Update censor badwords logic ([823099e](https://github.com/selimdoyranli/parolla/commit/823099e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.36.5
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.4...v2.36.5)
