@@ -8,6 +8,7 @@ export {}
 declare global {
   const useAuth: typeof import('./composables/useAuth.js')['default']
   const useAvatar: typeof import('./composables/useAvatar.js')['default']
+  const useCensorBadwords: typeof import('./composables/useCensorBadwords.js')['default']
   const useCreatorForm: typeof import('./composables/useCreatorForm.js')['default']
   const useDeviceInfo: typeof import('./composables/useDeviceInfo.js')['default']
   const useDialog: typeof import('./composables/useDialog.js')['default']
