@@ -1,5 +1,5 @@
 import { useContext, useStore, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
-import { UNSUPPORTED_HEIGHT, WEB_CDN } from '@/system/constant'
+import { UNSUPPORTED_HEIGHT } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { answerTypeEnum } from '@/enums/quiz.enum'
 // Swiper
@@ -384,38 +384,38 @@ export default () => {
   })
 
   const startSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/start.wav`],
+    src: [`/sound/fx/start.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
   const correctSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/correct.wav`],
+    src: [`/sound/fx/correct.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
   const wrongSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/wrong.wav`],
+    src: [`/sound/fx/wrong.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
   const passSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/pass.wav`],
+    src: [`/sound/fx/pass.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
   const halfTimeSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/half-time.wav`],
+    src: [`/sound/fx/half-time.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
   const hurryUpSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/tick-tock.wav`],
+    src: [`/sound/fx/tick-tock.wav`],
     mute: isActiveSoundFx.value ? false : true,
     volume: 0.3
   })
 
   const countdownFinishSoundFx = new Howl({
-    src: [`${WEB_CDN}/assets/sound/fx/notification1.wav`],
+    src: [`/sound/fx/notification1.wav`],
     mute: isActiveSoundFx.value ? false : true
   })
 
