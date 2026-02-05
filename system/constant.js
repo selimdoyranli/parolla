@@ -4,7 +4,6 @@ export const APP_URL = 'https://parolla.app'
 export const PUBLISHER_NAME = 'Selim Doyranlı'
 export const PUBLISHER_DOMAIN = 'selimdoyranli.com'
 export const PUBLISHER_URL = 'https://selimdoyranli.com'
-export const WEB_CDN = 'https://radkod.com/cdn/parolla/web'
 export const ANSWER_CHAR_LENGTH = 64
 export const GAME_TIME_LIMIT = 60 * 5 * 1000 // 5min
 export const UNSUPPORTED_HEIGHT = 520
