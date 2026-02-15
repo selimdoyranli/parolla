@@ -489,6 +489,7 @@ export default {
       title: 'CREATE A QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
+      choicesSet: 'CHOICES SET',
       creatingQuiz: 'Creating quiz...',
       updatingQuiz: 'Updating quiz...',
       uploadingMedia: 'Uploading media',
@@ -571,6 +572,26 @@ export default {
           placeholder: 'Question character'
         },
         addMoreQuestion: 'Add more question'
+      },
+      choices: {
+        option: 'Option',
+        type: {
+          text: 'Text',
+          media: 'Media',
+          youtube: 'YouTube'
+        },
+        placeholder: {
+          text: 'Type option text',
+          youtube: 'Paste YouTube link'
+        },
+        addMedia: 'Add Media',
+        empty: {
+          description: "You haven't added any choice yet",
+          action: 'Add choice'
+        },
+        addMore: {
+          action: 'Add new choice'
+        }
       },
       saveDraft: {
         action: 'Save draft',

@@ -6,7 +6,8 @@ export default () => ({
     pagination: {},
     total: null,
     sort: 'recently',
-    room: {}
+    room: {},
+    quizType: 'qa' // 'qa' | 'choices'
   },
   isGameOver: false,
   alphabet: {

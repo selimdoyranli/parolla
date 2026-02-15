@@ -1,6 +1,6 @@
-import { reactive, computed, ref, nextTick, useContext, useStore, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { reactive, computed, ref, nextTick, useContext, useStore, onMounted, onUnmounted, useRoute } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
-import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
+import { quizTypeEnum, questionTypeEnum, answerTypeEnum, choiceTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
 import { Notify } from 'vant'
 import useDeviceInfo from './useDeviceInfo'
@@ -8,11 +8,15 @@ import useDeviceInfo from './useDeviceInfo'
 export default function useCreatorForm(props) {
   const { i18n } = useContext()
   const store = useStore()
+  const route = useRoute()
   const { getDeviceInfo } = useDeviceInfo()
 
   const user = computed(() => store.getters['auth/user'])
 
+  const initialQuizType = route.value.query.mode === quizTypeEnum.CHOICES ? quizTypeEnum.CHOICES : props.room?.quizType || quizTypeEnum.QA
+
   const form = reactive({
+    quizType: initialQuizType,
     isDraft: props.room?.isVisible ? false : true,
     isBusy: false,
     isClear: true,
@@ -22,21 +26,44 @@ export default function useCreatorForm(props) {
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
     qaList:
-      props.room?.questions.map((q, idx) => ({
-        ...q,
-        id: q.id || Date.now() + idx,
-        order: idx,
-        // Ensure media object structure is consistent if it exists
-        media: q.media || null,
-        mediaFile: null // New field for storing file object to upload
-      })) || [],
+      initialQuizType === quizTypeEnum.CHOICES && props.room?.choices
+        ? transformChoices(props.room.choices)
+        : props.room?.questions.map((q, idx) => ({
+            ...q,
+            id: q.id || Date.now() + idx,
+            order: idx,
+            media: q.media || null,
+            mediaFile: null
+          })) || [],
     gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
   })
+
+  // Helper to transform flat list of choices
+  function transformChoices(choices) {
+    return choices.map(choice => {
+      let type = choice.choiceType
+      let mediaObj = choice.media
+
+      if (type === 'youtube') {
+        type = choiceTypeEnum.MEDIA
+        mediaObj = { url: choice.youtubeUrl, isYoutube: true }
+      }
+
+      return {
+        ...choice,
+        type: type,
+        content: choice.text,
+        media: mediaObj,
+        mediaFile: null
+      }
+    })
+  }
 
   const createdRoom = reactive({
     title: '',
     roomId: '',
     questions: [],
+    choices: [],
     isListed: form.isListed
   })
 
@@ -46,7 +73,8 @@ export default function useCreatorForm(props) {
     },
     mediaUpload: {
       isOpen: false,
-      currentQaIndex: null
+      currentQaIndex: null,
+      currentOption: null // 'optionA' or 'optionB' for choices
     },
     creatingRoom: {
       isOpen: false,
@@ -97,22 +125,35 @@ export default function useCreatorForm(props) {
   }
 
   const addItem = () => {
-    const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
-    const lastAnswerType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].answerType : answerTypeEnum.TEXT_FIELD
+    if (form.quizType === quizTypeEnum.CHOICES) {
+      const lastType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].type : choiceTypeEnum.MEDIA
 
-    form.qaList.push({
-      id: Date.now() + Math.random(),
-      character: '',
-      questionType: lastQuestionType,
-      question: '',
-      answerType: lastAnswerType,
-      triviaOptions: [],
-      answer: '',
-      isMatched: null,
-      media: null,
-      mediaFile: null,
-      order: form.qaList.length
-    })
+      form.qaList.push({
+        id: Date.now() + Math.random(),
+        order: form.qaList.length,
+        type: lastType,
+        content: '',
+        media: null,
+        mediaFile: null
+      })
+    } else {
+      const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
+      const lastAnswerType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].answerType : answerTypeEnum.TEXT_FIELD
+
+      form.qaList.push({
+        id: Date.now() + Math.random(),
+        character: '',
+        questionType: lastQuestionType,
+        question: '',
+        answerType: lastAnswerType,
+        triviaOptions: [],
+        answer: '',
+        isMatched: null,
+        media: null,
+        mediaFile: null,
+        order: form.qaList.length
+      })
+    }
   }
 
   const removeItem = index => {
@@ -169,19 +210,6 @@ export default function useCreatorForm(props) {
     } else {
       form.qaList[index].character = ''
     }
-
-    nextTick(() => {
-      // Need to pass a unique ID or ref to access the specific element if we want to manipulate DOM directly
-      // But better to let Vue handle this if possible.
-      // Keeping original logic for now but might need adjustment in component
-      // The original logic used querySelectorAll which is brittle.
-      // We will skip the DOM manipulation part here and rely on v-model updates.
-      // If word count update is visual only and needed, we should handle it in the component.
-    })
-
-    setTimeout(() => {
-      validateAnswer(value, { item, index })
-    }, 100)
   }
 
   const validateAnswer = (value, { item, index }) => {
@@ -207,8 +235,8 @@ export default function useCreatorForm(props) {
   }
 
   // Media Handling
-  const handleAddMedia = qaIndex => {
-    dialog.mediaUpload.currentQaIndex = qaIndex
+  const handleAddMedia = ({ index }) => {
+    dialog.mediaUpload.currentQaIndex = index
     dialog.mediaUpload.isOpen = true
   }
 
@@ -218,16 +246,14 @@ export default function useCreatorForm(props) {
 
       if (selectedMedia) {
         const mediaData = {
-          file: selectedMedia.file || selectedMedia, // This is the File object
+          file: selectedMedia.file || selectedMedia,
           url:
             selectedMedia.url ||
             (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
         }
 
-        // Update the QA item with media info
         form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
 
-        // Store the file directly for upload later
         if (mediaData.file) {
           form.qaList[dialog.mediaUpload.currentQaIndex].mediaFile = mediaData.file
         }
@@ -237,9 +263,9 @@ export default function useCreatorForm(props) {
     dialog.mediaUpload.currentQaIndex = null
   }
 
-  const handleDeleteMedia = qaIndex => {
-    form.qaList[qaIndex].media = null
-    form.qaList[qaIndex].mediaFile = null
+  const handleDeleteMedia = ({ index }) => {
+    form.qaList[index].media = null
+    form.qaList[index].mediaFile = null
   }
 
   const getMediaSrc = media => {
@@ -271,7 +297,6 @@ export default function useCreatorForm(props) {
     nextTick(() => {
       let targetElement = document.querySelector(primarySelector)
 
-      // If primary selector not found and fallback provided, try fallback
       if (!targetElement && fallbackSelector) {
         targetElement = document.querySelector(fallbackSelector)
       }
@@ -282,8 +307,7 @@ export default function useCreatorForm(props) {
         if (layoutMain) {
           const fieldRect = targetElement.getBoundingClientRect()
           const containerRect = layoutMain.getBoundingClientRect()
-          const scrollTop = layoutMain.scrollTop + fieldRect.top - containerRect.top - 150 // 150px offset
-
+          const scrollTop = layoutMain.scrollTop + fieldRect.top - containerRect.top - 150
           layoutMain.scrollTo({
             top: scrollTop,
             behavior: 'smooth'
@@ -297,8 +321,6 @@ export default function useCreatorForm(props) {
   const onFormFailed = async errorInfo => {
     if (errorInfo && errorInfo.errors.length > 0) {
       form.isClear = false
-
-      // Scroll to first error field or error message
       const firstError = errorInfo.errors[0]
 
       if (firstError && firstError.name) {
@@ -345,37 +367,54 @@ export default function useCreatorForm(props) {
   const handleSubmit = async ({ isDraft = false }) => {
     form.isBusy = true
 
-    const itemsWithMedia = form.qaList.filter(item => item.mediaFile)
+    let itemsWithMedia = []
+
+    // Both modes now use same structure for mediaFile on root item
+    itemsWithMedia = form.qaList.filter(item => item.mediaFile)
+
     const selectedMediaCount = itemsWithMedia.length
 
     openCreatingRoomModal(selectedMediaCount)
 
-    const nonMatchedItems = form.qaList.filter(item => item.isMatched === false)
-    const mediaMissingItems = form.qaList.filter(
-      item => item.questionType === questionTypeEnum.MEDIA && (!item.media || item.media === null)
-    )
-    const answerMissingItems = form.qaList.filter(item => !item.answer || item.answer.trim() === '')
+    // Validation
+    let isValid = true
 
-    if (nonMatchedItems.length > 0 || mediaMissingItems.length > 0 || answerMissingItems.length > 0) {
-      form.isClear = false
+    if (form.quizType === quizTypeEnum.CHOICES) {
+      const invalidItems = form.qaList.filter(item => {
+        if (item.type === choiceTypeEnum.TEXT && !item.content) return true
 
-      // Scroll to first error when validation fails
-      scrollToErrorMessage('.van-field__error-message')
+        if (item.type === choiceTypeEnum.MEDIA && !item.media) return true
+
+        return false
+      })
+
+      if (invalidItems.length > 0) isValid = false
     } else {
-      form.isClear = true
+      const nonMatchedItems = form.qaList.filter(item => item.isMatched === false)
+      const mediaMissingItems = form.qaList.filter(
+        item => item.questionType === questionTypeEnum.MEDIA && (!item.media || item.media === null)
+      )
+      const answerMissingItems = form.qaList.filter(item => !item.answer || item.answer.trim() === '')
+
+      if (nonMatchedItems.length > 0 || mediaMissingItems.length > 0 || answerMissingItems.length > 0) {
+        isValid = false
+      }
     }
 
-    if (!form.isClear) {
+    if (!isValid) {
+      form.isClear = false
+      scrollToErrorMessage('.van-field__error-message')
       getErrorNotify()
       form.isBusy = false
       closeCreatingRoomModal()
 
       return
+    } else {
+      form.isClear = true
     }
 
     const deviceInfo = await getDeviceInfo()
 
-    // Visibility logic
     const getQuizVisibility = () => {
       if (isDraft) return false
 
@@ -384,10 +423,10 @@ export default function useCreatorForm(props) {
 
     const payload = {
       ...form,
+      gameTimeLimit: form.quizType === quizTypeEnum.QA ? form.gameTimeLimit : null,
       isVisible: getQuizVisibility()
     }
 
-    // Call API
     const { data, error } = props.room
       ? await store.dispatch('creator/editRoom', {
           documentId: props.room.documentId,
@@ -399,19 +438,6 @@ export default function useCreatorForm(props) {
     if (data) {
       const room = roomTransformer(data.data)
 
-      // Sync IDs back to form list
-      if (room.questions && Array.isArray(room.questions)) {
-        room.questions.forEach((item, index) => {
-          if (form.qaList[index]) {
-            form.qaList[index].id = item.id
-
-            if (item.documentId) {
-              form.qaList[index].documentId = item.documentId
-            }
-          }
-        })
-      }
-
       if (room.isVisible) {
         form.isDraft = false
       }
@@ -419,59 +445,82 @@ export default function useCreatorForm(props) {
       createdRoom.title = room.title
       createdRoom.roomId = room.roomId
       createdRoom.questions = room.questions
+      createdRoom.choices = room.choices || []
       createdRoom.isListed = form.isListed
 
       // Upload Media
       let uploadedMediaCount = 0
 
-      // We iterate through our form.qaList to find items with mediaFile
-      // We need to match them to the createdRoom.questions to get the refId (qaItem.id)
-      // Since order is preserved, we can match by index.
-      // Upload sequentially to show progress for each media
-
       try {
-        for (let index = 0; index < form.qaList.length; index++) {
-          const qaItem = form.qaList[index]
+        if (form.quizType === quizTypeEnum.CHOICES) {
+          // Handle choices media upload
+          for (let i = 0; i < form.qaList.length; i++) {
+            const formItem = form.qaList[i]
+            const createdChoice = createdRoom.choices[i]
 
-          if (qaItem.mediaFile) {
-            const createdQaItem = createdRoom.questions[index]
-
-            if (createdQaItem) {
-              // Update current uploading media for modal display
+            if (formItem.mediaFile && createdChoice) {
               updateCreatingRoomProgress({
                 currentMedia: {
-                  file: qaItem.mediaFile,
-                  url: qaItem.media?.url || null
+                  file: formItem.mediaFile,
+                  url: formItem.media?.url || null
                 }
               })
 
               const { data: uploadedData, error: uploadedError } = await store.dispatch('creator/uploadQuizMedia', {
-                file: qaItem.mediaFile,
+                file: formItem.mediaFile,
                 path: `quiz/${room.id}`,
-                ref: 'api::room-qa-item.room-qa-item',
-                refId: createdQaItem.id,
+                ref: 'api::room-choice.room-choice',
+                refId: createdChoice.id,
                 field: 'media'
               })
 
               if (uploadedData) {
                 uploadedMediaCount++
-                form.qaList[index].media = uploadedData[0]
-                form.qaList[index].mediaFile = null // Clear file after upload
-
-                // Update progress count
-                updateCreatingRoomProgress({
-                  uploadedCount: uploadedMediaCount
-                })
+                formItem.media = uploadedData[0]
+                formItem.mediaFile = null
+                updateCreatingRoomProgress({ uploadedCount: uploadedMediaCount })
               }
 
-              if (uploadedError) {
-                throw uploadedError
+              if (uploadedError) throw uploadedError
+            }
+          }
+        } else {
+          // Standard QA media upload
+          for (let index = 0; index < form.qaList.length; index++) {
+            const qaItem = form.qaList[index]
+
+            if (qaItem.mediaFile) {
+              const createdQaItem = createdRoom.questions[index]
+
+              if (createdQaItem) {
+                updateCreatingRoomProgress({
+                  currentMedia: {
+                    file: qaItem.mediaFile,
+                    url: qaItem.media?.url || null
+                  }
+                })
+
+                const { data: uploadedData, error: uploadedError } = await store.dispatch('creator/uploadQuizMedia', {
+                  file: qaItem.mediaFile,
+                  path: `quiz/${room.id}`,
+                  ref: 'api::room-qa-item.room-qa-item',
+                  refId: createdQaItem.id,
+                  field: 'media'
+                })
+
+                if (uploadedData) {
+                  uploadedMediaCount++
+                  form.qaList[index].media = uploadedData[0]
+                  form.qaList[index].mediaFile = null
+                  updateCreatingRoomProgress({ uploadedCount: uploadedMediaCount })
+                }
+
+                if (uploadedError) throw uploadedError
               }
             }
           }
         }
 
-        // If all media uploaded and we are not draft, make visible
         if (selectedMediaCount > 0 && !isDraft) {
           await store.dispatch('creator/setRoomVisibility', {
             documentId: room.documentId,
@@ -497,11 +546,6 @@ export default function useCreatorForm(props) {
       getErrorNotify({ error })
       form.isBusy = false
       closeCreatingRoomModal()
-    }
-
-    if (selectedMediaCount === 0 && !error) {
-      // dialog.room.isOpen = true // Already set above in success path?
-      // Logic in original was a bit nested.
     }
   }
 

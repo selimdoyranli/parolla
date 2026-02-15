@@ -19,6 +19,7 @@ export default model => {
     hasMedia: model.hasMedia,
     mediaCount: model.mediaCount,
     questions: model.qaItems,
+    choices: model.choices || [],
     answerTypeDominance: model.answerTypeDominance,
     questionTypeDominance: model.questionTypeDominance,
     tags: model.roomTags

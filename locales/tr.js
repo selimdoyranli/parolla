@@ -496,6 +496,7 @@ export default {
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
+      choicesSet: 'TERCİH SETİ',
       creatingQuiz: 'Quiz oluşturuluyor...',
       updatingQuiz: 'Quiz güncelleniyor...',
       uploadingMedia: 'Medya yükleniyor',
@@ -547,6 +548,12 @@ export default {
             description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
           },
           removeQuestion: 'Soruyu kaldır',
+          changeType: {
+            title: 'Tip değişsin mi?',
+            description: 'Bu soruya ait girdiğin veriler kaybolacak',
+            confirm: 'Değiştir',
+            cancel: 'İptal'
+          },
           error: {
             mediaRequired: 'Fotoğraf tipindeki soruda dosya eksik'
           }
@@ -577,6 +584,33 @@ export default {
           placeholder: 'Soru karakteri'
         },
         addMoreQuestion: 'Başka soru ekle'
+      },
+      choices: {
+        choiceType: 'Seçim tipi',
+        type: {
+          text: 'Yazı',
+          media: 'Fotoğraf',
+          youtube: 'YouTube'
+        },
+        placeholder: {
+          text: 'Seçim metnini yaz',
+          youtube: 'YouTube bağlantısını yapıştır'
+        },
+        addMedia: 'Fotoğraf Ekle',
+        empty: {
+          description: 'Henüz bir seçim eklemedin',
+          action: 'Seçim ekle'
+        },
+        addMore: {
+          action: 'Yeni seçim ekle'
+        },
+        removeChoice: 'Seçimi kaldır',
+        changeType: {
+          title: 'Tip değişsin mi?',
+          description: 'Bu seçime ait girdiğin veriler kaybolacak',
+          confirm: 'Değiştir',
+          cancel: 'İptal'
+        }
       },
       saveDraft: {
         action: 'Taslak kaydet',

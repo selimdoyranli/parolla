@@ -1,0 +1,113 @@
+.uploader {
+  --uploader-aspect-ratio: 16/9;
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacer * 2;
+  align-items: center;
+  aspect-ratio: var(--uploader-aspect-ratio);
+  margin-block: $spacer * 4;
+
+  .uploader-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: $spacer * 2 $spacer * 4;
+    text-align: center;
+    background-color: light-dark(#f2f2f2, #222);
+    border: 2px dashed var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+    cursor: pointer;
+    aspect-ratio: var(--uploader-aspect-ratio);
+
+    &__icon {
+      color: var(--color-icon-01);
+      font-size: var(--font-size-text-10);
+    }
+
+    &__description {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-8);
+    }
+  }
+
+  .van-uploader {
+    position: absolute;
+    width: 100%;
+
+    &:hover + .uploader-area {
+      background-color: light-dark(#eee, #212121);
+      border-color: var(--color-hover-01);
+    }
+
+    &__upload {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: scale-down;
+      border-radius: var(--border-radius-01);
+      aspect-ratio: var(--uploader-aspect-ratio);
+    }
+
+    &__preview {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+
+      &-image {
+        width: 100%;
+        height: 100%;
+        padding: $spacer * 2;
+        object-fit: scale-down;
+        border: 1px solid var(--color-border-02);
+        border-radius: calc(var(--border-radius-01) / 2);
+        aspect-ratio: var(--uploader-aspect-ratio);
+
+        img {
+          object-fit: scale-down !important;
+          aspect-ratio: var(--uploader-aspect-ratio);
+        }
+      }
+
+      &-delete {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        transform: none;
+        place-items: center;
+
+        &:hover {
+          background-color: var(--color-danger-01);
+        }
+
+        i {
+          position: relative;
+        }
+      }
+    }
+  }
+}
+
+.youtube-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+
+  .youtube-url-field {
+    margin-block-end: 8px;
+    flex-direction: column;
+    padding: 0;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__control {
+      padding: 8px 12px;
+      border: 1px solid var(--color-border-02);
+      border-radius: 4px;
+    }
+  }
+}

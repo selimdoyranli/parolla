@@ -303,6 +303,38 @@
       margin-block-end: calc(var(--base-m-y) / 2);
     }
 
+    .youtube-preview {
+      &__iframe,
+      &__placeholder {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        padding: $spacer * 2;
+        object-fit: scale-down;
+        border: 1px solid var(--color-border-02);
+        border-radius: var(--border-radius-01);
+        aspect-ratio: 16/9;
+        margin-block-end: calc(var(--base-m-y) / 2);
+      }
+
+      &__placeholder {
+        display: flex;
+        flex-direction: column;
+        gap: $spacer * 2;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-03);
+        background-color: var(--color-ui-01);
+
+        .youtube-url {
+          font-size: var(--font-size-text-10);
+          text-align: center;
+          word-break: break-all;
+          padding-inline: $spacer * 2;
+        }
+      }
+    }
+
     &__delete {
       position: absolute;
       inset-block-start: calc(var(--base-p-y) + 8px);

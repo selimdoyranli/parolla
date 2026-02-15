@@ -16,12 +16,14 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   )
 
   QuestionList(
-    :qa-list="form.qaList"
+    :qa-list.sync="form.qaList"
+    :quiz-type="form.quizType"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"
     :get-media-src="getMediaSrc"
     :get-media-alt="getMediaAlt"
     :is-form-valid="form.isClear"
+    @update-order="() => {}"
     @add-item="addItem"
     @add-media="handleAddMedia"
     @delete-media="handleDeleteMedia"
@@ -50,13 +52,6 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @onConfirm="handleConfirmCreatedRoomDialog"
     @onCancel="handleCancelCreatedRoomDialog"
     @closed="handleCloseCreatedRoomDialog"
-  )
-
-  MediaUploadDialog(
-    :title="$t('form.creatorModeCompose.qa.question.addPhoto')"
-    :isOpen="dialog.mediaUpload.isOpen"
-    :activeMediaTypes="['file']"
-    @closed="handleCloseMediaUploadDialog"
   )
 
   CreatingRoomModal(
@@ -107,11 +102,9 @@ export default defineComponent({
       moveDown,
       handleAnswerTypeChange,
       getCharacter,
-      validateAnswer, // Not used directly in template but kept in composable
       triviaHandleSelectCorrectOption,
       triviaHandleSetOptions,
       handleAddMedia,
-      handleCloseMediaUploadDialog,
       handleDeleteMedia,
       getMediaSrc,
       getMediaAlt,
@@ -157,7 +150,6 @@ export default defineComponent({
       triviaHandleSelectCorrectOption,
       triviaHandleSetOptions,
       handleAddMedia,
-      handleCloseMediaUploadDialog,
       handleDeleteMedia,
       getMediaSrc,
       getMediaAlt,
