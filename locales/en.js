@@ -487,6 +487,7 @@ export default {
     isInvalid: '{model} is invalid',
     creatorModeCompose: {
       title: 'CREATE A QUIZ',
+      choicesTitle: 'CREATE A CHOICES QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
       choicesSet: 'CHOICES SET',
@@ -608,6 +609,7 @@ export default {
     },
     creatorModeEdit: {
       title: 'EDIT A QUIZ',
+      choicesTitle: 'EDIT CHOICES QUIZ',
       submit: 'Update and publish'
     },
     roomReview: {
@@ -812,6 +814,11 @@ export default {
       title: 'Create a quiz',
       description: 'Create a quiz or solve quizzes created by players',
       keywords: 'quiz game, quiz solve, quiz create'
+    },
+    creatorModeComposeChoices: {
+      title: 'Create a choices quiz',
+      description: 'Create a choices quiz or solve quizzes created by players',
+      keywords: 'choices quiz, quiz solve, quiz create'
     },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',

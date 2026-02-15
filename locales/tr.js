@@ -493,6 +493,7 @@ export default {
     isInvalid: '{model} geçersiz',
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
+      choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
@@ -627,6 +628,7 @@ export default {
     },
     creatorModeEdit: {
       title: 'QUIZ DÜZENLE',
+      choicesTitle: 'SEÇİM QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -835,6 +837,11 @@ export default {
       title: 'Quiz oluştur',
       description: 'Quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
+    },
+    creatorModeComposeChoices: {
+      title: 'Seçim quiz oluştur',
+      description: 'Seçmeli quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
+      keywords: 'seçimli quiz, quiz çöz, quiz oluştur'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',

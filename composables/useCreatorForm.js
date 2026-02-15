@@ -6,14 +6,17 @@ import { Notify } from 'vant'
 import useDeviceInfo from './useDeviceInfo'
 
 export default function useCreatorForm(props) {
-  const { i18n } = useContext()
+  const { i18n, getRouteBaseName } = useContext()
   const store = useStore()
   const route = useRoute()
   const { getDeviceInfo } = useDeviceInfo()
 
   const user = computed(() => store.getters['auth/user'])
 
-  const initialQuizType = route.value.query.mode === quizTypeEnum.CHOICES ? quizTypeEnum.CHOICES : props.room?.quizType || quizTypeEnum.QA
+  const initialQuizType =
+    route.value.query.mode === quizTypeEnum.CHOICES || getRouteBaseName(route.value) === 'CreatorMode-CreatorModeCompose-Choices'
+      ? quizTypeEnum.CHOICES
+      : props.room?.quizType || quizTypeEnum.QA
 
   const form = reactive({
     quizType: initialQuizType,

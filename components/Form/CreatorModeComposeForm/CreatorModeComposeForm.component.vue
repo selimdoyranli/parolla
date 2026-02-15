@@ -1,10 +1,13 @@
 <template lang="pug">
 Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="onFormFailed" @submit="handleSubmit")
-  span.creator-mode-compose-form__title(align="center")
+  h1.creator-mode-compose-form__title(align="center")
     template(v-if="room")
-      | {{ $t('form.creatorModeEdit.title') }}
+      template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeEdit.choicesTitle') }}
+      template(v-else) {{ $t('form.creatorModeEdit.title') }}
       Tag.creator-mode-compose-form__draftTag(v-if="form.isDraft" type="warning") {{ $t('general.draft') }}
-    template(v-else) {{ $t('form.creatorModeCompose.title') }}
+    template(v-else)
+      template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeCompose.choicesTitle') }}
+      template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   RoomBasicInfo(
     :form="form"
@@ -69,6 +72,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 <script>
 import { defineComponent, useRouter, useContext } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
+import { quizTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   components: {
@@ -159,7 +163,8 @@ export default defineComponent({
       isVisibleSaveDraftButton,
       handleConfirmCreatedRoomDialog,
       handleCancelCreatedRoomDialog,
-      handleCloseCreatedRoomDialog
+      handleCloseCreatedRoomDialog,
+      quizTypeEnum
     }
   }
 })
