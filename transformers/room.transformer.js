@@ -11,6 +11,7 @@ export default model => {
     isListed: model.isPublic,
     isAnon: model.isAnon,
     questionCount: model.questionCount,
+    quizType: model.quizType,
     viewCount: model.viewCount,
     reviewCount: model.reviewsCount,
     rating: model.rating,
