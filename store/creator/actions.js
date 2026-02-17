@@ -30,7 +30,7 @@ export default {
 
                 return qaItem
               }),
-        choices:
+        choiceList:
           form.quizType === 'choices'
             ? form.qaList.map((item, index) => {
                 let type = item.type
@@ -109,7 +109,7 @@ export default {
 
                 return qaItem
               }),
-        choices:
+        choiceList:
           form.quizType === 'choices'
             ? form.qaList.map((item, index) => {
                 let type = item.type
