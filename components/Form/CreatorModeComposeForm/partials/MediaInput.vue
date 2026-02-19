@@ -242,11 +242,15 @@ export default defineComponent({
       if (Array.isArray(file)) {
         emit('files-selected', file)
       } else {
-        const mediaData = {
-          file: file.file,
-          url: file.content
+        if (props.multiple) {
+          emit('files-selected', [file])
+        } else {
+          const mediaData = {
+            file: file.file,
+            url: file.content
+          }
+          emit('update:media', mediaData, file.file)
         }
-        emit('update:media', mediaData, file.file)
       }
     }
 
