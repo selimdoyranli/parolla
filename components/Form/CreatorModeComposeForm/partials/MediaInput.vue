@@ -15,9 +15,11 @@
     )
     label.uploader-area(for="media-input-uploader")
       AppIcon.uploader-area__icon(name="tabler:upload")
+      span.uploader-area__title(v-if="multiple") {{ $t('dialog.mediaUpload.uploadArea.addMultiplePhoto') }}
       p.uploader-area__description {{ $t('dialog.mediaUpload.uploadArea.description') }}
       small
         | Max: {{ convertSize(parollaConfig.upload.maxFileSize, { unit: 'mb' }) }}
+        | {{ parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(', ') }}
 
   // YouTube URL Input
   .youtube-uploader(v-if="inputType === 'youtube' && !media")

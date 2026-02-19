@@ -247,6 +247,7 @@ export default {
     mediaUpload: {
       title: 'Medya yükle',
       uploadArea: {
+        addMultiplePhoto: 'Çoklu fotoğraf ekle',
         description: 'Cihazından dosya seç veya sürükleyip bırak'
       },
       selectFile: 'Medya seç',

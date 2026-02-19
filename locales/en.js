@@ -241,6 +241,7 @@ export default {
     mediaUpload: {
       title: 'Upload media',
       uploadArea: {
+        addMultiplePhoto: 'Add multiple photo',
         description: 'Select file from your device or drag and drop'
       },
       selectFile: 'Select file',
