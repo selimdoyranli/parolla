@@ -19,14 +19,13 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   )
 
   QuestionList(
-    :qa-list.sync="form.qaList"
+    :qa-list.sync="form.quizType === quizTypeEnum.CHOICES ? form.choices : form.qaList"
     :quiz-type="form.quizType"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"
     :get-media-src="getMediaSrc"
     :get-media-alt="getMediaAlt"
     :is-form-valid="form.isClear"
-    @update-order="() => {}"
     @add-item="addItem"
     @add-media="handleAddMedia"
     @delete-media="handleDeleteMedia"
@@ -41,6 +40,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   )
 
   AddChoicesDialog(
+    v-if="form.quizType === quizTypeEnum.CHOICES"
     :is-open="isAddChoicesDialogOpen"
     :get-media-src="getMediaSrc"
     :get-media-alt="getMediaAlt"
@@ -50,7 +50,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 
   FormActions(
     :is-visible-save-draft-button="isVisibleSaveDraftButton"
-    :qa-list-length="form.qaList.length"
+    :qa-list-length="form.quizType === quizTypeEnum.CHOICES ? form.choices.length : form.qaList.length"
     :is-busy="form.isBusy"
     :is-room-exists="!!room"
     @save-draft="saveAsDraft"
@@ -158,9 +158,9 @@ export default defineComponent({
       if (!items || items.length === 0) return
 
       items.forEach(item => {
-        form.qaList.push({
+        form.choices.push({
           id: Date.now() + Math.random(),
-          order: form.qaList.length,
+          order: form.choices.length,
           type: item.type,
           content: item.content || '',
           media: item.media || null,

@@ -29,15 +29,16 @@ export default function useCreatorForm(props) {
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
     qaList:
-      initialQuizType === quizTypeEnum.CHOICES && props.room?.choices
-        ? transformChoices(props.room.choices)
-        : props.room?.questions.map((q, idx) => ({
+      initialQuizType === quizTypeEnum.QA
+        ? props.room?.questions.map((q, idx) => ({
             ...q,
             id: q.id || Date.now() + idx,
             order: idx,
             media: q.media || null,
             mediaFile: null
-          })) || [],
+          })) || []
+        : [],
+    choices: initialQuizType === quizTypeEnum.CHOICES && props.room?.choices ? transformChoices(props.room.choices) : [],
     gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
   })
 
@@ -129,17 +130,19 @@ export default function useCreatorForm(props) {
 
   const addItem = () => {
     if (form.quizType === quizTypeEnum.CHOICES) {
-      const lastType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].type : choiceTypeEnum.MEDIA
+      const lastType = form.choices.length > 0 ? form.choices[form.choices.length - 1].type : choiceTypeEnum.MEDIA
 
-      form.qaList.push({
+      form.choices.push({
         id: Date.now() + Math.random(),
-        order: form.qaList.length,
+        order: form.choices.length,
         type: lastType,
         content: '',
         media: null,
         mediaFile: null
       })
-    } else {
+    }
+
+    if (form.quizType === quizTypeEnum.QA) {
       const lastQuestionType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].questionType : questionTypeEnum.TEXT
       const lastAnswerType = form.qaList.length > 0 ? form.qaList[form.qaList.length - 1].answerType : answerTypeEnum.TEXT_FIELD
 
@@ -160,27 +163,40 @@ export default function useCreatorForm(props) {
   }
 
   const removeItem = index => {
-    form.qaList.splice(index, 1)
+    if (form.quizType === quizTypeEnum.CHOICES) {
+      form.choices.splice(index, 1)
+    }
+
+    if (form.quizType === quizTypeEnum.QA) {
+      form.qaList.splice(index, 1)
+    }
   }
 
   const moveUp = index => {
     if (index === 0) return
-    const item = form.qaList.splice(index, 1)[0]
-    form.qaList.splice(index - 1, 0, item)
-    updateOrder()
+
+    if (form.quizType === quizTypeEnum.QA) {
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index - 1, 0, item)
+      updateOrder()
+    }
   }
 
   const moveDown = index => {
-    if (index === form.qaList.length - 1) return
-    const item = form.qaList.splice(index, 1)[0]
-    form.qaList.splice(index + 1, 0, item)
-    updateOrder()
+    if (form.quizType === quizTypeEnum.QA) {
+      if (index === form.qaList.length - 1) return
+      const item = form.qaList.splice(index, 1)[0]
+      form.qaList.splice(index + 1, 0, item)
+      updateOrder()
+    }
   }
 
   const updateOrder = () => {
-    form.qaList.forEach((item, idx) => {
-      item.order = idx
-    })
+    if (form.quizType === quizTypeEnum.QA) {
+      form.qaList.forEach((item, idx) => {
+        item.order = idx
+      })
+    }
   }
 
   const handleAnswerTypeChange = ({ index, option }) => {
@@ -255,10 +271,20 @@ export default function useCreatorForm(props) {
             (selectedMedia.file && typeof URL !== 'undefined' ? URL.createObjectURL(selectedMedia.file || selectedMedia) : null)
         }
 
-        form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
+        if (form.quizType === quizTypeEnum.CHOICES) {
+          form.choices[dialog.mediaUpload.currentQaIndex].media = mediaData
 
-        if (mediaData.file) {
-          form.qaList[dialog.mediaUpload.currentQaIndex].mediaFile = mediaData.file
+          if (mediaData.file) {
+            form.choices[dialog.mediaUpload.currentQaIndex].mediaFile = mediaData.file
+          }
+        }
+
+        if (form.quizType === quizTypeEnum.QA) {
+          form.qaList[dialog.mediaUpload.currentQaIndex].media = mediaData
+
+          if (mediaData.file) {
+            form.qaList[dialog.mediaUpload.currentQaIndex].mediaFile = mediaData.file
+          }
         }
       }
     }
@@ -267,8 +293,15 @@ export default function useCreatorForm(props) {
   }
 
   const handleDeleteMedia = ({ index }) => {
-    form.qaList[index].media = null
-    form.qaList[index].mediaFile = null
+    if (form.quizType === quizTypeEnum.CHOICES) {
+      form.choices[index].media = null
+      form.choices[index].mediaFile = null
+    }
+
+    if (form.quizType === quizTypeEnum.QA) {
+      form.qaList[index].media = null
+      form.qaList[index].mediaFile = null
+    }
   }
 
   const getMediaSrc = media => {
@@ -373,7 +406,13 @@ export default function useCreatorForm(props) {
     let itemsWithMedia = []
 
     // Both modes now use same structure for mediaFile on root item
-    itemsWithMedia = form.qaList.filter(item => item.mediaFile)
+    if (form.quizType === quizTypeEnum.CHOICES) {
+      itemsWithMedia = form.choices.filter(item => item.mediaFile)
+    }
+
+    if (form.quizType === quizTypeEnum.QA) {
+      itemsWithMedia = form.qaList.filter(item => item.mediaFile)
+    }
 
     const selectedMediaCount = itemsWithMedia.length
 
@@ -385,7 +424,7 @@ export default function useCreatorForm(props) {
     if (form.quizType === quizTypeEnum.CHOICES) {
       console.log(form)
 
-      const invalidItems = form.qaList.filter(item => {
+      const invalidItems = form.choices.filter(item => {
         if (item.type === choiceTypeEnum.TEXT && !item.content) return true
 
         if (item.type === choiceTypeEnum.MEDIA && !item.media) return true
@@ -461,8 +500,8 @@ export default function useCreatorForm(props) {
       try {
         if (form.quizType === quizTypeEnum.CHOICES) {
           // Handle choices media upload
-          for (let i = 0; i < form.qaList.length; i++) {
-            const formItem = form.qaList[i]
+          for (let i = 0; i < form.choices.length; i++) {
+            const formItem = form.choices[i]
             const createdChoice = createdRoom.choices[i]
 
             if (formItem.mediaFile && createdChoice) {
@@ -491,7 +530,9 @@ export default function useCreatorForm(props) {
               if (uploadedError) throw uploadedError
             }
           }
-        } else {
+        }
+
+        if (form.quizType === quizTypeEnum.QA) {
           // Standard QA media upload
           for (let index = 0; index < form.qaList.length; index++) {
             const qaItem = form.qaList[index]
@@ -561,12 +602,14 @@ export default function useCreatorForm(props) {
   }
 
   const isVisibleSaveDraftButton = computed(() => {
-    return form.qaList && form.qaList.length > 0 && (!props.room || (props.room && !props.room.isVisible))
+    const hasItems = (form.qaList && form.qaList.length > 0) || (form.choices && form.choices.length > 0)
+
+    return hasItems && (!props.room || (props.room && !props.room.isVisible))
   })
 
   // Navigation block
   const handleBeforeUnload = e => {
-    const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.tags.length > 0
+    const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.choices.length > 0 || form.tags.length > 0
 
     if (hasContent) {
       e.preventDefault()
