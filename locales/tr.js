@@ -567,6 +567,11 @@ export default {
             placeholder: 'Fotoğraf notunu yaz (isteğe bağlı)',
             description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
           },
+          videoNote: {
+            label: 'Video notu',
+            placeholder: 'Video notunu yaz (isteğe bağlı)',
+            description: 'Oyuncuya video ile ilgili notun gösterilir'
+          },
           removeQuestion: 'Soruyu kaldır',
           changeType: {
             title: 'Tip değişsin mi?',

@@ -53,11 +53,11 @@
 
     Cell.creator-mode-compose-form-media-note
       small.creator-mode-compose-form-media-note__description
-        | {{ $t('form.creatorModeCompose.qa.question.mediaNote.description') }}
+        | {{ computedMediaNoteDescription }}
       Field.creator-mode-compose-form-media-note-field(
         name="mediaNote"
         :value="mediaNote"
-        :placeholder="$t('form.creatorModeCompose.qa.question.mediaNote.placeholder')"
+        :placeholder="computedMediaNotePlaceholder"
         maxlength="64"
         show-word-limit
         @input="$emit('update:mediaNote', $event)"
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, useContext, watch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext, watch, computed } from '@nuxtjs/composition-api'
 import { Field, Button, Cell, Uploader, Notify } from 'vant'
 import parollaConfig from '@/system/parolla.config'
 import convertSize from 'convert-size'
@@ -256,6 +256,18 @@ export default defineComponent({
       }
     }
 
+    const computedMediaNotePlaceholder = computed(() => {
+      return props.inputType === 'youtube'
+        ? i18n.t('form.creatorModeCompose.qa.question.videoNote.placeholder')
+        : i18n.t('form.creatorModeCompose.qa.question.mediaNote.placeholder')
+    })
+
+    const computedMediaNoteDescription = computed(() => {
+      return props.inputType === 'youtube'
+        ? i18n.t('form.creatorModeCompose.qa.question.videoNote.description')
+        : i18n.t('form.creatorModeCompose.qa.question.mediaNote.description')
+    })
+
     return {
       parollaConfig,
       convertSize,
@@ -268,7 +280,9 @@ export default defineComponent({
       handleYoutubeUrlBlur,
       handleBeforeRead,
       handleOversize,
-      onFileRead
+      onFileRead,
+      computedMediaNotePlaceholder,
+      computedMediaNoteDescription
     }
   }
 })

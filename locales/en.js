@@ -561,6 +561,11 @@ export default {
             placeholder: 'Type photo note (optional)',
             description: 'The player will see the note related to the photo'
           },
+          videoNote: {
+            label: 'Video note',
+            placeholder: 'Type video note (optional)',
+            description: 'The player will see the note related to the video'
+          },
           removeQuestion: 'Remove question',
           error: {
             mediaRequired: 'Photo file is required for photo type questions'
