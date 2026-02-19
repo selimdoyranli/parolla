@@ -37,6 +37,15 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @move-up="moveUp"
     @move-down="moveDown"
     @remove="removeItem"
+    @open-batch-dialog="openAddChoicesDialog"
+  )
+
+  AddChoicesDialog(
+    :is-open="isAddChoicesDialogOpen"
+    :get-media-src="getMediaSrc"
+    :get-media-alt="getMediaAlt"
+    @close="closeAddChoicesDialog"
+    @confirm="handleBatchAddItems"
   )
 
   FormActions(
@@ -70,7 +79,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, ref } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
@@ -135,6 +144,31 @@ export default defineComponent({
       dialog.room.isOpen = false
     }
 
+    const isAddChoicesDialogOpen = ref(false)
+
+    const openAddChoicesDialog = () => {
+      isAddChoicesDialogOpen.value = true
+    }
+
+    const closeAddChoicesDialog = () => {
+      isAddChoicesDialogOpen.value = false
+    }
+
+    const handleBatchAddItems = items => {
+      if (!items || items.length === 0) return
+
+      items.forEach(item => {
+        form.qaList.push({
+          id: Date.now() + Math.random(),
+          order: form.qaList.length,
+          type: item.type,
+          content: item.content || '',
+          media: item.media || null,
+          mediaFile: item.mediaFile || null
+        })
+      })
+    }
+
     return {
       user,
       form,
@@ -164,7 +198,11 @@ export default defineComponent({
       handleConfirmCreatedRoomDialog,
       handleCancelCreatedRoomDialog,
       handleCloseCreatedRoomDialog,
-      quizTypeEnum
+      quizTypeEnum,
+      isAddChoicesDialogOpen,
+      openAddChoicesDialog,
+      closeAddChoicesDialog,
+      handleBatchAddItems
     }
   }
 })

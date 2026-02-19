@@ -4,7 +4,8 @@
   .uploader(v-if="inputType === 'file' && !media")
     Uploader#media-input-uploader(
       v-model="fileList"
-      :max-count="1"
+      :multiple="multiple"
+      :max-count="multiple ? maxCount : 1"
       :max-size="parollaConfig.upload.maxFileSize"
       :accept="parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(',')"
       :before-read="handleBeforeRead"
@@ -88,6 +89,14 @@ export default defineComponent({
       type: String,
       required: true,
       validator: value => ['file', 'youtube'].includes(value)
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    maxCount: {
+      type: Number,
+      default: 256
     },
     getMediaSrc: {
       type: Function,
@@ -177,52 +186,68 @@ export default defineComponent({
     }
 
     const handleBeforeRead = file => {
-      if (parollaConfig.upload.allowedMimeTypes) {
-        if (!parollaConfig.upload.allowedMimeTypes.includes(file.type)) {
+      let files = Array.isArray(file) ? file : [file]
+      const validFiles = []
+
+      for (const f of files) {
+        let error = null
+
+        // Mime Type Check
+        if (parollaConfig.upload.allowedMimeTypes) {
+          if (!parollaConfig.upload.allowedMimeTypes.includes(f.type)) {
+            error = i18n.t('error.mediaError.mimeTypeNotAllowed')
+          }
+        }
+
+        // Extension Check
+        if (!error && parollaConfig.upload.allowedExtensions) {
+          const extension = getFileExtension(f.name)
+
+          if (!parollaConfig.upload.allowedExtensions.includes(extension)) {
+            error = i18n.t('error.mediaError.extensionNotAllowed')
+          }
+        }
+
+        if (error) {
           Notify({
-            message: i18n.t('error.mediaError.mimeTypeNotAllowed'),
-            color: 'var(--color-text-04)',
-            background: 'var(--color-danger-01)',
+            message: `${f.name} - ${error}`,
+            type: 'warning',
             duration: 3000
           })
-
-          return false
+        } else {
+          validFiles.push(f)
         }
       }
 
-      const extension = getFileExtension(file.name)
-
-      if (parollaConfig.upload.allowedExtensions) {
-        if (!parollaConfig.upload.allowedExtensions.includes(extension)) {
-          Notify({
-            message: i18n.t('error.mediaError.extensionNotAllowed'),
-            color: 'var(--color-text-04)',
-            background: 'var(--color-danger-01)',
-            duration: 3000
-          })
-
-          return false
-        }
+      if (Array.isArray(file)) {
+        return validFiles
       }
 
-      return true
+      return validFiles.length > 0
     }
 
-    const handleOversize = error => {
-      Notify({
-        message: i18n.t('error.mediaError.limitExceeded'),
-        color: 'var(--color-text-04)',
-        background: 'var(--color-danger-01)',
-        duration: 3000
+    const handleOversize = file => {
+      const files = Array.isArray(file) ? file : [file]
+
+      files.forEach(f => {
+        Notify({
+          message: `${f.name} - ${i18n.t('error.mediaError.limitExceeded')}`,
+          type: 'warning',
+          duration: 3000
+        })
       })
     }
 
     const onFileRead = file => {
-      const mediaData = {
-        file: file.file,
-        url: file.content
+      if (Array.isArray(file)) {
+        emit('files-selected', file)
+      } else {
+        const mediaData = {
+          file: file.file,
+          url: file.content
+        }
+        emit('update:media', mediaData, file.file)
       }
-      emit('update:media', mediaData, file.file)
     }
 
     return {

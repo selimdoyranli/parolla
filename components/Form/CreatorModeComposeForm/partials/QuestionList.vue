@@ -52,6 +52,15 @@
             template(v-else)
               | {{ $t('form.creatorModeCompose.choices.empty.action') }}
 
+          Button.compose-qa-list__addQaButton.mt-sm(
+            v-if="quizType === quizTypeEnum.CHOICES"
+            type="info"
+            plain
+            native-type="button"
+            round
+            @click="$emit('open-batch-dialog')"
+          ) Toplu seçim gir
+
       // Add qa button
       Button.compose-qa-list__addQaButton(
         v-if="qaList && qaList.length > 0"
@@ -68,6 +77,17 @@
           | {{ $t('form.creatorModeCompose.qa.addMoreQuestion') }}
         template(v-else)
           | {{ $t('form.creatorModeCompose.choices.addMore.action') }}
+
+      Button.compose-qa-list__addQaButton(
+        v-if="qaList && qaList.length > 0 && quizType === quizTypeEnum.CHOICES"
+        type="info"
+        plain
+        native-type="button"
+        round
+        :loading="isBusy"
+        :disabled="isBusy"
+        @click="$emit('open-batch-dialog')"
+      ) Toplu seçim gir
 
       p.creator-mode-compose-form__termsDescription(v-if="qaList && qaList.length > 0")
         | {{ $t('form.creatorModeCompose.termsDescription') }}

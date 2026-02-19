@@ -18,7 +18,11 @@ export default {
       limitExceeded: 'Media size limit exceeded',
       mimeTypeNotAllowed: 'Media mime type not allowed',
       extensionNotAllowed: 'Media extension not allowed'
-    }
+    },
+    tooManyLines: 'Maximum {max} lines allowed',
+    textTooLong: 'Some lines are longer than 64 characters',
+    tooManyFiles: 'Maximum {max} files allowed',
+    invalidYoutubeLinks: 'Some links are invalid, please check'
   },
   success: {
     success: 'Success'
@@ -170,6 +174,20 @@ export default {
     }
   },
   dialog: {
+    addChoices: {
+      title: 'Add choice',
+      tab: {
+        photo: 'Photo',
+        youtube: 'YouTube',
+        text: 'Text'
+      },
+      placeholder: {
+        youtube: 'Paste YouTube links...',
+        text: 'Paste texts...'
+      },
+      selectSystemFiles: 'Select files',
+      selectedCount: '{count} photos selected'
+    },
     menu: {
       profileEdit: 'Edit profile',
       profileView: 'View profile',

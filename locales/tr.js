@@ -18,7 +18,11 @@ export default {
       limitExceeded: 'Medya boyutu sınırı aşıldı',
       mimeTypeNotAllowed: 'İzin verilmiyen medya tipi',
       extensionNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
-    }
+    },
+    tooManyLines: 'En fazla {max} satır olabilir',
+    textTooLong: 'Bazı satırlar 64 karakterden uzun',
+    tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
+    invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin'
   },
   success: {
     success: 'Başarılı'
@@ -175,6 +179,20 @@ export default {
     }
   },
   dialog: {
+    addChoices: {
+      title: 'Seçim ekle',
+      tab: {
+        photo: 'Fotoğraf',
+        youtube: 'YouTube',
+        text: 'Metin'
+      },
+      placeholder: {
+        youtube: 'YouTube linklerini yapıştırın...',
+        text: 'Metinleri yapıştırın...'
+      },
+      selectSystemFiles: 'Dosya seç',
+      selectedCount: '{count} adet foto seçildi'
+    },
     menu: {
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',

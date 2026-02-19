@@ -383,6 +383,8 @@ export default function useCreatorForm(props) {
     let isValid = true
 
     if (form.quizType === quizTypeEnum.CHOICES) {
+      console.log(form)
+
       const invalidItems = form.qaList.filter(item => {
         if (item.type === choiceTypeEnum.TEXT && !item.content) return true
 
@@ -392,7 +394,9 @@ export default function useCreatorForm(props) {
       })
 
       if (invalidItems.length > 0) isValid = false
-    } else {
+    }
+
+    if (form.quizType === quizTypeEnum.QA) {
       const nonMatchedItems = form.qaList.filter(item => item.isMatched === false)
       const mediaMissingItems = form.qaList.filter(
         item => item.questionType === questionTypeEnum.MEDIA && (!item.media || item.media === null)
