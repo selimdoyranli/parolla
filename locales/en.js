@@ -601,12 +601,12 @@ export default {
           youtube: 'YouTube'
         },
         placeholder: {
-          text: 'Type option text',
-          youtube: 'Paste YouTube link'
+          youtube: 'https://www.youtube.com/watch?v=abc1\nhttps://www.youtube.com/watch?v=abc2',
+          text: 'Choice 1\nChoice 2\nChoice 3'
         },
         addMedia: 'Add Media',
         empty: {
-          description: "You haven't added any choice yet",
+          description: "You haven't added any choice yet\nAt least 8 choices, at most 256 choices can be added",
           action: 'Add choice'
         },
         addMore: {
@@ -620,7 +620,7 @@ export default {
         }
       },
       termsDescription:
-        '* Avoid spam, hate speech, racist and insulting content when creating quizzes. Such quizzes will be deleted upon moderation detection. While creating a quiz, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
+        '* Avoid spam, illegal and nsfw content when creating quizzes. Such quizzes will be deleted upon moderation detection. While creating a quiz, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
       submit: 'Finish and publish',
       error: {
         couldNotCreate: 'Could not create quiz, please check and try again'

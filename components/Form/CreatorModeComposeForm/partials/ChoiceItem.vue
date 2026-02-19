@@ -222,4 +222,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped src="./ChoiceItem.scss"></style>
+<style lang="scss" src="./ChoiceItem.scss"></style>

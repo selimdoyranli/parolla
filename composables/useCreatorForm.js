@@ -469,6 +469,8 @@ export default function useCreatorForm(props) {
 
     const payload = {
       ...form,
+      qaList: form.quizType === quizTypeEnum.QA ? form.qaList : [],
+      choices: form.quizType === quizTypeEnum.CHOICES ? form.choices : [],
       gameTimeLimit: form.quizType === quizTypeEnum.QA ? form.gameTimeLimit : null,
       isVisible: getQuizVisibility()
     }

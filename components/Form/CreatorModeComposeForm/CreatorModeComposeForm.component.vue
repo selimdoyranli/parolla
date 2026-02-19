@@ -19,7 +19,8 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   )
 
   QuestionList(
-    :qa-list.sync="form.quizType === quizTypeEnum.CHOICES ? form.choices : form.qaList"
+    :qa-list.sync="form.qaList"
+    :choices.sync="form.choices"
     :quiz-type="form.quizType"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"

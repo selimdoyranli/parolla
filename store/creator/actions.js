@@ -12,47 +12,41 @@ export default {
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
         quizType: form.quizType,
-        qaList:
-          form.quizType === 'choices'
-            ? []
-            : form.qaList.map(item => {
-                const qaItem = {
-                  order: item.order,
-                  character: item.character,
-                  questionType: item.questionType,
-                  question: item.question,
-                  answerType: item.answerType,
-                  answer: item.answer,
-                  media: item.media?.id || null,
-                  mediaNote: item.mediaNote,
-                  triviaOptions: item.triviaOptions
-                }
+        qaList: (form.qaList || []).map(item => {
+          const qaItem = {
+            order: item.order,
+            character: item.character,
+            questionType: item.questionType,
+            question: item.question,
+            answerType: item.answerType,
+            answer: item.answer,
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
+          }
 
-                return qaItem
-              }),
-        choiceList:
-          form.quizType === 'choices'
-            ? form.qaList.map((item, index) => {
-                let type = item.type
-                let youtubeUrl = null
-                let mediaId = item.media?.id || null
+          return qaItem
+        }),
+        choiceList: (form.choices || []).map((item, index) => {
+          let type = item.type
+          let youtubeUrl = null
+          let mediaId = item.media?.id || null
 
-                if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
-                  type = 'youtube'
-                  youtubeUrl = item.media.url
-                  mediaId = null
-                }
+          if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
+            type = 'youtube'
+            youtubeUrl = item.media.url
+            mediaId = null
+          }
 
-                return {
-                  choiceType: type,
-                  text: type === 'text' ? item.content : null,
-                  youtubeUrl: youtubeUrl,
-                  media: mediaId,
-                  mediaNote: item.mediaNote,
-                  voteCount: 0
-                }
-              })
-            : [],
+          return {
+            choiceType: type,
+            text: type === 'text' ? item.content : null,
+            youtubeUrl: youtubeUrl,
+            media: mediaId,
+            mediaNote: item.mediaNote,
+            voteCount: 0
+          }
+        }),
         roomTags: form.tags,
         gameTimeLimit: form.gameTimeLimit === null ? null : Number(form.gameTimeLimit),
         deviceInfo
@@ -90,50 +84,44 @@ export default {
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
         quizType: form.quizType,
-        qaList:
-          form.quizType === 'choices'
-            ? []
-            : form.qaList.map(item => {
-                const qaItem = {
-                  documentId: item.documentId,
-                  order: item.order,
-                  character: item.character,
-                  questionType: item.questionType,
-                  question: item.question,
-                  answerType: item.answerType,
-                  answer: item.answer,
-                  media: item.media?.id || null,
-                  mediaNote: item.mediaNote,
-                  triviaOptions: item.triviaOptions
-                }
+        qaList: (form.qaList || []).map(item => {
+          const qaItem = {
+            documentId: item.documentId,
+            order: item.order,
+            character: item.character,
+            questionType: item.questionType,
+            question: item.question,
+            answerType: item.answerType,
+            answer: item.answer,
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote,
+            triviaOptions: item.triviaOptions
+          }
 
-                return qaItem
-              }),
-        choiceList:
-          form.quizType === 'choices'
-            ? form.qaList.map((item, index) => {
-                let type = item.type
-                let youtubeUrl = null
-                let mediaId = item.media?.id || null
+          return qaItem
+        }),
+        choiceList: (form.choices || []).map((item, index) => {
+          let type = item.type
+          let youtubeUrl = null
+          let mediaId = item.media?.id || null
 
-                if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
-                  type = 'youtube'
-                  youtubeUrl = item.media.url
-                  mediaId = null
-                } else if (type === 'youtube') {
-                  youtubeUrl = item.content
-                }
+          if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
+            type = 'youtube'
+            youtubeUrl = item.media.url
+            mediaId = null
+          } else if (type === 'youtube') {
+            youtubeUrl = item.content
+          }
 
-                return {
-                  id: item.id,
-                  choiceType: type,
-                  text: type === 'text' ? item.content : null,
-                  youtubeUrl: youtubeUrl,
-                  media: mediaId,
-                  mediaNote: item.mediaNote
-                }
-              })
-            : [],
+          return {
+            id: item.id,
+            choiceType: type,
+            text: type === 'text' ? item.content : null,
+            youtubeUrl: youtubeUrl,
+            media: mediaId,
+            mediaNote: item.mediaNote
+          }
+        }),
         roomTags: form.tags,
         gameTimeLimit: form.gameTimeLimit === null ? null : Number(form.gameTimeLimit),
         deviceInfo

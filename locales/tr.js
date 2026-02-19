@@ -184,11 +184,11 @@ export default {
       tab: {
         photo: 'Fotoğraf',
         youtube: 'YouTube',
-        text: 'Metin'
+        text: 'Yazı'
       },
       placeholder: {
-        youtube: 'YouTube linklerini yapıştırın...',
-        text: 'Metinleri yapıştırın...'
+        youtube: 'https://www.youtube.com/watch?v=abc1\nhttps://www.youtube.com/watch?v=abc2',
+        text: 'Seçim 1\nSeçim 2\nSeçim 3'
       },
       selectSystemFiles: 'Dosya seç',
       selectedCount: '{count} adet foto seçildi'
@@ -618,11 +618,12 @@ export default {
         },
         addMedia: 'Fotoğraf Ekle',
         empty: {
-          description: 'Henüz bir seçim eklemedin',
+          description: 'Henüz bir seçim eklemedin\nEn az 8 seçim, en fazla 256 seçim eklenebilir',
           action: 'Seçim ekle'
         },
         addMore: {
-          action: 'Yeni seçim ekle'
+          action: 'Başka seçim ekle',
+          addMultiple: 'Toplu seçim ekle'
         },
         removeChoice: 'Seçimi kaldır',
         changeType: {
@@ -639,7 +640,7 @@ export default {
         }
       },
       termsDescription:
-        '* Quiz oluştururken spam, nefret söylemi içeren, ırkçı ve aşağılayacı içeriklerden kaçının. Bu gibi quizler moderasyon tespitinde silinecektir. Quiz oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
+        '* Quiz oluştururken spam, illegal ve nsfw içeriklerden kaçının. Bu gibi quizler moderasyon tespitinde silinecektir. Quiz oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
       submit: 'Bitir ve yayınla',
       error: {
         couldNotCreate: 'Quiz oluşturulamadı, lütfen kontrol edip tekrar dene'
