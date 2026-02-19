@@ -186,7 +186,8 @@ export default {
         text: 'Paste texts...'
       },
       selectSystemFiles: 'Select files',
-      selectedCount: '{count} photos selected'
+      selectedCount: '{count} photos selected',
+      useFilenameAsMediaNote: 'Use filename as description'
     },
     menu: {
       profileEdit: 'Edit profile',

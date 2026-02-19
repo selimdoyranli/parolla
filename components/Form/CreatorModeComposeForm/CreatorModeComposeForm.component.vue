@@ -165,7 +165,8 @@ export default defineComponent({
           type: item.type,
           content: item.content || '',
           media: item.media || null,
-          mediaFile: item.mediaFile || null
+          mediaFile: item.mediaFile || null,
+          mediaNote: item.mediaNote || ''
         })
       })
     }

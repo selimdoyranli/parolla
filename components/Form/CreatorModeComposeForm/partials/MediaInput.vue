@@ -2,8 +2,9 @@
 .media-input
   // Upload Area
   .uploader(v-if="inputType === 'file' && !media")
-    Uploader#media-input-uploader(
+    Uploader(
       v-model="fileList"
+      :id="uploaderId"
       :multiple="multiple"
       :max-count="multiple ? maxCount : 1"
       :max-size="parollaConfig.upload.maxFileSize"
@@ -13,7 +14,7 @@
       :style="{ opacity: 0 }"
       @oversize="handleOversize"
     )
-    label.uploader-area(for="media-input-uploader")
+    label.uploader-area(:for="uploaderId")
       AppIcon.uploader-area__icon(name="tabler:upload")
       span.uploader-area__title(v-if="multiple") {{ $t('dialog.mediaUpload.uploadArea.addMultiplePhoto') }}
       p.uploader-area__description {{ $t('dialog.mediaUpload.uploadArea.description') }}
@@ -65,7 +66,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, useContext, watch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext, watch, computed, onMounted } from '@nuxtjs/composition-api'
 import { Field, Button, Cell, Uploader, Notify } from 'vant'
 import parollaConfig from '@/system/parolla.config'
 import convertSize from 'convert-size'
@@ -114,6 +115,11 @@ export default defineComponent({
 
     const fileList = ref([])
     const youtubeUrl = ref('')
+    const uploaderId = ref('media-input-uploader')
+
+    onMounted(() => {
+      uploaderId.value = `media-input-uploader-${Math.random().toString(36).substr(2, 9)}`
+    })
 
     // Helper to get file extension
     const getFileExtension = filename => {
@@ -269,6 +275,7 @@ export default defineComponent({
     })
 
     return {
+      uploaderId,
       parollaConfig,
       convertSize,
       fileList,

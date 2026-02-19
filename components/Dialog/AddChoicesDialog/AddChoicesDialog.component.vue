@@ -14,7 +14,12 @@ Dialog.dialog.add-choices-dialog(
     // Photo Tab
     Tab(name="photo" :title="$t('dialog.addChoices.tab.photo')")
       .add-choices-dialog__tab-content
+        Cell(center :title="$t('dialog.addChoices.useFilenameAsMediaNote')")
+          template(#right-icon)
+            SwitchInput(v-model="state.useFilenameAsMediaNote" size="24px")
+
         MediaInput(
+          :key="state.mediaInputKey"
           inputType="file"
           :multiple="true"
           :max-count="256"
@@ -39,7 +44,7 @@ Dialog.dialog.add-choices-dialog(
 
 <script>
 import { defineComponent, reactive, watch, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Tabs, Tab, Button, Notify } from 'vant'
+import { Dialog, Tabs, Tab, Button, Notify, Switch, Cell } from 'vant'
 import parollaConfig from '@/system/parolla.config'
 import { choiceTypeEnum } from '@/enums/quiz.enum'
 import MediaInput from '../../Form/CreatorModeComposeForm/partials/MediaInput.vue'
@@ -51,7 +56,9 @@ export default defineComponent({
     Tabs,
     Tab,
     Button,
-    MediaInput
+    MediaInput,
+    SwitchInput: Switch,
+    Cell
   },
   props: {
     isOpen: {
@@ -73,11 +80,13 @@ export default defineComponent({
     const state = reactive({
       isOpen: props.isOpen,
       activeTab: 'photo',
+      mediaInputKey: 0,
 
       youtubeText: '',
       textText: '',
       youtubeError: '',
-      textError: ''
+      textError: '',
+      useFilenameAsMediaNote: true
     })
 
     watch(
@@ -86,6 +95,7 @@ export default defineComponent({
         state.isOpen = val
 
         if (val) {
+          state.mediaInputKey += 1
           // Reset state on open
           state.activeTab = 'photo'
 
@@ -93,6 +103,7 @@ export default defineComponent({
           state.textText = ''
           state.youtubeError = ''
           state.textError = ''
+          state.useFilenameAsMediaNote = true
         }
       }
     )
@@ -140,7 +151,8 @@ export default defineComponent({
           items.push({
             type: choiceTypeEnum.MEDIA,
             mediaFile: file,
-            media: { url: fileItem.content } // Preview purpose
+            media: { url: fileItem.content }, // Preview purpose
+            mediaNote: state.useFilenameAsMediaNote ? file.name.replace(/\.[^/.]+$/, '') : ''
           })
         })
 

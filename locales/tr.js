@@ -191,7 +191,8 @@ export default {
         text: 'Seçim 1\nSeçim 2\nSeçim 3'
       },
       selectSystemFiles: 'Dosya seç',
-      selectedCount: '{count} adet foto seçildi'
+      selectedCount: '{count} adet foto seçildi',
+      useFilenameAsMediaNote: 'Dosya isimlerini açıklama olarak kullan'
     },
     menu: {
       profileEdit: 'Profili düzenle',
