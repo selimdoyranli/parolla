@@ -22,7 +22,8 @@ export default {
     tooManyLines: 'Maximum {max} lines allowed',
     textTooLong: 'Some lines are longer than 64 characters',
     tooManyFiles: 'Maximum {max} files allowed',
-    invalidYoutubeLinks: 'Some links are invalid, please check'
+    invalidYoutubeLinks: 'Some links are invalid, please check',
+    choicesLength: 'You must add at least {min} and at most {max} choices'
   },
   success: {
     success: 'Success'

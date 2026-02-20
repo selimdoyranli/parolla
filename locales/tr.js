@@ -22,7 +22,8 @@ export default {
     tooManyLines: 'En fazla {max} satır olabilir',
     textTooLong: 'Bazı satırlar 64 karakterden uzun',
     tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
-    invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin'
+    invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
+    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin'
   },
   success: {
     success: 'Başarılı'

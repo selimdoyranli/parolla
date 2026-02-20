@@ -422,7 +422,17 @@ export default function useCreatorForm(props) {
     let isValid = true
 
     if (form.quizType === quizTypeEnum.CHOICES) {
-      console.log(form)
+      if (form.choices.length < 8 || form.choices.length > 256) {
+        getErrorNotify({
+          error: {
+            message: i18n.t('error.choicesLength', { min: 8, max: 256 })
+          }
+        })
+        form.isBusy = false
+        closeCreatingRoomModal()
+
+        return
+      }
 
       const invalidItems = form.choices.filter(item => {
         if (item.type === choiceTypeEnum.TEXT && !item.content) return true

@@ -152,7 +152,7 @@ export default defineComponent({
             type: choiceTypeEnum.MEDIA,
             mediaFile: file,
             media: { url: fileItem.content }, // Preview purpose
-            mediaNote: state.useFilenameAsMediaNote ? file.name.replace(/\.[^/.]+$/, '') : ''
+            mediaNote: state.useFilenameAsMediaNote ? file.name.replace(/\.[^/.]+$/, '').substring(0, 64) : ''
           })
         })
 
