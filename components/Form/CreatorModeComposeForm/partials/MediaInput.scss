@@ -70,6 +70,7 @@
         img {
           object-fit: scale-down !important;
           aspect-ratio: var(--uploader-aspect-ratio);
+          pointer-events: none;
         }
       }
 

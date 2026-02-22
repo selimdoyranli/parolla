@@ -18,10 +18,22 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @remove-tag="removeTag"
   )
 
-  QuestionList(
-    :qa-list.sync="form.qaList"
+  ChoiceList(
+    v-if="form.quizType === quizTypeEnum.CHOICES"
     :choices.sync="form.choices"
-    :quiz-type="form.quizType"
+    :is-busy="form.isBusy"
+    :get-media-src="getMediaSrc"
+    :get-media-alt="getMediaAlt"
+    @add-item="addItem"
+    @add-media="handleAddMedia"
+    @delete-media="handleDeleteMedia"
+    @remove="removeItem"
+    @open-batch-dialog="openAddChoicesDialog"
+  )
+
+  QuestionList(
+    v-else
+    :qa-list.sync="form.qaList"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"
     :get-media-src="getMediaSrc"
@@ -37,7 +49,6 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @move-up="moveUp"
     @move-down="moveDown"
     @remove="removeItem"
-    @open-batch-dialog="openAddChoicesDialog"
   )
 
   AddChoicesDialog(
@@ -83,11 +94,15 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 import { defineComponent, useRouter, useContext, ref } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
+import ChoiceList from './partials/ChoiceList.vue'
+import QuestionList from './partials/QuestionList.vue'
 
 export default defineComponent({
   components: {
     Form,
-    Tag
+    Tag,
+    ChoiceList,
+    QuestionList
   },
   props: {
     room: {
