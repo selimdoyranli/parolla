@@ -21,7 +21,7 @@
       template(v-else)
         Empty.choice-list-empty
           template(#image)
-            AppIcon.choice-list-empty__icon(name="hugeicons:versus" :width="128" :height="128")
+            img.choice-list-empty__icon(src="/img/elements/versus.webp" alt="Versus" draggable="false" width="128" height="128")
           p.choice-list-empty__description {{ $t('form.creatorModeCompose.choices.empty.description') }}
           Button.compose-qa-list__addQaButton(type="info" icon="plus" native-type="button" round @click="$emit('open-batch-dialog')")
             | {{ $t('form.creatorModeCompose.choices.empty.action') }}

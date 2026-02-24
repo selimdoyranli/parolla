@@ -1,4 +1,5 @@
 import { roomTransformer, scoreboardTransformer } from '@/transformers'
+import { choiceTypeEnum } from '@/enums/quiz.enum'
 
 export default {
   async postRoom({ commit, state }, { form, deviceInfo }) {
@@ -27,24 +28,16 @@ export default {
 
           return qaItem
         }),
-        choiceList: (form.choices || []).map((item, index) => {
-          let type = item.type
-          let youtubeUrl = null
-          let mediaId = item.media?.id || null
-
-          if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
-            type = 'youtube'
-            youtubeUrl = item.media.url
-            mediaId = null
-          }
+        choiceList: (form.choices || []).map(item => {
+          const youtubeUrl = item.type === choiceTypeEnum.YOUTUBE ? item.media.url : null
 
           return {
-            choiceType: type,
-            text: type === 'text' ? item.content : null,
+            id: item.id,
+            choiceType: item.type,
+            text: item.type === choiceTypeEnum.TEXT ? item.content : null,
             youtubeUrl: youtubeUrl,
-            media: mediaId,
-            mediaNote: item.mediaNote,
-            voteCount: 0
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote
           }
         }),
         roomTags: form.tags,
@@ -100,25 +93,15 @@ export default {
 
           return qaItem
         }),
-        choiceList: (form.choices || []).map((item, index) => {
-          let type = item.type
-          let youtubeUrl = null
-          let mediaId = item.media?.id || null
-
-          if (type === 'media' && item.media?.url && (item.media.url.includes('youtube') || item.media.url.includes('youtu.be'))) {
-            type = 'youtube'
-            youtubeUrl = item.media.url
-            mediaId = null
-          } else if (type === 'youtube') {
-            youtubeUrl = item.content
-          }
+        choiceList: (form.choices || []).map(item => {
+          const youtubeUrl = item.type === choiceTypeEnum.YOUTUBE ? item.media.url : null
 
           return {
             id: item.id,
-            choiceType: type,
-            text: type === 'text' ? item.content : null,
+            choiceType: item.type,
+            text: item.type === choiceTypeEnum.TEXT ? item.content : null,
             youtubeUrl: youtubeUrl,
-            media: mediaId,
+            media: item.media?.id || null,
             mediaNote: item.mediaNote
           }
         }),
@@ -358,6 +341,10 @@ export default {
 
       commit('SET_QUESTIONS', {
         questions: room.questions
+      })
+
+      commit('SET_CHOICES', {
+        choices: room.choices
       })
 
       commit('SET_ALPHABET_ITEMS', room.alphabet)

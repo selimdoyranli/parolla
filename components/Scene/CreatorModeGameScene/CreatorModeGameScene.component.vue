@@ -9,7 +9,7 @@
           .alphabet__item(:class="[alphabetItemClasses(item, index)]") {{ alphabetItemLetter(item, index) }}
 
     // Countdown
-    .countdown.game-scene__countdown(:class="{ 'd-none': fetchState.pending || fetchState.error }")
+    .countdown.game-scene__countdown(:class="{ 'd-none': !questions }")
       AppIcon.countdown__icon(name="tabler:clock" color="var(--color-icon-01)")
       CountDown.countdown__timer(
         ref="countdownTimerRef"
@@ -20,15 +20,7 @@
         @finish="handleCountdownFinish"
       )
 
-    // Fetch State
-    template(v-if="fetchState.pending")
-      Empty(:description="$t('gameScene.pendingQuestions')")
-
-    template(v-else-if="fetchState.error")
-      Empty(image="error" :description="$t('gameScene.error.fetchQuestions.description')")
-        Button(@click="reFetch") {{ $t('gameScene.error.fetchQuestions.action') }}
-
-    template(v-else)
+    template
       // Questions
       .questions
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
@@ -99,20 +91,18 @@
 import { defineComponent, useFetch, useRoute, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
-import { Button, Field, Empty, CountDown, Notify } from 'vant'
+import { Button, Field, Empty, CountDown } from 'vant'
 
 export default defineComponent({
   components: {
     Button,
     Field,
     Empty,
-    CountDown,
-    Notify
+    CountDown
   },
   setup() {
-    const route = useRoute()
     const store = useStore()
-    const { localePath, redirect, $ua } = useContext()
+    const { $ua } = useContext()
 
     const rootRef = ref(null)
 
@@ -147,34 +137,7 @@ export default defineComponent({
 
     const room = computed(() => store.getters['creator/room'])
 
-    // Fetch Room
-    const { fetch, fetchState } = useFetch(async () => {
-      const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
-
-      if (error) {
-        Notify({
-          message: error.message,
-          color: 'var(--color-text-04)',
-          background: 'var(--color-danger-01)',
-          duration: 3000
-        })
-
-        setTimeout(() => {
-          redirect(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
-        }, 1000)
-      }
-    })
-
-    const reFetch = async () => {
-      await resetGame()
-
-      if (questions.value.length > 0) {
-        startGame()
-      }
-    }
-
     const resetGame = async () => {
-      await fetch()
       await store.commit('creator/SET_IS_GAME_OVER', {
         isGameOver: false
       })
@@ -266,9 +229,6 @@ export default defineComponent({
       answerTypeEnum,
       rootRef,
       ANSWER_CHAR_LENGTH,
-      fetch,
-      fetchState,
-      reFetch,
       isGameStarted,
       isGameOver,
       alphabet,

@@ -1,7 +1,10 @@
 <template lang="pug">
 .page.creator-mode-rooms-page
   .page.creator-mode-rooms-page__inner
-    h2.creator-mode-rooms-page__title(align="center") {{ $t('creatorModeRooms.title') }}
+    .creator-mode-rooms-page-header
+      h2.creator-mode-rooms-page__title(align="center") {{ $t('creatorModeRooms.title') }}
+      Button(color="#ff7878" icon="plus" round size="normal" @click="openCreateQuizSelectionDialog")
+        | {{ $t('form.creatorModeCompose.title') }}
 
     br
 
@@ -16,7 +19,7 @@
         template(#left-icon)
           AppIcon(name="tabler:link" color="var(--color-icon-01)" :width="20" :height="20")
         template(#button)
-          Button(type="info" size="small" native-type="button" round :disabled="!form.roomUrl.isClear" @click="gotoRoom")
+          Button(type="info" size="small" native-type="button" round plain :disabled="!form.roomUrl.isClear" @click="gotoRoom")
             | {{ $t('creatorModeRooms.joinRoom.url.action') }}
 
     Divider {{ $t('creatorModeRooms.divider') }}
@@ -44,10 +47,12 @@
       template(v-else)
         RoomFeaturedTagList(@on-tag-click="handleFeaturedTagClick")
         RoomList(:items="rooms")
+
+  CreateQuizSelectionDialog(:isOpen="isOpenCreateQuizSelectionDialog" @closed="isOpenCreateQuizSelectionDialog = false")
 </template>
 
 <script>
-import { defineComponent, useFetch, useRouter, useContext, useStore, reactive, computed, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, useRouter, useContext, useStore, ref, reactive, computed, useMeta } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
 import { Field, Button, Divider, Empty, Notify } from 'vant'
 
@@ -64,6 +69,16 @@ export default defineComponent({
     const router = useRouter()
     const { localePath, i18n, route } = useContext()
     const store = useStore()
+
+    const isOpenCreateQuizSelectionDialog = ref(false)
+
+    const openCreateQuizSelectionDialog = () => {
+      isOpenCreateQuizSelectionDialog.value = true
+    }
+
+    const closeCreateQuizSelectionDialog = () => {
+      isOpenCreateQuizSelectionDialog.value = false
+    }
 
     // Fetch Rooms
     const { fetch, fetchState } = useFetch(async () => {
@@ -223,6 +238,9 @@ export default defineComponent({
 
     return {
       APP_URL,
+      isOpenCreateQuizSelectionDialog,
+      openCreateQuizSelectionDialog,
+      closeCreateQuizSelectionDialog,
       fetch,
       fetchState,
       rooms,

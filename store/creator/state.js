@@ -15,6 +15,7 @@ export default () => ({
     items: []
   },
   questions: [],
+  choices: [],
   countdown: {
     time: GAME_TIME_LIMIT,
     remainTime: {}

@@ -1,22 +1,43 @@
 <template lang="pug">
 .page.creator-mode-room-page
   // GameScene
-  CreatorModeGameScene
+  CreatorModeGameScene(v-if="room.quizType === quizTypeEnum.QA || !room.quizType")
+  ChoicesGameScene(v-if="room.quizType === quizTypeEnum.CHOICES")
 </template>
 
 <script>
-import { defineComponent, useRoute, useStore, useContext, useMeta, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, useRoute, useStore, useContext, useMeta, computed } from '@nuxtjs/composition-api'
+import { quizTypeEnum } from '@/enums/quiz.enum'
+import { Notify } from 'vant'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
-    const route = useRoute()
     const { localePath, redirect, i18n } = useContext()
+    const route = useRoute()
     const store = useStore()
 
     if (!route.value.params.slug) {
       redirect(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
     }
+
+    // Fetch Room
+    const { fetch, fetchState } = useFetch(async () => {
+      const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
+
+      if (error) {
+        Notify({
+          message: error.message,
+          color: 'var(--color-text-04)',
+          background: 'var(--color-danger-01)',
+          duration: 3000
+        })
+
+        setTimeout(() => {
+          redirect(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
+        }, 1000)
+      }
+    })
 
     const room = computed(() => store.getters['creator/room'])
 
@@ -53,6 +74,13 @@ export default defineComponent({
         }
       ]
     }))
+
+    return {
+      fetch,
+      fetchState,
+      quizTypeEnum,
+      room
+    }
   },
   head: {}
 })

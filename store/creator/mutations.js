@@ -47,6 +47,10 @@ export default {
     state.questions = questions
   },
 
+  SET_CHOICES(state, { choices }) {
+    state.choices = choices
+  },
+
   SET_ALPHABET_ITEMS(state, items) {
     const alphabetItems = items.map((item, index) => {
       return {

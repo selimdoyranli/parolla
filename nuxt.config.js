@@ -272,10 +272,6 @@ module.exports = {
             tr: '/limitsiz',
             en: '/unlimited'
           },
-          'CreatorMode/CreatorModeIntro/index': {
-            tr: '/yaratici/basla',
-            en: '/creator/start'
-          },
           'CreatorMode/index': {
             tr: '/yaratici',
             en: '/creator'

@@ -48,8 +48,8 @@ export default function useCreatorForm(props) {
       let type = choice.choiceType
       let mediaObj = choice.media
 
-      if (type === 'youtube') {
-        type = choiceTypeEnum.MEDIA
+      if (type === choiceTypeEnum.YOUTUBE) {
+        type = choiceTypeEnum.YOUTUBE
         mediaObj = { url: choice.youtubeUrl, isYoutube: true }
       }
 

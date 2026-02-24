@@ -64,6 +64,7 @@ export default {
     quiz: 'Quiz',
     photoQuiz: 'Photo quiz',
     triviaQuiz: 'Trivia',
+    thisOrThatQuiz: 'This or that?',
     provider: 'Provider',
     quizPreparing: 'Preparing quiz'
   },
@@ -191,11 +192,12 @@ export default {
       useFilenameAsMediaNote: 'Use filename as description'
     },
     menu: {
-      profileEdit: 'Edit profile',
-      profileView: 'View profile',
       title: 'More',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
+      profileEdit: 'Edit profile',
+      profileView: 'View profile',
+      myQuizzes: 'My quizzes',
       darkTheme: 'Dark theme',
       soundFx: 'Sound fx',
       switchLocale: 'Choose language',
@@ -226,6 +228,23 @@ export default {
     announcements: {
       title: 'Announcements',
       description: 'Announcements'
+    },
+    createQuizSelection: {
+      title: 'Create quiz',
+      quizType: {
+        qa: {
+          title: 'Question-Answer (Classic)',
+          description: 'Players answer the questions you add',
+          label: 'Classic question-answer quiz against time',
+          createQaQuiz: 'Create question-answer quiz'
+        },
+        thisOrThat: {
+          title: 'This or That?',
+          description: 'Create a list of choices, players choose one of two options each round',
+          label: 'No competition, determines personal preferences',
+          createThisOrThatQuiz: 'Create this or that quiz'
+        }
+      }
     },
     createdRoom: {
       title: 'Quiz created',
@@ -280,6 +299,11 @@ export default {
           '<strong>parolla</strong> game contains <strong>{questionCount}</strong> English alphabet letters. <br> You can play this mod over and over again. Different questions come up every time.'
       },
       creator: {
+        thisOrThat: {
+          title: 'How to play this or that quiz?',
+          description: 'Choose between two options each round',
+          extra: 'This quiz was created by another player <br> There are {choiceCount} choices. You can play this mod over and over again.'
+        },
         extra:
           'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
       },
@@ -429,21 +453,6 @@ export default {
       description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
     }
   },
-  creatorModeIntro: {
-    description:
-      '<strong>Player-generated quizzes</strong> &nbsp; <br> <strong>check out the quizzes</strong> or create <strong>your own question-answer set</strong>',
-    list: {
-      rooms: {
-        title: 'SEE QUIZZES'
-      },
-      compose: {
-        title: 'CREATE A QUIZ'
-      },
-      myRooms: {
-        title: 'MY RECENTLY CREATED QUIZZES'
-      }
-    }
-  },
   creatorModeRooms: {
     title: 'QUIZZES',
     joinRoom: {
@@ -501,6 +510,13 @@ export default {
     listing: {
       public: 'Public',
       private: 'Private'
+    }
+  },
+  choices: {
+    remainingChoices: '{count} choices left',
+    lastChoice: 'Last choice',
+    winner: {
+      title: 'WINNER CHOICE'
     }
   },
   form: {

@@ -11,7 +11,8 @@ Dialog.dialog.how-to-play-dialog(
   .how-to-play-dialog__explain
     HowToPlayDailyModeContent(v-if="activeGameMode === gameModeKeyEnum.DAILY")
     HowToPlayUnlimitedModeContent(v-if="activeGameMode === gameModeKeyEnum.UNLIMITED")
-    HowToPlayCreatorModeContent(v-if="activeGameMode === gameModeKeyEnum.CREATOR")
+    HowToPlayCreatorModeContent(v-if="activeGameMode === gameModeKeyEnum.CREATOR && (room.quizType === quizTypeEnum.QA || !room.quizType)")
+    HowToPlayThisOrThatContent(v-if="room && room.quizType === quizTypeEnum.CHOICES")
     HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
     HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
     .how-to-play-dialog__ad
@@ -25,8 +26,9 @@ Dialog.dialog.how-to-play-dialog(
 </template>
 
 <script>
-import { defineComponent, useContext, reactive, watch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, reactive, watch, computed } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
+import { quizTypeEnum } from '@/enums/quiz.enum'
 import { Dialog } from 'vant'
 
 export default defineComponent({
@@ -47,6 +49,7 @@ export default defineComponent({
   },
   setup(props) {
     const { i18n } = useContext()
+    const store = useStore()
 
     const { activeGameMode } = useGameMode()
 
@@ -61,7 +64,19 @@ export default defineComponent({
       }
     )
 
+    const room = computed(() => store.getters['creator/room'])
+
     const dialogTitle = computed(() => {
+      if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
+        if (room.value.quizType === quizTypeEnum.QA || !room.value.quizType) {
+          return i18n.t('dialog.howToPlay.title')
+        }
+
+        if (room.value.quizType === quizTypeEnum.CHOICES) {
+          return i18n.t('dialog.howToPlay.creator.thisOrThat.title')
+        }
+      }
+
       if (activeGameMode.value === gameModeKeyEnum.WORDBLOCK) {
         return i18n.t('dialog.howToPlay.wordblock.title')
       }
@@ -71,9 +86,11 @@ export default defineComponent({
 
     return {
       gameModeKeyEnum,
+      quizTypeEnum,
       activeGameMode,
       state,
-      dialogTitle
+      dialogTitle,
+      room
     }
   }
 })

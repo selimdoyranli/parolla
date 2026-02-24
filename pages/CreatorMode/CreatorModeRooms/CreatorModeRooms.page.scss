@@ -4,7 +4,13 @@
   &__inner {
     position: relative;
     width: calc(100% - (var(--base-p-x) * 2));
-    margin: calc(var(--base-m-y) * 2) auto;
+    margin: var(--base-m-y) auto;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__title {

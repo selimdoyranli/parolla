@@ -55,6 +55,17 @@
                     template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                     template(v-if="room.isAnon") {{ $t('general.anon') }}
 
+                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
+                  Tag.room-list-item-choices-tag
+                    img.room-list-item-choices-tag__versusIcon(
+                      src="/img/elements/versus.webp"
+                      alt="Versus"
+                      draggable="false"
+                      width="48"
+                      height="48"
+                    )
+                    span.room-list-item-choices-tag__text {{ $t('general.thisOrThatQuiz') }}
+
                 .room-list-item-badge(v-if="room.questionTypeDominance === questionTypeEnum.MEDIA")
                   Tag.room-list-item-has-media-tag
                     AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
@@ -115,7 +126,7 @@ import { defineComponent, useContext, useRouter, useStore, reactive, computed, w
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
-import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
+import { quizTypeEnum, questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   components: {
@@ -319,6 +330,7 @@ export default defineComponent({
     })
 
     return {
+      quizTypeEnum,
       questionTypeEnum,
       answerTypeEnum,
       isOwner,

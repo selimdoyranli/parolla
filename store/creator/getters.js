@@ -15,6 +15,10 @@ export default {
     return state.room.room
   },
 
+  quizType(state) {
+    return state.room.quizType
+  },
+
   isGameOver(state) {
     return state.isGameOver
   },
@@ -25,6 +29,10 @@ export default {
 
   questions(state) {
     return state.questions
+  },
+
+  choices(state) {
+    return state.choices
   },
 
   countdown(state) {

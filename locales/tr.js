@@ -64,6 +64,7 @@ export default {
     quiz: 'Quiz',
     photoQuiz: 'Foto quiz',
     triviaQuiz: 'Trivia',
+    thisOrThatQuiz: 'O mu bu mu?',
     provider: 'Sağlayıcı',
     quizPreparing: 'Quiz hazırlanıyor'
   },
@@ -196,11 +197,12 @@ export default {
       useFilenameAsMediaNote: 'Dosya isimlerini açıklama olarak kullan'
     },
     menu: {
-      profileEdit: 'Profili düzenle',
-      profileView: 'Profili görüntüle',
       title: 'Daha fazla',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
+      profileEdit: 'Profili düzenle',
+      profileView: 'Profili görüntüle',
+      myQuizzes: 'Quizlerim',
       darkTheme: 'Koyu tema',
       soundFx: 'Ses efekleri',
       switchLocale: 'Dil değiştir',
@@ -231,6 +233,23 @@ export default {
     announcements: {
       title: 'Duyurular',
       description: 'Duyurular'
+    },
+    createQuizSelection: {
+      title: 'Quiz oluştur',
+      quizType: {
+        qa: {
+          title: 'Soru-Cevap (Klasik)',
+          description: 'Oyuncular eklediğin sorulara cevap verir',
+          label: 'Zamana karşı klasik soru-cevap quiz',
+          createQaQuiz: 'Soru-Cevap quiz oluştur'
+        },
+        thisOrThat: {
+          title: 'O mu bu mu?',
+          description: 'Seçim listesi oluştur, oyuncular her tur iki seçenekten birini seçer',
+          label: 'Rekabet yok, kişisel tercihleri belirler',
+          createThisOrThatQuiz: 'O mu bu mu? quiz oluştur'
+        }
+      }
     },
     createdRoom: {
       title: 'Quiz oluşturuldu',
@@ -285,6 +304,11 @@ export default {
           '<strong>parolla</strong> oyunu <strong>{questionCount}</strong> türkçe alfabe harfi içerir. <br> Bu modu tekrar tekrar oynayabilirsin. Her defasında farklı sorular gelir'
       },
       creator: {
+        thisOrThat: {
+          title: 'O mu bu mu? quiz nasıl oynanır?',
+          description: 'Her tur iki seçenek arasından seçim yap',
+          extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
+        },
         extra:
           'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
       },
@@ -435,21 +459,6 @@ export default {
       description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
     }
   },
-  creatorModeIntro: {
-    description:
-      '<strong>Oyuncular tarafından oluşturulmuş quizler</strong> &nbsp; <br> Hemen <strong>quizlere bak</strong> ya da <strong>quiz oluştur</strong>',
-    list: {
-      rooms: {
-        title: 'QUIZLERE BAK'
-      },
-      compose: {
-        title: 'QUIZ OLUŞTUR'
-      },
-      myRooms: {
-        title: 'SON OLUŞTURDUĞUM QUIZLER'
-      }
-    }
-  },
   creatorModeRooms: {
     title: 'QUIZLER',
     joinRoom: {
@@ -507,6 +516,13 @@ export default {
     listing: {
       public: 'Listede',
       private: 'Liste dışı'
+    }
+  },
+  choices: {
+    remainingChoices: '{count} seçim kaldı',
+    lastChoice: 'Son seçim',
+    winner: {
+      title: 'KAZANAN SEÇİM'
     }
   },
   form: {
