@@ -157,33 +157,6 @@ export default {
     }
   },
 
-  async uploadChoiceMedia({ commit }, { file, path, ref, refId, field }) {
-    const token = this.$auth.strategy.token.get()
-
-    const formData = new FormData()
-
-    formData.append('files', file)
-    formData.append('path', path)
-    formData.append('ref', ref)
-    formData.append('refId', refId)
-    formData.append('field', field)
-
-    const { data, error } = await this.$appFetch({
-      path: `rooms/upload-media`,
-      method: 'POST',
-      data: formData,
-      headers: {
-        Authorization: `${token}`,
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    return {
-      data,
-      error
-    }
-  },
-
   async deleteRoom({ commit }, { documentId }) {
     const token = this.$auth.strategy.token.get()
 
