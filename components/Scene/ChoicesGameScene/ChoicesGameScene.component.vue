@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 
 export default defineComponent({
@@ -66,14 +66,22 @@ export default defineComponent({
     const creatorDialog = computed(() => store.getters['creator/dialog'])
     const room = computed(() => store.getters['creator/room'])
     const choices = computed(() => store.getters['creator/choices'])
-    const remainingChoicesCount = computed(() => {
-      return choicesQueue.value.length
-    })
 
     const resetGame = () => {
       dialog.howToPlay.isOpen = true
       initGame(choices.value || [])
     }
+
+    watch(
+      () => room.value,
+      () => {
+        resetGame()
+      }
+    )
+
+    const remainingChoicesCount = computed(() => {
+      return choicesQueue.value.length
+    })
 
     onMounted(() => {
       setRootRef(rootRef.value)

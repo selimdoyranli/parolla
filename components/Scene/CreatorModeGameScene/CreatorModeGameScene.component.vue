@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { defineComponent, useFetch, useRoute, useStore, useContext, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown } from 'vant'
@@ -147,6 +147,13 @@ export default defineComponent({
 
       dialog.howToPlay.isOpen = true
     }
+
+    watch(
+      () => room.value,
+      () => {
+        resetGame()
+      }
+    )
 
     const getActiveQuestion = () => {
       return questions.value[alphabet.value.activeIndex]

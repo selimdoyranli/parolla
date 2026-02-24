@@ -1,16 +1,27 @@
 <template lang="pug">
 .page.creator-mode-room-page
-  // GameScene
-  CreatorModeGameScene(v-if="room.quizType === quizTypeEnum.QA || !room.quizType")
-  ChoicesGameScene(v-if="room.quizType === quizTypeEnum.CHOICES")
+  template(v-if="fetchState.pending")
+    Empty(:description="$t('gameScene.pendingQuestions')")
+
+  template(v-else-if="fetchState.error")
+    Empty(image="error" :description="$t('gameScene.error.fetchQuestions.description')")
+      Button(@click="fetch") {{ $t('gameScene.error.fetchQuestions.action') }}
+
+  template(v-else)
+    CreatorModeGameScene(v-if="room.quizType === quizTypeEnum.QA || !room.quizType")
+    ChoicesGameScene(v-if="room.quizType === quizTypeEnum.CHOICES")
 </template>
 
 <script>
 import { defineComponent, useFetch, useRoute, useStore, useContext, useMeta, computed } from '@nuxtjs/composition-api'
 import { quizTypeEnum } from '@/enums/quiz.enum'
-import { Notify } from 'vant'
+import { Notify, Empty, Button } from 'vant'
 
 export default defineComponent({
+  components: {
+    Empty,
+    Button
+  },
   layout: 'Default/Default.layout',
   setup() {
     const { localePath, redirect, i18n } = useContext()
