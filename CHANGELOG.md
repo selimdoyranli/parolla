@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.38.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/f3e9bc7b1fbe65d7aeee8265f977c39dccf85f8c...v2.38.0)
+
+
+### 🚀 Enhancements
+
+  - Choice quiz ([cdff933](https://github.com/selimdoyranli/parolla/commit/cdff933))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.37.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.37.0...v2.37.1)
