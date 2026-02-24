@@ -56,6 +56,10 @@
     flex-direction: column;
     width: 100%;
     height: calc(100vh - var(--header-height) - var(--room-info-height));
+
+    @include media-breakpoint-down(tablet) {
+      height: calc(100vh - var(--header-height) - var(--room-info-height) - max(34px, env(safe-area-inset-bottom)));
+    }
   }
 
   .versus-icon {
@@ -65,6 +69,11 @@
 
     img {
       display: inline-block;
+
+      @include media-breakpoint-down(mobile) {
+        width: 32px;
+        height: 32px;
+      }
     }
   }
 
