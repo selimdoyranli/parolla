@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.37.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.37.0...v2.37.1)
+
+
+### 💅 Refactors
+
+  - Sounds path change ([33f9b85](https://github.com/selimdoyranli/parolla/commit/33f9b85))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.37.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.36.5...v2.37.0)
