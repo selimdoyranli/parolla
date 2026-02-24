@@ -18,7 +18,7 @@
       v-if="activeGameMode === gameModeKeyEnum.TOUR"
       @click="openTourModeOnlineDialog"
     )
-      AppIcon(name="tabler:users-group" :label="formatMillions(userList.totalPlayers + userList.totalViewers)")
+      AppIcon(name="tabler:users-group" :label="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)")
 
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
       AppIcon(name="tabler:info-circle")
@@ -85,6 +85,7 @@
 <script>
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
+import { quizTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   setup() {
@@ -93,12 +94,14 @@ export default defineComponent({
     const { localePath, getRouteBaseName } = useContext()
     const store = useStore()
 
-    const userList = computed(() => store.getters['tour/userList'])
-
     const { formatMillions } = useFormatter()
 
     const { activeGameMode } = useGameMode()
     const { openLeaveDialog } = useDialog()
+
+    const user = computed(() => store.getters['auth/user'])
+    const room = computed(() => store.getters['creator/room'])
+    const tourUserList = computed(() => store.getters['tour/userList'])
 
     const dialog = reactive({
       howToPlay: {
@@ -204,13 +207,15 @@ export default defineComponent({
 
     const handleClickBackButton = () => {
       const triggerRoute = () => {
-        if (
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
+        if (route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' })) {
+          router.replace(localePath({ name: 'Main' }))
+        } else if (
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
+          route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
           route.value.path.startsWith(localePath('/quiz'))
         ) {
-          router.replace(localePath({ name: 'CreatorMode-CreatorModeIntro' }))
+          router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))) {
@@ -223,6 +228,7 @@ export default defineComponent({
       if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))
       ) {
@@ -276,10 +282,10 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
         activeGameMode.value === gameModeKeyEnum.CREATOR ||
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeIntro' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' })) ||
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
         route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
@@ -295,15 +301,13 @@ export default defineComponent({
       if (
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
-        activeGameMode.value === gameModeKeyEnum.CREATOR ||
+        (activeGameMode.value === gameModeKeyEnum.CREATOR && !room.value.quizType) ||
+        room.value.quizType === quizTypeEnum.QA ||
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK
       ) {
         return true
       }
     })
-
-    const user = computed(() => store.getters['auth/user'])
-    const room = computed(() => store.getters['creator/room'])
 
     return {
       gameModeKeyEnum,
@@ -332,7 +336,7 @@ export default defineComponent({
       isVisibleBackButton,
       user,
       room,
-      userList
+      tourUserList
     }
   }
 })

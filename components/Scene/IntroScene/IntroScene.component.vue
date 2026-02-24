@@ -44,7 +44,7 @@
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--creator(
         icon="noto:pencil"
-        :to="localePath({ name: 'CreatorMode-CreatorModeIntro' })"
+        :to="localePath({ name: 'CreatorMode-CreatorModeRooms' })"
         :title="$t('introScene.modeList.creator.title')"
         :headLabel="{ title: $t('introScene.modeList.creator.label', { count: creatorDailyPlayingCount }) }"
         :description="$t('introScene.modeList.creator.description')"

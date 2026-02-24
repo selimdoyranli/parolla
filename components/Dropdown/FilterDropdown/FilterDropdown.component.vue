@@ -72,10 +72,20 @@ export default defineComponent({
 
     const triggerButtonTitle = computed(() => props.triggerTitle || context.i18n.t('general.filter'))
 
-    const selectedOption = ref(props.selected || {})
+    const internalSelected = ref({})
+
+    const selectedOption = computed(() => {
+      if (props.selected !== undefined && props.selected !== null) {
+        return props.selected
+      }
+
+      return internalSelected.value
+    })
 
     const handleOptionSelect = option => {
-      selectedOption.value = option
+      if (props.selected === undefined || props.selected === null) {
+        internalSelected.value = option
+      }
 
       emit('on-select-option', option)
     }

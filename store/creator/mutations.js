@@ -9,6 +9,10 @@ export default {
     state.room.list = rooms
   },
 
+  SET_QUIZ_TYPE(state, quizType) {
+    state.quizType = quizType
+  },
+
   PUSH_ROOMS(state, rooms) {
     state.room.list.push(...rooms)
   },
@@ -41,6 +45,10 @@ export default {
 
   SET_QUESTIONS(state, { questions }) {
     state.questions = questions
+  },
+
+  SET_CHOICES(state, { choices }) {
+    state.choices = choices
   },
 
   SET_ALPHABET_ITEMS(state, items) {

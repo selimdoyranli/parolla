@@ -1,7 +1,10 @@
 <template lang="pug">
 .intro-button(role="button" tabindex="1")
   .intro-button__header
-    AppIcon.intro-button__icon(color="var(--color-text-01)" :name="icon" :width="24" :height="24")
+    template(v-if="$slots.icon")
+      .intro-button__icon
+        slot(name="icon")
+    AppIcon.intro-button__icon(v-else color="var(--color-text-01)" :name="icon" :width="24" :height="24")
     span.intro-button-title
       | {{ title }}
 
@@ -17,7 +20,11 @@
   p.intro-button__description(v-if="description?.length > 0") {{ description }}
 
   .intro-button__footer
-    NuxtLink.play-now-button(role="button" :to="to" :title="title" :aria-label="title") {{ $t('general.play') }}
+    NuxtLink.play-now-button(role="button" :to="to" :title="title" :aria-label="title")
+      template(v-if="playButtonText")
+        | {{ playButtonText }}
+      template(v-else)
+        | {{ $t('general.play') }}
 
     .avatar-group(v-if="playerList?.length > 4")
       PlayerAvatar(
@@ -71,6 +78,11 @@ export default defineComponent({
         icon: '',
         pulse: false
       })
+    },
+    playButtonText: {
+      type: String,
+      required: false,
+      default: null
     },
     playerList: {
       type: Array,

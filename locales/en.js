@@ -18,7 +18,12 @@ export default {
       limitExceeded: 'Media size limit exceeded',
       mimeTypeNotAllowed: 'Media mime type not allowed',
       extensionNotAllowed: 'Media extension not allowed'
-    }
+    },
+    tooManyLines: 'Maximum {max} lines allowed',
+    textTooLong: 'Some lines are longer than 64 characters',
+    tooManyFiles: 'Maximum {max} files allowed',
+    invalidYoutubeLinks: 'Some links are invalid, please check',
+    choicesLength: 'You must add at least {min} and at most {max} choices'
   },
   success: {
     success: 'Success'
@@ -59,6 +64,7 @@ export default {
     quiz: 'Quiz',
     photoQuiz: 'Photo quiz',
     triviaQuiz: 'Trivia',
+    thisOrThatQuiz: 'This or that?',
     provider: 'Provider',
     quizPreparing: 'Preparing quiz'
   },
@@ -170,12 +176,28 @@ export default {
     }
   },
   dialog: {
+    addChoices: {
+      title: 'Add choice',
+      tab: {
+        photo: 'Photo',
+        youtube: 'YouTube',
+        text: 'Text'
+      },
+      placeholder: {
+        youtube: 'Paste YouTube links...',
+        text: 'Paste texts...'
+      },
+      selectSystemFiles: 'Select files',
+      selectedCount: '{count} photos selected',
+      useFilenameAsMediaNote: 'Use filename as description'
+    },
     menu: {
-      profileEdit: 'Edit profile',
-      profileView: 'View profile',
       title: 'More',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
+      profileEdit: 'Edit profile',
+      profileView: 'View profile',
+      myQuizzes: 'My quizzes',
       darkTheme: 'Dark theme',
       soundFx: 'Sound fx',
       switchLocale: 'Choose language',
@@ -207,6 +229,23 @@ export default {
       title: 'Announcements',
       description: 'Announcements'
     },
+    createQuizSelection: {
+      title: 'Create quiz',
+      quizType: {
+        qa: {
+          title: 'Question-Answer (Classic)',
+          description: 'Players answer the questions you add',
+          label: 'Classic question-answer quiz against time',
+          createQaQuiz: 'Create question-answer quiz'
+        },
+        thisOrThat: {
+          title: 'This or That?',
+          description: 'Create a list of choices, players choose one of two options each round',
+          label: 'No competition, determines personal preferences',
+          createThisOrThatQuiz: 'Create this or that quiz'
+        }
+      }
+    },
     createdRoom: {
       title: 'Quiz created',
       quizUpdated: 'Quiz updated',
@@ -223,6 +262,7 @@ export default {
     mediaUpload: {
       title: 'Upload media',
       uploadArea: {
+        addMultiplePhoto: 'Add multiple photo',
         description: 'Select file from your device or drag and drop'
       },
       selectFile: 'Select file',
@@ -259,6 +299,11 @@ export default {
           '<strong>parolla</strong> game contains <strong>{questionCount}</strong> English alphabet letters. <br> You can play this mod over and over again. Different questions come up every time.'
       },
       creator: {
+        thisOrThat: {
+          title: 'How to play this or that quiz?',
+          description: 'Choose between two options each round',
+          extra: 'This quiz was created by another player <br> There are {choiceCount} choices. You can play this mod over and over again.'
+        },
         extra:
           'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
       },
@@ -408,21 +453,6 @@ export default {
       description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
     }
   },
-  creatorModeIntro: {
-    description:
-      '<strong>Player-generated quizzes</strong> &nbsp; <br> <strong>check out the quizzes</strong> or create <strong>your own question-answer set</strong>',
-    list: {
-      rooms: {
-        title: 'SEE QUIZZES'
-      },
-      compose: {
-        title: 'CREATE A QUIZ'
-      },
-      myRooms: {
-        title: 'MY RECENTLY CREATED QUIZZES'
-      }
-    }
-  },
   creatorModeRooms: {
     title: 'QUIZZES',
     joinRoom: {
@@ -482,13 +512,25 @@ export default {
       private: 'Private'
     }
   },
+  choices: {
+    remainingChoices: '{count} choices left',
+    lastChoice: 'Last choice',
+    winner: {
+      title: 'WINNER CHOICE',
+      winnerChoices: {
+        title: 'Most chosen'
+      }
+    }
+  },
   form: {
     isRequired: '{model} is required',
     isInvalid: '{model} is invalid',
     creatorModeCompose: {
       title: 'CREATE A QUIZ',
+      choicesTitle: 'CREATE A CHOICES QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
+      choicesSet: 'CHOICES SET',
       creatingQuiz: 'Creating quiz...',
       updatingQuiz: 'Updating quiz...',
       uploadingMedia: 'Uploading media',
@@ -540,6 +582,11 @@ export default {
             placeholder: 'Type photo note (optional)',
             description: 'The player will see the note related to the photo'
           },
+          videoNote: {
+            label: 'Video note',
+            placeholder: 'Type video note (optional)',
+            description: 'The player will see the note related to the video'
+          },
           removeQuestion: 'Remove question',
           error: {
             mediaRequired: 'Photo file is required for photo type questions'
@@ -572,6 +619,26 @@ export default {
         },
         addMoreQuestion: 'Add more question'
       },
+      choices: {
+        option: 'Option',
+        type: {
+          text: 'Text',
+          media: 'Media',
+          youtube: 'YouTube'
+        },
+        placeholder: {
+          youtube: 'https://www.youtube.com/watch?v=abc1\nhttps://www.youtube.com/watch?v=abc2',
+          text: 'Choice 1\nChoice 2\nChoice 3'
+        },
+        addMedia: 'Add Media',
+        empty: {
+          description: "You haven't added any choice yet\nAt least 8 choices, at most 256 choices can be added",
+          action: 'Add choice'
+        },
+        addMore: {
+          action: 'Add new choice'
+        }
+      },
       saveDraft: {
         action: 'Save draft',
         callback: {
@@ -579,7 +646,7 @@ export default {
         }
       },
       termsDescription:
-        '* Avoid spam, hate speech, racist and insulting content when creating quizzes. Such quizzes will be deleted upon moderation detection. While creating a quiz, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
+        '* Avoid spam, illegal and nsfw content when creating quizzes. Such quizzes will be deleted upon moderation detection. While creating a quiz, your IP address is stored in accordance with legal regulations. In case of violation, legal sanctions may be applied.',
       submit: 'Finish and publish',
       error: {
         couldNotCreate: 'Could not create quiz, please check and try again'
@@ -587,6 +654,7 @@ export default {
     },
     creatorModeEdit: {
       title: 'EDIT A QUIZ',
+      choicesTitle: 'EDIT CHOICES QUIZ',
       submit: 'Update and publish'
     },
     roomReview: {
@@ -791,6 +859,11 @@ export default {
       title: 'Create a quiz',
       description: 'Create a quiz or solve quizzes created by players',
       keywords: 'quiz game, quiz solve, quiz create'
+    },
+    creatorModeComposeChoices: {
+      title: 'Create a choices quiz',
+      description: 'Create a choices quiz or solve quizzes created by players',
+      keywords: 'choices quiz, quiz solve, quiz create'
     },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',

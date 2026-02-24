@@ -29,6 +29,13 @@ Dialog.dialog.menu-dialog(
         :title="$t('dialog.menu.profileView')"
         @click.native="handleClickProfileView"
       )
+      Cell.menu-dialog-nav__item(
+        icon="bookmark"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.myQuizzes')"
+        @click.native="handleClickMyQuizzes"
+      )
 
   Button.menu-dialog__logoutButton(v-if="$auth.loggedIn && $auth.user" @click="handleClickLogout") Çıkış Yap
   LoginForm(v-else)
@@ -258,6 +265,12 @@ export default defineComponent({
       state.isOpen = false
     }
 
+    const handleClickMyQuizzes = () => {
+      router.push(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
+
+      state.isOpen = false
+    }
+
     const handleClickLogout = async () => {
       await store.dispatch('auth/logout')
 
@@ -278,6 +291,7 @@ export default defineComponent({
       openAppSharer,
       handleClickProfileEdit,
       handleClickProfileView,
+      handleClickMyQuizzes,
       handleClickLogout
     }
   }

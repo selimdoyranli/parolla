@@ -1,10 +1,13 @@
 <template lang="pug">
 Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="onFormFailed" @submit="handleSubmit")
-  span.creator-mode-compose-form__title(align="center")
+  h1.creator-mode-compose-form__title(align="center")
     template(v-if="room")
-      | {{ $t('form.creatorModeEdit.title') }}
+      template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeEdit.choicesTitle') }}
+      template(v-else) {{ $t('form.creatorModeEdit.title') }}
       Tag.creator-mode-compose-form__draftTag(v-if="form.isDraft" type="warning") {{ $t('general.draft') }}
-    template(v-else) {{ $t('form.creatorModeCompose.title') }}
+    template(v-else)
+      template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeCompose.choicesTitle') }}
+      template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   RoomBasicInfo(
     :form="form"
@@ -15,8 +18,22 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @remove-tag="removeTag"
   )
 
+  ChoiceList(
+    v-if="form.quizType === quizTypeEnum.CHOICES"
+    :choices.sync="form.choices"
+    :is-busy="form.isBusy"
+    :get-media-src="getMediaSrc"
+    :get-media-alt="getMediaAlt"
+    @add-item="addItem"
+    @add-media="handleAddMedia"
+    @delete-media="handleDeleteMedia"
+    @remove="removeItem"
+    @open-batch-dialog="openAddChoicesDialog"
+  )
+
   QuestionList(
-    :qa-list="form.qaList"
+    v-else
+    :qa-list.sync="form.qaList"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"
     :get-media-src="getMediaSrc"
@@ -34,9 +51,18 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @remove="removeItem"
   )
 
+  AddChoicesDialog(
+    v-if="form.quizType === quizTypeEnum.CHOICES"
+    :is-open="isAddChoicesDialogOpen"
+    :get-media-src="getMediaSrc"
+    :get-media-alt="getMediaAlt"
+    @close="closeAddChoicesDialog"
+    @confirm="handleBatchAddItems"
+  )
+
   FormActions(
     :is-visible-save-draft-button="isVisibleSaveDraftButton"
-    :qa-list-length="form.qaList.length"
+    :qa-list-length="form.quizType === quizTypeEnum.CHOICES ? form.choices.length : form.qaList.length"
     :is-busy="form.isBusy"
     :is-room-exists="!!room"
     @save-draft="saveAsDraft"
@@ -52,13 +78,6 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @closed="handleCloseCreatedRoomDialog"
   )
 
-  MediaUploadDialog(
-    :title="$t('form.creatorModeCompose.qa.question.addPhoto')"
-    :isOpen="dialog.mediaUpload.isOpen"
-    :activeMediaTypes="['file']"
-    @closed="handleCloseMediaUploadDialog"
-  )
-
   CreatingRoomModal(
     :isOpen="dialog.creatingRoom.isOpen"
     :isUpdating="!!room"
@@ -72,13 +91,18 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, ref } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
+import { quizTypeEnum } from '@/enums/quiz.enum'
+import ChoiceList from './partials/ChoiceList.vue'
+import QuestionList from './partials/QuestionList.vue'
 
 export default defineComponent({
   components: {
     Form,
-    Tag
+    Tag,
+    ChoiceList,
+    QuestionList
   },
   props: {
     room: {
@@ -107,11 +131,9 @@ export default defineComponent({
       moveDown,
       handleAnswerTypeChange,
       getCharacter,
-      validateAnswer, // Not used directly in template but kept in composable
       triviaHandleSelectCorrectOption,
       triviaHandleSetOptions,
       handleAddMedia,
-      handleCloseMediaUploadDialog,
       handleDeleteMedia,
       getMediaSrc,
       getMediaAlt,
@@ -138,6 +160,32 @@ export default defineComponent({
       dialog.room.isOpen = false
     }
 
+    const isAddChoicesDialogOpen = ref(false)
+
+    const openAddChoicesDialog = () => {
+      isAddChoicesDialogOpen.value = true
+    }
+
+    const closeAddChoicesDialog = () => {
+      isAddChoicesDialogOpen.value = false
+    }
+
+    const handleBatchAddItems = items => {
+      if (!items || items.length === 0) return
+
+      items.forEach(item => {
+        form.choices.push({
+          id: Date.now() + Math.random(),
+          order: form.choices.length,
+          type: item.type,
+          content: item.content || '',
+          media: item.media || null,
+          mediaFile: item.mediaFile || null,
+          mediaNote: item.mediaNote || ''
+        })
+      })
+    }
+
     return {
       user,
       form,
@@ -157,7 +205,6 @@ export default defineComponent({
       triviaHandleSelectCorrectOption,
       triviaHandleSetOptions,
       handleAddMedia,
-      handleCloseMediaUploadDialog,
       handleDeleteMedia,
       getMediaSrc,
       getMediaAlt,
@@ -167,7 +214,12 @@ export default defineComponent({
       isVisibleSaveDraftButton,
       handleConfirmCreatedRoomDialog,
       handleCancelCreatedRoomDialog,
-      handleCloseCreatedRoomDialog
+      handleCloseCreatedRoomDialog,
+      quizTypeEnum,
+      isAddChoicesDialogOpen,
+      openAddChoicesDialog,
+      closeAddChoicesDialog,
+      handleBatchAddItems
     }
   }
 })

@@ -1,3 +1,20 @@
+const choiceItemTransformer = model => {
+  return {
+    id: model.id,
+    documentId: model.documentId,
+    choiceType: model.choiceType,
+    mediaNote: model.mediaNote,
+    text: model.text,
+    youtubeUrl: model.youtubeUrl,
+    voteCount: model.voteCount,
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt,
+    publishedAt: model.publishedAt,
+    locale: model.locale,
+    media: model.media
+  }
+}
+
 export default model => {
   return {
     id: model.id,
@@ -11,6 +28,7 @@ export default model => {
     isListed: model.isPublic,
     isAnon: model.isAnon,
     questionCount: model.questionCount,
+    quizType: model.quizType,
     viewCount: model.viewCount,
     reviewCount: model.reviewsCount,
     rating: model.rating,
@@ -19,6 +37,8 @@ export default model => {
     hasMedia: model.hasMedia,
     mediaCount: model.mediaCount,
     questions: model.qaItems,
+    choices: model.choices?.map(choiceItemTransformer),
+    winnerChoices: model.winnerChoices?.map(choiceItemTransformer),
     answerTypeDominance: model.answerTypeDominance,
     questionTypeDominance: model.questionTypeDominance,
     tags: model.roomTags

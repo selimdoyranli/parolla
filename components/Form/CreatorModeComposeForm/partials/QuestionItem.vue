@@ -5,7 +5,7 @@
     template(#title)
       span {{ $t('form.creatorModeCompose.qa.question.questionType.title') }}
     template(#right-icon)
-      RadioGroup.type-radio-group(v-model="item.questionType" direction="horizontal")
+      RadioGroup.type-radio-group(:value="item.questionType" direction="horizontal" @input="onQuestionTypeChange")
         Radio.type-radio(name="text")
           span.type-radio__text {{ $t('form.creatorModeCompose.qa.question.questionType.options.text') }}
           template(#icon="{ props }")
@@ -19,33 +19,17 @@
     template(#title)
       span {{ $t('form.creatorModeCompose.qa.question.photo') }}
 
-    template(v-if="!item.media || item.media === null" #right-icon)
-      Button.compose-qa-card-add-media-button(
-        type="secondary"
-        plain
-        native-type="button"
-        round
-        size="small"
-        @click="$emit('add-media', index)"
-      )
-        AppIcon.compose-qa-card-add-media-button__icon(name="tabler:plus")
-        span.compose-qa-card-add-media-button__text {{ $t('form.creatorModeCompose.qa.question.addPhoto') }}
-
     template(#label)
-      .media-thumbnail(v-if="item.media")
-        img.media-thumbnail__image(:src="getMediaSrc(item.media)" :alt="getMediaAlt(item.media)")
-        Button.media-thumbnail__delete(type="danger" size="small" round @click="$emit('delete-media', index)")
-          AppIcon(name="tabler:x" :width="14" :height="14")
-
-        Cell.creator-mode-compose-form-media-note
-          small.creator-mode-compose-form-media-note__description {{ $t('form.creatorModeCompose.qa.question.mediaNote.description') }}
-          Field.creator-mode-compose-form-media-note-field(
-            v-model="item.mediaNote"
-            name="mediaNote"
-            :placeholder="$t('form.creatorModeCompose.qa.question.mediaNote.placeholder')"
-            maxlength="64"
-            show-word-limit
-          )
+      MediaInput(
+        input-type="file"
+        :media="item.media"
+        :media-note="item.mediaNote"
+        :get-media-src="getMediaSrc"
+        :get-media-alt="getMediaAlt"
+        @update:media="onMediaUpdate"
+        @update:mediaNote="onMediaNoteUpdate"
+        @remove="onMediaRemove"
+      )
 
       // Media missing warning for media type questions (only show when form has validation errors)
       .compose-qa-card__media-warning(v-if="!item.media && item.questionType === questionTypeEnum.MEDIA && !isFormValid")
@@ -143,7 +127,8 @@
 <script>
 import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
-import { Field, Cell, RadioGroup, Radio, Button } from 'vant'
+import { Field, Cell, RadioGroup, Radio, Button, Dialog } from 'vant'
+import MediaInput from './MediaInput.vue'
 
 export default defineComponent({
   name: 'QuestionItem',
@@ -152,7 +137,8 @@ export default defineComponent({
     Cell,
     RadioGroup,
     Radio,
-    Button
+    Button,
+    MediaInput
   },
   props: {
     item: {
@@ -183,8 +169,74 @@ export default defineComponent({
       default: true
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { i18n } = useContext()
+
+    const onQuestionTypeChange = name => {
+      let hasData = false
+
+      if (props.item.questionType === questionTypeEnum.MEDIA) {
+        if (props.item.media || props.item.mediaFile || (props.item.mediaNote && props.item.mediaNote.trim() !== '')) {
+          hasData = true
+        }
+      } else if (props.item.questionType === questionTypeEnum.TEXT) {
+        if (props.item.question && props.item.question.trim() !== '') {
+          hasData = true
+        }
+      }
+
+      if (hasData) {
+        Dialog.confirm({
+          title: i18n.t('form.creatorModeCompose.qa.question.changeType.title'),
+          message: i18n.t('form.creatorModeCompose.qa.question.changeType.description'),
+          confirmButtonText: i18n.t('form.creatorModeCompose.qa.question.changeType.confirm'),
+          cancelButtonText: i18n.t('form.creatorModeCompose.qa.question.changeType.cancel')
+        })
+          .then(() => {
+            performTypeChange(name)
+          })
+          .catch(() => {
+            // Do nothing
+          })
+      } else {
+        performTypeChange(name)
+      }
+    }
+
+    const performTypeChange = name => {
+      const updatedItem = { ...props.item, questionType: name }
+
+      if (name === questionTypeEnum.TEXT) {
+        updatedItem.media = null
+        updatedItem.mediaFile = null
+        updatedItem.mediaNote = ''
+      } else if (name === questionTypeEnum.MEDIA) {
+        updatedItem.question = ''
+      }
+
+      emit('update-item', updatedItem)
+    }
+
+    const onMediaUpdate = (mediaData, mediaFile) => {
+      emit('update-item', {
+        ...props.item,
+        media: mediaData,
+        mediaFile: mediaFile || null
+      })
+    }
+
+    const onMediaNoteUpdate = note => {
+      emit('update-item', { ...props.item, mediaNote: note })
+    }
+
+    const onMediaRemove = () => {
+      emit('update-item', {
+        ...props.item,
+        media: null,
+        mediaFile: null
+      })
+      emit('delete-media', { index: props.index })
+    }
 
     const triggerTitle = computed(() => {
       if (props.item.answerType === answerTypeEnum.TEXT_FIELD) {
@@ -241,7 +293,11 @@ export default defineComponent({
       selectedAnswerTypeOption,
       formatAnswerField,
       hasAnswerError,
-      getAnswerErrorMessage
+      getAnswerErrorMessage,
+      onQuestionTypeChange,
+      onMediaUpdate,
+      onMediaNoteUpdate,
+      onMediaRemove
     }
   }
 })

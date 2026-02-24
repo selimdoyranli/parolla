@@ -1,0 +1,47 @@
+.winner-choice-list {
+  position: relative;
+  width: 100%;
+
+  &__title {
+    display: block;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-5);
+    margin-block-end: $spacer * 3;
+  }
+
+  &__items {
+    position: relative;
+  }
+
+  .choice-card {
+    padding: $spacer * 2 0;
+    border: 1px solid var(--color-border-02);
+    border-radius: var(--border-radius-01);
+    pointer-events: none;
+    margin-block-end: $spacer * 2;
+
+    &__content {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &__image,
+    &__video,
+    &__text {
+      display: grid;
+      width: 64px;
+      height: 64px;
+      margin: unset;
+      object-fit: contain;
+      overflow: hidden;
+      margin-inline-end: auto;
+      place-items: center;
+    }
+
+    &__text {
+      width: 100%;
+      padding: $spacer $spacer * 2;
+      font-size: var(--font-size-text-10);
+    }
+  }
+}

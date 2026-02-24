@@ -56,7 +56,7 @@
         template(v-for="tag in form.tags")
           Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="onRemoveTag(tag)") {{ tag }}
 
-    Cell.creator-mode-compose-form__gameTimeLimit
+    Cell.creator-mode-compose-form__gameTimeLimit(v-if="form.quizType === quizTypeEnum.QA")
       template(#title)
         span {{ $t('form.creatorModeCompose.room.gameTimeLimit.label') }}
 
@@ -70,6 +70,7 @@
 <script>
 import { defineComponent, computed } from '@nuxtjs/composition-api'
 import { Field, Cell, Switch, Button, Tag, Stepper } from 'vant'
+import { quizTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   name: 'RoomBasicInfo',
@@ -109,7 +110,8 @@ export default defineComponent({
       localGameTimeLimitMinutes,
       onInputTag,
       onAddTag,
-      onRemoveTag
+      onRemoveTag,
+      quizTypeEnum
     }
   }
 })

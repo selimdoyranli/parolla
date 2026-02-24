@@ -6,7 +6,8 @@ export default () => ({
     pagination: {},
     total: null,
     sort: 'recently',
-    room: {}
+    room: {},
+    quizType: 'qa' // 'qa' | 'choices'
   },
   isGameOver: false,
   alphabet: {
@@ -14,6 +15,7 @@ export default () => ({
     items: []
   },
   questions: [],
+  choices: [],
   countdown: {
     time: GAME_TIME_LIMIT,
     remainTime: {}

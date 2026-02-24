@@ -13,33 +13,33 @@ export default defineComponent({
     const { i18n } = useContext()
 
     useMeta(() => ({
-      title: `${i18n.t('seo.creatorModeCompose.title')} - ${i18n.t('seo.main.title')}`,
-      description: i18n.t('seo.creatorModeCompose.description'),
+      title: `${i18n.t('seo.creatorModeComposeChoices.title')} - ${i18n.t('seo.main.title')}`,
+      description: i18n.t('seo.creatorModeComposeChoices.description'),
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: `${i18n.t('seo.creatorModeCompose.title')} - ${i18n.t('seo.main.title')}`
+          content: `${i18n.t('seo.creatorModeComposeChoices.title')} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: `${i18n.t('seo.creatorModeCompose.title')} - ${i18n.t('seo.main.title')}`
+          content: `${i18n.t('seo.creatorModeComposeChoices.title')} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: i18n.t('seo.creatorModeCompose.description')
+          content: i18n.t('seo.creatorModeComposeChoices.description')
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: i18n.t('seo.creatorModeCompose.description')
+          content: i18n.t('seo.creatorModeComposeChoices.description')
         },
         {
           hid: 'keywords',
           name: 'keywords',
-          content: i18n.t('seo.creatorModeCompose.keywords')
+          content: i18n.t('seo.creatorModeComposeChoices.keywords')
         }
       ]
     }))

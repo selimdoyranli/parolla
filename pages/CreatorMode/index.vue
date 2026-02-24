@@ -10,7 +10,7 @@ export default defineComponent({
   setup() {
     const { localePath, redirect } = useContext()
 
-    redirect(localePath({ name: 'CreatorMode-CreatorModeIntro' }))
+    redirect(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
   }
 })
 </script>

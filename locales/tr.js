@@ -18,7 +18,12 @@ export default {
       limitExceeded: 'Medya boyutu sınırı aşıldı',
       mimeTypeNotAllowed: 'İzin verilmiyen medya tipi',
       extensionNotAllowed: 'İzin verilmiyen uzantıya sahip medya'
-    }
+    },
+    tooManyLines: 'En fazla {max} satır olabilir',
+    textTooLong: 'Bazı satırlar 64 karakterden uzun',
+    tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
+    invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
+    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin'
   },
   success: {
     success: 'Başarılı'
@@ -59,6 +64,7 @@ export default {
     quiz: 'Quiz',
     photoQuiz: 'Foto quiz',
     triviaQuiz: 'Trivia',
+    thisOrThatQuiz: 'O mu bu mu?',
     provider: 'Sağlayıcı',
     quizPreparing: 'Quiz hazırlanıyor'
   },
@@ -175,12 +181,28 @@ export default {
     }
   },
   dialog: {
+    addChoices: {
+      title: 'Seçim ekle',
+      tab: {
+        photo: 'Fotoğraf',
+        youtube: 'YouTube',
+        text: 'Yazı'
+      },
+      placeholder: {
+        youtube: 'https://www.youtube.com/watch?v=abc1\nhttps://www.youtube.com/watch?v=abc2',
+        text: 'Seçim 1\nSeçim 2\nSeçim 3'
+      },
+      selectSystemFiles: 'Dosya seç',
+      selectedCount: '{count} adet foto seçildi',
+      useFilenameAsMediaNote: 'Dosya isimlerini açıklama olarak kullan'
+    },
     menu: {
-      profileEdit: 'Profili düzenle',
-      profileView: 'Profili görüntüle',
       title: 'Daha fazla',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
+      profileEdit: 'Profili düzenle',
+      profileView: 'Profili görüntüle',
+      myQuizzes: 'Quizlerim',
       darkTheme: 'Koyu tema',
       soundFx: 'Ses efekleri',
       switchLocale: 'Dil değiştir',
@@ -212,6 +234,23 @@ export default {
       title: 'Duyurular',
       description: 'Duyurular'
     },
+    createQuizSelection: {
+      title: 'Quiz oluştur',
+      quizType: {
+        qa: {
+          title: 'Soru-Cevap (Klasik)',
+          description: 'Oyuncular eklediğin sorulara cevap verir',
+          label: 'Zamana karşı klasik soru-cevap quiz',
+          createQaQuiz: 'Soru-Cevap quiz oluştur'
+        },
+        thisOrThat: {
+          title: 'O mu bu mu?',
+          description: 'Seçim listesi oluştur, oyuncular her tur iki seçenekten birini seçer',
+          label: 'Rekabet yok, kişisel tercihleri belirler',
+          createThisOrThatQuiz: 'O mu bu mu? quiz oluştur'
+        }
+      }
+    },
     createdRoom: {
       title: 'Quiz oluşturuldu',
       quizUpdated: 'Quiz güncellendi',
@@ -229,6 +268,7 @@ export default {
     mediaUpload: {
       title: 'Medya yükle',
       uploadArea: {
+        addMultiplePhoto: 'Çoklu fotoğraf ekle',
         description: 'Cihazından dosya seç veya sürükleyip bırak'
       },
       selectFile: 'Medya seç',
@@ -264,6 +304,11 @@ export default {
           '<strong>parolla</strong> oyunu <strong>{questionCount}</strong> türkçe alfabe harfi içerir. <br> Bu modu tekrar tekrar oynayabilirsin. Her defasında farklı sorular gelir'
       },
       creator: {
+        thisOrThat: {
+          title: 'O mu bu mu? quiz nasıl oynanır?',
+          description: 'Her tur iki seçenek arasından seçim yap',
+          extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
+        },
         extra:
           'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
       },
@@ -414,21 +459,6 @@ export default {
       description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
     }
   },
-  creatorModeIntro: {
-    description:
-      '<strong>Oyuncular tarafından oluşturulmuş quizler</strong> &nbsp; <br> Hemen <strong>quizlere bak</strong> ya da <strong>quiz oluştur</strong>',
-    list: {
-      rooms: {
-        title: 'QUIZLERE BAK'
-      },
-      compose: {
-        title: 'QUIZ OLUŞTUR'
-      },
-      myRooms: {
-        title: 'SON OLUŞTURDUĞUM QUIZLER'
-      }
-    }
-  },
   creatorModeRooms: {
     title: 'QUIZLER',
     joinRoom: {
@@ -488,14 +518,26 @@ export default {
       private: 'Liste dışı'
     }
   },
+  choices: {
+    remainingChoices: '{count} seçim kaldı',
+    lastChoice: 'Son seçim',
+    winner: {
+      title: 'KAZANAN SEÇİM',
+      winnerChoices: {
+        title: 'En çok seçilenler'
+      }
+    }
+  },
   form: {
     isRequired: '{model} gereklidir',
     isInvalid: '{model} geçersiz',
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
+      choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
+      choicesSet: 'TERCİH SETİ',
       creatingQuiz: 'Quiz oluşturuluyor...',
       updatingQuiz: 'Quiz güncelleniyor...',
       uploadingMedia: 'Medya yükleniyor',
@@ -546,7 +588,18 @@ export default {
             placeholder: 'Fotoğraf notunu yaz (isteğe bağlı)',
             description: 'Oyuncuya fotoğraf ile ilgili notun gösterilir'
           },
+          videoNote: {
+            label: 'Video notu',
+            placeholder: 'Video notunu yaz (isteğe bağlı)',
+            description: 'Oyuncuya video ile ilgili notun gösterilir'
+          },
           removeQuestion: 'Soruyu kaldır',
+          changeType: {
+            title: 'Tip değişsin mi?',
+            description: 'Bu soruya ait girdiğin veriler kaybolacak',
+            confirm: 'Değiştir',
+            cancel: 'İptal'
+          },
           error: {
             mediaRequired: 'Fotoğraf tipindeki soruda dosya eksik'
           }
@@ -578,6 +631,34 @@ export default {
         },
         addMoreQuestion: 'Başka soru ekle'
       },
+      choices: {
+        choiceType: 'Seçim tipi',
+        type: {
+          text: 'Yazı',
+          media: 'Fotoğraf',
+          youtube: 'YouTube'
+        },
+        placeholder: {
+          text: 'Seçim metnini yaz',
+          youtube: 'YouTube bağlantısını yapıştır'
+        },
+        addMedia: 'Fotoğraf Ekle',
+        empty: {
+          description: 'Henüz bir seçim eklemedin\nEn az 8 seçim, en fazla 256 seçim eklenebilir',
+          action: 'Seçim ekle'
+        },
+        addMore: {
+          action: 'Başka seçim ekle',
+          addMultiple: 'Toplu seçim ekle'
+        },
+        removeChoice: 'Seçimi kaldır',
+        changeType: {
+          title: 'Tip değişsin mi?',
+          description: 'Bu seçime ait girdiğin veriler kaybolacak',
+          confirm: 'Değiştir',
+          cancel: 'İptal'
+        }
+      },
       saveDraft: {
         action: 'Taslak kaydet',
         callback: {
@@ -585,7 +666,7 @@ export default {
         }
       },
       termsDescription:
-        '* Quiz oluştururken spam, nefret söylemi içeren, ırkçı ve aşağılayacı içeriklerden kaçının. Bu gibi quizler moderasyon tespitinde silinecektir. Quiz oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
+        '* Quiz oluştururken spam, illegal ve nsfw içeriklerden kaçının. Bu gibi quizler moderasyon tespitinde silinecektir. Quiz oluştururken IP adresiniz yasal mevzuat gereği saklanır. İhlal durumunda yasal yaptırım uygulanabilir.',
       submit: 'Bitir ve yayınla',
       error: {
         couldNotCreate: 'Quiz oluşturulamadı, lütfen kontrol edip tekrar dene'
@@ -593,6 +674,7 @@ export default {
     },
     creatorModeEdit: {
       title: 'QUIZ DÜZENLE',
+      choicesTitle: 'SEÇİM QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -801,6 +883,11 @@ export default {
       title: 'Quiz oluştur',
       description: 'Quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
+    },
+    creatorModeComposeChoices: {
+      title: 'Seçim quiz oluştur',
+      description: 'Seçmeli quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
+      keywords: 'seçimli quiz, quiz çöz, quiz oluştur'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',

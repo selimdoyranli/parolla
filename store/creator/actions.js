@@ -1,4 +1,5 @@
 import { roomTransformer, scoreboardTransformer } from '@/transformers'
+import { choiceTypeEnum } from '@/enums/quiz.enum'
 
 export default {
   async postRoom({ commit, state }, { form, deviceInfo }) {
@@ -11,7 +12,8 @@ export default {
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
-        qaList: form.qaList.map(item => {
+        quizType: form.quizType,
+        qaList: (form.qaList || []).map(item => {
           const qaItem = {
             order: item.order,
             character: item.character,
@@ -26,8 +28,20 @@ export default {
 
           return qaItem
         }),
+        choiceList: (form.choices || []).map(item => {
+          const youtubeUrl = item.type === choiceTypeEnum.YOUTUBE ? item.media.url : null
+
+          return {
+            id: item.id,
+            choiceType: item.type,
+            text: item.type === choiceTypeEnum.TEXT ? item.content : null,
+            youtubeUrl: youtubeUrl,
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote
+          }
+        }),
         roomTags: form.tags,
-        gameTimeLimit: Number(form.gameTimeLimit),
+        gameTimeLimit: form.gameTimeLimit === null ? null : Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -62,7 +76,8 @@ export default {
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
-        qaList: form.qaList.map(item => {
+        quizType: form.quizType,
+        qaList: (form.qaList || []).map(item => {
           const qaItem = {
             documentId: item.documentId,
             order: item.order,
@@ -78,8 +93,20 @@ export default {
 
           return qaItem
         }),
+        choiceList: (form.choices || []).map(item => {
+          const youtubeUrl = item.type === choiceTypeEnum.YOUTUBE ? item.media.url : null
+
+          return {
+            id: item.id,
+            choiceType: item.type,
+            text: item.type === choiceTypeEnum.TEXT ? item.content : null,
+            youtubeUrl: youtubeUrl,
+            media: item.media?.id || null,
+            mediaNote: item.mediaNote
+          }
+        }),
         roomTags: form.tags,
-        gameTimeLimit: Number(form.gameTimeLimit),
+        gameTimeLimit: form.gameTimeLimit === null ? null : Number(form.gameTimeLimit),
         deviceInfo
       }
     }
@@ -168,6 +195,31 @@ export default {
       headers: {
         Authorization: `${token}`,
         'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async upvoteChoice({ commit }, { choiceDocumentId }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: `room-choices/${choiceDocumentId}/upvote`,
+      method: 'PUT',
+      query: {
+        locale: this.$i18n.locale
+      },
+      data: {
+        data: {
+          user: this.$auth.user?.id
+        }
+      },
+      headers: {
+        Authorization: `${token}`
       }
     })
 
@@ -287,6 +339,10 @@ export default {
 
       commit('SET_QUESTIONS', {
         questions: room.questions
+      })
+
+      commit('SET_CHOICES', {
+        choices: room.choices
       })
 
       commit('SET_ALPHABET_ITEMS', room.alphabet)
