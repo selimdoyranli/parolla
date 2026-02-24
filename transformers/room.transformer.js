@@ -38,6 +38,7 @@ export default model => {
     mediaCount: model.mediaCount,
     questions: model.qaItems,
     choices: model.choices?.map(choiceItemTransformer),
+    winnerChoices: model.winnerChoices?.map(choiceItemTransformer),
     answerTypeDominance: model.answerTypeDominance,
     questionTypeDominance: model.questionTypeDominance,
     tags: model.roomTags

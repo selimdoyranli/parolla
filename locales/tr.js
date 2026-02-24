@@ -522,7 +522,10 @@ export default {
     remainingChoices: '{count} seçim kaldı',
     lastChoice: 'Son seçim',
     winner: {
-      title: 'KAZANAN SEÇİM'
+      title: 'KAZANAN SEÇİM',
+      winnerChoices: {
+        title: 'En çok seçilenler'
+      }
     }
   },
   form: {

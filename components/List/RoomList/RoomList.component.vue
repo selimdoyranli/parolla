@@ -80,6 +80,10 @@
                   AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.questionCount }}
 
+                .room-list-item-badge(v-if="room.choices?.length > 0")
+                  AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
+                  span.room-list-item-badge__value {{ room.choices.length }}
+
                 .room-list-item-badge(v-if="room.viewCount && room.viewCount > 0")
                   AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.viewCount }}

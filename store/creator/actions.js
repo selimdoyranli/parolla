@@ -231,6 +231,31 @@ export default {
     }
   },
 
+  async upvoteChoice({ commit }, { choiceDocumentId }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: `room-choices/${choiceDocumentId}/upvote`,
+      method: 'PUT',
+      query: {
+        locale: this.$i18n.locale
+      },
+      data: {
+        data: {
+          user: this.$auth.user?.id
+        }
+      },
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
   async fetchRooms({ commit, state }, params) {
     const { isVisible, isLoadMore = false, page, limit, keyword, tags, user, locale } = params
 

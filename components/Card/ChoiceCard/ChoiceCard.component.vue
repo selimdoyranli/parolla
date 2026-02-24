@@ -1,23 +1,24 @@
 <template lang="pug">
-.choice-card__content
-  // Image
-  template(v-if="choice && choice.choiceType === choiceTypeEnum.MEDIA")
-    img.choice-card__image(v-if="choice.media && choice.media.url" :src="choice.media.url" alt="Choice" draggable="false")
-    .choice-card__note(v-if="choice.mediaNote") {{ choice.mediaNote }}
+.choice-card
+  .choice-card__content
+    // Image
+    template(v-if="choice && choice.choiceType === choiceTypeEnum.MEDIA")
+      img.choice-card__image(v-if="choice.media && choice.media.url" :src="choice.media.url" alt="Choice" draggable="false")
+      .choice-card__note(v-if="choice.mediaNote") {{ choice.mediaNote }}
 
-  // YouTube
-  template(v-else-if="choice && choice.choiceType === choiceTypeEnum.YOUTUBE && choice.youtubeUrl")
-    .choice-card__video
-      iframe(
-        :src="getYoutubeIframeUrl(choice.youtubeUrl)"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      )
-    .choice-card__note(v-if="choice.mediaNote") {{ choice.mediaNote }}
+    // YouTube
+    template(v-else-if="choice && choice.choiceType === choiceTypeEnum.YOUTUBE && choice.youtubeUrl")
+      .choice-card__video
+        iframe(
+          :src="getYoutubeIframeUrl(choice.youtubeUrl)"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        )
+      .choice-card__note(v-if="choice.mediaNote") {{ choice.mediaNote }}
 
-  // Text
-  template(v-else-if="choice && choice.choiceType === choiceTypeEnum.TEXT")
-    span.choice-card__text(v-if="choice.text") {{ choice.text }}
+    // Text
+    template(v-else-if="choice && choice.choiceType === choiceTypeEnum.TEXT")
+      span.choice-card__text(v-if="choice.text") {{ choice.text }}
 </template>
 
 <script>

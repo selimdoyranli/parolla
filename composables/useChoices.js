@@ -1,6 +1,8 @@
-import { ref } from '@nuxtjs/composition-api'
+import { useStore, ref, watch } from '@nuxtjs/composition-api'
 
 export default () => {
+  const store = useStore()
+
   const choicesQueue = ref([])
   const choiceFirst = ref(null)
   const choiceSecond = ref(null)
@@ -8,6 +10,7 @@ export default () => {
   const isAnimating = ref(false)
   const selectedSide = ref(null)
   const ultimateWinner = ref(null)
+  const selectedChoiceIds = ref([])
 
   const initGame = choicesArray => {
     if (!choicesArray || choicesArray.length === 0) return
@@ -20,13 +23,17 @@ export default () => {
     isAnimating.value = false
     selectedSide.value = null
     ultimateWinner.value = null
+    selectedChoiceIds.value = []
   }
 
-  const selectChoice = side => {
+  const selectChoice = async side => {
     if (isAnimating.value || ultimateWinner.value) return
 
     const selectedChoice = side === 'left' ? choiceFirst.value : choiceSecond.value
-    console.log(`[GameScene] Upvoted choice (${side}):`, selectedChoice)
+
+    if (selectedChoice?.documentId && !selectedChoiceIds.value.includes(selectedChoice.documentId)) {
+      selectedChoiceIds.value.push(selectedChoice.documentId)
+    }
 
     selectedSide.value = side
     isAnimating.value = true
@@ -45,10 +52,18 @@ export default () => {
 
       if (!choiceFirst.value || !choiceSecond.value) {
         ultimateWinner.value = choiceFirst.value || choiceSecond.value
-        console.log('[GameScene] Ultimate winner choice:', ultimateWinner.value)
       }
     }, 1000)
   }
+
+  watch(
+    () => ultimateWinner.value,
+    async () => {
+      if (ultimateWinner.value) {
+        await store.dispatch('creator/upvoteChoice', { choiceDocumentId: ultimateWinner.value.documentId })
+      }
+    }
+  )
 
   return {
     choicesQueue,

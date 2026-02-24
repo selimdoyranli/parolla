@@ -75,6 +75,7 @@
   aspect-ratio: 16 / 9;
 
   iframe {
+    width: 100%;
     border: none;
     border-radius: calc(var(--border-radius-01) / 2);
     aspect-ratio: inherit;
@@ -82,6 +83,7 @@
 }
 
 .choice-card__text {
+  width: 100%;
   padding: $spacer * 4 $spacer * 8;
   color: var(--color-text-01);
   font-size: var(--font-size-7);

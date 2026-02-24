@@ -516,7 +516,10 @@ export default {
     remainingChoices: '{count} choices left',
     lastChoice: 'Last choice',
     winner: {
-      title: 'WINNER CHOICE'
+      title: 'WINNER CHOICE',
+      winnerChoices: {
+        title: 'Most chosen'
+      }
     }
   },
   form: {

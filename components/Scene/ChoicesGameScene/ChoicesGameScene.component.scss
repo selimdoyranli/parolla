@@ -11,16 +11,23 @@
   .scene__inner {
     height: 100%;
     padding: 0;
+    padding-block-start: var(--room-info-height);
   }
 
   .room-info {
+    position: fixed;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: var(--layout-max-width);
     height: var(--room-info-height);
     background-color: var(--color-ui-02);
     border-bottom: 1px solid var(--color-border-03);
+    transform: translateX(-50%);
+    inset-block-start: var(--header-height);
+    inset-inline-start: 50%;
 
     &__title {
       width: 100%;
@@ -68,7 +75,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: $spacer * 10;
+    padding: $spacer * 4;
     text-align: center;
 
     &__title {
@@ -80,16 +87,21 @@
     }
 
     &__actions {
-      margin-block-start: $spacer * 15;
+      margin-block-start: $spacer * 6;
+      margin-block-end: $spacer * 8;
     }
 
     .choice-card--winner {
       flex: none;
       width: 100%;
-      max-width: 800px;
+      max-width: var(--mobile);
       height: auto;
       cursor: default;
       pointer-events: none;
     }
+  }
+
+  .winner-choice-list {
+    margin-block-start: $spacer * 4;
   }
 }

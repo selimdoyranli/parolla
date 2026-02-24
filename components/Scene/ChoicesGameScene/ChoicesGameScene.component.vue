@@ -38,6 +38,8 @@
       .winner-layout__actions
         Button.button.button--primary(type="info" plain round @click="resetGame") {{ $t('general.playAgain') }}
 
+      WinnerChoiceList(v-if="room.winnerChoices?.length > 0" :items="room.winnerChoices")
+
   // How To Play Dialog
   HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Interstitial Ad Dialog
@@ -58,7 +60,7 @@ export default defineComponent({
 
     const rootRef = ref(null)
 
-    const { setRootRef, dialog, startGame: sceneStartGame, handleBeforeUnload, scrollTop, checkUnsupportedHeight } = useGameScene()
+    const { setRootRef, dialog, startGame, handleBeforeUnload, scrollTop, checkUnsupportedHeight } = useGameScene()
     const { initGame, selectChoice, choiceFirst, choiceSecond, isAnimating, selectedSide, ultimateWinner, choicesQueue } = useChoices()
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
@@ -71,10 +73,6 @@ export default defineComponent({
     const resetGame = () => {
       dialog.howToPlay.isOpen = true
       initGame(choices.value || [])
-    }
-
-    const startGame = () => {
-      sceneStartGame()
     }
 
     onMounted(() => {
