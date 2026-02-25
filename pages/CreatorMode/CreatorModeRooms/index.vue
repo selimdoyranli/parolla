@@ -45,7 +45,7 @@
           Button(@click="fetch") {{ $t('creatorModeRooms.error.rooms.fetch.action') }}
 
       template(v-else)
-        RoomFeaturedTagList(@on-tag-click="handleFeaturedTagClick")
+        RoomFeaturedTagList(v-if="$i18n.locale === $i18n.defaultLocale" @on-tag-click="handleFeaturedTagClick")
         RoomList(:items="rooms")
 
   CreateQuizSelectionDialog(:isOpen="isOpenCreateQuizSelectionDialog" @closed="isOpenCreateQuizSelectionDialog = false")
