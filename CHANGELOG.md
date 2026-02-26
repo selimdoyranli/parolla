@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.38.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.1...v2.38.2)
+
+
+### 💅 Refactors
+
+  - Room featured tag list show only defaultLocale ([27ed86f](https://github.com/selimdoyranli/parolla/commit/27ed86f))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.38.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.0...v2.38.1)
