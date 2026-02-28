@@ -12,22 +12,24 @@
     // Game Layout
     .versus-set(v-if="!ultimateWinner")
       // Left Choice
-      .choice-card.choice-card--left(
+      ChoiceCard.choice-card--left(
+        v-if="choiceFirst"
+        :choice="choiceFirst"
         :class="{ 'is-selected': selectedSide === 'left', 'is-loser': selectedSide === 'right' }"
-        @click="selectChoice('left')"
+        @click.native="selectChoice('left')"
       )
-        ChoiceCard(v-if="choiceFirst" :choice="choiceFirst")
 
       // Vs Icon
       .versus-icon
         img(src="/img/elements/versus.webp" alt="Versus" draggable="false" width="64" height="64")
 
       // Right Choice
-      .choice-card.choice-card--right(
+      ChoiceCard.choice-card--right(
+        v-if="choiceSecond"
+        :choice="choiceSecond"
         :class="{ 'is-selected': selectedSide === 'right', 'is-loser': selectedSide === 'left' }"
-        @click="selectChoice('right')"
+        @click.native="selectChoice('right')"
       )
-        ChoiceCard(v-if="choiceSecond" :choice="choiceSecond")
 
     // Winner Layout
     .winner-layout(v-else)
