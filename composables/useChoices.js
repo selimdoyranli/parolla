@@ -1,6 +1,7 @@
-import { useStore, ref, watch } from '@nuxtjs/composition-api'
+import { useContext, useStore, ref, watch } from '@nuxtjs/composition-api'
 
 export default () => {
+  const { $auth } = useContext()
   const store = useStore()
 
   const choicesQueue = ref([])
@@ -60,7 +61,9 @@ export default () => {
     () => ultimateWinner.value,
     async () => {
       if (ultimateWinner.value) {
-        await store.dispatch('creator/upvoteChoice', { choiceDocumentId: ultimateWinner.value.documentId })
+        if ($auth.loggedIn && $auth.user) {
+          await store.dispatch('creator/upvoteChoice', { choiceDocumentId: ultimateWinner.value.documentId })
+        }
       }
     }
   )
