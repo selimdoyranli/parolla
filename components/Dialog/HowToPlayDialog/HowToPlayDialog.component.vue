@@ -16,7 +16,10 @@ Dialog.dialog.how-to-play-dialog(
     HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
     HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
     .how-to-play-dialog__ad
-      // AppAd(:data-ad-slot="9964323575")
+      template(v-if="isDesktop")
+        AppAd(:data-ad-slot="9964323575")
+      template(v-else)
+        AppAd(:data-ad-slot="5200543400")
 
   // Footer
   footer.how-to-play-dialog__footer
@@ -30,6 +33,7 @@ import { defineComponent, useContext, useStore, reactive, watch, computed } from
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import { Dialog } from 'vant'
+import { useMediaQuery } from '@vueuse/core'
 
 export default defineComponent({
   components: {
@@ -50,6 +54,8 @@ export default defineComponent({
   setup(props) {
     const { i18n } = useContext()
     const store = useStore()
+
+    const isDesktop = useMediaQuery('(min-width: 992px)')
 
     const { activeGameMode } = useGameMode()
 
@@ -87,6 +93,7 @@ export default defineComponent({
     return {
       gameModeKeyEnum,
       quizTypeEnum,
+      isDesktop,
       activeGameMode,
       state,
       dialogTitle,

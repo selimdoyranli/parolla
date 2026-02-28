@@ -53,6 +53,9 @@
           )
           AppIcon.guess-the-song-scene-popular-artist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-popular-artist-text {{ popularArtist.artistName }}
+
+    // Ad
+    AppAd(:data-ad-slot="9964323575")
 </template>
 
 <script>
