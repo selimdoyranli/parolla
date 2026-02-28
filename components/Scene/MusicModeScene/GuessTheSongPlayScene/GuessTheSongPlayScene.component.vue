@@ -64,7 +64,17 @@
           .guess-the-song-play-scene-audio__timer
             span.guess-the-song-play-scene-audio__limit {{ limitLabel }}
 
-        audio(ref="audioEl" :src="currentRound.previewUrl" preload="auto" @timeupdate="handleTimeUpdate" @ended="handleEnded")
+        audio(
+          ref="audioEl"
+          :src="currentRound.previewUrl"
+          autoplay
+          preload="auto"
+          @play="isAudioPlaying = true"
+          @pause="isAudioPlaying = false"
+          @timeupdate="handleTimeUpdate"
+          @ended="handleEnded"
+        )
+        audio(v-if="nextRound" :src="nextRound.previewUrl" preload="auto" style="display: none")
 
       .guess-the-song-play-scene-options(v-if="currentRound")
         span.guess-the-song-play-scene-options__title {{ pickSongLabel }}
@@ -335,6 +345,7 @@ export default defineComponent({
     }
 
     const currentRound = computed(() => rounds.value[roundIndex.value] || null)
+    const nextRound = computed(() => rounds.value[roundIndex.value + 1] || null)
     const isLastRound = computed(() => roundIndex.value === rounds.value.length - 1)
     const isAnswerLocked = computed(() => selectedOptionId.value !== null)
     const roundLabel = computed(() => `${Math.min(roundIndex.value + 1, rounds.value.length)}/${rounds.value.length || TOTAL_ROUNDS}`)
@@ -507,6 +518,12 @@ export default defineComponent({
       }
     )
 
+    watch(audioEl, el => {
+      if (el && currentRound.value?.previewUrl) {
+        playCurrentPreview()
+      }
+    })
+
     onUnmounted(() => {
       stopAudio()
     })
@@ -575,6 +592,7 @@ export default defineComponent({
       rootRef,
       rounds,
       currentRound,
+      nextRound,
       isAnswerLocked,
       isAudioPlaying,
       roundLabel,
