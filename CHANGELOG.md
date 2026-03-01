@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.38.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.2...v2.38.3)
+
+
+### 🩹 Fixes
+
+  - Ui fixes on choice card ([f93ea85](https://github.com/selimdoyranli/parolla/commit/f93ea85))
+  - Ui fixes on choice card ([64ffd0b](https://github.com/selimdoyranli/parolla/commit/64ffd0b))
+  - Choice upvote auth only ([8c11864](https://github.com/selimdoyranli/parolla/commit/8c11864))
+  - Hwp dialog ad fix ([60cd739](https://github.com/selimdoyranli/parolla/commit/60cd739))
+
+### 💅 Refactors
+
+  - Ux updates on music mode ([88547af](https://github.com/selimdoyranli/parolla/commit/88547af))
+  - Update ads ([4c8aacc](https://github.com/selimdoyranli/parolla/commit/4c8aacc))
+
+### 🎨 Styles
+
+  - Prettify code ([4c7c26c](https://github.com/selimdoyranli/parolla/commit/4c7c26c))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.38.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.1...v2.38.2)
