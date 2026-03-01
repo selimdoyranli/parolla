@@ -1,66 +1,82 @@
 <template lang="pug">
 .scene.tycoon-game-scene(ref="rootRef")
   .scene__inner
-    //- Game Info
-    .tycoon-game-info
-      h2 {{ $t('tycoon.knowledgeKingdom.title') }}
-
-    //- Header & Tap Area (Sticky)
+    //- Sticky Top Section (Dashboard & Tap Area)
     .tycoon-sticky-top
-      .tycoon-header
-        .tycoon-header__stats
+      .tycoon-dashboard
+        .tycoon-dashboard__header
+          .tycoon-dashboard__title {{ $t('tycoon.knowledgeKingdom.title') }}
+          .tycoon-dashboard__tier(:class="'tycoon-tier-' + currentTier") LVL {{ currentTier }}
+        .tycoon-dashboard__stats
           .tycoon-stat.tycoon-stat--gold
-            AppIcon.tycoon-stat__icon(name="noto:coin" :width="20" :height="20")
-            span.tycoon-stat__value {{ formatNumber(gold) }}
+            AppIcon.tycoon-stat__icon(name="noto:coin" :width="24" :height="24")
+            .tycoon-stat__content
+              span.tycoon-stat__label Bakiye
+              span.tycoon-stat__value {{ formatNumber(gold) }}
           .tycoon-stat.tycoon-stat--gps(v-if="goldPerSecond > 0")
             AppIcon.tycoon-stat__icon(name="noto:coin" :width="16" :height="16")
-            span.tycoon-stat__value +{{ formatNumber(goldPerSecond) }}{{ $t('tycoon.knowledgeKingdom.perSecond') }}
+            span.tycoon-stat__value +{{ formatNumber(goldPerSecond) }} / sn
 
-      //- Tap Area
-      .tycoon-tap-area(ref="tapAreaRef" @click="handleTap")
-        .tycoon-tap-area__inner(:class="{ 'tycoon-tap-area__inner--pressed': isTapping }")
-          AppIcon.tycoon-tap-area__icon(name="noto:crown" :width="36" :height="36")
-          .tycoon-tap-area__content
-            span.tycoon-tap-area__label {{ $t('tycoon.knowledgeKingdom.tap') }}
-            span.tycoon-tap-area__click-value +{{ formatNumber(goldPerClick) }}
-        //- Floating numbers
-        transition-group.tycoon-tap-area__floaters(name="float-up" tag="div")
-          .tycoon-floater(v-for="floater in floaters" :key="floater.id" :style="floaterStyle(floater)") +{{ formatNumber(goldPerClick) }}
+      //- Compact Tap Area
+      .tycoon-tap-container
+        .tycoon-tap-area(ref="tapAreaRef" :class="{ 'is-tapping': isTapping }" @click="handleTap")
+          .tycoon-tap-area__ring
+          .tycoon-tap-area__inner
+            AppIcon.tycoon-tap-area__icon(name="noto:coin" :width="28" :height="28")
+            span.tycoon-tap-area__hint-text D O K U N
+            span.tycoon-tap-area__click-value
+              | +{{ formatNumber(goldPerClick) }}
 
-    //- Items List
-    .tycoon-items
-      h3.tycoon-items__title
-        AppIcon(name="noto:package" :width="20" :height="20")
-        | &nbsp;{{ $t('tycoon.knowledgeKingdom.items') }}
-      .tycoon-items__list(ref="itemsListRef")
+          transition-group.tycoon-floaters(name="float-up" tag="div")
+            .tycoon-floater(v-for="floater in floaters" :key="floater.id" :style="floaterStyle(floater)")
+              span
+                | +{{ formatNumber(goldPerClick) }}
+                AppIcon(name="noto:coin" :width="16" :height="16")
+
+    //- Shop / Items List
+    .tycoon-shop
+      .tycoon-shop__header
+        h3.tycoon-shop__title
+          AppIcon(name="noto:package" :width="24" :height="24")
+          | &nbsp;{{ $t('tycoon.knowledgeKingdom.items') }}
+
+      .tycoon-shop__list(ref="itemsListRef")
         .tycoon-item(
           v-for="item in visibleItems"
           :key="item.id"
-          :class="{ 'tycoon-item--affordable': gold >= item.cost, 'tycoon-item--owned': getOwnedCount(item.id) > 0 }"
+          :class="{ 'is-affordable': gold >= item.cost, 'is-owned': getOwnedCount(item.id) > 0 }"
         )
+          .tycoon-item__icon-wrapper
+            span.tycoon-item__icon {{ item.icon }}
+            .tycoon-item__owned-badge(v-if="getOwnedCount(item.id) > 0") {{ getOwnedCount(item.id) }}
+
           .tycoon-item__info
             .tycoon-item__name-row
-              span.tycoon-item__icon {{ item.icon }}
               span.tycoon-item__name {{ item.name }}
-              span.tycoon-item-tier(:class="'tycoon-item-tier--' + item.tier")
-                span.tycoon-item-tier__value LVL {{ item.tier }}
+              span.tycoon-item__tier-badge(:class="'tycoon-tier-' + item.tier") LVL {{ item.tier }}
             .tycoon-item__earnings
-              AppIcon(name="noto:coin" :width="14" :height="14")
-              span +{{ formatNumber(item.goldPerSecond) }}{{ $t('tycoon.knowledgeKingdom.perSecond') }}
-          .tycoon-item__actions
-            .tycoon-item__owned-badge(v-if="getOwnedCount(item.id) > 0")
-              | x{{ getOwnedCount(item.id) }}
+              AppIcon(name="noto:coin" :width="12" :height="12")
+              span +{{ formatNumber(item.goldPerSecond) }} / sn
 
-            button.tycoon-item__buy-btn.tycoon-item__buy-btn--can-afford(v-if="gold >= item.cost" @click="handleBuy(item.id)")
-              AppIcon(name="noto:coin" :width="14" :height="14")
-              span {{ formatNumber(item.cost) }}
+          .tycoon-item__action
+            button.tycoon-button.tycoon-button--buy.is-affordable(v-if="gold >= item.cost" @click="handleBuy(item, $event)")
+              .tycoon-button__inner
+                AppIcon(name="noto:coin" :class="gold < item.cost ? 'tycoon-button__coin--disabled' : ''" :width="16" :height="16")
+                span {{ formatNumber(item.cost) }}
 
-            button.tycoon-item__buy-btn(v-else)
-              AppIcon(name="noto:coin" :width="14" :height="14")
-              span {{ formatNumber(item.cost) }}
+            button.tycoon-button.tycoon-button--buy.disabled(v-else)
+              .tycoon-button__inner
+                AppIcon(name="noto:coin" :class="gold < item.cost ? 'tycoon-button__coin--disabled' : ''" :width="16" :height="16")
+                span {{ formatNumber(item.cost) }}
 
-  // Ad
-  AppAd(:data-ad-slot="9964323575")
+      transition-group.tycoon-floaters.tycoon-floaters--expense(name="float-up" tag="div")
+        .tycoon-floater.tycoon-floater--expense(v-for="floater in expenseFloaters" :key="floater.id" :style="floaterStyle(floater)")
+          span
+            | -{{ formatNumber(floater.val) }}
+            AppIcon(name="noto:coin" :width="16" :height="16")
+      // Ad
+      .tycoon-game-scene__ad
+        AppAd(:data-ad-slot="9964323575")
 </template>
 
 <script>
@@ -75,6 +91,7 @@ export default defineComponent({
     const itemsListRef = ref(null)
     const isTapping = ref(false)
     const floaters = ref([])
+    const expenseFloaters = ref([])
     let floaterId = 0
     let tickInterval = null
 
@@ -86,6 +103,22 @@ export default defineComponent({
     const items = computed(() => store.getters['tycoon/knowledge-kingdom/items'])
     const ownedItems = computed(() => store.getters['tycoon/knowledge-kingdom/ownedItems'])
     const isLoaded = computed(() => store.getters['tycoon/knowledge-kingdom/isLoaded'])
+
+    const currentTier = computed(() => {
+      let maxTier = 0
+
+      for (const id in ownedItems.value) {
+        if (ownedItems.value[id] > 0) {
+          const item = items.value.find(i => i.id === parseInt(id))
+
+          if (item && item.tier > maxTier) {
+            maxTier = item.tier
+          }
+        }
+      }
+
+      return maxTier
+    })
 
     // Show items: all items up to the first unaffordable + 3 more
     const visibleItems = computed(() => {
@@ -155,10 +188,28 @@ export default defineComponent({
       haptic()
     }
 
-    function handleBuy(itemId) {
-      store.dispatch('tycoon/knowledge-kingdom/buyItem', itemId)
+    function handleBuy(item, event) {
+      if (gold.value >= item.cost) {
+        store.dispatch('tycoon/knowledge-kingdom/buyItem', item.id)
 
-      haptic()
+        // Floating number for expenses
+        const rect = rootRef.value?.getBoundingClientRect()
+
+        if (rect && event) {
+          const x = event.clientX - rect.left - 20
+          const y = event.clientY - rect.top - 20
+
+          const id = ++floaterId
+
+          expenseFloaters.value.push({ id, x, y, val: item.cost })
+
+          setTimeout(() => {
+            expenseFloaters.value = expenseFloaters.value.filter(f => f.id !== id)
+          }, 800)
+        }
+
+        haptic()
+      }
     }
 
     onMounted(async () => {
@@ -192,6 +243,8 @@ export default defineComponent({
       visibleItems,
       isTapping,
       floaters,
+      expenseFloaters,
+      currentTier,
       getOwnedCount,
       floaterStyle,
       formatNumber,

@@ -1,400 +1,677 @@
 .tycoon-game-scene {
+  --scene-header-height: 230px;
+
   $scene: '.scene';
 
   position: relative;
-  min-height: 100vh;
+  color: light-dark(#1a1a1a, #fff);
+  font-family: 'Rubik', sans-serif;
+  background-color: light-dark(#f4f7f6, #0d0d0d);
+  background-image: radial-gradient(circle at 50% 30%, light-dark(#e2e8f0, #1a1a1a) 0%, light-dark(#f4f7f6, #0d0d0d) 60%),
+    repeating-linear-gradient(
+      45deg,
+      light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02)) 0,
+      light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02)) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  background-attachment: fixed;
 
   @at-root html {
     user-select: none;
   }
 
+  // Hide the default dark mode header styles or adapt them
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 300px;
+    background: linear-gradient(180deg, light-dark(rgba(255, 255, 255, 0.6), rgba(0, 0, 0, 0.4)) 0%, transparent 100%);
+    content: '';
+    pointer-events: none;
+  }
+
   #{$scene} {
     &__inner {
-      max-width: 480px;
-      height: auto;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
       margin: 0 auto;
-      padding-block-start: var(--base-p-y);
-      padding-block-end: 15vh;
-      padding-inline: var(--base-p-x);
     }
   }
 
-  .tycoon-game-info {
-    position: relative;
-    display: block;
-    text-align: center;
-    margin-block-end: calc(var(--base-m-y) * 1.5);
-  }
-
-  // Sticky Top Container
+  // Sticky Top Section
   .tycoon-sticky-top {
-    position: sticky;
+    position: relative;
     top: 0;
-    z-index: 10;
-    background: rgba(18, 18, 18, 0.95); // Adjust for dark mode compatibility, fallback background
-    border-bottom: 1px solid var(--color-border-01);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    margin-inline: calc(var(--base-p-x) * -1);
-    padding-inline: var(--base-p-x);
-    padding-block-start: var(--base-p-y);
-    padding-block-end: calc(var(--base-p-y) * 1.5);
-    margin-block-end: calc(var(--base-m-y) * 1.5);
-
-    // Support root level CSS variables if present
-    @supports (background: rgba(var(--color-bg-01-rgb), 0.95)) {
-      background: rgba(var(--color-bg-01-rgb), 0.95);
-    }
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: var(--scene-header-height);
+    padding-block: $spacer * 4;
   }
 
-  // Header
-  .tycoon-header {
-    text-align: center;
-    margin-block-end: calc(var(--base-m-y) * 1.5);
+  // Dashboard / Stats Top Bar
+  .tycoon-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: light-dark(rgba(255, 255, 255, 0.8), rgba(26, 26, 26, 0.8));
+    border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+    border-radius: 16px;
+    box-shadow: 0 8px 16px light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.5));
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__tier {
+      padding: 2px 8px;
+      font-weight: 900;
+      font-size: 11px;
+      font-family: 'Rubik', sans-serif;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+    }
 
     &__title {
       margin: 0;
-      color: var(--color-text-01);
-      font-size: var(--font-size-text-4);
-      letter-spacing: 0.04em;
-      margin-block-end: $spacer * 3;
+      color: light-dark(#e6b800, #ffd700);
+      font-weight: 900;
+      font-size: 16px;
+      font-family: 'Rubik', sans-serif;
+      line-height: 1.2;
+      text-transform: uppercase;
+      text-shadow: 0 2px 0 light-dark(#ffe44d, #b38800);
+      -webkit-text-stroke: 1px light-dark(#b38800, #8b5a00);
     }
 
     &__stats {
       display: flex;
-      gap: $spacer * 3;
-      align-items: center;
-      justify-content: center;
+      gap: 12px;
     }
   }
 
   .tycoon-stat {
     display: flex;
-    gap: $spacer * 2;
+    flex: 1;
+    gap: 8px;
     align-items: center;
-    padding: $spacer * 2 $spacer * 3;
-    background: var(--color-bg-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: var(--border-radius-01);
+    padding: 8px 12px;
+    background: linear-gradient(180deg, light-dark(#fff, #1f1f1f) 0%, light-dark(#f8f9fa, #141414) 100%);
+    border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+    border-bottom: 3px solid light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.5));
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px light-dark(transparent, rgba(255, 255, 255, 0.05));
 
     &--gold {
+      flex: 2;
+
       .tycoon-stat__value {
-        color: #f5a623;
-        font-weight: 700;
-        font-size: var(--font-size-text-5);
+        color: light-dark(#e6b800, #ffd700);
+        font-weight: 800;
+        font-size: 18px;
+        font-family: 'Rubik', sans-serif;
+        text-shadow: 0 2px 2px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+      }
+
+      .tycoon-stat__label {
+        color: light-dark(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5));
+        font-weight: 800;
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
       }
     }
 
     &--gps {
-      .tycoon-stat__value {
-        color: var(--color-text-03);
-        font-size: var(--font-size-text-8);
-      }
-    }
-
-    &__icon {
-      flex-shrink: 0;
-    }
-  }
-
-  // Tap Area
-  .tycoon-tap-area {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    margin-block: 0;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-
-    &__inner {
-      display: flex;
-      flex-direction: row;
-      gap: $spacer * 3;
-      align-items: center;
+      flex: 1;
       justify-content: center;
-      width: 100%;
-      height: 64px;
-      padding-inline: $spacer * 4;
-      background: linear-gradient(135deg, #f5a623 0%, #e8910e 50%, #d4790a 100%);
-      border-radius: 32px;
-      box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3), 0 0 0 4px rgba(245, 166, 35, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      background: linear-gradient(180deg, light-dark(#f1f3f5, #2a2a2a) 0%, light-dark(#e9ecef, #1a1a1a) 100%);
 
-      &:hover {
-        @media (pointer: fine) {
-          box-shadow: 0 6px 16px rgba(245, 166, 35, 0.4), 0 0 0 6px rgba(245, 166, 35, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-          transform: scale(1.02);
-        }
+      .tycoon-stat__value {
+        color: light-dark(#279b76, #4fe0b6); // Minty green for income
+        font-weight: 900;
+        font-size: 14px;
       }
-
-      &:active,
-      &--pressed {
-        box-shadow: 0 2px 8px rgba(245, 166, 35, 0.2), 0 0 0 3px rgba(245, 166, 35, 0.1), inset 0 2px 8px rgba(0, 0, 0, 0.1);
-        transform: scale(0.98);
-      }
-    }
-
-    &__icon {
-      flex-shrink: 0;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
     &__content {
       display: flex;
-      flex-direction: row;
-      gap: 2px;
-      align-items: center;
+      flex-direction: column;
+      gap: 4px;
+      line-height: 1;
     }
 
-    &__label {
-      color: #fff;
-      font-weight: 700;
-      font-size: var(--font-size-text-8);
-      line-height: 1.1;
-      letter-spacing: 0.02em;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    &__icon {
+      filter: drop-shadow(0 2px 4px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)));
+    }
+  }
+
+  // The Big Tap Area
+  .tycoon-tap-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    perspective: 1000px;
+    margin-block-start: $spacer * 2;
+  }
+
+  .tycoon-tap-area {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 280px;
+    height: 72px;
+    border-radius: 36px;
+    cursor: pointer;
+    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -webkit-tap-highlight-color: transparent;
+
+    &::before {
+      position: absolute;
+      z-index: 0;
+      background: linear-gradient(180deg, light-dark(#ffd54f, #d37e00) 0%, light-dark(#ffb300, #a45a00) 100%);
+      border-radius: 36px;
+      box-shadow: 0 12px 20px light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+      transform: translateY(6px);
+      content: '';
+      inset: 0;
+    }
+
+    &__ring {
+      position: absolute;
+      z-index: 0;
+      border: 2px dashed light-dark(rgba(255, 165, 0, 0.4), rgba(255, 215, 0, 0.3));
+      border-radius: 40px;
+      animation: tycoon-pulse 2s infinite;
+      inset: -6px;
+    }
+
+    &__inner {
+      position: absolute;
+      z-index: 1;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #ffd700 0%, #ffa500 100%);
+      border: 3px solid light-dark(#fff, #fff);
+      border-radius: 36px;
+      box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.2), inset 0 6px 12px rgba(255, 255, 255, 0.6);
+      transition: transform 0.1s;
+      inset: 0;
+    }
+
+    &__icon {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      transition: transform 0.1s;
+    }
+
+    &__hint-text {
+      color: rgba(0, 0, 0, 0.9);
+      font-weight: 900;
+      font-size: 16px;
+      font-family: 'Rubik', sans-serif;
+      letter-spacing: 2px;
     }
 
     &__click-value {
-      color: rgba(255, 255, 255, 0.9);
-      font-weight: 600;
-      font-size: var(--font-size-text-10);
-      margin-inline-start: $spacer * 2;
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      padding: 2px 8px;
+      color: light-dark(#8b5a00, #ffd700);
+      font-weight: 900;
+      font-size: 11px;
+      background: light-dark(rgba(255, 255, 255, 0.9), rgba(0, 0, 0, 0.6));
+      border: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.2));
+      border-radius: 8px;
     }
 
-    &__floaters {
-      position: absolute;
-      overflow: hidden;
-      pointer-events: none;
-      inset: 0;
+    &:hover {
+      @media (pointer: fine) {
+        transform: scale(1.02);
+      }
+    }
+
+    &.is-tapping {
+      transform: scale(0.98) translateY(4px);
+
+      .tycoon-tap-area__inner {
+        box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.2);
+        transform: translateY(2px);
+      }
+
+      &::before {
+        box-shadow: 0 6px 12px light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.3));
+        transform: translateY(2px);
+      }
+
+      .tycoon-tap-area__icon {
+        transform: scale(0.95);
+      }
     }
   }
 
-  // Floating numbers animation
-  .tycoon-floater {
-    position: absolute;
-    color: #f5a623;
-    font-weight: 700;
-    font-size: var(--font-size-text-6);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    animation: float-up-anim 0.8s ease-out forwards;
-    pointer-events: none;
-  }
-
-  @keyframes float-up-anim {
+  @keyframes tycoon-pulse {
     0% {
-      transform: translateY(0) scale(1);
+      transform: scale(1);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: scale(1.02);
       opacity: 1;
     }
 
     100% {
-      transform: translateY(-80px) scale(1.3);
+      transform: scale(1);
+      opacity: 0.5;
+    }
+  }
+
+  // Floating numbers
+  .tycoon-floaters {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    inset: 0;
+  }
+
+  .tycoon-floater {
+    position: absolute;
+    color: light-dark(#fff, #fff);
+    font-weight: 900;
+    font-size: 32px;
+    font-family: 'Rubik', sans-serif;
+    white-space: nowrap;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    -webkit-text-stroke: 1px #a45a00;
+
+    span {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      animation: tycoon-float-up-anim 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    &--expense {
+      color: light-dark(#ffeaeb, #ffb3b3);
+      font-size: 24px;
+      -webkit-text-stroke: 1px #c62828;
+    }
+  }
+
+  @keyframes tycoon-float-up-anim {
+    0% {
+      transform: translateY(0) scale(0.5);
+      opacity: 0;
+    }
+
+    10% {
+      transform: translateY(-20px) scale(1.2);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(-120px) scale(1);
       opacity: 0;
     }
   }
 
-  .float-up-enter-active {
-    animation: float-up-anim 0.8s ease-out;
-  }
+  // Shop Section
+  .tycoon-shop {
+    height: calc(100vh - var(--header-height) - var(--scene-header-height));
+    padding-block-start: $spacer * 2;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
-  .float-up-leave-active {
-    display: none;
-  }
+    &__header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-  // Items Section
-  .tycoon-items {
     &__title {
       display: flex;
-      gap: $spacer * 2;
       align-items: center;
-      color: var(--color-text-02);
-      font-size: var(--font-size-text-6);
-      margin-block-end: $spacer * 4;
-      padding-block-end: $spacer * 3;
-      border-block-end: 1px solid var(--color-border-01);
+      justify-content: center;
+      margin: 0;
+      color: light-dark(#1a1a1a, #fff);
+      font-weight: 900;
+      font-size: 20px;
+      font-family: 'Rubik', sans-serif;
+      text-shadow: 0 2px 4px light-dark(transparent, rgba(0, 0, 0, 0.3));
+      -webkit-text-stroke: 1px light-dark(transparent, rgba(0, 0, 0, 0.2));
     }
 
     &__list {
       display: flex;
       flex-direction: column;
-      gap: $spacer * 3;
+      gap: 12px;
     }
   }
 
   // Item Card
   .tycoon-item {
+    position: relative;
     display: flex;
-    gap: $spacer * 4;
+    gap: 12px;
     align-items: center;
-    justify-content: space-between;
-    padding: $spacer * 4 $spacer * 5;
-    background: var(--color-bg-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: calc(var(--border-radius-01) / 2);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    height: 72px;
+    padding: 8px;
+    background: linear-gradient(90deg, light-dark(#fff, #1f1f1f) 0%, light-dark(#f8f9fa, #141414) 100%);
+    border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+    border-bottom: 2px solid light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+    border-radius: 12px;
+    opacity: 0.4;
+    transition: all 0.2s;
 
-    &--affordable {
-      border-color: rgba(245, 166, 35, 0.4);
-      box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.1);
+    @include media-breakpoint-up(desktop) {
+      height: 84px;
     }
 
-    &--owned {
-      background: var(--color-bg-02);
+    &.is-affordable {
+      background: linear-gradient(90deg, light-dark(#f8f9fa, #2a2a2a) 0%, light-dark(#f1f3f5, #1a1a1a) 100%);
+      border-color: light-dark(rgba(218, 165, 32, 0.4), rgba(255, 215, 0, 0.3));
+      opacity: 1;
+    }
+
+    &.is-owned {
+      &::after {
+        position: absolute;
+        background: linear-gradient(90deg, light-dark(rgba(47, 179, 142, 0.1), rgba(79, 224, 182, 0.1)) 0%, transparent 100%);
+        border-radius: 14px;
+        content: '';
+        pointer-events: none;
+        inset: 0;
+      }
+    }
+
+    &__icon-wrapper {
+      position: relative;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.3));
+      border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+      border-radius: 8px;
+      box-shadow: inset 0 2px 4px light-dark(transparent, rgba(0, 0, 0, 0.5));
+    }
+
+    &__icon {
+      font-size: 24px;
+      filter: drop-shadow(0 2px 2px light-dark(transparent, rgba(0, 0, 0, 0.3)));
+    }
+
+    &__owned-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      padding: 1px 4px;
+      color: light-dark(#fff, #000);
+      font-weight: 900;
+      font-size: 9px;
+      background: light-dark(#279b76, #4fe0b6); // Vibrant UI color
+      border: 1px solid light-dark(#fff, #141414);
+      border-radius: 6px;
+      box-shadow: 0 2px 4px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
     }
 
     &__info {
+      display: flex;
       flex: 1;
-      min-width: 0;
+      flex-direction: column;
+      gap: 2px;
+      justify-content: center;
+      min-width: 0; // Prevent flex blowout
     }
 
     &__name-row {
       display: flex;
-      gap: $spacer * 3;
+      gap: 6px;
       align-items: center;
-      margin-block-end: $spacer * 2;
+      min-width: 0;
     }
 
-    &__icon {
+    &__tier-badge {
+      display: inline-block;
       flex-shrink: 0;
-      font-size: var(--font-size-text-5);
+      padding: 1px 4px;
+      font-weight: 900;
+      font-size: 9px;
+      border-radius: 4px;
     }
 
     &__name {
-      overflow: hidden;
-      color: var(--color-text-01);
-      font-weight: 600;
-      font-size: var(--font-size-text-9);
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      color: light-dark(#1a1a1a, #fff);
+      font-size: 14px;
+      font-family: 'Rubik', sans-serif;
+      line-height: 1.2;
+      text-shadow: 0 1px 2px light-dark(transparent, rgba(0, 0, 0, 0.5));
+      word-break: break-word;
+      -webkit-text-stroke: 0.5px light-dark(transparent, rgba(0, 0, 0, 0.2));
 
-      @include media-breakpoint-up(tablet) {
-        font-size: var(--font-size-text-8);
-      }
-    }
+      @include font-weight-semi-bold;
 
-    &-tier {
-      display: none;
-      flex-shrink: 0;
-      align-items: center;
-      padding: $spacer $spacer * 2;
-      font-weight: 700;
-      font-size: var(--font-size-text-11);
-      line-height: 1;
-      border-radius: 4px;
-
-      &--1 {
-        color: #666;
-        background: #e8e8e8;
-      }
-
-      &--2 {
-        color: #155724;
-        background: #d4edda;
-      }
-
-      &--3 {
-        color: #004085;
-        background: #cce5ff;
-      }
-
-      &--4 {
-        color: #3b3d8f;
-        background: #d6d8ff;
-      }
-
-      &--5 {
-        color: #6b2f8a;
-        background: #f0d4ff;
-      }
-
-      &--6 {
-        color: #8b6914;
-        background: #ffe4b5;
-      }
-
-      &--7 {
-        color: #8b1a1a;
-        background: #ffc9c9;
-      }
-
-      &--8 {
-        color: #7a3b00;
-        background: #ffb347;
-      }
-
-      &--9 {
-        color: #fff;
-        background: #ff6b6b;
-      }
-
-      &--10 {
-        color: #fff;
-        background: linear-gradient(135deg, #f5a623, #e8910e);
+      @include media-breakpoint-up(desktop) {
+        font-size: 18px;
       }
     }
 
     &__earnings {
       display: flex;
-      gap: $spacer;
+      gap: 4px;
       align-items: center;
-      color: var(--color-text-03);
-      font-size: var(--font-size-text-9);
+      color: light-dark(#279b76, #4fe0b6);
+      font-weight: 800;
+      font-size: 13px;
     }
 
-    &__actions {
+    &__action {
       display: flex;
       flex-shrink: 0;
-      gap: $spacer * 3;
       align-items: center;
-      user-select: none;
     }
+  }
 
-    &__owned-badge {
-      min-width: 36px;
-      padding: $spacer * 2 $spacer * 3;
-      color: var(--color-text-02);
-      font-weight: 700;
-      font-size: var(--font-size-text-9);
-      text-align: center;
-      background: var(--color-bg-03);
-      border-radius: 4px;
-    }
+  // Juicy Button
+  .tycoon-button {
+    padding: 0;
+    font-family: 'Rubik', sans-serif;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 
-    &__buy-btn {
+    &__inner {
       display: flex;
-      gap: $spacer * 2;
+      gap: 6px;
       align-items: center;
-      padding: $spacer * 2 $spacer * 4;
-      color: var(--color-text-03);
-      font-weight: 600;
-      font-size: var(--font-size-text-9);
-      white-space: nowrap;
-      background: var(--color-bg-03);
-      border: 1px solid var(--color-border-01);
-      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 900;
+      font-size: 16px;
+      border: 2px solid transparent;
+      border-bottom-width: 4px;
+      border-radius: 12px;
+      transition: all 0.1s;
+    }
+
+    &__coin {
+      opacity: 1;
+
+      &--disabled {
+        filter: grayscale(1) opacity(0.5);
+      }
+    }
+
+    // Disabled state
+    &:disabled,
+    &.disabled {
       cursor: not-allowed;
-      opacity: 0.5;
 
-      &--can-afford {
-        color: #fff;
-        background: linear-gradient(135deg, #f5a623, #e8910e);
-        border-color: #e8910e;
-        box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
-        cursor: pointer;
-        opacity: 1;
+      .tycoon-button__inner {
+        color: light-dark(rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.5));
+        background: linear-gradient(180deg, light-dark(#e9ecef, #444) 0%, light-dark(#dee2e6, #333) 100%);
+        border: 2px solid light-dark(#cad0d6, #555);
+        border-bottom-width: 4px;
+      }
+    }
 
-        &:hover {
-          @media (pointer: fine) {
-            box-shadow: 0 2px 8px rgba(245, 166, 35, 0.3);
-            transform: translateY(0);
-          }
+    // Affordable / Active state
+    &.is-affordable {
+      .tycoon-button__inner {
+        color: #222;
+        text-shadow: none;
+        text-shadow: 1px 2px #ddd;
+        background: linear-gradient(135deg, #c48a00 0%, #e0a800 40%, #ffbf00 100%);
+        border-color: #fff;
+        border-bottom-color: #cc7000;
+      }
+
+      &:hover {
+        @media (pointer: fine) {
+          transform: translateY(-2px);
         }
+      }
 
-        &:active {
-          box-shadow: 0 1px 4px rgba(245, 166, 35, 0.2);
-          transform: translateY(0) scale(0.92);
+      &:active {
+        transform: translateY(2px);
+
+        .tycoon-button__inner {
+          margin-top: 2px;
+          border-bottom-width: 2px;
         }
+      }
+    }
+  }
+
+  &__ad {
+    margin-block-start: calc(var(--base-m-y) * 4);
+  }
+
+  // Tier Colors
+  $tiers: (
+    1: (
+      #cd7f32,
+      #fff
+    ),
+    // Bronze
+    2:
+      (
+        #c0c0c0,
+        #000
+      ),
+    // Silver
+    3:
+      (
+        #ffd700,
+        #000
+      ),
+    // Gold
+    4:
+      (
+        #50c878,
+        #000
+      ),
+    // Emerald
+    5:
+      (
+        #0f52ba,
+        #fff
+      ),
+    // Sapphire
+    6:
+      (
+        #96c,
+        #fff
+      ),
+    // Amethyst
+    7:
+      (
+        #e0115f,
+        #fff
+      ),
+    // Ruby
+    8:
+      (
+        #b9f2ff,
+        #000
+      ),
+    // Diamond
+    9:
+      (
+        #ff4500,
+        #fff
+      ),
+    // Fire
+    10:
+      (
+        #1a1a1a,
+        #ffd700
+      ),
+    // Obsidian
+    11:
+      (
+        #ff1493,
+        #fff
+      ),
+    // Deep Pink
+    12:
+      (
+        #00ced1,
+        #000
+      ),
+    // Turquoise
+    13:
+      (
+        #9400d3,
+        #fff
+      ),
+    // Dark Violet
+    14:
+      (
+        #ff8c00,
+        #000
+      ),
+    // Dark Orange
+    15:
+      (
+        #32cd32,
+        #000
+      )
+      // Lime
+  );
+
+  @for $i from 1 through 40 {
+    .tycoon-tier-#{$i} {
+      @if map-has-key($tiers, $i) {
+        $colors: map-get($tiers, $i);
+
+        color: nth($colors, 2) !important;
+        background: nth($colors, 1) !important;
+      } @else {
+        // Fallback for extremely high tiers
+        color: #000 !important;
+        background: hsl($i * 35, 80%, 65%) !important;
       }
     }
   }
