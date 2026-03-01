@@ -76,6 +76,16 @@
         }
       }
 
+      &--knowledge-kingdom {
+        &::after {
+          display: none;
+        }
+
+        .intro-button__description {
+          margin-block-start: $spacer * 6;
+        }
+      }
+
       &--creator {
         .intro-button-body {
           height: auto;
