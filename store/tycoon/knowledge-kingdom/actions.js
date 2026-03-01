@@ -3,7 +3,7 @@ export default {
     if (state.isLoaded) return
 
     try {
-      const response = await fetch('/data/word_idle_tycoon_items.json')
+      const response = await fetch('/data/tycoon/knowledge-kingdom.json')
       const data = await response.json()
 
       commit('SET_ITEMS', data.items)
