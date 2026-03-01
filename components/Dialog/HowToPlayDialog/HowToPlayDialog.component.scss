@@ -37,10 +37,10 @@
   }
 
   &__ad {
-    display: grid;
-    place-items: center;
     width: 100%;
+    min-width: 320px;
     height: auto;
+    min-height: 100px;
     background-color: var(--color-ui-04);
   }
 }
