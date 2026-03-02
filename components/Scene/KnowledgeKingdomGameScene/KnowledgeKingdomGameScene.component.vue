@@ -161,11 +161,11 @@ export default defineComponent({
 
       if (!Number.isFinite(n) || n < 0) return '0'
 
-      if (n >= 1e15) {
-        const q = n / 1e15
-
-        return (q >= 999.5 ? '999' : q.toFixed(1)) + 'Q'
+      if (n >= 1e18) {
+        return n.toExponential(2).replace('+', '')
       }
+
+      if (n >= 1e15) return (n / 1e15).toFixed(1) + 'Q'
 
       if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T'
 
@@ -174,6 +174,10 @@ export default defineComponent({
       if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'
 
       if (n >= 1e4) return (n / 1e3).toFixed(1) + 'K'
+
+      if (n < 1) return n.toFixed(1)
+
+      if (n < 1000 && !Number.isInteger(n)) return n.toFixed(1)
 
       return Math.floor(n).toLocaleString('tr-TR')
     }

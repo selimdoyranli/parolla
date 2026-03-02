@@ -819,7 +819,15 @@ const config = {
   prefixEmoji,
   diverseEmojis,
   seed: 42,
-  outputPath: path.join(process.cwd(), 'static/data/tycoon/knowledge-kingdom.json')
+  outputPath: path.join(process.cwd(), 'static/data/tycoon/knowledge-kingdom.json'),
+  // Hard mode: decimal (1 gold start), tap 0.1, high item cost ratio
+  firstCosts: [1, 10, 50],
+  costGrowthMult: 2.5,
+  minCostMult: 3.0,
+  roiEarly: 0.002,
+  roiDecay: 0.92,
+  roiMin: 0.0001,
+  maxCostCap: 999e12 // 999T — last tier ends at 500
 }
 
 const generator = new TycoonDataGenerator(config)

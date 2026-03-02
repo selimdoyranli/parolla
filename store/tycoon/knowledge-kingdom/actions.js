@@ -1,6 +1,6 @@
 export default {
   async loadItems({ commit, state }) {
-    if (state.economyVersion !== 'v3') {
+    if (state.economyVersion !== 'v6') {
       commit('RESET_ECONOMY')
     }
 
@@ -38,11 +38,12 @@ export default {
 
     const ownedCount = state.ownedItems[itemId] || 0
     const base = item.baseCost !== undefined ? item.baseCost : item.cost
-    const dynamicCost = Math.floor(base * Math.pow(1.15, ownedCount))
+    const dynamicCost = base * Math.pow(1.15, ownedCount)
+    const finalCost = dynamicCost < 100 ? Math.round(dynamicCost * 10) / 10 : Math.floor(dynamicCost)
 
-    if (state.gold < dynamicCost) return false
+    if (state.gold < finalCost) return false
 
-    commit('SUBTRACT_GOLD', dynamicCost)
+    commit('SUBTRACT_GOLD', finalCost)
     commit('BUY_ITEM', itemId)
 
     // Recalculate total GPS

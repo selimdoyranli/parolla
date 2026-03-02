@@ -2,7 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 function roundNice(val) {
-  if (val <= 10) return 10
+  if (val < 1) return Math.round(val * 10) / 10
+
+  if (val <= 10) return Math.round(val * 10) / 10
 
   if (val < 50) return Math.round(val / 5) * 5
 
@@ -90,7 +92,14 @@ class TycoonDataGenerator {
       existingItems = [],
       costMultRange = [1.015, 1.03],
       gpsMultRange = [1.013, 1.025],
-      outputPath
+      outputPath,
+      firstCosts = [10, 50, 100],
+      costGrowthMult = 2.1,
+      minCostMult = 2.5,
+      roiEarly = 0.002,
+      roiDecay = 0.92,
+      roiMin = 0.0001,
+      maxCostCap = null
     } = this.config
 
     const allNamesList = []
@@ -140,30 +149,38 @@ class TycoonDataGenerator {
       const tier = this.getTier(id)
       const icon = this.assignEmoji(name)
 
-      const MAX_BASE_COST = 1e15
-      let exactCost = 50
-      let multiplier = 1.35
+      const MAX_BASE_COST = 1e300
 
-      for (let i = 1; i < id; i++) {
-        exactCost *= multiplier
-        multiplier = Math.max(1.08, multiplier * 0.98)
+      // Hard mode: first items 10, 50, 100; then 100 * costGrowthMult^(id-3)
+      let exactCost
+
+      if (id <= firstCosts.length) {
+        exactCost = firstCosts[id - 1]
+      } else {
+        exactCost = firstCosts[firstCosts.length - 1] * Math.pow(costGrowthMult, id - firstCosts.length)
       }
       exactCost = Math.min(MAX_BASE_COST, exactCost)
 
-      let finalCost = roundNice(Math.round(exactCost))
+      let finalCost = exactCost < 1e14 ? roundNice(Math.round(exactCost)) : Math.floor(exactCost)
 
-      // Strict inequality constraint
-      if (finalCost <= lastCost) finalCost = lastCost + Math.floor(lastCost * 0.1) + 1
+      // Strict inequality: each item at least minCostMult x previous
+      if (finalCost < lastCost * minCostMult && lastCost > 0) {
+        finalCost = Math.ceil(lastCost * minCostMult)
+      }
 
-      // ROI: ~2.0% early (50s payback), ~0.2% late (500s payback)
-      let roi = 0.02 * Math.pow(0.95, id)
-      roi = Math.max(0.002, roi)
+      if (finalCost > MAX_BASE_COST) {
+        finalCost = MAX_BASE_COST
+      }
+
+      // Lower ROI (amorti): ~0.2% early (500s payback), ~0.01% late (10000s payback)
+      let roi = roiEarly * Math.pow(roiDecay, id)
+      roi = Math.max(roiMin, roi)
 
       let gps = Math.round(finalCost * roi)
 
       // Strict GPS inequality
       if (gps <= lastGPS) {
-        gps = lastGPS + Math.max(1, Math.floor(lastGPS * 0.05))
+        gps = lastGPS + Math.max(1, Math.floor(lastGPS * 0.03))
       }
 
       gps = Math.max(1, gps)
@@ -182,6 +199,37 @@ class TycoonDataGenerator {
         tier,
         icon
       })
+    }
+
+    // Scale costs so last tier ends at maxCostCap (e.g. 999T)
+    // Power curve: next item much more expensive than previous (makes game harder)
+    if (maxCostCap != null && allItems.length > 0) {
+      const n = allItems.length
+      const startCost = firstCosts[firstCosts.length - 1] || 100
+      const startId = firstCosts.length // startId=3 for item 4
+      const power = Math.log(maxCostCap / startCost) / Math.log(n / startId)
+
+      for (let i = 0; i < allItems.length; i++) {
+        const item = allItems[i]
+        let cost
+
+        if (item.id <= firstCosts.length) {
+          cost = firstCosts[item.id - 1]
+        } else {
+          cost = startCost * Math.pow(item.id / startId, power)
+        }
+        cost = Math.max(cost, 0.1)
+
+        item.baseCost = cost < 1e14 ? roundNice(Math.round(cost)) : Math.floor(cost)
+        const roi = Math.max(roiMin, roiEarly * Math.pow(roiDecay, item.id))
+        let gps = Math.round(Math.max(0.1, item.baseCost * roi) * 10) / 10
+        const prev = allItems[i - 1]
+
+        if (prev && gps <= prev.goldPerSecond) {
+          gps = Math.round((prev.goldPerSecond + Math.max(0.1, prev.goldPerSecond * 0.03)) * 10) / 10
+        }
+        item.goldPerSecond = gps
+      }
     }
 
     const output = {

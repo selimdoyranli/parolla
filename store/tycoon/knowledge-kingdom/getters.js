@@ -8,8 +8,8 @@ export default {
   },
 
   goldPerClick(state) {
-    // Tap power scales to 0.2% of passive GPS, minimum 1 — slower progression
-    return Math.max(1, Math.floor(state.goldPerSecond * 0.002))
+    // Tap: 0.1 base + 0.01% of GPS — decimal support, tap cannot easily level up
+    return 0.1 + state.goldPerSecond * 0.0001
   },
 
   itemCost: state => id => {
@@ -19,9 +19,10 @@ export default {
 
     const ownedCount = state.ownedItems[id] || 0
     const base = item.baseCost !== undefined ? item.baseCost : item.cost
+    const cost = base * Math.pow(1.15, ownedCount)
 
-    // 1.15 multiplier — repeat purchases cost more, slows leveling
-    return Math.floor(base * Math.pow(1.15, ownedCount))
+    // 1.15 multiplier — repeat purchases cost more; decimal support
+    return cost < 100 ? Math.round(cost * 10) / 10 : Math.floor(cost)
   },
 
   ownedItems(state) {
