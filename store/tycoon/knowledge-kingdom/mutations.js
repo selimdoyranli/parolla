@@ -3,7 +3,7 @@ export default {
     state.gold = 0
     state.goldPerSecond = 0
     state.ownedItems = {}
-    state.economyVersion = 'v6'
+    state.economyVersion = 'v23'
   },
 
   SET_GOLD(state, gold) {
@@ -45,5 +45,9 @@ export default {
 
   SET_IS_LOADED(state, isLoaded) {
     state.isLoaded = isLoaded
+  },
+
+  SET_DEBUG_UNLOCK_ALL(state, value) {
+    state.debugUnlockAll = value
   }
 }

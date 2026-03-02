@@ -1,3 +1,21 @@
+const MILESTONES = [
+  { threshold: 10, multiplier: 2 },
+  { threshold: 25, multiplier: 2 },
+  { threshold: 50, multiplier: 2.5 },
+  { threshold: 100, multiplier: 4 },
+  { threshold: 200, multiplier: 8 }
+]
+
+export function getMilestoneMultiplier(ownedCount) {
+  let mult = 1
+
+  for (const { threshold, multiplier } of MILESTONES) {
+    if (ownedCount >= threshold) mult *= multiplier
+  }
+
+  return mult
+}
+
 export default {
   gold(state) {
     return state.gold
@@ -35,5 +53,9 @@ export default {
 
   isLoaded(state) {
     return state.isLoaded
+  },
+
+  debugUnlockAll(state) {
+    return state.debugUnlockAll
   }
 }

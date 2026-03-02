@@ -184,7 +184,7 @@ const prefixes = [
 ]
 
 const baseItems = [
-  // Yazı ve Kırtasiye
+  // Writing and Stationery
   'Kalem',
   'Kalemlik',
   'Silgi',
@@ -220,7 +220,7 @@ const baseItems = [
   'Mühür',
   'Damga',
 
-  // Kitap ve Yayın
+  // Books and Publications
   'Ansiklopedi',
   'Atlas',
   'Harita',
@@ -245,7 +245,7 @@ const baseItems = [
   'Kupa',
   'Ödül',
 
-  // Dil ve Eğitim
+  // Language and Education
   'Alfabe Seti',
   'Hece Tablosu',
   'Kelime Kartı',
@@ -266,7 +266,7 @@ const baseItems = [
   'Sunum',
   'Rapor',
 
-  // Teknoloji
+  // Technology
   'Yazılım',
   'Uygulama',
   'Algoritma',
@@ -292,7 +292,7 @@ const baseItems = [
   'Modül',
   'Bileşen',
 
-  // Yapı
+  // Structure
   'Kütüphane',
   'Arşiv',
   'Müze',
@@ -316,7 +316,7 @@ const baseItems = [
   'Kale',
   'Hisar',
 
-  // İleri Teknoloji
+  // Advanced Technology
   'Çeviri Motoru',
   'Dil İşlemcisi',
   'Metin Analizörü',
@@ -332,7 +332,7 @@ const baseItems = [
   'Simülasyon',
   'Sanal Gerçeklik',
 
-  // Fantastik
+  // Fantasy
   'Büyü Kitabı',
   'Tılsım',
   'Muska',
@@ -354,7 +354,7 @@ const baseItems = [
   'Bilgelik Tacı',
   'Adalet Terazisi',
 
-  // Kozmik
+  // Cosmic
   'Yıldız Haritası',
   'Gezegen Atlası',
   'Galaksi Rehberi',
@@ -366,7 +366,7 @@ const baseItems = [
   'Mars Kolonisi',
   'Uzay İstasyonu',
 
-  // Soyut
+  // Abstract
   'Bilgi Havuzu',
   'Bilgelik Kaynağı',
   'İlham Deposu',
@@ -379,7 +379,7 @@ const baseItems = [
   'Ölümsüzlük İksiri',
   'Filozofların Taşı',
 
-  // Araçlar
+  // Tools
   'Pusula',
   'Dürbün',
   'Mikroskop',
@@ -811,7 +811,9 @@ const config = {
   gameName: 'Knowledge Kingdom Tycoon',
   currency: 'gold',
   tickSeconds: 1,
-  targetItemsCount: 500,
+  targetItemsCount: 150,
+  tierCount: 20,
+  maxCostCap: 999e15,
   prefixes,
   baseItems,
   existingItems,
@@ -820,14 +822,12 @@ const config = {
   diverseEmojis,
   seed: 42,
   outputPath: path.join(process.cwd(), 'static/data/tycoon/knowledge-kingdom.json'),
-  // Hard mode: decimal (1 gold start), tap 0.1, high item cost ratio
   firstCosts: [1, 10, 50],
-  costGrowthMult: 2.5,
-  minCostMult: 3.0,
-  roiEarly: 0.002,
-  roiDecay: 0.92,
-  roiMin: 0.0001,
-  maxCostCap: 999e12 // 999T — last tier ends at 500
+  firstPaybacks: [60, 120, 300],
+  paybackBase: 300,
+  paybackGrowth: 1.09,
+  withinTierGrowth: 1.18,
+  tierGateMult: 1.95
 }
 
 const generator = new TycoonDataGenerator(config)

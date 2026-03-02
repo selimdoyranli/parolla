@@ -1,6 +1,23 @@
+import { getMilestoneMultiplier } from './getters'
+
+function computeTotalGPS(ownedItems, items) {
+  let totalGPS = 0
+
+  for (const [itemId, count] of Object.entries(ownedItems)) {
+    const item = items.find(i => i.id === parseInt(itemId))
+
+    if (item) {
+      const tickSeconds = item.tickSeconds || 1
+      totalGPS += (item.goldPerSecond / tickSeconds) * count * getMilestoneMultiplier(count)
+    }
+  }
+
+  return totalGPS
+}
+
 export default {
   async loadItems({ commit, state }) {
-    if (state.economyVersion !== 'v6') {
+    if (state.economyVersion !== 'v23') {
       commit('RESET_ECONOMY')
     }
 
@@ -13,18 +30,7 @@ export default {
       commit('SET_ITEMS', data.items)
       commit('SET_IS_LOADED', true)
 
-      // Recalculate GPS from persisted owned items
-      let totalGPS = 0
-
-      for (const [itemId, count] of Object.entries(state.ownedItems)) {
-        const item = data.items.find(i => i.id === parseInt(itemId))
-
-        if (item) {
-          const tickSeconds = item.tickSeconds || 1
-          totalGPS += (item.goldPerSecond / tickSeconds) * count
-        }
-      }
-
+      const totalGPS = computeTotalGPS(state.ownedItems, data.items)
       commit('SET_GOLD_PER_SECOND', totalGPS)
     } catch (error) {
       console.error('Failed to load items:', error)
@@ -50,18 +56,7 @@ export default {
     commit('SUBTRACT_GOLD', finalCost)
     commit('BUY_ITEM', itemId)
 
-    // Recalculate total GPS
-    let totalGPS = 0
-
-    for (const [id, count] of Object.entries(state.ownedItems)) {
-      const ownedItem = state.items.find(i => i.id === parseInt(id))
-
-      if (ownedItem) {
-        const tickSeconds = ownedItem.tickSeconds || 1
-        totalGPS += (ownedItem.goldPerSecond / tickSeconds) * count
-      }
-    }
-
+    const totalGPS = computeTotalGPS(state.ownedItems, state.items)
     commit('SET_GOLD_PER_SECOND', totalGPS)
 
     return true
@@ -80,9 +75,8 @@ export default {
         if (ownedItem) {
           const tickSeconds = ownedItem.tickSeconds || 1
 
-          // If the timer sequence hits for this item's interval length
           if (state.tickCount % tickSeconds === 0) {
-            goldToDepositThisTick += ownedItem.goldPerSecond * count
+            goldToDepositThisTick += ownedItem.goldPerSecond * count * getMilestoneMultiplier(count)
           }
         }
       }
@@ -95,5 +89,10 @@ export default {
 
   tapGold({ commit, getters }) {
     commit('ADD_GOLD', getters.goldPerClick)
+  },
+
+  debugCheat({ commit }) {
+    commit('ADD_GOLD', 9999e15) // 9999Q
+    commit('SET_DEBUG_UNLOCK_ALL', true)
   }
 }

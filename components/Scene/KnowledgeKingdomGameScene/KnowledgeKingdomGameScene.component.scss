@@ -567,4 +567,24 @@
   &__ad {
     margin-block-start: calc(var(--base-m-y) * 4);
   }
+
+  .tycoon-debug-btn {
+    position: fixed;
+    right: 16px;
+    bottom: 80px;
+    z-index: 100;
+    padding: 6px 12px;
+    color: #666;
+    font-weight: 700;
+    font-size: 11px;
+    background: light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1));
+    border: 1px solid light-dark(rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.15));
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

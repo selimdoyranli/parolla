@@ -5,5 +5,6 @@ export default () => ({
   tickCount: 0,
   ownedItems: {},
   items: [],
-  isLoaded: false
+  isLoaded: false,
+  debugUnlockAll: false
 })

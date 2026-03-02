@@ -6,4502 +6,1352 @@
     {
       "id": 1,
       "name": "Kitap",
-      "baseCost": 1,
-      "goldPerSecond": 0.1,
-      "tickSeconds": 1,
       "tier": 1,
-      "icon": "📚"
+      "icon": "📚",
+      "baseCost": 1,
+      "goldPerSecond": 0.02,
+      "tickSeconds": 1
     },
     {
       "id": 2,
       "name": "Defter",
+      "tier": 1,
+      "icon": "📓",
       "baseCost": 10,
-      "goldPerSecond": 0.2,
-      "tickSeconds": 1,
-      "tier": 2,
-      "icon": "📓"
+      "goldPerSecond": 0.08,
+      "tickSeconds": 1
     },
     {
       "id": 3,
       "name": "Mürekkep Şişesi",
+      "tier": 1,
+      "icon": "🖋️",
       "baseCost": 50,
-      "goldPerSecond": 0.3,
-      "tickSeconds": 1,
-      "tier": 3,
-      "icon": "🖋️"
+      "goldPerSecond": 0.17,
+      "tickSeconds": 1
     },
     {
       "id": 4,
       "name": "Yazı Masası",
-      "baseCost": 300,
-      "goldPerSecond": 0.4,
-      "tickSeconds": 1,
-      "tier": 4,
-      "icon": "✍️"
+      "tier": 1,
+      "icon": "✍️",
+      "baseCost": 60,
+      "goldPerSecond": 0.18,
+      "tickSeconds": 1
     },
     {
       "id": 5,
       "name": "Mini Kütüphane",
-      "baseCost": 1100,
-      "goldPerSecond": 1.4,
-      "tickSeconds": 1,
-      "tier": 5,
-      "icon": "🏛️"
+      "tier": 1,
+      "icon": "🏛️",
+      "baseCost": 70,
+      "goldPerSecond": 0.2,
+      "tickSeconds": 1
     },
     {
       "id": 6,
       "name": "Dil Kartları Seti",
-      "baseCost": 3200,
-      "goldPerSecond": 3.9,
-      "tickSeconds": 1,
-      "tier": 6,
-      "icon": "🧺"
+      "tier": 1,
+      "icon": "🧺",
+      "baseCost": 80,
+      "goldPerSecond": 0.21,
+      "tickSeconds": 1
     },
     {
       "id": 7,
       "name": "Sözlük",
-      "baseCost": 8000,
-      "goldPerSecond": 8.9,
-      "tickSeconds": 1,
-      "tier": 7,
-      "icon": "🗣️"
+      "tier": 1,
+      "icon": "🗣️",
+      "baseCost": 100,
+      "goldPerSecond": 0.23,
+      "tickSeconds": 1
     },
     {
       "id": 8,
       "name": "Yayın Masası",
-      "baseCost": 18000,
-      "goldPerSecond": 18.5,
-      "tickSeconds": 1,
-      "tier": 8,
-      "icon": "👜"
+      "tier": 2,
+      "icon": "👜",
+      "baseCost": 190,
+      "goldPerSecond": 0.41,
+      "tickSeconds": 1
     },
     {
       "id": 9,
       "name": "Araştırma Raporu",
-      "baseCost": 36000,
-      "goldPerSecond": 34,
-      "tickSeconds": 1,
-      "tier": 9,
-      "icon": "🔒"
+      "tier": 2,
+      "icon": "🔒",
+      "baseCost": 200,
+      "goldPerSecond": 0.44,
+      "tickSeconds": 1
     },
     {
       "id": 10,
       "name": "Akademik Makale",
-      "baseCost": 67000,
-      "goldPerSecond": 58.2,
-      "tickSeconds": 1,
-      "tier": 10,
-      "icon": "📃"
+      "tier": 2,
+      "icon": "📃",
+      "baseCost": 250,
+      "goldPerSecond": 0.48,
+      "tickSeconds": 1
     },
     {
       "id": 11,
       "name": "Dil Laboratuvarı",
-      "baseCost": 120000,
-      "goldPerSecond": 95.9,
-      "tickSeconds": 1,
-      "tier": 11,
-      "icon": "🎙️"
+      "tier": 2,
+      "icon": "🎙️",
+      "baseCost": 300,
+      "goldPerSecond": 0.52,
+      "tickSeconds": 1
     },
     {
       "id": 12,
       "name": "Profesör Ekibi",
-      "baseCost": 200000,
-      "goldPerSecond": 147.1,
-      "tickSeconds": 1,
-      "tier": 12,
-      "icon": "🗞️"
+      "tier": 2,
+      "icon": "🗞️",
+      "baseCost": 350,
+      "goldPerSecond": 0.56,
+      "tickSeconds": 1
     },
     {
       "id": 13,
       "name": "Yayın Evi",
-      "baseCost": 320000,
-      "goldPerSecond": 216.5,
-      "tickSeconds": 1,
-      "tier": 13,
-      "icon": "✂️"
+      "tier": 2,
+      "icon": "✂️",
+      "baseCost": 450,
+      "goldPerSecond": 0.61,
+      "tickSeconds": 1
     },
     {
       "id": 14,
       "name": "Ulusal Kütüphane",
-      "baseCost": 510000,
-      "goldPerSecond": 317.4,
-      "tickSeconds": 1,
-      "tier": 14,
-      "icon": "🏛️"
+      "tier": 2,
+      "icon": "🏛️",
+      "baseCost": 500,
+      "goldPerSecond": 0.66,
+      "tickSeconds": 1
     },
     {
       "id": 15,
       "name": "Dil Akademisi",
-      "baseCost": 760000,
-      "goldPerSecond": 435.2,
-      "tickSeconds": 1,
-      "tier": 15,
-      "icon": "🛡️"
+      "tier": 2,
+      "icon": "🛡️",
+      "baseCost": 600,
+      "goldPerSecond": 0.71,
+      "tickSeconds": 1
     },
     {
       "id": 16,
       "name": "AI Kelime Analizörü",
-      "baseCost": 1100000,
-      "goldPerSecond": 579.5,
-      "tickSeconds": 1,
-      "tier": 16,
-      "icon": "💬"
+      "tier": 3,
+      "icon": "💬",
+      "baseCost": 1200,
+      "goldPerSecond": 1.3,
+      "tickSeconds": 1
     },
     {
       "id": 17,
       "name": "Çeviri Sunucusu",
-      "baseCost": 1600000,
-      "goldPerSecond": 775.4,
-      "tickSeconds": 1,
-      "tier": 17,
-      "icon": "📆"
+      "tier": 3,
+      "icon": "📆",
+      "baseCost": 1400,
+      "goldPerSecond": 1.4,
+      "tickSeconds": 1
     },
     {
       "id": 18,
       "name": "Global Yayın Ağı",
-      "baseCost": 2300000,
-      "goldPerSecond": 1025.5,
-      "tickSeconds": 1,
-      "tier": 18,
-      "icon": "💲"
+      "tier": 3,
+      "icon": "💲",
+      "baseCost": 1600,
+      "goldPerSecond": 1.5,
+      "tickSeconds": 1
     },
     {
       "id": 19,
       "name": "Dil Veri Merkezi",
-      "baseCost": 3100000,
-      "goldPerSecond": 1271.6,
-      "tickSeconds": 1,
-      "tier": 19,
-      "icon": "🧵"
+      "tier": 3,
+      "icon": "🧵",
+      "baseCost": 1900,
+      "goldPerSecond": 1.6,
+      "tickSeconds": 1
     },
     {
       "id": 20,
       "name": "Küresel Bilgi Ağı",
-      "baseCost": 4300000,
-      "goldPerSecond": 1622.8,
-      "tickSeconds": 1,
-      "tier": 20,
-      "icon": "🧠"
+      "tier": 3,
+      "icon": "🧠",
+      "baseCost": 2300,
+      "goldPerSecond": 1.8,
+      "tickSeconds": 1
     },
     {
       "id": 21,
       "name": "Nöral Dil Motoru",
-      "baseCost": 5700000,
-      "goldPerSecond": 1979,
-      "tickSeconds": 1,
-      "tier": 21,
-      "icon": "🪦"
+      "tier": 3,
+      "icon": "🪦",
+      "baseCost": 2700,
+      "goldPerSecond": 1.9,
+      "tickSeconds": 1
     },
     {
       "id": 22,
       "name": "Kuantum Çeviri Çekirdeği",
-      "baseCost": 7600000,
-      "goldPerSecond": 2427.6,
-      "tickSeconds": 1,
-      "tier": 22,
-      "icon": "🔓"
+      "tier": 3,
+      "icon": "🔓",
+      "baseCost": 3200,
+      "goldPerSecond": 2.1,
+      "tickSeconds": 1
     },
     {
       "id": 23,
       "name": "Evrensel Dil Arşivi",
-      "baseCost": 9900000,
-      "goldPerSecond": 2909.3,
-      "tickSeconds": 1,
-      "tier": 23,
-      "icon": "🗃️"
+      "tier": 4,
+      "icon": "🗃️",
+      "baseCost": 6200,
+      "goldPerSecond": 3.7,
+      "tickSeconds": 1
     },
     {
       "id": 24,
       "name": "Bilgi İmparatorluğu Merkezi",
-      "baseCost": 13000000,
-      "goldPerSecond": 3514.6,
-      "tickSeconds": 1,
-      "tier": 24,
-      "icon": "🧠"
+      "tier": 4,
+      "icon": "🧠",
+      "baseCost": 7300,
+      "goldPerSecond": 4,
+      "tickSeconds": 1
     },
     {
       "id": 25,
       "name": "Nazarlık",
-      "baseCost": 16000000,
-      "goldPerSecond": 3979.7,
-      "tickSeconds": 1,
-      "tier": 25,
-      "icon": "🎞️"
+      "tier": 4,
+      "icon": "🎞️",
+      "baseCost": 8600,
+      "goldPerSecond": 4.3,
+      "tickSeconds": 1
     },
     {
       "id": 26,
       "name": "Hoparlör",
-      "baseCost": 21000000,
-      "goldPerSecond": 4805.4,
-      "tickSeconds": 1,
-      "tier": 26,
-      "icon": "📏"
+      "tier": 4,
+      "icon": "📏",
+      "baseCost": 10000,
+      "goldPerSecond": 4.7,
+      "tickSeconds": 1
     },
     {
       "id": 27,
       "name": "Ağ Kartı",
-      "baseCost": 26000000,
-      "goldPerSecond": 5473.6,
-      "tickSeconds": 1,
-      "tier": 27,
-      "icon": "🔌"
+      "tier": 4,
+      "icon": "🔌",
+      "baseCost": 12000,
+      "goldPerSecond": 5,
+      "tickSeconds": 1
     },
     {
       "id": 28,
       "name": "Teleskop",
-      "baseCost": 32000000,
-      "goldPerSecond": 6197.8,
-      "tickSeconds": 1,
-      "tier": 28,
-      "icon": "🩹"
+      "tier": 4,
+      "icon": "🩹",
+      "baseCost": 14000,
+      "goldPerSecond": 5.5,
+      "tickSeconds": 1
     },
     {
       "id": 29,
       "name": "Ejderha Kalkanı",
-      "baseCost": 40000000,
-      "goldPerSecond": 7127.5,
-      "tickSeconds": 1,
-      "tier": 29,
-      "icon": "🐉"
+      "tier": 4,
+      "icon": "🐉",
+      "baseCost": 17000,
+      "goldPerSecond": 5.9,
+      "tickSeconds": 1
     },
     {
       "id": 30,
       "name": "Madalya",
-      "baseCost": 48000000,
-      "goldPerSecond": 7868.8,
-      "tickSeconds": 1,
-      "tier": 30,
-      "icon": "🔖"
+      "tier": 4,
+      "icon": "🔖",
+      "baseCost": 20000,
+      "goldPerSecond": 6.4,
+      "tickSeconds": 1
     },
     {
       "id": 31,
       "name": "Dergi",
-      "baseCost": 59000000,
-      "goldPerSecond": 8898.3,
-      "tickSeconds": 1,
-      "tier": 31,
-      "icon": "📰"
+      "tier": 5,
+      "icon": "📰",
+      "baseCost": 38000,
+      "goldPerSecond": 11.5,
+      "tickSeconds": 1
     },
     {
       "id": 32,
       "name": "Hazine Sandığı",
-      "baseCost": 71000000,
-      "goldPerSecond": 9851.4,
-      "tickSeconds": 1,
-      "tier": 32,
-      "icon": "🛁"
+      "tier": 5,
+      "icon": "🛁",
+      "baseCost": 45000,
+      "goldPerSecond": 12.4,
+      "tickSeconds": 1
     },
     {
       "id": 33,
       "name": "Enstitü",
-      "baseCost": 86000000,
-      "goldPerSecond": 10978.1,
-      "tickSeconds": 1,
-      "tier": 33,
-      "icon": "🏷️"
+      "tier": 5,
+      "icon": "🏷️",
+      "baseCost": 53000,
+      "goldPerSecond": 13.4,
+      "tickSeconds": 1
     },
     {
       "id": 34,
       "name": "Tezhip Seti",
-      "baseCost": 100000000,
-      "goldPerSecond": 11744,
-      "tickSeconds": 1,
-      "tier": 34,
-      "icon": "📸"
+      "tier": 5,
+      "icon": "📸",
+      "baseCost": 63000,
+      "goldPerSecond": 14.5,
+      "tickSeconds": 1
     },
     {
       "id": 35,
       "name": "Gözlemevi",
-      "baseCost": 120000000,
-      "goldPerSecond": 12965.4,
-      "tickSeconds": 1,
-      "tier": 35,
-      "icon": "🩼"
+      "tier": 5,
+      "icon": "🩼",
+      "baseCost": 74000,
+      "goldPerSecond": 15.7,
+      "tickSeconds": 1
     },
     {
       "id": 36,
       "name": "Boyut Kapısı",
-      "baseCost": 140000000,
-      "goldPerSecond": 14000,
-      "tickSeconds": 1,
-      "tier": 36,
-      "icon": "🗝️"
+      "tier": 5,
+      "icon": "🗝️",
+      "baseCost": 88000,
+      "goldPerSecond": 17,
+      "tickSeconds": 1
     },
     {
       "id": 37,
       "name": "Derleyici",
-      "baseCost": 170000000,
-      "goldPerSecond": 17000,
-      "tickSeconds": 1,
-      "tier": 37,
-      "icon": "📸"
+      "tier": 5,
+      "icon": "📸",
+      "baseCost": 100000,
+      "goldPerSecond": 18.4,
+      "tickSeconds": 1
     },
     {
       "id": 38,
       "name": "Atölye",
-      "baseCost": 200000000,
-      "goldPerSecond": 20000,
-      "tickSeconds": 1,
-      "tier": 38,
-      "icon": "📉"
+      "tier": 6,
+      "icon": "📉",
+      "baseCost": 200000,
+      "goldPerSecond": 33,
+      "tickSeconds": 1
     },
     {
       "id": 39,
       "name": "Ses Sentezi",
-      "baseCost": 230000000,
-      "goldPerSecond": 23000,
-      "tickSeconds": 1,
-      "tier": 39,
-      "icon": "📙"
+      "tier": 6,
+      "icon": "📙",
+      "baseCost": 240000,
+      "goldPerSecond": 35.7,
+      "tickSeconds": 1
     },
     {
       "id": 40,
       "name": "Davetiye",
-      "baseCost": 270000000,
-      "goldPerSecond": 27000,
-      "tickSeconds": 1,
-      "tier": 40,
-      "icon": "💱"
+      "tier": 6,
+      "icon": "💱",
+      "baseCost": 280000,
+      "goldPerSecond": 38.7,
+      "tickSeconds": 1
     },
     {
       "id": 41,
       "name": "Metin Analizörü",
-      "baseCost": 310000000,
-      "goldPerSecond": 31000,
-      "tickSeconds": 1,
-      "tier": 41,
-      "icon": "📣"
+      "tier": 6,
+      "icon": "📣",
+      "baseCost": 330000,
+      "goldPerSecond": 41.9,
+      "tickSeconds": 1
     },
     {
       "id": 42,
       "name": "Muska",
-      "baseCost": 360000000,
-      "goldPerSecond": 36000,
-      "tickSeconds": 1,
-      "tier": 42,
-      "icon": "🪟"
+      "tier": 6,
+      "icon": "🪟",
+      "baseCost": 390000,
+      "goldPerSecond": 45.3,
+      "tickSeconds": 1
     },
     {
       "id": 43,
       "name": "Sunum",
-      "baseCost": 420000000,
-      "goldPerSecond": 42000,
-      "tickSeconds": 1,
-      "tier": 43,
-      "icon": "🪟"
+      "tier": 6,
+      "icon": "🪟",
+      "baseCost": 460000,
+      "goldPerSecond": 49.1,
+      "tickSeconds": 1
     },
     {
       "id": 44,
       "name": "Kelime Kartı",
-      "baseCost": 480000000,
-      "goldPerSecond": 48000,
-      "tickSeconds": 1,
-      "tier": 44,
-      "icon": "💬"
+      "tier": 6,
+      "icon": "💬",
+      "baseCost": 550000,
+      "goldPerSecond": 53.1,
+      "tickSeconds": 1
     },
     {
       "id": 45,
       "name": "Altın Taç",
-      "baseCost": 550000000,
-      "goldPerSecond": 55000,
-      "tickSeconds": 1,
-      "tier": 45,
-      "icon": "🪙"
+      "tier": 6,
+      "icon": "🪙",
+      "baseCost": 640000,
+      "goldPerSecond": 57.5,
+      "tickSeconds": 1
     },
     {
       "id": 46,
       "name": "Gizemli Harita",
-      "baseCost": 630000000,
-      "goldPerSecond": 63000,
-      "tickSeconds": 1,
-      "tier": 46,
-      "icon": "🎻"
+      "tier": 7,
+      "icon": "🎻",
+      "baseCost": 1300000,
+      "goldPerSecond": 102,
+      "tickSeconds": 1
     },
     {
       "id": 47,
       "name": "Zafer Anahtarı",
-      "baseCost": 710000000,
-      "goldPerSecond": 71000,
-      "tickSeconds": 1,
-      "tier": 47,
-      "icon": "📑"
+      "tier": 7,
+      "icon": "📑",
+      "baseCost": 1500000,
+      "goldPerSecond": 111,
+      "tickSeconds": 1
     },
     {
       "id": 48,
       "name": "Stüdyo",
-      "baseCost": 810000000,
-      "goldPerSecond": 81000,
-      "tickSeconds": 1,
-      "tier": 48,
-      "icon": "🕯️"
+      "tier": 7,
+      "icon": "🕯️",
+      "baseCost": 1700000,
+      "goldPerSecond": 120,
+      "tickSeconds": 1
     },
     {
       "id": 49,
       "name": "Hikaye",
-      "baseCost": 910000000,
-      "goldPerSecond": 91000,
-      "tickSeconds": 1,
-      "tier": 49,
-      "icon": "🔨"
+      "tier": 7,
+      "icon": "🔨",
+      "baseCost": 2100000,
+      "goldPerSecond": 130,
+      "tickSeconds": 1
     },
     {
       "id": 50,
       "name": "Katalizör",
-      "baseCost": 1000000000,
-      "goldPerSecond": 100000,
-      "tickSeconds": 1,
-      "tier": 50,
-      "icon": "📨"
+      "tier": 7,
+      "icon": "📨",
+      "baseCost": 2400000,
+      "goldPerSecond": 141,
+      "tickSeconds": 1
     },
     {
       "id": 51,
       "name": "Veritabanı",
-      "baseCost": 1200000000,
-      "goldPerSecond": 120000,
-      "tickSeconds": 1,
-      "tier": 51,
-      "icon": "🏮"
+      "tier": 7,
+      "icon": "🏮",
+      "baseCost": 2900000,
+      "goldPerSecond": 152,
+      "tickSeconds": 1
     },
     {
       "id": 52,
       "name": "Tapınak",
-      "baseCost": 1300000000,
-      "goldPerSecond": 130000,
-      "tickSeconds": 1,
-      "tier": 52,
-      "icon": "🧢"
+      "tier": 7,
+      "icon": "🧢",
+      "baseCost": 3400000,
+      "goldPerSecond": 165,
+      "tickSeconds": 1
     },
     {
       "id": 53,
       "name": "Depolama",
-      "baseCost": 1500000000,
-      "goldPerSecond": 150000,
-      "tickSeconds": 1,
-      "tier": 53,
-      "icon": "🧣"
+      "tier": 8,
+      "icon": "🧣",
+      "baseCost": 6600000,
+      "goldPerSecond": 296,
+      "tickSeconds": 1
     },
     {
       "id": 54,
       "name": "Cetvel",
-      "baseCost": 1600000000,
-      "goldPerSecond": 160000,
-      "tickSeconds": 1,
-      "tier": 54,
-      "icon": "🥿"
+      "tier": 8,
+      "icon": "🥿",
+      "baseCost": 7800000,
+      "goldPerSecond": 320,
+      "tickSeconds": 1
     },
     {
       "id": 55,
       "name": "Papirüs",
-      "baseCost": 1800000000,
-      "goldPerSecond": 180000,
-      "tickSeconds": 1,
-      "tier": 55,
-      "icon": "🔐"
+      "tier": 8,
+      "icon": "🔐",
+      "baseCost": 9200000,
+      "goldPerSecond": 347,
+      "tickSeconds": 1
     },
     {
       "id": 56,
       "name": "Kupa",
-      "baseCost": 2000000000,
-      "goldPerSecond": 200000,
-      "tickSeconds": 1,
-      "tier": 56,
-      "icon": "📂"
+      "tier": 8,
+      "icon": "📂",
+      "baseCost": 11000000,
+      "goldPerSecond": 375,
+      "tickSeconds": 1
     },
     {
       "id": 57,
       "name": "Sunucu",
-      "baseCost": 2300000000,
-      "goldPerSecond": 230000,
-      "tickSeconds": 1,
-      "tier": 57,
-      "icon": "💷"
+      "tier": 8,
+      "icon": "💷",
+      "baseCost": 13000000,
+      "goldPerSecond": 406,
+      "tickSeconds": 1
     },
     {
       "id": 58,
       "name": "Makas",
-      "baseCost": 2500000000,
-      "goldPerSecond": 250000,
-      "tickSeconds": 1,
-      "tier": 58,
-      "icon": "🖊️"
+      "tier": 8,
+      "icon": "🖊️",
+      "baseCost": 15000000,
+      "goldPerSecond": 440,
+      "tickSeconds": 1
     },
     {
       "id": 59,
       "name": "Adalet Terazisi",
-      "baseCost": 2800000000,
-      "goldPerSecond": 280000,
-      "tickSeconds": 1,
-      "tier": 59,
-      "icon": "🥾"
+      "tier": 8,
+      "icon": "🥾",
+      "baseCost": 18000000,
+      "goldPerSecond": 476,
+      "tickSeconds": 1
     },
     {
       "id": 60,
       "name": "Mektup",
-      "baseCost": 3100000000,
-      "goldPerSecond": 310000,
-      "tickSeconds": 1,
-      "tier": 60,
-      "icon": "🔕"
+      "tier": 8,
+      "icon": "🔕",
+      "baseCost": 21000000,
+      "goldPerSecond": 516,
+      "tickSeconds": 1
     },
     {
       "id": 61,
       "name": "Arayüz",
-      "baseCost": 3400000000,
-      "goldPerSecond": 340000,
-      "tickSeconds": 1,
-      "tier": 61,
-      "icon": "🛡️"
+      "tier": 9,
+      "icon": "🛡️",
+      "baseCost": 41000000,
+      "goldPerSecond": 923,
+      "tickSeconds": 1
     },
     {
       "id": 62,
       "name": "Takvim",
-      "baseCost": 3700000000,
-      "goldPerSecond": 370000,
-      "tickSeconds": 1,
-      "tier": 62,
-      "icon": "🪕"
+      "tier": 9,
+      "icon": "🪕",
+      "baseCost": 48000000,
+      "goldPerSecond": 999,
+      "tickSeconds": 1
     },
     {
       "id": 63,
       "name": "Nöral Ağ",
-      "baseCost": 4100000000,
-      "goldPerSecond": 410000,
-      "tickSeconds": 1,
-      "tier": 63,
-      "icon": "📌"
+      "tier": 9,
+      "icon": "📌",
+      "baseCost": 57000000,
+      "goldPerSecond": 1082,
+      "tickSeconds": 1
     },
     {
       "id": 64,
       "name": "Klasör",
-      "baseCost": 4500000000,
-      "goldPerSecond": 450000,
-      "tickSeconds": 1,
-      "tier": 64,
-      "icon": "📯"
+      "tier": 9,
+      "icon": "📯",
+      "baseCost": 67000000,
+      "goldPerSecond": 1171,
+      "tickSeconds": 1
     },
     {
       "id": 65,
       "name": "Motor",
-      "baseCost": 5000000000,
-      "goldPerSecond": 500000,
-      "tickSeconds": 1,
-      "tier": 65,
-      "icon": "💼"
+      "tier": 9,
+      "icon": "💼",
+      "baseCost": 80000000,
+      "goldPerSecond": 1268,
+      "tickSeconds": 1
     },
     {
       "id": 66,
       "name": "Piramit",
-      "baseCost": 5400000000,
-      "goldPerSecond": 540000,
-      "tickSeconds": 1,
-      "tier": 66,
-      "icon": "🧺"
+      "tier": 9,
+      "icon": "🧺",
+      "baseCost": 94000000,
+      "goldPerSecond": 1373,
+      "tickSeconds": 1
     },
     {
       "id": 67,
       "name": "Kongre Merkezi",
-      "baseCost": 5900000000,
-      "goldPerSecond": 590000,
-      "tickSeconds": 1,
-      "tier": 67,
-      "icon": "⛏️"
+      "tier": 9,
+      "icon": "⛏️",
+      "baseCost": 110000000,
+      "goldPerSecond": 1486,
+      "tickSeconds": 1
     },
     {
       "id": 68,
       "name": "Tiyatro",
-      "baseCost": 6500000000,
-      "goldPerSecond": 650000,
-      "tickSeconds": 1,
-      "tier": 68,
-      "icon": "🔕"
+      "tier": 10,
+      "icon": "🔕",
+      "baseCost": 220000000,
+      "goldPerSecond": 2659,
+      "tickSeconds": 1
     },
     {
       "id": 69,
       "name": "Hologram",
-      "baseCost": 7100000000,
-      "goldPerSecond": 710000,
-      "tickSeconds": 1,
-      "tier": 69,
-      "icon": "💳"
+      "tier": 10,
+      "icon": "💳",
+      "baseCost": 260000000,
+      "goldPerSecond": 2879,
+      "tickSeconds": 1
     },
     {
       "id": 70,
       "name": "Yazılım",
-      "baseCost": 7700000000,
-      "goldPerSecond": 770000,
-      "tickSeconds": 1,
-      "tier": 70,
-      "icon": "✍️"
+      "tier": 10,
+      "icon": "✍️",
+      "baseCost": 300000000,
+      "goldPerSecond": 3117,
+      "tickSeconds": 1
     },
     {
       "id": 71,
       "name": "Ödül",
-      "baseCost": 8400000000,
-      "goldPerSecond": 840000,
-      "tickSeconds": 1,
-      "tier": 71,
-      "icon": "📫"
+      "tier": 10,
+      "icon": "📫",
+      "baseCost": 360000000,
+      "goldPerSecond": 3374,
+      "tickSeconds": 1
     },
     {
       "id": 72,
       "name": "Tablet",
-      "baseCost": 9100000000,
-      "goldPerSecond": 910000,
-      "tickSeconds": 1,
-      "tier": 72,
-      "icon": "📱"
+      "tier": 10,
+      "icon": "📱",
+      "baseCost": 420000000,
+      "goldPerSecond": 3653,
+      "tickSeconds": 1
     },
     {
       "id": 73,
       "name": "Algoritma",
-      "baseCost": 9900000000,
-      "goldPerSecond": 990000,
-      "tickSeconds": 1,
-      "tier": 73,
-      "icon": "🧲"
+      "tier": 10,
+      "icon": "🧲",
+      "baseCost": 490000000,
+      "goldPerSecond": 3954,
+      "tickSeconds": 1
     },
     {
       "id": 74,
       "name": "Dönüştürücü",
-      "baseCost": 11000000000,
-      "goldPerSecond": 1100000,
-      "tickSeconds": 1,
-      "tier": 74,
-      "icon": "👔"
+      "tier": 10,
+      "icon": "👔",
+      "baseCost": 580000000,
+      "goldPerSecond": 4281,
+      "tickSeconds": 1
     },
     {
       "id": 75,
       "name": "Not Defteri",
-      "baseCost": 12000000000,
-      "goldPerSecond": 1200000,
-      "tickSeconds": 1,
-      "tier": 75,
-      "icon": "📓"
+      "tier": 10,
+      "icon": "📓",
+      "baseCost": 690000000,
+      "goldPerSecond": 4634,
+      "tickSeconds": 1
     },
     {
       "id": 76,
       "name": "Metronom",
-      "baseCost": 13000000000,
-      "goldPerSecond": 1300000,
-      "tickSeconds": 1,
-      "tier": 76,
-      "icon": "📰"
+      "tier": 11,
+      "icon": "📰",
+      "baseCost": 1300000000,
+      "goldPerSecond": 8291,
+      "tickSeconds": 1
     },
     {
       "id": 77,
       "name": "Kurşun Kalem",
-      "baseCost": 14000000000,
-      "goldPerSecond": 1400000,
-      "tickSeconds": 1,
-      "tier": 77,
-      "icon": "✏️"
+      "tier": 11,
+      "icon": "✏️",
+      "baseCost": 1600000000,
+      "goldPerSecond": 8975,
+      "tickSeconds": 1
     },
     {
       "id": 78,
       "name": "Kontrol Ünitesi",
-      "baseCost": 15000000000,
-      "goldPerSecond": 1500000,
-      "tickSeconds": 1,
-      "tier": 78,
-      "icon": "🩹"
+      "tier": 11,
+      "icon": "🩹",
+      "baseCost": 1900000000,
+      "goldPerSecond": 9717,
+      "tickSeconds": 1
     },
     {
       "id": 79,
       "name": "Palet",
-      "baseCost": 16000000000,
-      "goldPerSecond": 1600000,
-      "tickSeconds": 1,
-      "tier": 79,
-      "icon": "🧽"
+      "tier": 11,
+      "icon": "🧽",
+      "baseCost": 2200000000,
+      "goldPerSecond": 10519,
+      "tickSeconds": 1
     },
     {
       "id": 80,
       "name": "Hisar",
-      "baseCost": 17000000000,
-      "goldPerSecond": 1700000,
-      "tickSeconds": 1,
-      "tier": 80,
-      "icon": "🪟"
+      "tier": 11,
+      "icon": "🪟",
+      "baseCost": 2600000000,
+      "goldPerSecond": 11388,
+      "tickSeconds": 1
     },
     {
       "id": 81,
       "name": "Dolma Kalem",
-      "baseCost": 19000000000,
-      "goldPerSecond": 1900000,
-      "tickSeconds": 1,
-      "tier": 81,
-      "icon": "✏️"
+      "tier": 11,
+      "icon": "✏️",
+      "baseCost": 3100000000,
+      "goldPerSecond": 12328,
+      "tickSeconds": 1
     },
     {
       "id": 82,
       "name": "Soğutucu",
-      "baseCost": 20000000000,
-      "goldPerSecond": 2000000,
-      "tickSeconds": 1,
-      "tier": 82,
-      "icon": "📆"
+      "tier": 11,
+      "icon": "📆",
+      "baseCost": 3600000000,
+      "goldPerSecond": 13346,
+      "tickSeconds": 1
     },
     {
       "id": 83,
       "name": "Konsol",
-      "baseCost": 21000000000,
-      "goldPerSecond": 2100000,
-      "tickSeconds": 1,
-      "tier": 83,
-      "icon": "🪥"
+      "tier": 12,
+      "icon": "🪥",
+      "baseCost": 7100000000,
+      "goldPerSecond": 23876,
+      "tickSeconds": 1
     },
     {
       "id": 84,
       "name": "Pul",
-      "baseCost": 23000000000,
-      "goldPerSecond": 2300000,
-      "tickSeconds": 1,
-      "tier": 84,
-      "icon": "🎙️"
+      "tier": 12,
+      "icon": "🎙️",
+      "baseCost": 8300000000,
+      "goldPerSecond": 25847,
+      "tickSeconds": 1
     },
     {
       "id": 85,
       "name": "Başarı Formülü",
-      "baseCost": 25000000000,
-      "goldPerSecond": 2500000,
-      "tickSeconds": 1,
-      "tier": 85,
-      "icon": "📘"
+      "tier": 12,
+      "icon": "📘",
+      "baseCost": 9800000000,
+      "goldPerSecond": 27982,
+      "tickSeconds": 1
     },
     {
       "id": 86,
       "name": "Bilgelik Kaynağı",
-      "baseCost": 26000000000,
-      "goldPerSecond": 2600000,
-      "tickSeconds": 1,
-      "tier": 86,
-      "icon": "⛑️"
+      "tier": 12,
+      "icon": "⛑️",
+      "baseCost": 12000000000,
+      "goldPerSecond": 30292,
+      "tickSeconds": 1
     },
     {
       "id": 87,
       "name": "Çeviri Motoru",
-      "baseCost": 28000000000,
-      "goldPerSecond": 2800000,
-      "tickSeconds": 1,
-      "tier": 87,
-      "icon": "🔭"
+      "tier": 12,
+      "icon": "🔭",
+      "baseCost": 14000000000,
+      "goldPerSecond": 32793,
+      "tickSeconds": 1
     },
     {
       "id": 88,
       "name": "Konuşma Tanıma",
-      "baseCost": 30000000000,
-      "goldPerSecond": 3000000,
-      "tickSeconds": 1,
-      "tier": 88,
-      "icon": "📨"
+      "tier": 12,
+      "icon": "📨",
+      "baseCost": 16000000000,
+      "goldPerSecond": 35501,
+      "tickSeconds": 1
     },
     {
       "id": 89,
       "name": "Filtre",
-      "baseCost": 33000000000,
-      "goldPerSecond": 3300000,
-      "tickSeconds": 1,
-      "tier": 89,
-      "icon": "🔐"
+      "tier": 12,
+      "icon": "🔐",
+      "baseCost": 19000000000,
+      "goldPerSecond": 38432,
+      "tickSeconds": 1
     },
     {
       "id": 90,
       "name": "Burs Belgesi",
-      "baseCost": 35000000000,
-      "goldPerSecond": 3500000,
-      "tickSeconds": 1,
-      "tier": 90,
-      "icon": "📄"
+      "tier": 12,
+      "icon": "📄",
+      "baseCost": 23000000000,
+      "goldPerSecond": 41606,
+      "tickSeconds": 1
     },
     {
       "id": 91,
       "name": "Kale",
-      "baseCost": 37000000000,
-      "goldPerSecond": 3700000,
-      "tickSeconds": 1,
-      "tier": 91,
-      "icon": "🧯"
+      "tier": 13,
+      "icon": "🧯",
+      "baseCost": 44000000000,
+      "goldPerSecond": 74432,
+      "tickSeconds": 1
     },
     {
       "id": 92,
       "name": "Ay Üssü",
-      "baseCost": 40000000000,
-      "goldPerSecond": 4000000,
-      "tickSeconds": 1,
-      "tier": 92,
-      "icon": "🌙"
+      "tier": 13,
+      "icon": "🌙",
+      "baseCost": 52000000000,
+      "goldPerSecond": 80578,
+      "tickSeconds": 1
     },
     {
       "id": 93,
       "name": "Dil İşlemcisi",
-      "baseCost": 42000000000,
-      "goldPerSecond": 4200000,
-      "tickSeconds": 1,
-      "tier": 93,
-      "icon": "🎵"
+      "tier": 13,
+      "icon": "🎵",
+      "baseCost": 61000000000,
+      "goldPerSecond": 87232,
+      "tickSeconds": 1
     },
     {
       "id": 94,
       "name": "Atlas",
-      "baseCost": 45000000000,
-      "goldPerSecond": 4500000,
-      "tickSeconds": 1,
-      "tier": 94,
-      "icon": "🗺️"
+      "tier": 13,
+      "icon": "🗺️",
+      "baseCost": 72000000000,
+      "goldPerSecond": 94434,
+      "tickSeconds": 1
     },
     {
       "id": 95,
       "name": "Rapor",
-      "baseCost": 48000000000,
-      "goldPerSecond": 4800000,
-      "tickSeconds": 1,
-      "tier": 95,
-      "icon": "💡"
+      "tier": 13,
+      "icon": "💡",
+      "baseCost": 85000000000,
+      "goldPerSecond": 102232,
+      "tickSeconds": 1
     },
     {
       "id": 96,
       "name": "Kronograf",
-      "baseCost": 51000000000,
-      "goldPerSecond": 5100000,
-      "tickSeconds": 1,
-      "tier": 96,
-      "icon": "🎻"
+      "tier": 13,
+      "icon": "🎻",
+      "baseCost": 100000000000,
+      "goldPerSecond": 110673,
+      "tickSeconds": 1
     },
     {
       "id": 97,
       "name": "Kampüs",
-      "baseCost": 54000000000,
-      "goldPerSecond": 5400000,
-      "tickSeconds": 1,
-      "tier": 97,
-      "icon": "🎛️"
+      "tier": 13,
+      "icon": "🎛️",
+      "baseCost": 120000000000,
+      "goldPerSecond": 119811,
+      "tickSeconds": 1
     },
     {
       "id": 98,
       "name": "Dikilitaş",
-      "baseCost": 58000000000,
-      "goldPerSecond": 5800000,
-      "tickSeconds": 1,
-      "tier": 98,
-      "icon": "🎙️"
+      "tier": 14,
+      "icon": "🎙️",
+      "baseCost": 230000000000,
+      "goldPerSecond": 214341,
+      "tickSeconds": 1
     },
     {
       "id": 99,
       "name": "Tüy Kalem",
-      "baseCost": 62000000000,
-      "goldPerSecond": 6200000,
-      "tickSeconds": 1,
-      "tier": 99,
-      "icon": "✏️"
+      "tier": 14,
+      "icon": "✏️",
+      "baseCost": 270000000000,
+      "goldPerSecond": 232039,
+      "tickSeconds": 1
     },
     {
       "id": 100,
       "name": "Güç Sembolü",
-      "baseCost": 65000000000,
-      "goldPerSecond": 6500000,
-      "tickSeconds": 1,
-      "tier": 100,
-      "icon": "📋"
+      "tier": 14,
+      "icon": "📋",
+      "baseCost": 320000000000,
+      "goldPerSecond": 251198,
+      "tickSeconds": 1
     },
     {
       "id": 101,
       "name": "Terazi",
-      "baseCost": 69000000000,
-      "goldPerSecond": 6900000,
-      "tickSeconds": 1,
-      "tier": 101,
-      "icon": "👑"
+      "tier": 14,
+      "icon": "👑",
+      "baseCost": 380000000000,
+      "goldPerSecond": 271939,
+      "tickSeconds": 1
     },
     {
       "id": 102,
       "name": "Jeneratör",
-      "baseCost": 74000000000,
-      "goldPerSecond": 7400000,
-      "tickSeconds": 1,
-      "tier": 102,
-      "icon": "🗑️"
+      "tier": 14,
+      "icon": "🗑️",
+      "baseCost": 450000000000,
+      "goldPerSecond": 294393,
+      "tickSeconds": 1
     },
     {
       "id": 103,
       "name": "Suluboya",
-      "baseCost": 78000000000,
-      "goldPerSecond": 7800000,
-      "tickSeconds": 1,
-      "tier": 103,
-      "icon": "🧹"
+      "tier": 14,
+      "icon": "🧹",
+      "baseCost": 530000000000,
+      "goldPerSecond": 318701,
+      "tickSeconds": 1
     },
     {
       "id": 104,
       "name": "Parşömen",
-      "baseCost": 83000000000,
-      "goldPerSecond": 8300000,
-      "tickSeconds": 1,
-      "tier": 104,
-      "icon": "👠"
+      "tier": 14,
+      "icon": "👠",
+      "baseCost": 620000000000,
+      "goldPerSecond": 345015,
+      "tickSeconds": 1
     },
     {
       "id": 105,
       "name": "Afiş",
-      "baseCost": 88000000000,
-      "goldPerSecond": 8800000,
-      "tickSeconds": 1,
-      "tier": 105,
-      "icon": "🛏️"
+      "tier": 14,
+      "icon": "🛏️",
+      "baseCost": 740000000000,
+      "goldPerSecond": 373503,
+      "tickSeconds": 1
     },
     {
       "id": 106,
       "name": "Evrensel Pusula",
-      "baseCost": 93000000000,
-      "goldPerSecond": 9300000,
-      "tickSeconds": 1,
-      "tier": 106,
-      "icon": "🚿"
+      "tier": 15,
+      "icon": "🚿",
+      "baseCost": 1400000000000,
+      "goldPerSecond": 668194,
+      "tickSeconds": 1
     },
     {
       "id": 107,
       "name": "Mühür",
-      "baseCost": 98000000000,
-      "goldPerSecond": 9800000,
-      "tickSeconds": 1,
-      "tier": 107,
-      "icon": "🖍️"
+      "tier": 15,
+      "icon": "🖍️",
+      "baseCost": 1700000000000,
+      "goldPerSecond": 723366,
+      "tickSeconds": 1
     },
     {
       "id": 108,
       "name": "Müfredat",
-      "baseCost": 100000000000,
-      "goldPerSecond": 10000000,
-      "tickSeconds": 1,
-      "tier": 108,
-      "icon": "🥾"
+      "tier": 15,
+      "icon": "🥾",
+      "baseCost": 2000000000000,
+      "goldPerSecond": 783093,
+      "tickSeconds": 1
     },
     {
       "id": 109,
       "name": "Sensör",
-      "baseCost": 110000000000,
-      "goldPerSecond": 11000000,
-      "tickSeconds": 1,
-      "tier": 109,
-      "icon": "🩸"
+      "tier": 15,
+      "icon": "🩸",
+      "baseCost": 2400000000000,
+      "goldPerSecond": 847752,
+      "tickSeconds": 1
     },
     {
       "id": 110,
       "name": "Uydu",
-      "baseCost": 120000000000,
-      "goldPerSecond": 12000000,
-      "tickSeconds": 1,
-      "tier": 110,
-      "icon": "⌨️"
+      "tier": 15,
+      "icon": "⌨️",
+      "baseCost": 2800000000000,
+      "goldPerSecond": 917750,
+      "tickSeconds": 1
     },
     {
       "id": 111,
       "name": "Mercek",
-      "baseCost": 120000000000,
-      "goldPerSecond": 12360000,
-      "tickSeconds": 1,
-      "tier": 111,
-      "icon": "👗"
+      "tier": 15,
+      "icon": "👗",
+      "baseCost": 3300000000000,
+      "goldPerSecond": 993528,
+      "tickSeconds": 1
     },
     {
       "id": 112,
       "name": "Cilt",
-      "baseCost": 130000000000,
-      "goldPerSecond": 13000000,
-      "tickSeconds": 1,
-      "tier": 112,
-      "icon": "📔"
+      "tier": 15,
+      "icon": "📔",
+      "baseCost": 3900000000000,
+      "goldPerSecond": 1075562,
+      "tickSeconds": 1
     },
     {
       "id": 113,
       "name": "Ölümsüzlük İksiri",
-      "baseCost": 140000000000,
-      "goldPerSecond": 14000000,
-      "tickSeconds": 1,
-      "tier": 113,
-      "icon": "👙"
+      "tier": 16,
+      "icon": "👙",
+      "baseCost": 7600000000000,
+      "goldPerSecond": 1924171,
+      "tickSeconds": 1
     },
     {
       "id": 114,
       "name": "Şiir Kitabı",
-      "baseCost": 140000000000,
-      "goldPerSecond": 14420000,
-      "tickSeconds": 1,
-      "tier": 114,
-      "icon": "📝"
+      "tier": 16,
+      "icon": "📝",
+      "baseCost": 8900000000000,
+      "goldPerSecond": 2083048,
+      "tickSeconds": 1
     },
     {
       "id": 115,
       "name": "Kalemlik",
-      "baseCost": 150000000000,
-      "goldPerSecond": 15000000,
-      "tickSeconds": 1,
-      "tier": 115,
-      "icon": "✏️"
+      "tier": 16,
+      "icon": "✏️",
+      "baseCost": 11000000000000,
+      "goldPerSecond": 2255043,
+      "tickSeconds": 1
     },
     {
       "id": 116,
       "name": "Hub",
-      "baseCost": 160000000000,
-      "goldPerSecond": 16000000,
-      "tickSeconds": 1,
-      "tier": 116,
-      "icon": "💸"
+      "tier": 16,
+      "icon": "💸",
+      "baseCost": 12000000000000,
+      "goldPerSecond": 2441239,
+      "tickSeconds": 1
     },
     {
       "id": 117,
       "name": "Kompresör",
-      "baseCost": 170000000000,
-      "goldPerSecond": 17000000,
-      "tickSeconds": 1,
-      "tier": 117,
-      "icon": "🔨"
+      "tier": 16,
+      "icon": "🔨",
+      "baseCost": 15000000000000,
+      "goldPerSecond": 2642809,
+      "tickSeconds": 1
     },
     {
       "id": 118,
       "name": "Konferans Salonu",
-      "baseCost": 180000000000,
-      "goldPerSecond": 18000000,
-      "tickSeconds": 1,
-      "tier": 118,
-      "icon": "🔩"
+      "tier": 16,
+      "icon": "🔩",
+      "baseCost": 17000000000000,
+      "goldPerSecond": 2861023,
+      "tickSeconds": 1
     },
     {
       "id": 119,
       "name": "Tuval",
-      "baseCost": 190000000000,
-      "goldPerSecond": 19000000,
-      "tickSeconds": 1,
-      "tier": 119,
-      "icon": "🛏️"
+      "tier": 16,
+      "icon": "🛏️",
+      "baseCost": 20000000000000,
+      "goldPerSecond": 3097254,
+      "tickSeconds": 1
     },
     {
       "id": 120,
       "name": "Türbin",
-      "baseCost": 190000000000,
-      "goldPerSecond": 19570000,
-      "tickSeconds": 1,
-      "tier": 120,
-      "icon": "🪡"
+      "tier": 16,
+      "icon": "🪡",
+      "baseCost": 24000000000000,
+      "goldPerSecond": 3352991,
+      "tickSeconds": 1
     },
     {
       "id": 121,
       "name": "Anka Tüyü",
-      "baseCost": 200000000000,
-      "goldPerSecond": 20000000,
-      "tickSeconds": 1,
-      "tier": 121,
-      "icon": "🦅"
+      "tier": 17,
+      "icon": "🦅",
+      "baseCost": 47000000000000,
+      "goldPerSecond": 5998470,
+      "tickSeconds": 1
     },
     {
       "id": 122,
       "name": "Dürbün",
-      "baseCost": 210000000000,
-      "goldPerSecond": 21000000,
-      "tickSeconds": 1,
-      "tier": 122,
-      "icon": "📂"
+      "tier": 17,
+      "icon": "📂",
+      "baseCost": 55000000000000,
+      "goldPerSecond": 6493756,
+      "tickSeconds": 1
     },
     {
       "id": 123,
       "name": "Mürekkep",
-      "baseCost": 230000000000,
-      "goldPerSecond": 23000000,
-      "tickSeconds": 1,
-      "tier": 123,
-      "icon": "🖋️"
+      "tier": 17,
+      "icon": "🖋️",
+      "baseCost": 65000000000000,
+      "goldPerSecond": 7029938,
+      "tickSeconds": 1
     },
     {
       "id": 124,
       "name": "Panel",
-      "baseCost": 240000000000,
-      "goldPerSecond": 24000000,
-      "tickSeconds": 1,
-      "tier": 124,
-      "icon": "⌨️"
+      "tier": 17,
+      "icon": "⌨️",
+      "baseCost": 77000000000000,
+      "goldPerSecond": 7610392,
+      "tickSeconds": 1
     },
     {
       "id": 125,
       "name": "Drone",
-      "baseCost": 250000000000,
-      "goldPerSecond": 25000000,
-      "tickSeconds": 1,
-      "tier": 125,
-      "icon": "🪟"
+      "tier": 17,
+      "icon": "🪟",
+      "baseCost": 91000000000000,
+      "goldPerSecond": 8238773,
+      "tickSeconds": 1
     },
     {
       "id": 126,
       "name": "El Kitabı",
-      "baseCost": 260000000000,
-      "goldPerSecond": 26000000,
-      "tickSeconds": 1,
-      "tier": 126,
-      "icon": "📍"
+      "tier": 17,
+      "icon": "📍",
+      "baseCost": 107373860489504.58,
+      "goldPerSecond": 8919039,
+      "tickSeconds": 1
     },
     {
       "id": 127,
       "name": "Tez",
-      "baseCost": 270000000000,
-      "goldPerSecond": 27000000,
-      "tickSeconds": 1,
-      "tier": 127,
-      "icon": "🔔"
+      "tier": 17,
+      "icon": "🔔",
+      "baseCost": 126701155377615.39,
+      "goldPerSecond": 9655473,
+      "tickSeconds": 1
     },
     {
       "id": 128,
       "name": "Tesbih",
-      "baseCost": 290000000000,
-      "goldPerSecond": 29000000,
-      "tickSeconds": 1,
-      "tier": 128,
-      "icon": "📓"
+      "tier": 18,
+      "icon": "📓",
+      "baseCost": 247067252986350,
+      "goldPerSecond": 17273553,
+      "tickSeconds": 1
     },
     {
       "id": 129,
       "name": "Çip",
-      "baseCost": 300000000000,
-      "goldPerSecond": 30000000,
-      "tickSeconds": 1,
-      "tier": 129,
-      "icon": "📀"
+      "tier": 18,
+      "icon": "📀",
+      "baseCost": 291539358523893,
+      "goldPerSecond": 18699810,
+      "tickSeconds": 1
     },
     {
       "id": 130,
       "name": "Sanal Gerçeklik",
-      "baseCost": 310000000000,
-      "goldPerSecond": 31000000,
-      "tickSeconds": 1,
-      "tier": 130,
-      "icon": "📄"
+      "tier": 18,
+      "icon": "📄",
+      "baseCost": 344016443058193.75,
+      "goldPerSecond": 20243831,
+      "tickSeconds": 1
     },
     {
       "id": 131,
       "name": "Ajanda",
-      "baseCost": 330000000000,
-      "goldPerSecond": 33000000,
-      "tickSeconds": 1,
-      "tier": 131,
-      "icon": "🧴"
+      "tier": 18,
+      "icon": "🧴",
+      "baseCost": 405939402808668.6,
+      "goldPerSecond": 21915340,
+      "tickSeconds": 1
     },
     {
       "id": 132,
       "name": "Sertifika",
-      "baseCost": 340000000000,
-      "goldPerSecond": 34000000,
-      "tickSeconds": 1,
-      "tier": 132,
-      "icon": "💻"
+      "tier": 18,
+      "icon": "💻",
+      "baseCost": 479008495314228.94,
+      "goldPerSecond": 23724863,
+      "tickSeconds": 1
     },
     {
       "id": 133,
       "name": "Okuma Kitabı",
-      "baseCost": 360000000000,
-      "goldPerSecond": 36000000,
-      "tickSeconds": 1,
-      "tier": 133,
-      "icon": "📓"
+      "tier": 18,
+      "icon": "📓",
+      "baseCost": 565230024470790.1,
+      "goldPerSecond": 25683797,
+      "tickSeconds": 1
     },
     {
       "id": 134,
       "name": "Poster",
-      "baseCost": 380000000000,
-      "goldPerSecond": 38000000,
-      "tickSeconds": 1,
-      "tier": 134,
-      "icon": "🪧"
+      "tier": 18,
+      "icon": "🪧",
+      "baseCost": 666971428875532.2,
+      "goldPerSecond": 27804477,
+      "tickSeconds": 1
     },
     {
       "id": 135,
       "name": "Opera",
-      "baseCost": 390000000000,
-      "goldPerSecond": 39000000,
-      "tickSeconds": 1,
-      "tier": 135,
-      "icon": "🩱"
+      "tier": 18,
+      "icon": "🩱",
+      "baseCost": 787026286073128,
+      "goldPerSecond": 30100260,
+      "tickSeconds": 1
     },
     {
       "id": 136,
       "name": "Saray",
-      "baseCost": 410000000000,
-      "goldPerSecond": 41000000,
-      "tickSeconds": 1,
-      "tier": 136,
-      "icon": "🪤"
+      "tier": 19,
+      "icon": "🪤",
+      "baseCost": 1534701257842599.5,
+      "goldPerSecond": 53849089,
+      "tickSeconds": 1
     },
     {
       "id": 137,
       "name": "Ansiklopedi",
-      "baseCost": 430000000000,
-      "goldPerSecond": 43000000,
-      "tickSeconds": 1,
-      "tier": 137,
-      "icon": "📚"
+      "tier": 19,
+      "icon": "📚",
+      "baseCost": 1810947484254267.2,
+      "goldPerSecond": 58295345,
+      "tickSeconds": 1
     },
     {
       "id": 138,
       "name": "Mars Kolonisi",
-      "baseCost": 450000000000,
-      "goldPerSecond": 45000000,
-      "tickSeconds": 1,
-      "tier": 138,
-      "icon": "🔕"
+      "tier": 19,
+      "icon": "🔕",
+      "baseCost": 2136918031420035.2,
+      "goldPerSecond": 63108722,
+      "tickSeconds": 1
     },
     {
       "id": 139,
       "name": "Terminal",
-      "baseCost": 470000000000,
-      "goldPerSecond": 47000000,
-      "tickSeconds": 1,
-      "tier": 139,
-      "icon": "🔌"
+      "tier": 19,
+      "icon": "🔌",
+      "baseCost": 2521563277075641.5,
+      "goldPerSecond": 68319534,
+      "tickSeconds": 1
     },
     {
       "id": 140,
       "name": "Hat Takımı",
-      "baseCost": 490000000000,
-      "goldPerSecond": 49000000,
-      "tickSeconds": 1,
-      "tier": 140,
-      "icon": "📝"
+      "tier": 19,
+      "icon": "📝",
+      "baseCost": 2975444666949257,
+      "goldPerSecond": 73960596,
+      "tickSeconds": 1
     },
     {
       "id": 141,
       "name": "Güneş Paneli",
-      "baseCost": 510000000000,
-      "goldPerSecond": 51000000,
-      "tickSeconds": 1,
-      "tier": 141,
-      "icon": "☀️"
+      "tier": 19,
+      "icon": "☀️",
+      "baseCost": 3511024707000123,
+      "goldPerSecond": 80067434,
+      "tickSeconds": 1
     },
     {
       "id": 142,
       "name": "Müze",
-      "baseCost": 530000000000,
-      "goldPerSecond": 53000000,
-      "tickSeconds": 1,
-      "tier": 142,
-      "icon": "🔗"
+      "tier": 19,
+      "icon": "🔗",
+      "baseCost": 4143009154260145,
+      "goldPerSecond": 86678507,
+      "tickSeconds": 1
     },
     {
       "id": 143,
       "name": "Ekran",
-      "baseCost": 560000000000,
-      "goldPerSecond": 56000000,
-      "tickSeconds": 1,
-      "tier": 143,
-      "icon": "🥼"
+      "tier": 20,
+      "icon": "🥼",
+      "baseCost": 8078867850807283,
+      "goldPerSecond": 155067054,
+      "tickSeconds": 1
     },
     {
       "id": 144,
       "name": "Gazete",
-      "baseCost": 580000000000,
-      "goldPerSecond": 58000000,
-      "tickSeconds": 1,
-      "tier": 144,
-      "icon": "🗞️"
+      "tier": 20,
+      "icon": "🗞️",
+      "baseCost": 9533064063952594,
+      "goldPerSecond": 167870756,
+      "tickSeconds": 1
     },
     {
       "id": 145,
       "name": "Kule",
-      "baseCost": 600000000000,
-      "goldPerSecond": 60000000,
-      "tickSeconds": 1,
-      "tier": 145,
-      "icon": "🎩"
+      "tier": 20,
+      "icon": "🎩",
+      "baseCost": 11249015595464060,
+      "goldPerSecond": 181731644,
+      "tickSeconds": 1
     },
     {
       "id": 146,
       "name": "Alfabe Seti",
-      "baseCost": 630000000000,
-      "goldPerSecond": 63000000,
-      "tickSeconds": 1,
-      "tier": 146,
-      "icon": "🔤"
+      "tier": 20,
+      "icon": "🔤",
+      "baseCost": 13273838402647590,
+      "goldPerSecond": 196737009,
+      "tickSeconds": 1
     },
     {
       "id": 147,
       "name": "Kristal Küre",
-      "baseCost": 660000000000,
-      "goldPerSecond": 66000000,
-      "tickSeconds": 1,
-      "tier": 147,
-      "icon": "🔮"
+      "tier": 20,
+      "icon": "🔮",
+      "baseCost": 15663129315124156,
+      "goldPerSecond": 212981349,
+      "tickSeconds": 1
     },
     {
       "id": 148,
       "name": "Totem",
-      "baseCost": 680000000000,
-      "goldPerSecond": 68000000,
-      "tickSeconds": 1,
-      "tier": 148,
-      "icon": "🧰"
+      "tier": 20,
+      "icon": "🧰",
+      "baseCost": 18482492591846504,
+      "goldPerSecond": 230566965,
+      "tickSeconds": 1
     },
     {
       "id": 149,
       "name": "Kraliyet Asası",
-      "baseCost": 710000000000,
-      "goldPerSecond": 71000000,
-      "tickSeconds": 1,
-      "tier": 149,
-      "icon": "🏰"
+      "tier": 20,
+      "icon": "🏰",
+      "baseCost": 21809341258378870,
+      "goldPerSecond": 249604605,
+      "tickSeconds": 1
     },
     {
       "id": 150,
       "name": "Sihir Asası",
-      "baseCost": 740000000000,
-      "goldPerSecond": 74000000,
-      "tickSeconds": 1,
-      "tier": 150,
-      "icon": "👜"
-    },
-    {
-      "id": 151,
-      "name": "Ayna",
-      "baseCost": 770000000000,
-      "goldPerSecond": 77000000,
-      "tickSeconds": 1,
-      "tier": 151,
-      "icon": "🌙"
-    },
-    {
-      "id": 152,
-      "name": "Simülasyon",
-      "baseCost": 800000000000,
-      "goldPerSecond": 80000000,
-      "tickSeconds": 1,
-      "tier": 152,
-      "icon": "💳"
-    },
-    {
-      "id": 153,
-      "name": "Saat",
-      "baseCost": 830000000000,
-      "goldPerSecond": 83000000,
-      "tickSeconds": 1,
-      "tier": 153,
-      "icon": "🛏️"
-    },
-    {
-      "id": 154,
-      "name": "Katalog",
-      "baseCost": 870000000000,
-      "goldPerSecond": 87000000,
-      "tickSeconds": 1,
-      "tier": 154,
-      "icon": "📡"
-    },
-    {
-      "id": 155,
-      "name": "Robot",
-      "baseCost": 900000000000,
-      "goldPerSecond": 90000000,
-      "tickSeconds": 1,
-      "tier": 155,
-      "icon": "🧰"
-    },
-    {
-      "id": 156,
-      "name": "Runa Taşı",
-      "baseCost": 940000000000,
-      "goldPerSecond": 94000000,
-      "tickSeconds": 1,
-      "tier": 156,
-      "icon": "🪦"
-    },
-    {
-      "id": 157,
-      "name": "Diploma",
-      "baseCost": 970000000000,
-      "goldPerSecond": 97000000,
-      "tickSeconds": 1,
-      "tier": 157,
-      "icon": "📘"
-    },
-    {
-      "id": 158,
-      "name": "Ders Planı",
-      "baseCost": 1000000000000,
-      "goldPerSecond": 100000000,
-      "tickSeconds": 1,
-      "tier": 158,
-      "icon": "🛁"
-    },
-    {
-      "id": 159,
-      "name": "Damga",
-      "baseCost": 1000000000000,
-      "goldPerSecond": 103000000,
-      "tickSeconds": 1,
-      "tier": 159,
-      "icon": "🔊"
-    },
-    {
-      "id": 160,
-      "name": "Yazıcı",
-      "baseCost": 1100000000000,
-      "goldPerSecond": 110000000,
-      "tickSeconds": 1,
-      "tier": 160,
-      "icon": "✍️"
-    },
-    {
-      "id": 161,
-      "name": "İşlemci",
-      "baseCost": 1100000000000,
-      "goldPerSecond": 113300000,
-      "tickSeconds": 1,
-      "tier": 161,
-      "icon": "📊"
-    },
-    {
-      "id": 162,
-      "name": "Boya Kalemi",
-      "baseCost": 1200000000000,
-      "goldPerSecond": 120000000,
-      "tickSeconds": 1,
-      "tier": 162,
-      "icon": "✏️"
-    },
-    {
-      "id": 163,
-      "name": "Filozofların Taşı",
-      "baseCost": 1200000000000,
-      "goldPerSecond": 123600000,
-      "tickSeconds": 1,
-      "tier": 163,
-      "icon": "🩱"
-    },
-    {
-      "id": 164,
-      "name": "Yıldız Haritası",
-      "baseCost": 1300000000000,
-      "goldPerSecond": 130000000,
-      "tickSeconds": 1,
-      "tier": 164,
-      "icon": "⭐"
-    },
-    {
-      "id": 165,
-      "name": "Sergi Salonu",
-      "baseCost": 1300000000000,
-      "goldPerSecond": 133900000,
-      "tickSeconds": 1,
-      "tier": 165,
-      "icon": "⚖️"
-    },
-    {
-      "id": 166,
-      "name": "Teknoloji Parkı",
-      "baseCost": 1400000000000,
-      "goldPerSecond": 140000000,
-      "tickSeconds": 1,
-      "tier": 166,
-      "icon": "🪥"
-    },
-    {
-      "id": 167,
-      "name": "Mikrofon",
-      "baseCost": 1400000000000,
-      "goldPerSecond": 144200000,
-      "tickSeconds": 1,
-      "tier": 167,
-      "icon": "🎹"
-    },
-    {
-      "id": 168,
-      "name": "Akademi",
-      "baseCost": 1500000000000,
-      "goldPerSecond": 150000000,
-      "tickSeconds": 1,
-      "tier": 168,
-      "icon": "🧷"
-    },
-    {
-      "id": 169,
-      "name": "İlham Deposu",
-      "baseCost": 1500000000000,
-      "goldPerSecond": 154500000,
-      "tickSeconds": 1,
-      "tier": 169,
-      "icon": "🧺"
-    },
-    {
-      "id": 170,
-      "name": "Bilgi Havuzu",
-      "baseCost": 1600000000000,
-      "goldPerSecond": 160000000,
-      "tickSeconds": 1,
-      "tier": 170,
-      "icon": "🧠"
-    },
-    {
-      "id": 171,
-      "name": "Kütüphane",
-      "baseCost": 1600000000000,
-      "goldPerSecond": 164800000,
-      "tickSeconds": 1,
-      "tier": 171,
-      "icon": "🏛️"
-    },
-    {
-      "id": 172,
-      "name": "Portal Anahtarı",
-      "baseCost": 1700000000000,
-      "goldPerSecond": 170000000,
-      "tickSeconds": 1,
-      "tier": 172,
-      "icon": "🗑️"
-    },
-    {
-      "id": 173,
-      "name": "Zaman Saati",
-      "baseCost": 1700000000000,
-      "goldPerSecond": 175100000,
-      "tickSeconds": 1,
-      "tier": 173,
-      "icon": "🪓"
-    },
-    {
-      "id": 174,
-      "name": "Mikroskop",
-      "baseCost": 1800000000000,
-      "goldPerSecond": 180000000,
-      "tickSeconds": 1,
-      "tier": 174,
-      "icon": "👢"
-    },
-    {
-      "id": 175,
-      "name": "Rulo",
-      "baseCost": 1900000000000,
-      "goldPerSecond": 190000000,
-      "tickSeconds": 1,
-      "tier": 175,
-      "icon": "📀"
-    },
-    {
-      "id": 176,
-      "name": "Uzay İstasyonu",
-      "baseCost": 1900000000000,
-      "goldPerSecond": 195700000,
-      "tickSeconds": 1,
-      "tier": 176,
-      "icon": "🚀"
-    },
-    {
-      "id": 177,
-      "name": "Dil Kursu",
-      "baseCost": 2000000000000,
-      "goldPerSecond": 200000000,
-      "tickSeconds": 1,
-      "tier": 177,
-      "icon": "🩺"
-    },
-    {
-      "id": 178,
-      "name": "Boncuk",
-      "baseCost": 2100000000000,
-      "goldPerSecond": 210000000,
-      "tickSeconds": 1,
-      "tier": 178,
-      "icon": "💻"
-    },
-    {
-      "id": 179,
-      "name": "Hokka",
-      "baseCost": 2100000000000,
-      "goldPerSecond": 216300000,
-      "tickSeconds": 1,
-      "tier": 179,
-      "icon": "📒"
-    },
-    {
-      "id": 180,
-      "name": "Büyüteç",
-      "baseCost": 2200000000000,
-      "goldPerSecond": 220000000,
-      "tickSeconds": 1,
-      "tier": 180,
-      "icon": "🔫"
-    },
-    {
-      "id": 181,
-      "name": "Bilgelik Tacı",
-      "baseCost": 2300000000000,
-      "goldPerSecond": 230000000,
-      "tickSeconds": 1,
-      "tier": 181,
-      "icon": "🚬"
-    },
-    {
-      "id": 182,
-      "name": "Zımba",
-      "baseCost": 2400000000000,
-      "goldPerSecond": 240000000,
-      "tickSeconds": 1,
-      "tier": 182,
-      "icon": "🔕"
-    },
-    {
-      "id": 183,
-      "name": "Zarf",
-      "baseCost": 2400000000000,
-      "goldPerSecond": 247200000,
-      "tickSeconds": 1,
-      "tier": 183,
-      "icon": "🪢"
-    },
-    {
-      "id": 184,
-      "name": "Rozet",
-      "baseCost": 2500000000000,
-      "goldPerSecond": 250000000,
-      "tickSeconds": 1,
-      "tier": 184,
-      "icon": "📉"
-    },
-    {
-      "id": 185,
-      "name": "Bildiri",
-      "baseCost": 2600000000000,
-      "goldPerSecond": 260000000,
-      "tickSeconds": 1,
-      "tier": 185,
-      "icon": "🪞"
-    },
-    {
-      "id": 186,
-      "name": "Kağıt",
-      "baseCost": 2700000000000,
-      "goldPerSecond": 270000000,
-      "tickSeconds": 1,
-      "tier": 186,
-      "icon": "📄"
-    },
-    {
-      "id": 187,
-      "name": "Şifreleyici",
-      "baseCost": 2800000000000,
-      "goldPerSecond": 280000000,
-      "tickSeconds": 1,
-      "tier": 187,
-      "icon": "💵"
-    },
-    {
-      "id": 188,
-      "name": "Yapışkan Not",
-      "baseCost": 2900000000000,
-      "goldPerSecond": 290000000,
-      "tickSeconds": 1,
-      "tier": 188,
-      "icon": "📩"
-    },
-    {
-      "id": 189,
-      "name": "Gramer Kitabı",
-      "baseCost": 3000000000000,
-      "goldPerSecond": 300000000,
-      "tickSeconds": 1,
-      "tier": 189,
-      "icon": "🧢"
-    },
-    {
-      "id": 190,
-      "name": "Strateji Merkezi",
-      "baseCost": 3000000000000,
-      "goldPerSecond": 309000000,
-      "tickSeconds": 1,
-      "tier": 190,
-      "icon": "🔧"
-    },
-    {
-      "id": 191,
-      "name": "Hayal Gücü",
-      "baseCost": 3100000000000,
-      "goldPerSecond": 310000000,
-      "tickSeconds": 1,
-      "tier": 191,
-      "icon": "📕"
-    },
-    {
-      "id": 192,
-      "name": "Antoloji",
-      "baseCost": 3200000000000,
-      "goldPerSecond": 320000000,
-      "tickSeconds": 1,
-      "tier": 192,
-      "icon": "🖌️"
-    },
-    {
-      "id": 193,
-      "name": "Kaligrafi Seti",
-      "baseCost": 3300000000000,
-      "goldPerSecond": 330000000,
-      "tickSeconds": 1,
-      "tier": 193,
-      "icon": "📷"
-    },
-    {
-      "id": 194,
-      "name": "Hece Tablosu",
-      "baseCost": 3500000000000,
-      "goldPerSecond": 350000000,
-      "tickSeconds": 1,
-      "tier": 194,
-      "icon": "💸"
-    },
-    {
-      "id": 195,
-      "name": "Tarayıcı",
-      "baseCost": 3600000000000,
-      "goldPerSecond": 360000000,
-      "tickSeconds": 1,
-      "tier": 195,
-      "icon": "🎺"
-    },
-    {
-      "id": 196,
-      "name": "Radar",
-      "baseCost": 3700000000000,
-      "goldPerSecond": 370000000,
-      "tickSeconds": 1,
-      "tier": 196,
-      "icon": "📣"
-    },
-    {
-      "id": 197,
-      "name": "Modül",
-      "baseCost": 3800000000000,
-      "goldPerSecond": 380000000,
-      "tickSeconds": 1,
-      "tier": 197,
-      "icon": "📰"
-    },
-    {
-      "id": 198,
-      "name": "Büyü Kitabı",
-      "baseCost": 3900000000000,
-      "goldPerSecond": 390000000,
-      "tickSeconds": 1,
-      "tier": 198,
-      "icon": "🧦"
-    },
-    {
-      "id": 199,
-      "name": "Asteroid Madeni",
-      "baseCost": 4000000000000,
-      "goldPerSecond": 400000000,
-      "tickSeconds": 1,
-      "tier": 199,
-      "icon": "📈"
-    },
-    {
-      "id": 200,
-      "name": "Sonsuzluk İşareti",
-      "baseCost": 4100000000000,
-      "goldPerSecond": 410000000,
-      "tickSeconds": 1,
-      "tier": 200,
-      "icon": "🔬"
-    },
-    {
-      "id": 201,
-      "name": "Pergel",
-      "baseCost": 4300000000000,
-      "goldPerSecond": 430000000,
-      "tickSeconds": 1,
-      "tier": 201,
-      "icon": "📗"
-    },
-    {
-      "id": 202,
-      "name": "Silgi",
-      "baseCost": 4400000000000,
-      "goldPerSecond": 440000000,
-      "tickSeconds": 1,
-      "tier": 202,
-      "icon": "📑"
-    },
-    {
-      "id": 203,
-      "name": "Roman",
-      "baseCost": 4500000000000,
-      "goldPerSecond": 450000000,
-      "tickSeconds": 1,
-      "tier": 203,
-      "icon": "📖"
-    },
-    {
-      "id": 204,
-      "name": "Bulut Sistemi",
-      "baseCost": 4700000000000,
-      "goldPerSecond": 470000000,
-      "tickSeconds": 1,
-      "tier": 204,
-      "icon": "☁️"
-    },
-    {
-      "id": 205,
-      "name": "Optimize Edici",
-      "baseCost": 4800000000000,
-      "goldPerSecond": 480000000,
-      "tickSeconds": 1,
-      "tier": 205,
-      "icon": "👚"
-    },
-    {
-      "id": 206,
-      "name": "Çözümleyici",
-      "baseCost": 4900000000000,
-      "goldPerSecond": 490000000,
-      "tickSeconds": 1,
-      "tier": 206,
-      "icon": "🪕"
-    },
-    {
-      "id": 207,
-      "name": "Gezegen Atlası",
-      "baseCost": 5100000000000,
-      "goldPerSecond": 510000000,
-      "tickSeconds": 1,
-      "tier": 207,
-      "icon": "🗺️"
-    },
-    {
-      "id": 208,
-      "name": "Çerçeve",
-      "baseCost": 5200000000000,
-      "goldPerSecond": 520000000,
-      "tickSeconds": 1,
-      "tier": 208,
-      "icon": "📓"
-    },
-    {
-      "id": 209,
-      "name": "Bileşen",
-      "baseCost": 5400000000000,
-      "goldPerSecond": 540000000,
-      "tickSeconds": 1,
-      "tier": 209,
-      "icon": "👞"
-    },
-    {
-      "id": 210,
-      "name": "Divit",
-      "baseCost": 5500000000000,
-      "goldPerSecond": 550000000,
-      "tickSeconds": 1,
-      "tier": 210,
-      "icon": "👙"
-    },
-    {
-      "id": 211,
-      "name": "Tılsım",
-      "baseCost": 5700000000000,
-      "goldPerSecond": 570000000,
-      "tickSeconds": 1,
-      "tier": 211,
-      "icon": "🥻"
-    },
-    {
-      "id": 212,
-      "name": "Galaksi Rehberi",
-      "baseCost": 5900000000000,
-      "goldPerSecond": 590000000,
-      "tickSeconds": 1,
-      "tier": 212,
-      "icon": "📇"
-    },
-    {
-      "id": 213,
-      "name": "Arşiv",
-      "baseCost": 6000000000000,
-      "goldPerSecond": 600000000,
-      "tickSeconds": 1,
-      "tier": 213,
-      "icon": "🗃️"
-    },
-    {
-      "id": 214,
-      "name": "Güç Yüzüğü",
-      "baseCost": 6200000000000,
-      "goldPerSecond": 620000000,
-      "tickSeconds": 1,
-      "tier": 214,
-      "icon": "💷"
-    },
-    {
-      "id": 215,
-      "name": "Pastel Boya",
-      "baseCost": 6400000000000,
-      "goldPerSecond": 640000000,
-      "tickSeconds": 1,
-      "tier": 215,
-      "icon": "🔓"
-    },
-    {
-      "id": 216,
-      "name": "Yazma Defteri",
-      "baseCost": 6600000000000,
-      "goldPerSecond": 660000000,
-      "tickSeconds": 1,
-      "tier": 216,
-      "icon": "📓"
-    },
-    {
-      "id": 217,
-      "name": "Harita",
-      "baseCost": 6800000000000,
-      "goldPerSecond": 680000000,
-      "tickSeconds": 1,
-      "tier": 217,
-      "icon": "🎙️"
-    },
-    {
-      "id": 218,
-      "name": "Anakart",
-      "baseCost": 6900000000000,
-      "goldPerSecond": 690000000,
-      "tickSeconds": 1,
-      "tier": 218,
-      "icon": "📌"
-    },
-    {
-      "id": 219,
-      "name": "Broşür",
-      "baseCost": 7100000000000,
-      "goldPerSecond": 710000000,
-      "tickSeconds": 1,
-      "tier": 219,
-      "icon": "🔐"
-    },
-    {
-      "id": 220,
-      "name": "Bellek",
-      "baseCost": 7300000000000,
-      "goldPerSecond": 730000000,
-      "tickSeconds": 1,
-      "tier": 220,
-      "icon": "📭"
-    },
-    {
-      "id": 221,
-      "name": "Pusula",
-      "baseCost": 7500000000000,
-      "goldPerSecond": 750000000,
-      "tickSeconds": 1,
-      "tier": 221,
-      "icon": "🌂"
-    },
-    {
-      "id": 222,
-      "name": "Meteor Parçası",
-      "baseCost": 7700000000000,
-      "goldPerSecond": 770000000,
-      "tickSeconds": 1,
-      "tier": 222,
-      "icon": "⛓️"
-    },
-    {
-      "id": 223,
-      "name": "Fırça",
-      "baseCost": 8000000000000,
-      "goldPerSecond": 800000000,
-      "tickSeconds": 1,
-      "tier": 223,
-      "icon": "🖨️"
-    },
-    {
-      "id": 224,
-      "name": "Kartpostal",
-      "baseCost": 8200000000000,
-      "goldPerSecond": 820000000,
-      "tickSeconds": 1,
-      "tier": 224,
-      "icon": "🧽"
-    },
-    {
-      "id": 225,
-      "name": "Laboratuvar",
-      "baseCost": 8400000000000,
-      "goldPerSecond": 840000000,
-      "tickSeconds": 1,
-      "tier": 225,
-      "icon": "🔈"
-    },
-    {
-      "id": 226,
-      "name": "Galeri",
-      "baseCost": 8600000000000,
-      "goldPerSecond": 860000000,
-      "tickSeconds": 1,
-      "tier": 226,
-      "icon": "✒️"
-    },
-    {
-      "id": 227,
-      "name": "Kamera",
-      "baseCost": 8800000000000,
-      "goldPerSecond": 880000000,
-      "tickSeconds": 1,
-      "tier": 227,
-      "icon": "📈"
-    },
-    {
-      "id": 228,
-      "name": "Rehber",
-      "baseCost": 9100000000000,
-      "goldPerSecond": 910000000,
-      "tickSeconds": 1,
-      "tier": 228,
-      "icon": "🖇️"
-    },
-    {
-      "id": 229,
-      "name": "Uygulama",
-      "baseCost": 9300000000000,
-      "goldPerSecond": 930000000,
-      "tickSeconds": 1,
-      "tier": 229,
-      "icon": "🗄️"
-    },
-    {
-      "id": 230,
-      "name": "Plaket",
-      "baseCost": 9600000000000,
-      "goldPerSecond": 960000000,
-      "tickSeconds": 1,
-      "tier": 230,
-      "icon": "🧼"
-    },
-    {
-      "id": 231,
-      "name": "Kader Çarkı",
-      "baseCost": 9800000000000,
-      "goldPerSecond": 980000000,
-      "tickSeconds": 1,
-      "tier": 231,
-      "icon": "🗿"
-    },
-    {
-      "id": 232,
-      "name": "Seminer Odası",
-      "baseCost": 10000000000000,
-      "goldPerSecond": 1000000000,
-      "tickSeconds": 1,
-      "tier": 232,
-      "icon": "🪤"
-    },
-    {
-      "id": 233,
-      "name": "Kalem",
-      "baseCost": 10000000000000,
-      "goldPerSecond": 1030000000,
-      "tickSeconds": 1,
-      "tier": 233,
-      "icon": "✏️"
-    },
-    {
-      "id": 234,
-      "name": "İpek Strateji Merkezi",
-      "baseCost": 11000000000000,
-      "goldPerSecond": 1100000000,
-      "tickSeconds": 1,
-      "tier": 234,
-      "icon": "🖱️"
-    },
-    {
-      "id": 235,
-      "name": "İpek Radar",
-      "baseCost": 11000000000000,
-      "goldPerSecond": 1133000000,
-      "tickSeconds": 1,
-      "tier": 235,
-      "icon": "💳"
-    },
-    {
-      "id": 236,
-      "name": "İpek Şifreleyici",
-      "baseCost": 11000000000000,
-      "goldPerSecond": 1166990000,
-      "tickSeconds": 1,
-      "tier": 236,
-      "icon": "📍"
-    },
-    {
-      "id": 237,
-      "name": "İpek Seminer Odası",
-      "baseCost": 11000000000000,
-      "goldPerSecond": 1201999700,
-      "tickSeconds": 1,
-      "tier": 237,
-      "icon": "👘"
-    },
-    {
-      "id": 238,
-      "name": "İpek Dil İşlemcisi",
-      "baseCost": 12000000000000,
-      "goldPerSecond": 1238059691,
-      "tickSeconds": 1,
-      "tier": 238,
-      "icon": "⚔️"
-    },
-    {
-      "id": 239,
-      "name": "İpek Bileşen",
-      "baseCost": 12000000000000,
-      "goldPerSecond": 1275201481.7,
-      "tickSeconds": 1,
-      "tier": 239,
-      "icon": "🔧"
-    },
-    {
-      "id": 240,
-      "name": "İpek Tuval",
-      "baseCost": 12000000000000,
-      "goldPerSecond": 1313457526.2,
-      "tickSeconds": 1,
-      "tier": 240,
-      "icon": "🌂"
-    },
-    {
-      "id": 241,
-      "name": "İpek Kraliyet Asası",
-      "baseCost": 13000000000000,
-      "goldPerSecond": 1352861252,
-      "tickSeconds": 1,
-      "tier": 241,
-      "icon": "🏰"
-    },
-    {
-      "id": 242,
-      "name": "İpek Atlas",
-      "baseCost": 13000000000000,
-      "goldPerSecond": 1393447089.6,
-      "tickSeconds": 1,
-      "tier": 242,
-      "icon": "🗺️"
-    },
-    {
-      "id": 243,
-      "name": "İpek Kristal Küre",
-      "baseCost": 13000000000000,
-      "goldPerSecond": 1435250502.3,
-      "tickSeconds": 1,
-      "tier": 243,
-      "icon": "🔮"
-    },
-    {
-      "id": 244,
-      "name": "İpek Damga",
-      "baseCost": 14000000000000,
-      "goldPerSecond": 1478308017.4,
-      "tickSeconds": 1,
-      "tier": 244,
-      "icon": "💷"
-    },
-    {
-      "id": 245,
-      "name": "İpek Filtre",
-      "baseCost": 14000000000000,
-      "goldPerSecond": 1522657257.9,
-      "tickSeconds": 1,
-      "tier": 245,
-      "icon": "💰"
-    },
-    {
-      "id": 246,
-      "name": "İpek Sensör",
-      "baseCost": 14000000000000,
-      "goldPerSecond": 1568336975.6,
-      "tickSeconds": 1,
-      "tier": 246,
-      "icon": "🔩"
-    },
-    {
-      "id": 247,
-      "name": "İpek Boncuk",
-      "baseCost": 15000000000000,
-      "goldPerSecond": 1615387084.9,
-      "tickSeconds": 1,
-      "tier": 247,
-      "icon": "🪑"
-    },
-    {
-      "id": 248,
-      "name": "İpek Tüy Kalem",
-      "baseCost": 15000000000000,
-      "goldPerSecond": 1663848697.4,
-      "tickSeconds": 1,
-      "tier": 248,
-      "icon": "✏️"
-    },
-    {
-      "id": 249,
-      "name": "İpek Parşömen",
-      "baseCost": 15000000000000,
-      "goldPerSecond": 1713764158.3,
-      "tickSeconds": 1,
-      "tier": 249,
-      "icon": "💳"
-    },
-    {
-      "id": 250,
-      "name": "İpek Terazi",
-      "baseCost": 16000000000000,
-      "goldPerSecond": 1765177083,
-      "tickSeconds": 1,
-      "tier": 250,
-      "icon": "👘"
-    },
-    {
-      "id": 251,
-      "name": "İpek Katalog",
-      "baseCost": 16000000000000,
-      "goldPerSecond": 1818132395.5,
-      "tickSeconds": 1,
-      "tier": 251,
-      "icon": "👕"
-    },
-    {
-      "id": 252,
-      "name": "İpek Algoritma",
-      "baseCost": 17000000000000,
-      "goldPerSecond": 1872676367.4,
-      "tickSeconds": 1,
-      "tier": 252,
-      "icon": "💳"
-    },
-    {
-      "id": 253,
-      "name": "İpek Müfredat",
-      "baseCost": 17000000000000,
-      "goldPerSecond": 1928856658.4,
-      "tickSeconds": 1,
-      "tier": 253,
-      "icon": "💷"
-    },
-    {
-      "id": 254,
-      "name": "İpek Hologram",
-      "baseCost": 17000000000000,
-      "goldPerSecond": 1986722358.2,
-      "tickSeconds": 1,
-      "tier": 254,
-      "icon": "👠"
-    },
-    {
-      "id": 255,
-      "name": "İpek Burs Belgesi",
-      "baseCost": 18000000000000,
-      "goldPerSecond": 2046324028.9,
-      "tickSeconds": 1,
-      "tier": 255,
-      "icon": "📄"
-    },
-    {
-      "id": 256,
-      "name": "İpek Mikrofon",
-      "baseCost": 18000000000000,
-      "goldPerSecond": 2107713749.8,
-      "tickSeconds": 1,
-      "tier": 256,
-      "icon": "🚽"
-    },
-    {
-      "id": 257,
-      "name": "İpek Konferans Salonu",
-      "baseCost": 19000000000000,
-      "goldPerSecond": 2170945162.3,
-      "tickSeconds": 1,
-      "tier": 257,
-      "icon": "⌨️"
-    },
-    {
-      "id": 258,
-      "name": "İpek Konuşma Tanıma",
-      "baseCost": 19000000000000,
-      "goldPerSecond": 2236073517.2,
-      "tickSeconds": 1,
-      "tier": 258,
-      "icon": "🧦"
-    },
-    {
-      "id": 259,
-      "name": "İpek Takvim",
-      "baseCost": 19000000000000,
-      "goldPerSecond": 2303155722.7,
-      "tickSeconds": 1,
-      "tier": 259,
-      "icon": "📣"
-    },
-    {
-      "id": 260,
-      "name": "İpek Cilt",
-      "baseCost": 20000000000000,
-      "goldPerSecond": 2372250394.4,
-      "tickSeconds": 1,
-      "tier": 260,
-      "icon": "📔"
-    },
-    {
-      "id": 261,
-      "name": "İpek Poster",
-      "baseCost": 20000000000000,
-      "goldPerSecond": 2443417906.2,
-      "tickSeconds": 1,
-      "tier": 261,
-      "icon": "🪤"
-    },
-    {
-      "id": 262,
-      "name": "İpek Tesbih",
-      "baseCost": 21000000000000,
-      "goldPerSecond": 2516720443.4,
-      "tickSeconds": 1,
-      "tier": 262,
-      "icon": "📺"
-    },
-    {
-      "id": 263,
-      "name": "İpek Ekran",
-      "baseCost": 21000000000000,
-      "goldPerSecond": 2592222056.7,
-      "tickSeconds": 1,
-      "tier": 263,
-      "icon": "💽"
-    },
-    {
-      "id": 264,
-      "name": "İpek Totem",
-      "baseCost": 22000000000000,
-      "goldPerSecond": 2669988718.4,
-      "tickSeconds": 1,
-      "tier": 264,
-      "icon": "👜"
-    },
-    {
-      "id": 265,
-      "name": "İpek Güç Yüzüğü",
-      "baseCost": 22000000000000,
-      "goldPerSecond": 2750088380,
-      "tickSeconds": 1,
-      "tier": 265,
-      "icon": "🔫"
-    },
-    {
-      "id": 266,
-      "name": "İpek Motor",
-      "baseCost": 23000000000000,
-      "goldPerSecond": 2832591031.4,
-      "tickSeconds": 1,
-      "tier": 266,
-      "icon": "📲"
-    },
-    {
-      "id": 267,
-      "name": "İpek Kartpostal",
-      "baseCost": 23000000000000,
-      "goldPerSecond": 2917568762.3,
-      "tickSeconds": 1,
-      "tier": 267,
-      "icon": "🔌"
-    },
-    {
-      "id": 268,
-      "name": "İpek Türbin",
-      "baseCost": 24000000000000,
-      "goldPerSecond": 3005095825.2,
-      "tickSeconds": 1,
-      "tier": 268,
-      "icon": "🪥"
-    },
-    {
-      "id": 269,
-      "name": "İpek Cetvel",
-      "baseCost": 24000000000000,
-      "goldPerSecond": 3095248700,
-      "tickSeconds": 1,
-      "tier": 269,
-      "icon": "👘"
-    },
-    {
-      "id": 270,
-      "name": "İpek Atölye",
-      "baseCost": 25000000000000,
-      "goldPerSecond": 3188106161,
-      "tickSeconds": 1,
-      "tier": 270,
-      "icon": "📥"
-    },
-    {
-      "id": 271,
-      "name": "İpek Pergel",
-      "baseCost": 26000000000000,
-      "goldPerSecond": 3283749345.8,
-      "tickSeconds": 1,
-      "tier": 271,
-      "icon": "🎥"
-    },
-    {
-      "id": 272,
-      "name": "İpek Kağıt",
-      "baseCost": 26000000000000,
-      "goldPerSecond": 3382261826.2,
-      "tickSeconds": 1,
-      "tier": 272,
-      "icon": "📄"
-    },
-    {
-      "id": 273,
-      "name": "İpek Yapışkan Not",
-      "baseCost": 27000000000000,
-      "goldPerSecond": 3483729681,
-      "tickSeconds": 1,
-      "tier": 273,
-      "icon": "🧯"
-    },
-    {
-      "id": 274,
-      "name": "İpek Şiir Kitabı",
-      "baseCost": 27000000000000,
-      "goldPerSecond": 3588241571.4,
-      "tickSeconds": 1,
-      "tier": 274,
-      "icon": "📝"
-    },
-    {
-      "id": 275,
-      "name": "İpek Mikroskop",
-      "baseCost": 28000000000000,
-      "goldPerSecond": 3695888818.5,
-      "tickSeconds": 1,
-      "tier": 275,
-      "icon": "📔"
-    },
-    {
-      "id": 276,
-      "name": "İpek Yazılım",
-      "baseCost": 28000000000000,
-      "goldPerSecond": 3806765483.1,
-      "tickSeconds": 1,
-      "tier": 276,
-      "icon": "✍️"
-    },
-    {
-      "id": 277,
-      "name": "İpek Kurşun Kalem",
-      "baseCost": 29000000000000,
-      "goldPerSecond": 3920968447.6,
-      "tickSeconds": 1,
-      "tier": 277,
-      "icon": "✏️"
-    },
-    {
-      "id": 278,
-      "name": "İpek Hece Tablosu",
-      "baseCost": 30000000000000,
-      "goldPerSecond": 4038597501,
-      "tickSeconds": 1,
-      "tier": 278,
-      "icon": "👕"
-    },
-    {
-      "id": 279,
-      "name": "İpek Ağ Kartı",
-      "baseCost": 30000000000000,
-      "goldPerSecond": 4159755426,
-      "tickSeconds": 1,
-      "tier": 279,
-      "icon": "🧼"
-    },
-    {
-      "id": 280,
-      "name": "İpek Zaman Saati",
-      "baseCost": 31000000000000,
-      "goldPerSecond": 4284548088.8,
-      "tickSeconds": 1,
-      "tier": 280,
-      "icon": "📪"
-    },
-    {
-      "id": 281,
-      "name": "İpek Zımba",
-      "baseCost": 32000000000000,
-      "goldPerSecond": 4413084531.5,
-      "tickSeconds": 1,
-      "tier": 281,
-      "icon": "💲"
-    },
-    {
-      "id": 282,
-      "name": "İpek Drone",
-      "baseCost": 32000000000000,
-      "goldPerSecond": 4545477067.4,
-      "tickSeconds": 1,
-      "tier": 282,
-      "icon": "💍"
-    },
-    {
-      "id": 283,
-      "name": "İpek Dergi",
-      "baseCost": 33000000000000,
-      "goldPerSecond": 4681841379.4,
-      "tickSeconds": 1,
-      "tier": 283,
-      "icon": "📰"
-    },
-    {
-      "id": 284,
-      "name": "İpek Akademi",
-      "baseCost": 34000000000000,
-      "goldPerSecond": 4822296620.8,
-      "tickSeconds": 1,
-      "tier": 284,
-      "icon": "⚱️"
-    },
-    {
-      "id": 285,
-      "name": "İpek Büyü Kitabı",
-      "baseCost": 35000000000000,
-      "goldPerSecond": 4966965519.4,
-      "tickSeconds": 1,
-      "tier": 285,
-      "icon": "🪒"
-    },
-    {
-      "id": 286,
-      "name": "İpek Boya Kalemi",
-      "baseCost": 35000000000000,
-      "goldPerSecond": 5115974485,
-      "tickSeconds": 1,
-      "tier": 286,
-      "icon": "✏️"
-    },
-    {
-      "id": 287,
-      "name": "İpek Yazıcı",
-      "baseCost": 36000000000000,
-      "goldPerSecond": 5269453719.6,
-      "tickSeconds": 1,
-      "tier": 287,
-      "icon": "✍️"
-    },
-    {
-      "id": 288,
-      "name": "İpek Modül",
-      "baseCost": 37000000000000,
-      "goldPerSecond": 5427537331.2,
-      "tickSeconds": 1,
-      "tier": 288,
-      "icon": "🦯"
-    },
-    {
-      "id": 289,
-      "name": "İpek Jeneratör",
-      "baseCost": 38000000000000,
-      "goldPerSecond": 5590363451.1,
-      "tickSeconds": 1,
-      "tier": 289,
-      "icon": "☎️"
-    },
-    {
-      "id": 290,
-      "name": "İpek Galaksi Rehberi",
-      "baseCost": 38000000000000,
-      "goldPerSecond": 5758074354.6,
-      "tickSeconds": 1,
-      "tier": 290,
-      "icon": "🪦"
-    },
-    {
-      "id": 291,
-      "name": "İpek Tapınak",
-      "baseCost": 39000000000000,
-      "goldPerSecond": 5930816585.2,
-      "tickSeconds": 1,
-      "tier": 291,
-      "icon": "🔑"
-    },
-    {
-      "id": 292,
-      "name": "İpek Panel",
-      "baseCost": 40000000000000,
-      "goldPerSecond": 6108741082.8,
-      "tickSeconds": 1,
-      "tier": 292,
-      "icon": "📇"
-    },
-    {
-      "id": 293,
-      "name": "İpek Filozofların Taşı",
-      "baseCost": 41000000000000,
-      "goldPerSecond": 6292003315.3,
-      "tickSeconds": 1,
-      "tier": 293,
-      "icon": "🔓"
-    },
-    {
-      "id": 294,
-      "name": "İpek Sunucu",
-      "baseCost": 42000000000000,
-      "goldPerSecond": 6480763414.8,
-      "tickSeconds": 1,
-      "tier": 294,
-      "icon": "📗"
-    },
-    {
-      "id": 295,
-      "name": "İpek Mektup",
-      "baseCost": 42000000000000,
-      "goldPerSecond": 6675186317.2,
-      "tickSeconds": 1,
-      "tier": 295,
-      "icon": "👑"
-    },
-    {
-      "id": 296,
-      "name": "İpek Kamera",
-      "baseCost": 43000000000000,
-      "goldPerSecond": 6875441906.7,
-      "tickSeconds": 1,
-      "tier": 296,
-      "icon": "📭"
-    },
-    {
-      "id": 297,
-      "name": "İpek Soğutucu",
-      "baseCost": 44000000000000,
-      "goldPerSecond": 7081705163.9,
-      "tickSeconds": 1,
-      "tier": 297,
-      "icon": "🎛️"
-    },
-    {
-      "id": 298,
-      "name": "İpek Rehber",
-      "baseCost": 45000000000000,
-      "goldPerSecond": 7294156318.8,
-      "tickSeconds": 1,
-      "tier": 298,
-      "icon": "🖌️"
-    },
-    {
-      "id": 299,
-      "name": "İpek Divit",
-      "baseCost": 46000000000000,
-      "goldPerSecond": 7512981008.4,
-      "tickSeconds": 1,
-      "tier": 299,
-      "icon": "🔎"
-    },
-    {
-      "id": 300,
-      "name": "İpek Galeri",
-      "baseCost": 47000000000000,
-      "goldPerSecond": 7738370438.7,
-      "tickSeconds": 1,
-      "tier": 300,
-      "icon": "📁"
-    },
-    {
-      "id": 301,
-      "name": "İpek Kule",
-      "baseCost": 48000000000000,
-      "goldPerSecond": 7970521551.9,
-      "tickSeconds": 1,
-      "tier": 301,
-      "icon": "🧦"
-    },
-    {
-      "id": 302,
-      "name": "İpek Uzay İstasyonu",
-      "baseCost": 49000000000000,
-      "goldPerSecond": 8209637198.5,
-      "tickSeconds": 1,
-      "tier": 302,
-      "icon": "🚀"
-    },
-    {
-      "id": 303,
-      "name": "İpek Bilgelik Kaynağı",
-      "baseCost": 50000000000000,
-      "goldPerSecond": 8455926314.5,
-      "tickSeconds": 1,
-      "tier": 303,
-      "icon": "👝"
-    },
-    {
-      "id": 304,
-      "name": "İpek Hikaye",
-      "baseCost": 51000000000000,
-      "goldPerSecond": 8709604103.9,
-      "tickSeconds": 1,
-      "tier": 304,
-      "icon": "📉"
-    },
-    {
-      "id": 305,
-      "name": "İpek Hayal Gücü",
-      "baseCost": 52000000000000,
-      "goldPerSecond": 8970892227,
-      "tickSeconds": 1,
-      "tier": 305,
-      "icon": "📡"
-    },
-    {
-      "id": 306,
-      "name": "İpek Arayüz",
-      "baseCost": 53000000000000,
-      "goldPerSecond": 9240018993.8,
-      "tickSeconds": 1,
-      "tier": 306,
-      "icon": "📙"
-    },
-    {
-      "id": 307,
-      "name": "İpek Kelime Kartı",
-      "baseCost": 54000000000000,
-      "goldPerSecond": 9517219563.6,
-      "tickSeconds": 1,
-      "tier": 307,
-      "icon": "💬"
-    },
-    {
-      "id": 308,
-      "name": "İpek Kontrol Ünitesi",
-      "baseCost": 55000000000000,
-      "goldPerSecond": 9802736150.5,
-      "tickSeconds": 1,
-      "tier": 308,
-      "icon": "🛡️"
-    },
-    {
-      "id": 309,
-      "name": "İpek Anka Tüyü",
-      "baseCost": 56000000000000,
-      "goldPerSecond": 10096818235,
-      "tickSeconds": 1,
-      "tier": 309,
-      "icon": "🦅"
-    },
-    {
-      "id": 310,
-      "name": "İpek Tezhip Seti",
-      "baseCost": 57000000000000,
-      "goldPerSecond": 10399722782.1,
-      "tickSeconds": 1,
-      "tier": 310,
-      "icon": "🪓"
-    },
-    {
-      "id": 311,
-      "name": "İpek Enstitü",
-      "baseCost": 58000000000000,
-      "goldPerSecond": 10711714465.6,
-      "tickSeconds": 1,
-      "tier": 311,
-      "icon": "📹"
-    },
-    {
-      "id": 312,
-      "name": "İpek Piramit",
-      "baseCost": 59000000000000,
-      "goldPerSecond": 11033065899.6,
-      "tickSeconds": 1,
-      "tier": 312,
-      "icon": "⚰️"
-    },
-    {
-      "id": 313,
-      "name": "İpek Gramer Kitabı",
-      "baseCost": 61000000000000,
-      "goldPerSecond": 11364057876.6,
-      "tickSeconds": 1,
-      "tier": 313,
-      "icon": "👛"
-    },
-    {
-      "id": 314,
-      "name": "İpek Çeviri Motoru",
-      "baseCost": 62000000000000,
-      "goldPerSecond": 11704979612.9,
-      "tickSeconds": 1,
-      "tier": 314,
-      "icon": "👑"
-    },
-    {
-      "id": 315,
-      "name": "İpek Ajanda",
-      "baseCost": 63000000000000,
-      "goldPerSecond": 12056129001.3,
-      "tickSeconds": 1,
-      "tier": 315,
-      "icon": "📲"
-    },
-    {
-      "id": 316,
-      "name": "İpek Tarayıcı",
-      "baseCost": 64000000000000,
-      "goldPerSecond": 12417812871.3,
-      "tickSeconds": 1,
-      "tier": 316,
-      "icon": "🪠"
-    },
-    {
-      "id": 317,
-      "name": "İpek Mercek",
-      "baseCost": 65000000000000,
-      "goldPerSecond": 12790347257.4,
-      "tickSeconds": 1,
-      "tier": 317,
-      "icon": "🧳"
-    },
-    {
-      "id": 318,
-      "name": "İpek Ay Üssü",
-      "baseCost": 67000000000000,
-      "goldPerSecond": 13174057675.1,
-      "tickSeconds": 1,
-      "tier": 318,
-      "icon": "🌙"
-    },
-    {
-      "id": 319,
-      "name": "İpek Diploma",
-      "baseCost": 68000000000000,
-      "goldPerSecond": 13569279405.4,
-      "tickSeconds": 1,
-      "tier": 319,
-      "icon": "🧺"
-    },
-    {
-      "id": 320,
-      "name": "İpek Kalem",
-      "baseCost": 69000000000000,
-      "goldPerSecond": 13976357787.6,
-      "tickSeconds": 1,
-      "tier": 320,
-      "icon": "✏️"
-    },
-    {
-      "id": 321,
-      "name": "İpek Yazma Defteri",
-      "baseCost": 70000000000000,
-      "goldPerSecond": 14395648521.2,
-      "tickSeconds": 1,
-      "tier": 321,
-      "icon": "📓"
-    },
-    {
-      "id": 322,
-      "name": "İpek Kampüs",
-      "baseCost": 72000000000000,
-      "goldPerSecond": 14827517976.8,
-      "tickSeconds": 1,
-      "tier": 322,
-      "icon": "🪖"
-    },
-    {
-      "id": 323,
-      "name": "İpek İşlemci",
-      "baseCost": 73000000000000,
-      "goldPerSecond": 15272343516.1,
-      "tickSeconds": 1,
-      "tier": 323,
-      "icon": "🎼"
-    },
-    {
-      "id": 324,
-      "name": "İpek Gazete",
-      "baseCost": 74000000000000,
-      "goldPerSecond": 15730513821.6,
-      "tickSeconds": 1,
-      "tier": 324,
-      "icon": "🗞️"
-    },
-    {
-      "id": 325,
-      "name": "İpek Portal Anahtarı",
-      "baseCost": 76000000000000,
-      "goldPerSecond": 16202429236.2,
-      "tickSeconds": 1,
-      "tier": 325,
-      "icon": "🧣"
-    },
-    {
-      "id": 326,
-      "name": "İpek Sanal Gerçeklik",
-      "baseCost": 77000000000000,
-      "goldPerSecond": 16688502113.3,
-      "tickSeconds": 1,
-      "tier": 326,
-      "icon": "⛑️"
-    },
-    {
-      "id": 327,
-      "name": "İpek Ödül",
-      "baseCost": 79000000000000,
-      "goldPerSecond": 17189157176.7,
-      "tickSeconds": 1,
-      "tier": 327,
-      "icon": "📰"
-    },
-    {
-      "id": 328,
-      "name": "İpek Optimize Edici",
-      "baseCost": 80000000000000,
-      "goldPerSecond": 17704831892,
-      "tickSeconds": 1,
-      "tier": 328,
-      "icon": "✉️"
-    },
-    {
-      "id": 329,
-      "name": "İpek Anakart",
-      "baseCost": 82000000000000,
-      "goldPerSecond": 18235976848.8,
-      "tickSeconds": 1,
-      "tier": 329,
-      "icon": "🔔"
-    },
-    {
-      "id": 330,
-      "name": "İpek Okuma Kitabı",
-      "baseCost": 83000000000000,
-      "goldPerSecond": 18783056154.3,
-      "tickSeconds": 1,
-      "tier": 330,
-      "icon": "👝"
-    },
-    {
-      "id": 331,
-      "name": "İpek Bilgelik Tacı",
-      "baseCost": 85000000000000,
-      "goldPerSecond": 19346547838.9,
-      "tickSeconds": 1,
-      "tier": 331,
-      "icon": "🧶"
-    },
-    {
-      "id": 332,
-      "name": "İpek Güneş Paneli",
-      "baseCost": 86000000000000,
-      "goldPerSecond": 19926944274.1,
-      "tickSeconds": 1,
-      "tier": 332,
-      "icon": "☀️"
-    },
-    {
-      "id": 333,
-      "name": "İpek Rozet",
-      "baseCost": 88000000000000,
-      "goldPerSecond": 20524752602.3,
-      "tickSeconds": 1,
-      "tier": 333,
-      "icon": "⚰️"
-    },
-    {
-      "id": 334,
-      "name": "İpek Katalizör",
-      "baseCost": 89000000000000,
-      "goldPerSecond": 21140495180.4,
-      "tickSeconds": 1,
-      "tier": 334,
-      "icon": "📓"
-    },
-    {
-      "id": 335,
-      "name": "İpek Hat Takımı",
-      "baseCost": 91000000000000,
-      "goldPerSecond": 21774710035.8,
-      "tickSeconds": 1,
-      "tier": 335,
-      "icon": "📽️"
-    },
-    {
-      "id": 336,
-      "name": "İpek Kongre Merkezi",
-      "baseCost": 93000000000000,
-      "goldPerSecond": 22427951336.9,
-      "tickSeconds": 1,
-      "tier": 336,
-      "icon": "🛋️"
-    },
-    {
-      "id": 337,
-      "name": "İpek Büyüteç",
-      "baseCost": 94000000000000,
-      "goldPerSecond": 23100789877,
-      "tickSeconds": 1,
-      "tier": 337,
-      "icon": "🥿"
-    },
-    {
-      "id": 338,
-      "name": "İpek Stüdyo",
-      "baseCost": 96000000000000,
-      "goldPerSecond": 23793813573.3,
-      "tickSeconds": 1,
-      "tier": 338,
-      "icon": "⌨️"
-    },
-    {
-      "id": 339,
-      "name": "İpek Mühür",
-      "baseCost": 98000000000000,
-      "goldPerSecond": 24507627980.5,
-      "tickSeconds": 1,
-      "tier": 339,
-      "icon": "🧷"
-    },
-    {
-      "id": 340,
-      "name": "İpek Gözlemevi",
-      "baseCost": 99000000000000,
-      "goldPerSecond": 25242856819.9,
-      "tickSeconds": 1,
-      "tier": 340,
-      "icon": "📼"
-    },
-    {
-      "id": 341,
-      "name": "İpek Plaket",
-      "baseCost": 101053929475923,
-      "goldPerSecond": 26000142524.5,
-      "tickSeconds": 1,
-      "tier": 341,
-      "icon": "🚪"
-    },
-    {
-      "id": 342,
-      "name": "İpek Pusula",
-      "baseCost": 102840957715989,
-      "goldPerSecond": 26780146800.2,
-      "tickSeconds": 1,
-      "tier": 342,
-      "icon": "👝"
-    },
-    {
-      "id": 343,
-      "name": "İpek Zafer Anahtarı",
-      "baseCost": 104654231182271,
-      "goldPerSecond": 27583551204.2,
-      "tickSeconds": 1,
-      "tier": 343,
-      "icon": "🥿"
-    },
-    {
-      "id": 344,
-      "name": "İpek Çözümleyici",
-      "baseCost": 106494057119984,
-      "goldPerSecond": 28411057740.3,
-      "tickSeconds": 1,
-      "tier": 344,
-      "icon": "📙"
-    },
-    {
-      "id": 345,
-      "name": "İpek Hazine Sandığı",
-      "baseCost": 108360745460993,
-      "goldPerSecond": 29263389472.5,
-      "tickSeconds": 1,
-      "tier": 345,
-      "icon": "🔐"
-    },
-    {
-      "id": 346,
-      "name": "İpek Papirüs",
-      "baseCost": 110254608839393,
-      "goldPerSecond": 30141291156.7,
-      "tickSeconds": 1,
-      "tier": 346,
-      "icon": "⛑️"
-    },
-    {
-      "id": 347,
-      "name": "İpek Mars Kolonisi",
-      "baseCost": 112175962607134,
-      "goldPerSecond": 31045529891.4,
-      "tickSeconds": 1,
-      "tier": 347,
-      "icon": "🪪"
-    },
-    {
-      "id": 348,
-      "name": "İpek Palet",
-      "baseCost": 114125124849691,
-      "goldPerSecond": 31976895788.1,
-      "tickSeconds": 1,
-      "tier": 348,
-      "icon": "🎧"
-    },
-    {
-      "id": 349,
-      "name": "İpek Hokka",
-      "baseCost": 116102416401780,
-      "goldPerSecond": 32936202661.7,
-      "tickSeconds": 1,
-      "tier": 349,
-      "icon": "🔩"
-    },
-    {
-      "id": 350,
-      "name": "İpek Depolama",
-      "baseCost": 118108160863115,
-      "goldPerSecond": 33924288741.6,
-      "tickSeconds": 1,
-      "tier": 350,
-      "icon": "📘"
-    },
-    {
-      "id": 351,
-      "name": "İpek Müze",
-      "baseCost": 120142684614214,
-      "goldPerSecond": 34942017403.8,
-      "tickSeconds": 1,
-      "tier": 351,
-      "icon": "🗑️"
-    },
-    {
-      "id": 352,
-      "name": "İpek Kupa",
-      "baseCost": 122206316832246,
-      "goldPerSecond": 35990277925.9,
-      "tickSeconds": 1,
-      "tier": 352,
-      "icon": "💲"
-    },
-    {
-      "id": 353,
-      "name": "İpek Dolma Kalem",
-      "baseCost": 124299389506927,
-      "goldPerSecond": 37069986263.7,
-      "tickSeconds": 1,
-      "tier": 353,
-      "icon": "✏️"
-    },
-    {
-      "id": 354,
-      "name": "İpek Suluboya",
-      "baseCost": 126422237456455,
-      "goldPerSecond": 38182085851.6,
-      "tickSeconds": 1,
-      "tier": 354,
-      "icon": "💲"
-    },
-    {
-      "id": 355,
-      "name": "İpek Broşür",
-      "baseCost": 128575198343497,
-      "goldPerSecond": 39327548427.1,
-      "tickSeconds": 1,
-      "tier": 355,
-      "icon": "💰"
-    },
-    {
-      "id": 356,
-      "name": "İpek Gizemli Harita",
-      "baseCost": 130758612691213,
-      "goldPerSecond": 40507374879.9,
-      "tickSeconds": 1,
-      "tier": 356,
-      "icon": "💿"
-    },
-    {
-      "id": 357,
-      "name": "İpek Kale",
-      "baseCost": 132972823899329,
-      "goldPerSecond": 41722596126.3,
-      "tickSeconds": 1,
-      "tier": 357,
-      "icon": "🚪"
-    },
-    {
-      "id": 358,
-      "name": "İpek Konsol",
-      "baseCost": 135218178260257,
-      "goldPerSecond": 42974274010.1,
-      "tickSeconds": 1,
-      "tier": 358,
-      "icon": "🪞"
-    },
-    {
-      "id": 359,
-      "name": "İpek Arşiv",
-      "baseCost": 137495024975253,
-      "goldPerSecond": 44263502230.4,
-      "tickSeconds": 1,
-      "tier": 359,
-      "icon": "🗃️"
-    },
-    {
-      "id": 360,
-      "name": "İpek Sergi Salonu",
-      "baseCost": 139803716170626,
-      "goldPerSecond": 45591407297.3,
-      "tickSeconds": 1,
-      "tier": 360,
-      "icon": "🪤"
-    },
-    {
-      "id": 361,
-      "name": "İpek Tılsım",
-      "baseCost": 142144606913988,
-      "goldPerSecond": 46959149516.2,
-      "tickSeconds": 1,
-      "tier": 361,
-      "icon": "🌂"
-    },
-    {
-      "id": 362,
-      "name": "İpek Sihir Asası",
-      "baseCost": 144518055230550,
-      "goldPerSecond": 48367924001.7,
-      "tickSeconds": 1,
-      "tier": 362,
-      "icon": "🧽"
-    },
-    {
-      "id": 363,
-      "name": "İpek Muska",
-      "baseCost": 146924422119466,
-      "goldPerSecond": 49818961721.8,
-      "tickSeconds": 1,
-      "tier": 363,
-      "icon": "💍"
-    },
-    {
-      "id": 364,
-      "name": "İpek Çerçeve",
-      "baseCost": 149364071570211,
-      "goldPerSecond": 51313530573.5,
-      "tickSeconds": 1,
-      "tier": 364,
-      "icon": "🧴"
-    },
-    {
-      "id": 365,
-      "name": "İpek Metin Analizörü",
-      "baseCost": 151837370579019,
-      "goldPerSecond": 52852936490.7,
-      "tickSeconds": 1,
-      "tier": 365,
-      "icon": "📔"
-    },
-    {
-      "id": 366,
-      "name": "İpek Gezegen Atlası",
-      "baseCost": 154344689165352,
-      "goldPerSecond": 54438524585.4,
-      "tickSeconds": 1,
-      "tier": 366,
-      "icon": "🗺️"
-    },
-    {
-      "id": 367,
-      "name": "İpek Terminal",
-      "baseCost": 156886400388423,
-      "goldPerSecond": 56071680323,
-      "tickSeconds": 1,
-      "tier": 367,
-      "icon": "🧼"
-    },
-    {
-      "id": 368,
-      "name": "İpek Pastel Boya",
-      "baseCost": 159462880363760,
-      "goldPerSecond": 57753830732.7,
-      "tickSeconds": 1,
-      "tier": 368,
-      "icon": "📨"
-    },
-    {
-      "id": 369,
-      "name": "İpek Kompresör",
-      "baseCost": 162074508279810,
-      "goldPerSecond": 59486445654.7,
-      "tickSeconds": 1,
-      "tier": 369,
-      "icon": "🧾"
-    },
-    {
-      "id": 370,
-      "name": "İpek Uygulama",
-      "baseCost": 164721666414600,
-      "goldPerSecond": 61271039024.3,
-      "tickSeconds": 1,
-      "tier": 370,
-      "icon": "🥻"
-    },
-    {
-      "id": 371,
-      "name": "İpek Hisar",
-      "baseCost": 167404740152430,
-      "goldPerSecond": 63109170195,
-      "tickSeconds": 1,
-      "tier": 371,
-      "icon": "💍"
-    },
-    {
-      "id": 372,
-      "name": "İpek Ses Sentezi",
-      "baseCost": 170124118000617,
-      "goldPerSecond": 65002445300.9,
-      "tickSeconds": 1,
-      "tier": 372,
-      "icon": "🪕"
-    },
-    {
-      "id": 373,
-      "name": "İpek Rulo",
-      "baseCost": 172880191606284,
-      "goldPerSecond": 66952518659.9,
-      "tickSeconds": 1,
-      "tier": 373,
-      "icon": "🎸"
-    },
-    {
-      "id": 374,
-      "name": "İpek Runa Taşı",
-      "baseCost": 175673355773192,
-      "goldPerSecond": 68961094219.7,
-      "tickSeconds": 1,
-      "tier": 374,
-      "icon": "🥽"
-    },
-    {
-      "id": 375,
-      "name": "İpek Klasör",
-      "baseCost": 178504008478614,
-      "goldPerSecond": 71029927046.3,
-      "tickSeconds": 1,
-      "tier": 375,
-      "icon": "🩰"
-    },
-    {
-      "id": 376,
-      "name": "İpek Pul",
-      "baseCost": 181372550890261,
-      "goldPerSecond": 73160824857.7,
-      "tickSeconds": 1,
-      "tier": 376,
-      "icon": "📹"
-    },
-    {
-      "id": 377,
-      "name": "İpek Roman",
-      "baseCost": 184279387383246,
-      "goldPerSecond": 75355649603.4,
-      "tickSeconds": 1,
-      "tier": 377,
-      "icon": "📖"
-    },
-    {
-      "id": 378,
-      "name": "İpek Rapor",
-      "baseCost": 187224925557096,
-      "goldPerSecond": 77616319091.5,
-      "tickSeconds": 1,
-      "tier": 378,
-      "icon": "🗝️"
-    },
-    {
-      "id": 379,
-      "name": "İpek Teknoloji Parkı",
-      "baseCost": 190209576252807,
-      "goldPerSecond": 79944808664.2,
-      "tickSeconds": 1,
-      "tier": 379,
-      "icon": "📍"
-    },
-    {
-      "id": 380,
-      "name": "İpek Tiyatro",
-      "baseCost": 193233753569943,
-      "goldPerSecond": 82343152924.1,
-      "tickSeconds": 1,
-      "tier": 380,
-      "icon": "📋"
-    },
-    {
-      "id": 381,
-      "name": "İpek Yıldız Haritası",
-      "baseCost": 196297874883785,
-      "goldPerSecond": 84813447511.8,
-      "tickSeconds": 1,
-      "tier": 381,
-      "icon": "⭐"
-    },
-    {
-      "id": 382,
-      "name": "İpek Dönüştürücü",
-      "baseCost": 199402360862518,
-      "goldPerSecond": 87357850937.2,
-      "tickSeconds": 1,
-      "tier": 382,
-      "icon": "📢"
-    },
-    {
-      "id": 383,
-      "name": "İpek Sonsuzluk İşareti",
-      "baseCost": 202547635484465,
-      "goldPerSecond": 89978586465.3,
-      "tickSeconds": 1,
-      "tier": 383,
-      "icon": "📙"
-    },
-    {
-      "id": 384,
-      "name": "İpek Nazarlık",
-      "baseCost": 205734126055367,
-      "goldPerSecond": 92677944059.3,
-      "tickSeconds": 1,
-      "tier": 384,
-      "icon": "🎒"
-    },
-    {
-      "id": 385,
-      "name": "İpek Veritabanı",
-      "baseCost": 208962263225708,
-      "goldPerSecond": 95458282381.1,
-      "tickSeconds": 1,
-      "tier": 385,
-      "icon": "📫"
-    },
-    {
-      "id": 386,
-      "name": "İpek Bulut Sistemi",
-      "baseCost": 212232481008080,
-      "goldPerSecond": 98322030852.5,
-      "tickSeconds": 1,
-      "tier": 386,
-      "icon": "☁️"
-    },
-    {
-      "id": 387,
-      "name": "İpek Kronograf",
-      "baseCost": 215545216794602,
-      "goldPerSecond": 101271691778.1,
-      "tickSeconds": 1,
-      "tier": 387,
-      "icon": "🔑"
-    },
-    {
-      "id": 388,
-      "name": "İpek Zarf",
-      "baseCost": 218900911374371,
-      "goldPerSecond": 104309842531.4,
-      "tickSeconds": 1,
-      "tier": 388,
-      "icon": "🪣"
-    },
-    {
-      "id": 389,
-      "name": "İpek Bellek",
-      "baseCost": 222300008950968,
-      "goldPerSecond": 107439137807.3,
-      "tickSeconds": 1,
-      "tier": 389,
-      "icon": "📆"
-    },
-    {
-      "id": 390,
-      "name": "İpek Simülasyon",
-      "baseCost": 225742957160005,
-      "goldPerSecond": 110662311941.5,
-      "tickSeconds": 1,
-      "tier": 390,
-      "icon": "📃"
-    },
-    {
-      "id": 391,
-      "name": "İpek Bilgi Havuzu",
-      "baseCost": 229230207086717,
-      "goldPerSecond": 113982181299.7,
-      "tickSeconds": 1,
-      "tier": 391,
-      "icon": "🧠"
-    },
-    {
-      "id": 392,
-      "name": "İpek Metronom",
-      "baseCost": 232762213283597,
-      "goldPerSecond": 117401646738.7,
-      "tickSeconds": 1,
-      "tier": 392,
-      "icon": "🩲"
-    },
-    {
-      "id": 393,
-      "name": "İpek Dürbün",
-      "baseCost": 236339433788078,
-      "goldPerSecond": 120923696140.9,
-      "tickSeconds": 1,
-      "tier": 393,
-      "icon": "📩"
-    },
-    {
-      "id": 394,
-      "name": "İpek Nöral Ağ",
-      "baseCost": 239962330140259,
-      "goldPerSecond": 124551407025.1,
-      "tickSeconds": 1,
-      "tier": 394,
-      "icon": "👕"
-    },
-    {
-      "id": 395,
-      "name": "İpek Saat",
-      "baseCost": 243631367400674,
-      "goldPerSecond": 128287949235.9,
-      "tickSeconds": 1,
-      "tier": 395,
-      "icon": "🔗"
-    },
-    {
-      "id": 396,
-      "name": "İpek Ders Planı",
-      "baseCost": 247347014168110,
-      "goldPerSecond": 132136587713,
-      "tickSeconds": 1,
-      "tier": 396,
-      "icon": "🎥"
-    },
-    {
-      "id": 397,
-      "name": "İpek Boyut Kapısı",
-      "baseCost": 251109742597463,
-      "goldPerSecond": 136100685344.4,
-      "tickSeconds": 1,
-      "tier": 397,
-      "icon": "💊"
-    },
-    {
-      "id": 398,
-      "name": "İpek Kütüphane",
-      "baseCost": 254920028417645,
-      "goldPerSecond": 140183705904.7,
-      "tickSeconds": 1,
-      "tier": 398,
-      "icon": "🏛️"
-    },
-    {
-      "id": 399,
-      "name": "İpek Antoloji",
-      "baseCost": 258778350949531,
-      "goldPerSecond": 144389217081.8,
-      "tickSeconds": 1,
-      "tier": 399,
-      "icon": "📯"
-    },
-    {
-      "id": 400,
-      "name": "İpek Harita",
-      "baseCost": 262685193123954,
-      "goldPerSecond": 148720893594.3,
-      "tickSeconds": 1,
-      "tier": 400,
-      "icon": "🧢"
-    },
-    {
-      "id": 401,
-      "name": "İpek Silgi",
-      "baseCost": 266641041499744,
-      "goldPerSecond": 153182520402.1,
-      "tickSeconds": 1,
-      "tier": 401,
-      "icon": "⛓️"
-    },
-    {
-      "id": 402,
-      "name": "İpek Kalemlik",
-      "baseCost": 270646386281810,
-      "goldPerSecond": 157777996014.2,
-      "tickSeconds": 1,
-      "tier": 402,
-      "icon": "✏️"
-    },
-    {
-      "id": 403,
-      "name": "İpek Tablet",
-      "baseCost": 274701721339265,
-      "goldPerSecond": 162511335894.6,
-      "tickSeconds": 1,
-      "tier": 403,
-      "icon": "📱"
-    },
-    {
-      "id": 404,
-      "name": "İpek Robot",
-      "baseCost": 278807544223602,
-      "goldPerSecond": 167386675971.4,
-      "tickSeconds": 1,
-      "tier": 404,
-      "icon": "👜"
-    },
-    {
-      "id": 405,
-      "name": "İpek Altın Taç",
-      "baseCost": 282964356186912,
-      "goldPerSecond": 172408276250.5,
-      "tickSeconds": 1,
-      "tier": 405,
-      "icon": "🪙"
-    },
-    {
-      "id": 406,
-      "name": "İpek Ansiklopedi",
-      "baseCost": 287172662200139,
-      "goldPerSecond": 177580524538,
-      "tickSeconds": 1,
-      "tier": 406,
-      "icon": "📚"
-    },
-    {
-      "id": 407,
-      "name": "İpek Makas",
-      "baseCost": 291432970971393,
-      "goldPerSecond": 182907940274.1,
-      "tickSeconds": 1,
-      "tier": 407,
-      "icon": "🪒"
-    },
-    {
-      "id": 408,
-      "name": "İpek Fırça",
-      "baseCost": 295745794964295,
-      "goldPerSecond": 188395178482.3,
-      "tickSeconds": 1,
-      "tier": 408,
-      "icon": "🗓️"
-    },
-    {
-      "id": 409,
-      "name": "İpek Derleyici",
-      "baseCost": 300111650416379,
-      "goldPerSecond": 194047033836.8,
-      "tickSeconds": 1,
-      "tier": 409,
-      "icon": "🚪"
-    },
-    {
-      "id": 410,
-      "name": "İpek Sertifika",
-      "baseCost": 304531057357524,
-      "goldPerSecond": 199868444851.9,
-      "tickSeconds": 1,
-      "tier": 410,
-      "icon": "🖇️"
-    },
-    {
-      "id": 411,
-      "name": "İpek Uydu",
-      "baseCost": 309004539628446,
-      "goldPerSecond": 205864498197.5,
-      "tickSeconds": 1,
-      "tier": 411,
-      "icon": "🎛️"
-    },
-    {
-      "id": 412,
-      "name": "İpek Güç Sembolü",
-      "baseCost": 313532624899224,
-      "goldPerSecond": 212040433143.4,
-      "tickSeconds": 1,
-      "tier": 412,
-      "icon": "🪙"
-    },
-    {
-      "id": 413,
-      "name": "İpek Alfabe Seti",
-      "baseCost": 318115844687871,
-      "goldPerSecond": 218401646137.7,
-      "tickSeconds": 1,
-      "tier": 413,
-      "icon": "🔤"
-    },
-    {
-      "id": 414,
-      "name": "İpek Afiş",
-      "baseCost": 322754734378960,
-      "goldPerSecond": 224953695521.8,
-      "tickSeconds": 1,
-      "tier": 414,
-      "icon": "🔗"
-    },
-    {
-      "id": 415,
-      "name": "İpek Laboratuvar",
-      "baseCost": 327449833242280,
-      "goldPerSecond": 231702306387.5,
-      "tickSeconds": 1,
-      "tier": 415,
-      "icon": "📀"
-    },
-    {
-      "id": 416,
-      "name": "İpek Meteor Parçası",
-      "baseCost": 332201684451546,
-      "goldPerSecond": 238653375579.1,
-      "tickSeconds": 1,
-      "tier": 416,
-      "icon": "💊"
-    },
-    {
-      "id": 417,
-      "name": "İpek Dikilitaş",
-      "baseCost": 337010835103153,
-      "goldPerSecond": 245812976846.5,
-      "tickSeconds": 1,
-      "tier": 417,
-      "icon": "🧵"
-    },
-    {
-      "id": 418,
-      "name": "İpek Hoparlör",
-      "baseCost": 341877836234973,
-      "goldPerSecond": 253187366151.9,
-      "tickSeconds": 1,
-      "tier": 418,
-      "icon": "📱"
-    },
-    {
-      "id": 419,
-      "name": "İpek Not Defteri",
-      "baseCost": 346803242845192,
-      "goldPerSecond": 260782987136.5,
-      "tickSeconds": 1,
-      "tier": 419,
-      "icon": "📓"
-    },
-    {
-      "id": 420,
-      "name": "İpek Kader Çarkı",
-      "baseCost": 351787613911204,
-      "goldPerSecond": 268606476750.6,
-      "tickSeconds": 1,
-      "tier": 420,
-      "icon": "👠"
-    },
-    {
-      "id": 421,
-      "name": "İpek Hub",
-      "baseCost": 356831512408535,
-      "goldPerSecond": 276664671053.1,
-      "tickSeconds": 1,
-      "tier": 421,
-      "icon": "📎"
-    },
-    {
-      "id": 422,
-      "name": "İpek Davetiye",
-      "baseCost": 361935505329821,
-      "goldPerSecond": 284964611184.7,
-      "tickSeconds": 1,
-      "tier": 422,
-      "icon": "🧷"
-    },
-    {
-      "id": 423,
-      "name": "İpek Ejderha Kalkanı",
-      "baseCost": 367100163703830,
-      "goldPerSecond": 293513549520.2,
-      "tickSeconds": 1,
-      "tier": 423,
-      "icon": "🐉"
-    },
-    {
-      "id": 424,
-      "name": "İpek Saray",
-      "baseCost": 372326062614523,
-      "goldPerSecond": 302318956005.8,
-      "tickSeconds": 1,
-      "tier": 424,
-      "icon": "📣"
-    },
-    {
-      "id": 425,
-      "name": "İpek Evrensel Pusula",
-      "baseCost": 377613781220165,
-      "goldPerSecond": 311388524686,
-      "tickSeconds": 1,
-      "tier": 425,
-      "icon": "🗡️"
-    },
-    {
-      "id": 426,
-      "name": "İpek Teleskop",
-      "baseCost": 382963902772482,
-      "goldPerSecond": 320730180426.6,
-      "tickSeconds": 1,
-      "tier": 426,
-      "icon": "📃"
-    },
-    {
-      "id": 427,
-      "name": "İpek Kaligrafi Seti",
-      "baseCost": 388377014635853,
-      "goldPerSecond": 330352085839.4,
-      "tickSeconds": 1,
-      "tier": 427,
-      "icon": "🎤"
-    },
-    {
-      "id": 428,
-      "name": "İpek El Kitabı",
-      "baseCost": 393853708306557,
-      "goldPerSecond": 340262648414.6,
-      "tickSeconds": 1,
-      "tier": 428,
-      "icon": "🗳️"
-    },
-    {
-      "id": 429,
-      "name": "İpek Mürekkep",
-      "baseCost": 399394579432065,
-      "goldPerSecond": 350470527867,
-      "tickSeconds": 1,
-      "tier": 429,
-      "icon": "🖋️"
-    },
-    {
-      "id": 430,
-      "name": "İpek Tez",
-      "baseCost": 405000227830362,
-      "goldPerSecond": 360984643703,
-      "tickSeconds": 1,
-      "tier": 430,
-      "icon": "📽️"
-    },
-    {
-      "id": 431,
-      "name": "İpek İlham Deposu",
-      "baseCost": 410671257509332,
-      "goldPerSecond": 371814183014.1,
-      "tickSeconds": 1,
-      "tier": 431,
-      "icon": "💻"
-    },
-    {
-      "id": 432,
-      "name": "İpek Asteroid Madeni",
-      "baseCost": 416408276686178,
-      "goldPerSecond": 382968608504.5,
-      "tickSeconds": 1,
-      "tier": 432,
-      "icon": "⚰️"
-    },
-    {
-      "id": 433,
-      "name": "İpek Adalet Terazisi",
-      "baseCost": 422211897806887,
-      "goldPerSecond": 394457666759.6,
-      "tickSeconds": 1,
-      "tier": 433,
-      "icon": "📑"
-    },
-    {
-      "id": 434,
-      "name": "İpek Opera",
-      "baseCost": 428082737565740,
-      "goldPerSecond": 406291396762.4,
-      "tickSeconds": 1,
-      "tier": 434,
-      "icon": "📹"
-    },
-    {
-      "id": 435,
-      "name": "İpek Madalya",
-      "baseCost": 434021416924869,
-      "goldPerSecond": 418480138665.3,
-      "tickSeconds": 1,
-      "tier": 435,
-      "icon": "🛋️"
-    },
-    {
-      "id": 436,
-      "name": "İpek Dil Kursu",
-      "baseCost": 440028561133858,
-      "goldPerSecond": 431034542825.3,
-      "tickSeconds": 1,
-      "tier": 436,
-      "icon": "📭"
-    },
-    {
-      "id": 437,
-      "name": "İpek Bildiri",
-      "baseCost": 446104799749381,
-      "goldPerSecond": 443965579110.1,
-      "tickSeconds": 1,
-      "tier": 437,
-      "icon": "🪡"
-    },
-    {
-      "id": 438,
-      "name": "İpek Ayna",
-      "baseCost": 452250766654902,
-      "goldPerSecond": 457284546483.4,
-      "tickSeconds": 1,
-      "tier": 438,
-      "icon": "🌙"
-    },
-    {
-      "id": 439,
-      "name": "İpek Çip",
-      "baseCost": 458467100080398,
-      "goldPerSecond": 471003082877.9,
-      "tickSeconds": 1,
-      "tier": 439,
-      "icon": "💷"
-    },
-    {
-      "id": 440,
-      "name": "İpek Ölümsüzlük İksiri",
-      "baseCost": 464754442622143,
-      "goldPerSecond": 485133175364.2,
-      "tickSeconds": 1,
-      "tier": 440,
-      "icon": "💰"
-    },
-    {
-      "id": 441,
-      "name": "İpek Sunum",
-      "baseCost": 471113441262531,
-      "goldPerSecond": 499687170625.1,
-      "tickSeconds": 1,
-      "tier": 441,
-      "icon": "💍"
-    },
-    {
-      "id": 442,
-      "name": "İpek Başarı Formülü",
-      "baseCost": 477544747389941,
-      "goldPerSecond": 514677785743.9,
-      "tickSeconds": 1,
-      "tier": 442,
-      "icon": "🔇"
-    },
-    {
-      "id": 443,
-      "name": "İnci Uygulama",
-      "baseCost": 484049016818649,
-      "goldPerSecond": 530118119316.2,
-      "tickSeconds": 1,
-      "tier": 443,
-      "icon": "⚪"
-    },
-    {
-      "id": 444,
-      "name": "İnci Poster",
-      "baseCost": 490626909808788,
-      "goldPerSecond": 546021662895.7,
-      "tickSeconds": 1,
-      "tier": 444,
-      "icon": "⚪"
-    },
-    {
-      "id": 445,
-      "name": "İnci Terminal",
-      "baseCost": 497279091086347,
-      "goldPerSecond": 562402312782.6,
-      "tickSeconds": 1,
-      "tier": 445,
-      "icon": "⚪"
-    },
-    {
-      "id": 446,
-      "name": "İnci Alfabe Seti",
-      "baseCost": 504006229863213,
-      "goldPerSecond": 579274382166.1,
-      "tickSeconds": 1,
-      "tier": 446,
-      "icon": "🔤"
-    },
-    {
-      "id": 447,
-      "name": "İnci Broşür",
-      "baseCost": 510808999857269,
-      "goldPerSecond": 596652613631.1,
-      "tickSeconds": 1,
-      "tier": 447,
-      "icon": "⚪"
-    },
-    {
-      "id": 448,
-      "name": "İnci Piramit",
-      "baseCost": 517688079312523,
-      "goldPerSecond": 614552192040,
-      "tickSeconds": 1,
-      "tier": 448,
-      "icon": "⚪"
-    },
-    {
-      "id": 449,
-      "name": "İnci Mikroskop",
-      "baseCost": 524644151019290,
-      "goldPerSecond": 632988757801.2,
-      "tickSeconds": 1,
-      "tier": 449,
-      "icon": "⚪"
-    },
-    {
-      "id": 450,
-      "name": "İnci Damga",
-      "baseCost": 531677902334416,
-      "goldPerSecond": 651978420535.2,
-      "tickSeconds": 1,
-      "tier": 450,
-      "icon": "⚪"
-    },
-    {
-      "id": 451,
-      "name": "İnci Davetiye",
-      "baseCost": 538790025201544,
-      "goldPerSecond": 671537773151.3,
-      "tickSeconds": 1,
-      "tier": 451,
-      "icon": "⚪"
-    },
-    {
-      "id": 452,
-      "name": "İnci Kader Çarkı",
-      "baseCost": 545981216171432,
-      "goldPerSecond": 691683906345.8,
-      "tickSeconds": 1,
-      "tier": 452,
-      "icon": "⚪"
-    },
-    {
-      "id": 453,
-      "name": "İnci Sonsuzluk İşareti",
-      "baseCost": 553252176422307,
-      "goldPerSecond": 712434423536.2,
-      "tickSeconds": 1,
-      "tier": 453,
-      "icon": "⚪"
-    },
-    {
-      "id": 454,
-      "name": "İnci Kaligrafi Seti",
-      "baseCost": 560603611780268,
-      "goldPerSecond": 733807456242.3,
-      "tickSeconds": 1,
-      "tier": 454,
-      "icon": "⚪"
-    },
-    {
-      "id": 455,
-      "name": "İnci Roman",
-      "baseCost": 568036232739734,
-      "goldPerSecond": 755821679929.6,
-      "tickSeconds": 1,
-      "tier": 455,
-      "icon": "📖"
-    },
-    {
-      "id": 456,
-      "name": "İnci Depolama",
-      "baseCost": 575550754483934,
-      "goldPerSecond": 778496330327.5,
-      "tickSeconds": 1,
-      "tier": 456,
-      "icon": "⚪"
-    },
-    {
-      "id": 457,
-      "name": "İnci Galeri",
-      "baseCost": 583147896905446,
-      "goldPerSecond": 801851220237.3,
-      "tickSeconds": 1,
-      "tier": 457,
-      "icon": "⚪"
-    },
-    {
-      "id": 458,
-      "name": "İnci Kongre Merkezi",
-      "baseCost": 590828384626772,
-      "goldPerSecond": 825906756844.4,
-      "tickSeconds": 1,
-      "tier": 458,
-      "icon": "⚪"
-    },
-    {
-      "id": 459,
-      "name": "İnci Ödül",
-      "baseCost": 598592947020971,
-      "goldPerSecond": 850683959549.7,
-      "tickSeconds": 1,
-      "tier": 459,
-      "icon": "⚪"
-    },
-    {
-      "id": 460,
-      "name": "İnci Dil Kursu",
-      "baseCost": 606442318232320,
-      "goldPerSecond": 876204478336.2,
-      "tickSeconds": 1,
-      "tier": 460,
-      "icon": "⚪"
-    },
-    {
-      "id": 461,
-      "name": "İnci Mürekkep",
-      "baseCost": 614377237197036,
-      "goldPerSecond": 902490612686.3,
-      "tickSeconds": 1,
-      "tier": 461,
-      "icon": "🖋️"
-    },
-    {
-      "id": 462,
-      "name": "İnci Kronograf",
-      "baseCost": 622398447664031,
-      "goldPerSecond": 929565331066.9,
-      "tickSeconds": 1,
-      "tier": 462,
-      "icon": "⚪"
-    },
-    {
-      "id": 463,
-      "name": "İnci Tarayıcı",
-      "baseCost": 630506698215715,
-      "goldPerSecond": 957452290998.9,
-      "tickSeconds": 1,
-      "tier": 463,
-      "icon": "⚪"
-    },
-    {
-      "id": 464,
-      "name": "İnci Afiş",
-      "baseCost": 638702742288844,
-      "goldPerSecond": 986175859728.9,
-      "tickSeconds": 1,
-      "tier": 464,
-      "icon": "⚪"
-    },
-    {
-      "id": 465,
-      "name": "İnci Boya Kalemi",
-      "baseCost": 646987338195416,
-      "goldPerSecond": 1015761135520.8,
-      "tickSeconds": 1,
-      "tier": 465,
-      "icon": "✏️"
-    },
-    {
-      "id": 466,
-      "name": "İnci Filozofların Taşı",
-      "baseCost": 655361249143604,
-      "goldPerSecond": 1046233969586.4,
-      "tickSeconds": 1,
-      "tier": 466,
-      "icon": "⚪"
-    },
-    {
-      "id": 467,
-      "name": "İnci Arayüz",
-      "baseCost": 663825243258738,
-      "goldPerSecond": 1077620988674,
-      "tickSeconds": 1,
-      "tier": 467,
-      "icon": "⚪"
-    },
-    {
-      "id": 468,
-      "name": "İnci Metin Analizörü",
-      "baseCost": 672380093604335,
-      "goldPerSecond": 1109949618334.2,
-      "tickSeconds": 1,
-      "tier": 468,
-      "icon": "⚪"
-    },
-    {
-      "id": 469,
-      "name": "İnci Tezhip Seti",
-      "baseCost": 681026578203166,
-      "goldPerSecond": 1143248106884.2,
-      "tickSeconds": 1,
-      "tier": 469,
-      "icon": "⚪"
-    },
-    {
-      "id": 470,
-      "name": "İnci Kağıt",
-      "baseCost": 689765480058369,
-      "goldPerSecond": 1177545550090.7,
-      "tickSeconds": 1,
-      "tier": 470,
-      "icon": "📄"
-    },
-    {
-      "id": 471,
-      "name": "İnci Ölümsüzlük İksiri",
-      "baseCost": 698597587174618,
-      "goldPerSecond": 1212871916593.4,
-      "tickSeconds": 1,
-      "tier": 471,
-      "icon": "⚪"
-    },
-    {
-      "id": 472,
-      "name": "İnci Dikilitaş",
-      "baseCost": 707523692579317,
-      "goldPerSecond": 1249258074091.2,
-      "tickSeconds": 1,
-      "tier": 472,
-      "icon": "⚪"
-    },
-    {
-      "id": 473,
-      "name": "İnci Mühür",
-      "baseCost": 716544594343853,
-      "goldPerSecond": 1286735816313.9,
-      "tickSeconds": 1,
-      "tier": 473,
-      "icon": "⚪"
-    },
-    {
-      "id": 474,
-      "name": "İnci Nöral Ağ",
-      "baseCost": 725661095604893,
-      "goldPerSecond": 1325337890803.3,
-      "tickSeconds": 1,
-      "tier": 474,
-      "icon": "⚪"
-    },
-    {
-      "id": 475,
-      "name": "İnci Dönüştürücü",
-      "baseCost": 734874004585716,
-      "goldPerSecond": 1365098027527.4,
-      "tickSeconds": 1,
-      "tier": 475,
-      "icon": "⚪"
-    },
-    {
-      "id": 476,
-      "name": "İnci Plaket",
-      "baseCost": 744184134617598,
-      "goldPerSecond": 1406050968353.2,
-      "tickSeconds": 1,
-      "tier": 476,
-      "icon": "⚪"
-    },
-    {
-      "id": 477,
-      "name": "İnci Gezegen Atlası",
-      "baseCost": 753592304161243,
-      "goldPerSecond": 1448232497403.8,
-      "tickSeconds": 1,
-      "tier": 477,
-      "icon": "🗺️"
-    },
-    {
-      "id": 478,
-      "name": "İnci Kelime Kartı",
-      "baseCost": 763099336828247,
-      "goldPerSecond": 1491679472325.9,
-      "tickSeconds": 1,
-      "tier": 478,
-      "icon": "💬"
-    },
-    {
-      "id": 479,
-      "name": "İnci Gramer Kitabı",
-      "baseCost": 772706061402617,
-      "goldPerSecond": 1536429856495.7,
-      "tickSeconds": 1,
-      "tier": 479,
-      "icon": "⚪"
-    },
-    {
-      "id": 480,
-      "name": "İnci Kurşun Kalem",
-      "baseCost": 782413311862337,
-      "goldPerSecond": 1582522752190.6,
-      "tickSeconds": 1,
-      "tier": 480,
-      "icon": "✏️"
-    },
-    {
-      "id": 481,
-      "name": "İnci Suluboya",
-      "baseCost": 792221927400967,
-      "goldPerSecond": 1629998434756.3,
-      "tickSeconds": 1,
-      "tier": 481,
-      "icon": "⚪"
-    },
-    {
-      "id": 482,
-      "name": "İnci Okuma Kitabı",
-      "baseCost": 802132752449292,
-      "goldPerSecond": 1678898387799,
-      "tickSeconds": 1,
-      "tier": 482,
-      "icon": "⚪"
-    },
-    {
-      "id": 483,
-      "name": "İnci Katalog",
-      "baseCost": 812146636697022,
-      "goldPerSecond": 1729265339433,
-      "tickSeconds": 1,
-      "tier": 483,
-      "icon": "⚪"
-    },
-    {
-      "id": 484,
-      "name": "İnci Bildiri",
-      "baseCost": 822264435114527,
-      "goldPerSecond": 1781143299616,
-      "tickSeconds": 1,
-      "tier": 484,
-      "icon": "⚪"
-    },
-    {
-      "id": 485,
-      "name": "İnci Mars Kolonisi",
-      "baseCost": 832487007974619,
-      "goldPerSecond": 1834577598604.5,
-      "tickSeconds": 1,
-      "tier": 485,
-      "icon": "⚪"
-    },
-    {
-      "id": 486,
-      "name": "İnci Yıldız Haritası",
-      "baseCost": 842815220874385,
-      "goldPerSecond": 1889614926562.6,
-      "tickSeconds": 1,
-      "tier": 486,
-      "icon": "⭐"
-    },
-    {
-      "id": 487,
-      "name": "İnci Gözlemevi",
-      "baseCost": 853249944757053,
-      "goldPerSecond": 1946303374359.5,
-      "tickSeconds": 1,
-      "tier": 487,
-      "icon": "⚪"
-    },
-    {
-      "id": 488,
-      "name": "İnci Şifreleyici",
-      "baseCost": 863792055933912,
-      "goldPerSecond": 2004692475590.3,
-      "tickSeconds": 1,
-      "tier": 488,
-      "icon": "⚪"
-    },
-    {
-      "id": 489,
-      "name": "İnci Portal Anahtarı",
-      "baseCost": 874442436106277,
-      "goldPerSecond": 2064833249858,
-      "tickSeconds": 1,
-      "tier": 489,
-      "icon": "⚪"
-    },
-    {
-      "id": 490,
-      "name": "İnci Bileşen",
-      "baseCost": 885201972387488,
-      "goldPerSecond": 2126778247353.7,
-      "tickSeconds": 1,
-      "tier": 490,
-      "icon": "⚪"
-    },
-    {
-      "id": 491,
-      "name": "İnci Totem",
-      "baseCost": 896071557324962,
-      "goldPerSecond": 2190581594774.3,
-      "tickSeconds": 1,
-      "tier": 491,
-      "icon": "⚪"
-    },
-    {
-      "id": 492,
-      "name": "İnci Uydu",
-      "baseCost": 907052088922296,
-      "goldPerSecond": 2256299042617.5,
-      "tickSeconds": 1,
-      "tier": 492,
-      "icon": "⚪"
-    },
-    {
-      "id": 493,
-      "name": "İnci Rulo",
-      "baseCost": 918144470661395,
-      "goldPerSecond": 2323988013896,
-      "tickSeconds": 1,
-      "tier": 493,
-      "icon": "⚪"
-    },
-    {
-      "id": 494,
-      "name": "İnci Dolma Kalem",
-      "baseCost": 929349611524662,
-      "goldPerSecond": 2393707654312.9,
-      "tickSeconds": 1,
-      "tier": 494,
-      "icon": "✏️"
-    },
-    {
-      "id": 495,
-      "name": "İnci Zımba",
-      "baseCost": 940668426017227,
-      "goldPerSecond": 2465518883942.3,
-      "tickSeconds": 1,
-      "tier": 495,
-      "icon": "⚪"
-    },
-    {
-      "id": 496,
-      "name": "İnci Jeneratör",
-      "baseCost": 952101834189219,
-      "goldPerSecond": 2539484450460.6,
-      "tickSeconds": 1,
-      "tier": 496,
-      "icon": "⚪"
-    },
-    {
-      "id": 497,
-      "name": "İnci Sertifika",
-      "baseCost": 963650761658080,
-      "goldPerSecond": 2615668983974.4,
-      "tickSeconds": 1,
-      "tier": 497,
-      "icon": "⚪"
-    },
-    {
-      "id": 498,
-      "name": "İnci Yazıcı",
-      "baseCost": 975316139630936,
-      "goldPerSecond": 2694139053493.6,
-      "tickSeconds": 1,
-      "tier": 498,
-      "icon": "✍️"
-    },
-    {
-      "id": 499,
-      "name": "İnci Simülasyon",
-      "baseCost": 987098904926994,
-      "goldPerSecond": 2774963225098.4,
-      "tickSeconds": 1,
-      "tier": 499,
-      "icon": "⚪"
-    },
-    {
-      "id": 500,
-      "name": "İnci Ay Üssü",
-      "baseCost": 998999999999996,
-      "goldPerSecond": 2858212121851.4,
-      "tickSeconds": 1,
-      "tier": 500,
-      "icon": "🌙"
+      "tier": 20,
+      "icon": "👜",
+      "baseCost": 25735022684887068,
+      "goldPerSecond": 270214159,
+      "tickSeconds": 1
     }
   ]
 }

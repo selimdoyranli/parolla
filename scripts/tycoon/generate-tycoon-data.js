@@ -77,8 +77,20 @@ class TycoonDataGenerator {
   }
 
   getTier(id) {
-    // Make tier strictly linear: e.g. first item is level 1, 1000th item is level 1000
-    return id
+    const tierCount = this.config.tierCount || 12
+    const targetItems = this.config.targetItemsCount || 150
+
+    return Math.min(tierCount, Math.ceil(id / (targetItems / tierCount)))
+  }
+
+  isFirstItemOfTier(id) {
+    if (id === 1) return true
+
+    const tierCount = this.config.tierCount || 12
+    const targetItems = this.config.targetItemsCount || 150
+    const itemsPerTier = targetItems / tierCount
+
+    return Math.ceil(id / itemsPerTier) !== Math.ceil((id - 1) / itemsPerTier)
   }
 
   generate() {
@@ -148,87 +160,67 @@ class TycoonDataGenerator {
       const name = allNamesList[nameIndex++]
       const tier = this.getTier(id)
       const icon = this.assignEmoji(name)
-
-      const MAX_BASE_COST = 1e300
-
-      // Hard mode: first items 10, 50, 100; then 100 * costGrowthMult^(id-3)
-      let exactCost
-
-      if (id <= firstCosts.length) {
-        exactCost = firstCosts[id - 1]
-      } else {
-        exactCost = firstCosts[firstCosts.length - 1] * Math.pow(costGrowthMult, id - firstCosts.length)
-      }
-      exactCost = Math.min(MAX_BASE_COST, exactCost)
-
-      let finalCost = exactCost < 1e14 ? roundNice(Math.round(exactCost)) : Math.floor(exactCost)
-
-      // Strict inequality: each item at least minCostMult x previous
-      if (finalCost < lastCost * minCostMult && lastCost > 0) {
-        finalCost = Math.ceil(lastCost * minCostMult)
-      }
-
-      if (finalCost > MAX_BASE_COST) {
-        finalCost = MAX_BASE_COST
-      }
-
-      // Lower ROI (amorti): ~0.2% early (500s payback), ~0.01% late (10000s payback)
-      let roi = roiEarly * Math.pow(roiDecay, id)
-      roi = Math.max(roiMin, roi)
-
-      let gps = Math.round(finalCost * roi)
-
-      // Strict GPS inequality
-      if (gps <= lastGPS) {
-        gps = lastGPS + Math.max(1, Math.floor(lastGPS * 0.03))
-      }
-
-      gps = Math.max(1, gps)
-
-      lastGPS = gps
-      lastCost = finalCost
-
-      const tickSeconds = 1
-
-      allItems.push({
-        id,
-        name,
-        baseCost: finalCost,
-        goldPerSecond: gps,
-        tickSeconds,
-        tier,
-        icon
-      })
+      allItems.push({ id, name, tier, icon, baseCost: 0, goldPerSecond: 0, tickSeconds: 1 })
     }
 
-    // Scale costs so last tier ends at maxCostCap (e.g. 999T)
-    // Power curve: next item much more expensive than previous (makes game harder)
-    if (maxCostCap != null && allItems.length > 0) {
-      const n = allItems.length
-      const startCost = firstCosts[firstCosts.length - 1] || 100
-      const startId = firstCosts.length // startId=3 for item 4
-      const power = Math.log(maxCostCap / startCost) / Math.log(n / startId)
+    const numItems = allItems.length
+    const costCap = maxCostCap ?? 999e15
+    const firstPaybacks = this.config.firstPaybacks ?? [60, 120, 300]
+    const paybackBase = this.config.paybackBase ?? 300
+    const paybackGrowth = this.config.paybackGrowth ?? 1.09
+    const withinTierGrowth = this.config.withinTierGrowth ?? 1.24
+    const tierGateMult = this.config.tierGateMult ?? 2.2
 
-      for (let i = 0; i < allItems.length; i++) {
-        const item = allItems[i]
-        let cost
+    if (numItems > 0) {
+      const costs = new Array(numItems + 1).fill(0)
+      const paybacks = new Array(numItems + 1).fill(0)
+      const gps = new Array(numItems + 1).fill(0)
 
-        if (item.id <= firstCosts.length) {
-          cost = firstCosts[item.id - 1]
+      const first_costs = firstCosts || [1, 10, 50]
+
+      costs[1] = first_costs[0] ?? 1
+      costs[2] = numItems >= 2 ? first_costs[1] ?? 10 : 0
+      costs[3] = numItems >= 3 ? first_costs[2] ?? 50 : 0
+
+      paybacks[1] = firstPaybacks[0] ?? 60
+      paybacks[2] = numItems >= 2 ? firstPaybacks[1] ?? 120 : 0
+      paybacks[3] = numItems >= 3 ? firstPaybacks[2] ?? 300 : 0
+
+      for (let i = 1; i <= 3 && i <= numItems; i++) {
+        gps[i] = costs[i] / paybacks[i]
+
+        if (gps[i] >= costs[i]) gps[i] = costs[i] * 0.99
+      }
+
+      for (let i = 4; i <= numItems; i++) {
+        if (this.isFirstItemOfTier(i)) {
+          costs[i] = costs[i - 1] * tierGateMult
         } else {
-          cost = startCost * Math.pow(item.id / startId, power)
+          costs[i] = costs[i - 1] * withinTierGrowth
         }
-        cost = Math.max(cost, 0.1)
+        costs[i] = Math.min(costs[i], costCap)
 
-        item.baseCost = cost < 1e14 ? roundNice(Math.round(cost)) : Math.floor(cost)
-        const roi = Math.max(roiMin, roiEarly * Math.pow(roiDecay, item.id))
-        let gps = Math.round(Math.max(0.1, item.baseCost * roi) * 10) / 10
-        const prev = allItems[i - 1]
+        paybacks[i] = paybackBase * Math.pow(paybackGrowth, i - 3)
+        gps[i] = costs[i] / paybacks[i]
 
-        if (prev && gps <= prev.goldPerSecond) {
-          gps = Math.round((prev.goldPerSecond + Math.max(0.1, prev.goldPerSecond * 0.03)) * 10) / 10
-        }
-        item.goldPerSecond = gps
+        if (gps[i] >= costs[i]) gps[i] = costs[i] * 0.99
+      }
+
+      for (let i = 0; i < numItems; i++) {
+        const item = allItems[i]
+        const id_idx = item.id
+
+        const c = costs[id_idx]
+        let g = gps[id_idx]
+
+        item.baseCost = c < 1e14 ? roundNice(Math.round(c)) : c
+
+        if (g < 0.01) g = Math.round(g * 1000) / 1000
+        else if (g < 1) g = Math.round(g * 100) / 100
+        else if (g < 100) g = Math.round(g * 10) / 10
+        else g = Math.floor(g)
+
+        item.goldPerSecond = Math.max(0.001, g)
       }
     }
 

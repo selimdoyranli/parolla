@@ -84,9 +84,13 @@
           span
             | -{{ formatNumber(floater.val) }}
             AppIcon(name="noto:coin" :width="16" :height="16")
+
       // Ad
       .tycoon-game-scene__ad
         AppAd(:data-ad-slot="9964323575")
+
+      // Debug Button
+        button.tycoon-debug-btn(@click="handleDebugCheat") DEBUG
 </template>
 
 <script>
@@ -112,6 +116,7 @@ export default defineComponent({
     const items = computed(() => store.getters['tycoon/knowledge-kingdom/items'])
     const ownedItems = computed(() => store.getters['tycoon/knowledge-kingdom/ownedItems'])
     const isLoaded = computed(() => store.getters['tycoon/knowledge-kingdom/isLoaded'])
+    const debugUnlockAll = computed(() => store.getters['tycoon/knowledge-kingdom/debugUnlockAll'])
 
     const currentTier = computed(() => {
       let maxTier = 0
@@ -129,14 +134,25 @@ export default defineComponent({
       return maxTier
     })
 
-    // Show items up to currentTier + 1
+    // Show items in groups of 3; debug: all items
     const visibleItems = computed(() => {
       if (!items.value.length) return []
 
-      const targetTier = currentTier.value + 1
+      if (debugUnlockAll.value) return items.value
 
-      // Return all items that are either in an unlocked tier, or the very next progression tier
-      return items.value.filter(item => item.tier <= Math.max(1, targetTier))
+      let highestOwnedId = 0
+
+      for (const id in ownedItems.value) {
+        if (ownedItems.value[id] > 0) {
+          const numId = parseInt(id, 10)
+
+          if (numId > highestOwnedId) highestOwnedId = numId
+        }
+      }
+
+      const maxVisibleId = Math.max(3, Math.ceil((highestOwnedId + 1) / 3) * 3)
+
+      return items.value.filter(item => item.id <= maxVisibleId)
     })
 
     function getItemCost(itemId) {
@@ -175,11 +191,19 @@ export default defineComponent({
 
       if (n >= 1e4) return (n / 1e3).toFixed(1) + 'K'
 
-      if (n < 1) return n.toFixed(1)
+      if (n < 0.001) return n.toFixed(5)
+
+      if (n < 0.1) return n.toFixed(3)
+
+      if (n < 1) return n.toFixed(2)
 
       if (n < 1000 && !Number.isInteger(n)) return n.toFixed(1)
 
       return Math.floor(n).toLocaleString('tr-TR')
+    }
+
+    function handleDebugCheat() {
+      store.dispatch('tycoon/knowledge-kingdom/debugCheat')
     }
 
     function handleTap(event) {
@@ -274,6 +298,7 @@ export default defineComponent({
       formatNumber,
       handleTap,
       handleBuy,
+      handleDebugCheat,
       getItemCost
     }
   }
