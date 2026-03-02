@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.39.4
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.3...v2.39.4)
+
+
+### 💅 Refactors
+
+  - Update knowledge tycoon economy ([2e01d94](https://github.com/selimdoyranli/parolla/commit/2e01d94))
+  - Show economy version ([15520d5](https://github.com/selimdoyranli/parolla/commit/15520d5))
+  - Update economy version of knowledge kingdom ([144f62e](https://github.com/selimdoyranli/parolla/commit/144f62e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.39.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.2...v2.39.3)
