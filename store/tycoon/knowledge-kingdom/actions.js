@@ -16,7 +16,8 @@ export default {
         const item = data.items.find(i => i.id === parseInt(itemId))
 
         if (item) {
-          totalGPS += item.goldPerSecond * count
+          const tickSeconds = item.tickSeconds || 1
+          totalGPS += (item.goldPerSecond / tickSeconds) * count
         }
       }
 
@@ -31,9 +32,13 @@ export default {
 
     if (!item) return false
 
-    if (state.gold < item.cost) return false
+    const ownedCount = state.ownedItems[itemId] || 0
+    const base = item.baseCost !== undefined ? item.baseCost : item.cost
+    const dynamicCost = Math.floor(base * Math.pow(1.15, ownedCount))
 
-    commit('SUBTRACT_GOLD', item.cost)
+    if (state.gold < dynamicCost) return false
+
+    commit('SUBTRACT_GOLD', dynamicCost)
     commit('BUY_ITEM', itemId)
 
     // Recalculate total GPS
@@ -43,7 +48,8 @@ export default {
       const ownedItem = state.items.find(i => i.id === parseInt(id))
 
       if (ownedItem) {
-        totalGPS += ownedItem.goldPerSecond * count
+        const tickSeconds = ownedItem.tickSeconds || 1
+        totalGPS += (ownedItem.goldPerSecond / tickSeconds) * count
       }
     }
 
@@ -53,12 +59,32 @@ export default {
   },
 
   tick({ commit, state }) {
-    if (state.goldPerSecond > 0) {
-      commit('ADD_GOLD', state.goldPerSecond)
+    commit('INCREMENT_TICK_COUNT')
+
+    // Calculate the actual burst gold to add this specific tick based on modulo timers
+    let goldToDepositThisTick = 0
+
+    if (Object.keys(state.ownedItems).length > 0) {
+      for (const [id, count] of Object.entries(state.ownedItems)) {
+        const ownedItem = state.items.find(i => i.id === parseInt(id))
+
+        if (ownedItem) {
+          const tickSeconds = ownedItem.tickSeconds || 1
+
+          // If the timer sequence hits for this item's interval length
+          if (state.tickCount % tickSeconds === 0) {
+            goldToDepositThisTick += ownedItem.goldPerSecond * count
+          }
+        }
+      }
+    }
+
+    if (goldToDepositThisTick > 0) {
+      commit('ADD_GOLD', goldToDepositThisTick)
     }
   },
 
-  tapGold({ commit, state }) {
-    commit('ADD_GOLD', state.goldPerClick)
+  tapGold({ commit, getters }) {
+    commit('ADD_GOLD', getters.goldPerClick)
   }
 }

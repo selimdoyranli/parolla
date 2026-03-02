@@ -3,17 +3,16 @@ export default {
     state.gold = gold
   },
 
-  SET_TOTAL_GOLD(state, totalGold) {
-    state.totalGold = totalGold
-  },
-
   SET_GOLD_PER_SECOND(state, gps) {
     state.goldPerSecond = gps
   },
 
+  INCREMENT_TICK_COUNT(state) {
+    state.tickCount++
+  },
+
   ADD_GOLD(state, amount) {
     state.gold += amount
-    state.totalGold += amount
   },
 
   SUBTRACT_GOLD(state, amount) {

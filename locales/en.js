@@ -139,8 +139,8 @@ export default {
       },
       knowledgeKingdom: {
         title: 'KNOWLEDGE KINGDOM',
-        description: 'Grow your kingdom with every click',
-        label: 'Click, earn, rise'
+        description: 'Click, earn, rise',
+        label: 'Clicker mini game'
       }
     }
   },

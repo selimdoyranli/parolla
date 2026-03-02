@@ -44,7 +44,7 @@
         .tycoon-item(
           v-for="item in visibleItems"
           :key="item.id"
-          :class="{ 'is-affordable': gold >= item.cost, 'is-owned': getOwnedCount(item.id) > 0 }"
+          :class="{ 'is-affordable': gold >= getItemCost(item.id), 'is-owned': getOwnedCount(item.id) > 0 }"
         )
           .tycoon-item__icon-wrapper
             span.tycoon-item__icon {{ item.icon }}
@@ -56,18 +56,28 @@
               span.tycoon-item__tier-badge(:class="'tycoon-tier-' + item.tier") LVL {{ item.tier }}
             .tycoon-item__earnings
               AppIcon(name="noto:coin" :width="12" :height="12")
-              span +{{ formatNumber(item.goldPerSecond) }} / sn
+              span +{{ formatNumber(item.goldPerSecond) }} / {{ item.tickSeconds > 1 ? item.tickSeconds + 'sn' : 'sn' }}
 
           .tycoon-item__action
-            button.tycoon-button.tycoon-button--buy.is-affordable(v-if="gold >= item.cost" @click="handleBuy(item, $event)")
+            button.tycoon-button.tycoon-button--buy.is-affordable(v-if="gold >= getItemCost(item.id)" @click="handleBuy(item, $event)")
               .tycoon-button__inner
-                AppIcon(name="noto:coin" :class="gold < item.cost ? 'tycoon-button__coin--disabled' : ''" :width="16" :height="16")
-                span {{ formatNumber(item.cost) }}
+                AppIcon(
+                  name="noto:coin"
+                  :class="gold < getItemCost(item.id) ? 'tycoon-button__coin--disabled' : ''"
+                  :width="16"
+                  :height="16"
+                )
+                span {{ formatNumber(getItemCost(item.id)) }}
 
             button.tycoon-button.tycoon-button--buy.disabled(v-else)
               .tycoon-button__inner
-                AppIcon(name="noto:coin" :class="gold < item.cost ? 'tycoon-button__coin--disabled' : ''" :width="16" :height="16")
-                span {{ formatNumber(item.cost) }}
+                AppIcon(
+                  name="noto:coin"
+                  :class="gold < getItemCost(item.id) ? 'tycoon-button__coin--disabled' : ''"
+                  :width="16"
+                  :height="16"
+                )
+                span {{ formatNumber(getItemCost(item.id)) }}
 
       transition-group.tycoon-floaters.tycoon-floaters--expense(name="float-up" tag="div")
         .tycoon-floater.tycoon-floater--expense(v-for="floater in expenseFloaters" :key="floater.id" :style="floaterStyle(floater)")
@@ -97,7 +107,6 @@ export default defineComponent({
 
     // Store getters
     const gold = computed(() => store.getters['tycoon/knowledge-kingdom/gold'])
-    const totalGold = computed(() => store.getters['tycoon/knowledge-kingdom/totalGold'])
     const goldPerSecond = computed(() => store.getters['tycoon/knowledge-kingdom/goldPerSecond'])
     const goldPerClick = computed(() => store.getters['tycoon/knowledge-kingdom/goldPerClick'])
     const items = computed(() => store.getters['tycoon/knowledge-kingdom/items'])
@@ -120,18 +129,19 @@ export default defineComponent({
       return maxTier
     })
 
-    // Show items: all items up to the first unaffordable + 3 more
+    // Show items up to currentTier + 1
     const visibleItems = computed(() => {
       if (!items.value.length) return []
 
-      // Find the first item the player can't afford based on all-time gold (totalGold)
-      const firstUnaffordableIndex = items.value.findIndex(item => item.cost > totalGold.value && !getOwnedCount(item.id))
+      const targetTier = currentTier.value + 1
 
-      // Show up to that index + 3 more items, minimum 5
-      const showUpTo = Math.max(5, firstUnaffordableIndex === -1 ? items.value.length : firstUnaffordableIndex + 3)
-
-      return items.value.slice(0, Math.min(showUpTo, items.value.length))
+      // Return all items that are either in an unlocked tier, or the very next progression tier
+      return items.value.filter(item => item.tier <= Math.max(1, targetTier))
     })
+
+    function getItemCost(itemId) {
+      return store.getters['tycoon/knowledge-kingdom/itemCost'](itemId)
+    }
 
     function getOwnedCount(itemId) {
       return ownedItems.value[itemId] || 0
@@ -147,17 +157,25 @@ export default defineComponent({
     function formatNumber(num) {
       if (num === undefined || num === null) return '0'
 
-      if (num >= 1e15) return (num / 1e15).toFixed(1) + 'Q'
+      const n = Number(num)
 
-      if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T'
+      if (!Number.isFinite(n) || n < 0) return '0'
 
-      if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B'
+      if (n >= 1e15) {
+        const q = n / 1e15
 
-      if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M'
+        return (q >= 999.5 ? '999' : q.toFixed(1)) + 'Q'
+      }
 
-      if (num >= 1e4) return (num / 1e3).toFixed(1) + 'K'
+      if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T'
 
-      return Math.floor(num).toLocaleString('tr-TR')
+      if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B'
+
+      if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'
+
+      if (n >= 1e4) return (n / 1e3).toFixed(1) + 'K'
+
+      return Math.floor(n).toLocaleString('tr-TR')
     }
 
     function handleTap(event) {
@@ -189,7 +207,9 @@ export default defineComponent({
     }
 
     function handleBuy(item, event) {
-      if (gold.value >= item.cost) {
+      const cost = getItemCost(item.id)
+
+      if (gold.value >= cost) {
         store.dispatch('tycoon/knowledge-kingdom/buyItem', item.id)
 
         // Floating number for expenses
@@ -201,7 +221,7 @@ export default defineComponent({
 
           const id = ++floaterId
 
-          expenseFloaters.value.push({ id, x, y, val: item.cost })
+          expenseFloaters.value.push({ id, x, y, val: cost })
 
           setTimeout(() => {
             expenseFloaters.value = expenseFloaters.value.filter(f => f.id !== id)
@@ -249,7 +269,8 @@ export default defineComponent({
       floaterStyle,
       formatNumber,
       handleTap,
-      handleBuy
+      handleBuy,
+      getItemCost
     }
   }
 })

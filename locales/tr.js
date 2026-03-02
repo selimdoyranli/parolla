@@ -144,8 +144,8 @@ export default {
       },
       knowledgeKingdom: {
         title: 'BİLGİ KRALLIĞI',
-        description: 'Her tıklamada krallığını büyüt',
-        label: 'Tıkla, kazan, yüksel'
+        description: 'Tıkla, kazan, yüksel',
+        label: 'Clicker mini oyun'
       }
     }
   },

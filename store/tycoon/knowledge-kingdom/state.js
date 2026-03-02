@@ -1,8 +1,7 @@
 export default () => ({
   gold: 0,
-  totalGold: 0,
   goldPerSecond: 0,
-  goldPerClick: 1,
+  tickCount: 0,
   ownedItems: {},
   items: [],
   isLoaded: false
