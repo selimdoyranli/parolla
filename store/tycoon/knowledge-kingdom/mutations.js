@@ -3,7 +3,7 @@ export default {
     state.gold = 0
     state.goldPerSecond = 0
     state.ownedItems = {}
-    state.economyVersion = 'v23'
+    state.economyVersion = 'v4'
   },
 
   SET_GOLD(state, gold) {
