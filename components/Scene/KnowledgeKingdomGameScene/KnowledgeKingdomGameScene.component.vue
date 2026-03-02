@@ -90,7 +90,7 @@
         AppAd(:data-ad-slot="9964323575")
 
       // Debug Button
-      button.tycoon-debug-btn(@click="handleDebugCheat") DEBUG
+        button.tycoon-debug-btn(@click="handleDebugCheat") DEBUG
 
       .tycoon-economy-version economy version: {{ economyVersion }}
 </template>
