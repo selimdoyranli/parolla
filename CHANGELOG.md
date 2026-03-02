@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.39.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.3...v2.39.0)
+
+
+### 🚀 Enhancements
+
+  - Knowledge kingdom ([65125d3](https://github.com/selimdoyranli/parolla/commit/65125d3))
+
+### 💅 Refactors
+
+  - Tycoon data generator ([d7fad60](https://github.com/selimdoyranli/parolla/commit/d7fad60))
+  - Ui updates on knowledge kingdom ([d597775](https://github.com/selimdoyranli/parolla/commit/d597775))
+  - Remove tier colors on knowledge kingdom ([59bdf6c](https://github.com/selimdoyranli/parolla/commit/59bdf6c))
+  - Update economy logic of tycoon ([77fc789](https://github.com/selimdoyranli/parolla/commit/77fc789))
+  - Persist states of knowledge kingdom ([8efc4d0](https://github.com/selimdoyranli/parolla/commit/8efc4d0))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.38.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.2...v2.38.3)
