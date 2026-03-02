@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.39.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.0...v2.39.1)
+
+
+### 🩹 Fixes
+
+  - Ux fixes for knowledge kingdom ([01ac945](https://github.com/selimdoyranli/parolla/commit/01ac945))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.39.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.38.3...v2.39.0)
