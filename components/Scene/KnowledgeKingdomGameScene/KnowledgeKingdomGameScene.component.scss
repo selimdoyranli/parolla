@@ -568,6 +568,15 @@
     margin-block-start: calc(var(--base-m-y) * 4);
   }
 
+  .tycoon-economy-version {
+    margin-block-start: calc(var(--base-m-y) * 2);
+    color: light-dark(rgba(0, 0, 0, 0.35), rgba(255, 255, 255, 0.35));
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+  }
+
   .tycoon-debug-btn {
     position: fixed;
     right: 16px;

@@ -90,7 +90,9 @@
         AppAd(:data-ad-slot="9964323575")
 
       // Debug Button
-        button.tycoon-debug-btn(@click="handleDebugCheat") DEBUG
+      button.tycoon-debug-btn(@click="handleDebugCheat") DEBUG
+
+      .tycoon-economy-version economy version: {{ economyVersion }}
 </template>
 
 <script>
@@ -117,6 +119,7 @@ export default defineComponent({
     const ownedItems = computed(() => store.getters['tycoon/knowledge-kingdom/ownedItems'])
     const isLoaded = computed(() => store.getters['tycoon/knowledge-kingdom/isLoaded'])
     const debugUnlockAll = computed(() => store.getters['tycoon/knowledge-kingdom/debugUnlockAll'])
+    const economyVersion = computed(() => (store.getters['tycoon/knowledge-kingdom/economyVersion'] || '').toLowerCase())
 
     const currentTier = computed(() => {
       let maxTier = 0
@@ -289,6 +292,7 @@ export default defineComponent({
       ownedItems,
       isLoaded,
       visibleItems,
+      economyVersion,
       isTapping,
       floaters,
       expenseFloaters,

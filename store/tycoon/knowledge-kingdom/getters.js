@@ -57,5 +57,9 @@ export default {
 
   debugUnlockAll(state) {
     return state.debugUnlockAll
+  },
+
+  economyVersion(state) {
+    return state.economyVersion || ''
   }
 }
