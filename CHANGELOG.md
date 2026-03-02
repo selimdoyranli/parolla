@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.39.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.2...v2.39.3)
+
+
+### 🩹 Fixes
+
+  - Decimal fixes on knowledge kingdom ([ee9717d](https://github.com/selimdoyranli/parolla/commit/ee9717d))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.39.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.1...v2.39.2)
