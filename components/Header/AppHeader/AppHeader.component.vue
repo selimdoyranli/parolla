@@ -230,8 +230,7 @@ export default defineComponent({
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' }) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Tycoon-KnowledgeKingdom' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))
       ) {
         openLeaveDialog({
           confirm: () => {
@@ -247,8 +246,7 @@ export default defineComponent({
       if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeCompose' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Tycoon-KnowledgeKingdom' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))
       ) {
         openLeaveDialog({
           confirm: () => {
