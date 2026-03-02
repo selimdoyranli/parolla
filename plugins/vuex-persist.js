@@ -20,7 +20,16 @@ export default ({ store }) => {
         currentDate: state.wordblock.currentDate,
         targetWord: state.wordblock.targetWord,
         result: state.wordblock.result
-      }
+      },
+      tycoon:
+        state.tycoon && state.tycoon['knowledge-kingdom']
+          ? {
+              'knowledge-kingdom': {
+                gold: state.tycoon['knowledge-kingdom'].gold,
+                ownedItems: state.tycoon['knowledge-kingdom'].ownedItems
+              }
+            }
+          : {}
     })
   }).plugin(store)
 }
