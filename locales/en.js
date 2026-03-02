@@ -136,6 +136,11 @@ export default {
         title: 'MUSIC',
         description: 'Listen to songs and guess them',
         label: 'Songs of the artist you want'
+      },
+      knowledgeKingdom: {
+        title: 'KNOWLEDGE KINGDOM',
+        description: 'Click, earn, rise',
+        label: 'Clicker mini game'
       }
     }
   },
@@ -895,6 +900,28 @@ export default {
         description: 'Listen to {artists} songs and guess them in the music quiz',
         keywords: 'music quiz, music quiz play, listen to songs and guess them'
       }
+    },
+    tycoon: {
+      knowledgeKingdom: {
+        title: 'Knowledge Kingdom',
+        description: 'Tap to earn gold, build your knowledge empire',
+        keywords: 'idle tycoon, clicker game, knowledge kingdom'
+      }
+    }
+  },
+  tycoon: {
+    knowledgeKingdom: {
+      title: 'Knowledge Kingdom',
+      gold: 'Gold',
+      perSecond: '/sec',
+      buy: 'Buy',
+      tier: 'Tier',
+      owned: 'Owned',
+      totalIncome: 'Total Income',
+      tap: 'Tap to Earn',
+      items: 'Items',
+      locked: 'Locked',
+      notEnoughGold: 'Not enough gold'
     }
   }
 }

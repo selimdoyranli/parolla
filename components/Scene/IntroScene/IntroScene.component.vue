@@ -100,6 +100,15 @@
         :description="$t('introScene.modeList.music.description')"
       )
 
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--knowledge-kingdom(
+        v-if="$i18n.locale === $i18n.defaultLocale"
+        icon="noto:crown"
+        :to="localePath({ name: 'Tycoon-KnowledgeKingdom' })"
+        :title="$t('introScene.modeList.knowledgeKingdom.title')"
+        :headLabel="{ title: $t('introScene.modeList.knowledgeKingdom.label') }"
+        :description="$t('introScene.modeList.knowledgeKingdom.description')"
+      )
+
     .intro-scene__keywords.d-none
       h3.intro-scene__subtitle {{ $t('introScene.subtitle') }}
       p.intro-scene__description {{ $t('introScene.description') }}

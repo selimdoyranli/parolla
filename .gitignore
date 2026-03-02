@@ -93,3 +93,5 @@ sw.*
 package-lock.json
 
 .vercel
+
+.agent

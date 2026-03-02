@@ -141,6 +141,11 @@ export default {
         title: 'MÜZİK',
         description: 'Şarkıları dinle ve tahmin et',
         label: 'Dilediğin sanatçıya ait şarkılar'
+      },
+      knowledgeKingdom: {
+        title: 'BİLGİ KRALLIĞI',
+        description: 'Tıkla, kazan, yüksel',
+        label: 'Clicker mini oyun'
       }
     }
   },
@@ -919,6 +924,28 @@ export default {
         description: 'Müzik quizde {artists} şarkılarını dinle ve tahmin et',
         keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
       }
+    },
+    tycoon: {
+      knowledgeKingdom: {
+        title: 'Bilgi Krallığı',
+        description: 'Her tıklamada krallığını büyüt',
+        keywords: 'idle tycoon, clicker oyunu, bilgi krallığı'
+      }
+    }
+  },
+  tycoon: {
+    knowledgeKingdom: {
+      title: 'Bilgi Krallığı',
+      gold: 'Altın',
+      perSecond: '/sn',
+      buy: 'Satın Al',
+      tier: 'Seviye',
+      owned: 'Sahip',
+      totalIncome: 'Toplam Gelir',
+      tap: 'Tıkla ve Kazan',
+      items: 'Eşyalar',
+      locked: 'Kilitli',
+      notEnoughGold: 'Yetersiz altın'
     }
   }
 }
