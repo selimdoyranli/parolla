@@ -19,11 +19,11 @@ export default {
   },
 
   ADD_GOLD(state, amount) {
-    state.gold += amount
+    state.gold = Math.round((state.gold + amount) * 100) / 100
   },
 
   SUBTRACT_GOLD(state, amount) {
-    state.gold -= amount
+    state.gold = Math.round((state.gold - amount) * 100) / 100
   },
 
   SET_ITEMS(state, items) {

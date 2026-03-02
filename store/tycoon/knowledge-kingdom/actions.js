@@ -41,7 +41,11 @@ export default {
     const dynamicCost = base * Math.pow(1.15, ownedCount)
     const finalCost = dynamicCost < 100 ? Math.round(dynamicCost * 10) / 10 : Math.floor(dynamicCost)
 
-    if (state.gold < finalCost) return false
+    // Epsilon for floating point: 0.1*10 can be 0.9999999999999999
+    const goldRounded = Math.round(state.gold * 100) / 100
+    const costRounded = Math.round(finalCost * 100) / 100
+
+    if (goldRounded < costRounded) return false
 
     commit('SUBTRACT_GOLD', finalCost)
     commit('BUY_ITEM', itemId)
