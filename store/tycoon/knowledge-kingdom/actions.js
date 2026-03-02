@@ -17,7 +17,7 @@ function computeTotalGPS(ownedItems, items) {
 
 export default {
   async loadItems({ commit, state }) {
-    if (state.economyVersion !== 'v4') {
+    if (state.economyVersion !== 'v5') {
       commit('RESET_ECONOMY')
     }
 
