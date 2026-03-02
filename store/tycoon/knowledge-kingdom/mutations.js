@@ -1,4 +1,11 @@
 export default {
+  RESET_ECONOMY(state) {
+    state.gold = 0
+    state.goldPerSecond = 0
+    state.ownedItems = {}
+    state.economyVersion = 'v3'
+  },
+
   SET_GOLD(state, gold) {
     state.gold = gold
   },

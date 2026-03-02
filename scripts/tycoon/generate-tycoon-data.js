@@ -140,28 +140,30 @@ class TycoonDataGenerator {
       const tier = this.getTier(id)
       const icon = this.assignEmoji(name)
 
-      const MAX_BASE_COST = 1e14
-      let exactCost = 15
-      let multiplier = 2.5
+      const MAX_BASE_COST = 1e15
+      let exactCost = 50
+      let multiplier = 1.35
 
       for (let i = 1; i < id; i++) {
         exactCost *= multiplier
-        multiplier = Math.max(1.18, multiplier * 0.97)
+        multiplier = Math.max(1.08, multiplier * 0.98)
       }
       exactCost = Math.min(MAX_BASE_COST, exactCost)
 
       let finalCost = roundNice(Math.round(exactCost))
 
       // Strict inequality constraint
-      if (finalCost <= lastCost) finalCost = lastCost + 1
+      if (finalCost <= lastCost) finalCost = lastCost + Math.floor(lastCost * 0.1) + 1
 
-      // ROI: ~4.5% early (22s payback), ~0.4% late (250s payback)
-      let roi = 0.045 * Math.pow(0.975, id)
+      // ROI: ~2.0% early (50s payback), ~0.2% late (500s payback)
+      let roi = 0.02 * Math.pow(0.95, id)
+      roi = Math.max(0.002, roi)
+
       let gps = Math.round(finalCost * roi)
 
       // Strict GPS inequality
       if (gps <= lastGPS) {
-        gps = lastGPS + 1
+        gps = lastGPS + Math.max(1, Math.floor(lastGPS * 0.05))
       }
 
       gps = Math.max(1, gps)

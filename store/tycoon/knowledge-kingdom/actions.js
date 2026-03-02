@@ -1,5 +1,9 @@
 export default {
   async loadItems({ commit, state }) {
+    if (state.economyVersion !== 'v3') {
+      commit('RESET_ECONOMY')
+    }
+
     if (state.isLoaded) return
 
     try {
