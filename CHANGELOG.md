@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.39.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.1...v2.39.2)
+
+
+### 🩹 Fixes
+
+  - **tycoon:** Force state wipe for legacy players to prevent economy exploitation ([e6a08ff](https://github.com/selimdoyranli/parolla/commit/e6a08ff))
+
+### 💅 Refactors
+
+  - Update economy of knowledge kingdom ([6f0c7ea](https://github.com/selimdoyranli/parolla/commit/6f0c7ea))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.39.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.0...v2.39.1)
