@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.39.5
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.4...v2.39.5)
+
+
+### 🩹 Fixes
+
+  - Disable debug button on knowledge kingdom ([fda62e9](https://github.com/selimdoyranli/parolla/commit/fda62e9))
+
+### 💅 Refactors
+
+  - Update economy version of knowledge kingdom ([a2a2fed](https://github.com/selimdoyranli/parolla/commit/a2a2fed))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.39.4
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.3...v2.39.4)
