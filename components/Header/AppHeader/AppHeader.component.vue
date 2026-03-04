@@ -279,8 +279,6 @@ export default defineComponent({
     })
 
     const isVisibleBackButton = computed(() => {
-      console.log('activeGameMode.value', activeGameMode.value)
-
       if (
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
