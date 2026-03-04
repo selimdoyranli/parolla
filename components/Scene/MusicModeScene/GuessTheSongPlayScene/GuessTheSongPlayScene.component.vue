@@ -552,10 +552,14 @@ export default defineComponent({
 
     useMeta(() => ({
       title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: selectedArtists.value.map(artist => artist.artistName).join(',') }),
-      description: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-        artists: selectedArtists.value.map(artist => artist.artistName).join(',')
-      }),
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
+            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+          })
+        },
         {
           hid: 'og:title',
           name: 'og:title',

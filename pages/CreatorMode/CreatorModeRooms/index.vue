@@ -206,8 +206,12 @@ export default defineComponent({
 
     useMeta(() => ({
       title: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`,
-      description: i18n.t('seo.creatorModeQuizzes.description'),
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: i18n.t('seo.creatorModeQuizzes.description')
+        },
         {
           hid: 'og:title',
           name: 'og:title',
