@@ -13,8 +13,12 @@ export default defineComponent({
 
     useMeta(() => ({
       title: `${i18n.t('seo.tycoon.knowledgeKingdom.title')} - ${i18n.t('seo.main.title')}`,
-      description: i18n.t('seo.tycoon.knowledgeKingdom.description'),
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: i18n.t('seo.tycoon.knowledgeKingdom.description')
+        },
         {
           hid: 'og:title',
           name: 'og:title',

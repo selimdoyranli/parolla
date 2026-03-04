@@ -19,8 +19,12 @@ export default defineComponent({
 
     useMeta(() => ({
       title: `${i18n.t('seo.musicMode.guessTheSong.title')} - ${i18n.t('seo.main.title')}`,
-      description: i18n.t('seo.musicMode.guessTheSong.description'),
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: i18n.t('seo.musicMode.guessTheSong.description')
+        },
         {
           hid: 'og:title',
           name: 'og:title',

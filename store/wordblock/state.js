@@ -1,4 +1,4 @@
-export default () => ({
+const defaultGameState = () => ({
   targetWord: '',
   isGameOver: false,
   currentDate: null,
@@ -16,6 +16,14 @@ export default () => ({
     stats: {
       isOpen: false
     }
+  }
+})
+
+export default () => ({
+  games: {
+    5: defaultGameState(),
+    6: defaultGameState(),
+    7: defaultGameState()
   },
   dailyPlayingCount: 0
 })

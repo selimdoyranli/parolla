@@ -42,8 +42,31 @@
 
   .stats-dialog {
     &__actions {
-      margin-block-start: calc(var(--base-m-y) * 4);
+      margin-block-start: calc(var(--base-m-y) * 2);
       margin-block-end: var(--base-m-y);
+
+      @include media-breakpoint-up(tablet) {
+        margin-block-start: calc(var(--base-m-y) * 4);
+      }
+    }
+  }
+
+  .other-lengths {
+    display: block;
+    margin-block-end: $spacer * 5;
+
+    &__title {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-8);
+      margin-block-end: $spacer * 3;
+
+      @include font-weight-semi-bold;
+    }
+
+    &__buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacer * 2;
     }
   }
 }

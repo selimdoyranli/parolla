@@ -15,12 +15,12 @@ export default ({ store }) => {
         currentDate: state.daily.currentDate,
         questions: state.daily.questions
       },
-      wordblock: {
-        isGameOver: state.wordblock.isGameOver,
-        currentDate: state.wordblock.currentDate,
-        targetWord: state.wordblock.targetWord,
-        result: state.wordblock.result
-      },
+      wordblock:
+        state.wordblock && state.wordblock.games
+          ? {
+              games: state.wordblock.games
+            }
+          : {},
       tycoon:
         state.tycoon && state.tycoon['knowledge-kingdom']
           ? {

@@ -13,6 +13,8 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
 )
   template(v-if="isGameOver")
     .results
+      p {{ $t('wordblockMode.title', { charLength: charLength }) }}
+
       template(v-if="gameResult.status === 'won'")
         .status-card.status-card--won
           .status-card-title
@@ -43,6 +45,20 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
         // Result Sharer
         .result-sharer
           Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults") PAYLAŞ
+
+      // Other Lengths
+      .other-lengths
+        p.other-lengths__title {{ $t('wordblockMode.otherLengths') }}
+        .other-lengths__buttons
+          Button.other-lengths__button(
+            v-for="len in otherLengths"
+            :key="len"
+            type="primary"
+            icon="play"
+            round
+            size="normal"
+            :to="localePath({ name: len === 5 ? 'WordblockMode' : 'WordblockMode-charLength', params: { charLength: len } })"
+          ) {{ len }} {{ $t('wordblockMode.letter') }}
       // Ad
       AppAd(:data-ad-slot="9964323575")
 
@@ -59,7 +75,7 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
 
 <script>
 import { defineComponent, useContext, useStore, ref, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { APP_URL } from '@/system/constant'
+import { APP_URL, WORDBLOCK_AVAILABLE_LENGTHS, WORDBLOCK_MAX_ATTEMPTS } from '@/system/constant'
 import { Dialog, Tabs, Tab, CountDown, Button, Toast, Collapse, CollapseItem, Empty } from 'vant'
 
 export default defineComponent({
@@ -74,6 +90,11 @@ export default defineComponent({
     Empty
   },
   props: {
+    charLength: {
+      type: Number,
+      required: false,
+      default: 5
+    },
     isOpen: {
       type: Boolean,
       required: false,
@@ -91,7 +112,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { i18n } = useContext()
+    const { i18n, app } = useContext()
     const store = useStore()
 
     const { convertMsToTime } = useTime()
@@ -111,12 +132,20 @@ export default defineComponent({
         correct: '🟩'
       }
 
-      return gameResult.value.guesses
+      const filledEmojis = gameResult.value.guesses
         .filter(guess => guess.word) // Filter out empty guesses
         .map(guess => {
           return guess.states.map(state => emojiMap[state] || '⬛').join('')
         })
-        .join('\n')
+
+      const remainingAttempts = WORDBLOCK_MAX_ATTEMPTS - filledEmojis.length
+      const emptyRow = '⬛'.repeat(props.charLength)
+
+      for (let i = 0; i < remainingAttempts; i++) {
+        filledEmojis.push(emptyRow)
+      }
+
+      return filledEmojis.join('\n')
     }
 
     watch(
@@ -126,8 +155,8 @@ export default defineComponent({
       }
     )
 
-    const isGameOver = computed(() => store.getters['wordblock/isGameOver'])
-    const gameResult = computed(() => store.getters['wordblock/result'])
+    const isGameOver = computed(() => store.getters['wordblock/isGameOver'](props.charLength))
+    const gameResult = computed(() => store.getters['wordblock/result'](props.charLength))
 
     const elapsedTime = computed(() => {
       if (isGameOver.value && gameResult.value.elapsedTime) {
@@ -143,9 +172,10 @@ export default defineComponent({
 
     const shareResults = async () => {
       const shareText = i18n.t('sharer.wordblockModeStats.description', {
+        charLength: props.charLength,
         cells: getCellEmojis(),
         attempts: gameResult.value.attempts,
-        maxAttempts: 5,
+        maxAttempts: WORDBLOCK_MAX_ATTEMPTS,
         elapsedTime: elapsedTime.value,
         url: APP_URL
       })
@@ -182,6 +212,8 @@ export default defineComponent({
       return midnight.getTime() - new Date().getTime()
     })
 
+    const otherLengths = computed(() => WORDBLOCK_AVAILABLE_LENGTHS.filter(len => len !== props.charLength))
+
     return {
       state,
       gameResult,
@@ -189,7 +221,9 @@ export default defineComponent({
       shareResults,
       isGameOver,
       nextGameDateMs,
-      getCellEmojis
+      getCellEmojis,
+      otherLengths,
+      localePath: app.localePath
     }
   }
 })

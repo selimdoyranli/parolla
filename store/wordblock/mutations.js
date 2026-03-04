@@ -1,26 +1,26 @@
 export default {
-  SET_TARGET_WORD(state, word) {
-    state.targetWord = word.toLocaleUpperCase(this.$i18n.locale)
+  SET_TARGET_WORD(state, { charLength, word }) {
+    state.games[charLength].targetWord = word.toLocaleUpperCase(this.$i18n.locale)
   },
 
-  SET_CURRENT_DATE(state, date) {
-    state.currentDate = date
+  SET_CURRENT_DATE(state, { charLength, date }) {
+    state.games[charLength].currentDate = date
   },
 
-  SET_IS_GAME_OVER(state, isGameOver) {
-    state.isGameOver = isGameOver
+  SET_IS_GAME_OVER(state, { charLength, isGameOver }) {
+    state.games[charLength].isGameOver = isGameOver
   },
 
-  SET_GAME_RESULT(state, result) {
-    state.result = result
+  SET_GAME_RESULT(state, { charLength, result }) {
+    state.games[charLength].result = result
   },
 
-  SET_IS_OPEN_HOW_TO_PLAY_DIALOG(state, isOpen) {
-    state.dialog.howToPlay.isOpen = isOpen
+  SET_IS_OPEN_HOW_TO_PLAY_DIALOG(state, { charLength, isOpen }) {
+    state.games[charLength].dialog.howToPlay.isOpen = isOpen
   },
 
-  SET_IS_OPEN_STATS_DIALOG(state, isOpen) {
-    state.dialog.stats.isOpen = isOpen
+  SET_IS_OPEN_STATS_DIALOG(state, { charLength, isOpen }) {
+    state.games[charLength].dialog.stats.isOpen = isOpen
   },
 
   SET_DAILY_PLAYING_COUNT(state, count) {

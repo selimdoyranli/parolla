@@ -1,9 +1,9 @@
 export default {
-  async fetchWord({ commit }) {
+  async fetchWord({ commit }, { charLength = 5 }) {
     const { data, error } = await this.$appFetch({
       path: `modes/wordblock/daily-word`,
       query: {
-        charLength: 5
+        charLength
       }
     })
 
@@ -17,7 +17,7 @@ export default {
         }
       }
 
-      commit('SET_TARGET_WORD', transform(data).word)
+      commit('SET_TARGET_WORD', { charLength, word: transform(data).word })
     }
 
     return {

@@ -1,6 +1,6 @@
 <template lang="pug">
 .page.wordblock-mode-page
-  WordblockModeScene
+  WordblockModeScene(:charLength="5")
 </template>
 
 <script>
@@ -12,23 +12,27 @@ export default defineComponent({
     const { i18n } = useContext()
 
     useMeta(() => ({
-      title: `${i18n.t('seo.wordblockMode.title')} - ${i18n.t('seo.main.title')}`,
-      description: i18n.t('seo.wordblockMode.description'),
+      title: `${i18n.t('seo.wordblockMode.title', { charLength: 5 })} - ${i18n.t('seo.main.title')}`,
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: i18n.t('seo.wordblockMode.description', { charLength: 5 })
+        },
         {
           hid: 'og:title',
           name: 'og:title',
-          content: `${i18n.t('seo.wordblockMode.title')} - ${i18n.t('seo.main.title')}`
+          content: `${i18n.t('seo.wordblockMode.title', { charLength: 5 })} - ${i18n.t('seo.main.title')}`
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: i18n.t('seo.wordblockMode.description')
+          content: i18n.t('seo.wordblockMode.description', { charLength: 5 })
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: i18n.t('seo.wordblockMode.description')
+          content: i18n.t('seo.wordblockMode.description', { charLength: 5 })
         },
         {
           hid: 'keywords',

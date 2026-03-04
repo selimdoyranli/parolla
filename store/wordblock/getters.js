@@ -1,22 +1,22 @@
 export default {
-  targetWord(state) {
-    return state.targetWord
+  targetWord: state => charLength => {
+    return state.games[charLength].targetWord
   },
 
-  isGameOver(state) {
-    return state.isGameOver
+  isGameOver: state => charLength => {
+    return state.games[charLength].isGameOver
   },
 
-  currentDate(state) {
-    return state.currentDate
+  currentDate: state => charLength => {
+    return state.games[charLength].currentDate
   },
 
-  result(state) {
-    return state.result
+  result: state => charLength => {
+    return state.games[charLength].result
   },
 
-  dialog(state) {
-    return state.dialog
+  dialog: state => charLength => {
+    return state.games[charLength].dialog
   },
 
   dailyPlayingCount(state) {

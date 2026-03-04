@@ -9,3 +9,5 @@ export const GAME_TIME_LIMIT = 60 * 5 * 1000 // 5min
 export const UNSUPPORTED_HEIGHT = 520
 export const USERNAME_REGEX = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/
 export const ROOM_TAG_REGEX = /[^\p{L}\p{N}]/gu
+export const WORDBLOCK_AVAILABLE_LENGTHS = [5, 6, 7]
+export const WORDBLOCK_MAX_ATTEMPTS = 6

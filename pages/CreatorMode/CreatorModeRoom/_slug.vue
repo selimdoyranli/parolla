@@ -54,8 +54,12 @@ export default defineComponent({
 
     useMeta(() => ({
       title: room.value?.title && `${i18n.t('seo.creatorModeQuiz.title', { quizTitle: room.value.title })} - ${i18n.t('seo.main.title')}`,
-      description: room.value?.title && `${i18n.t('seo.creatorModeQuiz.description', { quizTitle: room.value.title })}`,
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: room.value?.title && `${i18n.t('seo.creatorModeQuiz.description', { quizTitle: room.value.title })}`
+        },
         {
           hid: 'og:title',
           name: 'og:title',

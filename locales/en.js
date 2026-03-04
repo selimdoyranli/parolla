@@ -452,7 +452,7 @@ export default {
       description: `parolla - Word game \n\nI played the "{quizTitle}" quiz \n\n🟩 {correctAnswerCount} Correct \n🟥 {wrongAnswerCount} Incorrect \n🟨 {passedAnswerCount} Pass \n \nRemain time: {remainTime} \n \n{url}`
     },
     wordblockModeStats: {
-      description: `parolla - Word game \n\nMy score in Wordblock mode\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nElapsed Time: {elapsedTime} \n \n{url}`
+      description: `parolla - Word game \n\nMy score in word block mode ({charLength} letters)\n\n{attempts}. attempts / {maxAttempts} guesses\n\n{cells}\n\nTime elapsed: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
       description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
@@ -791,6 +791,12 @@ export default {
     seeResults: 'See results',
     appleMusic: 'Apple Music'
   },
+  wordblockMode: {
+    wordblock: 'Wordblock',
+    title: 'Wordblock - {charLength} letters',
+    otherLengths: 'Play other modes',
+    letter: 'Letter'
+  },
   period: {
     daily: {
       title: 'Daily',
@@ -885,8 +891,8 @@ export default {
       description: 'Answer the question in each round, instant competition'
     },
     wordblockMode: {
-      title: 'Wordblock',
-      description: `Guess the today's word, daily word game`,
+      title: 'Wordblock - {charLength} letters',
+      description: `Guess the {charLength} letter word in 6 attempts, daily word game`,
       keywords: 'daily word game, wordle, like wordle, word guess game'
     },
     musicMode: {
