@@ -149,7 +149,9 @@ export default defineComponent({
       }
 
       if (activeGameMode.value === gameModeKeyEnum.WORDBLOCK) {
-        store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', !wordblockDialog.value.stats.isOpen)
+        const charLength = parseInt(route.value.params.charLength) || 5
+        const currentDialogState = wordblockDialog.value(charLength).stats.isOpen
+        store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength, isOpen: !currentDialogState })
       }
     }
 
@@ -277,6 +279,8 @@ export default defineComponent({
     })
 
     const isVisibleBackButton = computed(() => {
+      console.log('activeGameMode.value', activeGameMode.value)
+
       if (
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||

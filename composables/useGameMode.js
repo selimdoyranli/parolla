@@ -22,7 +22,10 @@ export default () => {
       return gameModeKeyEnum.TOUR
     }
 
-    if (route.value.path === localePath({ name: 'WordblockMode' })) {
+    if (
+      route.value.path === localePath({ name: 'WordblockMode' }) ||
+      route.value.name.startsWith(getRouteBaseName({ name: 'WordblockMode-charLength' }))
+    ) {
       return gameModeKeyEnum.WORDBLOCK
     }
 

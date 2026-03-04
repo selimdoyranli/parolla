@@ -1,4 +1,4 @@
-import { useStore, ref, computed, onMounted } from '@nuxtjs/composition-api'
+import { useStore, ref, computed, onMounted, unref } from '@nuxtjs/composition-api'
 
 /**
  * Game Status Enum
@@ -18,16 +18,17 @@ const gameStatusEnum = Object.freeze({
  *
  * @returns {Object} Game state and methods
  */
-export default () => {
+export default charLength => {
   const store = useStore()
+  const charLen = computed(() => unref(charLength))
 
-  // Demo word - will be replaced with API data
-  const targetWord = computed(() => store.getters['wordblock/targetWord'])
+  const targetWord = computed(() => store.getters['wordblock/targetWord'](charLen.value))
   const WORD_LENGTH = computed(() => targetWord.value.length)
-  const MAX_ATTEMPTS = 5
+  const activeCharLength = computed(() => charLen.value)
+  const MAX_ATTEMPTS = 6
 
-  const isGameOver = computed(() => store.getters['wordblock/isGameOver'])
-  const gameResult = computed(() => store.getters['wordblock/result'])
+  const isGameOver = computed(() => store.getters['wordblock/isGameOver'](charLen.value))
+  const gameResult = computed(() => store.getters['wordblock/result'](charLen.value))
 
   // Game state
   const currentAttempt = ref(0)
@@ -42,20 +43,23 @@ export default () => {
     closeHowToPlayDialog()
     gameStatus.value = gameStatusEnum.PLAYING
     startTime.value = Date.now()
-    store.commit('wordblock/SET_IS_GAME_OVER', false)
+    store.commit('wordblock/SET_IS_GAME_OVER', { charLength: charLen.value, isGameOver: false })
   }
 
   const endGame = async () => {
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
-    store.commit('wordblock/SET_IS_GAME_OVER', true)
-    store.commit('wordblock/SET_CURRENT_DATE', day)
+    store.commit('wordblock/SET_IS_GAME_OVER', { charLength: charLen.value, isGameOver: true })
+    store.commit('wordblock/SET_CURRENT_DATE', { charLength: charLen.value, date: day })
     store.commit('wordblock/SET_GAME_RESULT', {
-      status: gameStatus.value,
-      attempts: currentAttempt.value,
-      word: targetWord.value,
-      guesses: guesses.value,
-      elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
+      charLength: charLen.value,
+      result: {
+        status: gameStatus.value,
+        attempts: currentAttempt.value,
+        word: targetWord.value,
+        guesses: guesses.value,
+        elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
+      }
     })
 
     await store.dispatch('wordblock/increaseDailyPlayingCount')
@@ -355,22 +359,22 @@ export default () => {
     }
   }
 
-  const dialog = computed(() => store.getters['wordblock/dialog'])
+  const dialog = computed(() => store.getters['wordblock/dialog'](charLen.value))
 
   const openHowToPlayDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', true)
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { charLength: charLen.value, isOpen: true })
   }
 
   const closeHowToPlayDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', false)
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { charLength: charLen.value, isOpen: false })
   }
 
   const openStatsDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', true)
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength: charLen.value, isOpen: true })
   }
 
   const closeStatsDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', false)
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength: charLen.value, isOpen: false })
   }
 
   onMounted(() => {
@@ -388,6 +392,7 @@ export default () => {
     isGameOver,
     gameResult,
     WORD_LENGTH,
+    activeCharLength,
     MAX_ATTEMPTS,
     currentAttempt,
     currentGuess,

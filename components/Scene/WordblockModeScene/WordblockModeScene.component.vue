@@ -2,6 +2,9 @@
 .scene.game-scene.wordblock-mode-scene(ref="rootRef" :class="sceneClasses")
   // Scene Inner
   .scene__inner.game-scene__inner.wordblock-mode-scene__inner
+    .wordblock-mode-scene__header
+      h2.wordblock-mode-scene__title {{ $t('wordblockMode.title', { charLength }) }}
+
     // Fetch State
     template(v-if="fetchState.pending")
       Empty(:description="$t('gameScene.pendingQuestions')")
@@ -68,7 +71,7 @@
           AppIcon(name="tabler:backspace")
 
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="handleHowToPlayDialogClose")
-  WordblockModeStatsDialog(:isOpen="dialog.stats.isOpen" @closed="handleStatsDialogClose")
+  WordblockModeStatsDialog(:charLength="charLength" :isOpen="dialog.stats.isOpen" @closed="handleStatsDialogClose")
 </template>
 
 <script>
@@ -80,7 +83,14 @@ export default defineComponent({
     Button,
     Empty
   },
-  setup() {
+  props: {
+    charLength: {
+      type: Number,
+      required: false,
+      default: 5
+    }
+  },
+  setup(props) {
     const rootRef = ref(null)
 
     const store = useStore()
@@ -92,24 +102,27 @@ export default defineComponent({
 
     if (process.browser) {
       const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
-      storedDay = persistStore && persistStore.wordblock && persistStore.wordblock.currentDate
+      storedDay = persistStore?.wordblock?.games?.[props.charLength]?.currentDate
 
       if (day !== storedDay) {
         // New day - reset game
-        store.commit('wordblock/SET_IS_GAME_OVER', false)
-        store.commit('wordblock/SET_CURRENT_DATE', day)
+        store.commit('wordblock/SET_IS_GAME_OVER', { charLength: props.charLength, isGameOver: false })
+        store.commit('wordblock/SET_CURRENT_DATE', { charLength: props.charLength, date: day })
         store.commit('wordblock/SET_GAME_RESULT', {
-          status: null,
-          attempts: 0,
-          word: '',
-          guesses: [],
-          elapsedTime: null
+          charLength: props.charLength,
+          result: {
+            status: null,
+            attempts: 0,
+            word: '',
+            guesses: [],
+            elapsedTime: null
+          }
         })
       }
     }
 
     const { fetch, fetchState } = useFetch(async () => {
-      await store.dispatch('wordblock/fetchWord')
+      await store.dispatch('wordblock/fetchWord', { charLength: props.charLength })
     })
 
     const {
@@ -141,7 +154,7 @@ export default defineComponent({
       openStatsDialog,
       closeStatsDialog,
       dialog
-    } = useWordblock()
+    } = useWordblock(computed(() => props.charLength))
 
     // Turkish keyboard layout
     const keyboardLayout = [
@@ -154,7 +167,8 @@ export default defineComponent({
     const sceneClasses = computed(() => ({
       'game-scene--gameOver': isGameOver.value,
       'wordblock-mode-scene--won': gameStatus.value === gameStatusEnum.WON,
-      'wordblock-mode-scene--lost': gameStatus.value === gameStatusEnum.LOST
+      'wordblock-mode-scene--lost': gameStatus.value === gameStatusEnum.LOST,
+      [`wordblock-mode-scene--charLength-${props.charLength}`]: true
     }))
 
     // Get row class

@@ -458,7 +458,7 @@ export default {
       description: `parolla - Kelime oyunu \n\n"{roomTitle}" quizini çözdüm \n\n🟩 {correctAnswerCount} Doğru \n🟥 {wrongAnswerCount} Yanlış \n🟨 {passedAnswerCount} Pas \n \nKalan Süre: {remainTime} \n \n{url}`
     },
     wordblockModeStats: {
-      description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum\n\n{attempts}/{maxAttempts}\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
+      description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum ({charLength} harf)\n\n{attempts}. deneme / {maxAttempts} tahmin hakkı\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
       description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
@@ -783,6 +783,12 @@ export default {
       description: `<h2>💔 &nbsp; TAHMİN HAKKIN BİTTİ!</h2> <p>Turun bitmesine kadar bekle</p>`
     }
   },
+  wordblockMode: {
+    wordblock: 'Kelimeblok',
+    title: 'Kelimeblok - {charLength} harf',
+    otherLengths: 'Diğer modları da oyna',
+    letter: 'Harf'
+  },
   musicMode: {
     title: 'Müzik quiz',
     subtitle: 'Şarkıları veya sanatçıları tahmin et',
@@ -909,8 +915,8 @@ export default {
       description: 'Her tur bir soruyu cevapla, anlık rekabet'
     },
     wordblockMode: {
-      title: 'Kelimeblok',
-      description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
+      title: 'Kelimeblok - {charLength} harf',
+      description: '{charLength} harfli günün kelimesini 6 tahminde bul, günlük kelime oyunu',
       keywords: 'günlük kelime oyunu, wordle türkçe, wordle türkçe uyarlaması, kelime tahmi oyunu'
     },
     musicMode: {

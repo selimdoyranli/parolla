@@ -1,6 +1,42 @@
 @import '@/assets/style/scss/shared/_game-scene.scss';
 
 .wordblock-mode-scene {
+  &--charLength-5 {
+    --cell-size: 50px;
+
+    @include media-breakpoint-up(mobile-m) {
+      --cell-size: 50px;
+    }
+
+    @include media-breakpoint-up(mobile) {
+      --cell-size: 62px;
+    }
+  }
+
+  &--charLength-6 {
+    --cell-size: 50px;
+
+    @include media-breakpoint-up(mobile-m) {
+      --cell-size: 50px;
+    }
+
+    @include media-breakpoint-up(mobile) {
+      --cell-size: 62px;
+    }
+  }
+
+  &--charLength-7 {
+    --cell-size: 42px;
+
+    @include media-breakpoint-up(mobile-m) {
+      --cell-size: 44px;
+    }
+
+    @include media-breakpoint-up(mobile) {
+      --cell-size: 62px;
+    }
+  }
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -10,12 +46,11 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    justify-content: space-between;
+    gap: 0;
+    justify-content: flex-start;
     width: 100%;
     max-width: 500px;
     padding-inline: 0;
-    padding-block: var(--base-p-y);
 
     @include media-breakpoint-up(tablet) {
       padding-block: 10vh;
@@ -23,15 +58,32 @@
   }
 
   &__header {
+    position: relative;
+    width: 100%;
     text-align: center;
+    inset: 0;
+    padding-block: $spacer * 3;
+
+    @include media-breakpoint-up(mobile-m) {
+      padding-block: $spacer * 5;
+    }
+
+    @include media-breakpoint-up(tablet) {
+      padding-block: $spacer * 8;
+    }
   }
 
   &__title {
-    margin: 0 0 0.5rem;
+    margin: 0;
     color: var(--color-text-01);
-    font-weight: 700;
-    font-size: 2.5rem;
+    font-size: var(--font-size-text-8);
     letter-spacing: 0.05em;
+
+    @include font-weight-semi-bold;
+
+    @include media-breakpoint-up(tablet) {
+      font-size: var(--font-size-text-5);
+    }
   }
 
   &__subtitle {
@@ -58,8 +110,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 62px;
-    height: 62px;
+    width: var(--cell-size);
+    height: var(--cell-size);
     color: var(--color-text-01);
     font-weight: 700;
     font-size: 2rem;

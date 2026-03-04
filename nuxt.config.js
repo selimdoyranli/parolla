@@ -324,6 +324,14 @@ module.exports = {
             tr: '/kelimeblok',
             en: '/wordblock'
           },
+          'WordblockMode/index': {
+            tr: '/kelimeblok',
+            en: '/wordblock'
+          },
+          'WordblockMode/_charLength': {
+            tr: '/kelimeblok/:charLength-harf',
+            en: '/wordblock/:charLength-letters'
+          },
           'MusicMode/index': {
             tr: '/muzik',
             en: '/music'
