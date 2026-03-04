@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.40.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.5...v2.40.0)
+
+
+### 🚀 Enhancements
+
+  - Add 6,7 letters mode to wordblock mode ([3c49e56](https://github.com/selimdoyranli/parolla/commit/3c49e56))
+
+### 💅 Refactors
+
+  - Seo improvements ([75a94e1](https://github.com/selimdoyranli/parolla/commit/75a94e1))
+
+### 📖 Documentation
+
+  - Tycoon generator doc updates ([13097e6](https://github.com/selimdoyranli/parolla/commit/13097e6))
+  - Update wordblock doc ([84456c2](https://github.com/selimdoyranli/parolla/commit/84456c2))
+
+### 🎨 Styles
+
+  - Remove debug log ([9b4026e](https://github.com/selimdoyranli/parolla/commit/9b4026e))
+
+### ❤️  Contributors
+
+- Selimdoyranli <selimdoyranli@gmail.com>
+
 ## v2.39.5
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.4...v2.39.5)
