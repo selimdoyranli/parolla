@@ -8,81 +8,98 @@ A clean, modern game implementation for Parolla project.
 WordblockModeScene/
 ├── WordblockModeScene.component.vue   # Main component
 ├── WordblockModeScene.component.scss  # Styles
-├── /composables/useWordblock.js               # Game logic composable
-└── README.md                     # Documentation
+├── /composables/useWordblock.js       # Game logic composable
+└── README.md                          # Documentation
 ```
 
 ## 🎮 Features
 
-- **6 Attempts**: Players have 6 tries to guess the word
+- **Dynamic Lengths**: Generically supports multiple independent word games (5, 6, and 7 characters).
+- **6 or More Attempts**: Players have a fixed amount of tries to guess the word (e.g. 6 tries configurable).
 - **Visual Feedback**:
   - 🟩 Green: Correct letter in correct position
   - 🟨 Yellow: Correct letter in wrong position
-  - ⬜ Gray: Letter not in word
-- **Virtual Keyboard**: On-screen Turkish layout
+  - ⬛ Gray: Letter not in word
+- **Virtual Keyboard**: On-screen Turkish layout.
 - **Physical Keyboard Support**: Type with your keyboard too!
-- **Responsive Design**: Works on all screen sizes
-- **Smooth Animations**: Pop, flip, and fade effects
-- **Smart Letter States**: Keyboard keys change color based on your guesses
+- **Responsive Design**: Works on all screen sizes, tile layouts adapt fluidly based on lengths.
+- **Smooth Animations**: Pop, flip, and fade effects.
+- **Smart Letter States**: Keyboard keys change color based on your guesses.
 
 ## 🔧 Current Implementation
 
-### Demo Word
-
-Currently using a hardcoded demo word: **"PARLA"**
+### Scene Context Usage
+The component accepts `charLength` as a prop mapping to independent Vuex storage entries to track their context dynamically isolated.
 
 ```javascript
-// In /composables/useWordblock.js
-const targetWord = ref('PARLA')
+// In pages/WordblockMode/_charLength.vue
+<WordblockModeScene :charLength="parseInt($route.params.charLength)" />
+```
+
+### Composable Usage
+```javascript
+import useWordblock from '@/composables/useWordblock'
+
+// Supplying the isolated charLength map configuration
+const { targetWord, ...engine } = useWordblock(computed(() => props.charLength))
 ```
 
 ## 🚀 API Integration Guide
 
 To integrate with your API, follow these steps:
 
-### 1. Fetch Word from API
+### 1. Fetch Word from API passing Parameter Length
 
-In `WordblockModeScene.component.vue`, add API call:
+In `WordblockModeScene.component.vue`, pass `charLength` downstream via Vuex Actions.
 
 ```javascript
 import { useFetch, useStore } from '@nuxtjs/composition-api'
 
 // In setup()
 const store = useStore()
+const charLength = computed(() => props.charLength)
 
-// Fetch word from API
+// Fetch word dynamically
 const { fetch, fetchState } = useFetch(async () => {
   try {
-    const response = await store.dispatch('Wordblock/fetchWord')
-    // Assuming API returns: { word: 'PARLA', id: 123 }
-    setTargetWord(response.word)
+    const response = await store.dispatch('wordblock/fetchWord', { charLength: charLength.value })
+    // Using the scoped dictionary based on length
   } catch (error) {
     console.error('Failed to fetch word:', error)
   }
 })
 ```
 
-### 2. Create Vuex Store Module
+### 2. Vuex Store Module Shape
 
-Create `store/Wordblock/` directory with actions:
+Ensure your `store/wordblock/state.js` exports dictionary mapping per `charLength`:
 
 ```javascript
-// store/Wordblock/actions.js
-export default {
-  async fetchWord({ commit }) {
-    try {
-      const response = await this.$axios.get('/api/Wordblock/word')
-      commit('SET_WORD', response.data.word)
-      return response.data
-    } catch (error) {
-      throw error
-    }
-  },
+export const defaultGameState = () => ({
+  isGameOver: false,
+  currentDate: null,
+  targetWord: '',
+  result: null
+})
 
-  async submitGameResult({ commit }, payload) {
-    // payload: { attempts, won, word, guesses }
+export const state = () => ({
+  games: {
+    5: defaultGameState(),
+    6: defaultGameState(),
+    7: defaultGameState()
+  }
+})
+```
+
+Ensure your `actions.js` fetches correctly filtering the right game length context.
+
+```javascript
+// store/wordblock/actions.js
+export default {
+  async fetchWord({ commit }, { charLength }) {
     try {
-      const response = await this.$axios.post('/api/Wordblock/result', payload)
+      const response = await this.$axios.get(`/api/Wordblock/word?length=${charLength}`)
+      commit('SET_TARGET_WORD', { charLength, word: response.data.word })
       return response.data
     } catch (error) {
       throw error
@@ -92,13 +109,13 @@ export default {
 ```
 
 ### 3. Submit Game Results
-
-Add result submission when game ends:
+Add result submission payload scoped securely.
 
 ```javascript
 // In handleSubmit() after game ends
 if (result.status === 'won' || result.status === 'lost') {
-  await store.dispatch('Wordblock/submitGameResult', {
+  await store.dispatch('wordblock/submitGameResult', {
+    charLength: props.charLength, // Isolated scope 
     word: targetWord.value,
     attempts: currentAttempt.value,
     won: result.status === 'won',
@@ -112,74 +129,14 @@ if (result.status === 'won' || result.status === 'lost') {
 }
 ```
 
-### 4. Loading & Error States
-
-Add loading and error handling:
-
-```vue
-<template lang="pug">
-.word-block-scene
-  // Loading state
-  template(v-if="fetchState.pending")
-    .word-block-scene__loading Loading word...
-
-  // Error state
-  template(v-else-if="fetchState.error")
-    .word-block-scene__error
-      p Error loading word
-      Button(@click="fetch") Retry
-
-  // Game board (existing code)
-  template(v-else)
-    .scene__inner.word-block-scene__inner
-      // ... existing game board code
-</template>
-```
-
-## 📊 API Endpoints Expected
-
-```
-GET  /api/Wordblock/word
-Response: {
-  word: "PARLA",
-  id: 123,
-  difficulty: "medium"
-}
-
-POST /api/Wordblock/result
-Body: {
-  word: "PARLA",
-  attempts: 4,
-  won: true,
-  guesses: [
-    { word: "PASTA", states: ["correct", "correct", "absent", "absent", "correct"] },
-    { word: "PARMA", states: ["correct", "correct", "correct", "absent", "correct"] },
-    ...
-  ]
-}
-Response: {
-  success: true,
-  score: 85,
-  ranking: 42
-}
-```
-
 ## 🎨 Customization
 
-### Change Word Length
+### Configuring Supported Word Lengths
 
-Modify in `/composables/useWordblock.js`:
-
-```javascript
-const targetWord = ref('KELIME') // 6 letters instead of 5
-```
-
-### Change Max Attempts
-
-Modify in `/composables/useWordblock.js`:
+Modify in `@/system/constant.js` ensuring downstream paths dynamically adapt router validations correctly out-of-the-box.
 
 ```javascript
-const MAX_ATTEMPTS = 8 // Instead of 6
+export const WORDBLOCK_AVAILABLE_LENGTHS = [5, 6, 7]
 ```
 
 ### Change Colors
@@ -208,66 +165,43 @@ Row 3: [ENTER] z c v b n m ö ç [BACKSPACE]
   - Green: Letter is in the word and in correct position
   - Yellow: Letter is in the word but wrong position
   - Gray: Letter is not in the word
-- **Enter Key**: Submit your guess (enabled only when word is complete)
-- **Backspace Key**: Delete last letter
-- **Physical Keyboard**: Also works with your computer keyboard
+- **Enter Key**: Submit your guess (enabled only when word length aligns with current `charLength`)
+- **Backspace Key**: Delete last letter.
+- **Physical Keyboard**: Also works seamlessly intercepting typing correctly supporting isolated Turkish inputs safely filtering non-text nodes.
 
-## 🧪 Testing
+## 🔄 Methods Available (Composable Context)
 
-To test the game:
+### From `composables/useWordblock.js`:
 
-1. Navigate to `/Wordblock` or your configured route
-2. Click letters on the virtual keyboard (or type with physical keyboard)
-3. Fill all 5 letters
-4. Press Enter key or click "enter" button
-5. See visual feedback on both grid and keyboard
-6. Win in 6 attempts or less!
+Hook exports scoped context bound globally:
 
-## 🔄 Methods Available
-
-### From `/composables/useWordblock.js`:
-
-- `setTargetWord(word)` - Set new target word
-- `submitGuess()` - Submit current guess
-- `resetGame()` - Reset to start new game
-- `handleInputChange(value)` - Handle input changes
+- `setTargetWord(word)` - Set new target word manually triggering a hard reset gracefully natively.
+- `submitGuess()` - Submit current guess processing matching algorithm against normalized bounds.
+- `resetGame()` - Reset to start new game wiping grid metadata.
+- `handleInputChange(value)` - Normalizing native physical events filtering properly.
 
 ### From Component:
 
-- `getCellsForRow(rowIndex)` - Get cells for specific row
-- `getCellState(rowIndex, cellIndex)` - Get state of cell
-- `handleSubmit()` - Submit guess with API integration
+- `getCellsForRow(rowIndex)` - Fetch UI cells gracefully avoiding out-of-bounds error mapping dynamic spacing grids effectively.
+- `getCellState(rowIndex, cellIndex)` - Retrieves semantic status bound tracking class animations internally flawlessly.
+- `handleSubmit()` - Event capturing pipeline invoking hooks elegantly.
 
 ## 📱 Mobile Support
 
 - Fully responsive design
 - Touch-friendly input
 - Optimized for small screens (360px+)
-- Auto-focus on input field
+- Fluid SCSS tracking `charLength-5`, `charLength-6`, `charLength-7` dynamic mappings guaranteeing tiles remain readable regardless of column amount.
 
 ## 🎯 Game States
 
 ```javascript
 gameStatus.value === 'playing' // Game in progress
 gameStatus.value === 'won' // Player won
-gameStatus.value === 'lost' // Player lost (6 failed attempts)
-```
-
-## 🌐 Internationalization
-
-Update text in component or use i18n:
-
-```pug
-// Current
-h1.word-block-scene__title Wordblock
-p.word-block-scene__subtitle {{ WORD_LENGTH }} harfli kelimeyi {{ MAX_ATTEMPTS }} denemede bul
-
-// With i18n
-h1.word-block-scene__title {{ $t('Wordblock.title') }}
-p.word-block-scene__subtitle {{ $t('Wordblock.subtitle', { length: WORD_LENGTH, attempts: MAX_ATTEMPTS }) }}
+gameStatus.value === 'lost' // Player lost (fails maximum attempts limits)
 ```
 
 ---
 
-**Ready for API Integration** ✅  
-Follow the API Integration Guide above to connect to your backend!
+**Architecture Ready For Deep Component Scalability!** ✅  
+Leveraging isolated nested arrays using Vue Composition API allows creating N amounts of active Wordblock grids seamlessly without state clashing efficiently mapped gracefully.
