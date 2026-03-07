@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.40.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.0...v2.40.1)
+
+
+### 🩹 Fixes
+
+  - Error handle on music quiz play scene ([10fe9e6](https://github.com/selimdoyranli/parolla/commit/10fe9e6))
+
+### 💅 Refactors
+
+  - Itunes client service ([732ca30](https://github.com/selimdoyranli/parolla/commit/732ca30))
+  - Itunes serverless search fn ([c386b0d](https://github.com/selimdoyranli/parolla/commit/c386b0d))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.40.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.39.5...v2.40.0)
