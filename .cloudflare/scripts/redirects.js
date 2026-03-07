@@ -8,6 +8,7 @@ const distDir = join(__dirname, '../../dist')
 
 const redirects = `
 /.well-known/apple-app-site-association  /apple-app-site-association.json  200
+/api/itunes/search  https://itunes.apple.com/search  200
 `.trim()
 
 const headers = `

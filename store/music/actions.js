@@ -1,50 +1,32 @@
-import { artistTransformer, songTransformer } from '@/transformers/music.transformer'
+import { fetchArtists as fetchArtistsFromItunes, fetchSongs as fetchSongsFromItunes } from '@/services/itunes.service'
 
 export default {
   async fetchArtists({ commit }, { term }) {
-    const { data, error } = await this.$appFetch({
-      path: `modes/music/artists`,
-      query: {
-        term
-      }
-    })
-
-    const transformedData = data?.data.map(artist => artistTransformer(artist)) || []
+    const { data, meta, error } = await fetchArtistsFromItunes({ term })
 
     return {
-      data: transformedData,
-      meta: data?.meta,
+      data: data || [],
+      meta,
       error
     }
   },
 
   async fetchSongs({ commit }, { artistIds }) {
-    const getPerArtistLimit = () => {
-      return 30
-    }
+    const perArtistLimit = 30
 
-    const { data } = await this.$appFetch({
-      path: `modes/music/songs`,
-      query: {
-        artistIds: artistIds.join(','),
-        perArtistLimit: getPerArtistLimit()
-      }
+    const result = await fetchSongsFromItunes({
+      artistIds,
+      perArtistLimit
     })
 
-    let transformedData = []
-
-    if (data?.length > 0) {
-      transformedData = data?.data.map(song => songTransformer(song)) || []
-    }
-
-    if (data?.error) {
-      throw new Error(data.error)
+    if (result.error) {
+      throw new Error(result.error)
     }
 
     return {
-      data: transformedData,
-      meta: data?.meta,
-      error: data?.error
+      data: result.data || [],
+      meta: result.meta,
+      error: result.error
     }
   }
 }
