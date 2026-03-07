@@ -1,17 +1,8 @@
 import { artistTransformer, songTransformer } from '@/transformers/music.transformer'
 
 const ITUNES_BASE = 'https://itunes.apple.com'
-const PROXY_BASE = '/api/itunes'
 
 const isMobile = () => /Android|iPhone|iPad|iPod|Mobile|webOS/i.test(navigator.userAgent)
-
-const itunesSearch = params => {
-  const base = isMobile() ? `${PROXY_BASE}/search` : `${ITUNES_BASE}/search`
-
-  return `${base}?${params}`
-}
-
-const itunesLookup = params => `${ITUNES_BASE}/lookup?${params}`
 
 const fetchJson = async url => {
   try {
@@ -33,6 +24,16 @@ const fetchJson = async url => {
     return { data: null, error }
   }
 }
+
+const itunesSearch = params => {
+  if (isMobile()) {
+    return `/api/itunes/search?${params}`
+  }
+
+  return `${ITUNES_BASE}/search?${params}`
+}
+
+const itunesLookup = params => `${ITUNES_BASE}/lookup?${params}`
 
 export const fetchArtists = async ({ term, limit = 50 }) => {
   const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.min(Math.floor(limit), 200) : 50
