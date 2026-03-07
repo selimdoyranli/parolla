@@ -14,7 +14,7 @@
       Empty(:description="$t('general.quizPreparing')")
 
     template(v-else-if="fetchState.error")
-      Empty(image="error" :description="$t('error.anErrorOccurred')")
+      Empty(image="error" :description="`${$t('error.anErrorOccurred')}: ${fetchState.error.message}`")
         Button(@click="reFetch") {{ $t('error.tryAgain') }}
 
     template(v-else)
@@ -160,6 +160,7 @@ export default defineComponent({
     const { fetch, fetchState } = useFetch(async () => {
       const ids = selectedArtistIds.value
       const { data, meta } = await store.dispatch('music/fetchSongs', { artistIds: ids })
+
       selectedArtists.value = meta?.artists || []
 
       const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []

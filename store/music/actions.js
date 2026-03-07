@@ -23,7 +23,7 @@ export default {
       return 30
     }
 
-    const { data, error } = await this.$appFetch({
+    const { data } = await this.$appFetch({
       path: `modes/music/songs`,
       query: {
         artistIds: artistIds.join(','),
@@ -31,12 +31,20 @@ export default {
       }
     })
 
-    const transformedData = data?.data.map(song => songTransformer(song)) || []
+    let transformedData = []
+
+    if (data?.length > 0) {
+      transformedData = data?.data.map(song => songTransformer(song)) || []
+    }
+
+    if (data?.error) {
+      throw new Error(data.error)
+    }
 
     return {
       data: transformedData,
       meta: data?.meta,
-      error
+      error: data?.error
     }
   }
 }
