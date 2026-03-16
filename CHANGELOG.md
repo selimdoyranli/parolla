@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.40.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.1...v2.40.2)
+
+
+### 🩹 Fixes
+
+  - Trivia answer comma fix ([d9ec843](https://github.com/selimdoyranli/parolla/commit/d9ec843))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.40.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.0...v2.40.1)
