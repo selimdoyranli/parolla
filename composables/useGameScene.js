@@ -194,7 +194,12 @@ export default () => {
     item.isPassed = false
 
     const answerField = formatAnswer(rawAnswer)
-    const correctAnswers = questions.value[alphabet.value.activeIndex].answer.split(',')
+
+    const currentQuestion = questions.value[alphabet.value.activeIndex]
+    const isTrivia = currentQuestion?.answerType === answerTypeEnum.TRIVIA
+    const isTextField = currentQuestion?.answerType === answerTypeEnum.TEXT_FIELD
+    // Trivia questions: don't split by comma as the answer itself may contain commas
+    const correctAnswers = isTrivia ? [currentQuestion.answer] : currentQuestion.answer.split(',')
 
     const passKeywords = ['pas', 'pass']
     const endGameKeywords = ['bitir', 'finish']
@@ -211,9 +216,6 @@ export default () => {
 
         return false
       }
-
-      const currentQuestion = questions.value[alphabet.value.activeIndex]
-      const isTextField = currentQuestion?.answerType === answerTypeEnum.TEXT_FIELD
 
       if (isTextField && !answerField.startsWith(formatAnswer(item.letter))) {
         handleNotStartsWithActiveChar({ activeChar: item.letter })
