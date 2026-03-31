@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.41.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.2...v2.41.0)
+
+
+### 🚀 Enhancements
+
+  - Wordblock keyboard show-hide toggle ([ba05cce](https://github.com/selimdoyranli/parolla/commit/ba05cce))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.40.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.1...v2.40.2)
