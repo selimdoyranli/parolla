@@ -33,7 +33,10 @@
           ) {{ letter }}
 
     // Keyboard Section
-    section.wordblock-mode-scene__keyboard(:class="{ 'wordblock-mode-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }")
+    section.wordblock-mode-scene__keyboard(
+      v-show="isActiveKeyboard"
+      :class="{ 'wordblock-mode-scene__keyboard--disabled': currentGuess.length === WORD_LENGTH }"
+    )
       .wordblock-mode-scene__keyboardRow
         button.wordblock-mode-scene__key(
           v-for="key in keyboardLayout[0]"
@@ -94,6 +97,8 @@ export default defineComponent({
     const rootRef = ref(null)
 
     const store = useStore()
+
+    const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
     const { i18n } = useContext()
 
     // Check if it's a new day and reset game if needed
@@ -425,7 +430,8 @@ export default defineComponent({
       handleHowToPlayDialogClose,
       handleStatsDialogClose,
       openStatsDialog,
-      closeStatsDialog
+      closeStatsDialog,
+      isActiveKeyboard
     }
   }
 })

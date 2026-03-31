@@ -18,7 +18,8 @@ export default ({ store }) => {
       wordblock:
         state.wordblock && state.wordblock.games
           ? {
-              games: state.wordblock.games
+              games: state.wordblock.games,
+              isActiveKeyboard: state.wordblock.isActiveKeyboard
             }
           : {},
       tycoon:

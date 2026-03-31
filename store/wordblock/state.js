@@ -25,5 +25,6 @@ export default () => ({
     6: defaultGameState(),
     7: defaultGameState()
   },
-  dailyPlayingCount: 0
+  dailyPlayingCount: 0,
+  isActiveKeyboard: true
 })

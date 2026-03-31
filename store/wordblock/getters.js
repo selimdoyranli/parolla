@@ -21,5 +21,9 @@ export default {
 
   dailyPlayingCount(state) {
     return state.dailyPlayingCount
+  },
+
+  isActiveKeyboard(state) {
+    return state.isActiveKeyboard
   }
 }

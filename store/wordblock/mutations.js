@@ -25,5 +25,9 @@ export default {
 
   SET_DAILY_PLAYING_COUNT(state, count) {
     state.dailyPlayingCount = count
+  },
+
+  SET_IS_ACTIVE_KEYBOARD(state, isActive) {
+    state.isActiveKeyboard = isActive
   }
 }

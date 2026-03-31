@@ -210,6 +210,7 @@ export default {
       myQuizzes: 'Quizlerim',
       darkTheme: 'Koyu tema',
       soundFx: 'Ses efekleri',
+      wordblockKeyboard: 'Kelimeblok Klavyesi',
       switchLocale: 'Dil değiştir',
       suggestQa: 'Soru önermek ister misin?',
       howToPLay: 'Nasıl oynanır?',

@@ -57,4 +57,10 @@
   .login-form {
     margin-block-end: calc(var(--base-m-y) * 2);
   }
+
+  &-nav__item--wordblockKeyboard {
+    @include media-breakpoint-down(tablet) {
+      display: none;
+    }
+  }
 }

@@ -205,6 +205,7 @@ export default {
       myQuizzes: 'My quizzes',
       darkTheme: 'Dark theme',
       soundFx: 'Sound fx',
+      wordblockKeyboard: 'Wordblock Keyboard',
       switchLocale: 'Choose language',
       suggestQa: 'Do you want to suggest a question?',
       howToPLay: 'How to play?',

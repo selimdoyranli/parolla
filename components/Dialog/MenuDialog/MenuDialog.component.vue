@@ -48,6 +48,14 @@ Dialog.dialog.menu-dialog(
     Cell.menu-dialog-nav__item(icon="music-o" size="large" :title="$t('dialog.menu.soundFx')")
       template(#right-icon)
         SwitchInput(v-model="isActiveSoundFx" size="22px" @change="toggleSoundFx")
+    Cell.menu-dialog-nav__item.menu-dialog-nav__item--wordblockKeyboard(
+      v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK"
+      icon="font-o"
+      size="large"
+      :title="$t('dialog.menu.wordblockKeyboard')"
+    )
+      template(#right-icon)
+        SwitchInput(v-model="isActiveKeyboard" size="22px" @change="toggleWordblockKeyboard")
     Cell.menu-dialog-nav__item(
       v-if="$route.path === localePath({ name: 'Main' })"
       icon="font-o"
@@ -194,6 +202,12 @@ export default defineComponent({
       store.commit('app/SET_IS_ACTIVE_SOUND_FX', isChecked)
     }
 
+    const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
+
+    const toggleWordblockKeyboard = isChecked => {
+      store.commit('wordblock/SET_IS_ACTIVE_KEYBOARD', isChecked)
+    }
+
     const openSuggestQuestion = () => {
       window.open(
         'https://docs.google.com/forms/d/e/1FAIpQLSec4_MAFiDOjpd9pywfocFsfJQoXfMpLT3HIaHpO0Lz3clnaA/viewform?usp=sf_link',
@@ -286,6 +300,8 @@ export default defineComponent({
       toggleDarkTheme,
       isActiveSoundFx,
       toggleSoundFx,
+      isActiveKeyboard,
+      toggleWordblockKeyboard,
       openSuggestQuestion,
       openRoomSharer,
       openAppSharer,
