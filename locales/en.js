@@ -231,6 +231,36 @@ export default {
       description:
         'For suggestions, complaint, collaborations; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> or <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> You can reach us on our twitter account.'
     },
+    report: {
+      title: 'Report',
+      scope: {
+        label: 'Scope',
+        placeholder: 'Report scope'
+      },
+      detail: {
+        label: 'Detail',
+        placeholder: 'Describe your complaint'
+      },
+      media: {
+        label: 'Images (optional)',
+        hint: 'images',
+        uploading: 'Uploading'
+      },
+      reportedUser: {
+        label: 'Reported player'
+      },
+      reportedMessage: {
+        label: 'Reported message'
+      },
+      additional: {
+        label: 'Additional info'
+      },
+      submit: 'Submit',
+      callback: {
+        success: 'Your report has been submitted successfully',
+        error: 'Failed to submit report'
+      }
+    },
     announcements: {
       title: 'Announcements',
       description: 'Announcements'

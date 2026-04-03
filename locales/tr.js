@@ -236,6 +236,36 @@ export default {
       description:
         'Öneri, şikayet ya da işbirliği için; <br><br> <a href="mailto:parollaapp@gmail.com?subject=parolla_contact">parollaapp@gmail.com</a> <br> veya <br> <a href="https://twitter.com/parollaapp" target="_blank">@parollaapp</a> <br> twitter hesabımızdan ulaşabilirsin.'
     },
+    report: {
+      title: 'Şikayet',
+      scope: {
+        label: 'Kapsam',
+        placeholder: 'Şikayet kapsamı'
+      },
+      detail: {
+        label: 'Detay',
+        placeholder: 'Şikayetinizi açıklayın'
+      },
+      media: {
+        label: 'Görseller (isteğe bağlı)',
+        hint: 'görsel',
+        uploading: 'Yükleniyor'
+      },
+      reportedUser: {
+        label: 'Raporlanan oyuncu'
+      },
+      reportedMessage: {
+        label: 'Raporlanan mesaj'
+      },
+      additional: {
+        label: 'Ek bilgi'
+      },
+      submit: 'Gönder',
+      callback: {
+        success: 'Şikayetiniz başarıyla gönderildi',
+        error: 'Şikayet gönderilemedi'
+      }
+    },
     announcements: {
       title: 'Duyurular',
       description: 'Duyurular'

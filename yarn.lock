@@ -13233,6 +13233,7 @@ __metadata:
     nuxt-client-init-module: "npm:^0.3.0"
     nuxt-font-loader: "npm:^1.1.3"
     nuxt-user-agent: "npm:^1.2.2"
+    portal-vue: "npm:2"
     postcss: "npm:^8.4.21"
     postcss-preset-env: "npm:^7.5.0"
     prettier: "npm:^2.1.2"
@@ -13656,6 +13657,15 @@ __metadata:
   dependencies:
     ts-pnp: "npm:^1.1.6"
   checksum: 10c0/79d1973ec0b04be6d44f15d5625991701a010dae28f2798d974d3aa164e8c60dc7fa22fd01a47fb6af369c4ba6585c3030d4deb775ccfecd7156594bc223d086
+  languageName: node
+  linkType: hard
+
+"portal-vue@npm:2":
+  version: 2.1.7
+  resolution: "portal-vue@npm:2.1.7"
+  peerDependencies:
+    vue: ^2.5.18
+  checksum: 10c0/7888e77dc2ea81509b560e3cd69e6f54e66af1a47bc82caa419996595912a3a3ca13ed0d5815fabf459dffc367643f92542fe5e574df00737dfc776de62b50cf
   languageName: node
   linkType: hard
 

@@ -1,5 +1,16 @@
 <template lang="pug">
 .page.profile-view
+  Button.profile-view-report-btn(v-if="player" type="default" auth-control round size="small" @click="isOpenReportDialog = true")
+    AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="18" :height="18")
+
+  MountingPortal(mount-to="body" append)
+    ReportDialog(
+      :is-open="isOpenReportDialog"
+      :scope="reportTypeEnum.PROFILE"
+      :additional="reportAdditional"
+      @closed="isOpenReportDialog = false"
+    )
+
   .profile-view-player
     template(v-if="playerLoading")
       Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
@@ -37,8 +48,9 @@
 </template>
 
 <script>
-import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
 import { Loading, Empty, Button } from 'vant'
+import { reportTypeEnum } from '@/enums/report-type.enum'
 
 export default defineComponent({
   components: {
@@ -79,7 +91,28 @@ export default defineComponent({
       default: false
     }
   },
-  setup() {}
+  setup(props) {
+    const isOpenReportDialog = ref(false)
+
+    const reportAdditional = computed(() => {
+      if (!props.player) return null
+
+      return JSON.stringify({
+        reportedUser: {
+          id: props.player.id,
+          username: props.player.username,
+          bio: props.player.bio || '',
+          diceBear: props.player.diceBear
+        }
+      })
+    })
+
+    return {
+      reportTypeEnum,
+      isOpenReportDialog,
+      reportAdditional
+    }
+  }
 })
 </script>
 

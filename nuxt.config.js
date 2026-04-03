@@ -26,7 +26,7 @@ module.exports = {
    */
   env: {
     API_STRAPI: process.env.API_STRAPI || 'https://strapi.parolla.app/api',
-    WS_URL: process.env.WS_URL,
+    WS_URL: process.env.WS_URL || 'wss://0.0.0.0:1881',
     GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
     GOOGLE_AUTH_REDIRECT_URI: process.env.GOOGLE_AUTH_REDIRECT_URI
   },
@@ -103,7 +103,8 @@ module.exports = {
     { src: '~/plugins/theme-color', ssr: false },
     { src: '~/plugins/dynamic-head', ssr: false },
     { src: '~/plugins/iconify', ssr: false }, // https://www.npmjs.com/package/@iconify/vue
-    { src: '~/plugins/vue-timeago', ssr: false } // https://vue-timeago.egoist.sh
+    { src: '~/plugins/vue-timeago', ssr: false }, // https://vue-timeago.egoist.sh
+    { src: '~/plugins/portal-vue', ssr: false } // https://v2.portal-vue.linusb.org/
   ],
 
   /*

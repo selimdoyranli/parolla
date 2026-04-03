@@ -51,5 +51,67 @@ export default {
       data,
       error
     }
+  },
+
+  async report({ commit }, params) {
+    const { scope, detail, additional } = params
+
+    const user = this.$auth.user
+    let parsedAdditional = {}
+
+    try {
+      parsedAdditional = additional ? JSON.parse(additional) : {}
+    } catch {
+      parsedAdditional = additional ? { raw: additional } : {}
+    }
+
+    const mergedAdditional = JSON.stringify({
+      reportFromUser: user ? { id: user.id, username: user.username, email: user.email } : null,
+      ...parsedAdditional
+    })
+
+    const { data, error } = await this.$appFetch({
+      path: `reports`,
+      method: 'POST',
+      data: {
+        data: {
+          scope,
+          detail,
+          additional: mergedAdditional.slice(0, 5012)
+        }
+      }
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async uploadReportMedia({ commit }, { file, path, ref, refId, field }) {
+    const token = this.$auth.strategy.token.get()
+
+    const formData = new FormData()
+
+    formData.append('files', file)
+    formData.append('path', path)
+    formData.append('ref', ref)
+    formData.append('refId', refId)
+    formData.append('field', field)
+
+    const { data, error } = await this.$appFetch({
+      path: `reports/upload-media`,
+      method: 'POST',
+      data: formData,
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return {
+      data,
+      error
+    }
   }
 }

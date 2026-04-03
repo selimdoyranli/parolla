@@ -2,6 +2,24 @@
   position: relative;
   padding-block: calc(var(--base-p-y) * 2);
 
+  &-report-btn {
+    position: absolute;
+    top: $spacer * 4;
+    right: $spacer * 4;
+    z-index: 1;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background-color: var(--color-ui-02);
+    border-color: var(--color-border-02);
+    place-items: center;
+
+    &:hover {
+      background-color: var(--color-hover-01);
+    }
+  }
+
   &-player {
     display: flex;
     flex-direction: column;
