@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.42.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.41.0...v2.42.0)
+
+
+### 🚀 Enhancements
+
+  - Report user ui ([82280a4](https://github.com/selimdoyranli/parolla/commit/82280a4))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.41.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.40.2...v2.41.0)
