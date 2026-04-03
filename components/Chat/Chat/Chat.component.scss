@@ -63,6 +63,25 @@
     }
   }
 
+  &__message-report {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    margin-inline-start: 4px;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
+  &__message:hover &__message-report {
+    opacity: 0.5;
+  }
+
   &__message-time {
     position: relative;
     display: inline-block;

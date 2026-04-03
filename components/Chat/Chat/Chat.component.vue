@@ -16,10 +16,21 @@
           .chat__message-text(v-if="message.isSystem")
             .chat__message-time {{ $t('chat.system') }} - {{ isoToHumanDate(message.timestamp) }}
             | &nbsp;&nbsp;: &nbsp;{{ message.message }}
-          .chat__message-text(v-else) : {{ censorBadwords(message.message) }}
+          .chat__message-text(v-else v-longpress="() => openReport(message)")
+            | : {{ censorBadwords(message.message) }}
+            span.chat__message-report(auth-control @click="openReport(message)")
+              AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="12" :height="12")
 
     template(v-else)
       Empty(:description="$t('chat.messagesEmpty')")
+
+  MountingPortal(mount-to="body" append)
+    ReportDialog(
+      :is-open="isOpenReportDialog"
+      :scope="reportTypeEnum.CHAT"
+      :additional="reportAdditional"
+      @closed="isOpenReportDialog = false"
+    )
 
   .chat__input(auth-control)
     Field(
@@ -43,18 +54,62 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch, useContext } from '@nuxtjs/composition-api'
 import { Field, Button, Empty } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { reportTypeEnum } from '@/enums/report-type.enum'
+
+const longpressDirective = {
+  bind(el, binding) {
+    let timer = null
+    const delay = 500
+
+    const start = e => {
+      if (e.type === 'click' && e.button !== 0) return
+
+      timer = setTimeout(() => {
+        if (typeof binding.value === 'function') {
+          binding.value(e)
+        }
+      }, delay)
+    }
+
+    const cancel = () => {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+    }
+
+    el.addEventListener('touchstart', start, { passive: true })
+    el.addEventListener('touchend', cancel)
+    el.addEventListener('touchmove', cancel)
+
+    el._longpressCleanup = () => {
+      el.removeEventListener('touchstart', start)
+      el.removeEventListener('touchend', cancel)
+      el.removeEventListener('touchmove', cancel)
+    }
+  },
+  unbind(el) {
+    if (el._longpressCleanup) {
+      el._longpressCleanup()
+    }
+  }
+}
 
 export default defineComponent({
   name: 'Chat',
+  directives: {
+    longpress: longpressDirective
+  },
   components: {
     Field,
     Button,
     Empty
   },
   setup(_, { emit }) {
+    const { $auth } = useContext()
     const store = useStore()
 
     const { isoToHumanDate } = useFormatter()
@@ -170,6 +225,32 @@ export default defineComponent({
       messageText.value = ''
     }
 
+    const isOpenReportDialog = ref(false)
+    const reportAdditional = ref(null)
+
+    const openReport = message => {
+      if (!$auth.loggedIn && !$auth.user) {
+        return
+      }
+
+      reportAdditional.value = JSON.stringify({
+        reportedMessage: {
+          playerId: message.playerId,
+          playerName: message.playerName,
+          diceBear: message.diceBear,
+          message: message.message,
+          timestamp: message.timestamp
+        },
+        chatHistory: chatMessages.value.map(m => ({
+          playerId: m.playerId,
+          playerName: m.playerName,
+          message: m.message,
+          timestamp: m.timestamp
+        }))
+      })
+      isOpenReportDialog.value = true
+    }
+
     const handleFocus = () => {
       emit('on-focus')
     }
@@ -185,6 +266,7 @@ export default defineComponent({
     })
 
     return {
+      reportTypeEnum,
       censorBadwords,
       messagesRef,
       messageText,
@@ -194,7 +276,10 @@ export default defineComponent({
       scrollToBottom,
       handleFocus,
       handleBlur,
-      isScrollOnBottom
+      isScrollOnBottom,
+      isOpenReportDialog,
+      reportAdditional,
+      openReport
     }
   }
 })
