@@ -1,0 +1,170 @@
+@import '@/assets/style/scss/shared/_game-scene.scss';
+
+.flashcard-game-scene {
+  --room-info-height: 60px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .scene__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    padding-block-start: var(--room-info-height);
+  }
+
+  .room-info {
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: var(--layout-max-width);
+    height: var(--room-info-height);
+    background-color: var(--color-ui-02);
+    border-bottom: 1px solid var(--color-border-03);
+    transform: translateX(-50%);
+    inset-block-start: var(--header-height);
+    inset-inline-start: 50%;
+
+    &__title {
+      width: 100%;
+      overflow: hidden;
+      color: var(--color-brand-02);
+      font-size: var(--font-size-7);
+      white-space: nowrap;
+      text-align: center;
+      text-overflow: ellipsis;
+      padding-inline: $spacer;
+      padding-block-end: $spacer;
+
+      @include font-weight-semi-bold;
+    }
+
+    .card-counter {
+      color: var(--color-text-02);
+      font-size: var(--font-size-8);
+      text-align: center;
+    }
+  }
+
+  // Card area
+  .flashcard-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    padding: $spacer * 4;
+
+    &__hint {
+      margin-block-start: $spacer * 3;
+      color: var(--color-text-03);
+      font-size: var(--font-size-8);
+      text-align: center;
+    }
+  }
+
+  // Flashcard with flip
+  .flashcard-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    perspective: 1000px;
+    cursor: pointer;
+
+    @include media-breakpoint-down(mobile) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  .flashcard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+
+    &.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    &__face {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: $spacer * 4;
+      overflow-y: auto;
+      border-radius: $spacer * 2;
+      backface-visibility: hidden;
+    }
+
+    &__front {
+      background-color: var(--color-ui-01);
+      border: 2px solid var(--color-border-02);
+    }
+
+    &__back {
+      color: var(--color-text-inverse);
+      background-color: var(--color-brand-02);
+      transform: rotateY(180deg);
+    }
+
+    &__label {
+      position: absolute;
+      inset-block-start: $spacer * 2;
+      inset-inline-start: $spacer * 3;
+      font-size: var(--font-size-9);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.5;
+
+      @include font-weight-semi-bold;
+    }
+
+    &__text {
+      font-size: var(--font-size-text-2);
+      text-align: center;
+      word-break: break-word;
+
+      @include font-weight-semi-bold;
+
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-3);
+      }
+    }
+  }
+
+  // Navigation
+  .flashcard-nav {
+    display: flex;
+    gap: $spacer * 4;
+    align-items: center;
+    justify-content: center;
+    padding: $spacer * 4;
+    padding-block-end: $spacer * 6;
+
+    &__button {
+      min-width: 48px;
+      height: 48px;
+    }
+
+    &__flip {
+      min-width: 100px;
+    }
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: calc($spacer * 6 + max(0px, env(safe-area-inset-bottom)));
+    }
+  }
+}
