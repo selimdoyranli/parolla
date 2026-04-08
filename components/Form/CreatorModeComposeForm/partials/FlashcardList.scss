@@ -1,0 +1,8 @@
+.flashcard-list {
+  .flashcard-list-empty {
+    &__description {
+      white-space: pre-line;
+      text-align: center;
+    }
+  }
+}
