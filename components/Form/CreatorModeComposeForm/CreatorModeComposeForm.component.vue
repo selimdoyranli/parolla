@@ -103,7 +103,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, ref, computed } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import ChoiceList from './partials/ChoiceList.vue'
@@ -184,6 +184,14 @@ export default defineComponent({
       isAddChoicesDialogOpen.value = false
     }
 
+    const qaListLength = computed(() => {
+      if (form.quizType === quizTypeEnum.CHOICES) return form.choices.length
+
+      if (form.quizType === quizTypeEnum.FLASHCARDS) return form.flashcardList.length
+
+      return form.qaList.length
+    })
+
     const handleBatchAddItems = items => {
       if (!items || items.length === 0) return
 
@@ -233,16 +241,8 @@ export default defineComponent({
       isAddChoicesDialogOpen,
       openAddChoicesDialog,
       closeAddChoicesDialog,
-      handleBatchAddItems
-    }
-  },
-  computed: {
-    qaListLength() {
-      if (this.form.quizType === quizTypeEnum.CHOICES) return this.form.choices.length
-
-      if (this.form.quizType === quizTypeEnum.FLASHCARDS) return this.form.flashcardList.length
-
-      return this.form.qaList.length
+      handleBatchAddItems,
+      qaListLength
     }
   }
 })
