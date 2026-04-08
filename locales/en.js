@@ -23,7 +23,8 @@ export default {
     textTooLong: 'Some lines are longer than 64 characters',
     tooManyFiles: 'Maximum {max} files allowed',
     invalidYoutubeLinks: 'Some links are invalid, please check',
-    choicesLength: 'You must add at least {min} and at most {max} choices'
+    choicesLength: 'You must add at least {min} and at most {max} choices',
+    flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards'
   },
   success: {
     success: 'Success'
@@ -279,6 +280,12 @@ export default {
           description: 'Create a list of choices, players choose one of two options each round',
           label: 'No competition, determines personal preferences',
           createThisOrThatQuiz: 'Create this or that quiz'
+        },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'Create a set of cards with front and back text for studying',
+          label: 'Study with flashcards',
+          createFlashcardsQuiz: 'Create flashcards quiz'
         }
       }
     },
@@ -564,6 +571,7 @@ export default {
     creatorModeCompose: {
       title: 'CREATE A QUIZ',
       choicesTitle: 'CREATE A CHOICES QUIZ',
+      flashcardsTitle: 'CREATE A FLASHCARDS QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
       choicesSet: 'CHOICES SET',
@@ -675,6 +683,26 @@ export default {
           action: 'Add new choice'
         }
       },
+      flashcards: {
+        set: 'FLASHCARD SET',
+        card: 'Card',
+        front: {
+          label: 'Front',
+          placeholder: 'Card front text'
+        },
+        back: {
+          label: 'Back',
+          placeholder: 'Card back text'
+        },
+        removeCard: 'Remove card',
+        empty: {
+          description: "You haven't added any flashcard yet\nAt least 1 card, at most 100 cards can be added",
+          action: 'Add flashcard'
+        },
+        addMore: {
+          action: 'Add new card'
+        }
+      },
       saveDraft: {
         action: 'Save draft',
         callback: {
@@ -691,6 +719,7 @@ export default {
     creatorModeEdit: {
       title: 'EDIT A QUIZ',
       choicesTitle: 'EDIT CHOICES QUIZ',
+      flashcardsTitle: 'EDIT FLASHCARDS QUIZ',
       submit: 'Update and publish'
     },
     roomReview: {
@@ -906,6 +935,11 @@ export default {
       title: 'Create a choices quiz',
       description: 'Create a choices quiz or solve quizzes created by players',
       keywords: 'choices quiz, quiz solve, quiz create'
+    },
+    creatorModeComposeFlashcards: {
+      title: 'Create Flashcards Quiz',
+      description: 'Create a flashcard quiz for studying',
+      keywords: 'flashcards, quiz, study, learning'
     },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',

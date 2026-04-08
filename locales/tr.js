@@ -23,7 +23,8 @@ export default {
     textTooLong: 'Bazı satırlar 64 karakterden uzun',
     tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
     invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
-    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin'
+    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin',
+    flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır'
   },
   success: {
     success: 'Başarılı'
@@ -284,6 +285,12 @@ export default {
           description: 'Seçim listesi oluştur, oyuncular her tur iki seçenekten birini seçer',
           label: 'Rekabet yok, kişisel tercihleri belirler',
           createThisOrThatQuiz: 'O mu bu mu? quiz oluştur'
+        },
+        flashcards: {
+          title: 'Kartlar',
+          description: 'Çalışma için ön ve arka yüzü olan kartlar oluştur',
+          label: 'Kartlarla çalış',
+          createFlashcardsQuiz: 'Kart quiz oluştur'
         }
       }
     },
@@ -570,6 +577,7 @@ export default {
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
       choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
+      flashcardsTitle: 'KART QUİZ OLUŞTUR',
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
@@ -695,6 +703,26 @@ export default {
           cancel: 'İptal'
         }
       },
+      flashcards: {
+        set: 'KART SETİ',
+        card: 'Kart',
+        front: {
+          label: 'Ön yüz',
+          placeholder: 'Kartın ön yüz metni'
+        },
+        back: {
+          label: 'Arka yüz',
+          placeholder: 'Kartın arka yüz metni'
+        },
+        removeCard: 'Kartı kaldır',
+        empty: {
+          description: 'Henüz kart eklemedin\nEn az 1, en fazla 100 kart eklenebilir',
+          action: 'Kart ekle'
+        },
+        addMore: {
+          action: 'Yeni kart ekle'
+        }
+      },
       saveDraft: {
         action: 'Taslak kaydet',
         callback: {
@@ -711,6 +739,7 @@ export default {
     creatorModeEdit: {
       title: 'QUIZ DÜZENLE',
       choicesTitle: 'SEÇİM QUIZ DÜZENLE',
+      flashcardsTitle: 'KART QUİZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -930,6 +959,11 @@ export default {
       title: 'Seçim quiz oluştur',
       description: 'Seçmeli quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
       keywords: 'seçimli quiz, quiz çöz, quiz oluştur'
+    },
+    creatorModeComposeFlashcards: {
+      title: 'Kart Quiz Oluştur',
+      description: 'Çalışma için kart quiz oluştur',
+      keywords: 'kartlar, quiz, çalışma, öğrenme'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',
