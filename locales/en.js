@@ -347,6 +347,11 @@ export default {
           description: 'Choose between two options each round',
           extra: 'This quiz was created by another player <br> There are {choiceCount} choices. You can play this mod over and over again.'
         },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'This quiz has <strong>{cardCount} flashcards</strong>.',
+          extra: 'Tap a card to flip it. Use arrows to navigate between cards.'
+        },
         extra:
           'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
       },
@@ -554,6 +559,12 @@ export default {
       public: 'Public',
       private: 'Private'
     }
+  },
+  flashcardScene: {
+    front: 'FRONT',
+    back: 'BACK',
+    flip: 'Flip',
+    tapToFlip: 'Tap the card to flip'
   },
   choices: {
     remainingChoices: '{count} choices left',

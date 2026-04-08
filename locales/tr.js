@@ -352,6 +352,11 @@ export default {
           description: 'Her tur iki seçenek arasından seçim yap',
           extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
         },
+        flashcards: {
+          title: 'Kartlar',
+          description: 'Bu quizde <strong>{cardCount} kart</strong> var.',
+          extra: 'Kartı çevirmek için üzerine dokun. Kartlar arasında geçiş yapmak için okları kullan.'
+        },
         extra:
           'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
       },
@@ -560,6 +565,12 @@ export default {
       public: 'Listede',
       private: 'Liste dışı'
     }
+  },
+  flashcardScene: {
+    front: 'ÖN YÜZ',
+    back: 'ARKA YÜZ',
+    flip: 'Çevir',
+    tapToFlip: 'Kartı çevirmek için dokun'
   },
   choices: {
     remainingChoices: '{count} seçim kaldı',
