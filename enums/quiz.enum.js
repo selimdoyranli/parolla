@@ -1,6 +1,7 @@
 export const quizTypeEnum = Object.freeze({
   QA: 'qa',
-  CHOICES: 'choices'
+  CHOICES: 'choices',
+  FLASHCARDS: 'flashcards'
 })
 
 export const questionTypeEnum = Object.freeze({
