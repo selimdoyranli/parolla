@@ -571,7 +571,19 @@ export default {
     front: 'ÖN YÜZ',
     back: 'ARKA YÜZ',
     flip: 'Çevir',
-    tapToFlip: 'Kartı çevirmek için dokun'
+    tapToFlip: 'Kartı çevirmek için dokun',
+    more: {
+      title: 'Daha fazla',
+      shuffle: {
+        label: 'Karıştır'
+      },
+      watchlist: {
+        label: 'İzleme listesi',
+        stillProgress: 'Kalsın',
+        inMemory: 'Tekrar gösterme',
+        complete: 'Görünecek başka kart yok'
+      }
+    }
   },
   choices: {
     remainingChoices: '{count} seçim kaldı',

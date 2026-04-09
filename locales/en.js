@@ -565,7 +565,19 @@ export default {
     front: 'FRONT',
     back: 'BACK',
     flip: 'Flip',
-    tapToFlip: 'Tap the card to flip'
+    tapToFlip: 'Tap the card to flip',
+    more: {
+      title: 'More',
+      shuffle: {
+        label: 'Shuffle'
+      },
+      watchlist: {
+        label: 'Watchlist',
+        stillProgress: 'Keep',
+        inMemory: "Don't show again",
+        complete: 'No more cards to show'
+      }
+    }
   },
   choices: {
     remainingChoices: '{count} choices left',
