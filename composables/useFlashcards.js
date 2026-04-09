@@ -1,4 +1,4 @@
-import { ref, computed } from '@nuxtjs/composition-api'
+import { ref, computed, nextTick } from '@nuxtjs/composition-api'
 
 export default () => {
   const flashcards = ref([])
@@ -44,14 +44,23 @@ export default () => {
     isFlipped.value = !isFlipped.value
   }
 
-  const animateCard = (exitAnim, enterAnim, callback) => {
+  const animateCard = (exitAnim, enterAnim, changeCard) => {
     if (isAnimating.value) return
 
     isAnimating.value = true
     cardAnimation.value = exitAnim
 
-    setTimeout(() => {
-      callback()
+    setTimeout(async () => {
+      // Exit animation done — card invisible (opacity:0 via forwards).
+      // Exit class is STILL on, so transition:none override is active.
+      // Change flip state and card while transition:none is in effect.
+      isFlipped.value = true
+      changeCard()
+
+      // Let Vue flush DOM with new card in flipped state
+      await nextTick()
+
+      // Now swap exit → enter animation
       cardAnimation.value = enterAnim
 
       setTimeout(() => {
@@ -65,7 +74,6 @@ export default () => {
     if (currentIndex.value >= flashcards.value.length - 1 || isAnimating.value) return
 
     animateCard('exit-left', 'enter-right', () => {
-      isFlipped.value = true
       currentIndex.value++
     })
   }
@@ -74,7 +82,6 @@ export default () => {
     if (currentIndex.value <= 0 || isAnimating.value) return
 
     animateCard('exit-right', 'enter-left', () => {
-      isFlipped.value = true
       currentIndex.value--
     })
   }

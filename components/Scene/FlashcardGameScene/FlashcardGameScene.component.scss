@@ -219,6 +219,17 @@
     transform-style: preserve-3d;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
+    // Disable flip transition during card change animations
+    .flashcard-wrapper.exit-left &,
+    .flashcard-wrapper.exit-right &,
+    .flashcard-wrapper.enter-left &,
+    .flashcard-wrapper.enter-right &,
+    .flashcard-wrapper.dismiss-left &,
+    .flashcard-wrapper.dismiss-right &,
+    .flashcard-wrapper.enter-fade & {
+      transition: none;
+    }
+
     &.is-flipped {
       transform: rotateY(180deg);
     }

@@ -12,6 +12,12 @@
       text-align: center;
     }
 
+    &__hint {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      margin-block-start: 0.5rem;
+    }
+
     &__icon {
       color: var(--color-icon-01);
     }

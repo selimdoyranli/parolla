@@ -284,8 +284,8 @@ export default {
         },
         flashcards: {
           title: 'Flashcards',
-          description: 'Create a set of cards with front and back text for studying',
-          label: 'Study with flashcards',
+          description: 'Create a set of cards with front and back text for studying or having fun',
+          label: 'Study or have fun',
           createFlashcardsQuiz: 'Create flashcards quiz'
         }
       }
@@ -721,6 +721,7 @@ export default {
         removeCard: 'Remove card',
         empty: {
           description: "You haven't added any flashcard yet\nAt least 1 card, at most 100 cards can be added",
+          hint: 'In the game screen, the backface of the card is shown first',
           action: 'Add flashcard'
         },
         addMore: {

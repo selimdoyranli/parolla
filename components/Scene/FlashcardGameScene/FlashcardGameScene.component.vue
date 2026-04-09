@@ -21,7 +21,7 @@
     // Card area
     .flashcard-area(v-if="currentCard && !isWatchlistComplete")
       .flashcard-wrapper(:class="cardAnimation" @click="flipCard")
-        .flashcard(:class="{ 'is-flipped': isFlipped }")
+        .flashcard(:key="currentIndex" :class="{ 'is-flipped': isFlipped }")
           .flashcard__face.flashcard__front
             .flashcard__label {{ $t('flashcardScene.front') }}
             .flashcard__text {{ currentCard.cardFrontText }}

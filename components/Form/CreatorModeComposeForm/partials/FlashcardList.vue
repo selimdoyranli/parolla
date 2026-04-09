@@ -23,6 +23,7 @@
           template(#image)
             AppIcon.flashcard-list-empty__icon(name="streamline-color:cards-flat" :width="128" :height="128")
           p.flashcard-list-empty__description {{ $t('form.creatorModeCompose.flashcards.empty.description') }}
+          small.flashcard-list-empty__hint {{ $t('form.creatorModeCompose.flashcards.empty.hint') }}
           Button.compose-qa-list__addQaButton(type="info" icon="plus" native-type="button" round @click="$emit('add-item')")
             | {{ $t('form.creatorModeCompose.flashcards.empty.action') }}
 

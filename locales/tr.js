@@ -290,7 +290,7 @@ export default {
         flashcards: {
           title: 'Flashcards',
           description: 'Çalışma ya da eğlence için ön ve arka yüzü olan kartlar oluştur',
-          label: 'Flashcards ile çalış',
+          label: 'Öğrenme ya da eğlence',
           createFlashcardsQuiz: 'Flashcards quiz oluştur'
         }
       }
@@ -741,6 +741,7 @@ export default {
         removeCard: 'Kartı kaldır',
         empty: {
           description: 'Henüz kart eklemedin\nEn az 1, en fazla 100 kart eklenebilir',
+          hint: 'Oyun ekranında kartların arka yüzü önce gösterilir',
           action: 'Kart ekle'
         },
         addMore: {
