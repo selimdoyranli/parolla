@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.43.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/94794ee319187ced828e696f524b9be602e69fc2...v2.43.0)
+
+
+### 🚀 Enhancements
+
+  - Flashcards quiz ([e823f70](https://github.com/selimdoyranli/parolla/commit/e823f70))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.42.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.41.0...v2.42.0)
