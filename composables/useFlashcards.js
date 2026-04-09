@@ -10,6 +10,8 @@ export default () => {
   const stillProgress = ref([])
   const inMemory = ref([])
   const isWatchlistComplete = ref(false)
+  const cardAnimation = ref(null)
+  const isAnimating = ref(false)
 
   const currentCard = computed(() => {
     return flashcards.value[currentIndex.value] || null
@@ -42,18 +44,39 @@ export default () => {
     isFlipped.value = !isFlipped.value
   }
 
+  const animateCard = (exitAnim, enterAnim, callback) => {
+    if (isAnimating.value) return
+
+    isAnimating.value = true
+    cardAnimation.value = exitAnim
+
+    setTimeout(() => {
+      callback()
+      cardAnimation.value = enterAnim
+
+      setTimeout(() => {
+        cardAnimation.value = null
+        isAnimating.value = false
+      }, 250)
+    }, 250)
+  }
+
   const nextCard = () => {
-    if (currentIndex.value < flashcards.value.length - 1) {
+    if (currentIndex.value >= flashcards.value.length - 1 || isAnimating.value) return
+
+    animateCard('exit-left', 'enter-right', () => {
       isFlipped.value = true
       currentIndex.value++
-    }
+    })
   }
 
   const prevCard = () => {
-    if (currentIndex.value > 0) {
+    if (currentIndex.value <= 0 || isAnimating.value) return
+
+    animateCard('exit-right', 'enter-left', () => {
       isFlipped.value = true
       currentIndex.value--
-    }
+    })
   }
 
   const toggleShuffle = () => {
@@ -132,35 +155,53 @@ export default () => {
   }
 
   const markStillProgress = () => {
-    if (!currentCard.value) return
+    if (!currentCard.value || isAnimating.value) return
 
-    const cardId = currentCard.value.id || currentCard.value.documentId
-    const alreadyExists = stillProgress.value.some(c => (c.id || c.documentId) === cardId)
+    isAnimating.value = true
+    cardAnimation.value = 'dismiss-left'
 
-    if (!alreadyExists) {
-      stillProgress.value.push({ ...currentCard.value })
-    }
+    setTimeout(() => {
+      const cardId = currentCard.value.id || currentCard.value.documentId
+      const alreadyExists = stillProgress.value.some(c => (c.id || c.documentId) === cardId)
 
-    // Remove from inMemory if it was there
-    inMemory.value = inMemory.value.filter(c => (c.id || c.documentId) !== cardId)
+      if (!alreadyExists) {
+        stillProgress.value.push({ ...currentCard.value })
+      }
 
-    advanceToNextAvailable()
+      inMemory.value = inMemory.value.filter(c => (c.id || c.documentId) !== cardId)
+      advanceToNextAvailable()
+      cardAnimation.value = 'enter-fade'
+
+      setTimeout(() => {
+        cardAnimation.value = null
+        isAnimating.value = false
+      }, 250)
+    }, 300)
   }
 
   const markInMemory = () => {
-    if (!currentCard.value) return
+    if (!currentCard.value || isAnimating.value) return
 
-    const cardId = currentCard.value.id || currentCard.value.documentId
-    const alreadyExists = inMemory.value.some(c => (c.id || c.documentId) === cardId)
+    isAnimating.value = true
+    cardAnimation.value = 'dismiss-right'
 
-    if (!alreadyExists) {
-      inMemory.value.push({ ...currentCard.value })
-    }
+    setTimeout(() => {
+      const cardId = currentCard.value.id || currentCard.value.documentId
+      const alreadyExists = inMemory.value.some(c => (c.id || c.documentId) === cardId)
 
-    // Remove from stillProgress if it was there
-    stillProgress.value = stillProgress.value.filter(c => (c.id || c.documentId) !== cardId)
+      if (!alreadyExists) {
+        inMemory.value.push({ ...currentCard.value })
+      }
 
-    advanceToNextAvailable()
+      stillProgress.value = stillProgress.value.filter(c => (c.id || c.documentId) !== cardId)
+      advanceToNextAvailable()
+      cardAnimation.value = 'enter-fade'
+
+      setTimeout(() => {
+        cardAnimation.value = null
+        isAnimating.value = false
+      }, 250)
+    }, 300)
   }
 
   return {
@@ -185,6 +226,8 @@ export default () => {
     inMemoryCount,
     toggleWatchlist,
     markStillProgress,
-    markInMemory
+    markInMemory,
+    cardAnimation,
+    isAnimating
   }
 }

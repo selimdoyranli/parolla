@@ -87,12 +87,125 @@
     }
   }
 
+  // Card transition animations
+  @keyframes card-exit-left {
+    from {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(-40px) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-exit-right {
+    from {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(40px) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-enter-left {
+    from {
+      transform: translateX(-30px) scale(0.97);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes card-enter-right {
+    from {
+      transform: translateX(30px) scale(0.97);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes card-dismiss-left {
+    from {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(-100px) rotate(-6deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-dismiss-right {
+    from {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(100px) rotate(6deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-enter-fade {
+    from {
+      transform: scale(0.92);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   // Flashcard with flip
   .flashcard-wrapper {
     width: 100%;
     aspect-ratio: 3 / 4;
     perspective: 1200px;
     cursor: pointer;
+
+    &.exit-left {
+      animation: card-exit-left 0.25s ease-out forwards;
+    }
+
+    &.exit-right {
+      animation: card-exit-right 0.25s ease-out forwards;
+    }
+
+    &.enter-left {
+      animation: card-enter-left 0.25s ease-out forwards;
+    }
+
+    &.enter-right {
+      animation: card-enter-right 0.25s ease-out forwards;
+    }
+
+    &.dismiss-left {
+      animation: card-dismiss-left 0.3s ease-in forwards;
+    }
+
+    &.dismiss-right {
+      animation: card-dismiss-right 0.3s ease-in forwards;
+    }
+
+    &.enter-fade {
+      animation: card-enter-fade 0.25s ease-out forwards;
+    }
 
     @include media-breakpoint-down(mobile-m) {
       aspect-ratio: 1 / 1;
@@ -184,6 +297,7 @@
     max-width: 480px;
     padding-inline: $spacer * 4;
     margin-block: $spacer * 4;
+    margin-block-end: $spacer;
 
     &__item {
       display: inline-flex;

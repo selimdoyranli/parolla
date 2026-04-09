@@ -20,7 +20,7 @@
 
     // Card area
     .flashcard-area(v-if="currentCard && !isWatchlistComplete")
-      .flashcard-wrapper(@click="flipCard")
+      .flashcard-wrapper(:class="cardAnimation" @click="flipCard")
         .flashcard(:class="{ 'is-flipped': isFlipped }")
           .flashcard__face.flashcard__front
             .flashcard__label {{ $t('flashcardScene.front') }}
@@ -88,7 +88,7 @@
         AppIcon(name="tabler:chevron-right" :width="22" :height="22")
 
     // More button
-    .flashcard-more
+    .flashcard-more(v-if="!isWatchlistComplete")
       Button.flashcard-more__button(round plain size="small" native-type="button" @click="isMoreSheetOpen = true")
         AppIcon(name="tabler:dots" :width="16" :height="16")
         span {{ $t('flashcardScene.more.title') }}
@@ -146,7 +146,9 @@ export default defineComponent({
       inMemoryCount,
       toggleWatchlist,
       markStillProgress,
-      markInMemory
+      markInMemory,
+      cardAnimation,
+      isAnimating
     } = useFlashcards()
 
     const room = computed(() => store.getters['creator/room'])
@@ -221,7 +223,9 @@ export default defineComponent({
       inMemoryCount,
       toggleWatchlist,
       markStillProgress,
-      markInMemory
+      markInMemory,
+      cardAnimation,
+      isAnimating
     }
   }
 })
