@@ -3,7 +3,7 @@ import { ref, computed } from '@nuxtjs/composition-api'
 export default () => {
   const flashcards = ref([])
   const currentIndex = ref(0)
-  const isFlipped = ref(false)
+  const isFlipped = ref(true)
 
   const currentCard = computed(() => {
     return flashcards.value[currentIndex.value] || null
@@ -19,7 +19,7 @@ export default () => {
 
     flashcards.value = [...flashcardsArray].sort((a, b) => a.order - b.order)
     currentIndex.value = 0
-    isFlipped.value = false
+    isFlipped.value = true
   }
 
   const flipCard = () => {
@@ -28,14 +28,14 @@ export default () => {
 
   const nextCard = () => {
     if (currentIndex.value < flashcards.value.length - 1) {
-      isFlipped.value = false
+      isFlipped.value = true
       currentIndex.value++
     }
   }
 
   const prevCard = () => {
     if (currentIndex.value > 0) {
-      isFlipped.value = false
+      isFlipped.value = true
       currentIndex.value--
     }
   }

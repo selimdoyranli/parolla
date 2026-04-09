@@ -1,8 +1,30 @@
 .flashcard-list {
   .flashcard-list-empty {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     &__description {
+      color: var(--color-text-02);
+      line-height: 1.5;
       white-space: pre-line;
       text-align: center;
+    }
+
+    &__icon {
+      color: var(--color-icon-01);
+    }
+
+    .van-empty__image {
+      display: grid;
+      place-items: center;
+    }
+
+    .van-empty__bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 }

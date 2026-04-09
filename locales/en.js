@@ -66,6 +66,7 @@ export default {
     photoQuiz: 'Photo quiz',
     triviaQuiz: 'Trivia',
     thisOrThatQuiz: 'This or that?',
+    flashcardsQuiz: 'Flashcards',
     provider: 'Provider',
     quizPreparing: 'Preparing quiz'
   },

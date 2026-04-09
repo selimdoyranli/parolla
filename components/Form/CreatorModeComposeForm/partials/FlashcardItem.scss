@@ -1,7 +1,4 @@
 .flashcard-item {
-  .compose-qa-card__orderButtons {
-    display: inline-flex;
-    gap: 4px;
-    margin-right: 8px;
-  }
+  // Uses shared .compose-qa-card styles from parent
+  display: block;
 }

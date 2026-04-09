@@ -66,6 +66,7 @@ export default {
     photoQuiz: 'Foto quiz',
     triviaQuiz: 'Trivia',
     thisOrThatQuiz: 'O mu bu mu?',
+    flashcardsQuiz: 'Flashcards',
     provider: 'Sağlayıcı',
     quizPreparing: 'Quiz hazırlanıyor'
   },
@@ -287,10 +288,10 @@ export default {
           createThisOrThatQuiz: 'O mu bu mu? quiz oluştur'
         },
         flashcards: {
-          title: 'Kartlar',
-          description: 'Çalışma için ön ve arka yüzü olan kartlar oluştur',
-          label: 'Kartlarla çalış',
-          createFlashcardsQuiz: 'Kart quiz oluştur'
+          title: 'Flashcards',
+          description: 'Çalışma ya da eğlence için ön ve arka yüzü olan kartlar oluştur',
+          label: 'Flashcards ile çalış',
+          createFlashcardsQuiz: 'Flashcards quiz oluştur'
         }
       }
     },
@@ -353,8 +354,8 @@ export default {
           extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
         },
         flashcards: {
-          title: 'Kartlar',
-          description: 'Bu quizde <strong>{cardCount} kart</strong> var.',
+          title: 'Flashcards',
+          description: 'Bu quizde <strong>{cardCount} flashcard</strong> var.',
           extra: 'Kartı çevirmek için üzerine dokun. Kartlar arasında geçiş yapmak için okları kullan.'
         },
         extra:
@@ -588,7 +589,7 @@ export default {
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
       choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
-      flashcardsTitle: 'KART QUİZ OLUŞTUR',
+      flashcardsTitle: 'FLASHCARDS QUIZ OLUŞTUR',
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
@@ -750,7 +751,7 @@ export default {
     creatorModeEdit: {
       title: 'QUIZ DÜZENLE',
       choicesTitle: 'SEÇİM QUIZ DÜZENLE',
-      flashcardsTitle: 'KART QUİZ DÜZENLE',
+      flashcardsTitle: 'FLASHCARDS QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -972,9 +973,9 @@ export default {
       keywords: 'seçimli quiz, quiz çöz, quiz oluştur'
     },
     creatorModeComposeFlashcards: {
-      title: 'Kart Quiz Oluştur',
-      description: 'Çalışma için kart quiz oluştur',
-      keywords: 'kartlar, quiz, çalışma, öğrenme'
+      title: 'Flashcards Quiz Oluştur',
+      description: 'Çalışma ya da eğlence için flashcards quiz oluştur',
+      keywords: 'flashcards, quiz, çalışma, öğrenme'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',

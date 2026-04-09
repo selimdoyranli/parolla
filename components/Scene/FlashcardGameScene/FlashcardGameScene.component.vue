@@ -4,7 +4,10 @@
     // Info header
     .room-info
       .room-info__title {{ room.title }}
-      .card-counter {{ currentIndex + 1 }} / {{ totalCards }}
+      .card-counter
+        span.card-counter__current {{ currentIndex + 1 }}
+        span.card-counter__separator /
+        span.card-counter__total {{ totalCards }}
 
     // Card area
     .flashcard-area(v-if="currentCard")
@@ -22,13 +25,16 @@
 
     // Navigation
     .flashcard-nav
-      Button.flashcard-nav__button(icon="arrow-left" round plain native-type="button" :disabled="isFirst" @click="prevCard")
+      Button.flashcard-nav__button.flashcard-nav__prev(round plain native-type="button" :disabled="isFirst" @click="prevCard")
+        AppIcon(name="tabler:chevron-left" :width="22" :height="22")
 
-      Button.flashcard-nav__button.flashcard-nav__flip(type="info" round plain native-type="button" @click="flipCard")
-        AppIcon(name="tabler:rotate" size="20")
-        | {{ $t('flashcardScene.flip') }}
+      Button.flashcard-nav__button.flashcard-nav__flip(round plain native-type="button" @click="flipCard")
+        span.flashcard-nav__flip-inner
+          AppIcon(name="tabler:refresh" :width="18" :height="18")
+          span {{ $t('flashcardScene.flip') }}
 
-      Button.flashcard-nav__button(icon="arrow" round plain native-type="button" :disabled="isLast" @click="nextCard")
+      Button.flashcard-nav__button.flashcard-nav__next(round plain native-type="button" :disabled="isLast" @click="nextCard")
+        AppIcon(name="tabler:chevron-right" :width="22" :height="22")
 
   // How To Play Dialog
   HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")

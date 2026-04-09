@@ -9,7 +9,9 @@
           FlashcardItem(
             :item="item"
             :index="index"
+            :is-first="index === 0"
             :is-last="index === flashcardList.length - 1"
+            :is-single="flashcardList.length === 1"
             @remove="$emit('remove', index)"
             @move-up="$emit('move-up', index)"
             @move-down="$emit('move-down', index)"
@@ -19,7 +21,7 @@
       template(v-else)
         Empty.flashcard-list-empty
           template(#image)
-            Icon(name="tabler:cards" size="64")
+            AppIcon.flashcard-list-empty__icon(name="streamline-color:cards-flat" :width="128" :height="128")
           p.flashcard-list-empty__description {{ $t('form.creatorModeCompose.flashcards.empty.description') }}
           Button.compose-qa-list__addQaButton(type="info" icon="plus" native-type="button" round @click="$emit('add-item')")
             | {{ $t('form.creatorModeCompose.flashcards.empty.action') }}

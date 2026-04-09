@@ -93,9 +93,3 @@ sw.*
 package-lock.json
 
 .vercel
-
-.agent
-.agents
-.cursor
-.gemini
-.claude

@@ -32,7 +32,7 @@ Dialog.dialog.create-quiz-selection-dialog(
         img.quiz-type-list-item__icon(src="/img/elements/versus.webp" alt="Versus" draggable="false" width="48" height="48")
 
     IntroButton.quiz-type-list-item(
-      icon="tabler:cards"
+      icon="streamline-color:cards-flat"
       auth-control
       :to="localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' })"
       :title="$t('dialog.createQuizSelection.quizType.flashcards.title')"

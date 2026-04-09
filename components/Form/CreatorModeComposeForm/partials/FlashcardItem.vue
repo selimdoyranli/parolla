@@ -29,23 +29,21 @@
   .compose-qa-card__actions
     label.compose-qa-card__index {{ index + 1 }}. {{ $t('form.creatorModeCompose.flashcards.card') }}
 
-    .compose-qa-card__orderButtons
-      Button.compose-qa-card__orderButton(
-        v-if="index > 0"
+    template(v-if="!isSingle")
+      Button.compose-qa-card__moveButton.compose-qa-card__moveButton--up(
         icon="arrow-up"
-        plain
-        native-type="button"
         round
         size="small"
+        native-type="button"
+        :disabled="isFirst"
         @click="$emit('move-up', index)"
       )
-      Button.compose-qa-card__orderButton(
-        v-if="!isLast"
+      Button.compose-qa-card__moveButton.compose-qa-card__moveButton--down(
         icon="arrow-down"
-        plain
-        native-type="button"
         round
         size="small"
+        native-type="button"
+        :disabled="isLast"
         @click="$emit('move-down', index)"
       )
 
@@ -79,10 +77,9 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    isLast: {
-      type: Boolean,
-      default: false
-    }
+    isFirst: Boolean,
+    isLast: Boolean,
+    isSingle: Boolean
   }
 })
 </script>

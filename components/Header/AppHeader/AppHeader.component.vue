@@ -215,6 +215,7 @@ export default defineComponent({
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
+          route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||
           route.value.path.startsWith(localePath('/quiz'))
         ) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
@@ -231,6 +232,7 @@ export default defineComponent({
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeEdit-slug' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))
       ) {
@@ -288,6 +290,7 @@ export default defineComponent({
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
+        route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' })) ||
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
         route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
