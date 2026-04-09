@@ -174,6 +174,98 @@
     }
   }
 
+  // Watchlist progress labels
+  .watchlist-labels {
+    display: flex;
+    gap: $spacer * 4;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    padding-inline: $spacer * 4;
+    margin-block-end: $spacer * 2;
+
+    &__item {
+      display: inline-flex;
+      gap: $spacer;
+      align-items: center;
+      font-size: var(--font-size-text-9);
+
+      @include font-weight-semi-bold;
+
+      &--still-progress {
+        color: var(--color-danger-01);
+      }
+
+      &--in-memory {
+        color: var(--color-success-01);
+      }
+
+      .app-icon {
+        display: flex;
+        color: currentColor;
+      }
+    }
+  }
+
+  // Watchlist action buttons
+  .watchlist-actions {
+    display: flex;
+    gap: $spacer * 6;
+    align-items: center;
+    justify-content: center;
+    margin-block-start: $spacer * 4;
+
+    &__button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+
+      .app-icon {
+        display: flex;
+        color: currentColor;
+      }
+
+      &--cross {
+        color: var(--color-danger-01);
+        border-color: var(--color-danger-01);
+      }
+
+      &--check {
+        color: var(--color-success-01);
+        border-color: var(--color-success-01);
+      }
+    }
+  }
+
+  // Watchlist complete
+  .watchlist-complete {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $spacer * 4;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: $spacer * 8;
+    text-align: center;
+
+    &__text {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-4);
+
+      @include font-weight-semi-bold;
+    }
+
+    &__stats {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-8);
+    }
+  }
+
   // Navigation
   .flashcard-nav {
     display: flex;
@@ -227,6 +319,42 @@
 
       .app-icon {
         color: currentColor;
+      }
+    }
+  }
+
+  // More button
+  .flashcard-more {
+    display: flex;
+    justify-content: center;
+    padding-block-end: $spacer * 3;
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: calc($spacer * 3 + max(0px, env(safe-area-inset-bottom)));
+    }
+
+    &__button {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-9);
+      border-color: transparent;
+
+      .app-icon {
+        display: flex;
+        margin-inline-end: $spacer;
+        color: currentColor;
+      }
+    }
+  }
+
+  // ActionSheet options
+  .flashcard-options {
+    padding-block-end: $spacer * 4;
+
+    &__item {
+      .van-cell__title {
+        color: var(--color-text-01);
+
+        @include font-weight-semi-bold;
       }
     }
   }

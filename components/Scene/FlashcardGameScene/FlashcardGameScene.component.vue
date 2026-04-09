@@ -9,8 +9,17 @@
         span.card-counter__separator /
         span.card-counter__total {{ totalCards }}
 
+    // Watchlist progress labels
+    .watchlist-labels(v-if="isWatchlistActive && !isWatchlistComplete")
+      .watchlist-labels__item.watchlist-labels__item--still-progress
+        AppIcon(name="tabler:x" :width="14" :height="14")
+        span {{ $t('flashcardScene.more.watchlist.stillProgress') }}: {{ stillProgressCount }}
+      .watchlist-labels__item.watchlist-labels__item--in-memory
+        AppIcon(name="tabler:check" :width="14" :height="14")
+        span {{ $t('flashcardScene.more.watchlist.inMemory') }}: {{ inMemoryCount }}
+
     // Card area
-    .flashcard-area(v-if="currentCard")
+    .flashcard-area(v-if="currentCard && !isWatchlistComplete")
       .flashcard-wrapper(@click="flipCard")
         .flashcard(:class="{ 'is-flipped': isFlipped }")
           .flashcard__face.flashcard__front
@@ -23,9 +32,31 @@
       // Tap hint
       p.flashcard-area__hint {{ $t('flashcardScene.tapToFlip') }}
 
+      // Watchlist action buttons
+      .watchlist-actions(v-if="isWatchlistActive")
+        Button.watchlist-actions__button.watchlist-actions__button--cross(round native-type="button" @click="markStillProgress")
+          AppIcon(name="tabler:x" :width="24" :height="24")
+        Button.watchlist-actions__button.watchlist-actions__button--check(round native-type="button" @click="markInMemory")
+          AppIcon(name="tabler:check" :width="24" :height="24")
+
+    // Watchlist complete
+    .watchlist-complete(v-if="isWatchlistActive && isWatchlistComplete")
+      AppIcon(name="tabler:circle-check" color="var(--color-success-01)" :width="64" :height="64")
+      p.watchlist-complete__text {{ $t('flashcardScene.more.watchlist.complete') }}
+      .watchlist-complete__stats
+        span {{ $t('flashcardScene.more.watchlist.inMemory') }}: {{ inMemoryCount }}
+      Button(type="info" plain round native-type="button" @click="resetGame") {{ $t('general.playAgain') }}
+
     // Navigation
-    .flashcard-nav
-      Button.flashcard-nav__button.flashcard-nav__prev(round plain native-type="button" :disabled="isFirst" @click="prevCard")
+    .flashcard-nav(v-if="!isWatchlistComplete")
+      Button.flashcard-nav__button.flashcard-nav__prev(
+        v-if="!isWatchlistActive"
+        round
+        plain
+        native-type="button"
+        :disabled="isFirst"
+        @click="prevCard"
+      )
         AppIcon(name="tabler:chevron-left" :width="22" :height="22")
 
       Button.flashcard-nav__button.flashcard-nav__flip(round plain native-type="button" @click="flipCard")
@@ -33,29 +64,77 @@
           AppIcon(name="tabler:refresh" :width="18" :height="18")
           span {{ $t('flashcardScene.flip') }}
 
-      Button.flashcard-nav__button.flashcard-nav__next(round plain native-type="button" :disabled="isLast" @click="nextCard")
+      Button.flashcard-nav__button.flashcard-nav__next(
+        v-if="!isWatchlistActive"
+        round
+        plain
+        native-type="button"
+        :disabled="isLast"
+        @click="nextCard"
+      )
         AppIcon(name="tabler:chevron-right" :width="22" :height="22")
+
+    // More button
+    .flashcard-more
+      Button.flashcard-more__button(round plain size="small" native-type="button" @click="isMoreSheetOpen = true")
+        AppIcon(name="tabler:dots" :width="16" :height="16")
+        span {{ $t('flashcardScene.more.title') }}
 
   // How To Play Dialog
   HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+
+  // More Options ActionSheet
+  ActionSheet(v-model="isMoreSheetOpen" :title="$t('flashcardScene.more.title')")
+    template(#default)
+      .flashcard-options
+        Cell.flashcard-options__item(:title="$t('flashcardScene.more.shuffle.label')")
+          template(#right-icon)
+            VanSwitch(:value="isShuffled" :size="24" @input="toggleShuffle")
+        Cell.flashcard-options__item(:title="$t('flashcardScene.more.watchlist.label')")
+          template(#right-icon)
+            VanSwitch(:value="isWatchlistActive" :size="24" @input="toggleWatchlist")
 </template>
 
 <script>
 import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch } from '@nuxtjs/composition-api'
-import { Button } from 'vant'
+import { Button, ActionSheet, Cell, Switch } from 'vant'
 
 export default defineComponent({
   components: {
-    Button
+    Button,
+    ActionSheet,
+    Cell,
+    VanSwitch: Switch
   },
   setup() {
     const store = useStore()
     const { $ua } = useContext()
 
     const rootRef = ref(null)
+    const isMoreSheetOpen = ref(false)
 
     const { setRootRef, dialog, startGame, handleBeforeUnload, scrollTop, checkUnsupportedHeight } = useGameScene()
-    const { initGame, flipCard, nextCard, prevCard, currentCard, currentIndex, totalCards, isFlipped, isFirst, isLast } = useFlashcards()
+    const {
+      initGame,
+      flipCard,
+      nextCard,
+      prevCard,
+      currentCard,
+      currentIndex,
+      totalCards,
+      isFlipped,
+      isFirst,
+      isLast,
+      isShuffled,
+      toggleShuffle,
+      isWatchlistActive,
+      isWatchlistComplete,
+      stillProgressCount,
+      inMemoryCount,
+      toggleWatchlist,
+      markStillProgress,
+      markInMemory
+    } = useFlashcards()
 
     const room = computed(() => store.getters['creator/room'])
 
@@ -72,9 +151,9 @@ export default defineComponent({
     )
 
     const handleKeydown = event => {
-      if (event.key === 'ArrowLeft') {
+      if (event.key === 'ArrowLeft' && !isWatchlistActive.value) {
         prevCard()
-      } else if (event.key === 'ArrowRight') {
+      } else if (event.key === 'ArrowRight' && !isWatchlistActive.value) {
         nextCard()
       } else if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault()
@@ -119,7 +198,17 @@ export default defineComponent({
       totalCards,
       isFlipped,
       isFirst,
-      isLast
+      isLast,
+      isMoreSheetOpen,
+      isShuffled,
+      toggleShuffle,
+      isWatchlistActive,
+      isWatchlistComplete,
+      stillProgressCount,
+      inMemoryCount,
+      toggleWatchlist,
+      markStillProgress,
+      markInMemory
     }
   }
 })
