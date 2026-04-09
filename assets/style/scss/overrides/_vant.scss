@@ -140,3 +140,26 @@
     border: 1px solid var(--color-border-02) !important;
   }
 }
+
+.van-action-sheet {
+  position: fixed !important;
+  color: var(--color-text-01);
+  background-color: var(--color-ui-02);
+
+  @include media-breakpoint-up(tablet) {
+    left: calc(50% - var(--layout-max-width) / 2);
+    max-width: var(--layout-max-width);
+  }
+
+  .van-action-sheet__header {
+    color: var(--color-text-01);
+  }
+
+  .van-action-sheet__content {
+    padding-block: $spacer * 8;
+  }
+
+  .van-action-sheet__close {
+    color: var(--color-text-03);
+  }
+}

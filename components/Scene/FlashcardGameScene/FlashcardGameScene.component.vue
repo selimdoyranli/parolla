@@ -30,14 +30,7 @@
             .flashcard__text {{ currentCard.cardBackText }}
 
       // Tap hint
-      p.flashcard-area__hint {{ $t('flashcardScene.tapToFlip') }}
-
-      // Watchlist action buttons
-      .watchlist-actions(v-if="isWatchlistActive")
-        Button.watchlist-actions__button.watchlist-actions__button--cross(round native-type="button" @click="markStillProgress")
-          AppIcon(name="tabler:x" :width="24" :height="24")
-        Button.watchlist-actions__button.watchlist-actions__button--check(round native-type="button" @click="markInMemory")
-          AppIcon(name="tabler:check" :width="24" :height="24")
+      p.flashcard-area__hint(v-show="false") {{ $t('flashcardScene.tapToFlip') }}
 
     // Watchlist complete
     .watchlist-complete(v-if="isWatchlistActive && isWatchlistComplete")
@@ -59,10 +52,30 @@
       )
         AppIcon(name="tabler:chevron-left" :width="22" :height="22")
 
+      // Watchlist: cross (left of flip)
+      Button.flashcard-nav__button.flashcard-nav__watchlist-btn.flashcard-nav__watchlist-btn--cross(
+        v-if="isWatchlistActive"
+        round
+        plain
+        native-type="button"
+        @click="markStillProgress"
+      )
+        AppIcon(name="tabler:x" :width="18" :height="18")
+
       Button.flashcard-nav__button.flashcard-nav__flip(round plain native-type="button" @click="flipCard")
         span.flashcard-nav__flip-inner
           AppIcon(name="tabler:refresh" :width="18" :height="18")
           span {{ $t('flashcardScene.flip') }}
+
+      // Watchlist: check (right of flip)
+      Button.flashcard-nav__button.flashcard-nav__watchlist-btn.flashcard-nav__watchlist-btn--check(
+        v-if="isWatchlistActive"
+        round
+        plain
+        native-type="button"
+        @click="markInMemory"
+      )
+        AppIcon(name="tabler:check" :width="18" :height="18")
 
       Button.flashcard-nav__button.flashcard-nav__next(
         v-if="!isWatchlistActive"
@@ -84,7 +97,7 @@
   HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")
 
   // More Options ActionSheet
-  ActionSheet(v-model="isMoreSheetOpen" :title="$t('flashcardScene.more.title')")
+  ActionSheet(v-model="isMoreSheetOpen" :overlay="false" :title="$t('flashcardScene.more.title')")
     template(#default)
       .flashcard-options
         Cell.flashcard-options__item(:title="$t('flashcardScene.more.shuffle.label')")

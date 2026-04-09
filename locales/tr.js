@@ -579,7 +579,7 @@ export default {
       },
       watchlist: {
         label: 'İzleme listesi',
-        stillProgress: 'Kalsın',
+        stillProgress: 'Dizide',
         inMemory: 'Tekrar gösterme',
         complete: 'Görünecek başka kart yok'
       }

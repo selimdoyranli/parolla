@@ -32,6 +32,10 @@ export default () => {
     currentIndex.value = 0
     isFlipped.value = true
     isShuffled.value = false
+    isWatchlistActive.value = false
+    stillProgress.value = []
+    inMemory.value = []
+    isWatchlistComplete.value = false
   }
 
   const flipCard = () => {

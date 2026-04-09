@@ -183,7 +183,7 @@
     width: 100%;
     max-width: 480px;
     padding-inline: $spacer * 4;
-    margin-block-end: $spacer * 2;
+    margin-block: $spacer * 4;
 
     &__item {
       display: inline-flex;
@@ -204,39 +204,6 @@
       .app-icon {
         display: flex;
         color: currentColor;
-      }
-    }
-  }
-
-  // Watchlist action buttons
-  .watchlist-actions {
-    display: flex;
-    gap: $spacer * 6;
-    align-items: center;
-    justify-content: center;
-    margin-block-start: $spacer * 4;
-
-    &__button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-
-      .app-icon {
-        display: flex;
-        color: currentColor;
-      }
-
-      &--cross {
-        color: var(--color-danger-01);
-        border-color: var(--color-danger-01);
-      }
-
-      &--check {
-        color: var(--color-success-01);
-        border-color: var(--color-success-01);
       }
     }
   }
@@ -301,8 +268,8 @@
     }
 
     &__flip {
-      color: var(--color-brand-02);
-      border-color: var(--color-brand-02);
+      color: var(--color-text-02);
+      border-color: var(--color-border-02);
 
       .van-button__text {
         display: flex;
@@ -319,6 +286,22 @@
 
       .app-icon {
         color: currentColor;
+      }
+    }
+
+    &__watchlist-btn {
+      min-width: 40px;
+      height: 40px;
+      background-color: transparent;
+
+      &--cross {
+        color: var(--color-danger-01);
+        border-color: var(--color-danger-01);
+      }
+
+      &--check {
+        color: var(--color-success-01);
+        border-color: var(--color-success-01);
       }
     }
   }
@@ -338,6 +321,11 @@
       font-size: var(--font-size-text-9);
       border-color: transparent;
 
+      .van-button__text {
+        display: flex;
+        align-items: center;
+      }
+
       .app-icon {
         display: flex;
         margin-inline-end: $spacer;
@@ -351,6 +339,12 @@
     padding-block-end: $spacer * 4;
 
     &__item {
+      background-color: var(--color-ui-02);
+
+      &::after {
+        border-color: var(--color-border-02);
+      }
+
       .van-cell__title {
         color: var(--color-text-01);
 
