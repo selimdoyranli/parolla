@@ -23,7 +23,8 @@ export default {
     textTooLong: 'Some lines are longer than 64 characters',
     tooManyFiles: 'Maximum {max} files allowed',
     invalidYoutubeLinks: 'Some links are invalid, please check',
-    choicesLength: 'You must add at least {min} and at most {max} choices'
+    choicesLength: 'You must add at least {min} and at most {max} choices',
+    flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards'
   },
   success: {
     success: 'Success'
@@ -65,6 +66,7 @@ export default {
     photoQuiz: 'Photo quiz',
     triviaQuiz: 'Trivia',
     thisOrThatQuiz: 'This or that?',
+    flashcardsQuiz: 'Flashcards',
     provider: 'Provider',
     quizPreparing: 'Preparing quiz'
   },
@@ -279,6 +281,12 @@ export default {
           description: 'Create a list of choices, players choose one of two options each round',
           label: 'No competition, determines personal preferences',
           createThisOrThatQuiz: 'Create this or that quiz'
+        },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'Create a set of cards with front and back text for studying or having fun',
+          label: 'Study or have fun',
+          createFlashcardsQuiz: 'Create flashcards quiz'
         }
       }
     },
@@ -339,6 +347,11 @@ export default {
           title: 'How to play this or that quiz?',
           description: 'Choose between two options each round',
           extra: 'This quiz was created by another player <br> There are {choiceCount} choices. You can play this mod over and over again.'
+        },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'This quiz has <strong>{cardCount} flashcards</strong>.',
+          extra: 'Tap a card to flip it. Use arrows to navigate between cards.'
         },
         extra:
           'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
@@ -548,6 +561,24 @@ export default {
       private: 'Private'
     }
   },
+  flashcardScene: {
+    front: 'FRONT',
+    back: 'BACK',
+    flip: 'Flip',
+    tapToFlip: 'Tap the card to flip',
+    more: {
+      title: 'More',
+      shuffle: {
+        label: 'Shuffle'
+      },
+      watchlist: {
+        label: 'Watchlist',
+        stillProgress: 'Keep',
+        inMemory: "Don't show again",
+        complete: 'No more cards to show'
+      }
+    }
+  },
   choices: {
     remainingChoices: '{count} choices left',
     lastChoice: 'Last choice',
@@ -564,6 +595,7 @@ export default {
     creatorModeCompose: {
       title: 'CREATE A QUIZ',
       choicesTitle: 'CREATE A CHOICES QUIZ',
+      flashcardsTitle: 'CREATE A FLASHCARDS QUIZ',
       roomInformations: 'QUIZ INFORMATIONS',
       qaSet: 'QUESTION-ANSWER SET',
       choicesSet: 'CHOICES SET',
@@ -675,6 +707,27 @@ export default {
           action: 'Add new choice'
         }
       },
+      flashcards: {
+        set: 'FLASHCARD SET',
+        card: 'Card',
+        front: {
+          label: 'Front',
+          placeholder: 'Card front text'
+        },
+        back: {
+          label: 'Back',
+          placeholder: 'Card back text'
+        },
+        removeCard: 'Remove card',
+        empty: {
+          description: "You haven't added any flashcard yet\nAt least 1 card, at most 100 cards can be added",
+          hint: 'In the game screen, the backface of the card is shown first',
+          action: 'Add flashcard'
+        },
+        addMore: {
+          action: 'Add new card'
+        }
+      },
       saveDraft: {
         action: 'Save draft',
         callback: {
@@ -691,6 +744,7 @@ export default {
     creatorModeEdit: {
       title: 'EDIT A QUIZ',
       choicesTitle: 'EDIT CHOICES QUIZ',
+      flashcardsTitle: 'EDIT FLASHCARDS QUIZ',
       submit: 'Update and publish'
     },
     roomReview: {
@@ -906,6 +960,11 @@ export default {
       title: 'Create a choices quiz',
       description: 'Create a choices quiz or solve quizzes created by players',
       keywords: 'choices quiz, quiz solve, quiz create'
+    },
+    creatorModeComposeFlashcards: {
+      title: 'Create Flashcards Quiz',
+      description: 'Create a flashcard quiz for studying',
+      keywords: 'flashcards, quiz, study, learning'
     },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',

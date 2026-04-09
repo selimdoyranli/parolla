@@ -13,6 +13,7 @@ Dialog.dialog.how-to-play-dialog(
     HowToPlayUnlimitedModeContent(v-if="activeGameMode === gameModeKeyEnum.UNLIMITED")
     HowToPlayCreatorModeContent(v-if="activeGameMode === gameModeKeyEnum.CREATOR && (room.quizType === quizTypeEnum.QA || !room.quizType)")
     HowToPlayThisOrThatContent(v-if="room && room.quizType === quizTypeEnum.CHOICES")
+    HowToPlayFlashcardsContent(v-if="room && room.quizType === quizTypeEnum.FLASHCARDS")
     HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
     HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
     .how-to-play-dialog__ad
@@ -80,6 +81,10 @@ export default defineComponent({
 
         if (room.value.quizType === quizTypeEnum.CHOICES) {
           return i18n.t('dialog.howToPlay.creator.thisOrThat.title')
+        }
+
+        if (room.value.quizType === quizTypeEnum.FLASHCARDS) {
+          return i18n.t('dialog.howToPlay.creator.flashcards.title')
         }
       }
 

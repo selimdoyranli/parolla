@@ -23,7 +23,8 @@ export default {
     textTooLong: 'Bazı satırlar 64 karakterden uzun',
     tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
     invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
-    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin'
+    choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin',
+    flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır'
   },
   success: {
     success: 'Başarılı'
@@ -65,6 +66,7 @@ export default {
     photoQuiz: 'Foto quiz',
     triviaQuiz: 'Trivia',
     thisOrThatQuiz: 'O mu bu mu?',
+    flashcardsQuiz: 'Flashcards',
     provider: 'Sağlayıcı',
     quizPreparing: 'Quiz hazırlanıyor'
   },
@@ -284,6 +286,12 @@ export default {
           description: 'Seçim listesi oluştur, oyuncular her tur iki seçenekten birini seçer',
           label: 'Rekabet yok, kişisel tercihleri belirler',
           createThisOrThatQuiz: 'O mu bu mu? quiz oluştur'
+        },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'Çalışma ya da eğlence için ön ve arka yüzü olan kartlar oluştur',
+          label: 'Öğrenme ya da eğlence',
+          createFlashcardsQuiz: 'Flashcards quiz oluştur'
         }
       }
     },
@@ -344,6 +352,11 @@ export default {
           title: 'O mu bu mu? quiz nasıl oynanır?',
           description: 'Her tur iki seçenek arasından seçim yap',
           extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
+        },
+        flashcards: {
+          title: 'Flashcards',
+          description: 'Bu quizde <strong>{cardCount} flashcard</strong> var.',
+          extra: 'Kartı çevirmek için üzerine dokun. Kartlar arasında geçiş yapmak için okları kullan.'
         },
         extra:
           'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
@@ -554,6 +567,24 @@ export default {
       private: 'Liste dışı'
     }
   },
+  flashcardScene: {
+    front: 'ÖN YÜZ',
+    back: 'ARKA YÜZ',
+    flip: 'Çevir',
+    tapToFlip: 'Kartı çevirmek için dokun',
+    more: {
+      title: 'Daha fazla',
+      shuffle: {
+        label: 'Karıştır'
+      },
+      watchlist: {
+        label: 'İzleme listesi',
+        stillProgress: 'Dizide',
+        inMemory: 'Tekrar gösterme',
+        complete: 'Görünecek başka kart yok'
+      }
+    }
+  },
   choices: {
     remainingChoices: '{count} seçim kaldı',
     lastChoice: 'Son seçim',
@@ -570,6 +601,7 @@ export default {
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
       choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
+      flashcardsTitle: 'FLASHCARDS QUIZ OLUŞTUR',
       clearForm: 'Formu Temizle',
       roomInformations: 'QUIZ BİLGİLERİ',
       qaSet: 'SORU-CEVAP SETİ',
@@ -695,6 +727,27 @@ export default {
           cancel: 'İptal'
         }
       },
+      flashcards: {
+        set: 'KART SETİ',
+        card: 'Kart',
+        front: {
+          label: 'Ön yüz',
+          placeholder: 'Kartın ön yüz metni'
+        },
+        back: {
+          label: 'Arka yüz',
+          placeholder: 'Kartın arka yüz metni'
+        },
+        removeCard: 'Kartı kaldır',
+        empty: {
+          description: 'Henüz kart eklemedin\nEn az 1, en fazla 100 kart eklenebilir',
+          hint: 'Oyun ekranında kartların arka yüzü önce gösterilir',
+          action: 'Kart ekle'
+        },
+        addMore: {
+          action: 'Yeni kart ekle'
+        }
+      },
       saveDraft: {
         action: 'Taslak kaydet',
         callback: {
@@ -711,6 +764,7 @@ export default {
     creatorModeEdit: {
       title: 'QUIZ DÜZENLE',
       choicesTitle: 'SEÇİM QUIZ DÜZENLE',
+      flashcardsTitle: 'FLASHCARDS QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
     roomReview: {
@@ -930,6 +984,11 @@ export default {
       title: 'Seçim quiz oluştur',
       description: 'Seçmeli quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
       keywords: 'seçimli quiz, quiz çöz, quiz oluştur'
+    },
+    creatorModeComposeFlashcards: {
+      title: 'Flashcards Quiz Oluştur',
+      description: 'Çalışma ya da eğlence için flashcards quiz oluştur',
+      keywords: 'flashcards, quiz, çalışma, öğrenme'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',

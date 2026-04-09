@@ -3,10 +3,12 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   h1.creator-mode-compose-form__title(align="center")
     template(v-if="room")
       template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeEdit.choicesTitle') }}
+      template(v-else-if="form.quizType === quizTypeEnum.FLASHCARDS") {{ $t('form.creatorModeEdit.flashcardsTitle') }}
       template(v-else) {{ $t('form.creatorModeEdit.title') }}
       Tag.creator-mode-compose-form__draftTag(v-if="form.isDraft" type="warning") {{ $t('general.draft') }}
     template(v-else)
       template(v-if="form.quizType === quizTypeEnum.CHOICES") {{ $t('form.creatorModeCompose.choicesTitle') }}
+      template(v-else-if="form.quizType === quizTypeEnum.FLASHCARDS") {{ $t('form.creatorModeCompose.flashcardsTitle') }}
       template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   RoomBasicInfo(
@@ -32,7 +34,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
   )
 
   QuestionList(
-    v-else
+    v-else-if="form.quizType === quizTypeEnum.QA"
     :qa-list.sync="form.qaList"
     :is-busy="form.isBusy"
     :answer-type-options="answerTypeOptions"
@@ -51,6 +53,16 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @remove="removeItem"
   )
 
+  FlashcardList(
+    v-else-if="form.quizType === quizTypeEnum.FLASHCARDS"
+    :flashcard-list.sync="form.flashcardList"
+    :is-busy="form.isBusy"
+    @add-item="addItem"
+    @remove="removeItem"
+    @move-up="moveUp"
+    @move-down="moveDown"
+  )
+
   AddChoicesDialog(
     v-if="form.quizType === quizTypeEnum.CHOICES"
     :is-open="isAddChoicesDialogOpen"
@@ -62,7 +74,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 
   FormActions(
     :is-visible-save-draft-button="isVisibleSaveDraftButton"
-    :qa-list-length="form.quizType === quizTypeEnum.CHOICES ? form.choices.length : form.qaList.length"
+    :qa-list-length="qaListLength"
     :is-busy="form.isBusy"
     :is-room-exists="!!room"
     @save-draft="saveAsDraft"
@@ -91,18 +103,20 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 </template>
 
 <script>
-import { defineComponent, useRouter, useContext, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useContext, ref, computed } from '@nuxtjs/composition-api'
 import { Form, Tag } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import ChoiceList from './partials/ChoiceList.vue'
 import QuestionList from './partials/QuestionList.vue'
+import FlashcardList from './partials/FlashcardList.vue'
 
 export default defineComponent({
   components: {
     Form,
     Tag,
     ChoiceList,
-    QuestionList
+    QuestionList,
+    FlashcardList
   },
   props: {
     room: {
@@ -170,6 +184,14 @@ export default defineComponent({
       isAddChoicesDialogOpen.value = false
     }
 
+    const qaListLength = computed(() => {
+      if (form.quizType === quizTypeEnum.CHOICES) return form.choices.length
+
+      if (form.quizType === quizTypeEnum.FLASHCARDS) return form.flashcardList.length
+
+      return form.qaList.length
+    })
+
     const handleBatchAddItems = items => {
       if (!items || items.length === 0) return
 
@@ -219,7 +241,8 @@ export default defineComponent({
       isAddChoicesDialogOpen,
       openAddChoicesDialog,
       closeAddChoicesDialog,
-      handleBatchAddItems
+      handleBatchAddItems,
+      qaListLength
     }
   }
 })

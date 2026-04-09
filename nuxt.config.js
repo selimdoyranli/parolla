@@ -293,6 +293,10 @@ module.exports = {
             tr: '/quiz-olustur/secim',
             en: '/create-quiz/choices'
           },
+          'CreatorMode/CreatorModeCompose/Flashcards': {
+            tr: '/quiz-olustur/flashcards',
+            en: '/create-quiz/flashcards'
+          },
           'CreatorMode/CreatorModeEdit/_slug': {
             tr: '/quiz-duzenle/:slug',
             en: '/edit-quiz/:slug'

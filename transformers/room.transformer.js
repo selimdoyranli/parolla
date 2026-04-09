@@ -15,6 +15,18 @@ const choiceItemTransformer = model => {
   }
 }
 
+const flashcardItemTransformer = model => {
+  return {
+    id: model.id,
+    documentId: model.documentId,
+    cardFrontText: model.cardFrontText,
+    cardBackText: model.cardBackText,
+    order: model.order,
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt
+  }
+}
+
 export default model => {
   return {
     id: model.id,
@@ -39,6 +51,8 @@ export default model => {
     questions: model.qaItems,
     choices: model.choices?.map(choiceItemTransformer),
     winnerChoices: model.winnerChoices?.map(choiceItemTransformer),
+    flashcards: model.flashcards?.map(flashcardItemTransformer),
+    flashcardCount: model.flashcardCount,
     answerTypeDominance: model.answerTypeDominance,
     questionTypeDominance: model.questionTypeDominance,
     tags: model.roomTags

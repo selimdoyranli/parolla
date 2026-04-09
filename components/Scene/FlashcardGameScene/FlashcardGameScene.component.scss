@@ -1,0 +1,480 @@
+@import '@/assets/style/scss/shared/_game-scene.scss';
+
+.flashcard-game-scene {
+  --room-info-height: 60px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .scene__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    padding-block-start: var(--room-info-height);
+  }
+
+  .room-info {
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: var(--layout-max-width);
+    height: var(--room-info-height);
+    background-color: var(--color-ui-02);
+    border-bottom: 1px solid var(--color-border-03);
+    transform: translateX(-50%);
+    inset-block-start: var(--header-height);
+    inset-inline-start: 50%;
+
+    &__title {
+      width: 100%;
+      overflow: hidden;
+      color: var(--color-brand-02);
+      font-size: var(--font-size-7);
+      white-space: nowrap;
+      text-align: center;
+      text-overflow: ellipsis;
+      padding-inline: $spacer;
+      padding-block-end: $spacer;
+
+      @include font-weight-semi-bold;
+    }
+
+    .card-counter {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      color: var(--color-text-03);
+      font-size: var(--font-size-8);
+      text-align: center;
+
+      &__current {
+        color: var(--color-text-01);
+
+        @include font-weight-semi-bold;
+      }
+
+      &__separator {
+        margin-inline: 2px;
+      }
+    }
+  }
+
+  // Card area
+  .flashcard-area {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    padding: $spacer * 4;
+    padding-block-end: $spacer * 2;
+
+    &__hint {
+      margin-block-start: $spacer * 3;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+      opacity: 0.7;
+    }
+  }
+
+  // Card transition animations
+  @keyframes card-exit-left {
+    from {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(-40px) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-exit-right {
+    from {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(40px) scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-enter-left {
+    from {
+      transform: translateX(-30px) scale(0.97);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes card-enter-right {
+    from {
+      transform: translateX(30px) scale(0.97);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes card-dismiss-left {
+    from {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(-100px) rotate(-6deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-dismiss-right {
+    from {
+      transform: translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(100px) rotate(6deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes card-enter-fade {
+    from {
+      transform: scale(0.92);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  // Flashcard with flip
+  .flashcard-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    perspective: 1200px;
+    cursor: pointer;
+
+    &.exit-left {
+      animation: card-exit-left 0.25s ease-out forwards;
+    }
+
+    &.exit-right {
+      animation: card-exit-right 0.25s ease-out forwards;
+    }
+
+    &.enter-left {
+      animation: card-enter-left 0.25s ease-out forwards;
+    }
+
+    &.enter-right {
+      animation: card-enter-right 0.25s ease-out forwards;
+    }
+
+    &.dismiss-left {
+      animation: card-dismiss-left 0.3s ease-in forwards;
+    }
+
+    &.dismiss-right {
+      animation: card-dismiss-right 0.3s ease-in forwards;
+    }
+
+    &.enter-fade {
+      animation: card-enter-fade 0.25s ease-out forwards;
+    }
+
+    @include media-breakpoint-down(mobile-m) {
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  .flashcard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Disable flip transition during card change animations
+    .flashcard-wrapper.exit-left &,
+    .flashcard-wrapper.exit-right &,
+    .flashcard-wrapper.enter-left &,
+    .flashcard-wrapper.enter-right &,
+    .flashcard-wrapper.dismiss-left &,
+    .flashcard-wrapper.dismiss-right &,
+    .flashcard-wrapper.enter-fade & {
+      transition: none;
+    }
+
+    &.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    &__face {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      padding: $spacer * 6;
+      padding-block-start: $spacer * 8;
+      overflow-y: auto;
+      border-radius: $spacer * 3;
+      box-shadow: var(--box-shadow-03);
+      backface-visibility: hidden;
+
+      @include media-breakpoint-down(mobile) {
+        padding: $spacer * 4;
+        padding-block-start: $spacer * 6;
+        border-radius: $spacer * 2;
+      }
+    }
+
+    &__front {
+      background-color: var(--color-ui-02);
+      border: 4px solid var(--color-border-02);
+    }
+
+    &__back {
+      color: var(--color-text-01);
+      background-color: light-dark(#dcd0d0, #363030);
+      border: 4px dotted light-dark(#cfc2c2, #252323);
+      transform: rotateY(180deg);
+    }
+
+    &__label {
+      position: absolute;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.4;
+      inset-block-start: $spacer * 3;
+      inset-inline-start: $spacer * 4;
+
+      @include font-weight-semi-bold;
+
+      @include media-breakpoint-down(mobile) {
+        font-size: 9px;
+        inset-block-start: $spacer * 2;
+        inset-inline-start: $spacer * 3;
+      }
+    }
+
+    &__text {
+      font-size: var(--font-size-text-2);
+      line-height: 1.4;
+      text-align: center;
+      word-break: break-word;
+
+      @include font-weight-semi-bold;
+
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-3);
+      }
+    }
+  }
+
+  // Watchlist progress labels
+  .watchlist-labels {
+    display: flex;
+    gap: $spacer * 4;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    padding-inline: $spacer * 4;
+    margin-block: $spacer * 4;
+    margin-block-end: $spacer;
+
+    &__item {
+      display: inline-flex;
+      gap: $spacer;
+      align-items: center;
+      font-size: var(--font-size-text-9);
+
+      @include font-weight-semi-bold;
+
+      &--still-progress {
+        color: var(--color-danger-01);
+      }
+
+      &--in-memory {
+        color: var(--color-success-01);
+      }
+
+      .app-icon {
+        display: flex;
+        color: currentColor;
+      }
+    }
+  }
+
+  // Watchlist complete
+  .watchlist-complete {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $spacer * 4;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: $spacer * 8;
+    text-align: center;
+
+    &__text {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-4);
+
+      @include font-weight-semi-bold;
+    }
+
+    &__stats {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-8);
+    }
+  }
+
+  // Navigation
+  .flashcard-nav {
+    display: flex;
+    gap: $spacer * 3;
+    align-items: center;
+    justify-content: center;
+    padding: $spacer * 3;
+    padding-block-end: $spacer * 5;
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: calc($spacer * 5 + max(0px, env(safe-area-inset-bottom)));
+    }
+
+    &__button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-01);
+      background-color: var(--color-ui-03);
+      border-color: var(--color-border-02);
+      box-shadow: var(--box-shadow-03);
+
+      &.van-button--disabled {
+        opacity: 0.3;
+      }
+
+      .app-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: currentColor;
+      }
+    }
+
+    &__flip {
+      color: var(--color-text-02);
+      border-color: var(--color-border-02);
+
+      .van-button__text {
+        display: flex;
+      }
+    }
+
+    &__flip-inner {
+      display: inline-flex;
+      gap: $spacer;
+      align-items: center;
+      font-size: var(--font-size-text-8);
+
+      @include font-weight-semi-bold;
+
+      .app-icon {
+        color: currentColor;
+      }
+    }
+
+    &__watchlist-btn {
+      min-width: 40px;
+      height: 40px;
+      background-color: transparent;
+
+      &--cross {
+        color: var(--color-danger-01);
+        border-color: var(--color-danger-01);
+      }
+
+      &--check {
+        color: var(--color-success-01);
+        border-color: var(--color-success-01);
+      }
+    }
+  }
+
+  // More button
+  .flashcard-more {
+    display: flex;
+    justify-content: center;
+    padding-block-end: $spacer * 3;
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: calc($spacer * 3 + max(0px, env(safe-area-inset-bottom)));
+    }
+
+    &__button {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-9);
+      border-color: transparent;
+
+      .van-button__text {
+        display: flex;
+        align-items: center;
+      }
+
+      .app-icon {
+        display: flex;
+        margin-inline-end: $spacer;
+        color: currentColor;
+      }
+    }
+  }
+
+  // ActionSheet options
+  .flashcard-options {
+    padding-block-end: $spacer * 4;
+
+    &__item {
+      background-color: var(--color-ui-02);
+
+      &::after {
+        border-color: var(--color-border-02);
+      }
+
+      .van-cell__title {
+        color: var(--color-text-01);
+
+        @include font-weight-semi-bold;
+      }
+    }
+  }
+}

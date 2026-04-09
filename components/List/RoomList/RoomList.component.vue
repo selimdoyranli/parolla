@@ -66,6 +66,11 @@
                     )
                     span.room-list-item-choices-tag__text {{ $t('general.thisOrThatQuiz') }}
 
+                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.FLASHCARDS")
+                  Tag.room-list-item-flashcards-tag
+                    AppIcon.room-list-item-flashcards-tag__icon(name="streamline-color:cards-flat" :width="16" :height="16")
+                    span.room-list-item-flashcards-tag__text {{ $t('general.flashcardsQuiz') }}
+
                 .room-list-item-badge(v-if="room.questionTypeDominance === questionTypeEnum.MEDIA")
                   Tag.room-list-item-has-media-tag
                     AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
@@ -83,6 +88,10 @@
                 .room-list-item-badge(v-if="room.choices?.length > 0")
                   AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
                   span.room-list-item-badge__value {{ room.choices.length }}
+
+                .room-list-item-badge(v-if="room.flashcardCount > 0")
+                  AppIcon.room-list-item-badge__icon(name="tabler:cards" color="var(--color-text-03)" :width="16" :height="16")
+                  span.room-list-item-badge__value {{ room.flashcardCount }}
 
                 .room-list-item-badge(v-if="room.viewCount && room.viewCount > 0")
                   AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")

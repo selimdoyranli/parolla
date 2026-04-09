@@ -10,6 +10,7 @@
   template(v-else)
     CreatorModeGameScene(v-if="room.quizType === quizTypeEnum.QA || !room.quizType")
     ChoicesGameScene(v-if="room.quizType === quizTypeEnum.CHOICES")
+    FlashcardGameScene(v-if="room.quizType === quizTypeEnum.FLASHCARDS")
 </template>
 
 <script>

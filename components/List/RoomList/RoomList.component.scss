@@ -169,6 +169,27 @@
       }
     }
 
+    &-flashcards-tag {
+      position: relative;
+      inset-block-start: -1px;
+      background-color: transparent;
+
+      &__icon {
+        margin-inline-end: $spacer * 2;
+
+        svg {
+          width: 20px !important;
+          height: 20px !important;
+        }
+      }
+
+      &__text {
+        color: var(--color-text-03);
+        font-size: var(--font-size-text-9);
+        text-wrap: nowrap;
+      }
+    }
+
     &-has-media-tag {
       position: relative;
       inset-block-start: -1px;

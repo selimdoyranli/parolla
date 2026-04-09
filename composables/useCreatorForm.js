@@ -13,10 +13,20 @@ export default function useCreatorForm(props) {
 
   const user = computed(() => store.getters['auth/user'])
 
-  const initialQuizType =
-    route.value.query.mode === quizTypeEnum.CHOICES || getRouteBaseName(route.value) === 'CreatorMode-CreatorModeCompose-Choices'
-      ? quizTypeEnum.CHOICES
-      : props.room?.quizType || quizTypeEnum.QA
+  const initialQuizType = (() => {
+    if (route.value.query.mode === quizTypeEnum.CHOICES || getRouteBaseName(route.value) === 'CreatorMode-CreatorModeCompose-Choices') {
+      return quizTypeEnum.CHOICES
+    }
+
+    if (
+      route.value.query.mode === quizTypeEnum.FLASHCARDS ||
+      getRouteBaseName(route.value) === 'CreatorMode-CreatorModeCompose-Flashcards'
+    ) {
+      return quizTypeEnum.FLASHCARDS
+    }
+
+    return props.room?.quizType || quizTypeEnum.QA
+  })()
 
   const form = reactive({
     quizType: initialQuizType,
@@ -39,6 +49,14 @@ export default function useCreatorForm(props) {
           })) || []
         : [],
     choices: initialQuizType === quizTypeEnum.CHOICES && props.room?.choices ? transformChoices(props.room.choices) : [],
+    flashcardList:
+      initialQuizType === quizTypeEnum.FLASHCARDS && props.room?.flashcards
+        ? props.room.flashcards.map((fc, idx) => ({
+            ...fc,
+            id: fc.id || Date.now() + idx,
+            order: idx
+          }))
+        : [],
     gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
   })
 
@@ -160,6 +178,15 @@ export default function useCreatorForm(props) {
         order: form.qaList.length
       })
     }
+
+    if (form.quizType === quizTypeEnum.FLASHCARDS) {
+      form.flashcardList.push({
+        id: Date.now() + Math.random(),
+        cardFrontText: '',
+        cardBackText: '',
+        order: form.flashcardList.length
+      })
+    }
   }
 
   const removeItem = index => {
@@ -169,6 +196,13 @@ export default function useCreatorForm(props) {
 
     if (form.quizType === quizTypeEnum.QA) {
       form.qaList.splice(index, 1)
+    }
+
+    if (form.quizType === quizTypeEnum.FLASHCARDS) {
+      form.flashcardList.splice(index, 1)
+      form.flashcardList.forEach((item, idx) => {
+        item.order = idx
+      })
     }
   }
 
@@ -180,6 +214,14 @@ export default function useCreatorForm(props) {
       form.qaList.splice(index - 1, 0, item)
       updateOrder()
     }
+
+    if (form.quizType === quizTypeEnum.FLASHCARDS) {
+      const item = form.flashcardList.splice(index, 1)[0]
+      form.flashcardList.splice(index - 1, 0, item)
+      form.flashcardList.forEach((item, idx) => {
+        item.order = idx
+      })
+    }
   }
 
   const moveDown = index => {
@@ -188,6 +230,15 @@ export default function useCreatorForm(props) {
       const item = form.qaList.splice(index, 1)[0]
       form.qaList.splice(index + 1, 0, item)
       updateOrder()
+    }
+
+    if (form.quizType === quizTypeEnum.FLASHCARDS) {
+      if (index === form.flashcardList.length - 1) return
+      const item = form.flashcardList.splice(index, 1)[0]
+      form.flashcardList.splice(index + 1, 0, item)
+      form.flashcardList.forEach((item, idx) => {
+        item.order = idx
+      })
     }
   }
 
@@ -457,6 +508,26 @@ export default function useCreatorForm(props) {
       }
     }
 
+    if (form.quizType === quizTypeEnum.FLASHCARDS) {
+      if (form.flashcardList.length < 1 || form.flashcardList.length > 100) {
+        getErrorNotify({
+          error: {
+            message: i18n.t('error.flashcardListLength', { min: 1, max: 100 })
+          }
+        })
+        form.isBusy = false
+        closeCreatingRoomModal()
+
+        return
+      }
+
+      const invalidItems = form.flashcardList.filter(
+        item => !item.cardFrontText || item.cardFrontText.trim() === '' || !item.cardBackText || item.cardBackText.trim() === ''
+      )
+
+      if (invalidItems.length > 0) isValid = false
+    }
+
     if (!isValid) {
       form.isClear = false
       scrollToErrorMessage('.van-field__error-message')
@@ -481,6 +552,7 @@ export default function useCreatorForm(props) {
       ...form,
       qaList: form.quizType === quizTypeEnum.QA ? form.qaList : [],
       choices: form.quizType === quizTypeEnum.CHOICES ? form.choices : [],
+      flashcardList: form.quizType === quizTypeEnum.FLASHCARDS ? form.flashcardList : [],
       gameTimeLimit: form.quizType === quizTypeEnum.QA ? form.gameTimeLimit : null,
       isVisible: getQuizVisibility()
     }
@@ -614,14 +686,22 @@ export default function useCreatorForm(props) {
   }
 
   const isVisibleSaveDraftButton = computed(() => {
-    const hasItems = (form.qaList && form.qaList.length > 0) || (form.choices && form.choices.length > 0)
+    const hasItems =
+      (form.qaList && form.qaList.length > 0) ||
+      (form.choices && form.choices.length > 0) ||
+      (form.flashcardList && form.flashcardList.length > 0)
 
     return hasItems && (!props.room || (props.room && !props.room.isVisible))
   })
 
   // Navigation block
   const handleBeforeUnload = e => {
-    const hasContent = form.roomTitle.length > 0 || form.qaList.length > 0 || form.choices.length > 0 || form.tags.length > 0
+    const hasContent =
+      form.roomTitle.length > 0 ||
+      form.qaList.length > 0 ||
+      form.choices.length > 0 ||
+      form.flashcardList.length > 0 ||
+      form.tags.length > 0
 
     if (hasContent) {
       e.preventDefault()

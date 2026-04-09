@@ -40,6 +40,13 @@ export default {
             mediaNote: item.mediaNote
           }
         }),
+        flashcardList: (form.flashcardList || []).map((item, index) => {
+          return {
+            cardFrontText: item.cardFrontText,
+            cardBackText: item.cardBackText,
+            order: index
+          }
+        }),
         roomTags: form.tags,
         gameTimeLimit: form.gameTimeLimit === null ? null : Number(form.gameTimeLimit),
         deviceInfo
@@ -103,6 +110,14 @@ export default {
             youtubeUrl: youtubeUrl,
             media: item.media?.id || null,
             mediaNote: item.mediaNote
+          }
+        }),
+        flashcardList: (form.flashcardList || []).map((item, index) => {
+          return {
+            documentId: item.documentId,
+            cardFrontText: item.cardFrontText,
+            cardBackText: item.cardBackText,
+            order: index
           }
         }),
         roomTags: form.tags,
