@@ -1,15 +1,23 @@
 <template lang="pug">
 .app-ad
-  script(src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5310998423283624" async crossorigin="anonymous")
-  ins.adsbygoogle(
-    style="display: block"
-    data-ad-client="ca-pub-5310998423283624"
-    :data-ad-slot="dataAdSlot"
-    data-ad-format="auto"
-    data-full-width-responsive="true"
+  a.rota-ads(
+    href="https://rota.tips?utm_source=parolla.app"
+    title="Şehir Rehberi & Gezi Planlayıcı | Mekan Keşfet"
+    rel="noopener noreferrer"
+    target="_blank"
   )
-  script.
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    img.rota-ads__image(src="/ads/rota.jpeg" alt="Şehir Rehberi & Gezi Planlayıcı | Mekan Keşfet" decoding="async")
+  //
+    script(src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5310998423283624" async crossorigin="anonymous")
+    ins.adsbygoogle(
+      style="display: block"
+      data-ad-client="ca-pub-5310998423283624"
+      :data-ad-slot="dataAdSlot"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    )
+    script.
+      (adsbygoogle = window.adsbygoogle || []).push({});
 </template>
 
 <script>

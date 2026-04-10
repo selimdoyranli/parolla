@@ -1,3 +1,14 @@
 .app-ad {
   position: relative;
 }
+
+.rota-ads {
+  display: block;
+}
+
+.rota-ads__image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
