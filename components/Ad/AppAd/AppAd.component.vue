@@ -1,12 +1,12 @@
 <template lang="pug">
-.app-ad
-  a.rota-ads(
+.rota-block
+  a.rota-block(
     href="https://rota.tips?utm_source=parolla.app"
     title="Şehir Rehberi & Gezi Planlayıcı | Mekan Keşfet"
     rel="noopener noreferrer"
     target="_blank"
   )
-    img.rota-ads__image(src="/ads/rota.jpeg" alt="Şehir Rehberi & Gezi Planlayıcı | Mekan Keşfet" decoding="async")
+    img.rota-block__image(src="/block/rota.jpeg" alt="Şehir Rehberi & Gezi Planlayıcı | Mekan Keşfet" decoding="async")
   //
     script(src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5310998423283624" async crossorigin="anonymous")
     ins.adsbygoogle(
