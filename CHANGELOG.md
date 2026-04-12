@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.43.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/373544c5b2e444c5981e79c9d47ddbf07b76bc86...v2.43.1)
+
+
+### 💅 Refactors
+
+  - Set user ip on tour chat for legal requirements ([0f15192](https://github.com/selimdoyranli/parolla/commit/0f15192))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.43.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/94794ee319187ced828e696f524b9be602e69fc2...v2.43.0)
