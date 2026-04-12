@@ -25,6 +25,25 @@ export default {
     // Create WebSocket instance
     const ws = new WebSocket(wsUrl)
 
+    // Bağlantı açıldığında client IP'yi gönder
+    ws.addEventListener('open', async () => {
+      try {
+        const response = await fetch('https://ipinfo.io/json')
+        const ipData = await response.json()
+
+        if (ipData && ipData.ip && ws.readyState === WebSocket.OPEN) {
+          ws.send(
+            JSON.stringify({
+              type: 'set_client_ip',
+              ip: ipData.ip
+            })
+          )
+        }
+      } catch (error) {
+        console.error('Error fetching client IP:', error)
+      }
+    })
+
     commit('SET_WS', ws)
 
     return ws
