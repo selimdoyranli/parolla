@@ -25,7 +25,7 @@ export default {
     // Create WebSocket instance
     const ws = new WebSocket(wsUrl)
 
-    // Bağlantı açıldığında client IP'yi gönder
+    // Send client IP to WS server when connection is established
     ws.addEventListener('open', async () => {
       try {
         const response = await fetch('https://ipinfo.io/json')
@@ -75,7 +75,7 @@ export default {
   async report({ commit, state }, params) {
     const { scope, detail, additional } = params
 
-    // Chat raporları WS üzerinden gönderilir (IP sunucu tarafında eklenir)
+    // Chat reports are sent through WS (IP is added server-side)
     if (scope === 'chat' && state.ws && state.ws.readyState === WebSocket.OPEN) {
       let parsedAdditional = {}
 
@@ -88,7 +88,7 @@ export default {
       const reportedMessage = parsedAdditional.reportedMessage
 
       if (!reportedMessage) {
-        return { data: null, error: 'Raporlanacak mesaj bulunamadı' }
+        return { data: null, error: 'Reported message not found' }
       }
 
       return new Promise(resolve => {
@@ -103,11 +103,11 @@ export default {
               if (responseData.success) {
                 resolve({ data: { data: { id: responseData.reportId } }, error: null })
               } else {
-                resolve({ data: null, error: responseData.error || 'Rapor oluşturulamadı' })
+                resolve({ data: null, error: responseData.error || 'Failed to create report' })
               }
             }
           } catch {
-            // JSON parse hatası, bu mesaj bizim beklediğimiz değil, yoksay
+            // JSON parse error, not the message we're waiting for, ignore
           }
         }
 
@@ -122,15 +122,15 @@ export default {
           })
         )
 
-        // 10 saniye timeout
+        // 10 second timeout
         const timeout = setTimeout(() => {
           state.ws.removeEventListener('message', handler)
-          resolve({ data: null, error: 'Zaman aşımı' })
+          resolve({ data: null, error: 'Request timeout' })
         }, 10000)
       })
     }
 
-    // Diğer raporlar (profile, review) mevcut HTTP akışı ile
+    // Other reports (profile, review) go through existing HTTP flow
     const user = this.$auth.user
     let parsedAdditional = {}
 
