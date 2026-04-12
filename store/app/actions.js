@@ -53,9 +53,65 @@ export default {
     }
   },
 
-  async report({ commit }, params) {
+  async report({ commit, state }, params) {
     const { scope, detail, additional } = params
 
+    // Chat raporları WS üzerinden gönderilir (IP sunucu tarafında eklenir)
+    if (scope === 'chat' && state.ws && state.ws.readyState === WebSocket.OPEN) {
+      let parsedAdditional = {}
+
+      try {
+        parsedAdditional = additional ? JSON.parse(additional) : {}
+      } catch {
+        parsedAdditional = {}
+      }
+
+      const reportedMessage = parsedAdditional.reportedMessage
+
+      if (!reportedMessage) {
+        return { data: null, error: 'Raporlanacak mesaj bulunamadı' }
+      }
+
+      return new Promise(resolve => {
+        const handler = event => {
+          try {
+            const responseData = JSON.parse(event.data)
+
+            if (responseData.type === 'report_chat_message_result') {
+              state.ws.removeEventListener('message', handler)
+              clearTimeout(timeout)
+
+              if (responseData.success) {
+                resolve({ data: { data: { id: responseData.reportId } }, error: null })
+              } else {
+                resolve({ data: null, error: responseData.error || 'Rapor oluşturulamadı' })
+              }
+            }
+          } catch {
+            // JSON parse hatası, bu mesaj bizim beklediğimiz değil, yoksay
+          }
+        }
+
+        state.ws.addEventListener('message', handler)
+
+        state.ws.send(
+          JSON.stringify({
+            type: 'report_chat_message',
+            messageTimestamp: reportedMessage.timestamp,
+            messagePlayerId: reportedMessage.playerId,
+            detail: detail
+          })
+        )
+
+        // 10 saniye timeout
+        const timeout = setTimeout(() => {
+          state.ws.removeEventListener('message', handler)
+          resolve({ data: null, error: 'Zaman aşımı' })
+        }, 10000)
+      })
+    }
+
+    // Diğer raporlar (profile, review) mevcut HTTP akışı ile
     const user = this.$auth.user
     let parsedAdditional = {}
 
