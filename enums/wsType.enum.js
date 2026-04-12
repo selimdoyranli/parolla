@@ -9,5 +9,7 @@ export const wsTypeEnum = Object.freeze({
   TOUR_ANSWER_RESULT: 'answer_result',
   TOUR_RECENT_ANSWERS: 'recent_answers',
   TOUR_ROUND_SCORES: 'round_scores',
-  TOUR_USER_LIST: 'user_list'
+  TOUR_USER_LIST: 'user_list',
+  REPORT_CHAT_MESSAGE: 'report_chat_message',
+  REPORT_CHAT_MESSAGE_RESULT: 'report_chat_message_result'
 })
