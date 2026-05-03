@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.43.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.43.1...v2.43.2)
+
+
+### 🏡 Chore
+
+  - Update ads ([6fed3fa](https://github.com/selimdoyranli/parolla/commit/6fed3fa))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.43.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/373544c5b2e444c5981e79c9d47ddbf07b76bc86...v2.43.1)
