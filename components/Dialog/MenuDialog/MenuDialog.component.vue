@@ -274,7 +274,7 @@ export default defineComponent({
     }
 
     const handleClickProfileView = () => {
-      router.push(localePath({ name: 'Profile', query: { username: $auth.user.username } }))
+      router.push(localePath({ name: 'Profile-username', params: { username: $auth.user.username } }))
 
       state.isOpen = false
     }
