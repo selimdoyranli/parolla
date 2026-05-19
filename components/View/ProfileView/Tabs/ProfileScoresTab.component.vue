@@ -34,12 +34,12 @@
       .profile-scores-tab__list
         .profile-scores-tab__item(v-for="score in roomScores" :key="score.id")
           NuxtLink.profile-scores-tab__item-title(
-            v-if="score.attributes.room && score.attributes.room.data"
-            :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: score.attributes.room.data.attributes.roomId } })"
-          ) {{ score.attributes.room.data.attributes.title }}
+            v-if="score.room"
+            :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: score.room.roomId } })"
+          ) {{ score.room.title }}
 
           .profile-scores-tab__item-meta
-            Timeago(:datetime="score.attributes.createdAt" :auto-update="60" :locale="$i18n.locale")
+            Timeago(:datetime="score.createdAt" :auto-update="60" :locale="$i18n.locale")
             span &nbsp;·&nbsp;
             span {{ statsLine(score) }}
 
@@ -121,7 +121,7 @@ export default defineComponent({
     const reload = () => load(1, false)
 
     const statsLine = score => {
-      const results = score.attributes?.results || {}
+      const results = score.results || {}
       const correct = Array.isArray(results.correctAnswers) ? results.correctAnswers.length : 0
       const wrong = Array.isArray(results.wrongAnswers) ? results.wrongAnswers.length : 0
       const passed = Array.isArray(results.passedAnswers) ? results.passedAnswers.length : 0

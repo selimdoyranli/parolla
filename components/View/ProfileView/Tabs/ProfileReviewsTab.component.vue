@@ -20,20 +20,20 @@
               AppIcon(
                 :key="n"
                 color="var(--color-warning-01)"
-                :name="n <= (review.attributes.rating || 0) ? 'tabler:star-filled' : 'tabler:star'"
+                :name="n <= (review.rating || 0) ? 'tabler:star-filled' : 'tabler:star'"
                 :width="14"
                 :height="14"
               )
-          Timeago.profile-reviews-tab__date(:datetime="review.attributes.createdAt" :auto-update="60" :locale="$i18n.locale")
+          Timeago.profile-reviews-tab__date(:datetime="review.createdAt" :auto-update="60" :locale="$i18n.locale")
 
-        p.profile-reviews-tab__text(v-if="review.attributes.content") {{ review.attributes.content }}
+        p.profile-reviews-tab__text(v-if="review.content") {{ review.content }}
 
         NuxtLink.profile-reviews-tab__room(
-          v-if="review.attributes.room && review.attributes.room.data"
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: review.attributes.room.data.attributes.roomId } })"
+          v-if="review.room"
+          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: review.room.roomId } })"
         )
           AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
-          span.profile-reviews-tab__room-title {{ review.attributes.room.data.attributes.title }}
+          span.profile-reviews-tab__room-title {{ review.room.title }}
 
     Button.profile-reviews-tab__more(
       v-if="pagination.page < pagination.pageCount"
