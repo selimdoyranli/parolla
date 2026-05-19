@@ -268,7 +268,7 @@ export default defineComponent({
     }
 
     const handleClickProfileEdit = () => {
-      router.push(localePath({ name: 'Profile-ProfileEdit', query: { username: $auth.user.username } }))
+      router.push(localePath({ name: 'Account-AccountEdit' }))
 
       state.isOpen = false
     }

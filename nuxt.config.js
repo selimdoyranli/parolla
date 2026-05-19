@@ -321,9 +321,9 @@ module.exports = {
             tr: '/profil',
             en: '/profile'
           },
-          'Profile/ProfileEdit/index': {
-            tr: '/profil/duzenle',
-            en: '/profile/edit'
+          'Account/AccountEdit/index': {
+            tr: '/hesap/duzenle',
+            en: '/account/edit'
           },
           'WordblockMode/index': {
             tr: '/kelimeblok',
