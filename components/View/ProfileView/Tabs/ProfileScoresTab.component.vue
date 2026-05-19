@@ -122,9 +122,10 @@ export default defineComponent({
 
     const statsLine = score => {
       const results = score.attributes?.results || {}
-      const correct = results.correct ?? 0
-      const wrong = results.wrong ?? 0
-      const composite = results.score ?? results.composite ?? 0
+      const correct = Array.isArray(results.correctAnswers) ? results.correctAnswers.length : 0
+      const wrong = Array.isArray(results.wrongAnswers) ? results.wrongAnswers.length : 0
+      const passed = Array.isArray(results.passedAnswers) ? results.passedAnswers.length : 0
+      const composite = correct * 10 - wrong * 2 - passed * 1
 
       return i18n.t('profile.scoresTab.room.statsLine', { correct, wrong, score: composite })
     }
