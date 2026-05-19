@@ -1,0 +1,32 @@
+.profile-tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-surface-01);
+  border-bottom: 1px solid var(--color-border-01);
+
+  &__tabs {
+    background: transparent;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__wrap {
+    background: transparent;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__line {
+    border-radius: 2px;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tab {
+    padding: 0 16px;
+    font-weight: 600;
+    font-size: 14px;
+
+    &--active {
+      color: var(--color-text-01);
+    }
+  }
+}
