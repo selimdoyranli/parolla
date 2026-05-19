@@ -77,5 +77,13 @@ export default {
 
   userReviewsPagination(state) {
     return state.userReviews.pagination
+  },
+
+  userRoomScores(state) {
+    return state.userRoomScores.list
+  },
+
+  userRoomScoresPagination(state) {
+    return state.userRoomScores.pagination
   }
 }

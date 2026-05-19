@@ -383,6 +383,31 @@ export default {
     }
   },
 
+  async fetchRoomScoresByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
+    const { data, error } = await this.$appFetch({
+      path: 'room-scores',
+      query: {
+        'filters[user][id][$eq]': userId,
+        'pagination[page]': page,
+        'pagination[pageSize]': limit,
+        'populate[room]': '*',
+        'populate[user]': '*',
+        sort: 'createdAt:desc'
+      }
+    })
+
+    if (data) {
+      const list = data.data || []
+
+      if (isLoadMore) commit('PUSH_USER_ROOM_SCORES', list)
+      else commit('SET_USER_ROOM_SCORES', list)
+
+      if (data.meta?.pagination) commit('SET_USER_ROOM_SCORES_PAGINATION', data.meta.pagination)
+    }
+
+    return { data, error }
+  },
+
   async fetchReviewsByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
     const { data, error } = await this.$appFetch({
       path: 'room-reviews',

@@ -1,0 +1,58 @@
+.profile-scores-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px var(--base-p-x) 32px;
+
+  &__widget {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &-title {
+      color: var(--color-text-01);
+      font-weight: 700;
+      font-size: 14px;
+    }
+  }
+
+  &__state {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: var(--color-surface-02);
+    border-radius: 12px;
+
+    &-title {
+      color: var(--color-text-01);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    &-meta {
+      display: flex;
+      align-items: center;
+      color: var(--color-text-03);
+      font-size: 12px;
+    }
+  }
+
+  &__more {
+    display: block;
+    margin: 8px auto 0;
+  }
+}
