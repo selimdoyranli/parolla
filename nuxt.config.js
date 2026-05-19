@@ -321,10 +321,6 @@ module.exports = {
             tr: '/hesap/duzenle',
             en: '/account/edit'
           },
-          'Profile/_username': {
-            tr: '/profil/:username',
-            en: '/profile/:username'
-          },
           'Profile/_username/index': {
             tr: '/profil/:username',
             en: '/profile/:username'
