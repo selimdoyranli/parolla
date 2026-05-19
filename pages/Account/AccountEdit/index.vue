@@ -26,7 +26,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
 
-    const me = computed(() => store.$auth?.user || null)
+    const me = computed(() => store.getters['auth/user'])
 
     const { fetch, fetchState } = useFetch(async () => {
       if (me.value?.username) {
