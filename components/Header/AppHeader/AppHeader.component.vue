@@ -223,6 +223,10 @@ export default defineComponent({
           router.replace(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))) {
           router.replace(localePath({ name: 'MusicMode-GuessTheSong' }))
+        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' }))) {
+          router.replace(localePath({ name: 'Main' }))
+        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' }))) {
+          router.replace(localePath({ name: 'Main' }))
         } else {
           router.replace(localePath({ name: 'Main' }))
         }
@@ -297,7 +301,9 @@ export default defineComponent({
         route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' })) ||
         route.value.path === localePath({ name: 'MusicMode-GuessTheSong' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
-        route.value.path === localePath({ name: 'Tycoon-KnowledgeKingdom' })
+        route.value.path === localePath({ name: 'Tycoon-KnowledgeKingdom' }) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' }))
       ) {
         return true
       }

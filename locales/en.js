@@ -1027,6 +1027,15 @@ export default {
       reviews: 'Reviews',
       scores: 'Scores'
     },
+    stats: {
+      created: 'Created',
+      played: 'Played',
+      reviews: 'Reviews'
+    },
+    scoresSubTabs: {
+      creator: 'Creator',
+      tour: 'Tour Mode'
+    },
     editButton: 'Edit profile',
     notFound: {
       title: 'User not found',

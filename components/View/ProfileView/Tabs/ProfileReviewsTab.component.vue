@@ -14,41 +14,39 @@
   template(v-else)
     .profile-reviews-tab__list
       .profile-reviews-tab__item(v-for="review in reviews" :key="review.id")
-        .profile-reviews-tab__head
-          .profile-reviews-tab__rating
-            template(v-for="n in 5")
-              AppIcon(
-                :key="n"
-                color="var(--color-warning-01)"
-                :name="n <= (review.rating || 0) ? 'tabler:star-filled' : 'tabler:star'"
-                :width="14"
-                :height="14"
-              )
-          Timeago.profile-reviews-tab__date(:datetime="review.createdAt" :auto-update="60" :locale="$i18n.locale")
-
-        p.profile-reviews-tab__text(v-if="review.content") {{ review.content }}
-
-        NuxtLink.profile-reviews-tab__room(
+        NuxtLink.profile-reviews-tab__item-link(
           v-if="review.room"
           :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: review.room.roomId } })"
         )
-          AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
-          span.profile-reviews-tab__room-title {{ review.room.title }}
+          .profile-reviews-tab__head
+            .profile-reviews-tab__rating
+              template(v-for="n in 5")
+                AppIcon(
+                  :key="n"
+                  color="var(--color-warning-01)"
+                  :name="n <= (review.rating || 0) ? 'tabler:star-filled' : 'tabler:star'"
+                  :width="14"
+                  :height="14"
+                )
+            Timeago.profile-reviews-tab__date(:datetime="review.createdAt" :auto-update="60" :locale="$i18n.locale")
 
-    Button.profile-reviews-tab__more(
-      v-if="pagination.page < pagination.pageCount"
-      plain
-      round
-      size="small"
-      :loading="loadingMore"
-      @click="loadMore"
-    ) {{ $t('general.loadMore') }}
+          p.profile-reviews-tab__text(v-if="review.content") {{ review.content }}
+
+          .profile-reviews-tab__room-row
+            AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
+            span.profile-reviews-tab__room-title {{ review.room.title }}
+
+    InfiniteLoading(v-if="reviews.length >= PAGE_SIZE && pagination.page < pagination.pageCount" @infinite="handleInfinite")
+      template(#spinner)
+        Loading(color="var(--color-brand-02)" size="20")
+      template(#no-more) {{ '' }}
+      template(#no-results) {{ '' }}
 </template>
 
 <script>
-import { defineComponent, inject, ref, computed, watch } from '@nuxtjs/composition-api'
-import { useStore, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, inject, ref, computed, watch, useStore, useContext } from '@nuxtjs/composition-api'
 import { Loading, Empty, Button } from 'vant'
+import InfiniteLoading from 'vue-infinite-loading'
 
 const PAGE_SIZE = 10
 
@@ -56,7 +54,8 @@ export default defineComponent({
   components: {
     Loading,
     Empty,
-    Button
+    Button,
+    InfiniteLoading
   },
   setup() {
     const shell = inject('profileShell')
@@ -66,16 +65,14 @@ export default defineComponent({
     const reviews = ref([])
     const pagination = ref({ page: 1, pageCount: 1, pageSize: PAGE_SIZE, total: 0 })
     const loading = ref(false)
-    const loadingMore = ref(false)
     const error = ref(null)
 
     const playerId = computed(() => shell?.player?.value?.id || null)
 
     const load = async (page = 1, isLoadMore = false) => {
-      if (!playerId.value) return
+      if (!playerId.value) return null
 
-      if (isLoadMore) loadingMore.value = true
-      else loading.value = true
+      if (!isLoadMore) loading.value = true
       error.value = null
 
       const { data, error: err } = await store.dispatch('creator/fetchReviewsByUser', {
@@ -93,7 +90,8 @@ export default defineComponent({
       }
 
       loading.value = false
-      loadingMore.value = false
+
+      return { data, error: err }
     }
 
     watch(
@@ -104,17 +102,32 @@ export default defineComponent({
       { immediate: true }
     )
 
-    const loadMore = () => load(pagination.value.page + 1, true)
     const reload = () => load(1, false)
 
+    const handleInfinite = async $state => {
+      const result = await load(pagination.value.page + 1, true)
+
+      if (result?.error) {
+        $state.error()
+
+        return
+      }
+
+      $state.loaded()
+
+      if (pagination.value.page >= pagination.value.pageCount) {
+        $state.complete()
+      }
+    }
+
     return {
+      PAGE_SIZE,
       reviews,
       pagination,
       loading,
-      loadingMore,
       error,
-      loadMore,
       reload,
+      handleInfinite,
       localePath
     }
   }

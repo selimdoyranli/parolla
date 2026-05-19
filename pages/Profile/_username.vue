@@ -6,7 +6,13 @@
         Button(@click="goHome") {{ $t('profile.notFound.action') }}
 
   template(v-else)
-    ProfileView(:player="player" :player-loading="playerLoading" :player-error="!!playerError" @player-error-click="refetch")
+    ProfileView(
+      :player="player"
+      :player-loading="playerLoading"
+      :player-error="!!playerError"
+      :player-stats="playerStats"
+      @player-error-click="refetch"
+    )
 
     ProfileTabBar(:username="username")
 
@@ -42,7 +48,7 @@ export default defineComponent({
       tourScoreLoading.value = true
       tourScoreError.value = null
 
-      const [{ error: pErr }, { error: tErr }] = await Promise.all([
+      const [{ data: playerData, error: pErr }, { error: tErr }] = await Promise.all([
         store.dispatch('profile/fetchPlayer', { username: username.value }),
         store.dispatch('tour/fetchTourScoreOfUser', { username: username.value })
       ])
@@ -53,9 +59,14 @@ export default defineComponent({
 
       playerLoading.value = false
       tourScoreLoading.value = false
+
+      if (playerData?.id) {
+        store.dispatch('profile/fetchPlayerStats', { userId: playerData.id })
+      }
     })
 
     const player = computed(() => store.getters['profile/player'])
+    const playerStats = computed(() => store.getters['profile/playerStats'])
     const tourScore = computed(() => store.getters['tour/tourScoreOfUser'])
 
     const refetch = () => fetch()
@@ -78,6 +89,7 @@ export default defineComponent({
     return {
       username,
       player,
+      playerStats,
       playerLoading,
       playerError,
       fetchState,

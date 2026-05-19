@@ -85,6 +85,29 @@
     }
   }
 
+  &-stats {
+    display: flex;
+    gap: 24px;
+    padding: 0 var(--base-p-x) 16px;
+
+    &__item {
+      display: inline-flex;
+      gap: 6px;
+      align-items: baseline;
+    }
+
+    &__value {
+      color: var(--color-text-01);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    &__label {
+      color: var(--color-text-03);
+      font-size: 14px;
+    }
+  }
+
   &-loading {
     display: flex;
     justify-content: center;

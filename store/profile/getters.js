@@ -8,6 +8,9 @@ export default {
   player(state) {
     return state.player
   },
+  playerStats(state) {
+    return state.playerStats
+  },
   isOpenPlayerDialog(state) {
     return state.dialog.player.isOpen
   },

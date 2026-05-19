@@ -1,25 +1,18 @@
 .profile-scores-tab {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   padding: 8px var(--base-p-x) 32px;
 
-  &__widget {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  &__subtabs {
+    background: transparent;
+  }
 
-    &-title {
-      color: var(--color-text-01);
-      font-weight: 700;
-      font-size: 14px;
-    }
+  &__panel {
+    padding-top: 12px;
   }
 
   &__state {
     display: flex;
     justify-content: center;
-    padding: 24px 0;
+    padding: 32px 0;
   }
 
   &__list {
@@ -29,30 +22,65 @@
   }
 
   &__item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
     background: var(--color-surface-02);
+    border: 1px solid var(--color-border-01);
     border-radius: 12px;
+    transition: border-color 0.18s ease, background 0.18s ease;
+
+    &:hover {
+      background: var(--color-surface-03);
+      border-color: var(--color-border-02, var(--color-border-01));
+    }
+
+    &-link {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    &-head {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+    }
 
     &-title {
       color: var(--color-text-01);
       font-weight: 600;
+      font-size: 15px;
+    }
+
+    &-score {
+      color: var(--color-brand-02);
+      font-weight: 700;
       font-size: 14px;
-      text-decoration: none;
+      white-space: nowrap;
     }
 
     &-meta {
       display: flex;
+      gap: 4px;
       align-items: center;
       color: var(--color-text-03);
       font-size: 12px;
     }
+
+    &-dot {
+      margin: 0 4px;
+    }
   }
 
-  &__more {
-    display: block;
-    margin: 8px auto 0;
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__wrap {
+    background: transparent;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__line {
+    border-radius: 2px;
   }
 }

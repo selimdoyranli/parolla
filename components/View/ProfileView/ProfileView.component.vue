@@ -40,6 +40,17 @@
         AppIcon.profile-view-identity__meta-icon(name="tabler:clock" color="var(--color-text-03)" :width="14" :height="14")
         Timeago.profile-view-identity__meta-value(:datetime="player.createdAt" :auto-update="60" :locale="$i18n.locale")
         label.profile-view-identity__meta-label &nbsp;{{ $t('general.joined').toLowerCase() }}
+
+    .profile-view-stats
+      .profile-view-stats__item
+        strong.profile-view-stats__value {{ formatNumber(playerStats.rooms) }}
+        span.profile-view-stats__label {{ $t('profile.stats.created') }}
+      .profile-view-stats__item
+        strong.profile-view-stats__value {{ formatNumber(playerStats.scores) }}
+        span.profile-view-stats__label {{ $t('profile.stats.played') }}
+      .profile-view-stats__item
+        strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
+        span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
 </template>
 
 <script>
@@ -69,6 +80,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    playerStats: {
+      type: Object,
+      required: false,
+      default: () => ({ rooms: 0, scores: 0, reviews: 0 })
     }
   },
   setup(props) {
@@ -99,13 +115,22 @@ export default defineComponent({
       router.push(localePath({ name: 'Account-AccountEdit' }))
     }
 
+    const formatNumber = n => {
+      const value = Number(n) || 0
+
+      if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}k`
+
+      return String(value)
+    }
+
     return {
       isOpenReportDialog,
       reportTypeEnum,
       reportAdditional,
       isSelf,
       bannerStyle,
-      goToEdit
+      goToEdit,
+      formatNumber
     }
   }
 })

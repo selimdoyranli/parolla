@@ -1051,6 +1051,15 @@ export default {
       reviews: 'Değerlendirmeler',
       scores: 'Skorlar'
     },
+    stats: {
+      created: 'Oluşturulan',
+      played: 'Oynanan',
+      reviews: 'Değerlendirme'
+    },
+    scoresSubTabs: {
+      creator: 'Yaratıcı',
+      tour: 'Tur Modu'
+    },
     editButton: 'Profili düzenle',
     notFound: {
       title: 'Bu kullanıcı bulunamadı',
