@@ -1,0 +1,68 @@
+.profile-reviews-tab {
+  padding: 8px var(--base-p-x) 32px;
+
+  &__state {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__item {
+    padding: 12px;
+    background: var(--color-surface-02);
+    border-radius: 12px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__rating {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  &__date {
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__text {
+    margin: 8px 0 0;
+    color: var(--color-text-01);
+    font-size: 14px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+
+  &__room {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 10px;
+    padding: 6px 10px;
+    color: var(--color-text-02);
+    font-size: 12px;
+    text-decoration: none;
+    background: var(--color-surface-03);
+    border-radius: 999px;
+
+    &-title {
+      color: var(--color-text-01);
+      font-weight: 500;
+    }
+  }
+
+  &__more {
+    display: block;
+    margin: 16px auto 0;
+  }
+}

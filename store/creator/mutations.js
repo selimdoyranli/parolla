@@ -123,5 +123,17 @@ export default {
 
   SET_DAILY_PLAYING_COUNT(state, count) {
     state.dailyPlayingCount = count
+  },
+
+  SET_USER_REVIEWS(state, list) {
+    state.userReviews.list = list
+  },
+
+  PUSH_USER_REVIEWS(state, list) {
+    state.userReviews.list = [...state.userReviews.list, ...list]
+  },
+
+  SET_USER_REVIEWS_PAGINATION(state, pagination) {
+    state.userReviews.pagination = pagination
   }
 }

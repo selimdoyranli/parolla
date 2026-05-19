@@ -1,9 +1,12 @@
 <template lang="pug">
-.profile-tab-stub Reviews tab stub
+ProfileReviewsTab
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
+import ProfileReviewsTab from '@/components/View/ProfileView/Tabs/ProfileReviewsTab.component.vue'
 
-export default defineComponent({})
+export default defineComponent({
+  components: { ProfileReviewsTab }
+})
 </script>

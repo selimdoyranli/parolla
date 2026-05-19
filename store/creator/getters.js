@@ -69,5 +69,13 @@ export default {
 
   dailyPlayingCount(state) {
     return state.dailyPlayingCount
+  },
+
+  userReviews(state) {
+    return state.userReviews.list
+  },
+
+  userReviewsPagination(state) {
+    return state.userReviews.pagination
   }
 }
