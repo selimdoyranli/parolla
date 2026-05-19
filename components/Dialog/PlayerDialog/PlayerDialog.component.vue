@@ -10,7 +10,7 @@ Dialog.dialog.player-dialog(
   @closed="onClosed"
   @opened="$emit('opened')"
 )
-  ProfileView(
+  PlayerProfileCard(
     v-if="player && Object.keys(player).length > 0"
     :player-loading="playerLoading"
     :player-error="playerError"
