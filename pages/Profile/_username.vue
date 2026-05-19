@@ -1,19 +1,91 @@
 <template lang="pug">
 .page.profile-page
-  .profile-page__stub Profile shell stub — {{ username }}
-  nuxt-child
+  template(v-if="!playerLoading && playerError")
+    .profile-page__not-found
+      Empty(:description="$t('profile.notFound.title')")
+        Button(@click="goHome") {{ $t('profile.notFound.action') }}
+
+  template(v-else)
+    ProfileView(:player="player" :player-loading="playerLoading" :player-error="!!playerError" @player-error-click="refetch")
+
+    ProfileTabBar(:username="username")
+
+    nuxt-child(:key="$route.fullPath")
 </template>
 
 <script>
-import { defineComponent, useRoute, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useStore, useFetch, useRouter, useContext, computed, ref, provide } from '@nuxtjs/composition-api'
+import { Empty, Button } from 'vant'
 
 export default defineComponent({
+  components: {
+    Empty,
+    Button
+  },
   layout: 'Default/Default.layout',
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const store = useStore()
+    const { localePath } = useContext()
+
     const username = computed(() => route.value.params.username)
 
-    return { username }
+    const playerLoading = ref(false)
+    const playerError = ref(null)
+    const tourScoreLoading = ref(false)
+    const tourScoreError = ref(null)
+
+    const { fetch, fetchState } = useFetch(async () => {
+      playerLoading.value = true
+      playerError.value = null
+      tourScoreLoading.value = true
+      tourScoreError.value = null
+
+      const [{ error: pErr }, { error: tErr }] = await Promise.all([
+        store.dispatch('profile/fetchPlayer', { username: username.value }),
+        store.dispatch('tour/fetchTourScoreOfUser', { username: username.value })
+      ])
+
+      if (pErr) playerError.value = pErr
+
+      if (tErr) tourScoreError.value = tErr
+
+      playerLoading.value = false
+      tourScoreLoading.value = false
+    })
+
+    const player = computed(() => store.getters['profile/player'])
+    const tourScore = computed(() => store.getters['tour/tourScoreOfUser'])
+
+    const refetch = () => fetch()
+
+    const goHome = () => {
+      router.push(localePath({ name: 'Main' }))
+    }
+
+    provide('profileShell', {
+      username,
+      player,
+      playerLoading,
+      playerError,
+      tourScore,
+      tourScoreLoading,
+      tourScoreError,
+      refetch
+    })
+
+    return {
+      username,
+      player,
+      playerLoading,
+      playerError,
+      fetchState,
+      refetch,
+      goHome
+    }
   }
 })
 </script>
+
+<style lang="scss" src="./_username.page.scss"></style>
