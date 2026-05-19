@@ -1,64 +1,61 @@
 <template lang="pug">
-.page.profile-view
-  Button.profile-view-report-btn(v-if="player" type="default" auth-control round size="small" @click="isOpenReportDialog = true")
-    AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="18" :height="18")
+.profile-view
+  template(v-if="playerLoading")
+    .profile-view-skeleton
+      .profile-view-skeleton__banner
+      .profile-view-skeleton__avatar
+      Skeleton(row-width="60%" :row="3")
 
-  MountingPortal(mount-to="body" append)
-    ReportDialog(
-      :is-open="isOpenReportDialog"
-      :scope="reportTypeEnum.PROFILE"
-      :additional="reportAdditional"
-      @closed="isOpenReportDialog = false"
-    )
-
-  .profile-view-player
-    template(v-if="playerLoading")
-      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
-
-    template(v-else-if="playerError")
+  template(v-else-if="playerError || !player")
+    .profile-view-error
       Empty(image="error" :description="$t('dialog.player.callback.error.title')")
         Button(@click="$emit('player-error-click')") {{ $t('dialog.player.callback.error.action') }}
 
-    template(v-else)
-      PlayerAvatar.profile-view__avatar(with-username :user="player")
+  template(v-else)
+    .profile-view-banner(:style="bannerStyle")
 
-      .profile-view-created-at
-        AppIcon.profile-view-created-at__icon(name="tabler:clock" color="var(--color-text-03)" :width="16" :height="16")
-        Timeago.profile-view-created-at__value(:datetime="player.createdAt" :auto-update="60" :locale="$i18n.locale")
-        label.profile-view-created-at__label &nbsp;{{ $t('general.joined').toLowerCase() }}
+    MountingPortal(mount-to="body" append)
+      ReportDialog(
+        :is-open="isOpenReportDialog"
+        :scope="reportTypeEnum.PROFILE"
+        :additional="reportAdditional"
+        @closed="isOpenReportDialog = false"
+      )
 
-      .profile-view-info
-        span.profile-view-info__title {{ $t('dialog.player.myBio') }}
-        .profile-view-info__separator
-        span(v-if="!player.fullname && !player.bio") -
-        span.profile-view-info__fullname(v-if="player.fullname") {{ player.fullname }}
-        p.profile-view-info__bio(v-if="player.bio") {{ player.bio }}
+    .profile-view-header
+      .profile-view-header__avatar-wrap
+        PlayerAvatar.profile-view-header__avatar(:user="player" :size="96")
 
-  .profile-view-tour-score
-    template(v-if="tourScoreLoading")
-      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.tourScore.loading') }}
+      .profile-view-header__action
+        Button.profile-view-header__edit-btn(v-if="isSelf" plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
-    template(v-else-if="tourScoreError")
-      Empty(image="error" :description="$t('dialog.player.tourScore.callback.error.title')")
-        Button(@click="$emit('tour-score-error-click')") {{ $t('dialog.player.tourScore.callback.error.action') }}
+        Button.profile-view-header__report-btn(v-else type="default" auth-control round size="small" @click="isOpenReportDialog = true")
+          AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="18" :height="18")
 
-    template(v-else)
-      strong.profile-view-tour-score__title {{ $t('dialog.player.tourScore.title') }}
-      PlayerTourScoreTable.profile-view-tour-score__table(:tourScore="tourScore")
+    .profile-view-identity
+      h1.profile-view-identity__name {{ player.fullname || player.username }}
+      span.profile-view-identity__handle @{{ player.username }}
+
+      p.profile-view-identity__bio(v-if="player.bio") {{ player.bio }}
+
+      .profile-view-identity__meta
+        AppIcon.profile-view-identity__meta-icon(name="tabler:clock" color="var(--color-text-03)" :width="14" :height="14")
+        Timeago.profile-view-identity__meta-value(:datetime="player.createdAt" :auto-update="60" :locale="$i18n.locale")
+        label.profile-view-identity__meta-label &nbsp;{{ $t('general.joined').toLowerCase() }}
 </template>
 
 <script>
-import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
-import { Loading, Empty, Button } from 'vant'
+import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import { Empty, Button, Skeleton } from 'vant'
+import { buildBannerStyle } from '@/functions/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
 export default defineComponent({
   components: {
-    Loading,
     Empty,
-    Button
+    Button,
+    Skeleton
   },
-  layout: 'Default/Default.layout',
   props: {
     player: {
       type: Object,
@@ -74,25 +71,18 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
-    },
-    tourScore: {
-      type: Object,
-      required: false,
-      default: null
-    },
-    tourScoreLoading: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    tourScoreError: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   setup(props) {
+    const store = useStore()
+    const { localePath } = useContext()
+    const router = useRouter()
     const isOpenReportDialog = ref(false)
+
+    const me = computed(() => store.getters['auth/user'])
+    const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
+
+    const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
 
     const reportAdditional = computed(() => {
       if (!props.player) return null
@@ -107,10 +97,17 @@ export default defineComponent({
       })
     })
 
+    const goToEdit = () => {
+      router.push(localePath({ name: 'Account-AccountEdit' }))
+    }
+
     return {
-      reportTypeEnum,
       isOpenReportDialog,
-      reportAdditional
+      reportTypeEnum,
+      reportAdditional,
+      isSelf,
+      bannerStyle,
+      goToEdit
     }
   }
 })
