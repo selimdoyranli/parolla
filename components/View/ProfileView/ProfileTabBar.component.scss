@@ -5,28 +5,47 @@
   background: var(--color-surface-01);
   border-bottom: 1px solid var(--color-border-01);
 
-  &__tabs {
-    background: transparent;
+  &__list {
+    display: flex;
+    align-items: stretch;
+    padding: 0 var(--base-p-x);
   }
 
-  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-  ::v-deep .van-tabs__wrap {
-    background: transparent;
-  }
-
-  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-  ::v-deep .van-tabs__line {
-    border-radius: 2px;
-  }
-
-  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-  ::v-deep .van-tab {
-    padding: 0 16px;
+  &__tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    padding: 14px 16px;
+    color: var(--color-text-03);
     font-weight: 600;
     font-size: 14px;
+    text-decoration: none;
+    transition: color 0.18s ease;
+
+    &-label {
+      pointer-events: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-01);
+    }
 
     &--active {
       color: var(--color-text-01);
+
+      &::after {
+        position: absolute;
+        right: 16px;
+        bottom: 0;
+        left: 16px;
+        height: 3px;
+        background: var(--color-brand-02);
+        border-radius: 2px;
+        content: '';
+      }
     }
   }
 }

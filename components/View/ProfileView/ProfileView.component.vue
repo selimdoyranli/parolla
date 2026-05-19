@@ -1,10 +1,8 @@
 <template lang="pug">
 .profile-view
   template(v-if="playerLoading")
-    .profile-view-skeleton
-      .profile-view-skeleton__banner
-      .profile-view-skeleton__avatar
-      Skeleton(row-width="60%" :row="3")
+    .profile-view-loading
+      Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
 
   template(v-else-if="playerError || !player")
     .profile-view-error
@@ -46,7 +44,7 @@
 
 <script>
 import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
-import { Empty, Button, Skeleton } from 'vant'
+import { Empty, Button, Loading } from 'vant'
 import { buildBannerStyle } from '@/functions/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
@@ -54,7 +52,7 @@ export default defineComponent({
   components: {
     Empty,
     Button,
-    Skeleton
+    Loading
   },
   props: {
     player: {
