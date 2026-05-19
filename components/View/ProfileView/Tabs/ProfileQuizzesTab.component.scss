@@ -1,0 +1,23 @@
+.profile-quizzes-tab {
+  padding: 8px var(--base-p-x) 32px;
+
+  &__state {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+  }
+
+  &__cell {
+    background: transparent;
+
+    &-label {
+      color: var(--color-text-03);
+      font-size: 12px;
+    }
+  }
+
+  &__more {
+    display: block;
+    margin: 16px auto 0;
+  }
+}

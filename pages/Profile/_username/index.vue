@@ -1,9 +1,12 @@
 <template lang="pug">
-.profile-tab-stub Quizzes (default) tab stub
+ProfileQuizzesTab
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
+import ProfileQuizzesTab from '@/components/View/ProfileView/Tabs/ProfileQuizzesTab.component.vue'
 
-export default defineComponent({})
+export default defineComponent({
+  components: { ProfileQuizzesTab }
+})
 </script>
