@@ -26,7 +26,7 @@
               )
           Timeago.profile-reviews-tab__date(:datetime="review.attributes.createdAt" :auto-update="60" :locale="$i18n.locale")
 
-        p.profile-reviews-tab__text(v-if="review.attributes.text") {{ review.attributes.text }}
+        p.profile-reviews-tab__text(v-if="review.attributes.content") {{ review.attributes.content }}
 
         NuxtLink.profile-reviews-tab__room(
           v-if="review.attributes.room && review.attributes.room.data"
