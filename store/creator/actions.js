@@ -390,8 +390,7 @@ export default {
         'filters[user][id][$eq]': userId,
         'pagination[page]': page,
         'pagination[pageSize]': limit,
-        'populate[room]': '*',
-        'populate[user]': '*',
+        populate: 'room',
         sort: 'createdAt:desc'
       }
     })
@@ -415,8 +414,7 @@ export default {
         'filters[user][id][$eq]': userId,
         'pagination[page]': page,
         'pagination[pageSize]': limit,
-        'populate[room]': '*',
-        'populate[user]': '*',
+        populate: 'room',
         sort: 'createdAt:desc'
       }
     })
