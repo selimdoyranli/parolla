@@ -1079,7 +1079,7 @@ export default {
         title: 'Oynanan quiz skorları',
         empty: 'Henüz hiç quiz oynamamış.',
         error: 'Skorlar yüklenemedi.',
-        statsLine: '{correct} doğru · {wrong} yanlış · {score} puan'
+        statsLine: '{correct} doğru · {wrong} yanlış · {passed} pas'
       }
     }
   },

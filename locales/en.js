@@ -1055,7 +1055,7 @@ export default {
         title: 'Played quiz scores',
         empty: 'No quizzes played yet.',
         error: 'Could not load scores.',
-        statsLine: '{correct} correct · {wrong} wrong · {score} points'
+        statsLine: '{correct} correct · {wrong} wrong · {passed} passed'
       }
     }
   },

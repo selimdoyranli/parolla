@@ -32,7 +32,6 @@
               )
                 .profile-scores-tab__item-head
                   span.profile-scores-tab__item-title {{ score.room.title }}
-                  span.profile-scores-tab__item-score {{ compositeOf(score) }}
 
                 .profile-scores-tab__item-meta
                   Timeago(:datetime="score.createdAt" :auto-update="60" :locale="$i18n.locale")
@@ -145,21 +144,13 @@ export default defineComponent({
       }
     }
 
-    const compositeOf = score => {
+    const statsLine = score => {
       const results = score.results || {}
       const correct = Array.isArray(results.correctAnswers) ? results.correctAnswers.length : 0
       const wrong = Array.isArray(results.wrongAnswers) ? results.wrongAnswers.length : 0
       const passed = Array.isArray(results.passedAnswers) ? results.passedAnswers.length : 0
 
-      return correct * 10 - wrong * 2 - passed * 1
-    }
-
-    const statsLine = score => {
-      const results = score.results || {}
-      const correct = Array.isArray(results.correctAnswers) ? results.correctAnswers.length : 0
-      const wrong = Array.isArray(results.wrongAnswers) ? results.wrongAnswers.length : 0
-
-      return i18n.t('profile.scoresTab.room.statsLine', { correct, wrong, score: compositeOf(score) })
+      return i18n.t('profile.scoresTab.room.statsLine', { correct, wrong, passed })
     }
 
     return {
@@ -176,7 +167,6 @@ export default defineComponent({
       reload,
       handleInfinite,
       localePath,
-      compositeOf,
       statsLine
     }
   }
