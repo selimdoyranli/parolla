@@ -1,5 +1,64 @@
 # Changelog
 
+## v2.44.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.43.2...v2.44.0)
+
+
+### 🚀 Enhancements
+
+  - **profile:** Scaffold /profil/<username> route + nested tab stubs ([6f942db](https://github.com/selimdoyranli/parolla/commit/6f942db))
+  - **i18n:** Add profile tab labels, edit button, empty/error states ([633bae0](https://github.com/selimdoyranli/parolla/commit/633bae0))
+  - **profile:** Add deterministic banner gradient helper from DiceBear config ([bfdde27](https://github.com/selimdoyranli/parolla/commit/bfdde27))
+  - **profile:** Rewrite ProfileView as X-style header shell ([e77051d](https://github.com/selimdoyranli/parolla/commit/e77051d))
+  - **profile:** Add ProfileTabBar with URL-bound active tab ([5a97500](https://github.com/selimdoyranli/parolla/commit/5a97500))
+  - **profile:** Wire parent shell with header + tab bar + nuxt-child ([2f2e7d9](https://github.com/selimdoyranli/parolla/commit/2f2e7d9))
+  - **profile:** Quizler tab — list user's created rooms with load-more ([e737f3c](https://github.com/selimdoyranli/parolla/commit/e737f3c))
+  - **profile:** Reviews tab — Replies-style list with rating + room link ([4da8c59](https://github.com/selimdoyranli/parolla/commit/4da8c59))
+  - **profile:** Scores tab — tour widget + recently played quizzes ([3fae66a](https://github.com/selimdoyranli/parolla/commit/3fae66a))
+  - **profile:** Stats row, sub-tabs in scores, infinite loading + richer cards ([6ece997](https://github.com/selimdoyranli/parolla/commit/6ece997))
+  - **profile:** Show remaining time on score items ([1a74612](https://github.com/selimdoyranli/parolla/commit/1a74612))
+  - **profile:** Mirror full profile UI inside PlayerDialog ([6a3d542](https://github.com/selimdoyranli/parolla/commit/6a3d542))
+  - **profile:** Banner action dropdown + tighter banner + dialog content bg ([be6a46e](https://github.com/selimdoyranli/parolla/commit/be6a46e))
+  - **rooms:** Make RoomList player avatars open PlayerDialog on click ([9d8c950](https://github.com/selimdoyranli/parolla/commit/9d8c950))
+  - **rooms:** Make full avatar+username area open PlayerDialog, hover-underline ([4e9e3fd](https://github.com/selimdoyranli/parolla/commit/4e9e3fd))
+
+### 🩹 Fixes
+
+  - **profile:** Remove duplicate _username shell i18n mapping ([aca46f5](https://github.com/selimdoyranli/parolla/commit/aca46f5))
+  - **profile:** Use room-review content field instead of nonexistent text ([b402a52](https://github.com/selimdoyranli/parolla/commit/b402a52))
+  - **profile:** Compute room-score stats from results arrays ([a9dec91](https://github.com/selimdoyranli/parolla/commit/a9dec91))
+  - **profile:** Use Strapi 5 flat shape in reviews and scores tabs ([7c90162](https://github.com/selimdoyranli/parolla/commit/7c90162))
+  - **profile:** Simplify populate to avoid Strapi 5 sanitize error ([5126f79](https://github.com/selimdoyranli/parolla/commit/5126f79))
+  - **profile:** Swap skeleton for Loading spinner, rewrite tab bar as NuxtLink ([aa19124](https://github.com/selimdoyranli/parolla/commit/aa19124))
+  - **profile:** Show correct/wrong/passed counts in score items, drop composite ([8083329](https://github.com/selimdoyranli/parolla/commit/8083329))
+  - **profile:** Hide tab bar and tab content until player load completes ([2e4d016](https://github.com/selimdoyranli/parolla/commit/2e4d016))
+  - **profile:** Reset button defaults on ProfileTabBar local-mode tabs ([6853054](https://github.com/selimdoyranli/parolla/commit/6853054))
+  - **style:** Replace nonexistent --color-surface-* with --color-ui-* tokens ([fed0def](https://github.com/selimdoyranli/parolla/commit/fed0def))
+  - **profile:** Open banner action dropdown to the right ([9aa4a12](https://github.com/selimdoyranli/parolla/commit/9aa4a12))
+  - **profile:** Avoid RangeError when navigating from PlayerDialog to /profil ([d0e893b](https://github.com/selimdoyranli/parolla/commit/d0e893b))
+  - **profile:** Isolate profile quizzes list from /quizler directory store ([9c4d938](https://github.com/selimdoyranli/parolla/commit/9c4d938))
+
+### 💅 Refactors
+
+  - **profile:** Move ProfileEdit to /hesap/duzenle under Account scope ([1e67c58](https://github.com/selimdoyranli/parolla/commit/1e67c58))
+  - **profile:** Use auth/user getter for current user in AccountEdit ([81b202e](https://github.com/selimdoyranli/parolla/commit/81b202e))
+  - **profile:** Extract PlayerProfileCard for PlayerDialog peek ([9c52385](https://github.com/selimdoyranli/parolla/commit/9c52385))
+  - **profile:** Use RoomList for quizzes tab ([0d2b1c0](https://github.com/selimdoyranli/parolla/commit/0d2b1c0))
+
+### 📖 Documentation
+
+  - **profile:** Add X-style profile redesign + URL-bound tabs design spec ([44825bb](https://github.com/selimdoyranli/parolla/commit/44825bb))
+  - **profile:** Add X-style profile redesign implementation plan ([f6f2be2](https://github.com/selimdoyranli/parolla/commit/f6f2be2))
+
+### 🎨 Styles
+
+  - **profile:** Remove horizontal padding from tab bar list ([bb311ec](https://github.com/selimdoyranli/parolla/commit/bb311ec))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.43.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.43.1...v2.43.2)
