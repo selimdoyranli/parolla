@@ -37,6 +37,10 @@
                   Timeago(:datetime="score.createdAt" :auto-update="60" :locale="$i18n.locale")
                   span.profile-scores-tab__item-dot ·
                   span {{ statsLine(score) }}
+                  template(v-if="remainTimeOf(score)")
+                    span.profile-scores-tab__item-dot ·
+                    AppIcon.profile-scores-tab__item-clock(name="tabler:clock" color="var(--color-text-03)" :width="12" :height="12")
+                    span {{ remainTimeOf(score) }}
 
           InfiniteLoading(v-if="roomScores.length >= PAGE_SIZE && pagination.page < pagination.pageCount" @infinite="handleInfinite")
             template(#spinner)
@@ -153,6 +157,16 @@ export default defineComponent({
       return i18n.t('profile.scoresTab.room.statsLine', { correct, wrong, passed })
     }
 
+    const remainTimeOf = score => {
+      const rt = score.results?.remainTime
+
+      if (!rt || (rt.minutes == null && rt.seconds == null)) return ''
+
+      const pad = n => String(Number(n) || 0).padStart(2, '0')
+
+      return `${pad(rt.minutes)}:${pad(rt.seconds)}`
+    }
+
     return {
       PAGE_SIZE,
       activeSubTab,
@@ -167,7 +181,8 @@ export default defineComponent({
       reload,
       handleInfinite,
       localePath,
-      statsLine
+      statsLine,
+      remainTimeOf
     }
   }
 })
