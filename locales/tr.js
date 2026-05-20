@@ -1060,6 +1060,10 @@ export default {
       creator: 'Yaratıcı',
       tour: 'Tur Modu'
     },
+    actions: {
+      goToProfile: 'Profil sayfasına git',
+      report: 'Raporla'
+    },
     editButton: 'Profili düzenle',
     notFound: {
       title: 'Bu kullanıcı bulunamadı',

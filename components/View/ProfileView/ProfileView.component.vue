@@ -11,6 +11,25 @@
 
   template(v-else)
     .profile-view-banner(:style="bannerStyle")
+      .profile-view-banner__actions(v-if="!isSelf")
+        DropdownMenu.profile-view-actions(
+          withDropdownCloser
+          direction="left"
+          :overlay="false"
+          :is-open="isActionsOpen"
+          @closed="isActionsOpen = false"
+        )
+          template(#trigger)
+            button.profile-view-banner__more-btn(type="button" aria-label="actions" @click="isActionsOpen = true")
+              AppIcon(name="ion:md-more" color="var(--color-text-04)" :width="20" :height="20")
+          template(#body)
+            nav.profile-view-actions__nav
+              .profile-view-actions__item(dropdown-closer @click="handleGoToProfile")
+                AppIcon.profile-view-actions__item-icon(name="tabler:user-circle" :width="18" :height="18")
+                span.profile-view-actions__item-title {{ $t('profile.actions.goToProfile') }}
+              .profile-view-actions__item(dropdown-closer @click="handleReport")
+                AppIcon.profile-view-actions__item-icon(name="tabler:flag" :width="18" :height="18")
+                span.profile-view-actions__item-title {{ $t('profile.actions.report') }}
 
     MountingPortal(mount-to="body" append)
       ReportDialog(
@@ -24,11 +43,8 @@
       .profile-view-header__avatar-wrap
         PlayerAvatar.profile-view-header__avatar(:user="player" :size="96")
 
-      .profile-view-header__action
-        Button.profile-view-header__edit-btn(v-if="isSelf" plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
-
-        Button.profile-view-header__report-btn(v-else type="default" auth-control round size="small" @click="isOpenReportDialog = true")
-          AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="18" :height="18")
+      .profile-view-header__action(v-if="isSelf")
+        Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
       h1.profile-view-identity__name {{ player.fullname || player.username }}
@@ -56,6 +72,8 @@
 <script>
 import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
 import { Empty, Button, Loading } from 'vant'
+import DropdownMenu from 'v-dropdown-menu'
+import 'v-dropdown-menu/dist/v-dropdown-menu.css'
 import { buildBannerStyle } from '@/functions/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
@@ -63,7 +81,8 @@ export default defineComponent({
   components: {
     Empty,
     Button,
-    Loading
+    Loading,
+    DropdownMenu
   },
   props: {
     player: {
@@ -92,6 +111,7 @@ export default defineComponent({
     const { localePath } = useContext()
     const router = useRouter()
     const isOpenReportDialog = ref(false)
+    const isActionsOpen = ref(false)
 
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
@@ -115,6 +135,20 @@ export default defineComponent({
       router.push(localePath({ name: 'Account-AccountEdit' }))
     }
 
+    const handleGoToProfile = () => {
+      isActionsOpen.value = false
+
+      if (props.player?.username) {
+        store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', false)
+        router.push(localePath({ name: 'Profile-username', params: { username: props.player.username } }))
+      }
+    }
+
+    const handleReport = () => {
+      isActionsOpen.value = false
+      isOpenReportDialog.value = true
+    }
+
     const formatNumber = n => {
       const value = Number(n) || 0
 
@@ -125,11 +159,14 @@ export default defineComponent({
 
     return {
       isOpenReportDialog,
+      isActionsOpen,
       reportTypeEnum,
       reportAdditional,
       isSelf,
       bannerStyle,
       goToEdit,
+      handleGoToProfile,
+      handleReport,
       formatNumber
     }
   }

@@ -4,11 +4,91 @@
 
   &-banner {
     position: relative;
-    width: 100%;
-    height: 160px;
+    width: calc(100% - 2px);
+    height: 120px;
 
-    @media (min-width: 768px) {
-      height: 200px;
+    &__actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+    }
+
+    &__more-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      color: var(--color-text-04);
+      background: rgba(0, 0, 0, 0.35);
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.18s ease;
+      appearance: none;
+
+      &:hover,
+      &:focus-visible {
+        background: rgba(0, 0, 0, 0.55);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &-actions {
+    $v-dropdown-menu: '.v-dropdown-menu';
+
+    #{$v-dropdown-menu} {
+      &__container {
+        margin-block-start: $spacer;
+        padding: calc(var(--base-p-y) / 2) calc(var(--base-p-x) / 2);
+        color: var(--color-text-02);
+        background-color: var(--color-ui-02);
+        border: 1px solid var(--color-border-01);
+        border-radius: var(--border-radius-01);
+        box-shadow: var(--box-shadow-01);
+      }
+    }
+
+    &__nav {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 180px;
+    }
+
+    &__item {
+      display: flex;
+      gap: $spacer * 2;
+      align-items: center;
+      padding: calc(var(--base-p-y) / 2) calc(var(--base-p-x) / 2);
+      color: var(--color-text-02);
+      border-radius: var(--border-radius-01);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-hover-01);
+      }
+
+      &-icon {
+        width: 18px;
+        height: 18px;
+        color: var(--color-icon-02);
+
+        svg {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+
+      &-title {
+        font-size: var(--font-size-text-9);
+      }
     }
   }
 

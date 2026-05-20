@@ -1036,6 +1036,10 @@ export default {
       creator: 'Creator',
       tour: 'Tour Mode'
     },
+    actions: {
+      goToProfile: 'Go to profile',
+      report: 'Report'
+    },
     editButton: 'Edit profile',
     notFound: {
       title: 'User not found',
