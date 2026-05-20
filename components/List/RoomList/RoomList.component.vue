@@ -35,10 +35,12 @@
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
-                PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
-                span.room-list-item-badge__value
-                  template(v-if="room.user && !room.isAnon") {{ room.user.username }}
-                  template(v-if="room.isAnon") {{ $t('general.anon') }}
+                PlayerAvatar(
+                  with-username
+                  :size="16"
+                  :user="room.isAnon ? null : room.user"
+                  :open-player-dialog-on-click="!room.isAnon && !!room.user"
+                )
 
                 template(v-if="user")
                   Tag.room-list-item-listing-tag(v-if="room.isListed")
@@ -51,13 +53,11 @@
               .room-list-item__badges
                 .room-list-item-badge.room-list-item-badge--user
                   PlayerAvatar(
+                    with-username
                     :size="16"
                     :user="room.isAnon ? null : room.user"
                     :open-player-dialog-on-click="!room.isAnon && !!room.user"
                   )
-                  span.room-list-item-badge__value
-                    template(v-if="room.user && !room.isAnon") {{ room.user.username }}
-                    template(v-if="room.isAnon") {{ $t('general.anon') }}
 
                 .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
                   Tag.room-list-item-choices-tag
