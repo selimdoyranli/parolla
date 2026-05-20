@@ -35,7 +35,7 @@
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
-                PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user")
+                PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
                 span.room-list-item-badge__value
                   template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                   template(v-if="room.isAnon") {{ $t('general.anon') }}
@@ -50,7 +50,11 @@
 
               .room-list-item__badges
                 .room-list-item-badge.room-list-item-badge--user
-                  PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user")
+                  PlayerAvatar(
+                    :size="16"
+                    :user="room.isAnon ? null : room.user"
+                    :open-player-dialog-on-click="!room.isAnon && !!room.user"
+                  )
                   span.room-list-item-badge__value
                     template(v-if="room.user && !room.isAnon") {{ room.user.username }}
                     template(v-if="room.isAnon") {{ $t('general.anon') }}
