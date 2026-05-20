@@ -14,9 +14,10 @@
       @player-error-click="refetch"
     )
 
-    ProfileTabBar(:username="username")
+    template(v-if="!playerLoading && player && player.id")
+      ProfileTabBar(:username="username")
 
-    nuxt-child(:key="$route.fullPath")
+      nuxt-child(:key="$route.fullPath")
 </template>
 
 <script>
