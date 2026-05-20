@@ -12,7 +12,7 @@
     Empty(:description="$t('profile.quizzesTab.empty')")
 
   template(v-else)
-    RoomList(:items="rooms" :user="player" :isActiveInfiniteLoading="true")
+    RoomList(:items="rooms" scoped :user="player" :isActiveInfiniteLoading="true")
 </template>
 
 <script>
@@ -33,7 +33,7 @@ export default defineComponent({
     const store = useStore()
     const { i18n } = useContext()
 
-    const rooms = computed(() => store.getters['creator/rooms'] || [])
+    const rooms = computed(() => store.getters['creator/userRooms'] || [])
     const loading = ref(false)
     const error = ref(null)
 
@@ -46,7 +46,7 @@ export default defineComponent({
       loading.value = true
       error.value = null
 
-      const { error: err } = await store.dispatch('creator/fetchRooms', {
+      const { error: err } = await store.dispatch('creator/fetchUserRooms', {
         isVisible: true,
         isLoadMore: false,
         user: playerId.value,

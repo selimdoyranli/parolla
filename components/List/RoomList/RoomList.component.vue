@@ -174,6 +174,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+    scoped: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props, { emit }) {
@@ -182,7 +187,10 @@ export default defineComponent({
     const store = useStore()
     const { isOwner } = useAuth()
 
-    const pagination = computed(() => store.getters['creator/roomsPagination'])
+    const paginationGetter = computed(() => (props.scoped ? 'creator/userRoomsPagination' : 'creator/roomsPagination'))
+    const fetchActionName = computed(() => (props.scoped ? 'creator/fetchUserRooms' : 'creator/fetchRooms'))
+
+    const pagination = computed(() => store.getters[paginationGetter.value])
 
     const list = reactive({
       items: props.items,
@@ -198,7 +206,7 @@ export default defineComponent({
     )
 
     const handleInfiniteLoading = async $state => {
-      const { data, error } = await store.dispatch('creator/fetchRooms', {
+      const { data, error } = await store.dispatch(fetchActionName.value, {
         isVisible: true,
         isLoadMore: true,
         page: pagination.value.page + 1,
@@ -258,7 +266,7 @@ export default defineComponent({
             }
           }
 
-          await store.dispatch('creator/fetchRooms', {
+          await store.dispatch(fetchActionName.value, {
             isVisible: true,
             keyword: form.search.keyword,
             user: props.user?.id

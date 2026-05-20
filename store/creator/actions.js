@@ -339,6 +339,50 @@ export default {
     }
   },
 
+  async fetchUserRooms({ commit }, params) {
+    const { isVisible, isLoadMore = false, page, limit, keyword, user, locale } = params
+
+    const query = {
+      'filters[isVisible][$eq]': isVisible == null ? null : isVisible,
+      'pagination[page]': page || 1,
+      'pagination[pageSize]': limit || 10,
+      sort: 'createdAt:desc',
+      'populate[user][populate]': 'diceBear',
+      populate: 'roomTags',
+      locale: locale || this.$i18n.locale
+    }
+
+    if (keyword && keyword.includes('#')) {
+      query['filters[roomTags][title][$in]'] = keyword.replace('#', '')
+    } else if (keyword) {
+      query['filters[title][$containsi]'] = keyword
+    }
+
+    if (user) {
+      query['filters[user]'] = user
+    }
+
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      method: 'GET',
+      path: 'rooms',
+      query,
+      headers: { Authorization: `${token}` }
+    })
+
+    if (data) {
+      const rooms = data.data.map(room => roomTransformer(room))
+
+      if (isLoadMore) commit('PUSH_USER_ROOMS', rooms)
+      else commit('SET_USER_ROOMS', rooms)
+
+      if (data.meta?.pagination) commit('SET_USER_ROOMS_PAGINATION', data.meta.pagination)
+    }
+
+    return { data, error }
+  },
+
   async fetchRoom({ commit }, id) {
     const { data, error } = await this.$appFetch({
       path: `rooms/${id}`,

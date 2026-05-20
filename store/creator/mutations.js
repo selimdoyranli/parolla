@@ -147,5 +147,17 @@ export default {
 
   SET_USER_ROOM_SCORES_PAGINATION(state, pagination) {
     state.userRoomScores.pagination = pagination
+  },
+
+  SET_USER_ROOMS(state, list) {
+    state.userRooms.list = list
+  },
+
+  PUSH_USER_ROOMS(state, list) {
+    state.userRooms.list = [...state.userRooms.list, ...list]
+  },
+
+  SET_USER_ROOMS_PAGINATION(state, pagination) {
+    state.userRooms.pagination = pagination
   }
 }

@@ -39,5 +39,9 @@ export default () => ({
   userRoomScores: {
     list: [],
     pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
+  },
+  userRooms: {
+    list: [],
+    pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
   }
 })
