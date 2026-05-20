@@ -133,7 +133,10 @@ export default defineComponent({
     const onClosed = () => {
       store.commit('profile/SET_PLAYER_ID', null)
       store.commit('profile/SET_PLAYER_USERNAME', '')
-      store.commit('profile/CLEAR_PLAYER')
+      // do NOT clear the player here — when the user navigates away to the
+      // profile route (or opens another dialog), the new context overwrites
+      // the store anyway. Clearing here causes a flash of empty data and
+      // crashes Timeago in the destination page (createdAt becomes undefined).
       activeTab.value = 'quizzes'
     }
 

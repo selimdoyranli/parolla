@@ -38,9 +38,9 @@ export default defineComponent({
 
     const username = computed(() => route.value.params.username)
 
-    const playerLoading = ref(false)
+    const playerLoading = ref(true)
     const playerError = ref(null)
-    const tourScoreLoading = ref(false)
+    const tourScoreLoading = ref(true)
     const tourScoreError = ref(null)
 
     const { fetch, fetchState } = useFetch(async () => {

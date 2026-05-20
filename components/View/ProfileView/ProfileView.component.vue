@@ -4,7 +4,7 @@
     .profile-view-loading
       Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
 
-  template(v-else-if="playerError || !player")
+  template(v-else-if="playerError || !player || !player.id")
     .profile-view-error
       Empty(image="error" :description="$t('dialog.player.callback.error.title')")
         Button(@click="$emit('player-error-click')") {{ $t('dialog.player.callback.error.action') }}
