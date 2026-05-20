@@ -69,5 +69,29 @@ export default {
 
   dailyPlayingCount(state) {
     return state.dailyPlayingCount
+  },
+
+  userReviews(state) {
+    return state.userReviews.list
+  },
+
+  userReviewsPagination(state) {
+    return state.userReviews.pagination
+  },
+
+  userRoomScores(state) {
+    return state.userRoomScores.list
+  },
+
+  userRoomScoresPagination(state) {
+    return state.userRoomScores.pagination
+  },
+
+  userRooms(state) {
+    return state.userRooms.list
+  },
+
+  userRoomsPagination(state) {
+    return state.userRooms.pagination
   }
 }

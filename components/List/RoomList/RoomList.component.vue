@@ -35,10 +35,12 @@
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
-                PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user")
-                span.room-list-item-badge__value
-                  template(v-if="room.user && !room.isAnon") {{ room.user.username }}
-                  template(v-if="room.isAnon") {{ $t('general.anon') }}
+                PlayerAvatar(
+                  with-username
+                  :size="16"
+                  :user="room.isAnon ? null : room.user"
+                  :open-player-dialog-on-click="!room.isAnon && !!room.user"
+                )
 
                 template(v-if="user")
                   Tag.room-list-item-listing-tag(v-if="room.isListed")
@@ -50,10 +52,12 @@
 
               .room-list-item__badges
                 .room-list-item-badge.room-list-item-badge--user
-                  PlayerAvatar(:size="16" :user="room.isAnon ? null : room.user")
-                  span.room-list-item-badge__value
-                    template(v-if="room.user && !room.isAnon") {{ room.user.username }}
-                    template(v-if="room.isAnon") {{ $t('general.anon') }}
+                  PlayerAvatar(
+                    with-username
+                    :size="16"
+                    :user="room.isAnon ? null : room.user"
+                    :open-player-dialog-on-click="!room.isAnon && !!room.user"
+                  )
 
                 .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
                   Tag.room-list-item-choices-tag
@@ -170,6 +174,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+    scoped: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props, { emit }) {
@@ -178,7 +187,10 @@ export default defineComponent({
     const store = useStore()
     const { isOwner } = useAuth()
 
-    const pagination = computed(() => store.getters['creator/roomsPagination'])
+    const paginationGetter = computed(() => (props.scoped ? 'creator/userRoomsPagination' : 'creator/roomsPagination'))
+    const fetchActionName = computed(() => (props.scoped ? 'creator/fetchUserRooms' : 'creator/fetchRooms'))
+
+    const pagination = computed(() => store.getters[paginationGetter.value])
 
     const list = reactive({
       items: props.items,
@@ -194,7 +206,7 @@ export default defineComponent({
     )
 
     const handleInfiniteLoading = async $state => {
-      const { data, error } = await store.dispatch('creator/fetchRooms', {
+      const { data, error } = await store.dispatch(fetchActionName.value, {
         isVisible: true,
         isLoadMore: true,
         page: pagination.value.page + 1,
@@ -254,7 +266,7 @@ export default defineComponent({
             }
           }
 
-          await store.dispatch('creator/fetchRooms', {
+          await store.dispatch(fetchActionName.value, {
             isVisible: true,
             keyword: form.search.keyword,
             user: props.user?.id

@@ -31,5 +31,17 @@ export default () => ({
     total: null
   },
   todaysQuiz: {},
-  dailyPlayingCount: 0
+  dailyPlayingCount: 0,
+  userReviews: {
+    list: [],
+    pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
+  },
+  userRoomScores: {
+    list: [],
+    pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
+  },
+  userRooms: {
+    list: [],
+    pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
+  }
 })

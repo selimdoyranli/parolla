@@ -68,7 +68,8 @@ export default {
     thisOrThatQuiz: 'This or that?',
     flashcardsQuiz: 'Flashcards',
     provider: 'Provider',
-    quizPreparing: 'Preparing quiz'
+    quizPreparing: 'Preparing quiz',
+    loadMore: 'Load more'
   },
   auth: {
     google: {
@@ -1019,5 +1020,50 @@ export default {
       locked: 'Locked',
       notEnoughGold: 'Not enough gold'
     }
+  },
+  profile: {
+    tabs: {
+      quizzes: 'Quizzes',
+      reviews: 'Reviews',
+      scores: 'Scores'
+    },
+    stats: {
+      created: 'Created',
+      played: 'Played',
+      reviews: 'Reviews'
+    },
+    scoresSubTabs: {
+      creator: 'Creator',
+      tour: 'Tour Mode'
+    },
+    actions: {
+      goToProfile: 'Go to profile',
+      report: 'Report'
+    },
+    editButton: 'Edit profile',
+    notFound: {
+      title: 'User not found',
+      action: 'Back to home'
+    },
+    quizzesTab: {
+      empty: 'No quizzes created yet.',
+      error: 'Could not load quizzes.'
+    },
+    reviewsTab: {
+      empty: 'No reviews written yet.',
+      error: 'Could not load reviews.'
+    },
+    scoresTab: {
+      tour: { title: 'Tour mode scores' },
+      room: {
+        title: 'Played quiz scores',
+        empty: 'No quizzes played yet.',
+        error: 'Could not load scores.',
+        statsLine: '{correct} correct · {wrong} wrong · {passed} passed'
+      }
+    }
+  },
+  account: {
+    edit: { title: 'Edit profile' }
   }
 }

@@ -68,7 +68,8 @@ export default {
     thisOrThatQuiz: 'O mu bu mu?',
     flashcardsQuiz: 'Flashcards',
     provider: 'Sağlayıcı',
-    quizPreparing: 'Quiz hazırlanıyor'
+    quizPreparing: 'Quiz hazırlanıyor',
+    loadMore: 'Daha fazla'
   },
   auth: {
     google: {
@@ -1043,5 +1044,50 @@ export default {
       locked: 'Kilitli',
       notEnoughGold: 'Yetersiz altın'
     }
+  },
+  profile: {
+    tabs: {
+      quizzes: 'Quizler',
+      reviews: 'Değerlendirmeler',
+      scores: 'Skorlar'
+    },
+    stats: {
+      created: 'Oluşturulan',
+      played: 'Oynanan',
+      reviews: 'Değerlendirme'
+    },
+    scoresSubTabs: {
+      creator: 'Yaratıcı',
+      tour: 'Tur Modu'
+    },
+    actions: {
+      goToProfile: 'Profil sayfasına git',
+      report: 'Raporla'
+    },
+    editButton: 'Profili düzenle',
+    notFound: {
+      title: 'Bu kullanıcı bulunamadı',
+      action: 'Ana sayfaya dön'
+    },
+    quizzesTab: {
+      empty: 'Henüz quiz oluşturmamış.',
+      error: 'Quizler yüklenemedi.'
+    },
+    reviewsTab: {
+      empty: 'Henüz değerlendirme yapmamış.',
+      error: 'Değerlendirmeler yüklenemedi.'
+    },
+    scoresTab: {
+      tour: { title: 'Tur modu skorları' },
+      room: {
+        title: 'Oynanan quiz skorları',
+        empty: 'Henüz hiç quiz oynamamış.',
+        error: 'Skorlar yüklenemedi.',
+        statsLine: '{correct} doğru · {wrong} yanlış · {passed} pas'
+      }
+    }
+  },
+  account: {
+    edit: { title: 'Profili düzenle' }
   }
 }

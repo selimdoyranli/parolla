@@ -1,5 +1,5 @@
 <template lang="pug">
-.page.profile-edit-page
+.page.account-edit-page
   template(v-if="fetchState.pending")
     Loading(color="var(--color-brand-02)")
 
@@ -12,40 +12,38 @@
 </template>
 
 <script>
-import { defineComponent, useRoute, useStore, useFetch, computed } from '@nuxtjs/composition-api'
-import { Loading, Empty } from 'vant'
+import { defineComponent, useStore, useFetch, computed } from '@nuxtjs/composition-api'
+import { Loading, Empty, Button } from 'vant'
 
 export default defineComponent({
   components: {
     Loading,
-    Empty
+    Empty,
+    Button
   },
   layout: 'Default/Default.layout',
   middleware: ['auth-control'],
   setup() {
-    const route = useRoute()
     const store = useStore()
 
-    const username = computed(() => route.value.query.username)
+    const me = computed(() => store.getters['auth/user'])
 
     const { fetch, fetchState } = useFetch(async () => {
-      await store.dispatch('profile/fetchPlayer', { username: username.value })
+      if (me.value?.username) {
+        await store.dispatch('profile/fetchPlayer', { username: me.value.username })
+      }
     })
-
-    const player = computed(() => store.getters['profile/player'])
 
     const reFetch = async () => {
       await fetch()
     }
 
     return {
-      fetch,
       fetchState,
-      player,
       reFetch
     }
   }
 })
 </script>
 
-<style lang="scss" src="./ProfileEdit.page.scss"></style>
+<style lang="scss" src="./AccountEdit.page.scss"></style>

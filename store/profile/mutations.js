@@ -19,6 +19,10 @@ export default {
     state.player = {}
   },
 
+  SET_PLAYER_STATS(state, stats) {
+    state.playerStats = stats
+  },
+
   SET_PLAYER_DIALOG_IS_OPEN(state, isOpen) {
     state.dialog.player.isOpen = isOpen
   },

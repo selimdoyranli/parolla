@@ -122,6 +122,11 @@
           display: flex;
           align-items: center;
           margin-right: calc(var(--base-m-x) / 4);
+
+          &__username {
+            color: var(--color-text-03);
+            font-size: var(--font-size-text-9);
+          }
         }
       }
 

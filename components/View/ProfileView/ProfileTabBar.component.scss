@@ -1,0 +1,65 @@
+.profile-tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background: var(--color-ui-01);
+  border-bottom: 1px solid var(--color-border-01);
+
+  &__list {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  &__tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    padding: 14px 16px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.18s ease;
+    appearance: none;
+
+    &-label {
+      pointer-events: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand-02);
+      outline-offset: -2px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-01);
+    }
+
+    &--active {
+      color: var(--color-text-01);
+
+      &::after {
+        position: absolute;
+        right: 16px;
+        bottom: 0;
+        left: 16px;
+        height: 3px;
+        background: var(--color-brand-02);
+        border-radius: 2px;
+        content: '';
+      }
+    }
+  }
+}

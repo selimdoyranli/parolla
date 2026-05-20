@@ -1,0 +1,9 @@
+.profile-quizzes-tab {
+  padding: 8px var(--base-p-x) 32px;
+
+  &__state {
+    display: flex;
+    justify-content: center;
+    padding: 32px 0;
+  }
+}

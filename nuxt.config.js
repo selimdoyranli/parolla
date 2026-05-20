@@ -317,13 +317,25 @@ module.exports = {
             tr: '/tur/liderlik/:period',
             en: '/tour/leaderboard/:period'
           },
-          'Profile/index': {
-            tr: '/profil',
-            en: '/profile'
+          'Account/AccountEdit/index': {
+            tr: '/hesap/duzenle',
+            en: '/account/edit'
           },
-          'Profile/ProfileEdit/index': {
-            tr: '/profil/duzenle',
-            en: '/profile/edit'
+          'Profile/_username/index': {
+            tr: '/profil/:username',
+            en: '/profile/:username'
+          },
+          'Profile/_username/Quizzes/index': {
+            tr: '/profil/:username/quizler',
+            en: '/profile/:username/quizzes'
+          },
+          'Profile/_username/Reviews/index': {
+            tr: '/profil/:username/degerlendirmeler',
+            en: '/profile/:username/reviews'
+          },
+          'Profile/_username/Scores/index': {
+            tr: '/profil/:username/skorlar',
+            en: '/profile/:username/scores'
           },
           'WordblockMode/index': {
             tr: '/kelimeblok',

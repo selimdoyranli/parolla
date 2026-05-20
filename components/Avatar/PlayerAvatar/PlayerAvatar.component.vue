@@ -80,8 +80,10 @@ export default defineComponent({
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
     }
 
-    const handleClickPlayerAvatar = async () => {
+    const handleClickPlayerAvatar = async event => {
       if (props.openPlayerDialogOnClick) {
+        event?.stopPropagation()
+        event?.preventDefault()
         await openPlayerDialog()
       }
     }

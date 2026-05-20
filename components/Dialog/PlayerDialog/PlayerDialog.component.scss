@@ -5,58 +5,30 @@
   max-width: var(--tablet);
 
   #{$van-dialog} {
+    &__header {
+      padding-block: 12px;
+    }
+
     &__content {
       position: relative;
       display: block;
-      max-height: 60vh;
-      padding: var(--base-p-y) calc(var(--base-p-x) * 1.8);
+      max-height: 70vh;
+      padding: 0;
       overflow-x: hidden;
       overflow-y: auto;
+      background-color: var(--color-ui-01);
     }
   }
 
-  &-loading {
+  &__loading,
+  &__error {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-block-start: $spacer * 2;
-  }
-}
-
-.profile-view {
-  position: relative;
-
-  &__avatar {
-    margin-bottom: var(--base-m-y);
+    padding: 48px 24px;
   }
 
-  &-created-at {
-    display: flex;
-    align-items: center;
-
-    &__icon {
-      position: relative;
-      margin-inline-end: $spacer * 2;
-    }
-
-    &__value {
-      position: relative;
-    }
-
-    &__label {
-      position: relative;
-    }
-  }
-
-  .tour-scores {
-    position: relative;
-    margin-block-start: calc(var(--base-m-y) * 2);
-    border-block-start: 1px solid var(--color-border-02);
-
-    &__title {
-      display: block;
-      margin-block-start: $spacer * 6;
-      margin-block-end: $spacer * 4;
-    }
+  &__panel {
+    padding-block: 8px;
   }
 }

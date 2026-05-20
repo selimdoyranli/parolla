@@ -123,5 +123,41 @@ export default {
 
   SET_DAILY_PLAYING_COUNT(state, count) {
     state.dailyPlayingCount = count
+  },
+
+  SET_USER_REVIEWS(state, list) {
+    state.userReviews.list = list
+  },
+
+  PUSH_USER_REVIEWS(state, list) {
+    state.userReviews.list = [...state.userReviews.list, ...list]
+  },
+
+  SET_USER_REVIEWS_PAGINATION(state, pagination) {
+    state.userReviews.pagination = pagination
+  },
+
+  SET_USER_ROOM_SCORES(state, list) {
+    state.userRoomScores.list = list
+  },
+
+  PUSH_USER_ROOM_SCORES(state, list) {
+    state.userRoomScores.list = [...state.userRoomScores.list, ...list]
+  },
+
+  SET_USER_ROOM_SCORES_PAGINATION(state, pagination) {
+    state.userRoomScores.pagination = pagination
+  },
+
+  SET_USER_ROOMS(state, list) {
+    state.userRooms.list = list
+  },
+
+  PUSH_USER_ROOMS(state, list) {
+    state.userRooms.list = [...state.userRooms.list, ...list]
+  },
+
+  SET_USER_ROOMS_PAGINATION(state, pagination) {
+    state.userRooms.pagination = pagination
   }
 }
