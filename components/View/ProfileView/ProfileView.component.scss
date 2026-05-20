@@ -23,7 +23,7 @@
     &__avatar-wrap {
       display: inline-flex;
       padding: 4px;
-      background: var(--color-surface-01);
+      background: var(--color-ui-01);
       border-radius: 50%;
     }
 
@@ -37,7 +37,7 @@
 
     &__edit-btn {
       color: var(--color-text-01);
-      background: var(--color-surface-01);
+      background: var(--color-ui-01);
       border-color: var(--color-border-01);
     }
   }

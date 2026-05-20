@@ -5,6 +5,10 @@
   max-width: var(--tablet);
 
   #{$van-dialog} {
+    &__header {
+      padding-block: 12px;
+    }
+
     &__content {
       position: relative;
       display: block;
