@@ -14,7 +14,7 @@
       .profile-view-banner__actions(v-if="!isSelf")
         DropdownMenu.profile-view-actions(
           withDropdownCloser
-          direction="left"
+          direction="right"
           :overlay="false"
           :is-open="isActionsOpen"
           @closed="isActionsOpen = false"
