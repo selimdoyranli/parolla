@@ -21,11 +21,25 @@
     color: var(--color-text-03);
     font-weight: 600;
     font-size: 14px;
+    font-family: inherit;
     text-decoration: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
     transition: color 0.18s ease;
+    appearance: none;
 
     &-label {
       pointer-events: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand-02);
+      outline-offset: -2px;
     }
 
     &:hover,
