@@ -5,6 +5,7 @@
   template(v-if="scorers?.length > 0")
     .top-scorer-list
       .top-scorer-list-item(v-for="(scorer, index) in scorers.slice(0, 3)" :key="scorer.username" :data-rank="index + 1")
+        AppIcon.top-scorer-list-item-crown(v-if="index === 0" name="tabler:crown" :width="28" :height="28")
         PlayerAvatar(with-username open-player-dialog-on-click :size="48" :user="scorer")
 
         .top-scorer-list-item-score.top-scorer-list-item-score--results(v-if="scorer.results")

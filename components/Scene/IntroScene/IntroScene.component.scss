@@ -174,6 +174,22 @@
         }
       }
 
+      &__player {
+        position: relative;
+        display: inline-flex;
+      }
+
+      &__crown {
+        position: absolute;
+        z-index: 2;
+        color: #ffd700;
+        filter: drop-shadow(0 1px 2px rgba(255 215 0 / 45%));
+        animation: top-scorer-intro-crown-float 2.4s ease-in-out infinite;
+        pointer-events: none;
+        inset-block-start: -6px;
+        inset-inline-start: 12px;
+      }
+
       &__avatar {
         height: 40px;
         padding: $spacer * 2 $spacer * 2;
@@ -197,5 +213,16 @@
         }
       }
     }
+  }
+}
+
+@keyframes top-scorer-intro-crown-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+
+  50% {
+    transform: translateY(-2px) rotate(4deg);
   }
 }
