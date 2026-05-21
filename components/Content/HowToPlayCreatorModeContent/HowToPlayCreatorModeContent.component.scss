@@ -1,3 +1,15 @@
-.how-to-play-unlimited-mode-content {
+.how-to-play-creator-mode-content {
   position: relative;
+
+  &__preparedBy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    margin: 8px 0;
+
+    &-label {
+      font-weight: 600;
+    }
+  }
 }
