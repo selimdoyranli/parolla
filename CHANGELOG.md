@@ -1,5 +1,31 @@
 # Changelog
 
+## v2.45.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.44.0...v2.45.0)
+
+
+### 🚀 Enhancements
+
+  - **profile:** Swap username/fullname positions and add GM label ([e866598](https://github.com/selimdoyranli/parolla/commit/e866598))
+
+### 🩹 Fixes
+
+  - **profile:** Show drafts and listing tags only when viewing your own quizzes ([adbc845](https://github.com/selimdoyranli/parolla/commit/adbc845))
+  - **rooms:** Show listing tags on desktop too ([dc189b4](https://github.com/selimdoyranli/parolla/commit/dc189b4))
+  - **rooms:** Hide listing/draft tags on the public directory, profile-only ([d6ce5a4](https://github.com/selimdoyranli/parolla/commit/d6ce5a4))
+  - **profile:** Align Oluşturulan count with the actual visible rooms list ([ab89bc2](https://github.com/selimdoyranli/parolla/commit/ab89bc2))
+  - **profile:** Send null for empty fullname and bio on profile edit ([cbc22d5](https://github.com/selimdoyranli/parolla/commit/cbc22d5))
+
+### 💅 Refactors
+
+  - **profile:** Drop /quizlerim, force public-only view on profile ([e3ba781](https://github.com/selimdoyranli/parolla/commit/e3ba781))
+  - **header:** Use router.back() for back button instead of hardcoded route map ([109f8a9](https://github.com/selimdoyranli/parolla/commit/109f8a9))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.44.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.43.2...v2.44.0)
