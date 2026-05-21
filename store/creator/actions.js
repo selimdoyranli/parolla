@@ -340,13 +340,11 @@ export default {
   },
 
   async fetchUserRooms({ commit }, params) {
-    const { isLoadMore = false, page, limit, keyword, user, locale } = params
+    const { isLoadMore = false, page, limit, keyword, user, locale, includeDrafts = false, includeUnlisted = false } = params
 
-    // Profile context is always a public view — show only listed + published rooms,
-    // even when viewing your own profile.
+    // Other-user profile = strict public view. Own-profile callers opt in to
+    // see their drafts (isVisible:false) and unlisted (isPublic:false) rooms.
     const query = {
-      'filters[isVisible][$eq]': true,
-      'filters[isPublic][$eq]': true,
       'pagination[page]': page || 1,
       'pagination[pageSize]': limit || 10,
       sort: 'createdAt:desc',
@@ -354,6 +352,10 @@ export default {
       populate: 'roomTags',
       locale: locale || this.$i18n.locale
     }
+
+    if (!includeDrafts) query['filters[isVisible][$eq]'] = true
+
+    if (!includeUnlisted) query['filters[isPublic][$eq]'] = true
 
     if (keyword && keyword.includes('#')) {
       query['filters[roomTags][title][$in]'] = keyword.replace('#', '')

@@ -40,6 +40,9 @@ export default defineComponent({
     const player = computed(() => shell?.player?.value || null)
     const playerId = computed(() => player.value?.id || null)
 
+    const me = computed(() => store.getters['auth/user'])
+    const isOwnProfile = computed(() => !!(me.value?.id && playerId.value && Number(me.value.id) === Number(playerId.value)))
+
     const load = async () => {
       if (!playerId.value) return
 
@@ -47,12 +50,13 @@ export default defineComponent({
       error.value = null
 
       const { error: err } = await store.dispatch('creator/fetchUserRooms', {
-        isVisible: true,
         isLoadMore: false,
         user: playerId.value,
         page: 1,
         limit: PAGE_SIZE,
-        locale: i18n.locale
+        locale: i18n.locale,
+        includeDrafts: isOwnProfile.value,
+        includeUnlisted: isOwnProfile.value
       })
 
       if (err) error.value = err

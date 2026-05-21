@@ -31,6 +31,7 @@
             template(#title)
               .room-list-item-title
                 span.room-list-item-title__text {{ room.title }}
+                  Tag.ms-2(v-if="isOwner({ user: room.user }) && !room.isVisible" type="warning") {{ $t('general.draft') }}
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
@@ -40,6 +41,14 @@
                   :user="room.isAnon ? null : room.user"
                   :open-player-dialog-on-click="!room.isAnon && !!room.user"
                 )
+
+                template(v-if="isOwner({ user: room.user })")
+                  Tag.room-list-item-listing-tag(v-if="room.isListed")
+                    AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
+                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
+                  Tag.room-list-item-listing-tag(v-else)
+                    AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
+                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
 
               .room-list-item__badges
                 .room-list-item-badge.room-list-item-badge--user
@@ -183,6 +192,13 @@ export default defineComponent({
 
     const pagination = computed(() => store.getters[paginationGetter.value])
 
+    // Scoped (profile) lists honour owner-only filters when the auth user is
+    // looking at their own quizzes — drafts and unlisted rooms come through.
+    const authedUser = computed(() => store.getters['auth/user'])
+    const isOwnUserFilter = computed(
+      () => props.scoped && !!(authedUser.value?.id && props.user?.id && Number(authedUser.value.id) === Number(props.user.id))
+    )
+
     const list = reactive({
       items: props.items,
       originalItems: props.items // Store original items for local search
@@ -203,7 +219,9 @@ export default defineComponent({
         page: pagination.value.page + 1,
         keyword: form.search.keyword,
         tags: route.value.query.tags ? route.value.query.tags.split(',') : [],
-        user: props.user?.id
+        user: props.user?.id,
+        includeDrafts: isOwnUserFilter.value,
+        includeUnlisted: isOwnUserFilter.value
       })
 
       $state.loaded()
@@ -260,7 +278,9 @@ export default defineComponent({
           await store.dispatch(fetchActionName.value, {
             isVisible: true,
             keyword: form.search.keyword,
-            user: props.user?.id
+            user: props.user?.id,
+            includeDrafts: isOwnUserFilter.value,
+            includeUnlisted: isOwnUserFilter.value
           })
         } else {
           // Local filter for rooms
