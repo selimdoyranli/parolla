@@ -24,7 +24,9 @@
               template(#label)
                 label.best-score-label {{ $t('introScene.modeList.daily.todaysBestScoreLabel') }}
               template(#player)
-                PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysDailyBestScorer" :size="22")
+                span.top-scorer__player
+                  AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
+                  PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysDailyBestScorer" :size="22")
             Button.leaderboard-button(
               size="small"
               plain
@@ -70,7 +72,9 @@
               template(#label)
                 label.best-score-label {{ $t('introScene.modeList.tour.todaysBestScoreLabel') }}
               template(#by)
-                PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysTourBestScorer" :size="22")
+                span.top-scorer__player
+                  AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
+                  PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysTourBestScorer" :size="22")
               template(#byLabel)
                 label.by-label {{ $t('introScene.modeList.tour.todaysBestScoreByLabel') }}
               template(#score)
