@@ -133,6 +133,14 @@
       line-height: 1.2;
     }
 
+    &__gm-label {
+      margin-inline-start: 8px;
+      color: #e4ca1e;
+      font-weight: 700;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
     &__handle {
       display: block;
       margin-top: 2px;

@@ -47,8 +47,10 @@
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
-      h1.profile-view-identity__name {{ player.fullname || player.username }}
-      span.profile-view-identity__handle @{{ player.username }}
+      h1.profile-view-identity__name
+        | {{ player.username }}
+        span.profile-view-identity__gm-label(v-if="isGm") (GM)
+      span.profile-view-identity__handle(v-if="player.fullname") {{ player.fullname }}
 
       p.profile-view-identity__bio(v-if="player.bio") {{ player.bio }}
 
@@ -115,6 +117,7 @@ export default defineComponent({
 
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
+    const isGm = computed(() => [257116, 258270, 262467].includes(props.player?.id))
 
     const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
 
@@ -163,6 +166,7 @@ export default defineComponent({
       reportTypeEnum,
       reportAdditional,
       isSelf,
+      isGm,
       bannerStyle,
       goToEdit,
       handleGoToProfile,
