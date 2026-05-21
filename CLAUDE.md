@@ -69,7 +69,7 @@ Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`
 ### Data Layer
 
 - **API client:** `$appFetch` plugin (`plugins/app-fetch.js`) wraps Axios with locale transformation, returning `{ data, error }` tuples
-- **Backend:** Strapi API at `API_STRAPI` env var (default: `https://strapi.parolla.app/api`)
+- **Backend:** Strapi API at `API_URL` env var (default: `https://strapi.parolla.app/api`)
 - **WebSocket:** Real-time features via `isomorphic-ws` at `WS_URL` env var
 - **Transformers:** `transformers/` directory for normalizing API data (room, user, roomReview, scoreboard)
 
@@ -98,7 +98,7 @@ Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`
 ## Environment Variables
 
 ```
-API_STRAPI               # Backend API URL (default: https://strapi.parolla.app/api)
+API_URL               # Backend API URL (default: https://strapi.parolla.app/api)
 WS_URL                   # WebSocket URL (default: wss://0.0.0.0:1881)
 GOOGLE_AUTH_CLIENT_ID    # Google OAuth client ID
 GOOGLE_AUTH_REDIRECT_URI # Google OAuth redirect URI

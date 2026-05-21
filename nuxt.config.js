@@ -25,7 +25,7 @@ module.exports = {
    ** See https://nuxtjs.org/docs/configuration-glossary/configuration-env
    */
   env: {
-    API_STRAPI: process.env.API_STRAPI || 'https://strapi.parolla.app/api',
+    API_URL: process.env.API_URL || 'https://strapi.parolla.app/api',
     WS_URL: process.env.WS_URL || 'wss://0.0.0.0:1881',
     GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
     GOOGLE_AUTH_REDIRECT_URI: process.env.GOOGLE_AUTH_REDIRECT_URI
@@ -36,7 +36,7 @@ module.exports = {
    ** See https://nuxtjs.org/api/configuration-runtime-config
    */
   publicRuntimeConfig: {
-    API_STRAPI: process.env.API_STRAPI || 'https://strapi.parolla.app/api'
+    API_URL: process.env.API_URL || 'https://strapi.parolla.app/api'
   },
 
   /*
