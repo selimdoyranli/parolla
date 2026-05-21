@@ -281,10 +281,6 @@ module.exports = {
             tr: '/quizler',
             en: '/quizzes'
           },
-          'CreatorMode/CreatorModeMyRooms/index': {
-            tr: '/quizlerim',
-            en: '/my-quizzes'
-          },
           'CreatorMode/CreatorModeCompose/index': {
             tr: '/quiz-olustur',
             en: '/create-quiz'

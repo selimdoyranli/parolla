@@ -280,7 +280,7 @@ export default defineComponent({
     }
 
     const handleClickMyQuizzes = () => {
-      router.push(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
+      router.push(localePath({ name: 'Profile-username-Quizzes', params: { username: $auth.user.username } }))
 
       state.isOpen = false
     }

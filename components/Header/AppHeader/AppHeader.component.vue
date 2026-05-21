@@ -212,7 +212,6 @@ export default defineComponent({
         if (route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' })) {
           router.replace(localePath({ name: 'Main' }))
         } else if (
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
           route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||
@@ -220,7 +219,7 @@ export default defineComponent({
         ) {
           router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))) {
-          router.replace(localePath({ name: 'CreatorMode-CreatorModeMyRooms' }))
+          router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))) {
           router.replace(localePath({ name: 'MusicMode-GuessTheSong' }))
         } else if (route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' }))) {
@@ -291,7 +290,6 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.CREATOR ||
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
-        route.value.path === localePath({ name: 'CreatorMode-CreatorModeMyRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||

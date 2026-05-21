@@ -340,10 +340,13 @@ export default {
   },
 
   async fetchUserRooms({ commit }, params) {
-    const { isVisible, isLoadMore = false, page, limit, keyword, user, locale } = params
+    const { isLoadMore = false, page, limit, keyword, user, locale } = params
 
+    // Profile context is always a public view — show only listed + published rooms,
+    // even when viewing your own profile.
     const query = {
-      'filters[isVisible][$eq]': isVisible == null ? null : isVisible,
+      'filters[isVisible][$eq]': true,
+      'filters[isPublic][$eq]': true,
       'pagination[page]': page || 1,
       'pagination[pageSize]': limit || 10,
       sort: 'createdAt:desc',
