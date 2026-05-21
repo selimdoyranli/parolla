@@ -59,6 +59,15 @@
                     :open-player-dialog-on-click="!room.isAnon && !!room.user"
                   )
 
+                template(v-if="isOwner({ user: room.user })")
+                  .room-list-item-badge
+                    Tag.room-list-item-listing-tag(v-if="room.isListed")
+                      AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
+                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
+                    Tag.room-list-item-listing-tag(v-else)
+                      AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
+                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
+
                 .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
                   Tag.room-list-item-choices-tag
                     img.room-list-item-choices-tag__versusIcon(
