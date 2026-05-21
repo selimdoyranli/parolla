@@ -209,26 +209,7 @@ export default defineComponent({
 
     const handleClickBackButton = () => {
       const triggerRoute = () => {
-        if (route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' })) {
-          router.replace(localePath({ name: 'Main' }))
-        } else if (
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
-          route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Flashcards' }) ||
-          route.value.path.startsWith(localePath('/quiz'))
-        ) {
-          router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
-        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeEdit-slug' }))) {
-          router.replace(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
-        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' }))) {
-          router.replace(localePath({ name: 'MusicMode-GuessTheSong' }))
-        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' }))) {
-          router.replace(localePath({ name: 'Main' }))
-        } else if (route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' }))) {
-          router.replace(localePath({ name: 'Main' }))
-        } else {
-          router.replace(localePath({ name: 'Main' }))
-        }
+        router.back()
       }
 
       if (
