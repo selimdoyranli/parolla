@@ -20,8 +20,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-width: 160px;
+      min-width: 96px;
       text-align: center;
+
+      @include media-breakpoint-up(mobile) {
+        min-width: 160px;
+      }
 
       &-crown {
         color: #ffd700;
@@ -53,6 +57,7 @@
           margin-block-start: $spacer * 2;
 
           @include media-breakpoint-down(tablet) {
+            max-width: 92px;
             font-size: var(--font-size-text-10);
           }
         }
