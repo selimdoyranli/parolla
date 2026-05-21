@@ -105,7 +105,7 @@
       )
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--knowledge-kingdom(
-        v-if="$i18n.locale === $i18n.defaultLocale"
+        v-if="false"
         icon="noto:crown"
         :to="localePath({ name: 'Tycoon-KnowledgeKingdom' })"
         :title="$t('introScene.modeList.knowledgeKingdom.title')"
