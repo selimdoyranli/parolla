@@ -62,7 +62,9 @@ export default defineComponent({
       tourScoreLoading.value = false
 
       if (playerData?.id) {
-        store.dispatch('profile/fetchPlayerStats', { userId: playerData.id })
+        const me = store.getters['auth/user']
+        const isSelf = !!(me?.id && Number(me.id) === Number(playerData.id))
+        store.dispatch('profile/fetchPlayerStats', { userId: playerData.id, isSelf })
       }
     })
 

@@ -75,7 +75,9 @@ export default defineComponent({
       playerLoading.value = false
 
       if (data?.id) {
-        store.dispatch('profile/fetchPlayerStats', { userId: data.id })
+        const me = store.getters['auth/user']
+        const isSelf = !!(me?.id && Number(me.id) === Number(data.id))
+        store.dispatch('profile/fetchPlayerStats', { userId: data.id, isSelf })
       }
     }
 
