@@ -145,8 +145,8 @@ export default defineComponent({
 
       const { data, error } = await store.dispatch('auth/updateUser', {
         username: form.username,
-        fullname: form.fullname.trim(),
-        bio: form.bio.trim(),
+        fullname: form.fullname?.trim() || null,
+        bio: form.bio?.trim() || null,
         ...(form.diceBear && {
           diceBear: {
             dataImage: form.diceBear.dataImage,
