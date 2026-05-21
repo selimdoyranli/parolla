@@ -347,15 +347,23 @@ export default {
         thisOrThat: {
           title: 'How to play this or that quiz?',
           description: 'Choose between two options each round',
-          extra: 'This quiz was created by another player <br> There are {choiceCount} choices. You can play this mod over and over again.'
+          extra: 'There are {choiceCount} choices. You can play this mod over and over again.'
         },
         flashcards: {
           title: 'Flashcards',
           description: 'This quiz has <strong>{cardCount} flashcards</strong>.',
           extra: 'Tap a card to flip it. Use arrows to navigate between cards.'
         },
-        extra:
-          'This quiz was created by another player <br> There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
+        description: `
+        You have to find the answer to the question corresponding to each character, the answer starts with that character.
+        <br><br> The total duration of the game is <strong>{gameTimeLimitMinutes} minutes</strong>.
+        <br><small>If you refresh the page the game starts from the beginning</small>`,
+        descriptionTrivia: `
+        You have to find the correct answer to each question.
+        <br><br> The total duration of the game is <strong>{gameTimeLimitMinutes} minutes</strong>.
+        <br><small>If you refresh the page the game starts from the beginning</small>`,
+        preparedBy: 'Prepared by',
+        extra: 'There are {questionCount} questions and {questionCount} answers. You can play this mod over and over again.'
       },
       tour: {
         extra: `You have to find the answer to the question corresponding to each character, the answer starts with that character.<br><br>

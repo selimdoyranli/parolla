@@ -352,15 +352,23 @@ export default {
         thisOrThat: {
           title: 'O mu bu mu? quiz nasıl oynanır?',
           description: 'Her tur iki seçenek arasından seçim yap',
-          extra: 'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
+          extra: '{choiceCount} seçim var. Bu modu tekrar tekrar oynayabilirsin.'
         },
         flashcards: {
           title: 'Flashcards',
           description: 'Bu quizde <strong>{cardCount} flashcard</strong> var.',
           extra: 'Kartı çevirmek için üzerine dokun. Kartlar arasında geçiş yapmak için okları kullan.'
         },
-        extra:
-          'Bu quiz başka bir oyuncu tarafından hazırlandı <br> {questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
+        description: `
+        Her karaktere karşılık gelen sorunun cevabını bulmalısın, cevap o karakter ile başlar.
+        <br><br> Oyunun toplam süresi <strong>{gameTimeLimitMinutes} dakika</strong>'dır.
+        <br><small>Eğer sayfayı yenilersen oyun en baştan başlar</small>`,
+        descriptionTrivia: `
+        Her sorunun doğru cevabını bulmalısın.
+        <br><br> Oyunun toplam süresi <strong>{gameTimeLimitMinutes} dakika</strong>'dır.
+        <br><small>Eğer sayfayı yenilersen oyun en baştan başlar</small>`,
+        preparedBy: 'Hazırlayan',
+        extra: '{questionCount} soru ve {questionCount} cevap var. Bu modu tekrar tekrar oynayabilirsin.'
       },
       tour: {
         extra: `

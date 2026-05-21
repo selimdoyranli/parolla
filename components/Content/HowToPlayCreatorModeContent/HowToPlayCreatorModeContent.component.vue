@@ -6,6 +6,9 @@
       div(v-html="descriptionHtml")
     template(#extra)
       <br>
+      .how-to-play-creator-mode-content__preparedBy
+        span.how-to-play-creator-mode-content__preparedBy-label {{ $t('dialog.howToPlay.creator.preparedBy') }}
+        PlayerAvatar(with-username :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
       div(v-html="$t('dialog.howToPlay.creator.extra', { questionCount: String(alphabet.items.length) })")
       NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
         small(v-html="$t('scoreboard.loginToBeInScoreboard')")
@@ -37,7 +40,10 @@ export default defineComponent({
     })
 
     const descriptionHtml = computed(() => {
-      return i18n.t('dialog.howToPlay.description', {
+      const isTrivia = room.value?.answerTypeDominance === 'trivia'
+      const key = isTrivia ? 'dialog.howToPlay.creator.descriptionTrivia' : 'dialog.howToPlay.creator.description'
+
+      return i18n.t(key, {
         gameTimeLimitMinutes: gameTimeLimitMinutes.value
       })
     })
