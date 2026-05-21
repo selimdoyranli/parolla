@@ -8,7 +8,7 @@
       <br>
       .how-to-play-creator-mode-content__preparedBy
         span.how-to-play-creator-mode-content__preparedBy-label {{ $t('dialog.howToPlay.creator.preparedBy') }}
-        PlayerAvatar(with-username :user="room.isAnon ? null : room.user")
+        PlayerAvatar(with-username :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
       div(v-html="$t('dialog.howToPlay.creator.thisOrThat.extra', { choiceCount: String(room.choices.length) })")
 </template>
 
