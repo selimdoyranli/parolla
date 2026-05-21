@@ -31,7 +31,7 @@
             template(#title)
               .room-list-item-title
                 span.room-list-item-title__text {{ room.title }}
-                  Tag.ms-2(v-if="isOwner({ user: room.user }) && !room.isVisible" type="warning") {{ $t('general.draft') }}
+                  Tag.ms-2(v-if="scoped && isOwner({ user: room.user }) && !room.isVisible" type="warning") {{ $t('general.draft') }}
 
             template(#label)
               .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
@@ -42,7 +42,7 @@
                   :open-player-dialog-on-click="!room.isAnon && !!room.user"
                 )
 
-                template(v-if="isOwner({ user: room.user })")
+                template(v-if="scoped && isOwner({ user: room.user })")
                   Tag.room-list-item-listing-tag(v-if="room.isListed")
                     AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
                     span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
@@ -59,7 +59,7 @@
                     :open-player-dialog-on-click="!room.isAnon && !!room.user"
                   )
 
-                template(v-if="isOwner({ user: room.user })")
+                template(v-if="scoped && isOwner({ user: room.user })")
                   .room-list-item-badge
                     Tag.room-list-item-listing-tag(v-if="room.isListed")
                       AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
