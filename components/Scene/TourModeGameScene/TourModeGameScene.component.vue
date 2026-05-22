@@ -90,6 +90,7 @@ import { defineComponent, useContext, useStore, ref, onMounted, onUnmounted, com
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { Button, Field, Empty, CountDown, Progress, Popover, Notify, Toast, Loading } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -259,29 +260,25 @@ export default defineComponent({
     }
 
     const showCorrectToast = () => {
-      Toast({
+      showToast.default(context.i18n.t('tourMode.correctAnswer.description'), {
         type: 'html',
         className: 'toast-correct',
         forbidClick: false,
         overlay: false,
         transition: 'answer-result',
         closeOnClickOverlay: false,
-        position: 'bottom',
-        message: context.i18n.t('tourMode.correctAnswer.description'),
         duration: 0
       })
     }
 
     const showPlayerFinishedTheTourToast = () => {
-      Toast({
+      showToast.default(context.i18n.t('tourMode.playerFinishedTheTour.description'), {
         type: 'html',
         className: 'toast-wrong',
         forbidClick: false,
         overlay: false,
         transition: 'answer-result',
         closeOnClickOverlay: false,
-        position: 'bottom',
-        message: context.i18n.t('tourMode.playerFinishedTheTour.description'),
         duration: 0
       })
     }

@@ -79,7 +79,8 @@
 
 <script>
 import { defineComponent, useFetch, useStore, useContext, ref, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { Button, Empty, Toast } from 'vant'
+import { Button, Empty } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -305,11 +306,7 @@ export default defineComponent({
 
         if (gameStatus.value === gameStatusEnum.WON) {
           const getWonToastMessage = message => {
-            Toast({
-              message: message,
-              position: 'bottom',
-              duration: 3000
-            })
+            showToast.default(message, { duration: 3000 })
           }
 
           if (result.attempts === 1) {
