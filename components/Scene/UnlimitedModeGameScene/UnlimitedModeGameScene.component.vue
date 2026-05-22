@@ -43,7 +43,9 @@
           strong.question__title {{ question.question }}
 
       // Field Section
-      section.game-scene__fieldSection(:class="{ 'game-scene__fieldSection--disabled': !isGameStarted }")
+      section.game-scene__fieldSection.game-scene__fieldSection--withStats(
+        :class="{ 'game-scene__fieldSection--disabled': !isGameStarted }"
+      )
         // Answer Field
         .answer-field
           input.answer-field__input(
@@ -74,6 +76,21 @@
               icon="arrow"
               @click="pass"
             ) {{ $t('gameScene.answerField.pass') }}
+
+        // Stats
+        .game-scene__fieldSection-stats
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--correct
+            AppIcon(name="tabler:check" color="var(--color-success-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isCorrect).length }}
+            span {{ $t('gameScene.correct') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--wrong
+            AppIcon(name="tabler:x" color="var(--color-danger-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isWrong).length }}
+            span {{ $t('gameScene.wrong') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--passed
+            AppIcon(name="tabler:player-skip-forward" color="var(--color-warning-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isPassed).length }}
+            span {{ $t('gameScene.pass') }}
 
   // How To Play Dialog
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")

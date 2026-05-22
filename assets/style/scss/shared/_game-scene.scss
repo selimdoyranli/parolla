@@ -47,22 +47,6 @@
     }
   }
 
-  @at-root html[ua-is-from-ios='true'] {
-    #{$game-scene} {
-      &--osk {
-        /*  osk style for ios */
-      }
-    }
-  }
-
-  @at-root html[ua-browser='Safari'] {
-    #{$game-scene} {
-      &--osk {
-        /*  osk safari style */
-      }
-    }
-  }
-
   // Alphabet
   .alphabet {
     --alphabet-height: auto;
@@ -74,8 +58,12 @@
     margin-bottom: calc(var(--base-m-y) * 2);
     padding: var(--base-p-y) 0;
 
-    @include media-breakpoint-down(mobile-l) {
+    @include media-breakpoint-down(mobile) {
       margin-bottom: calc(var(--base-m-y) / 2);
+    }
+
+    @include media-breakpoint-down(mobile-l) {
+      margin-bottom: calc(var(--base-m-y) / 4);
     }
 
     @at-root .unsupported-height {
@@ -196,8 +184,12 @@
       padding: calc(var(--base-p-y) * 2) calc(var(--base-p-x) * 4);
     }
 
+    @include media-breakpoint-down(mobile) {
+      padding: calc(var(--base-p-y) / 2) var(--base-p-x);
+    }
+
     @include media-breakpoint-down(mobile-m) {
-      padding: var(--base-p-y) var(--base-p-x);
+      padding: calc(var(--base-p-y) / 4) var(--base-p-x);
     }
 
     @at-root .unsupported-height {
@@ -223,7 +215,8 @@
     white-space: break-spaces !important;
 
     @include media-breakpoint-down(mobile) {
-      height: 150px;
+      // Tracks visualViewport so the question shrinks when OSK lifts the field section (iOS) and grows when it doesn't (Android).
+      height: clamp(80px, calc(var(--vh) - 300px), 280px);
     }
 
     @media (max-height: 569px) {
@@ -238,16 +231,6 @@
       @include font-weight-bold;
     }
 
-    @at-root html[ua-is-from-ios='true'] {
-      #{$question} {
-        &--osk {
-          @include media-breakpoint-down(mobile) {
-            height: 90px;
-          }
-        }
-      }
-    }
-
     @at-root .unsupported-height {
       #{$question} {
         &--osk {
@@ -256,9 +239,23 @@
       }
     }
 
+    @at-root html[ua-is-from-ios='true'] {
+      #{$question} {
+        &--osk {
+          @include media-breakpoint-down(mobile) {
+            height: 80px;
+          }
+        }
+      }
+    }
+
     &--osk {
-      @media (max-height: 569px) {
+      @media (max-height: 400px) {
         height: 60px;
+      }
+
+      @media (max-height: 569px) {
+        height: 120px;
       }
     }
   }
@@ -276,10 +273,56 @@
 
     @include center(true, false);
 
+    &--withStats {
+      --field-section-stats-height: 34px;
+
+      top: calc(var(--vh) - var(--answer-field-height) - var(--field-section-stats-height) - var(--base-p-y));
+    }
+
     &--disabled {
       opacity: 0.5;
       user-select: none;
       pointer-events: none;
+    }
+  }
+
+  // Field Section Stats (correct / wrong / passed counts)
+  &__fieldSection-stats {
+    display: flex;
+    gap: calc(var(--base-m-x) * 1.25);
+    align-items: center;
+    justify-content: center;
+    height: var(--field-section-stats-height);
+    margin-top: calc(var(--base-m-y) / 2);
+    padding: 0 var(--base-p-x);
+    font-size: var(--font-size-text-9);
+    background-color: var(--color-ui-01);
+    border-radius: var(--border-radius-01);
+    user-select: none;
+
+    &__item {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      color: var(--color-text-03);
+
+      strong {
+        font-variant-numeric: tabular-nums;
+
+        @include font-weight-bold;
+      }
+
+      &--correct {
+        color: var(--color-success-01);
+      }
+
+      &--wrong {
+        color: var(--color-danger-01);
+      }
+
+      &--passed {
+        color: var(--color-warning-01);
+      }
     }
   }
 
