@@ -5850,6 +5850,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.2.6":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: 10c0/afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^4.1.11, clean-css@npm:^4.2.1, clean-css@npm:^4.2.3":
   version: 4.2.4
   resolution: "clean-css@npm:4.2.4"
@@ -7004,7 +7011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debounce@npm:^1.2.1":
+"debounce@npm:^1.2.0, debounce@npm:^1.2.1":
   version: 1.2.1
   resolution: "debounce@npm:1.2.1"
   checksum: 10c0/6c9320aa0973fc42050814621a7a8a78146c1975799b5b3cc1becf1f77ba9a5aa583987884230da0842a03f385def452fad5d60db97c3d1c8b824e38a8edf500
@@ -7508,6 +7515,13 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 10c0/26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"easy-bem@npm:^1.0.2":
+  version: 1.1.1
+  resolution: "easy-bem@npm:1.1.1"
+  checksum: 10c0/83b54e5c854795612a245fba9bc48053da3593205ff19d8aad38ef9bc0cbf56d2df7af73d90b533602696ead1ffe6beef55d756e2356e981f50156e044a1463e
   languageName: node
   linkType: hard
 
@@ -13255,6 +13269,7 @@ __metadata:
     unplugin-auto-import: "npm:^0.18.3"
     v-dropdown-menu: "npm:1.3.2"
     vant: "npm:^2.12.54"
+    vue-advanced-cropper: "npm:^2"
     vue-infinite-loading: "npm:^2.4.5"
     vue-multiselect: "npm:2.1.6"
     vue-star-rating: "npm:^1.7.0"
@@ -19170,6 +19185,19 @@ __metadata:
   version: 2.0.1
   resolution: "void-elements@npm:2.0.1"
   checksum: 10c0/23b4f35bbeabcaa5c87a9f638ae80862a9313dccbaa8973b0eada81dbe97488ae11baf4d8aa2846bc397d31456afdfd8d791bb44c542f83735e6d04af6996f4d
+  languageName: node
+  linkType: hard
+
+"vue-advanced-cropper@npm:^2":
+  version: 2.8.9
+  resolution: "vue-advanced-cropper@npm:2.8.9"
+  dependencies:
+    classnames: "npm:^2.2.6"
+    debounce: "npm:^1.2.0"
+    easy-bem: "npm:^1.0.2"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 10c0/c5b5d769ad6c8d1d14de7a425d0774bf63d971c3f9c576c8b2d8f85d1796208ccff605cdc58fbfeff88d1c4b2fe2bf29066eff191982f3b11d9f1453df3d2ec0
   languageName: node
   linkType: hard
 
