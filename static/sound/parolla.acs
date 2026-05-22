@@ -1,0 +1,41 @@
+/* Parolla — Audio CSS (ACS) sound effects.
+   Source of truth. Mirrored into static/sound/parolla.acs.
+   Loaded at runtime via <link rel="audiostyle"> by plugins/acs.js.
+   See docs/superpowers/specs/2026-05-23-acs-sfx-design.md */
+
+:root {
+  master-volume: 0.6;
+}
+
+/* === Buttons === */
+.van-button { sound-on-click: tap-tactile; }
+.van-button.van-button--primary,
+.van-button.van-button--danger,
+.van-button.van-button--info { sound-on-click: pop; }
+.van-button.van-button--disabled { sound-on-click: denied; volume: 0.3; }
+
+/* === Cells, Tabs, Dropdown items === */
+.van-cell.van-cell--clickable,
+.van-cell[is-link] { sound-on-click: tick; }
+.van-tab { sound-on-click: tick; }
+.van-dropdown-item { sound-on-click: tick; }
+
+/* === Switch — baseline; direction handled imperatively === */
+.van-switch { sound-on-click: tick; volume: 0.4; }
+
+/* === Inputs === */
+input, textarea { sound-on-keydown: tick; volume: 0.3; }
+input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
+
+/* === Dialog / Popup === */
+.van-dialog { sound-on-appear: modal-open; sound-on-disappear: modal-close; }
+.van-popup--bottom, .van-popup--top,
+.van-popup--left, .van-popup--right { sound-on-appear: drawer-open; sound-on-disappear: drawer-close; }
+
+/* === Toast (baseline; per-type overrides via showToast helper) === */
+.van-toast { sound-on-appear: notify; volume: 0.5; }
+
+/* === Accessibility === */
+@media (prefers-reduced-sound: reduce) {
+  :root { master-volume: 0; }
+}
