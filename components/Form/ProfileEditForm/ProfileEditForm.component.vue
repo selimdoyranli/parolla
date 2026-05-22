@@ -7,9 +7,10 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
 
     .profile-edit-form__avatarSourceField
       span.profile-edit-form__avatarSourceFieldLabel {{ $t('form.profileEdit.avatarSource.label') }}
-      RadioGroup.profile-edit-form__avatarSourceToggle(v-model="form.avatarSource" direction="horizontal")
-        Radio(name="diceBear") {{ $t('form.profileEdit.avatarSource.diceBear') }}
-        Radio(name="profilePhoto") {{ $t('form.profileEdit.avatarSource.profilePhoto') }}
+      .profile-edit-form__avatarSourceFieldBox
+        RadioGroup.profile-edit-form__avatarSourceToggle(v-model="form.avatarSource" direction="horizontal")
+          Radio(name="diceBear") {{ $t('form.profileEdit.avatarSource.diceBear') }}
+          Radio(name="profilePhoto") {{ $t('form.profileEdit.avatarSource.profilePhoto') }}
 
     Button.profile-edit-form__avatarEditButton(
       v-if="form.avatarSource === 'diceBear'"

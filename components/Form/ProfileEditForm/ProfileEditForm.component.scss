@@ -28,28 +28,38 @@
   &__avatarSourceField {
     display: flex;
     flex-direction: column;
+    gap: 8px;
     align-items: stretch;
     width: 100%;
-    max-width: 280px;
+    max-width: 360px;
     margin-block-start: var(--base-m-y);
-    padding: 10px 14px 12px;
-    background: var(--color-field-01);
-    border-radius: var(--border-radius-01);
   }
 
   &__avatarSourceFieldLabel {
-    display: block;
-    color: var(--color-text-03);
-    font-size: 11px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
+    align-self: flex-start;
+    padding: 6px 18px;
+    color: var(--color-text-02);
+    font-size: 13px;
+    background: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: var(--border-radius-01);
+  }
+
+  &__avatarSourceFieldBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 14px 20px;
+    background: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: var(--border-radius-01);
   }
 
   &__avatarSourceToggle {
     display: flex;
-    gap: 16px;
-    justify-content: center;
-    margin-block-start: 6px;
+    gap: 24px;
+    justify-content: space-around;
+    width: 100%;
   }
 
   &__avatarEditButton {
