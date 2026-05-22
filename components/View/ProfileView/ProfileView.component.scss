@@ -109,6 +109,10 @@
 
     &__avatar {
       display: block;
+
+      &--clickable {
+        cursor: pointer;
+      }
     }
 
     &__action {
@@ -205,4 +209,42 @@
   &-error {
     padding: 24px;
   }
+}
+
+// ImagePreview is portalled to <body> outside .profile-view, so this
+// selector lives at the root rather than nested under the page scope.
+.profile-view-image-preview {
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.45);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    pointer-events: auto;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(0, 0, 0, 0.65);
+    }
+  }
+}
+
+// vant's `.van-image-preview__cover` sits at top-left of the preview
+// stage and is sized to its content; let our close button float to the
+// top-right of the overlay instead.
+.van-image-preview__cover {
+  top: 0;
+  right: 0;
+  left: auto;
+  pointer-events: none;
 }
