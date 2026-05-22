@@ -4230,6 +4230,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acs-audio@npm:^0.9.5":
+  version: 0.9.5
+  resolution: "acs-audio@npm:0.9.5"
+  checksum: 10c0/6f32994ffad65d6fec05de0e7ca7a8ba5029234b4c653c08990f43747f28e5b7b81b1e5fcd9844fae625dc5c44c51843a6f7cc200e85c908fac8e8d44ef3ec00
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:6":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -13213,6 +13220,7 @@ __metadata:
     "@nuxtjs/stylelint-module": "npm:^4.0.0"
     "@prettier/plugin-pug": "npm:^1.10.0"
     "@vueuse/core": "npm:^10.2.0"
+    acs-audio: "npm:^0.9.5"
     babel-eslint: "npm:^10.1.0"
     babel-plugin-import: "npm:^1.13.3"
     bootstrap: "npm:5.2.3"

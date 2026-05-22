@@ -57,6 +57,7 @@
     "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/i18n": "^7.3.1",
     "@vueuse/core": "^10.2.0",
+    "acs-audio": "^0.9.5",
     "bootstrap": "5.2.3",
     "canvas-confetti": "^1.9.3",
     "convert-size": "^1.2.1",
