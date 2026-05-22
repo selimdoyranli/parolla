@@ -4,7 +4,28 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
 
   .profile-edit-form__avatarEdit
     PlayerAvatar(:size="80" :user="displayUser")
-    Button.profile-edit-form__avatarEditButton(icon="edit" size="small" native-type="button" round @click="handleClickAvatarEdit") Avatar Düzenle
+
+    RadioGroup.profile-edit-form__avatarSourceToggle(v-model="form.avatarSource" direction="horizontal")
+      Radio(name="diceBear") {{ $t('form.profileEdit.avatarSource.diceBear') }}
+      Radio(name="profilePhoto") {{ $t('form.profileEdit.avatarSource.profilePhoto') }}
+
+    Button.profile-edit-form__avatarEditButton(
+      v-if="form.avatarSource === 'diceBear'"
+      icon="edit"
+      size="small"
+      native-type="button"
+      round
+      @click="handleClickAvatarEdit"
+    ) {{ $t('form.profileEdit.editAvatarButton') }}
+
+    Button.profile-edit-form__avatarEditButton(
+      v-else
+      icon="photograph"
+      size="small"
+      native-type="button"
+      round
+      @click="handleClickProfilePhotoEdit"
+    ) {{ $t('form.profileEdit.uploadPhotoButton') }}
 
   .profile-edit-form__fields
     Field.profile-edit-form__usernameField(
@@ -58,11 +79,12 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
   ) {{ $t('general.save') }}
 
   AvatarEditorDialog(:user="user" @on-confirm="handleAvatarConfirm")
+  ProfilePhotoEditorDialog(@on-confirm="handleProfilePhotoConfirm")
 </template>
 
 <script>
 import { defineComponent, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
-import { Form, Button, Field, Notify, Badge } from 'vant'
+import { Form, Button, Field, Notify, Badge, RadioGroup, Radio } from 'vant'
 import { USERNAME_REGEX } from '@/system/constant'
 
 export default defineComponent({
@@ -71,7 +93,9 @@ export default defineComponent({
     Button,
     Field,
     Notify,
-    Badge
+    Badge,
+    RadioGroup,
+    Radio
   },
   setup() {
     const { i18n } = useContext()
@@ -87,23 +111,48 @@ export default defineComponent({
       form.diceBear = { ...diceBear }
     }
 
+    const handleClickProfilePhotoEdit = () => {
+      store.commit('profile/SET_PROFILE_PHOTO_EDITOR_DIALOG_IS_OPEN', true)
+    }
+
+    const handleProfilePhotoConfirm = blob => {
+      if (form.profilePhotoPreviewUrl) {
+        URL.revokeObjectURL(form.profilePhotoPreviewUrl)
+      }
+      form.profilePhotoBlob = blob
+      form.profilePhotoPreviewUrl = URL.createObjectURL(blob)
+    }
+
     const form = reactive({
       isBusy: false,
       username: user.value.username,
       fullname: user.value.fullname,
       bio: user.value.bio,
-      diceBear: null
+      diceBear: null,
+      avatarSource: user.value.avatarSource || 'diceBear',
+      profilePhotoBlob: null,
+      profilePhotoPreviewUrl: null
     })
 
     const displayUser = computed(() => {
-      if (form.diceBear) {
-        return {
-          ...user.value,
-          diceBear: form.diceBear
+      const base = { ...user.value, avatarSource: form.avatarSource }
+
+      if (form.avatarSource === 'profilePhoto') {
+        if (form.profilePhotoPreviewUrl) {
+          return {
+            ...base,
+            profilePhoto: { url: form.profilePhotoPreviewUrl }
+          }
         }
+
+        return base
       }
 
-      return user.value
+      if (form.diceBear) {
+        return { ...base, diceBear: form.diceBear }
+      }
+
+      return base
     })
 
     const isUsernameChanged = computed(() => {
@@ -143,34 +192,58 @@ export default defineComponent({
         return
       }
 
+      if (form.avatarSource === 'profilePhoto' && form.profilePhotoBlob) {
+        const { error: uploadError } = await store.dispatch('auth/uploadProfilePhoto', {
+          file: form.profilePhotoBlob
+        })
+
+        if (uploadError) {
+          Notify({
+            message: uploadError.message,
+            color: 'var(--color-text-04)',
+            background: 'var(--color-danger-01)',
+            duration: 3000
+          })
+          form.isBusy = false
+
+          return
+        }
+
+        if (form.profilePhotoPreviewUrl) {
+          URL.revokeObjectURL(form.profilePhotoPreviewUrl)
+        }
+        form.profilePhotoBlob = null
+        form.profilePhotoPreviewUrl = null
+      }
+
       const { data, error } = await store.dispatch('auth/updateUser', {
         username: form.username,
         fullname: form.fullname?.trim() || null,
         bio: form.bio?.trim() || null,
-        ...(form.diceBear && {
-          diceBear: {
-            dataImage: form.diceBear.dataImage,
-            config: {
-              seed: form.username || form.diceBear.config.seed,
-              mouth: form.diceBear.config.mouth,
-              eyes: form.diceBear.config.eyes,
-              eyebrows: form.diceBear.config.eyebrows,
-              hair: form.diceBear.config.hair,
-              hairColor: form.diceBear.config.hairColor,
-              earrings: form.diceBear.config.earrings,
-              features: form.diceBear.config.features,
-              glasses: form.diceBear.config.glasses,
-              skinColor: form.diceBear.config.skinColor,
-              backgroundColor: form.diceBear.config.backgroundColor
+        avatarSource: form.avatarSource,
+        ...(form.avatarSource === 'diceBear' &&
+          form.diceBear && {
+            diceBear: {
+              dataImage: form.diceBear.dataImage,
+              config: {
+                seed: form.username || form.diceBear.config.seed,
+                mouth: form.diceBear.config.mouth,
+                eyes: form.diceBear.config.eyes,
+                eyebrows: form.diceBear.config.eyebrows,
+                hair: form.diceBear.config.hair,
+                hairColor: form.diceBear.config.hairColor,
+                earrings: form.diceBear.config.earrings,
+                features: form.diceBear.config.features,
+                glasses: form.diceBear.config.glasses,
+                skinColor: form.diceBear.config.skinColor,
+                backgroundColor: form.diceBear.config.backgroundColor
+              }
             }
-          }
-        })
+          })
       })
 
       if (data) {
-        store.commit('auth/SET_USER', {
-          ...data
-        })
+        store.commit('auth/SET_USER', { ...data })
 
         Notify({
           message: i18n.t('form.profileEdit.callback.success'),
@@ -198,6 +271,8 @@ export default defineComponent({
       displayUser,
       handleClickAvatarEdit,
       handleAvatarConfirm,
+      handleClickProfilePhotoEdit,
+      handleProfilePhotoConfirm,
       form,
       handleInput,
       isUsernameChanged,

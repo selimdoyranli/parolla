@@ -25,6 +25,13 @@
     margin-inline: auto;
   }
 
+  &__avatarSourceToggle {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
   &__avatarEditButton {
     margin-block-start: var(--base-m-y);
   }
