@@ -24,13 +24,13 @@
 .van-switch { sound-on-click: tick; volume: 0.4; }
 
 /* === Inputs === */
-input, textarea { sound-on-keydown: tick; volume: 0.3; }
+input, textarea { sound-on-input: tick; volume: 0.3; }
 input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 
 /* === Dialog / Popup === */
-.van-dialog { sound-on-appear: modal-open; sound-on-disappear: modal-close; }
+.van-dialog { sound-on-appear: modal-open; sound-on-leave: modal-close; }
 .van-popup--bottom, .van-popup--top,
-.van-popup--left, .van-popup--right { sound-on-appear: drawer-open; sound-on-disappear: drawer-close; }
+.van-popup--left, .van-popup--right { sound-on-appear: drawer-open; sound-on-leave: drawer-close; }
 
 /* === Toast (baseline; per-type overrides via showToast helper) === */
 .van-toast { sound-on-appear: notify; volume: 0.5; }
