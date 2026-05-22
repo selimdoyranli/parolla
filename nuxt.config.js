@@ -403,7 +403,7 @@ module.exports = {
         ]
       ]
     },
-    transpile: ['vant'],
+    transpile: ['vant', 'acs-audio'],
     postcss: {
       postcssOptions: {
         plugins: {
