@@ -413,8 +413,18 @@ module.exports = {
     },
     extend(config, { isDev, isClient }) {
       if (!isDev && isClient) {
+        // Keep [name] only for top-level entries (app, runtime) so the
+        // network tab stays readable. Force split/async chunks to a flat
+        // hash-only filename — webpack 4's splitChunks auto-naming
+        // includes '/' for deeply-shared modules (e.g.
+        // vendors/components/A/components/B/page/...) which turns into
+        // real nested directories on disk and, past a depth threshold,
+        // also gets segment-truncated by webpack (we observed `compone`,
+        // `compo`, `Mus` in the output). Cloudflare Pages' asset binding
+        // mishandles that structure on deploy and serves 500 + empty
+        // body with cf-cache-status: BYPASS for foundational chunks.
         config.output.filename = '[name].[contenthash].js'
-        config.output.chunkFilename = '[name].[contenthash].js'
+        config.output.chunkFilename = '[contenthash].js'
       }
     }
   },
