@@ -105,7 +105,8 @@ module.exports = {
     { src: '~/plugins/iconify', ssr: false }, // https://www.npmjs.com/package/@iconify/vue
     { src: '~/plugins/vue-timeago', ssr: false }, // https://vue-timeago.egoist.sh
     { src: '~/plugins/portal-vue', ssr: false }, // https://v2.portal-vue.linusb.org/
-    { src: '~/plugins/vue-croppa', ssr: false } // https://www.npmjs.com/package/vue-croppa
+    { src: '~/plugins/vue-croppa', ssr: false }, // https://www.npmjs.com/package/vue-croppa
+    { src: '~/plugins/acs', ssr: false } // https://audiocss.dev — UI sound effects
   ],
 
   /*
