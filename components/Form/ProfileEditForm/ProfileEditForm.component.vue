@@ -3,7 +3,33 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
   span.profile-edit-form__title.mt-base Profil Düzenle
 
   .profile-edit-form__avatarEdit
-    PlayerAvatar(:size="80" :user="displayUser")
+    PlayerAvatar(v-if="form.avatarSource === 'diceBear'" :size="80" :user="displayUser")
+    .profile-edit-form__cropperBox(v-else)
+      client-only
+        croppa.profile-edit-form__croppa(
+          v-model="avatar.file"
+          placeholder
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          initial-size="cover"
+          :initial-image="initialPhotoUrl"
+          :quality="12.8"
+          :prevent-white-space="true"
+          :file-size-limit="maxFileSize"
+          :show-remove-button="!form.isBusy"
+          :zoom-speed="10"
+          :width="80"
+          :height="80"
+          :disabled="form.isBusy"
+          @file-type-mismatch="handleCroppaTypeMismatch"
+          @file-size-exceed="handleCroppaSizeExceed"
+          @file-choose="handleAvatarChoose"
+          @new-image-drawn="handleAvatarLoaded"
+          @zoom="handleDirtyAvatar"
+          @move="handleDirtyAvatar"
+          @image-remove="handleAvatarRemove"
+        )
+      span.profile-edit-form__cropperUploadIcon(v-if="!avatar.hasImage")
+        AppIcon(name="tabler:photo-plus" color="var(--color-text-02)" :width="28" :height="28")
 
     .profile-edit-form__avatarSourceField
       span.profile-edit-form__avatarSourceFieldLabel {{ $t('form.profileEdit.avatarSource.label') }}
@@ -11,14 +37,6 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
         RadioGroup.profile-edit-form__avatarSourceToggle(v-model="form.avatarSource" direction="horizontal")
           Radio(name="diceBear") {{ $t('form.profileEdit.avatarSource.diceBear') }}
           Radio(name="profilePhoto") {{ $t('form.profileEdit.avatarSource.profilePhoto') }}
-
-    input(
-      ref="profilePhotoInputRef"
-      type="file"
-      accept="image/jpeg,image/png,image/gif,image/webp"
-      style="display: none"
-      @change="handleProfilePhotoFileChange"
-    )
 
     Button.profile-edit-form__avatarEditButton(
       v-if="form.avatarSource === 'diceBear'"
@@ -29,21 +47,16 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
       @click="handleClickAvatarEdit"
     ) {{ $t('form.profileEdit.editAvatarButton') }}
 
-    .profile-edit-form__photoActions(v-else)
-      Button(icon="photograph" size="small" native-type="button" round @click="handleClickProfilePhotoEdit")
-        | {{ $t('form.profileEdit.uploadPhotoButton') }}
-      Button(
-        v-if="hasUploadedProfilePhoto"
-        type="danger"
-        icon="delete-o"
-        size="small"
-        plain
-        native-type="button"
-        round
-        :loading="form.isDeletingPhoto"
-        :disabled="form.isDeletingPhoto || form.isBusy"
-        @click="handleClickDeleteProfilePhoto"
-      ) {{ $t('form.profileEdit.deletePhotoButton') }}
+    Button.profile-edit-form__changePhotoButton(
+      v-else
+      icon="photograph"
+      size="small"
+      plain
+      native-type="button"
+      round
+      :disabled="form.isBusy"
+      @click="handleClickReplacePhoto"
+    ) {{ $t('dialog.profilePhotoEditor.change') }}
 
   .profile-edit-form__fields
     Field.profile-edit-form__usernameField(
@@ -97,12 +110,11 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
   ) {{ $t('general.save') }}
 
   AvatarEditorDialog(:user="user" @on-confirm="handleAvatarConfirm")
-  ProfilePhotoEditorDialog(:source-file="form.profilePhotoSelectedFile" @on-confirm="handleProfilePhotoConfirm")
 </template>
 
 <script>
-import { defineComponent, ref, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
-import { Form, Button, Field, Notify, Toast, Dialog as VanDialog, Badge, RadioGroup, Radio } from 'vant'
+import { defineComponent, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
+import { Form, Button, Field, Notify, Toast, Badge, RadioGroup, Radio } from 'vant'
 import { USERNAME_REGEX } from '@/system/constant'
 import parollaConfig from '@/system/parolla.config'
 
@@ -121,7 +133,7 @@ export default defineComponent({
     const store = useStore()
 
     const user = computed(() => store.getters['auth/user'])
-    const profilePhotoInputRef = ref(null)
+    const { maxFileSize } = parollaConfig.upload
 
     const handleClickAvatarEdit = async () => {
       store.commit('profile/SET_AVATAR_EDITOR_DIALOG_IS_OPEN', true)
@@ -131,84 +143,80 @@ export default defineComponent({
       form.diceBear = { ...diceBear }
     }
 
-    // Profile photo: click on the upload button triggers the native
-    // file picker directly. Only after the user picks a file that
-    // passes MIME + size validation do we stage it and open the
-    // cropper dialog. Invalid pick = Toast, dialog stays closed.
-    const handleClickProfilePhotoEdit = () => {
-      profilePhotoInputRef.value?.click()
+    const handleCroppaTypeMismatch = () => {
+      Toast.fail({
+        message: i18n.t('dialog.profilePhotoEditor.error.mimeTypeNotAllowed'),
+        duration: 2500
+      })
     }
 
-    const handleProfilePhotoFileChange = event => {
-      const file = event.target.files?.[0]
-
-      if (!file) return
-
-      const { maxFileSize, allowedMimeTypes } = parollaConfig.upload
-
-      if (!allowedMimeTypes.includes(file.type)) {
-        Toast.fail({
-          message: i18n.t('dialog.profilePhotoEditor.error.mimeTypeNotAllowed'),
-          duration: 2500
-        })
-        event.target.value = ''
-
-        return
-      }
-
-      if (file.size > maxFileSize) {
-        Toast.fail({
-          message: i18n.t('dialog.profilePhotoEditor.error.sizeLimitExceeded'),
-          duration: 2500
-        })
-        event.target.value = ''
-
-        return
-      }
-
-      form.profilePhotoSelectedFile = file
-      store.commit('profile/SET_PROFILE_PHOTO_EDITOR_DIALOG_IS_OPEN', true)
-      // Reset so picking the same file again re-fires `change`
-      event.target.value = ''
+    const handleCroppaSizeExceed = () => {
+      Toast.fail({
+        message: i18n.t('dialog.profilePhotoEditor.error.sizeLimitExceeded'),
+        duration: 2500
+      })
     }
 
-    const handleProfilePhotoConfirm = blob => {
-      if (form.profilePhotoPreviewUrl) {
-        URL.revokeObjectURL(form.profilePhotoPreviewUrl)
+    const handleAvatarChoose = () => {
+      avatar.isDirty = true
+    }
+
+    const handleAvatarLoaded = () => {
+      avatar.hasImage = true
+    }
+
+    const handleDirtyAvatar = () => {
+      avatar.isDirty = true
+    }
+
+    const handleAvatarRemove = () => {
+      avatar.isDirty = true
+      avatar.hasImage = false
+    }
+
+    const handleClickReplacePhoto = () => {
+      if (avatar.file && typeof avatar.file.chooseFile === 'function') {
+        avatar.file.chooseFile()
       }
-      form.profilePhotoBlob = blob
-      form.profilePhotoPreviewUrl = URL.createObjectURL(blob)
-      // The cropper now owns the result blob; the parent's staged File
-      // can be released so subsequent opens always start clean.
-      form.profilePhotoSelectedFile = null
     }
 
     const form = reactive({
       isBusy: false,
-      isDeletingPhoto: false,
       username: user.value.username,
       fullname: user.value.fullname,
       bio: user.value.bio,
       diceBear: null,
-      avatarSource: user.value.avatarSource || 'diceBear',
-      profilePhotoBlob: null,
-      profilePhotoPreviewUrl: null,
-      profilePhotoSelectedFile: null
+      avatarSource: user.value.avatarSource || 'diceBear'
     })
 
     const hasUploadedProfilePhoto = computed(() => Boolean(user.value?.profilePhoto?.url))
+
+    const avatar = reactive({
+      file: {},
+      isDirty: false,
+      // Initially true if the user already has an uploaded photo so the
+      // upload-icon overlay doesn't flash before croppa finishes loading
+      // the initial image. Flipped by handleAvatarLoaded / handleAvatarRemove.
+      hasImage: hasUploadedProfilePhoto.value
+    })
+
+    // Cache-bust the initial image URL so croppa fetches it as a fresh
+    // CORS request rather than reusing a previously cached non-CORS
+    // response (which would taint the canvas and break generateBlob).
+    // Computed once at setup; the URL only re-evaluates if the user's
+    // photo actually changes.
+    const initialPhotoUrl = computed(() => {
+      const url = user.value?.profilePhoto?.url
+
+      if (!url) return null
+
+      return `${url}?v=${Date.now()}`
+    })
 
     const displayUser = computed(() => {
       const base = { ...user.value, avatarSource: form.avatarSource }
 
       if (form.avatarSource === 'profilePhoto') {
-        if (form.profilePhotoPreviewUrl) {
-          return {
-            ...base,
-            profilePhoto: { url: form.profilePhotoPreviewUrl }
-          }
-        }
-
         return base
       }
 
@@ -241,57 +249,15 @@ export default defineComponent({
       }
     }
 
-    const handleClickDeleteProfilePhoto = async () => {
-      try {
-        await VanDialog.confirm({
-          title: i18n.t('dialog.deleteProfilePhoto.title'),
-          message: i18n.t('dialog.deleteProfilePhoto.message'),
-          confirmButtonText: i18n.t('general.delete'),
-          cancelButtonText: i18n.t('general.cancel'),
-          confirmButtonColor: 'var(--color-danger-01)'
-        })
-      } catch (_) {
-        // User cancelled
-        return
-      }
+    const generateCroppedBlob = () => {
+      return new Promise(resolve => {
+        if (!avatar.file || typeof avatar.file.generateBlob !== 'function') {
+          resolve(null)
 
-      form.isDeletingPhoto = true
-
-      const { data, error } = await store.dispatch('auth/deleteProfilePhoto')
-
-      if (data) {
-        // Drop any staged photo state so the next save doesn't try to
-        // re-upload something the user just deleted.
-        if (form.profilePhotoPreviewUrl) {
-          URL.revokeObjectURL(form.profilePhotoPreviewUrl)
+          return
         }
-        form.profilePhotoBlob = null
-        form.profilePhotoPreviewUrl = null
-        form.profilePhotoSelectedFile = null
-        form.avatarSource = 'diceBear'
-
-        // Re-fetch /users/me so the avatar reflects the user's existing
-        // diceBear config — the delete response can occasionally return
-        // an incomplete component payload, leaving PlayerAvatar to fall
-        // back to a generated (wrong-looking) avatar until refresh.
-        await store.dispatch('auth/fetchMe')
-
-        Toast.success({
-          message: i18n.t('form.profileEdit.deletePhotoCallback.success'),
-          duration: 2000
-        })
-      }
-
-      if (error) {
-        Notify({
-          message: error.message,
-          color: 'var(--color-text-04)',
-          background: 'var(--color-danger-01)',
-          duration: 3000
-        })
-      }
-
-      form.isDeletingPhoto = false
+        avatar.file.generateBlob(blob => resolve(blob), 'image/jpeg', 0.9)
+      })
     }
 
     const handleSubmit = async () => {
@@ -309,28 +275,77 @@ export default defineComponent({
         return
       }
 
-      if (form.avatarSource === 'profilePhoto' && form.profilePhotoBlob) {
-        const { error: uploadError } = await store.dispatch('auth/uploadProfilePhoto', {
-          file: form.profilePhotoBlob
-        })
+      if (form.avatarSource === 'profilePhoto') {
+        const hadAvatar = hasUploadedProfilePhoto.value
+        const hasImage = typeof avatar.file.hasImage === 'function' && avatar.file.hasImage()
+        const isInitial = Boolean(avatar.file?.currentIsInitial)
 
-        if (uploadError) {
-          Notify({
-            message: uploadError.message,
-            color: 'var(--color-text-04)',
-            background: 'var(--color-danger-01)',
-            duration: 3000
+        // User toggled to profilePhoto but never picked anything and there's
+        // no existing photo on the server — silently fall back to diceBear
+        // so the backend doesn't reject the update for a missing photo.
+        if (!hadAvatar && !hasImage) {
+          form.avatarSource = 'diceBear'
+        } else if (hadAvatar && !hasImage) {
+          // User had a photo and removed it via croppa's remove button —
+          // hit the delete endpoint.
+          const { error: deleteError } = await store.dispatch('auth/deleteProfilePhoto')
+
+          if (deleteError) {
+            Notify({
+              message: deleteError.message,
+              color: 'var(--color-text-04)',
+              background: 'var(--color-danger-01)',
+              duration: 3000
+            })
+            form.isBusy = false
+
+            return
+          }
+
+          // Re-fetch /users/me so the avatar reflects the user's existing
+          // diceBear config — the delete response can occasionally return
+          // an incomplete component payload, leaving PlayerAvatar to fall
+          // back to a generated (wrong-looking) avatar until refresh.
+          await store.dispatch('auth/fetchMe')
+
+          // Flip the UI back to diceBear reactively now that there is no
+          // profile photo on the server.
+          form.avatarSource = 'diceBear'
+        } else if (hasImage && (!isInitial || avatar.isDirty)) {
+          // New file picked, or initial image was pan/zoom-edited —
+          // re-export the canvas and upload.
+          const blob = await generateCroppedBlob()
+
+          if (!blob) {
+            Notify({
+              message: i18n.t('dialog.profilePhotoEditor.error.cropFailed'),
+              color: 'var(--color-text-04)',
+              background: 'var(--color-danger-01)',
+              duration: 3000
+            })
+            form.isBusy = false
+
+            return
+          }
+
+          const { error: uploadError } = await store.dispatch('auth/uploadProfilePhoto', {
+            file: blob
           })
-          form.isBusy = false
 
-          return
+          if (uploadError) {
+            Notify({
+              message: uploadError.message,
+              color: 'var(--color-text-04)',
+              background: 'var(--color-danger-01)',
+              duration: 3000
+            })
+            form.isBusy = false
+
+            return
+          }
         }
 
-        if (form.profilePhotoPreviewUrl) {
-          URL.revokeObjectURL(form.profilePhotoPreviewUrl)
-        }
-        form.profilePhotoBlob = null
-        form.profilePhotoPreviewUrl = null
+        avatar.isDirty = false
       }
 
       const { data, error } = await store.dispatch('auth/updateUser', {
@@ -387,14 +402,19 @@ export default defineComponent({
       user,
       displayUser,
       hasUploadedProfilePhoto,
-      profilePhotoInputRef,
+      initialPhotoUrl,
+      maxFileSize,
       handleClickAvatarEdit,
       handleAvatarConfirm,
-      handleClickProfilePhotoEdit,
-      handleProfilePhotoFileChange,
-      handleProfilePhotoConfirm,
-      handleClickDeleteProfilePhoto,
+      handleCroppaTypeMismatch,
+      handleCroppaSizeExceed,
+      handleAvatarChoose,
+      handleAvatarLoaded,
+      handleDirtyAvatar,
+      handleAvatarRemove,
+      handleClickReplacePhoto,
       form,
+      avatar,
       handleInput,
       isUsernameChanged,
       handleFailed,

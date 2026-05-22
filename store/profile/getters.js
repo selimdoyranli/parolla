@@ -16,8 +16,5 @@ export default {
   },
   isOpenAvatarEditorDialog(state) {
     return state.dialog.avatarEditor.isOpen
-  },
-  isOpenProfilePhotoEditorDialog(state) {
-    return state.dialog.profilePhotoEditor.isOpen
   }
 }

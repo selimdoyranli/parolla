@@ -72,12 +72,77 @@
     margin-block-start: var(--base-m-y);
   }
 
-  &__photoActions {
+  &__cropperBox {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    align-items: center;
     justify-content: center;
+    width: 80px;
+    height: 80px;
+  }
+
+  &__croppa {
+    // The class lands on `.croppa-container` (croppa's wrapper). Make it
+    // round, but DO NOT use overflow:hidden — that would clip croppa's
+    // built-in remove (X) button which sits absolutely positioned at
+    // top-right of the container's bounding box.
+    position: relative;
+    background-color: light-dark(#e6e6e6, #333) !important;
+    border-radius: 100%;
+    // Stop the page from scrolling/zooming while the user drags the
+    // crop area on touch screens — without this, mobile browsers consume
+    // the gesture before the cropper sees it.
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+
+    canvas {
+      display: block;
+      background: var(--color-background-02);
+      border: 1px solid var(--color-border-02);
+      // Mirror the container shape on the canvas itself so the cropped
+      // preview looks circular like an avatar.
+      border-radius: 100%;
+      clip-path: circle();
+    }
+
+    // Croppa renders the remove button without an intrinsic size, so it
+    // collapses to ~8px. Pull it slightly outside the circle, give it a
+    // tappable 24px hit box, and raise its stacking above the canvas.
+    svg.icon-remove {
+      top: -4px;
+      right: -4px;
+      z-index: 2;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__cropperUploadIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    // The croppa canvas underneath handles the click → file picker, so
+    // the overlay must be click-through.
+    pointer-events: none;
+  }
+
+  &__changePhotoButton {
     margin-block-start: var(--base-m-y);
+
+    // The "Change" button is a default (non-typed) plain Vant button —
+    // it ships with light-mode-only colors. Force themed surface/text/border
+    // so it stays legible in dark mode.
+    &.van-button {
+      color: var(--color-text-01) !important;
+      background-color: var(--color-ui-02) !important;
+      border: 1px solid var(--color-border-01) !important;
+    }
   }
 
   &__fields {

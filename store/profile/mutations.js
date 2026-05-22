@@ -29,9 +29,5 @@ export default {
 
   SET_AVATAR_EDITOR_DIALOG_IS_OPEN(state, isOpen) {
     state.dialog.avatarEditor.isOpen = isOpen
-  },
-
-  SET_PROFILE_PHOTO_EDITOR_DIALOG_IS_OPEN(state, isOpen) {
-    state.dialog.profilePhotoEditor.isOpen = isOpen
   }
 }
