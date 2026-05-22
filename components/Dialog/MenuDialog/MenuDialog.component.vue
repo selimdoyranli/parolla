@@ -131,8 +131,9 @@ Dialog.dialog.menu-dialog(
 import { defineComponent, useRoute, useRouter, useStore, useContext, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
-import { Dialog, CellGroup, Cell, Switch, Toast, Button } from 'vant'
+import { Dialog, CellGroup, Cell, Switch, Button } from 'vant'
 import { useSfx } from '@/composables/useSfx'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -235,20 +236,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
       }
     }
 
@@ -258,20 +253,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
       }
     }
 
