@@ -133,10 +133,12 @@ export default defineComponent({
 
     const onChatFocus = () => {
       isChatFocused.value = true
+      store.commit('tour/SET_IS_CHAT_FOCUSED', true)
     }
 
     const onChatBlur = () => {
       isChatFocused.value = false
+      store.commit('tour/SET_IS_CHAT_FOCUSED', false)
     }
 
     return {

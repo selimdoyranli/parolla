@@ -43,13 +43,15 @@
           strong.question__title {{ question.question }}
 
       // Field Section
-      section.game-scene__fieldSection(:class="{ 'game-scene__fieldSection--disabled': !isGameStarted }")
+      section.game-scene__fieldSection.game-scene__fieldSection--withStats(
+        :class="{ 'game-scene__fieldSection--disabled': !isGameStarted }"
+      )
         // Answer Field
         .answer-field
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -75,6 +77,21 @@
               @click="pass"
             ) {{ $t('gameScene.answerField.pass') }}
 
+        // Stats
+        .game-scene__fieldSection-stats
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--correct
+            AppIcon(name="tabler:check" color="var(--color-success-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isCorrect).length }}
+            span {{ $t('gameScene.correct') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--wrong
+            AppIcon(name="tabler:x" color="var(--color-danger-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isWrong).length }}
+            span {{ $t('gameScene.wrong') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--passed
+            AppIcon(name="tabler:player-skip-forward" color="var(--color-warning-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isPassed).length }}
+            span {{ $t('gameScene.pass') }}
+
   // How To Play Dialog
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
@@ -88,7 +105,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed, useContext } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { Button, Field, Empty, CountDown } from 'vant'
 
@@ -101,6 +118,7 @@ export default defineComponent({
   },
   setup() {
     const rootRef = ref(null)
+    const { i18n } = useContext()
 
     const store = useStore()
     const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
@@ -134,6 +152,15 @@ export default defineComponent({
     } = useGameScene()
 
     const dailyDialog = computed(() => store.getters['daily/dialog'])
+
+    const answerFieldPlaceholder = computed(() => {
+      const item = alphabet.value.items?.[alphabet.value.activeIndex]
+      const letter = item?.letter
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
     const storedDay = persistStore && persistStore.daily.currentDate
@@ -211,6 +238,7 @@ export default defineComponent({
       answer,
       dialog,
       dailyDialog,
+      answerFieldPlaceholder,
       countdown,
       countdownTimerRef,
       alphabetItemClasses,

@@ -6,7 +6,9 @@
   margin-block-start: calc(var(--base-m-y) * 2);
 
   &.chat-osk {
-    top: 0;
+    @include media-breakpoint-down(mobile) {
+      top: 0;
+    }
   }
 
   .van-tabs {

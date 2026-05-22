@@ -188,12 +188,23 @@
         }
       }
 
+      @at-root html[ua-is-from-ios='true'] {
+        .game-scene--activeAnswerTypeTrivia {
+          .question {
+            @include media-breakpoint-down(mobile) {
+              height: 120px;
+            }
+          }
+        }
+      }
+
       .game-scene__fieldSection {
         position: fixed !important;
         top: auto;
         bottom: 0;
         display: flex;
-        align-items: flex-end;
+        flex-direction: column;
+        justify-content: flex-end;
         height: 300px;
         overflow: visible;
         margin-block-start: auto;

@@ -33,13 +33,15 @@
             span.question-media__note.do-not-hide-keyboard(v-if="question.mediaNote?.length > 0") {{ question.mediaNote }}
 
       // Field Section
-      section.game-scene__fieldSection(:class="{ 'game-scene__fieldSection--disabled': !isGameStarted }")
+      section.game-scene__fieldSection.game-scene__fieldSection--withStats(
+        :class="{ 'game-scene__fieldSection--disabled': !isGameStarted }"
+      )
         // Answer Field
         .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TEXT_FIELD")
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -73,6 +75,21 @@
           ) {{ $t('gameScene.answerField.pass') }}
           TriviaOptionList(:options="getActiveQuestion().triviaOptions" @on-option-select="handleTriviaOptionSelect")
 
+        // Stats
+        .game-scene__fieldSection-stats
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--correct
+            AppIcon(name="tabler:check" color="var(--color-success-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isCorrect).length }}
+            span {{ $t('gameScene.correct') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--wrong
+            AppIcon(name="tabler:x" color="var(--color-danger-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isWrong).length }}
+            span {{ $t('gameScene.wrong') }}
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--passed
+            AppIcon(name="tabler:player-skip-forward" color="var(--color-warning-01)" :width="14" :height="14")
+            strong {{ alphabet.items.filter(i => i.isPassed).length }}
+            span {{ $t('gameScene.pass') }}
+
   // How To Play Dialog
   HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
@@ -102,7 +119,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const { $ua } = useContext()
+    const { $ua, i18n } = useContext()
 
     const rootRef = ref(null)
 
@@ -178,6 +195,19 @@ export default defineComponent({
     const handleTriviaOptionSelect = option => {
       handleAnswer(option.text)
     }
+
+    const answerFieldPlaceholder = computed(() => {
+      const activeIndex = alphabet.value.activeIndex
+      const item = alphabet.value.items?.[activeIndex]
+
+      if (!item) return null
+
+      const letter = alphabetItemLetter(item, activeIndex)
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     onMounted(() => {
       setRootRef(rootRef.value)
@@ -258,6 +288,7 @@ export default defineComponent({
       getActiveQuestionAnswerType,
       alphabetItemLetter,
       handleTriviaOptionSelect,
+      answerFieldPlaceholder,
       gameSceneClasses,
       questionClasses
     }

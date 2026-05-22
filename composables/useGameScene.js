@@ -197,7 +197,6 @@ export default () => {
 
     const currentQuestion = questions.value[alphabet.value.activeIndex]
     const isTrivia = currentQuestion?.answerType === answerTypeEnum.TRIVIA
-    const isTextField = currentQuestion?.answerType === answerTypeEnum.TEXT_FIELD
     // Trivia questions: don't split by comma as the answer itself may contain commas
     const correctAnswers = isTrivia ? [currentQuestion.answer] : currentQuestion.answer.split(',')
 
@@ -217,7 +216,7 @@ export default () => {
         return false
       }
 
-      if (isTextField && !answerField.startsWith(formatAnswer(item.letter))) {
+      if (!isTrivia && !answerField.startsWith(formatAnswer(item.letter))) {
         handleNotStartsWithActiveChar({ activeChar: item.letter })
 
         return false
