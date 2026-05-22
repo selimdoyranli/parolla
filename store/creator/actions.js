@@ -421,8 +421,18 @@ export default {
   },
 
   async fetchReviews({ commit }, { roomId }) {
+    // populate[user][populate][...] — without nested populate the user
+    // relation comes back with no diceBear/profilePhoto and PlayerAvatar
+    // falls back to a generated, unrelated avatar.
+    const params = new URLSearchParams({
+      'filters[room][roomId][$eq]': roomId,
+      'populate[user][populate][0]': 'diceBear',
+      'populate[user][populate][1]': 'profilePhoto',
+      sort: 'createdAt:desc'
+    })
+
     const { data, error } = await this.$appFetch({
-      path: `room-reviews?filters[room][roomId][$eq]=${roomId}&populate=user&sort=createdAt:desc`,
+      path: `room-reviews?${params.toString()}`,
       method: 'GET'
     })
 
