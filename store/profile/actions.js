@@ -48,7 +48,7 @@ export default {
       query: {
         'filters[id][$eq]': id,
         'filters[username][$eq]': username,
-        populate: 'diceBear'
+        populate: 'diceBear,profilePhoto'
       }
     })
 
