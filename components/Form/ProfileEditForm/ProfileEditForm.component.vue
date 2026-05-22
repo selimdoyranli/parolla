@@ -270,6 +270,12 @@ export default defineComponent({
         form.profilePhotoSelectedFile = null
         form.avatarSource = 'diceBear'
 
+        // Re-fetch /users/me so the avatar reflects the user's existing
+        // diceBear config — the delete response can occasionally return
+        // an incomplete component payload, leaving PlayerAvatar to fall
+        // back to a generated (wrong-looking) avatar until refresh.
+        await store.dispatch('auth/fetchMe')
+
         Toast.success({
           message: i18n.t('form.profileEdit.deletePhotoCallback.success'),
           duration: 2000
