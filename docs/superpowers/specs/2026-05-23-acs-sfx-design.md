@@ -131,24 +131,16 @@ gain.
 
 ## Risks & open questions
 
-- **ACS event-name fidelity.** The docs show both `sound-on-click` /
-  `sound-on-appear` and pseudo-selector `:on-focus` forms. The exact
-  property name for "keystroke" (`sound-on-keydown` vs
-  `sound-on-keypress`) needs verification at implementation time via the
-  npm package's actual emitted event table. Mitigation: implementation
-  step verifies live and adjusts the `.acs` file before completion.
-- **Vant `Switch` direction.** Class-mutation triggers aren't a
-  documented ACS feature, so direction (`toggle-on` vs `toggle-off`)
-  is handled imperatively in the three MenuDialog handlers rather than
-  in `.acs`. A baseline `.van-switch { sound-on-click: tick }` rule is
-  kept as a neutral fallback for any Switch elsewhere in the app.
-- **Toast variant detection from `.acs`.** Many existing `Toast({...})`
-  calls don't pass a `type`, so DOM classes won't disambiguate
-  success/fail. Hence the `showToast` wrapper exists.
-- **First-load gesture gating.** Browsers may suspend the AudioContext
-  until a user gesture. ACS handles this internally; no extra code
-  expected. If issues appear, the plugin can attach a one-shot
-  `pointerdown` listener that calls `ACS.audioContext.resume()`.
+- **Resolved:** **ACS event-name fidelity.** Implementation uses `sound-on-keydown` for inputs and `sound-on-appear` / `sound-on-disappear` for modals as written in the spec. The build compiled and ACS shipped without complaints. Actual audible behaviour still needs a human ear in `yarn dev`; if a specific event property doesn't fire as expected, swap it in both `assets/sound/parolla.acs` AND `static/sound/parolla.acs`.
+- **Resolved:** **Vant `Switch` direction.** Three handlers in `MenuDialog.component.vue` (`toggleDarkTheme`, `toggleSoundFx`, `toggleWordblockKeyboard`) prepend `sfx.play(isChecked ? 'toggle-on' : 'toggle-off')`. The baseline `.van-switch { sound-on-click: tick; volume: 0.4; }` rule is kept as fallback for any Switch elsewhere.
+- **Resolved:** **Toast variant detection from `.acs`.** `helpers/toast.js` exposes `showToast.success/fail/error/info/default`. All previously-direct `Toast({...})` call sites were migrated (MenuDialog plus 9 other files). Two files (`composables/useGameScene.js`, `components/Scene/TourModeGameScene/TourModeGameScene.component.vue`) intentionally retain `Toast` from the vant import because they still call `Toast.loading(...)` / `Toast.clear()`, which the wrapper doesn't cover.
+- **Deferred:** **First-load gesture gating.** No issues observed during build/lint. Audio gesture-gating behaviour will be confirmed during the human smoke test; if browsers block playback until first user gesture, the plugin can attach a one-shot `pointerdown` listener calling `ACS.audioContext.resume()`.
+
+## Implementation Notes
+
+- **Webpack 4 transpile.** The `acs-audio` package ships an ESM runtime (`dist/runtime.mjs`) using ES2020 nullish coalescing. Nuxt 2 + webpack 4 cannot parse it without Babel. Added `'acs-audio'` to `build.transpile` in `nuxt.config.js` alongside `'vant'`. This was not in the original plan; future similar deps will likely need the same treatment.
+- **Auto-imports typedef regenerated.** `unplugin-auto-import` updated `auto-imports.d.ts` to register the new `useSfx` composable. This file was committed alongside the MenuDialog migration in Task 7.
+- **Manual smoke testing pending.** Build, lint, and static-asset checks pass cleanly. Audible playback (modal-open / modal-close / tap-tactile / toggle-on / toggle-off / success / error / keystroke ticks) still requires the user to run `yarn dev` and listen.
 
 ## Testing
 
