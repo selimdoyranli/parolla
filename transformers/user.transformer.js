@@ -32,6 +32,13 @@ export default model => {
     }),
     fullname: model.fullname,
     bio: model.bio,
+    avatarSource: model.avatarSource,
+    ...(model.profilePhoto && {
+      profilePhoto: {
+        id: model.profilePhoto.id,
+        url: model.profilePhoto.url
+      }
+    }),
     ...(model.tourScore && {
       tourScore: {
         ...(model.tourScore.daily && {
