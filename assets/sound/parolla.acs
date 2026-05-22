@@ -35,6 +35,34 @@ input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 /* === Toast (baseline; per-type overrides via showToast helper) === */
 .van-toast { sound-on-appear: notify; volume: 0.5; }
 
+/* === Vant Stepper (+/- buttons) === */
+.van-stepper__minus, .van-stepper__plus { sound-on-click: tick; }
+
+/* === Vant Radio (covers RadioGroup items in CreatorModeComposeForm
+       and ProfileEditForm's avatar-source toggle) === */
+.van-radio { sound-on-click: tick; }
+
+/* === Project-specific interactive elements === */
+
+/* IntroButton CTA — the "Oyna" play link inside each game-mode card. */
+.play-now-button { sound-on-click: pop; }
+
+/* Room featured tag filter chips. */
+.room-featured-tag-list-tag { sound-on-click: tick; }
+
+/* Wordblock on-screen keyboard keys. */
+.wordblock-mode-scene__key { sound-on-click: tick; volume: 0.4; }
+
+/* Profile page tab bar items. */
+.profile-tab-bar__tab { sound-on-click: tick; }
+
+/* Creator compose form question/answer type switch cells. */
+.creator-mode-compose-form__typeSwitchCell { sound-on-click: tick; }
+
+/* Music mode — popular artist tile select + selected artist remove (×). */
+.guess-the-song-scene-popular-artist { sound-on-click: pop; }
+.guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
+
 /* === Accessibility === */
 @media (prefers-reduced-sound: reduce) {
   :root { master-volume: 0; }
