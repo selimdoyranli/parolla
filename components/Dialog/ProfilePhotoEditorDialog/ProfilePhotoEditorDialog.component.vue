@@ -21,7 +21,7 @@ Dialog.dialog.profile-photo-editor-dialog(
     )
     template(v-if="hasFile")
       .cropper-wrapper
-        Cropper.cropper(ref="cropperRef" :src="objectUrl" image-restriction="stencil" :stencil-props="{ aspectRatio: 1 }")
+        span ok
       .cropper-actions
         Button(size="small" plain round native-type="button" @click="triggerFilePicker") {{ $t('dialog.profilePhotoEditor.change') }}
 </template>
@@ -29,8 +29,6 @@ Dialog.dialog.profile-photo-editor-dialog(
 <script>
 import { defineComponent, ref, computed, watch, useStore, useContext } from '@nuxtjs/composition-api'
 import { Dialog, Button, Toast } from 'vant'
-import { Cropper } from 'vue-advanced-cropper'
-import 'vue-advanced-cropper/dist/style.css'
 import parollaConfig from '@/system/parolla.config'
 
 const OUTPUT_SIZE = 512
