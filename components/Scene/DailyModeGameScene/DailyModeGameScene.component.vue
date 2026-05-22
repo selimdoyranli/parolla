@@ -51,7 +51,7 @@
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed, useContext } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { Button, Field, Empty, CountDown } from 'vant'
 
@@ -118,6 +118,7 @@ export default defineComponent({
   },
   setup() {
     const rootRef = ref(null)
+    const { i18n } = useContext()
 
     const store = useStore()
     const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
@@ -151,6 +152,15 @@ export default defineComponent({
     } = useGameScene()
 
     const dailyDialog = computed(() => store.getters['daily/dialog'])
+
+    const answerFieldPlaceholder = computed(() => {
+      const item = alphabet.value.items?.[alphabet.value.activeIndex]
+      const letter = item?.letter
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
     const storedDay = persistStore && persistStore.daily.currentDate
@@ -228,6 +238,7 @@ export default defineComponent({
       answer,
       dialog,
       dailyDialog,
+      answerFieldPlaceholder,
       countdown,
       countdownTimerRef,
       alphabetItemClasses,

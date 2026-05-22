@@ -44,7 +44,7 @@
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -140,6 +140,14 @@ export default defineComponent({
     // TOUR_WAITING_NEXT — so this naturally covers both "joining at
     // round start" and "joining mid-round, waiting next" cases.
     const isConnecting = computed(() => !tour.value.question && !tour.value.isTimeUp)
+
+    const answerFieldPlaceholder = computed(() => {
+      const letter = tour.value.question?.letter
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${context.i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     watch(
       () => tour.value.question,
@@ -482,6 +490,7 @@ export default defineComponent({
       isTourModeOnlineDialogOpen,
       closeTourModeOnlineDialog,
       isConnecting,
+      answerFieldPlaceholder,
       tour,
       userList
     }

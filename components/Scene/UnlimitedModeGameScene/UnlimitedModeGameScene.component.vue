@@ -51,7 +51,7 @@
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useFetch, ref, onMounted, onUnmounted, computed, useContext } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { Button, Field, Empty, CountDown } from 'vant'
 
@@ -120,6 +120,7 @@ export default defineComponent({
   },
   setup() {
     const rootRef = ref(null)
+    const { i18n } = useContext()
     const store = useStore()
 
     const {
@@ -150,6 +151,15 @@ export default defineComponent({
     } = useGameScene()
 
     const unlimitedDialog = computed(() => store.getters['unlimited/dialog'])
+
+    const answerFieldPlaceholder = computed(() => {
+      const item = alphabet.value.items?.[alphabet.value.activeIndex]
+      const letter = item?.letter
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     // Fetch Questions
     const { fetch, fetchState } = useFetch(async () => {
@@ -221,6 +231,7 @@ export default defineComponent({
       answer,
       dialog,
       unlimitedDialog,
+      answerFieldPlaceholder,
       countdown,
       countdownTimerRef,
       alphabetItemClasses,

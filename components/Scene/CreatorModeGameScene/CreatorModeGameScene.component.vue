@@ -41,7 +41,7 @@
           input.answer-field__input(
             type="text"
             :value="answer.field"
-            :placeholder="$t('gameScene.answerField.placeholder')"
+            :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
@@ -119,7 +119,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const { $ua } = useContext()
+    const { $ua, i18n } = useContext()
 
     const rootRef = ref(null)
 
@@ -195,6 +195,19 @@ export default defineComponent({
     const handleTriviaOptionSelect = option => {
       handleAnswer(option.text)
     }
+
+    const answerFieldPlaceholder = computed(() => {
+      const activeIndex = alphabet.value.activeIndex
+      const item = alphabet.value.items?.[activeIndex]
+
+      if (!item) return null
+
+      const letter = alphabetItemLetter(item, activeIndex)
+
+      if (!letter || letter === '?') return null
+
+      return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
+    })
 
     onMounted(() => {
       setRootRef(rootRef.value)
@@ -275,6 +288,7 @@ export default defineComponent({
       getActiveQuestionAnswerType,
       alphabetItemLetter,
       handleTriviaOptionSelect,
+      answerFieldPlaceholder,
       gameSceneClasses,
       questionClasses
     }
