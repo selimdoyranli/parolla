@@ -6,8 +6,13 @@
 )
   // Scene Inner
   .scene__inner.game-scene__inner
+    // Connecting + waiting for the server's first game event
+    template(v-if="isConnecting")
+      .tour-mode-game-scene-loading
+        Loading(color="var(--color-brand-02)") {{ $t('general.loading') }}...
+
     // Countdown
-    .tour-mode-game-scene-countdown
+    .tour-mode-game-scene-countdown(v-if="!isConnecting")
       Progress(color="var(--color-brand-02)" :pivot-text="String(tour.countdown.seconds)" :percentage="tour.countdown.percentage")
 
     template(v-if="tour.question")
@@ -84,7 +89,7 @@
 import { defineComponent, useContext, useStore, ref, onMounted, onUnmounted, computed, nextTick, watch } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
-import { Button, Field, Empty, CountDown, Progress, Popover, Notify, Toast } from 'vant'
+import { Button, Field, Empty, CountDown, Progress, Popover, Notify, Toast, Loading } from 'vant'
 
 export default defineComponent({
   components: {
@@ -95,7 +100,8 @@ export default defineComponent({
     Progress,
     Popover,
     Notify,
-    Toast
+    Toast,
+    Loading
   },
   setup() {
     const rootRef = ref(null)
@@ -127,6 +133,13 @@ export default defineComponent({
     const ws = computed(() => store.getters['app/ws'])
 
     const tour = computed(() => store.getters['tour/tour'])
+
+    // Show the connecting/loading state until the first useful game
+    // event lands. Both `question` and `isTimeUp` are reset on mount
+    // and only flip once the WS server pushes TOUR_QUESTION or
+    // TOUR_WAITING_NEXT — so this naturally covers both "joining at
+    // round start" and "joining mid-round, waiting next" cases.
+    const isConnecting = computed(() => !tour.value.question && !tour.value.isTimeUp)
 
     watch(
       () => tour.value.question,
@@ -468,6 +481,7 @@ export default defineComponent({
       handleChatBlur,
       isTourModeOnlineDialogOpen,
       closeTourModeOnlineDialog,
+      isConnecting,
       tour,
       userList
     }
