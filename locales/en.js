@@ -813,6 +813,7 @@ export default {
         success: 'Profile information updated'
       },
       avatarSource: {
+        label: 'Use',
         diceBear: 'Avatar',
         profilePhoto: 'Profile Photo'
       },

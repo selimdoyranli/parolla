@@ -25,11 +25,31 @@
     margin-inline: auto;
   }
 
+  &__avatarSourceField {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 280px;
+    margin-block-start: var(--base-m-y);
+    padding: 10px 14px 12px;
+    background: var(--color-field-01);
+    border-radius: var(--border-radius-01);
+  }
+
+  &__avatarSourceFieldLabel {
+    display: block;
+    color: var(--color-text-03);
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+
   &__avatarSourceToggle {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     justify-content: center;
-    margin-top: 8px;
+    margin-block-start: 6px;
   }
 
   &__avatarEditButton {

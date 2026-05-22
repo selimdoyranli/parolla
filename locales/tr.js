@@ -833,6 +833,7 @@ export default {
         success: 'Profil bilgileriniz güncellendi'
       },
       avatarSource: {
+        label: 'Kullan',
         diceBear: 'Avatar',
         profilePhoto: 'Profil Fotoğrafı'
       },
