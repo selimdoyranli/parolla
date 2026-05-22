@@ -1,5 +1,64 @@
 # Changelog
 
+## v2.46.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.45.0...v2.46.0)
+
+
+### 🚀 Enhancements
+
+  - **how-to-play:** Show creator avatar and trivia-aware description in quiz how-to-play ([6606779](https://github.com/selimdoyranli/parolla/commit/6606779))
+  - **how-to-play:** Make creator avatar clickable to open player dialog ([773c0fd](https://github.com/selimdoyranli/parolla/commit/773c0fd))
+  - **leaderboard:** Redesign podium with perspective tops and animated crown for winners ([46f8508](https://github.com/selimdoyranli/parolla/commit/46f8508))
+  - **player-avatar:** Prioritize profile photo over diceBear ([44272d3](https://github.com/selimdoyranli/parolla/commit/44272d3))
+  - **store:** Add profilePhotoEditor dialog state ([eab56f0](https://github.com/selimdoyranli/parolla/commit/eab56f0))
+  - **auth:** Add uploadProfilePhoto action and avatarSource to updateUser ([f24d7be](https://github.com/selimdoyranli/parolla/commit/f24d7be))
+  - **dialog:** Add ProfilePhotoEditorDialog with vue-advanced-cropper ([39e1d43](https://github.com/selimdoyranli/parolla/commit/39e1d43))
+  - **i18n:** Add UI strings for profile photo editor ([40cf1f4](https://github.com/selimdoyranli/parolla/commit/40cf1f4))
+  - **profile-edit-form:** Add avatarSource toggle and photo upload flow ([e93a592](https://github.com/selimdoyranli/parolla/commit/e93a592))
+  - **profile-edit:** Polish avatar source toggle + photo dialog ([329b6d2](https://github.com/selimdoyranli/parolla/commit/329b6d2))
+  - **profile-photo:** Skip in-dialog picker + add delete action ([084a11c](https://github.com/selimdoyranli/parolla/commit/084a11c))
+  - **profile:** Preview uploaded profile photo via ImagePreview ([14fb42e](https://github.com/selimdoyranli/parolla/commit/14fb42e))
+  - **room-review-list:** Clickable user + correct avatar populate ([20a2c19](https://github.com/selimdoyranli/parolla/commit/20a2c19))
+  - **scoreboard-list:** Clickable user row opens PlayerDialog ([e9ec65d](https://github.com/selimdoyranli/parolla/commit/e9ec65d))
+  - **tour-mode-game-scene:** Loading state until first WS event lands ([843b8d2](https://github.com/selimdoyranli/parolla/commit/843b8d2))
+
+### 🩹 Fixes
+
+  - **leaderboard:** Restore narrower top-scorer widths on mobile breakpoints ([8d83416](https://github.com/selimdoyranli/parolla/commit/8d83416))
+  - **transformer:** Pass avatarSource and profilePhoto through user transformer ([0eeba9c](https://github.com/selimdoyranli/parolla/commit/0eeba9c))
+  - **deps:** Downgrade vue-advanced-cropper to v1 for Vue 2 compatibility ([7665241](https://github.com/selimdoyranli/parolla/commit/7665241))
+  - **populate:** Request profilePhoto alongside diceBear ([9f9ac14](https://github.com/selimdoyranli/parolla/commit/9f9ac14))
+  - **profile-edit:** Split 'Kullan' label into its own pill, match mock ([8028976](https://github.com/selimdoyranli/parolla/commit/8028976))
+  - **profile-edit:** Flush avatar-source pill onto field + theme radio label ([7d423d9](https://github.com/selimdoyranli/parolla/commit/7d423d9))
+  - **profile-edit:** Re-fetch /users/me after profile photo delete ([4fcdc76](https://github.com/selimdoyranli/parolla/commit/4fcdc76))
+  - **app-header:** Scope stats button visibility to active game mode ([31377f1](https://github.com/selimdoyranli/parolla/commit/31377f1))
+  - **intro-button:** Forward whole player object to PlayerAvatar ([9444748](https://github.com/selimdoyranli/parolla/commit/9444748))
+  - **tour-mode:** Forward profilePhoto + avatarSource through WS plumbing ([177974d](https://github.com/selimdoyranli/parolla/commit/177974d))
+  - **cf-pages:** Move profileBanner util out of /functions ([25d2715](https://github.com/selimdoyranli/parolla/commit/25d2715))
+
+### 💅 Refactors
+
+  - **api:** Rename API_STRAPI env to API_URL in app-fetch plugin ([a467825](https://github.com/selimdoyranli/parolla/commit/a467825))
+  - **api:** Rename API_STRAPI env var to API_URL across config and references ([2261d72](https://github.com/selimdoyranli/parolla/commit/2261d72))
+  - **profile-photo:** Swap vue-advanced-cropper for inline vue-croppa ([865ef52](https://github.com/selimdoyranli/parolla/commit/865ef52))
+
+### 🏡 Chore
+
+  - **intro:** Hide knowledge kingdom mode from intro scene ([6697616](https://github.com/selimdoyranli/parolla/commit/6697616))
+  - **yarn:** Refresh install state ([9f11e94](https://github.com/selimdoyranli/parolla/commit/9f11e94))
+  - Cf deploy ([77f3a08](https://github.com/selimdoyranli/parolla/commit/77f3a08))
+
+### 🎨 Styles
+
+  - **leaderboard:** Use light-dark color for silver podium top face ([9e5b2d7](https://github.com/selimdoyranli/parolla/commit/9e5b2d7))
+  - **leaderboard:** Bump top-scorer avatar from 48px to 64px ([f4b2c92](https://github.com/selimdoyranli/parolla/commit/f4b2c92))
+  - **leaderboard:** Tighten mobile gap, widen username clamp ([fca5f51](https://github.com/selimdoyranli/parolla/commit/fca5f51))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.45.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.44.0...v2.45.0)
