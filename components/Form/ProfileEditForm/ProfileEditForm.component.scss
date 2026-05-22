@@ -25,7 +25,58 @@
     margin-inline: auto;
   }
 
+  &__avatarSourceField {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 360px;
+    margin-block-start: var(--base-m-y);
+  }
+
+  &__avatarSourceFieldLabel {
+    z-index: 1;
+    align-self: flex-start;
+    margin-block-end: -1px;
+    padding: 6px 18px;
+    color: var(--color-text-02);
+    font-size: 13px;
+    background: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-bottom: 0;
+    border-radius: var(--border-radius-01) var(--border-radius-01) 0 0;
+  }
+
+  &__avatarSourceFieldBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 14px 20px;
+    background: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 0 var(--border-radius-01) var(--border-radius-01) var(--border-radius-01);
+  }
+
+  &__avatarSourceToggle {
+    display: flex;
+    gap: 24px;
+    justify-content: space-around;
+    width: 100%;
+
+    .van-radio__label {
+      color: var(--color-text-02);
+    }
+  }
+
   &__avatarEditButton {
+    margin-block-start: var(--base-m-y);
+  }
+
+  &__photoActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
     margin-block-start: var(--base-m-y);
   }
 

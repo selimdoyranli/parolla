@@ -10,7 +10,7 @@
     margin-block-end: var(--base-m-y);
 
     @include media-breakpoint-down(tablet) {
-      gap: calc(var(--base-p-x) * 2);
+      gap: calc(var(--base-p-x) * 1);
     }
 
     &-item {
@@ -57,7 +57,7 @@
           margin-block-start: $spacer * 2;
 
           @include media-breakpoint-down(tablet) {
-            max-width: 92px;
+            max-width: 100px;
             font-size: var(--font-size-text-10);
           }
         }

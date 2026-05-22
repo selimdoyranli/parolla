@@ -289,11 +289,14 @@ export default defineComponent({
     })
 
     const isVisibleStatsButton = computed(() => {
+      // The QA-quiz check must be scoped to CREATOR mode. Without that
+      // guard, room.quizType (set when a user opens a QA creator room
+      // and never reset on navigation) keeps the stats button visible
+      // on Main and elsewhere after the user leaves the game.
       if (
         activeGameMode.value === gameModeKeyEnum.DAILY ||
         activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
-        (activeGameMode.value === gameModeKeyEnum.CREATOR && !room.value.quizType) ||
-        room.value.quizType === quizTypeEnum.QA ||
+        (activeGameMode.value === gameModeKeyEnum.CREATOR && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA)) ||
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK
       ) {
         return true

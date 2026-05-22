@@ -39,9 +39,25 @@
         @closed="isOpenReportDialog = false"
       )
 
+    MountingPortal(mount-to="body" append)
+      ImagePreview.profile-view-image-preview(
+        v-model="isImagePreviewOpen"
+        :images="previewImages"
+        :show-index="false"
+        :close-on-popstate="true"
+      )
+        template(#cover)
+          button.profile-view-image-preview__close(type="button" :aria-label="$t('general.close')" @click="isImagePreviewOpen = false")
+            AppIcon(name="ion:md-close" color="#fff" :width="24" :height="24")
+
     .profile-view-header
       .profile-view-header__avatar-wrap
-        PlayerAvatar.profile-view-header__avatar(:user="player" :size="96")
+        PlayerAvatar.profile-view-header__avatar(
+          :user="player"
+          :size="96"
+          :class="{ 'profile-view-header__avatar--clickable': canPreviewPhoto }"
+          @click.native="handleAvatarClick"
+        )
 
       .profile-view-header__action(v-if="isSelf")
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
@@ -73,7 +89,7 @@
 
 <script>
 import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
-import { Empty, Button, Loading } from 'vant'
+import { Empty, Button, Loading, ImagePreview } from 'vant'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
 import { buildBannerStyle } from '@/functions/profileBanner'
@@ -84,7 +100,8 @@ export default defineComponent({
     Empty,
     Button,
     Loading,
-    DropdownMenu
+    DropdownMenu,
+    ImagePreview: ImagePreview.Component
   },
   props: {
     player: {
@@ -114,12 +131,26 @@ export default defineComponent({
     const router = useRouter()
     const isOpenReportDialog = ref(false)
     const isActionsOpen = ref(false)
+    const isImagePreviewOpen = ref(false)
 
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => [257116, 258270, 262467].includes(props.player?.id))
 
     const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
+
+    // Only let the avatar open ImagePreview when the user actually has
+    // an uploaded photo to view. DiceBear avatars stay non-interactive —
+    // previewing a 762×762 SVG dataURI in a lightbox isn't useful.
+    const canPreviewPhoto = computed(() => props.player?.avatarSource === 'profilePhoto' && Boolean(props.player?.profilePhoto?.url))
+
+    const previewImages = computed(() => (canPreviewPhoto.value ? [props.player.profilePhoto.url] : []))
+
+    const handleAvatarClick = () => {
+      if (canPreviewPhoto.value) {
+        isImagePreviewOpen.value = true
+      }
+    }
 
     const reportAdditional = computed(() => {
       if (!props.player) return null
@@ -163,11 +194,15 @@ export default defineComponent({
     return {
       isOpenReportDialog,
       isActionsOpen,
+      isImagePreviewOpen,
       reportTypeEnum,
       reportAdditional,
       isSelf,
       isGm,
       bannerStyle,
+      canPreviewPhoto,
+      previewImages,
+      handleAvatarClick,
       goToEdit,
       handleGoToProfile,
       handleReport,

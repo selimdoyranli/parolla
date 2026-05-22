@@ -13,6 +13,9 @@ export default () => ({
     },
     avatarEditor: {
       isOpen: false
+    },
+    profilePhotoEditor: {
+      isOpen: false
     }
   }
 })

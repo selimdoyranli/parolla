@@ -84,6 +84,13 @@
       position: relative;
       display: grid;
       grid-template-columns: 1fr auto;
+      outline: none;
+      cursor: pointer;
+
+      &:hover &__name,
+      &:focus-visible &__name {
+        text-decoration: underline;
+      }
 
       &__username {
         display: grid;

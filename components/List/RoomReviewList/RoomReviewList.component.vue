@@ -21,10 +21,16 @@
     List.list.room-review-list__items
       Cell.room-review-list-item(v-for="(item, index) in items" :key="index")
         .room-review-list-item__head
-          .room-review-list-item-user
+          .room-review-list-item-user(
+            role="button"
+            tabindex="0"
+            @click="handleClickUser(item.user)"
+            @keydown.enter.prevent="handleClickUser(item.user)"
+            @keydown.space.prevent="handleClickUser(item.user)"
+          )
             strong.room-review-list-item-user__username
               PlayerAvatar(:size="20" :user="item.user")
-              span {{ item.user.username }}
+              span.room-review-list-item-user__name {{ item.user.username }}
             small &nbsp; (
               AppIcon(name="tabler:star-filled" color="var(--color-text-03)" :width="10" :height="10")
               | {{ formatRating(item.rating).toString() }}
@@ -44,7 +50,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { List, Cell, Empty, Button } from 'vant'
 import StarRating from 'vue-star-rating'
 
@@ -69,10 +75,19 @@ export default defineComponent({
     }
   },
   setup() {
+    const store = useStore()
     const { formatRating } = useFormatter()
 
+    const handleClickUser = user => {
+      if (!user?.id) return
+      store.commit('profile/SET_PLAYER_ID', user.id)
+      store.commit('profile/SET_PLAYER_USERNAME', user.username)
+      store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
+    }
+
     return {
-      formatRating
+      formatRating,
+      handleClickUser
     }
   }
 })

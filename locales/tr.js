@@ -485,6 +485,21 @@ export default {
       },
       skinColor: 'Cilt Rengi',
       backgroundColor: 'Arkaplan Rengi'
+    },
+    profilePhotoEditor: {
+      title: 'Profil Fotoğrafı',
+      selectFile: 'Dosya Seç',
+      change: 'Değiştir',
+      hint: 'JPG, PNG, GIF veya WEBP — en fazla 5 MB',
+      error: {
+        mimeTypeNotAllowed: 'Bu dosya tipi desteklenmiyor',
+        sizeLimitExceeded: 'Dosya 5 MB sınırını aşıyor',
+        cropFailed: 'Fotoğraf işlenemedi'
+      }
+    },
+    deleteProfilePhoto: {
+      title: 'Profil fotoğrafını sil',
+      message: 'Yüklediğin profil fotoğrafı kalıcı olarak silinecek. Devam etmek istiyor musun?'
     }
   },
   clipboard: {
@@ -820,6 +835,17 @@ export default {
       },
       callback: {
         success: 'Profil bilgileriniz güncellendi'
+      },
+      avatarSource: {
+        label: 'Kullan',
+        diceBear: 'Avatar',
+        profilePhoto: 'Profil Fotoğrafı'
+      },
+      uploadPhotoButton: 'Profil Fotoğrafı Yükle',
+      editAvatarButton: 'Avatar Düzenle',
+      deletePhotoButton: 'Sil',
+      deletePhotoCallback: {
+        success: 'Profil fotoğrafı silindi'
       }
     }
   },

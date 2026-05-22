@@ -479,6 +479,21 @@ export default {
       },
       skinColor: 'Skin Color',
       backgroundColor: 'Background Color'
+    },
+    profilePhotoEditor: {
+      title: 'Profile Photo',
+      selectFile: 'Select File',
+      change: 'Change',
+      hint: 'JPG, PNG, GIF or WEBP — up to 5 MB',
+      error: {
+        mimeTypeNotAllowed: 'This file type is not supported',
+        sizeLimitExceeded: 'File exceeds the 5 MB limit',
+        cropFailed: 'Could not process the photo'
+      }
+    },
+    deleteProfilePhoto: {
+      title: 'Delete profile photo',
+      message: 'Your uploaded profile photo will be permanently removed. Continue?'
     }
   },
   clipboard: {
@@ -800,6 +815,17 @@ export default {
       },
       callback: {
         success: 'Profile information updated'
+      },
+      avatarSource: {
+        label: 'Use',
+        diceBear: 'Avatar',
+        profilePhoto: 'Profile Photo'
+      },
+      uploadPhotoButton: 'Upload Profile Photo',
+      editAvatarButton: 'Edit Avatar',
+      deletePhotoButton: 'Delete',
+      deletePhotoCallback: {
+        success: 'Profile photo removed'
       }
     }
   },

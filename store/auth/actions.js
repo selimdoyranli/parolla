@@ -21,7 +21,7 @@ export default {
 
   async fetchGoogleUser({ commit, state }, callbackParams) {
     const { data, error } = await this.$appFetch({
-      path: `auth/google/callback?${callbackParams}&populate=diceBear`,
+      path: `auth/google/callback?${callbackParams}&populate=diceBear,profilePhoto`,
       headers: {
         Authorization: `${callbackParams}`
       }
@@ -48,7 +48,7 @@ export default {
   },
 
   async updateUser({ commit, state }, params) {
-    const { username, fullname, bio, diceBear } = params
+    const { username, fullname, bio, diceBear, avatarSource } = params
 
     const token = this.$auth.strategy.token.get()
 
@@ -62,9 +62,57 @@ export default {
         username,
         fullname,
         bio,
-        diceBear
+        ...(diceBear && { diceBear }),
+        ...(avatarSource && { avatarSource })
       }
     })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async uploadProfilePhoto({ commit }, { file }) {
+    const token = this.$auth.strategy.token.get()
+
+    const formData = new FormData()
+    formData.append('files', file, `profile-photo-${Date.now()}.jpg`)
+
+    const { data, error } = await this.$appFetch({
+      path: 'users/me/profile-photo',
+      method: 'POST',
+      data: formData,
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    if (data) {
+      commit('SET_USER', data)
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async deleteProfilePhoto({ commit }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: 'users/me/profile-photo',
+      method: 'DELETE',
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    if (data) {
+      commit('SET_USER', data)
+    }
 
     return {
       data,

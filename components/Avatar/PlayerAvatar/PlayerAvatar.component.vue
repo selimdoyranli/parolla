@@ -104,6 +104,10 @@ export default defineComponent({
 
     const avatarSrc = computed(() => {
       if (props.user) {
+        if (props.user.avatarSource === 'profilePhoto' && props.user.profilePhoto?.url) {
+          return props.user.profilePhoto.url
+        }
+
         if (props.user.diceBear?.dataImage) {
           return props.user.diceBear.dataImage
         }

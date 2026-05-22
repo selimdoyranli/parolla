@@ -27,11 +27,7 @@
         | {{ $t('general.play') }}
 
     .avatar-group(v-if="playerList?.length > 4")
-      PlayerAvatar(
-        v-for="player in playerList.slice(0, 4)"
-        :key="player.id"
-        :user="{ username: player.username, diceBear: player.diceBear }"
-      )
+      PlayerAvatar(v-for="player in playerList.slice(0, 4)" :key="player.id" :user="player")
       .avatar-group__moreCount(v-if="$slots.avatarsMoreCount")
         slot(name="avatarsMoreCount")
 

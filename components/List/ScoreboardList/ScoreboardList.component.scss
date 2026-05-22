@@ -73,6 +73,8 @@
       display: grid;
       grid-template-columns: 1fr auto;
       margin-inline-end: auto;
+      outline: none;
+      cursor: pointer;
 
       &::before {
         width: 46px;
@@ -80,6 +82,11 @@
         content: counter(scoreboard-counter);
 
         @include font-weight-extra-bold;
+      }
+
+      &:hover &__name,
+      &:focus-visible &__name {
+        text-decoration: underline;
       }
 
       @include media-breakpoint-down(mobile) {

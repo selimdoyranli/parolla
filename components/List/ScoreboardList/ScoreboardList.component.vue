@@ -2,10 +2,16 @@
 Collapse.list.scoreboard-list(v-model="toggledScoreItem" accordion)
   CollapseItem.scoreboard-list-item(v-for="(item, index) in items" :key="index" :disabled="!item.results.gamersAnswers")
     template(#title)
-      .scoreboard-list-item-user
+      .scoreboard-list-item-user(
+        role="button"
+        tabindex="0"
+        @click.stop="handleClickUser(item.user)"
+        @keydown.enter.stop.prevent="handleClickUser(item.user)"
+        @keydown.space.stop.prevent="handleClickUser(item.user)"
+      )
         strong.scoreboard-list-item-user__username
           PlayerAvatar(:size="20" :user="item.user")
-          span {{ item.user.username }}
+          span.scoreboard-list-item-user__name {{ item.user.username }}
 
       .scoreboard-list-item-result
         strong.scoreboard-list-item-result__item
@@ -67,6 +73,13 @@ export default defineComponent({
       await emit('on-infinite-loading', $state)
     }
 
+    const handleClickUser = user => {
+      if (!user?.id) return
+      store.commit('profile/SET_PLAYER_ID', user.id)
+      store.commit('profile/SET_PLAYER_USERNAME', user.username)
+      store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
+    }
+
     const getGamerAnswer = ({ item, question, questionIndex }) => {
       return item.results.gamersAnswers
         ?.filter(answer => {
@@ -101,6 +114,7 @@ export default defineComponent({
       questions,
       toggledScoreItem,
       handleInfiniteLoading,
+      handleClickUser,
       getGamerAnswer,
       getGamerAnswerClasses
     }
