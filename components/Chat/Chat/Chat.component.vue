@@ -3,13 +3,7 @@
   .chat__messages(ref="messagesRef")
     template(v-if="chatMessages?.length > 0")
       .chat__message(v-for="message in chatMessages" :key="message.timestamp" :class="{ 'chat__message--system': message.isSystem }")
-        PlayerAvatar(
-          v-if="!message.isSystem"
-          with-username
-          open-player-dialog-on-click
-          :user="{ username: message.playerName, id: message.playerId, diceBear: message.diceBear }"
-          :size="24"
-        )
+        PlayerAvatar(v-if="!message.isSystem" with-username open-player-dialog-on-click :user="buildAvatarUser(message)" :size="24")
           template(#append)
             .chat__message-time {{ isoToHumanDate(message.timestamp) }}
         .chat__message-content
@@ -126,7 +120,9 @@ export default defineComponent({
     const currentWs = ref(null)
 
     const handleWsMessage = data => {
-      const { type, chatHistory, playerId, playerName, diceBear, message, isSystem, timestamp } = JSON.parse(data.data)
+      const { type, chatHistory, playerId, playerName, diceBear, profilePhoto, avatarSource, message, isSystem, timestamp } = JSON.parse(
+        data.data
+      )
 
       if (type === wsTypeEnum.CONNECTED) {
         store.commit('tour/SET_CHAT_MESSAGES', chatHistory)
@@ -149,6 +145,8 @@ export default defineComponent({
               playerId,
               playerName,
               diceBear,
+              profilePhoto,
+              avatarSource,
               message,
               timestamp
             }
@@ -251,6 +249,17 @@ export default defineComponent({
       isOpenReportDialog.value = true
     }
 
+    // Reshape a chat-message payload (playerName/playerId from WS) into
+    // the {username,id,...} shape PlayerAvatar expects, while preserving
+    // profilePhoto + avatarSource so uploaded photos render in chat.
+    const buildAvatarUser = message => ({
+      username: message.playerName,
+      id: message.playerId,
+      diceBear: message.diceBear,
+      profilePhoto: message.profilePhoto,
+      avatarSource: message.avatarSource
+    })
+
     const handleFocus = () => {
       emit('on-focus')
     }
@@ -279,7 +288,8 @@ export default defineComponent({
       isScrollOnBottom,
       isOpenReportDialog,
       reportAdditional,
-      openReport
+      openReport,
+      buildAvatarUser
     }
   }
 })

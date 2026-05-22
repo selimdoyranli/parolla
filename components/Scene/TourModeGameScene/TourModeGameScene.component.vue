@@ -325,6 +325,8 @@ export default defineComponent({
         id: answer.playerId,
         username: answer.playerName,
         diceBear: answer.diceBear,
+        profilePhoto: answer.profilePhoto,
+        avatarSource: answer.avatarSource,
         isCorrect: answer.isCorrect
       }))
 
@@ -348,6 +350,8 @@ export default defineComponent({
         id: scorer.playerId,
         username: scorer.playerName,
         diceBear: scorer.diceBear,
+        profilePhoto: scorer.profilePhoto,
+        avatarSource: scorer.avatarSource,
         score: `+${scorer.baseScore}`,
         time: formatTimestamp(scorer.responseTime),
         attemptCount: scorer.attemptCount,

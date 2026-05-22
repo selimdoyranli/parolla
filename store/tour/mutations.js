@@ -30,6 +30,8 @@ export default {
       id: player.id,
       username: player.name,
       diceBear: player.diceBear,
+      profilePhoto: player.profilePhoto,
+      avatarSource: player.avatarSource,
       avatarUrl: player.avatarUrl,
       lives: player.lives
     }))
