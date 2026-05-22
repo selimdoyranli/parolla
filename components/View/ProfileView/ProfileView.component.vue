@@ -92,7 +92,7 @@ import { defineComponent, computed, ref, useStore, useContext, useRouter } from 
 import { Empty, Button, Loading, ImagePreview } from 'vant'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
-import { buildBannerStyle } from '@/functions/profileBanner'
+import { buildBannerStyle } from '@/helpers/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
 export default defineComponent({
