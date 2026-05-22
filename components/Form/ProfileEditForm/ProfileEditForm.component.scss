@@ -28,7 +28,6 @@
   &__avatarSourceField {
     display: flex;
     flex-direction: column;
-    gap: 8px;
     align-items: stretch;
     width: 100%;
     max-width: 360px;
@@ -36,13 +35,16 @@
   }
 
   &__avatarSourceFieldLabel {
+    z-index: 1;
     align-self: flex-start;
+    margin-block-end: -1px;
     padding: 6px 18px;
     color: var(--color-text-02);
     font-size: 13px;
     background: var(--color-field-01);
     border: 1px solid var(--color-border-02);
-    border-radius: var(--border-radius-01);
+    border-bottom: 0;
+    border-radius: var(--border-radius-01) var(--border-radius-01) 0 0;
   }
 
   &__avatarSourceFieldBox {
@@ -52,7 +54,7 @@
     padding: 14px 20px;
     background: var(--color-field-01);
     border: 1px solid var(--color-border-02);
-    border-radius: var(--border-radius-01);
+    border-radius: 0 var(--border-radius-01) var(--border-radius-01) var(--border-radius-01);
   }
 
   &__avatarSourceToggle {
@@ -60,6 +62,10 @@
     gap: 24px;
     justify-content: space-around;
     width: 100%;
+
+    .van-radio__label {
+      color: var(--color-text-02);
+    }
   }
 
   &__avatarEditButton {
