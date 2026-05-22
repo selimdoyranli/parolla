@@ -594,7 +594,7 @@ export default () => {
   }
 
   const handleCountdownFinish = async () => {
-    showToast.default(i18n.t('gameScene.timeOver'))
+    await showToast.default(i18n.t('gameScene.timeOver'))
     await endGame()
   }
 
