@@ -485,6 +485,17 @@ export default {
       },
       skinColor: 'Cilt Rengi',
       backgroundColor: 'Arkaplan Rengi'
+    },
+    profilePhotoEditor: {
+      title: 'Profil Fotoğrafı',
+      selectFile: 'Dosya Seç',
+      change: 'Değiştir',
+      hint: 'JPG, PNG, GIF veya WEBP — en fazla 5 MB',
+      error: {
+        mimeTypeNotAllowed: 'Bu dosya tipi desteklenmiyor',
+        sizeLimitExceeded: 'Dosya 5 MB sınırını aşıyor',
+        cropFailed: 'Fotoğraf işlenemedi'
+      }
     }
   },
   clipboard: {
@@ -820,7 +831,13 @@ export default {
       },
       callback: {
         success: 'Profil bilgileriniz güncellendi'
-      }
+      },
+      avatarSource: {
+        diceBear: 'Avatar',
+        profilePhoto: 'Profil Fotoğrafı'
+      },
+      uploadPhotoButton: 'Profil Fotoğrafı Yükle',
+      editAvatarButton: 'Avatar Düzenle'
     }
   },
   roomReviewList: {
