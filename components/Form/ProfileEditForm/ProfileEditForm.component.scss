@@ -72,6 +72,14 @@
     margin-block-start: var(--base-m-y);
   }
 
+  &__photoActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-block-start: var(--base-m-y);
+  }
+
   &__fields {
     position: relative;
     overflow: hidden;

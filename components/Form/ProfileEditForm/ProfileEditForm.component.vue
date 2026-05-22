@@ -12,6 +12,14 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
           Radio(name="diceBear") {{ $t('form.profileEdit.avatarSource.diceBear') }}
           Radio(name="profilePhoto") {{ $t('form.profileEdit.avatarSource.profilePhoto') }}
 
+    input(
+      ref="profilePhotoInputRef"
+      type="file"
+      accept="image/jpeg,image/png,image/gif,image/webp"
+      style="display: none"
+      @change="handleProfilePhotoFileChange"
+    )
+
     Button.profile-edit-form__avatarEditButton(
       v-if="form.avatarSource === 'diceBear'"
       icon="edit"
@@ -21,14 +29,21 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
       @click="handleClickAvatarEdit"
     ) {{ $t('form.profileEdit.editAvatarButton') }}
 
-    Button.profile-edit-form__avatarEditButton(
-      v-else
-      icon="photograph"
-      size="small"
-      native-type="button"
-      round
-      @click="handleClickProfilePhotoEdit"
-    ) {{ $t('form.profileEdit.uploadPhotoButton') }}
+    .profile-edit-form__photoActions(v-else)
+      Button(icon="photograph" size="small" native-type="button" round @click="handleClickProfilePhotoEdit")
+        | {{ $t('form.profileEdit.uploadPhotoButton') }}
+      Button(
+        v-if="hasUploadedProfilePhoto"
+        type="danger"
+        icon="delete-o"
+        size="small"
+        plain
+        native-type="button"
+        round
+        :loading="form.isDeletingPhoto"
+        :disabled="form.isDeletingPhoto || form.isBusy"
+        @click="handleClickDeleteProfilePhoto"
+      ) {{ $t('form.profileEdit.deletePhotoButton') }}
 
   .profile-edit-form__fields
     Field.profile-edit-form__usernameField(
@@ -82,13 +97,14 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
   ) {{ $t('general.save') }}
 
   AvatarEditorDialog(:user="user" @on-confirm="handleAvatarConfirm")
-  ProfilePhotoEditorDialog(@on-confirm="handleProfilePhotoConfirm")
+  ProfilePhotoEditorDialog(:source-file="form.profilePhotoSelectedFile" @on-confirm="handleProfilePhotoConfirm")
 </template>
 
 <script>
-import { defineComponent, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
-import { Form, Button, Field, Notify, Badge, RadioGroup, Radio } from 'vant'
+import { defineComponent, ref, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
+import { Form, Button, Field, Notify, Toast, Dialog as VanDialog, Badge, RadioGroup, Radio } from 'vant'
 import { USERNAME_REGEX } from '@/system/constant'
+import parollaConfig from '@/system/parolla.config'
 
 export default defineComponent({
   components: {
@@ -105,6 +121,7 @@ export default defineComponent({
     const store = useStore()
 
     const user = computed(() => store.getters['auth/user'])
+    const profilePhotoInputRef = ref(null)
 
     const handleClickAvatarEdit = async () => {
       store.commit('profile/SET_AVATAR_EDITOR_DIALOG_IS_OPEN', true)
@@ -114,8 +131,45 @@ export default defineComponent({
       form.diceBear = { ...diceBear }
     }
 
+    // Profile photo: click on the upload button triggers the native
+    // file picker directly. Only after the user picks a file that
+    // passes MIME + size validation do we stage it and open the
+    // cropper dialog. Invalid pick = Toast, dialog stays closed.
     const handleClickProfilePhotoEdit = () => {
+      profilePhotoInputRef.value?.click()
+    }
+
+    const handleProfilePhotoFileChange = event => {
+      const file = event.target.files?.[0]
+
+      if (!file) return
+
+      const { maxFileSize, allowedMimeTypes } = parollaConfig.upload
+
+      if (!allowedMimeTypes.includes(file.type)) {
+        Toast.fail({
+          message: i18n.t('dialog.profilePhotoEditor.error.mimeTypeNotAllowed'),
+          duration: 2500
+        })
+        event.target.value = ''
+
+        return
+      }
+
+      if (file.size > maxFileSize) {
+        Toast.fail({
+          message: i18n.t('dialog.profilePhotoEditor.error.sizeLimitExceeded'),
+          duration: 2500
+        })
+        event.target.value = ''
+
+        return
+      }
+
+      form.profilePhotoSelectedFile = file
       store.commit('profile/SET_PROFILE_PHOTO_EDITOR_DIALOG_IS_OPEN', true)
+      // Reset so picking the same file again re-fires `change`
+      event.target.value = ''
     }
 
     const handleProfilePhotoConfirm = blob => {
@@ -124,18 +178,25 @@ export default defineComponent({
       }
       form.profilePhotoBlob = blob
       form.profilePhotoPreviewUrl = URL.createObjectURL(blob)
+      // The cropper now owns the result blob; the parent's staged File
+      // can be released so subsequent opens always start clean.
+      form.profilePhotoSelectedFile = null
     }
 
     const form = reactive({
       isBusy: false,
+      isDeletingPhoto: false,
       username: user.value.username,
       fullname: user.value.fullname,
       bio: user.value.bio,
       diceBear: null,
       avatarSource: user.value.avatarSource || 'diceBear',
       profilePhotoBlob: null,
-      profilePhotoPreviewUrl: null
+      profilePhotoPreviewUrl: null,
+      profilePhotoSelectedFile: null
     })
+
+    const hasUploadedProfilePhoto = computed(() => Boolean(user.value?.profilePhoto?.url))
 
     const displayUser = computed(() => {
       const base = { ...user.value, avatarSource: form.avatarSource }
@@ -178,6 +239,53 @@ export default defineComponent({
       } else {
         form.isClear = true
       }
+    }
+
+    const handleClickDeleteProfilePhoto = async () => {
+      try {
+        await VanDialog.confirm({
+          title: i18n.t('dialog.deleteProfilePhoto.title'),
+          message: i18n.t('dialog.deleteProfilePhoto.message'),
+          confirmButtonText: i18n.t('general.delete'),
+          cancelButtonText: i18n.t('general.cancel'),
+          confirmButtonColor: 'var(--color-danger-01)'
+        })
+      } catch (_) {
+        // User cancelled
+        return
+      }
+
+      form.isDeletingPhoto = true
+
+      const { data, error } = await store.dispatch('auth/deleteProfilePhoto')
+
+      if (data) {
+        // Drop any staged photo state so the next save doesn't try to
+        // re-upload something the user just deleted.
+        if (form.profilePhotoPreviewUrl) {
+          URL.revokeObjectURL(form.profilePhotoPreviewUrl)
+        }
+        form.profilePhotoBlob = null
+        form.profilePhotoPreviewUrl = null
+        form.profilePhotoSelectedFile = null
+        form.avatarSource = 'diceBear'
+
+        Toast.success({
+          message: i18n.t('form.profileEdit.deletePhotoCallback.success'),
+          duration: 2000
+        })
+      }
+
+      if (error) {
+        Notify({
+          message: error.message,
+          color: 'var(--color-text-04)',
+          background: 'var(--color-danger-01)',
+          duration: 3000
+        })
+      }
+
+      form.isDeletingPhoto = false
     }
 
     const handleSubmit = async () => {
@@ -272,10 +380,14 @@ export default defineComponent({
       USERNAME_REGEX,
       user,
       displayUser,
+      hasUploadedProfilePhoto,
+      profilePhotoInputRef,
       handleClickAvatarEdit,
       handleAvatarConfirm,
       handleClickProfilePhotoEdit,
+      handleProfilePhotoFileChange,
       handleProfilePhotoConfirm,
+      handleClickDeleteProfilePhoto,
       form,
       handleInput,
       isUsernameChanged,

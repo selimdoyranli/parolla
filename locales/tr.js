@@ -496,6 +496,10 @@ export default {
         sizeLimitExceeded: 'Dosya 5 MB sınırını aşıyor',
         cropFailed: 'Fotoğraf işlenemedi'
       }
+    },
+    deleteProfilePhoto: {
+      title: 'Profil fotoğrafını sil',
+      message: 'Yüklediğin profil fotoğrafı kalıcı olarak silinecek. Devam etmek istiyor musun?'
     }
   },
   clipboard: {
@@ -838,7 +842,11 @@ export default {
         profilePhoto: 'Profil Fotoğrafı'
       },
       uploadPhotoButton: 'Profil Fotoğrafı Yükle',
-      editAvatarButton: 'Avatar Düzenle'
+      editAvatarButton: 'Avatar Düzenle',
+      deletePhotoButton: 'Sil',
+      deletePhotoCallback: {
+        success: 'Profil fotoğrafı silindi'
+      }
     }
   },
   roomReviewList: {

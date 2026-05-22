@@ -99,6 +99,27 @@ export default {
     }
   },
 
+  async deleteProfilePhoto({ commit }) {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: 'users/me/profile-photo',
+      method: 'DELETE',
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    if (data) {
+      commit('SET_USER', data)
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
   async logout({ commit, state }) {
     commit('LOGOUT')
   },

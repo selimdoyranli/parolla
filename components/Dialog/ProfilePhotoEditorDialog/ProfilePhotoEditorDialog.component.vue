@@ -12,29 +12,23 @@ Dialog.dialog.profile-photo-editor-dialog(
   @cancel="handleCancel"
 )
   .profile-photo-editor-content
-    template(v-if="!hasFile")
-      .file-picker
-        input(
-          ref="fileInputRef"
-          type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
-          style="display: none"
-          @change="handleFileChange"
-        )
-        Button(type="primary" icon="photograph" plain round native-type="button" @click="triggerFilePicker")
-          | {{ $t('dialog.profilePhotoEditor.selectFile') }}
-        .file-picker__hint {{ $t('dialog.profilePhotoEditor.hint') }}
-
-    template(v-else)
+    input(
+      ref="fileInputRef"
+      type="file"
+      accept="image/jpeg,image/png,image/gif,image/webp"
+      style="display: none"
+      @change="handleFileChange"
+    )
+    template(v-if="hasFile")
       .cropper-wrapper
         Cropper.cropper(ref="cropperRef" :src="objectUrl" image-restriction="stencil" :stencil-props="{ aspectRatio: 1 }")
       .cropper-actions
-        Button(size="small" plain round native-type="button" @click="resetFile") {{ $t('dialog.profilePhotoEditor.change') }}
+        Button(size="small" plain round native-type="button" @click="triggerFilePicker") {{ $t('dialog.profilePhotoEditor.change') }}
 </template>
 
 <script>
-import { defineComponent, ref, computed, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Button, Notify } from 'vant'
+import { defineComponent, ref, computed, watch, useStore, useContext } from '@nuxtjs/composition-api'
+import { Dialog, Button, Toast } from 'vant'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import parollaConfig from '@/system/parolla.config'
@@ -47,8 +41,15 @@ export default defineComponent({
     Button,
     Cropper
   },
+  props: {
+    sourceFile: {
+      type: File,
+      required: false,
+      default: null
+    }
+  },
   emits: ['on-confirm', 'on-cancel'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const store = useStore()
     const { i18n } = useContext()
 
@@ -60,14 +61,28 @@ export default defineComponent({
     const isOpenProfilePhotoEditorDialog = computed(() => store.getters['profile/isOpenProfilePhotoEditorDialog'])
     const hasFile = computed(() => !!objectUrl.value)
 
-    const notifyError = message => {
-      Notify({
-        message,
-        color: 'var(--color-text-04)',
-        background: 'var(--color-danger-01)',
-        duration: 3000
-      })
+    const toastError = message => {
+      Toast.fail({ message, duration: 2500 })
     }
+
+    const setFile = file => {
+      if (objectUrl.value) URL.revokeObjectURL(objectUrl.value)
+      selectedFile.value = file
+      objectUrl.value = URL.createObjectURL(file)
+    }
+
+    // Seed the cropper from the parent-staged file whenever the dialog
+    // opens with a fresh source. Parent owns the initial validation so
+    // by the time we get here the file is already MIME/size-clean.
+    watch(
+      () => [props.sourceFile, isOpenProfilePhotoEditorDialog.value],
+      ([file, open]) => {
+        if (open && file && file !== selectedFile.value) {
+          setFile(file)
+        }
+      },
+      { immediate: true }
+    )
 
     const triggerFilePicker = () => {
       fileInputRef.value?.click()
@@ -81,26 +96,24 @@ export default defineComponent({
       const { maxFileSize, allowedMimeTypes } = parollaConfig.upload
 
       if (!allowedMimeTypes.includes(file.type)) {
-        notifyError(i18n.t('dialog.profilePhotoEditor.error.mimeTypeNotAllowed'))
+        toastError(i18n.t('dialog.profilePhotoEditor.error.mimeTypeNotAllowed'))
         event.target.value = ''
 
         return
       }
 
       if (file.size > maxFileSize) {
-        notifyError(i18n.t('dialog.profilePhotoEditor.error.sizeLimitExceeded'))
+        toastError(i18n.t('dialog.profilePhotoEditor.error.sizeLimitExceeded'))
         event.target.value = ''
 
         return
       }
 
-      if (objectUrl.value) URL.revokeObjectURL(objectUrl.value)
-
-      selectedFile.value = file
-      objectUrl.value = URL.createObjectURL(file)
+      setFile(file)
+      event.target.value = ''
     }
 
-    const resetFile = () => {
+    const resetState = () => {
       if (objectUrl.value) URL.revokeObjectURL(objectUrl.value)
       objectUrl.value = null
       selectedFile.value = null
@@ -126,7 +139,7 @@ export default defineComponent({
       out.toBlob(
         blob => {
           if (!blob) {
-            notifyError(i18n.t('dialog.profilePhotoEditor.error.cropFailed'))
+            toastError(i18n.t('dialog.profilePhotoEditor.error.cropFailed'))
 
             return
           }
@@ -144,7 +157,7 @@ export default defineComponent({
     }
 
     const onClosed = () => {
-      resetFile()
+      resetState()
     }
 
     return {
@@ -155,7 +168,6 @@ export default defineComponent({
       isOpenProfilePhotoEditorDialog,
       triggerFilePicker,
       handleFileChange,
-      resetFile,
       handleConfirm,
       handleCancel,
       onClosed

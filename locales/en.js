@@ -490,6 +490,10 @@ export default {
         sizeLimitExceeded: 'File exceeds the 5 MB limit',
         cropFailed: 'Could not process the photo'
       }
+    },
+    deleteProfilePhoto: {
+      title: 'Delete profile photo',
+      message: 'Your uploaded profile photo will be permanently removed. Continue?'
     }
   },
   clipboard: {
@@ -818,7 +822,11 @@ export default {
         profilePhoto: 'Profile Photo'
       },
       uploadPhotoButton: 'Upload Profile Photo',
-      editAvatarButton: 'Edit Avatar'
+      editAvatarButton: 'Edit Avatar',
+      deletePhotoButton: 'Delete',
+      deletePhotoCallback: {
+        success: 'Profile photo removed'
+      }
     }
   },
   roomReviewList: {

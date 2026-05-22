@@ -10,20 +10,6 @@
     padding: 16px;
   }
 
-  .file-picker {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    padding: 24px 0;
-
-    &__hint {
-      color: var(--color-text-02);
-      font-size: 12px;
-      text-align: center;
-    }
-  }
-
   .cropper-wrapper {
     width: 100%;
     max-width: 480px;
