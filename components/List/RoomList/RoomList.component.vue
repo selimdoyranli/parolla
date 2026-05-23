@@ -38,10 +38,10 @@
               .room-card__placeholder
                 .room-card__placeholder-grid
                 .room-card__placeholder-glow
-                AppIcon.room-card__placeholder-glyph(:name="quizGlyph(room)" :width="48" :height="48")
-                span.room-card__placeholder-monogram(aria-hidden="true") {{ monogram(room.title) }}
 
             .room-card__media-shade
+
+            h3.room-card__placeholder-title(v-if="!hasCoverPhoto(room)") {{ room.title }}
 
             .room-card__media-top
               .room-card__media-top-left
@@ -65,7 +65,7 @@
                 span.room-card__crown(v-if="room.isFeatured" :title="$t('general.editorsChoice')")
                   AppIcon(name="tabler:crown" :width="12" :height="12")
 
-            .room-card__media-bottom(v-if="quizTypePill(room)")
+            .room-card__media-bottom(v-if="hasCoverPhoto(room) && quizTypePill(room)")
               span.room-card__quiz-type(:class="`room-card__quiz-type--${quizTypePill(room).key}`")
                 img.room-card__quiz-type-versus(
                   v-if="quizTypePill(room).key === 'choices'"
@@ -79,7 +79,21 @@
                 span.room-card__quiz-type-text {{ quizTypePill(room).label }}
 
           .room-card__body
-            h3.room-card__title {{ room.title }}
+            .room-card__title-slot
+              template(v-if="hasCoverPhoto(room)")
+                h3.room-card__title {{ room.title }}
+              template(v-else-if="quizTypePill(room)")
+                span.room-card__quiz-label(:class="`room-card__quiz-label--${quizTypePill(room).key}`")
+                  img.room-card__quiz-label-versus(
+                    v-if="quizTypePill(room).key === 'choices'"
+                    src="/img/elements/versus.webp"
+                    alt
+                    draggable="false"
+                    width="18"
+                    height="18"
+                  )
+                  AppIcon.room-card__quiz-label-icon(v-else :name="quizTypePill(room).icon" :width="16" :height="16")
+                  span.room-card__quiz-label-text {{ quizTypePill(room).label }}
 
             .room-card__meta
               PlayerAvatar.room-card__author(
@@ -412,16 +426,6 @@ export default defineComponent({
       return String(n)
     }
 
-    const monogram = title => {
-      const t = String(title || '').trim()
-
-      if (!t) return '?'
-      const parts = t.split(/\s+/).filter(Boolean)
-      const letters = parts.length >= 2 ? `${parts[0][0]}${parts[1][0]}` : t.slice(0, 2)
-
-      return letters.toUpperCase()
-    }
-
     const placeholderPalette = room => {
       const key = room?.roomId || room?.documentId || room?.title || ''
       const idx = hashSeed(key) % PLACEHOLDER_PALETTES.length
@@ -439,20 +443,8 @@ export default defineComponent({
       }
     }
 
-    const quizGlyph = room => {
-      if (room?.quizType === quizTypeEnum.CHOICES) return 'tabler:swords'
-
-      if (room?.quizType === quizTypeEnum.FLASHCARDS) return 'tabler:cards'
-
-      if (room?.questionTypeDominance === questionTypeEnum.MEDIA) return 'tabler:photo'
-
-      if (room?.answerTypeDominance === answerTypeEnum.TRIVIA) return 'tabler:table'
-
-      return 'tabler:message-question'
-    }
-
     const quizTypePill = room => {
-      if (!room) return null
+      if (!room) return { key: 'qa', icon: 'tabler:message-question', label: i18n.t('general.quiz') }
 
       if (room.quizType === quizTypeEnum.CHOICES) {
         return { key: 'choices', icon: null, label: i18n.t('general.thisOrThatQuiz') }
@@ -470,7 +462,7 @@ export default defineComponent({
         return { key: 'trivia', icon: 'streamline-flex-color:table-flat', label: i18n.t('general.triviaQuiz') }
       }
 
-      return null
+      return { key: 'qa', icon: 'tabler:message-question', label: i18n.t('general.quiz') }
     }
 
     return {
@@ -490,9 +482,7 @@ export default defineComponent({
       hasRating,
       formatRating,
       formatCount,
-      monogram,
       cardStyle,
-      quizGlyph,
       quizTypePill
     }
   }
