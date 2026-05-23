@@ -8,6 +8,11 @@
 }
 
 /* === Buttons === */
+.answer-field__button--pass {
+  sound-on-click: pop !important;
+  volume: 0 !important;
+}
+
 .van-button { sound-on-click: tap-tactile; }
 .van-button.van-button--primary,
 .van-button.van-button--danger,
@@ -70,20 +75,6 @@ input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 .van-button.compose-qa-card__removeButton { sound-on-click: thunk; }
 .wordblock-mode-scene__key[data-key="backspace"] { sound-on-click: thunk; }
 .croppa-container .icon-remove { sound-on-click: thunk; }
-
-/* === Silenced — pass button already triggers its own Howler pass.wav ===
-   IMPORTANT: a rule with only `volume: 0` (no sound key) lands in the
-   `config` bucket in buildBindings (runtime.mjs:2174-2196), and
-   applyInheritance only reads config-bucket rules from PARENT elements
-   — never from the element itself (runtime.mjs:2376-2393). To actually
-   silence a click on this element we must declare `sound-on-click`
-   so the rule joins the click bucket; setting it to `none` (or
-   `silent`) short-circuits triggerNow at runtime.mjs:4135.
-   Three classes for specificity (0,3,0) + !important for cascade-proof
-   override regardless of how vant composes its class list. */
-.van-button.answer-field__button.answer-field__button--pass {
-  sound-on-click: none !important;
-}
 
 /* === Accessibility === */
 @media (prefers-reduced-sound: reduce) {
