@@ -51,6 +51,11 @@
   --room-card-border: var(--color-border-01);
   --room-card-border-hover: rgba(255, 120, 120, 0.45);
 
+  /* light mode lifts the placeholder gradient via a saturation + brightness filter
+     so colors stay vivid (not pastel) while reading lighter against the white card surface;
+     dark mode disables the filter via the override below */
+  --room-card-placeholder-filter: saturate(1.22) brightness(1.06);
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -138,6 +143,7 @@
     justify-content: center;
     background: radial-gradient(120% 90% at 18% 14%, var(--room-card-tint), transparent 55%),
       linear-gradient(135deg, var(--room-card-from), var(--room-card-to));
+    filter: var(--room-card-placeholder-filter);
     transition: transform 0.5s var(--motion-01);
     will-change: transform;
     inset: 0;
@@ -192,7 +198,7 @@
     overflow: hidden;
     color: light-dark(#fff, #ccc);
     font-weight: 700;
-    font-size: var(--font-size-text-7);
+    font-size: var(--font-size-text-6);
     line-height: 1.25;
     letter-spacing: -0.01em;
     text-align: center;
@@ -686,6 +692,12 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* dark mode keeps the placeholder gradient at its original saturated colors —
+   the saturate/brightness lift is only applied for the lighter light-mode aesthetic */
+.dark-mode .room-card {
+  --room-card-placeholder-filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
