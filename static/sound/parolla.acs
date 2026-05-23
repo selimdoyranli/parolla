@@ -72,8 +72,10 @@ input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 .croppa-container .icon-remove { sound-on-click: thunk; }
 
 /* === Silenced — these elements already play their own Howler sfx ===
-   ACS's per-rule sound: none cascade-override (runtime.mjs:4135). */
-.van-button.answer-field__button--pass { sound-on-click: none; }
+   ACS's per-rule sound: none cascade-override (runtime.mjs:4135).
+   !important forces priority over the .van-button baseline regardless
+   of how vant Button class composition shakes out. */
+.van-button.answer-field__button--pass { sound-on-click: none !important; }
 
 /* === Accessibility === */
 @media (prefers-reduced-sound: reduce) {
