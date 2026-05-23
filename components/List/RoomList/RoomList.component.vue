@@ -20,128 +20,123 @@
       ) {{ $t('creatorModeRooms.rooms.empty.action') }}
 
   template(v-else)
-    List
+    .room-list__grid
       template(v-for="(room, index) in list.items")
-        NuxtLink(
+        NuxtLink.room-card(
+          :key="room.documentId || room.roomId"
           :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
           :title="room.title"
-          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
+          :style="cardStyle(room)"
+          :class="{ 'room-card--photo': hasCoverPhoto(room), 'room-card--placeholder': !hasCoverPhoto(room) }"
+          :data-index="index"
         )
-          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
-            template(#title)
-              .room-list-item-title
-                span.room-list-item-title__text {{ room.title }}
-                  Tag.ms-2(v-if="scoped && isOwner({ user: room.user }) && !room.isVisible" type="warning") {{ $t('general.draft') }}
+          .room-card__media
+            template(v-if="hasCoverPhoto(room)")
+              img.room-card__photo(:src="room.coverPhoto.url" loading="lazy" draggable="false" :alt="room.title")
 
-            template(#label)
-              .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
-                PlayerAvatar(
-                  with-username
-                  :size="16"
-                  :user="room.isAnon ? null : room.user"
-                  :open-player-dialog-on-click="!room.isAnon && !!room.user"
-                )
+            template(v-else)
+              .room-card__placeholder
+                .room-card__placeholder-grid
+                .room-card__placeholder-glow
+                AppIcon.room-card__placeholder-glyph(:name="quizGlyph(room)" :width="48" :height="48")
+                span.room-card__placeholder-monogram(aria-hidden="true") {{ monogram(room.title) }}
 
+            .room-card__media-shade
+
+            .room-card__media-top
+              .room-card__media-top-left
                 template(v-if="scoped && isOwner({ user: room.user })")
-                  Tag.room-list-item-listing-tag(v-if="room.isListed")
-                    AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
-                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
-                  Tag.room-list-item-listing-tag(v-else)
-                    AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
-                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
+                  span.room-card__chip.room-card__chip--draft(v-if="!room.isVisible")
+                    AppIcon.room-card__chip-icon(name="tabler:edit-circle" :width="11" :height="11")
+                    | {{ $t('general.draft') }}
+                  span.room-card__chip(v-if="room.isListed")
+                    AppIcon.room-card__chip-icon(name="tabler:world" :width="11" :height="11")
+                    | {{ $t('creatorModeMyRooms.listing.public') }}
+                  span.room-card__chip(v-else)
+                    AppIcon.room-card__chip-icon(name="tabler:eye-off" :width="11" :height="11")
+                    | {{ $t('creatorModeMyRooms.listing.private') }}
 
-              .room-list-item__badges
-                .room-list-item-badge.room-list-item-badge--user
-                  PlayerAvatar(
-                    with-username
-                    :size="16"
-                    :user="room.isAnon ? null : room.user"
-                    :open-player-dialog-on-click="!room.isAnon && !!room.user"
-                  )
+              .room-card__media-top-right
+                span.room-card__rating(v-if="hasRating(room)")
+                  AppIcon.room-card__rating-star(name="tabler:star-filled" :width="11" :height="11")
+                  span.room-card__rating-value {{ formatRating(room.rating) }}
+                  span.room-card__rating-count(v-if="room.reviewsCount") ({{ room.reviewsCount }})
 
-                template(v-if="scoped && isOwner({ user: room.user })")
-                  .room-list-item-badge
-                    Tag.room-list-item-listing-tag(v-if="room.isListed")
-                      AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
-                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
-                    Tag.room-list-item-listing-tag(v-else)
-                      AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
-                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
+                span.room-card__crown(v-if="room.isFeatured" :title="$t('general.editorsChoice')")
+                  AppIcon(name="tabler:crown" :width="12" :height="12")
 
-                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
-                  Tag.room-list-item-choices-tag
-                    img.room-list-item-choices-tag__versusIcon(
-                      src="/img/elements/versus.webp"
-                      alt="Versus"
-                      draggable="false"
-                      width="48"
-                      height="48"
-                    )
-                    span.room-list-item-choices-tag__text {{ $t('general.thisOrThatQuiz') }}
-
-                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.FLASHCARDS")
-                  Tag.room-list-item-flashcards-tag
-                    AppIcon.room-list-item-flashcards-tag__icon(name="streamline-color:cards-flat" :width="16" :height="16")
-                    span.room-list-item-flashcards-tag__text {{ $t('general.flashcardsQuiz') }}
-
-                .room-list-item-badge(v-if="room.questionTypeDominance === questionTypeEnum.MEDIA")
-                  Tag.room-list-item-has-media-tag
-                    AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
-                    span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
-
-                .room-list-item-badge(v-if="room.answerTypeDominance === answerTypeEnum.TRIVIA")
-                  Tag.room-list-item-has-trivia-tag
-                    AppIcon.room-list-item-has-trivia-tag__triviaIcon(name="streamline-flex-color:table-flat")
-                    span.room-list-item-has-trivia-tag__text {{ $t('general.triviaQuiz') }}
-
-                .room-list-item-badge(v-if="room.questionCount")
-                  AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.questionCount }}
-
-                .room-list-item-badge(v-if="room.choices?.length > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.choices.length }}
-
-                .room-list-item-badge(v-if="room.flashcardCount > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:cards" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.flashcardCount }}
-
-                .room-list-item-badge(v-if="room.viewCount && room.viewCount > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.viewCount }}
-
-              .room-list-item__tags(v-if="room.tags && room.tags.length > 0")
-                template(v-for="tag in room.tags")
-                  Tag.room-list-item__tag(:key="tag.id" type="primary") {{ tag.title }}
-
-              span.room-list-item__id ID: {{ room.roomId }}
-
-              // Actions
-              .room-list-item__actions(v-if="user && isOwner({ user: room.user })")
-                Button(
-                  type="info"
-                  icon="edit"
-                  native-type="button"
-                  plain
-                  size="normal"
-                  round
-                  @click.native.stop.prevent.capture="handleEditRoom({ room })"
-                ) {{ $t('general.edit') }}
-                Button(
-                  type="danger"
-                  icon="delete"
-                  native-type="button"
-                  plain
-                  round
-                  size="normal"
-                  @click.native.stop.prevent.capture="handleDeleteRoom({ room })"
+            .room-card__media-bottom(v-if="quizTypePill(room)")
+              span.room-card__quiz-type(:class="`room-card__quiz-type--${quizTypePill(room).key}`")
+                img.room-card__quiz-type-versus(
+                  v-if="quizTypePill(room).key === 'choices'"
+                  src="/img/elements/versus.webp"
+                  alt
+                  draggable="false"
+                  width="14"
+                  height="14"
                 )
-                  | {{ $t('general.delete') }}
+                AppIcon.room-card__quiz-type-icon(v-else :name="quizTypePill(room).icon" :width="13" :height="13")
+                span.room-card__quiz-type-text {{ quizTypePill(room).label }}
+
+          .room-card__body
+            h3.room-card__title {{ room.title }}
+
+            .room-card__meta
+              PlayerAvatar.room-card__author(
+                with-username
+                :size="16"
+                :user="room.isAnon ? null : room.user"
+                :open-player-dialog-on-click="!room.isAnon && !!room.user"
+              )
+
+            .room-card__tags(v-if="room.tags && room.tags.length > 0")
+              template(v-for="tag in room.tags.slice(0, 3)")
+                span.room-card__tag(:key="tag.id") {{ tag.title }}
+              span.room-card__tag.room-card__tag--more(v-if="room.tags.length > 3")
+                | +{{ room.tags.length - 3 }}
+
+            .room-card__footer
+              .room-card__stats
+                span.room-card__stat.room-card__stat--accent(v-if="room.viewCount && room.viewCount > 0")
+                  AppIcon.room-card__stat-icon(name="tabler:player-play-filled" :width="13" :height="13")
+                  span.room-card__stat-value {{ formatCount(room.viewCount) }}
+
+                span.room-card__stat(v-if="room.questionCount")
+                  AppIcon.room-card__stat-icon(name="tabler:help-square-rounded" :width="13" :height="13")
+                  span.room-card__stat-value {{ room.questionCount }}
+
+                span.room-card__stat(v-if="room.choices && room.choices.length > 0")
+                  AppIcon.room-card__stat-icon(name="tabler:list-check" :width="13" :height="13")
+                  span.room-card__stat-value {{ room.choices.length }}
+
+                span.room-card__stat(v-if="room.flashcardCount > 0")
+                  AppIcon.room-card__stat-icon(name="tabler:cards" :width="13" :height="13")
+                  span.room-card__stat-value {{ room.flashcardCount }}
+
+                span.room-card__stat(v-if="room.tags && room.tags.length > 0")
+                  AppIcon.room-card__stat-icon(name="tabler:hash" :width="13" :height="13")
+                  span.room-card__stat-value {{ room.tags.length }}
+
+              .room-card__owner-actions(v-if="user && isOwner({ user: room.user })")
+                button.room-card__owner-action.room-card__owner-action--edit(
+                  type="button"
+                  :title="$t('general.edit')"
+                  :aria-label="$t('general.edit')"
+                  @click.prevent.stop="handleEditRoom({ room })"
+                )
+                  AppIcon(name="tabler:pencil" :width="14" :height="14")
+                button.room-card__owner-action.room-card__owner-action--delete(
+                  type="button"
+                  :title="$t('general.delete')"
+                  :aria-label="$t('general.delete')"
+                  @click.prevent.stop="handleDeleteRoom({ room })"
+                )
+                  AppIcon(name="tabler:trash" :width="14" :height="14")
 
         // Ad
         template(v-if="(index + 1) % 5 === 0")
-          .room-list-item.room-list-item--ad
-            small {{ $t('general.ad') }}
+          .room-card.room-card--ad(:key="`ad-${index}`")
+            small.room-card__ad-label {{ $t('general.ad') }}
             AppAd(:data-ad-slot="6048083070")
 
   InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" @infinite="handleInfiniteLoading")
@@ -153,6 +148,26 @@ import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 import { quizTypeEnum, questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
+
+const PLACEHOLDER_PALETTES = [
+  { from: '#ff7878', to: '#c83a5a', tint: 'rgba(255, 220, 220, 0.18)' },
+  { from: '#7c5ce8', to: '#3a3da8', tint: 'rgba(225, 220, 255, 0.18)' },
+  { from: '#1f9e8e', to: '#0c5a64', tint: 'rgba(200, 245, 240, 0.18)' },
+  { from: '#d4a017', to: '#9b5b0a', tint: 'rgba(255, 235, 200, 0.18)' },
+  { from: '#e85a8a', to: '#7a2d5a', tint: 'rgba(255, 220, 235, 0.18)' },
+  { from: '#3b7dd8', to: '#163f7a', tint: 'rgba(210, 225, 255, 0.18)' }
+]
+
+const hashSeed = key => {
+  const s = String(key || '')
+  let h = 0
+
+  for (let i = 0; i < s.length; i += 1) {
+    h = (h * 31 + s.charCodeAt(i)) | 0
+  }
+
+  return Math.abs(h)
+}
 
 export default defineComponent({
   components: {
@@ -210,14 +225,14 @@ export default defineComponent({
 
     const list = reactive({
       items: props.items,
-      originalItems: props.items // Store original items for local search
+      originalItems: props.items
     })
 
     watch(
       () => props.items,
       value => {
         list.items = value
-        list.originalItems = value // Update original items when props change
+        list.originalItems = value
       }
     )
 
@@ -292,12 +307,9 @@ export default defineComponent({
             includeUnlisted: isOwnUserFilter.value
           })
         } else {
-          // Local filter for rooms
           if (form.search.keyword.trim() === '') {
-            // If search is empty, restore original items
             list.items = list.originalItems.slice()
           } else {
-            // Filter original items based on search keyword
             list.items = list.originalItems.filter(room => {
               return room.title.toLowerCase().includes(form.search.keyword.toLowerCase())
             })
@@ -374,6 +386,93 @@ export default defineComponent({
       return i18n.t('creatorModeRooms.rooms.searchField.searchRoomOrTag.placeholder')
     })
 
+    const hasCoverPhoto = room => Boolean(room?.coverPhoto?.url)
+
+    const hasRating = room => {
+      const n = Number(room?.rating)
+
+      return Number.isFinite(n) && n > 0
+    }
+
+    const formatRating = rating => {
+      const n = Number(rating)
+
+      if (!Number.isFinite(n)) return '0.0'
+
+      return n.toFixed(1)
+    }
+
+    const formatCount = count => {
+      const n = Number(count) || 0
+
+      if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+
+      if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}K`
+
+      return String(n)
+    }
+
+    const monogram = title => {
+      const t = String(title || '').trim()
+
+      if (!t) return '?'
+      const parts = t.split(/\s+/).filter(Boolean)
+      const letters = parts.length >= 2 ? `${parts[0][0]}${parts[1][0]}` : t.slice(0, 2)
+
+      return letters.toUpperCase()
+    }
+
+    const placeholderPalette = room => {
+      const key = room?.roomId || room?.documentId || room?.title || ''
+      const idx = hashSeed(key) % PLACEHOLDER_PALETTES.length
+
+      return PLACEHOLDER_PALETTES[idx]
+    }
+
+    const cardStyle = room => {
+      const palette = placeholderPalette(room)
+
+      return {
+        '--room-card-from': palette.from,
+        '--room-card-to': palette.to,
+        '--room-card-tint': palette.tint
+      }
+    }
+
+    const quizGlyph = room => {
+      if (room?.quizType === quizTypeEnum.CHOICES) return 'tabler:swords'
+
+      if (room?.quizType === quizTypeEnum.FLASHCARDS) return 'tabler:cards'
+
+      if (room?.questionTypeDominance === questionTypeEnum.MEDIA) return 'tabler:photo'
+
+      if (room?.answerTypeDominance === answerTypeEnum.TRIVIA) return 'tabler:table'
+
+      return 'tabler:message-question'
+    }
+
+    const quizTypePill = room => {
+      if (!room) return null
+
+      if (room.quizType === quizTypeEnum.CHOICES) {
+        return { key: 'choices', icon: null, label: i18n.t('general.thisOrThatQuiz') }
+      }
+
+      if (room.quizType === quizTypeEnum.FLASHCARDS) {
+        return { key: 'flashcards', icon: 'streamline-color:cards-flat', label: i18n.t('general.flashcardsQuiz') }
+      }
+
+      if (room.questionTypeDominance === questionTypeEnum.MEDIA) {
+        return { key: 'media', icon: 'streamline-flex-color:gallery-flat', label: i18n.t('general.photoQuiz') }
+      }
+
+      if (room.answerTypeDominance === answerTypeEnum.TRIVIA) {
+        return { key: 'trivia', icon: 'streamline-flex-color:table-flat', label: i18n.t('general.triviaQuiz') }
+      }
+
+      return null
+    }
+
     return {
       quizTypeEnum,
       questionTypeEnum,
@@ -386,7 +485,15 @@ export default defineComponent({
       handleSearchRoom,
       handleEditRoom,
       handleDeleteRoom,
-      searchFieldPlaceholder
+      searchFieldPlaceholder,
+      hasCoverPhoto,
+      hasRating,
+      formatRating,
+      formatCount,
+      monogram,
+      cardStyle,
+      quizGlyph,
+      quizTypePill
     }
   }
 })
