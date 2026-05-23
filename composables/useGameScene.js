@@ -295,6 +295,27 @@ export default () => {
     }
   }
 
+  const handleAnswerFieldAutoFocus = event => {
+    if (!isGameStarted.value || isGameOver.value) return false
+
+    const activeElement = document.activeElement
+
+    if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) {
+      return false
+    }
+
+    if (event.ctrlKey || event.metaKey || event.altKey) return false
+
+    const pressedKey = event.key
+
+    if (!pressedKey || pressedKey.length !== 1) return false
+
+    if (!rootRef.value?.querySelector('.answer-field__input')) return false
+
+    answer.field = answer.field + pressedKey
+    focusToAnswerFieldInput()
+  }
+
   const pass = () => {
     if (isGameOver.value) return false
 
@@ -759,6 +780,7 @@ export default () => {
     focusToAnswerFieldInput,
     resetAnswerField,
     handleTabKey,
+    handleAnswerFieldAutoFocus,
     pass,
     carousels,
     initCarousels,
