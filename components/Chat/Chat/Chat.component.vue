@@ -231,7 +231,7 @@ export default defineComponent({
     const sfx = useSfx()
     const handleEnterSend = () => {
       if (!messageText.value.trim()) return
-      sfx.play('swoosh')
+      sfx.play('tap-tactile')
       sendMessage()
     }
 
