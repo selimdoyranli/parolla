@@ -32,7 +32,7 @@
       :placeholder="$t('chat.messageField.placeholder')"
       :border="false"
       :readonly="!$auth.loggedIn"
-      @keypress.enter="sendMessage"
+      @keypress.enter="handleEnterSend"
       @focus="handleFocus"
       @blur="handleBlur"
     )
@@ -52,6 +52,7 @@ import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch
 import { Field, Button, Empty } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { useSfx } from '@/composables/useSfx'
 
 const longpressDirective = {
   bind(el, binding) {
@@ -223,6 +224,17 @@ export default defineComponent({
       messageText.value = ''
     }
 
+    // Enter-to-send wrapper: the send button's click already gets
+    // tap-tactile from the .van-button .acs rule, but keypress events
+    // don't traverse the click pipeline so we play a sound explicitly
+    // here. Bail on empty messages so we don't play on a no-op send.
+    const sfx = useSfx()
+    const handleEnterSend = () => {
+      if (!messageText.value.trim()) return
+      sfx.play('tap-tactile')
+      sendMessage()
+    }
+
     const isOpenReportDialog = ref(false)
     const reportAdditional = ref(null)
 
@@ -281,6 +293,7 @@ export default defineComponent({
       messageText,
       chatMessages,
       sendMessage,
+      handleEnterSend,
       isoToHumanDate,
       scrollToBottom,
       handleFocus,
