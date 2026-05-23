@@ -35,8 +35,9 @@ input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 /* === Toast (baseline; per-type overrides via showToast helper) === */
 .van-toast { sound-on-appear: notify; volume: 0.5; }
 
-/* === Vant Stepper (+/- buttons) === */
-.van-stepper__minus, .van-stepper__plus { sound-on-click: tick; }
+/* === Vant Stepper (+/- buttons) — rising pop on increment, falling on decrement === */
+.van-stepper__plus  { sound-on-click: pop; pitch: +1st; }
+.van-stepper__minus { sound-on-click: pop; pitch: -1st; }
 
 /* === Vant Radio (covers RadioGroup items in CreatorModeComposeForm
        and ProfileEditForm's avatar-source toggle) === */
