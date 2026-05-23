@@ -64,14 +64,14 @@
             Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
               color="var(--color-warning-01)"
               icon="arrow"
-              @click="pass"
+              @click.stop="pass"
             ) {{ $t('gameScene.answerField.pass') }}
 
         .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA")
           Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
             color="var(--color-warning-01)"
             icon="arrow"
-            @click="pass"
+            @click.stop="pass"
           ) {{ $t('gameScene.answerField.pass') }}
           TriviaOptionList(:options="getActiveQuestion().triviaOptions" @on-option-select="handleTriviaOptionSelect")
 
