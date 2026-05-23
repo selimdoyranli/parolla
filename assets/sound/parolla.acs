@@ -64,6 +64,17 @@ input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
 .guess-the-song-scene-popular-artist { sound-on-click: pop; }
 .guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
 
+/* === Remove / destructive actions — thunk (decisive removal) ===
+   Compound selectors are used to beat .van-button.van-button--danger
+   specificity (0,2,0) on remove buttons that are vant Buttons. */
+.van-button.compose-qa-card__removeButton { sound-on-click: thunk; }
+.wordblock-mode-scene__key[data-key="backspace"] { sound-on-click: thunk; }
+.croppa-container .icon-remove { sound-on-click: thunk; }
+
+/* === Silenced — these elements already play their own Howler sfx ===
+   ACS's per-rule sound: none cascade-override (runtime.mjs:4135). */
+.van-button.answer-field__button--pass { sound-on-click: none; }
+
 /* === Accessibility === */
 @media (prefers-reduced-sound: reduce) {
   :root { master-volume: 0; }

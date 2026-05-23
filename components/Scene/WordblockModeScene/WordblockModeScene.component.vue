@@ -80,6 +80,7 @@
 <script>
 import { defineComponent, useFetch, useStore, useContext, ref, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { Button, Empty } from 'vant'
+import { useSfx } from '@/composables/useSfx'
 import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
@@ -98,6 +99,7 @@ export default defineComponent({
     const rootRef = ref(null)
 
     const store = useStore()
+    const sfx = useSfx()
 
     const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
     const { i18n } = useContext()
@@ -338,11 +340,14 @@ export default defineComponent({
       }
     }
 
-    // Handle physical keyboard events
+    // Handle physical keyboard events. The on-screen keyboard's ACS
+    // rules don't fire for these (no DOM click), so we trigger sounds
+    // programmatically: thunk on backspace, tick on each valid letter.
     const handleKeydown = event => {
       if (gameStatus.value !== gameStatusEnum.PLAYING) return
 
       if (event.key === 'Backspace') {
+        sfx.play('thunk')
         deleteLetter()
       } else if (event.key === 'Enter') {
         handleSubmit()
@@ -351,6 +356,7 @@ export default defineComponent({
 
         // Check if it's a valid Turkish letter
         if (/^[a-zçğıöşü]$/.test(key)) {
+          sfx.play('tick', { volume: 0.4 })
           addLetter(key)
         }
       }
