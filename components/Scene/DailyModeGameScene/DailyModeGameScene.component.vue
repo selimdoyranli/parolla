@@ -136,6 +136,7 @@ export default defineComponent({
       handleAnswer,
       handleAnswerField,
       handleTabKey,
+      handleAnswerFieldAutoFocus,
       pass,
       initCarousels,
       dialog,
@@ -200,6 +201,7 @@ export default defineComponent({
       }
 
       window.addEventListener('keyup', event => handleTabKey(event))
+      window.addEventListener('keyup', event => handleAnswerFieldAutoFocus(event))
 
       window.addEventListener('resize', questionFitText)
       window.addEventListener('beforeunload', event => handleBeforeUnload(event))
