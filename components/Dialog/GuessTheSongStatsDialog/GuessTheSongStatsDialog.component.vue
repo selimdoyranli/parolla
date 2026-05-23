@@ -43,7 +43,8 @@ Dialog.dialog.stats-dialog.guess-the-song-stats-dialog(
 <script>
 import { defineComponent, useContext, reactive, watch, computed } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
-import { Dialog, Button, Toast } from 'vant'
+import { Dialog, Button } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -110,20 +111,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('dialog.stats.clipboard.score.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.stats.clipboard.score.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('dialog.stats.clipboard.score.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.stats.clipboard.score.callback.success'))
       }
     }
 

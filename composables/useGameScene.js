@@ -11,6 +11,7 @@ import { Howl } from 'howler'
 import textfit from 'textfit'
 // Vant
 import { Notify, Toast } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default () => {
   const { i18n, $ua, $auth } = useContext()
@@ -593,10 +594,7 @@ export default () => {
   }
 
   const handleCountdownFinish = async () => {
-    await Toast({
-      message: i18n.t('gameScene.timeOver'),
-      position: 'bottom'
-    })
+    await showToast.default(i18n.t('gameScene.timeOver'))
     await endGame()
   }
 

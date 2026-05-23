@@ -30,7 +30,8 @@ Dialog.dialog.creator-mode-created-room-dialog(
 <script>
 import { defineComponent, useContext, reactive, watch } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
-import { Dialog, Field, Button, Toast } from 'vant'
+import { Dialog, Field, Button } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -84,20 +85,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(url)
-        await Toast({
-          message: i18n.t('dialog.createdRoom.copyUrl.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.createdRoom.copyUrl.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: url
         })
       } catch {
         await navigator.clipboard.writeText(url)
-        await Toast({
-          message: i18n.t('dialog.createdRoom.copyUrl.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.createdRoom.copyUrl.callback.success'))
       }
     }
 

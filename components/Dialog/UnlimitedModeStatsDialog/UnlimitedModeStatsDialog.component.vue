@@ -84,7 +84,8 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
 <script>
 import { defineComponent, useContext, useStore, ref, reactive, watch, computed } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
-import { Dialog, Tabs, Tab, Icon, CountDown, Button, Toast, Collapse, CollapseItem, Empty } from 'vant'
+import { Dialog, Tabs, Tab, Icon, CountDown, Button, Collapse, CollapseItem, Empty } from 'vant'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -171,20 +172,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('dialog.stats.clipboard.score.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.stats.clipboard.score.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('dialog.stats.clipboard.score.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('dialog.stats.clipboard.score.callback.success'))
       }
     }
 

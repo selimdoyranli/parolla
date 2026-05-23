@@ -131,7 +131,9 @@ Dialog.dialog.menu-dialog(
 import { defineComponent, useRoute, useRouter, useStore, useContext, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { APP_URL } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
-import { Dialog, CellGroup, Cell, Switch, Toast, Button } from 'vant'
+import { Dialog, CellGroup, Cell, Switch, Button } from 'vant'
+import { useSfx } from '@/composables/useSfx'
+import { showToast } from '@/helpers/toast'
 
 export default defineComponent({
   components: {
@@ -172,6 +174,8 @@ export default defineComponent({
       }
     )
 
+    const sfx = useSfx()
+
     const isDark = ref($colorMode.value === 'dark')
 
     watch(
@@ -186,6 +190,7 @@ export default defineComponent({
     )
 
     const toggleDarkTheme = isChecked => {
+      sfx.play(isChecked ? 'toggle-on' : 'toggle-off')
       $colorMode.preference = isChecked ? 'dark' : 'light'
       // Theme color'ı hemen güncelle
       const themeColor = isChecked ? '#161616' : '#eeeeee'
@@ -199,12 +204,16 @@ export default defineComponent({
     const isActiveSoundFx = computed(() => store.getters['app/isActiveSoundFx'])
 
     const toggleSoundFx = isChecked => {
+      // Fire BEFORE the mutation so the "off" tick is heard before
+      // the watcher in plugins/acs.js mutes ACS.
+      sfx.play(isChecked ? 'toggle-on' : 'toggle-off')
       store.commit('app/SET_IS_ACTIVE_SOUND_FX', isChecked)
     }
 
     const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
 
     const toggleWordblockKeyboard = isChecked => {
+      sfx.play(isChecked ? 'toggle-on' : 'toggle-off')
       store.commit('wordblock/SET_IS_ACTIVE_KEYBOARD', isChecked)
     }
 
@@ -227,20 +236,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
       }
     }
 
@@ -250,20 +253,14 @@ export default defineComponent({
 
       try {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
         await navigator.share({
           title: 'parolla',
           text: shareText
         })
       } catch {
         await navigator.clipboard.writeText(shareText)
-        await Toast({
-          message: i18n.t('clipboard.callback.success'),
-          position: 'bottom'
-        })
+        await showToast.default(i18n.t('clipboard.callback.success'))
       }
     }
 

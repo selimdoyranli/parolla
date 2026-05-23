@@ -1,0 +1,82 @@
+/* Parolla — Audio CSS (ACS) sound effects.
+   Source of truth. Mirrored into static/sound/parolla.acs.
+   Loaded at runtime via <link rel="audiostyle"> by plugins/acs.js.
+   See docs/superpowers/specs/2026-05-23-acs-sfx-design.md */
+
+:root {
+  master-volume: 0.6;
+}
+
+/* === Buttons === */
+.answer-field__button--pass {
+  sound-on-click: pop !important;
+  volume: 0 !important;
+}
+
+.van-button { sound-on-click: tap-tactile; }
+.van-button.van-button--primary,
+.van-button.van-button--danger,
+.van-button.van-button--info { sound-on-click: pop; }
+.van-button.van-button--disabled { sound-on-click: denied; volume: 0.3; }
+
+/* === Cells, Tabs, Dropdown items === */
+.van-cell.van-cell--clickable,
+.van-cell[is-link] { sound-on-click: tick; }
+.van-tab { sound-on-click: tick; }
+.van-dropdown-item { sound-on-click: tick; }
+
+/* === Switch — baseline; direction handled imperatively === */
+.van-switch { sound-on-click: tick; volume: 0.4; }
+
+/* === Inputs === */
+input, textarea { sound-on-input: tick; volume: 0.3; }
+input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
+
+/* === Dialog / Popup === */
+.van-dialog { sound-on-appear: modal-open; sound-on-leave: modal-close; }
+.van-popup--bottom, .van-popup--top,
+.van-popup--left, .van-popup--right { sound-on-appear: drawer-open; sound-on-leave: drawer-close; }
+
+/* === Toast (baseline; per-type overrides via showToast helper) === */
+.van-toast { sound-on-appear: notify; volume: 0.5; }
+
+/* === Vant Stepper (+/- buttons) — rising pop on increment, falling on decrement === */
+.van-stepper__plus  { sound-on-click: pop; pitch: +1st; }
+.van-stepper__minus { sound-on-click: pop; pitch: -1st; }
+
+/* === Vant Radio (covers RadioGroup items in CreatorModeComposeForm
+       and ProfileEditForm's avatar-source toggle) === */
+.van-radio { sound-on-click: tick; }
+
+/* === Project-specific interactive elements === */
+
+/* IntroButton CTA — the "Oyna" play link inside each game-mode card. */
+.play-now-button { sound-on-click: pop; }
+
+/* Room featured tag filter chips. */
+.room-featured-tag-list-tag { sound-on-click: tick; }
+
+/* Wordblock on-screen keyboard keys. */
+.wordblock-mode-scene__key { sound-on-click: tick; volume: 0.4; }
+
+/* Profile page tab bar items. */
+.profile-tab-bar__tab { sound-on-click: tick; }
+
+/* Creator compose form question/answer type switch cells. */
+.creator-mode-compose-form__typeSwitchCell { sound-on-click: tick; }
+
+/* Music mode — popular artist tile select + selected artist remove (×). */
+.guess-the-song-scene-popular-artist { sound-on-click: pop; }
+.guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
+
+/* === Remove / destructive actions — thunk (decisive removal) ===
+   Compound selectors are used to beat .van-button.van-button--danger
+   specificity (0,2,0) on remove buttons that are vant Buttons. */
+.van-button.compose-qa-card__removeButton { sound-on-click: thunk; }
+.wordblock-mode-scene__key[data-key="backspace"] { sound-on-click: thunk; }
+.croppa-container .icon-remove { sound-on-click: thunk; }
+
+/* === Accessibility === */
+@media (prefers-reduced-sound: reduce) {
+  :root { master-volume: 0; }
+}
