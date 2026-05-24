@@ -79,10 +79,17 @@
                 span.room-card__quiz-type-text {{ quizTypePill(room).label }}
 
           .room-card__body
-            .room-card__title-slot
+            .room-card__title-slot(:class="{ 'room-card__title-slot--inline': !hasCoverPhoto(room) }")
               template(v-if="hasCoverPhoto(room)")
                 h3.room-card__title {{ room.title }}
               template(v-else-if="quizTypePill(room)")
+                PlayerAvatar.room-card__author.room-card__author--inline(
+                  with-username
+                  :size="20"
+                  :user="room.isAnon ? null : room.user"
+                  :open-player-dialog-on-click="!room.isAnon && !!room.user"
+                )
+
                 span.room-card__quiz-label(:class="`room-card__quiz-label--${quizTypePill(room).key}`")
                   img.room-card__quiz-label-versus(
                     v-if="quizTypePill(room).key === 'choices'"
@@ -95,10 +102,10 @@
                   AppIcon.room-card__quiz-label-icon(v-else :name="quizTypePill(room).icon" :width="16" :height="16")
                   span.room-card__quiz-label-text {{ quizTypePill(room).label }}
 
-            .room-card__meta
+            .room-card__meta(v-if="hasCoverPhoto(room)")
               PlayerAvatar.room-card__author(
                 with-username
-                :size="16"
+                :size="20"
                 :user="room.isAnon ? null : room.user"
                 :open-player-dialog-on-click="!room.isAnon && !!room.user"
               )
@@ -126,10 +133,6 @@
                 span.room-card__stat(v-if="room.flashcardCount > 0")
                   AppIcon.room-card__stat-icon(name="tabler:cards" :width="13" :height="13")
                   span.room-card__stat-value {{ room.flashcardCount }}
-
-                span.room-card__stat(v-if="room.tags && room.tags.length > 0")
-                  AppIcon.room-card__stat-icon(name="tabler:hash" :width="13" :height="13")
-                  span.room-card__stat-value {{ room.tags.length }}
 
               .room-card__owner-actions(v-if="user && isOwner({ user: room.user })")
                 button.room-card__owner-action.room-card__owner-action--edit(

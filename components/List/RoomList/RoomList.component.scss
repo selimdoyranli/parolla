@@ -186,39 +186,31 @@
     opacity: 0.95;
   }
 
-  /* title shown inside the placeholder when no cover photo */
+  /* title sits bottom-left over the media — works for both placeholder gradient and future cover photos */
   &__placeholder-title {
     position: absolute;
-    top: 50%;
-    left: 50%;
     z-index: 3;
     display: -webkit-box;
-    width: calc(100% - 36px);
     margin: 0;
     overflow: hidden;
     color: light-dark(#fff, #ccc);
     font-weight: 700;
-    font-size: var(--font-size-text-6);
+    font-size: var(--font-size-text-5);
     line-height: 1.25;
     letter-spacing: -0.01em;
-    text-align: center;
+    text-align: left;
     text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.45);
     word-break: break-word;
-    transform: translate(-50%, -50%);
+    inset-block-end: 14px;
+    inset-inline: 16px;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 
-  /* shade for legibility of overlays — present for photo + placeholder */
+  /* bottom-up dark gradient so the title stays legible whether the media is the placeholder gradient or a cover photo */
   &__media-shade {
     position: absolute;
-    background: linear-gradient(
-      180deg,
-      rgba(12, 12, 12, 0.25) 0%,
-      rgba(12, 12, 12, 0.4) 25%,
-      rgba(12, 12, 12, 0.4) 65%,
-      rgba(12, 12, 12, 0.25) 100%
-    );
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.9) 100%);
     pointer-events: none;
     inset: 0;
   }
@@ -416,6 +408,15 @@
     min-height: calc(1.32em * 2);
   }
 
+  /* no-cover variant — player avatar on the left, quiz-label pushed to the right */
+  &__title-slot--inline {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 0;
+  }
+
   &__title {
     display: -webkit-box;
     margin: 0;
@@ -490,6 +491,11 @@
     line-height: 1;
   }
 
+  /* inside the inline title-slot, push the label to the right edge */
+  &__title-slot--inline &__quiz-label {
+    margin-inline-start: auto;
+  }
+
   &__meta {
     display: flex;
     gap: 6px;
@@ -503,7 +509,7 @@
 
     .player-avatar {
       display: inline-flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
 
       &__username {
@@ -511,10 +517,19 @@
         overflow: hidden;
         color: var(--color-text-03);
         font-weight: 500;
-        font-size: 12px;
+        font-size: 13px;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+    }
+  }
+
+  /* inline variant — sits at the start of the title-slot row alongside the quiz-label */
+  &__author--inline {
+    flex-shrink: 0;
+
+    .player-avatar__username {
+      max-width: 120px;
     }
   }
 
