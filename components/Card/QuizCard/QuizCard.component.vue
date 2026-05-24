@@ -15,8 +15,6 @@ NuxtLink.quiz-card(
         .quiz-card__placeholder-grid
         .quiz-card__placeholder-glow
 
-    .quiz-card__media-shade
-
     h3.quiz-card__placeholder-title {{ room.title }}
 
     .quiz-card__media-top
