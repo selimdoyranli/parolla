@@ -635,6 +635,8 @@ export default {
         },
         coverPhoto: {
           label: 'Cover photo',
+          uploaderTitle: 'Add a cover photo',
+          uploaderDescription: 'Click to pick an image, auto-cropped to 16:9',
           error: {
             mimeTypeNotAllowed: 'Allowed formats: JPG, PNG, GIF, WEBP',
             sizeLimitExceeded: 'Max file size: 5 MB',

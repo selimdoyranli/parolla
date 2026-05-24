@@ -641,6 +641,8 @@ export default {
         },
         coverPhoto: {
           label: 'Kapak fotoğrafı',
+          uploaderTitle: 'Kapak fotoğrafı ekle',
+          uploaderDescription: 'Tıkla ve görsel seç, 16:9 oranında kırpılır',
           error: {
             mimeTypeNotAllowed: 'İzin verilen formatlar: JPG, PNG, GIF, WEBP',
             sizeLimitExceeded: 'Maksimum dosya boyutu: 5 MB',

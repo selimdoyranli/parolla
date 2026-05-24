@@ -12,13 +12,17 @@
       :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.room.roomTitle.label') }) }]"
     )
 
-    .creator-mode-compose-form__coverPhoto
-      span.creator-mode-compose-form__coverPhotoLabel
-        | {{ $t('form.creatorModeCompose.room.coverPhoto.label') }} &nbsp;
-        small.creator-mode-compose-form__optionalHint
-          | ({{ $t('form.optionalHint') }})
+    Cell.creator-mode-compose-form__coverPhotoCell
+      template(#title)
+        span.creator-mode-compose-form__coverPhotoLabel
+          | {{ $t('form.creatorModeCompose.room.coverPhoto.label') }} &nbsp;
+          small.creator-mode-compose-form__optionalHint
+            | {{ $t('form.optionalHint') }}
 
-      .creator-mode-compose-form__coverPhotoCropperBox
+      .creator-mode-compose-form__coverPhotoUploader(
+        ref="coverPhotoWrapperRef"
+        :class="{ 'creator-mode-compose-form__coverPhotoUploader--hasImage': coverPhotoState.hasImage }"
+      )
         client-only
           croppa.creator-mode-compose-form__coverPhotoCroppa(
             v-model="coverPhotoCroppa"
@@ -31,8 +35,8 @@
             :file-size-limit="parollaConfig.upload.maxFileSize"
             :show-remove-button="!form.isBusy"
             :zoom-speed="10"
-            :width="320"
-            :height="180"
+            :width="croppaSize.width"
+            :height="croppaSize.height"
             :disabled="form.isBusy"
             @file-type-mismatch="handleCoverPhotoTypeMismatch"
             @file-size-exceed="handleCoverPhotoSizeExceed"
@@ -42,8 +46,15 @@
             @move="handleCoverPhotoDirty"
             @image-remove="handleCoverPhotoRemove"
           )
-        span.creator-mode-compose-form__coverPhotoUploadIcon(v-if="!coverPhotoState.hasImage")
-          AppIcon(name="tabler:photo-plus" color="var(--color-text-02)" :width="32" :height="32")
+        .creator-mode-compose-form__coverPhotoUploaderOverlay(v-if="!coverPhotoState.hasImage")
+          AppIcon.creator-mode-compose-form__coverPhotoUploaderIcon(name="tabler:upload" :width="32" :height="32")
+          span.creator-mode-compose-form__coverPhotoUploaderTitle
+            | {{ $t('form.creatorModeCompose.room.coverPhoto.uploaderTitle') }}
+          p.creator-mode-compose-form__coverPhotoUploaderDescription
+            | {{ $t('form.creatorModeCompose.room.coverPhoto.uploaderDescription') }}
+          small.creator-mode-compose-form__coverPhotoUploaderMeta
+            | Max: {{ convertSize(parollaConfig.upload.maxFileSize, { unit: 'mb' }) }} ·
+            | {{ parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(', ') }}
 
     Field.creator-mode-compose-form__description(
       v-model="form.description"
@@ -57,7 +68,7 @@
       template(#label)
         span {{ $t('form.creatorModeCompose.room.description.label') }} &nbsp;
         small.creator-mode-compose-form__optionalHint
-          | ({{ $t('form.optionalHint') }})
+          | {{ $t('form.optionalHint') }}
 
     Cell.creator-mode-compose-form__.creator-mode-compose-form__isListed
       template(#title)
@@ -115,10 +126,11 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, ref, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, computed, reactive, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { Field, Cell, Switch, Button, Tag, Stepper, Toast } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import parollaConfig from '@/system/parolla.config'
+import convertSize from 'convert-size'
 
 export default defineComponent({
   name: 'RoomBasicInfo',
@@ -158,6 +170,42 @@ export default defineComponent({
     const coverPhotoCroppa = ref({})
     const coverPhotoState = reactive({
       hasImage: Boolean(props.form.coverPhoto?.url)
+    })
+
+    // vue-croppa needs explicit pixel sizes for its canvas buffer. We sync
+    // them to the wrapper's measured width so the croppa fills the dashed
+    // box on any viewport. Changes here re-create the canvas, but that's
+    // acceptable: initial-image reloads from URL on a fresh canvas.
+    const coverPhotoWrapperRef = ref(null)
+    const croppaSize = reactive({ width: 320, height: 180 })
+    let resizeObserver = null
+
+    const updateCroppaSize = () => {
+      const el = coverPhotoWrapperRef.value
+
+      if (!el) return
+      const w = Math.max(160, Math.floor(el.clientWidth))
+
+      if (Math.abs(croppaSize.width - w) > 2) {
+        croppaSize.width = w
+        croppaSize.height = Math.floor((w * 9) / 16)
+      }
+    }
+
+    onMounted(() => {
+      updateCroppaSize()
+
+      if (typeof ResizeObserver !== 'undefined' && coverPhotoWrapperRef.value) {
+        resizeObserver = new ResizeObserver(() => updateCroppaSize())
+        resizeObserver.observe(coverPhotoWrapperRef.value)
+      }
+    })
+
+    onBeforeUnmount(() => {
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+        resizeObserver = null
+      }
     })
 
     // Cache-bust to dodge CORS taint on the canvas — same trick as ProfileEditForm
@@ -236,7 +284,10 @@ export default defineComponent({
       coverPhotoCroppa,
       coverPhotoState,
       coverPhotoInitialUrl,
+      coverPhotoWrapperRef,
+      croppaSize,
       parollaConfig,
+      convertSize,
       handleCoverPhotoTypeMismatch,
       handleCoverPhotoSizeExceed,
       handleCoverPhotoChoose,
@@ -255,11 +306,26 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.creator-mode-compose-form__coverPhoto {
-  display: flex;
+.creator-mode-compose-form__coverPhotoCell {
   flex-direction: column;
-  gap: 8px;
-  padding: 12px 16px;
+  align-items: stretch;
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-cell__title {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-cell__value {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    margin-block-start: 8px;
+    color: var(--color-text-01);
+    text-align: left;
+  }
 }
 
 .creator-mode-compose-form__coverPhotoLabel {
@@ -272,22 +338,72 @@ export default defineComponent({
   font-size: 12px;
 }
 
-.creator-mode-compose-form__coverPhotoCropperBox {
+.creator-mode-compose-form__coverPhotoUploader {
   position: relative;
-  width: 320px;
-  max-width: 100%;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: var(--color-bg-03);
-  border-radius: 12px;
-}
-
-.creator-mode-compose-form__coverPhotoUploadIcon {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background-color: light-dark(#f2f2f2, #222);
+  border: 2px dashed var(--color-border-02);
+  border-radius: calc(var(--border-radius-01) / 2);
+  cursor: pointer;
+  transition: border-color 0.2s var(--motion-01), background-color 0.2s var(--motion-01);
+
+  &:hover {
+    background-color: light-dark(#eee, #212121);
+    border-color: var(--color-hover-01);
+  }
+
+  &--hasImage {
+    background-color: transparent;
+    border-style: solid;
+    cursor: default;
+
+    &:hover {
+      border-color: var(--color-border-02);
+    }
+  }
+}
+
+.creator-mode-compose-form__coverPhotoCroppa {
+  display: block;
+}
+
+.creator-mode-compose-form__coverPhotoUploaderOverlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
   pointer-events: none;
+  inset: 0;
+}
+
+.creator-mode-compose-form__coverPhotoUploaderIcon {
+  margin-block-end: 4px;
+  color: var(--color-icon-01);
+}
+
+.creator-mode-compose-form__coverPhotoUploaderTitle {
+  color: var(--color-text-01);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.creator-mode-compose-form__coverPhotoUploaderDescription {
+  margin: 0;
+  color: var(--color-text-02);
+  font-size: 13px;
+}
+
+.creator-mode-compose-form__coverPhotoUploaderMeta {
+  color: var(--color-text-03);
+  font-size: 11px;
 }
 </style>
