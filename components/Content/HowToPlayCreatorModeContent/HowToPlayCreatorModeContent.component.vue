@@ -3,14 +3,13 @@
   i18n(tag="p" path="dialog.howToPlay.body")
     template(#description)
       h3 {{ room.title }}
+      .how-to-play-creator-mode-content__preparedBy
+        span.how-to-play-creator-mode-content__preparedBy-label {{ $t('dialog.howToPlay.creator.preparedBy') }}
+        PlayerAvatar(with-username :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
       p.how-to-play-creator-mode-content__userDescription(v-if="room.description")
         | {{ room.description }}
       div(v-html="descriptionHtml")
     template(#extra)
-      <br>
-      .how-to-play-creator-mode-content__preparedBy
-        span.how-to-play-creator-mode-content__preparedBy-label {{ $t('dialog.howToPlay.creator.preparedBy') }}
-        PlayerAvatar(with-username :user="room.isAnon ? null : room.user" :open-player-dialog-on-click="!room.isAnon && !!room.user")
       div(v-html="$t('dialog.howToPlay.creator.extra', { questionCount: String(alphabet.items.length) })")
       NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
         small(v-html="$t('scoreboard.loginToBeInScoreboard')")
