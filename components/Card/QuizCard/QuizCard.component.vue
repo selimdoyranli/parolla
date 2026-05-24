@@ -17,7 +17,7 @@ NuxtLink.quiz-card(
 
     .quiz-card__media-shade
 
-    h3.quiz-card__placeholder-title(v-if="!hasCoverPhoto") {{ room.title }}
+    h3.quiz-card__placeholder-title {{ room.title }}
 
     .quiz-card__media-top
       .quiz-card__media-top-left
@@ -41,50 +41,26 @@ NuxtLink.quiz-card(
         span.quiz-card__crown(v-if="room.isFeatured" :title="$t('general.editorsChoice')")
           AppIcon(name="tabler:crown" :width="12" :height="12")
 
-    .quiz-card__media-bottom(v-if="hasCoverPhoto && quizTypePill")
-      span.quiz-card__quiz-type(:class="`quiz-card__quiz-type--${quizTypePill.key}`")
-        img.quiz-card__quiz-type-versus(
-          v-if="quizTypePill.key === 'choices'"
-          src="/img/elements/versus.webp"
-          alt
-          draggable="false"
-          width="14"
-          height="14"
-        )
-        AppIcon.quiz-card__quiz-type-icon(v-else :name="quizTypePill.icon" :width="13" :height="13")
-        span.quiz-card__quiz-type-text {{ quizTypePill.label }}
-
   .quiz-card__body
-    .quiz-card__title-slot(:class="{ 'quiz-card__title-slot--inline': !hasCoverPhoto }")
-      template(v-if="hasCoverPhoto")
-        h3.quiz-card__title {{ room.title }}
-      template(v-else-if="quizTypePill")
-        PlayerAvatar.quiz-card__author.quiz-card__author--inline(
-          with-username
-          :size="24"
-          :user="room.isAnon ? null : room.user"
-          :open-player-dialog-on-click="!room.isAnon && !!room.user"
-        )
-
-        span.quiz-card__quiz-label(:class="`quiz-card__quiz-label--${quizTypePill.key}`")
-          img.quiz-card__quiz-label-versus(
-            v-if="quizTypePill.key === 'choices'"
-            src="/img/elements/versus.webp"
-            alt
-            draggable="false"
-            width="18"
-            height="18"
-          )
-          AppIcon.quiz-card__quiz-label-icon(v-else :name="quizTypePill.icon" :width="16" :height="16")
-          span.quiz-card__quiz-label-text {{ quizTypePill.label }}
-
-    .quiz-card__meta(v-if="hasCoverPhoto")
-      PlayerAvatar.quiz-card__author(
+    .quiz-card__title-slot.quiz-card__title-slot--inline(v-if="quizTypePill")
+      PlayerAvatar.quiz-card__author.quiz-card__author--inline(
         with-username
         :size="24"
         :user="room.isAnon ? null : room.user"
         :open-player-dialog-on-click="!room.isAnon && !!room.user"
       )
+
+      span.quiz-card__quiz-label(:class="`quiz-card__quiz-label--${quizTypePill.key}`")
+        img.quiz-card__quiz-label-versus(
+          v-if="quizTypePill.key === 'choices'"
+          src="/img/elements/versus.webp"
+          alt
+          draggable="false"
+          width="18"
+          height="18"
+        )
+        AppIcon.quiz-card__quiz-label-icon(v-else :name="quizTypePill.icon" :width="16" :height="16")
+        span.quiz-card__quiz-label-text {{ quizTypePill.label }}
 
     .quiz-card__tags(v-if="room.tags && room.tags.length > 0")
       template(v-for="tag in room.tags.slice(0, 3)")
