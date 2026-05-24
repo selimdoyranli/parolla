@@ -61,7 +61,7 @@ NuxtLink.quiz-card(
       template(v-else-if="quizTypePill")
         PlayerAvatar.quiz-card__author.quiz-card__author--inline(
           with-username
-          :size="20"
+          :size="24"
           :user="room.isAnon ? null : room.user"
           :open-player-dialog-on-click="!room.isAnon && !!room.user"
         )
@@ -81,7 +81,7 @@ NuxtLink.quiz-card(
     .quiz-card__meta(v-if="hasCoverPhoto")
       PlayerAvatar.quiz-card__author(
         with-username
-        :size="20"
+        :size="24"
         :user="room.isAnon ? null : room.user"
         :open-player-dialog-on-click="!room.isAnon && !!room.user"
       )
