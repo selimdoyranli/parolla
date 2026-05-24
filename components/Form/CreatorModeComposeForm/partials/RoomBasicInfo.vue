@@ -375,6 +375,17 @@ export default defineComponent({
 .creator-mode-compose-form__coverPhotoCroppa {
   display: block;
   background-color: light-dark(#f2f2f2, #222);
+
+  /* Remove-button is a real descendant svg, so ::v-deep works here.
+     !important is needed because vue-croppa sets top/right inline based
+     on its own width/height props (negative offsets, outside the box). */
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep svg.icon-remove {
+    top: 4px !important;
+    right: 4px !important;
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .creator-mode-compose-form__coverPhotoUploaderOverlay {
