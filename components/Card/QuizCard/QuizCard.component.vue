@@ -62,11 +62,12 @@ NuxtLink.quiz-card(
         AppIcon.quiz-card__quiz-label-icon(v-else :name="quizTypePill.icon" :width="16" :height="16")
         span.quiz-card__quiz-label-text {{ quizTypePill.label }}
 
-    .quiz-card__tags(v-if="room.tags && room.tags.length > 0")
-      template(v-for="tag in room.tags.slice(0, 3)")
-        span.quiz-card__tag(:key="tag.id") {{ tag.title }}
-      span.quiz-card__tag.quiz-card__tag--more(v-if="room.tags.length > 3")
-        | +{{ room.tags.length - 3 }}
+    .quiz-card__tags
+      template(v-if="room.tags && room.tags.length > 0")
+        template(v-for="tag in room.tags.slice(0, 3)")
+          span.quiz-card__tag(:key="tag.id") {{ tag.title }}
+        span.quiz-card__tag.quiz-card__tag--more(v-if="room.tags.length > 3")
+          | +{{ room.tags.length - 3 }}
 
     .quiz-card__footer
       .quiz-card__stats
