@@ -1,5 +1,97 @@
 # Changelog
 
+## v2.47.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.46.0...v2.47.0)
+
+
+### 🚀 Enhancements
+
+  - **game-scene:** Add live answer stats and refine mobile/OSK layout ([ad61cf6](https://github.com/selimdoyranli/parolla/commit/ad61cf6))
+  - **game-scene:** Show active letter in answer field placeholder ([8c00c71](https://github.com/selimdoyranli/parolla/commit/8c00c71))
+  - **sfx:** Add ACS stylesheet mapping vant components to sound presets ([e403b6e](https://github.com/selimdoyranli/parolla/commit/e403b6e))
+  - **sfx:** Add useSfx composable for imperative sound triggers ([6b4b323](https://github.com/selimdoyranli/parolla/commit/6b4b323))
+  - **sfx:** Add showToast helper pairing vant Toast variants with ACS sounds ([970a51a](https://github.com/selimdoyranli/parolla/commit/970a51a))
+  - **sfx:** Register client-only ACS plugin and bind to soundFx toggle ([95c471d](https://github.com/selimdoyranli/parolla/commit/95c471d))
+  - **sfx:** Play toggle-on/off sounds for MenuDialog switches ([c1ea926](https://github.com/selimdoyranli/parolla/commit/c1ea926))
+  - **sfx:** Migrate MenuDialog Toast calls to showToast.default ([4a68ffe](https://github.com/selimdoyranli/parolla/commit/4a68ffe))
+  - **sfx:** Migrate remaining Toast() call sites to showToast wrapper ([9046697](https://github.com/selimdoyranli/parolla/commit/9046697))
+  - **sfx:** Add ACS rules for stepper, radio, intro CTA and other interactions ([b305d00](https://github.com/selimdoyranli/parolla/commit/b305d00))
+  - **sfx:** Pitch stepper +/- as rising/falling pop ([c5234af](https://github.com/selimdoyranli/parolla/commit/c5234af))
+  - **sfx:** Thunk on remove/destroy actions, silence pass button, physical keyboard sfx ([263de82](https://github.com/selimdoyranli/parolla/commit/263de82))
+  - **sfx:** Play swoosh when chat is sent via Enter ([e3dfd83](https://github.com/selimdoyranli/parolla/commit/e3dfd83))
+  - **game-scene:** Auto-focus answer input on physical key press ([f93747c](https://github.com/selimdoyranli/parolla/commit/f93747c))
+  - **room-list:** Redesign room items as responsive card grid ([5e7a556](https://github.com/selimdoyranli/parolla/commit/5e7a556))
+  - **room-list:** Show title inside media for no-cover variant ([f82daeb](https://github.com/selimdoyranli/parolla/commit/f82daeb))
+  - **creator:** Expose room description/coverPhoto + add cover-photo actions ([3265db2](https://github.com/selimdoyranli/parolla/commit/3265db2))
+  - **i18n:** Add cover photo and description form strings ([98bc8fc](https://github.com/selimdoyranli/parolla/commit/98bc8fc))
+  - **how-to-play:** Render room.description in creator-mode variants ([c52ee8a](https://github.com/selimdoyranli/parolla/commit/c52ee8a))
+  - **creator-form:** Add cover photo croppa and description field to RoomBasicInfo ([24a3f7d](https://github.com/selimdoyranli/parolla/commit/24a3f7d))
+  - **creator-form:** Wire cover-photo and description into submit flow ([bca7be2](https://github.com/selimdoyranli/parolla/commit/bca7be2))
+  - **creator-form:** Pass roomBasicInfoRef into useCreatorForm and wire cover-photo events ([5496e09](https://github.com/selimdoyranli/parolla/commit/5496e09))
+  - **creator-form:** Treat cover-photo pan/zoom as dirty for re-upload ([c741937](https://github.com/selimdoyranli/parolla/commit/c741937))
+  - **creator-form:** Lock cover-photo pan/zoom on the initial edit image ([6efdfa6](https://github.com/selimdoyranli/parolla/commit/6efdfa6))
+
+### 🩹 Fixes
+
+  - **game-scene:** Restore start-with-active-letter validation outside creator ([46c95c2](https://github.com/selimdoyranli/parolla/commit/46c95c2))
+  - **tour-mode-online-dialog:** Scope chat OSK shift to mobile and keep chat focus on timeUp ([e033f70](https://github.com/selimdoyranli/parolla/commit/e033f70))
+  - **sfx:** Restore await on showToast.default in handleCountdownFinish ([df90b09](https://github.com/selimdoyranli/parolla/commit/df90b09))
+  - **sfx:** Transpile acs-audio so webpack 4 can parse its ESM runtime ([c26affb](https://github.com/selimdoyranli/parolla/commit/c26affb))
+  - **sfx:** Use valid ACS event names (sound-on-input, sound-on-leave) ([450ba84](https://github.com/selimdoyranli/parolla/commit/450ba84))
+  - **sfx:** Inject audiostyle <link> in app.html so ACS picks it up at boot ([79b1157](https://github.com/selimdoyranli/parolla/commit/79b1157))
+  - **sfx:** Force pass-button silence with !important ([4e243e1](https://github.com/selimdoyranli/parolla/commit/4e243e1))
+  - **sfx:** Silence pass button via sound-on-click, not volume ([eaa834c](https://github.com/selimdoyranli/parolla/commit/eaa834c))
+  - **sfx:** Stop click propagation on pass button so ACS never receives it ([59e2206](https://github.com/selimdoyranli/parolla/commit/59e2206))
+  - **sfx:** Silence pass button with pop + volume 0, hoist rule above .van-button ([97b8150](https://github.com/selimdoyranli/parolla/commit/97b8150))
+  - **how-to-play:** Use this-or-that BEM prefix for ThisOrThat user description ([c35a5d0](https://github.com/selimdoyranli/parolla/commit/c35a5d0))
+  - **quiz-card:** Reserve tag-row space when room has no tags ([fb4aae2](https://github.com/selimdoyranli/parolla/commit/fb4aae2))
+  - **creator-form:** Paint croppa root element directly for dark-mode bg ([e61ac60](https://github.com/selimdoyranli/parolla/commit/e61ac60))
+  - **creator-form:** Key cover-photo lock to form.coverPhoto, not props.room ([12557b5](https://github.com/selimdoyranli/parolla/commit/12557b5))
+
+### 💅 Refactors
+
+  - **sfx:** Use tap-tactile on chat enter-send to match send-button click ([9920c48](https://github.com/selimdoyranli/parolla/commit/9920c48))
+  - **room-list:** Anchor placeholder title bottom-left and reshuffle meta row ([c1a69c7](https://github.com/selimdoyranli/parolla/commit/c1a69c7))
+  - **quiz-card:** Extract room card into reusable QuizCard component ([5dd4afa](https://github.com/selimdoyranli/parolla/commit/5dd4afa))
+  - **quiz-card:** Unify cover-photo and placeholder layouts ([8e03490](https://github.com/selimdoyranli/parolla/commit/8e03490))
+  - **creator-form:** Style cover-photo uploader like MediaInput ([c30affe](https://github.com/selimdoyranli/parolla/commit/c30affe))
+  - **quiz-card:** Use --hasCoverPhoto modifier for cover-photo variants ([30b54ab](https://github.com/selimdoyranli/parolla/commit/30b54ab))
+  - **quiz-card:** Inline media shade into the placeholder title ([735fda2](https://github.com/selimdoyranli/parolla/commit/735fda2))
+
+### 📖 Documentation
+
+  - **spec:** Design ACS audio sfx integration for UI interactions ([e1015c9](https://github.com/selimdoyranli/parolla/commit/e1015c9))
+  - **plan:** Add implementation plan for ACS audio sfx ([59f9fbe](https://github.com/selimdoyranli/parolla/commit/59f9fbe))
+  - **spec:** Record post-implementation findings for ACS sfx ([4bde67a](https://github.com/selimdoyranli/parolla/commit/4bde67a))
+
+### 📦 Build
+
+  - **deps:** Add acs-audio for UI sound effects ([0bd34f3](https://github.com/selimdoyranli/parolla/commit/0bd34f3))
+
+### 🏡 Chore
+
+  - **yarn:** Stop tracking install-state.gz ([d2c7559](https://github.com/selimdoyranli/parolla/commit/d2c7559))
+
+### 🎨 Styles
+
+  - **room-list:** Vivify the placeholder gradient in light mode ([e140c22](https://github.com/selimdoyranli/parolla/commit/e140c22))
+  - **quiz-card:** Bump player avatar to 24px ([384bbdc](https://github.com/selimdoyranli/parolla/commit/384bbdc))
+  - **quiz-card:** Bottom-anchor media shade and lighten it in light mode ([4c99f1a](https://github.com/selimdoyranli/parolla/commit/4c99f1a))
+  - **creator-form:** Paint croppa-container with the uploader background ([f99f22d](https://github.com/selimdoyranli/parolla/commit/f99f22d))
+  - **creator-form:** Pin cover-photo croppa remove button to top-right corner ([effa9a5](https://github.com/selimdoyranli/parolla/commit/effa9a5))
+  - **how-to-play:** Move preparedBy block above the user description ([5fc3683](https://github.com/selimdoyranli/parolla/commit/5fc3683))
+  - **quiz-card:** Gate hover affordances behind pointer: fine ([fae5e69](https://github.com/selimdoyranli/parolla/commit/fae5e69))
+  - **quiz-card:** Shorten transitions to 0.1s for snappier hover feedback ([adfc04f](https://github.com/selimdoyranli/parolla/commit/adfc04f))
+  - **quiz-card:** Balance media title and unify media-shade across themes ([275e4cc](https://github.com/selimdoyranli/parolla/commit/275e4cc))
+  - **quiz-card:** Darken media-shade mid-stop for cover photo cards ([4a76309](https://github.com/selimdoyranli/parolla/commit/4a76309))
+  - **quiz-card:** Bump media title size and simplify placeholder shade ([1ebf20a](https://github.com/selimdoyranli/parolla/commit/1ebf20a))
+  - **quiz-card:** Anchor media title to the bottom-left edge ([583935e](https://github.com/selimdoyranli/parolla/commit/583935e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.46.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.45.0...v2.46.0)
