@@ -3,7 +3,7 @@
   i18n(tag="p" path="dialog.howToPlay.body")
     template(#description)
       h3 {{ room.title }}
-      p.how-to-play-creator-mode-content__userDescription(v-if="room.description")
+      p.how-to-play-this-or-that-content__userDescription(v-if="room.description")
         | {{ room.description }}
       div(v-html="descriptionHtml")
     template(#extra)
