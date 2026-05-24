@@ -20,128 +20,22 @@
       ) {{ $t('creatorModeRooms.rooms.empty.action') }}
 
   template(v-else)
-    List
+    .room-list__grid
       template(v-for="(room, index) in list.items")
-        NuxtLink(
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
-          :title="room.title"
-          @click.native.prevent.capture="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
+        QuizCard(
+          :key="room.documentId || room.roomId"
+          :room="room"
+          :viewer="user"
+          :userScoped="userScoped"
+          :index="index"
+          @edit="handleEditRoom"
+          @delete="handleDeleteRoom"
         )
-          Cell.room-list-item(is-link :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })")
-            template(#title)
-              .room-list-item-title
-                span.room-list-item-title__text {{ room.title }}
-                  Tag.ms-2(v-if="scoped && isOwner({ user: room.user }) && !room.isVisible" type="warning") {{ $t('general.draft') }}
-
-            template(#label)
-              .room-list-item-badge.room-list-item-badge--user.d-flex.d-mobile-none
-                PlayerAvatar(
-                  with-username
-                  :size="16"
-                  :user="room.isAnon ? null : room.user"
-                  :open-player-dialog-on-click="!room.isAnon && !!room.user"
-                )
-
-                template(v-if="scoped && isOwner({ user: room.user })")
-                  Tag.room-list-item-listing-tag(v-if="room.isListed")
-                    AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
-                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
-                  Tag.room-list-item-listing-tag(v-else)
-                    AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
-                    span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
-
-              .room-list-item__badges
-                .room-list-item-badge.room-list-item-badge--user
-                  PlayerAvatar(
-                    with-username
-                    :size="16"
-                    :user="room.isAnon ? null : room.user"
-                    :open-player-dialog-on-click="!room.isAnon && !!room.user"
-                  )
-
-                template(v-if="scoped && isOwner({ user: room.user })")
-                  .room-list-item-badge
-                    Tag.room-list-item-listing-tag(v-if="room.isListed")
-                      AppIcon.room-list-item-listing-tag__icon(name="tabler:world")
-                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.public') }}
-                    Tag.room-list-item-listing-tag(v-else)
-                      AppIcon.room-list-item-listing-tag__icon(name="tabler:eye-off")
-                      span.room-list-item-listing-tag__text {{ $t('creatorModeMyRooms.listing.private') }}
-
-                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.CHOICES")
-                  Tag.room-list-item-choices-tag
-                    img.room-list-item-choices-tag__versusIcon(
-                      src="/img/elements/versus.webp"
-                      alt="Versus"
-                      draggable="false"
-                      width="48"
-                      height="48"
-                    )
-                    span.room-list-item-choices-tag__text {{ $t('general.thisOrThatQuiz') }}
-
-                .room-list-item-badge(v-if="room.quizType === quizTypeEnum.FLASHCARDS")
-                  Tag.room-list-item-flashcards-tag
-                    AppIcon.room-list-item-flashcards-tag__icon(name="streamline-color:cards-flat" :width="16" :height="16")
-                    span.room-list-item-flashcards-tag__text {{ $t('general.flashcardsQuiz') }}
-
-                .room-list-item-badge(v-if="room.questionTypeDominance === questionTypeEnum.MEDIA")
-                  Tag.room-list-item-has-media-tag
-                    AppIcon.room-list-item-has-media-tag__galleryIcon(name="streamline-flex-color:gallery-flat")
-                    span.room-list-item-has-media-tag__text {{ $t('general.photoQuiz') }}
-
-                .room-list-item-badge(v-if="room.answerTypeDominance === answerTypeEnum.TRIVIA")
-                  Tag.room-list-item-has-trivia-tag
-                    AppIcon.room-list-item-has-trivia-tag__triviaIcon(name="streamline-flex-color:table-flat")
-                    span.room-list-item-has-trivia-tag__text {{ $t('general.triviaQuiz') }}
-
-                .room-list-item-badge(v-if="room.questionCount")
-                  AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.questionCount }}
-
-                .room-list-item-badge(v-if="room.choices?.length > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:help-circle" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.choices.length }}
-
-                .room-list-item-badge(v-if="room.flashcardCount > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:cards" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.flashcardCount }}
-
-                .room-list-item-badge(v-if="room.viewCount && room.viewCount > 0")
-                  AppIcon.room-list-item-badge__icon(name="tabler:eye" color="var(--color-text-03)" :width="16" :height="16")
-                  span.room-list-item-badge__value {{ room.viewCount }}
-
-              .room-list-item__tags(v-if="room.tags && room.tags.length > 0")
-                template(v-for="tag in room.tags")
-                  Tag.room-list-item__tag(:key="tag.id" type="primary") {{ tag.title }}
-
-              span.room-list-item__id ID: {{ room.roomId }}
-
-              // Actions
-              .room-list-item__actions(v-if="user && isOwner({ user: room.user })")
-                Button(
-                  type="info"
-                  icon="edit"
-                  native-type="button"
-                  plain
-                  size="normal"
-                  round
-                  @click.native.stop.prevent.capture="handleEditRoom({ room })"
-                ) {{ $t('general.edit') }}
-                Button(
-                  type="danger"
-                  icon="delete"
-                  native-type="button"
-                  plain
-                  round
-                  size="normal"
-                  @click.native.stop.prevent.capture="handleDeleteRoom({ room })"
-                )
-                  | {{ $t('general.delete') }}
 
         // Ad
-        template(v-if="(index + 1) % 5 === 0")
-          .room-list-item.room-list-item--ad
-            small {{ $t('general.ad') }}
+        template(v-if="(index + 1) % 4 === 0")
+          .room-list__ad(:key="`ad-${index}`")
+            small.room-list__ad-label {{ $t('general.ad') }}
             AppAd(:data-ad-slot="6048083070")
 
   InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" @infinite="handleInfiniteLoading")
@@ -152,7 +46,6 @@ import { defineComponent, useContext, useRouter, useStore, reactive, computed, w
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
-import { quizTypeEnum, questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   components: {
@@ -184,7 +77,7 @@ export default defineComponent({
       required: false,
       default: true
     },
-    scoped: {
+    userScoped: {
       type: Boolean,
       required: false,
       default: false
@@ -194,10 +87,9 @@ export default defineComponent({
     const { i18n, localePath, route } = useContext()
     const router = useRouter()
     const store = useStore()
-    const { isOwner } = useAuth()
 
-    const paginationGetter = computed(() => (props.scoped ? 'creator/userRoomsPagination' : 'creator/roomsPagination'))
-    const fetchActionName = computed(() => (props.scoped ? 'creator/fetchUserRooms' : 'creator/fetchRooms'))
+    const paginationGetter = computed(() => (props.userScoped ? 'creator/userRoomsPagination' : 'creator/roomsPagination'))
+    const fetchActionName = computed(() => (props.userScoped ? 'creator/fetchUserRooms' : 'creator/fetchRooms'))
 
     const pagination = computed(() => store.getters[paginationGetter.value])
 
@@ -205,19 +97,19 @@ export default defineComponent({
     // looking at their own quizzes — drafts and unlisted rooms come through.
     const authedUser = computed(() => store.getters['auth/user'])
     const isOwnUserFilter = computed(
-      () => props.scoped && !!(authedUser.value?.id && props.user?.id && Number(authedUser.value.id) === Number(props.user.id))
+      () => props.userScoped && !!(authedUser.value?.id && props.user?.id && Number(authedUser.value.id) === Number(props.user.id))
     )
 
     const list = reactive({
       items: props.items,
-      originalItems: props.items // Store original items for local search
+      originalItems: props.items
     })
 
     watch(
       () => props.items,
       value => {
         list.items = value
-        list.originalItems = value // Update original items when props change
+        list.originalItems = value
       }
     )
 
@@ -292,12 +184,9 @@ export default defineComponent({
             includeUnlisted: isOwnUserFilter.value
           })
         } else {
-          // Local filter for rooms
           if (form.search.keyword.trim() === '') {
-            // If search is empty, restore original items
             list.items = list.originalItems.slice()
           } else {
-            // Filter original items based on search keyword
             list.items = list.originalItems.filter(room => {
               return room.title.toLowerCase().includes(form.search.keyword.toLowerCase())
             })
@@ -375,10 +264,6 @@ export default defineComponent({
     })
 
     return {
-      quizTypeEnum,
-      questionTypeEnum,
-      answerTypeEnum,
-      isOwner,
       list,
       pagination,
       handleInfiniteLoading,

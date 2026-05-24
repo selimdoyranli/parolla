@@ -1,3 +1,11 @@
 .how-to-play-this-or-that-content {
   position: relative;
+
+  &__userDescription {
+    margin: 8px 0 12px;
+    color: var(--color-text-02);
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.4;
+  }
 }

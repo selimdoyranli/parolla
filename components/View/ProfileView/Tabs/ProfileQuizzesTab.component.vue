@@ -12,7 +12,7 @@
     Empty(:description="$t('profile.quizzesTab.empty')")
 
   template(v-else)
-    RoomList(:items="rooms" scoped :user="player" :isActiveInfiniteLoading="true")
+    RoomList(:items="rooms" user-scoped :user="player" :isActiveInfiniteLoading="true")
 </template>
 
 <script>

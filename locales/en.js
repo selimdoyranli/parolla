@@ -616,6 +616,7 @@ export default {
   form: {
     isRequired: '{model} is required',
     isInvalid: '{model} is invalid',
+    optionalHint: '(optional)',
     creatorModeCompose: {
       title: 'CREATE A QUIZ',
       choicesTitle: 'CREATE A CHOICES QUIZ',
@@ -631,6 +632,21 @@ export default {
         roomTitle: {
           label: 'Quiz title',
           placeholder: 'Type quiz title'
+        },
+        coverPhoto: {
+          label: 'Cover photo',
+          uploaderTitle: 'Add a cover photo',
+          uploaderDescription: 'Click to pick an image, auto-cropped to 16:9',
+          error: {
+            mimeTypeNotAllowed: 'Allowed formats: JPG, PNG, GIF, WEBP',
+            sizeLimitExceeded: 'Max file size: 5 MB',
+            cropFailed: 'Could not process cover photo',
+            uploadFailed: 'Cover photo upload failed'
+          }
+        },
+        description: {
+          label: 'Description',
+          placeholder: 'Short description about the quiz...'
         },
         isListed: {
           label: 'Wanna you listing on public quizzes?'

@@ -48,6 +48,8 @@ export default model => {
     alphabet: model.alphabet,
     hasMedia: model.hasMedia,
     mediaCount: model.mediaCount,
+    description: model.description,
+    coverPhoto: model.coverPhoto,
     questions: model.qaItems,
     choices: model.choices?.map(choiceItemTransformer),
     winnerChoices: model.winnerChoices?.map(choiceItemTransformer),

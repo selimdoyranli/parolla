@@ -622,6 +622,7 @@ export default {
   form: {
     isRequired: '{model} gereklidir',
     isInvalid: '{model} geçersiz',
+    optionalHint: '(isteğe bağlı)',
     creatorModeCompose: {
       title: 'QUIZ OLUŞTUR',
       choicesTitle: 'SEÇİM QUIZ OLUŞTUR',
@@ -637,6 +638,21 @@ export default {
         roomTitle: {
           label: 'Quiz başlığı',
           placeholder: 'Quiz başlığı yaz'
+        },
+        coverPhoto: {
+          label: 'Kapak fotoğrafı',
+          uploaderTitle: 'Kapak fotoğrafı ekle',
+          uploaderDescription: 'Tıkla ve görsel seç, 16:9 oranında kırpılır',
+          error: {
+            mimeTypeNotAllowed: 'İzin verilen formatlar: JPG, PNG, GIF, WEBP',
+            sizeLimitExceeded: 'Maksimum dosya boyutu: 5 MB',
+            cropFailed: 'Kapak fotoğrafı işlenemedi',
+            uploadFailed: 'Kapak fotoğrafı yüklenemedi'
+          }
+        },
+        description: {
+          label: 'Açıklama',
+          placeholder: 'Quiz hakkında kısa bir açıklama...'
         },
         isListed: {
           label: 'Quizler listesinde görünsün mü?'

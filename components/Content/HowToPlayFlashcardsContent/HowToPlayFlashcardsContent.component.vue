@@ -3,6 +3,8 @@
   i18n(tag="p" path="dialog.howToPlay.body")
     template(#description)
       h3 {{ room.title }}
+      p.how-to-play-flashcards-content__userDescription(v-if="room.description")
+        | {{ room.description }}
       div(v-html="$t('dialog.howToPlay.creator.flashcards.description', { cardCount: String(room.flashcardCount || 0) })")
     template(#extra)
       <br>
