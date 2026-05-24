@@ -35,6 +35,9 @@
             :file-size-limit="parollaConfig.upload.maxFileSize"
             :show-remove-button="!form.isBusy"
             :zoom-speed="10"
+            :disable-drag-to-move="isCoverPhotoLocked"
+            :disable-scroll-to-zoom="isCoverPhotoLocked"
+            :disable-pinch-to-zoom="isCoverPhotoLocked"
             :width="croppaSize.width"
             :height="croppaSize.height"
             :disabled="form.isBusy"
@@ -209,6 +212,14 @@ export default defineComponent({
       }
     })
 
+    // In edit mode, lock pan/zoom on the existing server-side photo so
+    // the user can't accidentally re-crop it. Click X (remove) — or
+    // pick a new file — to release the lock. Compose mode never locks
+    // (no initial image to protect).
+    const isCoverPhotoLocked = computed(() => {
+      return Boolean(props.room?.coverPhoto?.url) && !coverPhotoState.isDirty && coverPhotoState.hasImage
+    })
+
     // Cache-bust to dodge CORS taint on the canvas — same trick as ProfileEditForm
     const coverPhotoInitialUrl = computed(() => {
       const url = props.form.coverPhoto?.url
@@ -295,6 +306,7 @@ export default defineComponent({
       localGameTimeLimitMinutes,
       coverPhotoCroppa,
       coverPhotoState,
+      isCoverPhotoLocked,
       coverPhotoInitialUrl,
       coverPhotoWrapperRef,
       croppaSize,
