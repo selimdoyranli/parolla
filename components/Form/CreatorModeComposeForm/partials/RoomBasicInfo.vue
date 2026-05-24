@@ -169,7 +169,8 @@ export default defineComponent({
     // setup return below.
     const coverPhotoCroppa = ref({})
     const coverPhotoState = reactive({
-      hasImage: Boolean(props.form.coverPhoto?.url)
+      hasImage: Boolean(props.form.coverPhoto?.url),
+      isDirty: false
     })
 
     // vue-croppa needs explicit pixel sizes for its canvas buffer. We sync
@@ -232,6 +233,7 @@ export default defineComponent({
     }
 
     const handleCoverPhotoChoose = () => {
+      coverPhotoState.isDirty = true
       emit('cover-photo-choose')
     }
 
@@ -240,11 +242,13 @@ export default defineComponent({
     }
 
     const handleCoverPhotoDirty = () => {
+      coverPhotoState.isDirty = true
       emit('cover-photo-dirty')
     }
 
     const handleCoverPhotoRemove = () => {
       coverPhotoState.hasImage = false
+      coverPhotoState.isDirty = true
       emit('cover-photo-remove')
     }
 
@@ -264,7 +268,9 @@ export default defineComponent({
     }
 
     // Helper for parent: did the user actually touch the photo (vs. just
-    // looking at the initial image)?
+    // looking at the initial image)? Pan/zoom on the initial image counts
+    // as a change too — vue-croppa keeps currentIsInitial=true through
+    // transforms, so we track our own isDirty flag (mirrors ProfileEditForm).
     const coverPhotoIsCommittable = () => {
       const inst = coverPhotoCroppa.value
 
@@ -272,7 +278,13 @@ export default defineComponent({
       const hasImage = typeof inst.hasImage === 'function' ? inst.hasImage() : false
       const isInitial = Boolean(inst.currentIsInitial)
 
-      return hasImage && !isInitial
+      return hasImage && (!isInitial || coverPhotoState.isDirty)
+    }
+
+    // Called by the parent after the cover photo step has been attempted
+    // at submit time. Mirrors `avatar.isDirty = false` in ProfileEditForm.
+    const markCoverPhotoCommitted = () => {
+      coverPhotoState.isDirty = false
     }
 
     const onInputTag = val => emit('input-tag', val)
@@ -296,6 +308,7 @@ export default defineComponent({
       handleCoverPhotoRemove,
       generateCoverPhotoBlob,
       coverPhotoIsCommittable,
+      markCoverPhotoCommitted,
       onInputTag,
       onAddTag,
       onRemoveTag,

@@ -646,6 +646,15 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
           }
         }
 
+        // Reset the croppa's local isDirty flag now that we've attempted
+        // the upload/delete — mirrors avatar.isDirty = false at the end
+        // of ProfileEditForm's photo branch. Same posture: a failed
+        // upload won't retry on the next submit unless the user
+        // interacts with the cropper again.
+        if (hasCoverPhotoUpload || hasCoverPhotoDelete) {
+          roomBasicInfoRef?.value?.markCoverPhotoCommitted?.()
+        }
+
         if (form.quizType === quizTypeEnum.CHOICES) {
           // Handle choices media upload
           for (let i = 0; i < form.choices.length; i++) {
