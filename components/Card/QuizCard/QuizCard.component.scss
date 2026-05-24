@@ -51,10 +51,28 @@
     mask-composite: exclude;
   }
 
-  &:hover,
+  /* Hover affordance is mouse-only — coarse pointers (touch) sticky-hover the
+     red border on tap and never release it. focus-visible keeps the
+     keyboard path covered. */
+  @media (pointer: fine) {
+    &:hover {
+      background: var(--quiz-card-surface-hover);
+      border-color: var(--quiz-card-border-hover);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
+      transform: translateY(-3px);
+
+      &::after {
+        background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
+        opacity: 1;
+      }
+    }
+  }
+
   &:focus-visible {
     background: var(--quiz-card-surface-hover);
     border-color: var(--quiz-card-border-hover);
+    outline: 2px solid var(--color-brand-02);
+    outline-offset: 3px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
     transform: translateY(-3px);
 
@@ -62,11 +80,6 @@
       background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
       opacity: 1;
     }
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-brand-02);
-    outline-offset: 3px;
   }
 
   /* --------------------------------------------------------------------- */
@@ -131,16 +144,25 @@
     inset-inline-start: 50%;
   }
 
-  &:hover &__photo,
   &:focus-visible &__photo,
-  &:hover &__placeholder,
   &:focus-visible &__placeholder {
     transform: scale(1.04);
   }
 
-  &:hover &__placeholder-glow,
   &:focus-visible &__placeholder-glow {
     opacity: 0.95;
+  }
+
+  /* mouse-only zoom + glow on hover, paired with the border tint above */
+  @media (pointer: fine) {
+    &:hover &__photo,
+    &:hover &__placeholder {
+      transform: scale(1.04);
+    }
+
+    &:hover &__placeholder-glow {
+      opacity: 0.95;
+    }
   }
 
   /* title sits bottom-left over the media — works for both placeholder gradient and future cover photos */
