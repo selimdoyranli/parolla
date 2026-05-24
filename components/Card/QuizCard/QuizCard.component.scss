@@ -167,9 +167,15 @@
   /* bottom-up dark gradient so the title stays legible whether the media is the placeholder gradient or a cover photo */
   &__media-shade {
     position: absolute;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.9) 100%);
+    height: 75%;
+    background: light-dark(
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.6) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.9) 100%)
+    );
     pointer-events: none;
     inset: 0;
+    inset-block-start: unset;
+    inset-block-end: 0;
   }
 
   &__media-top {
