@@ -368,13 +368,13 @@ export default defineComponent({
   }
 }
 
+/* vue-croppa puts the .croppa-container class on its root element, which
+   is the same node our .coverPhotoCroppa class lives on — so the
+   background override has to be a same-element rule, not a descendant
+   one (::v-deep .croppa-container never matches here). */
 .creator-mode-compose-form__coverPhotoCroppa {
   display: block;
-
-  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-  ::v-deep .croppa-container {
-    background-color: light-dark(#f2f2f2, #222);
-  }
+  background-color: light-dark(#f2f2f2, #222);
 }
 
 .creator-mode-compose-form__coverPhotoUploaderOverlay {
