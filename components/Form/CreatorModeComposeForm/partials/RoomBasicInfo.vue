@@ -370,6 +370,11 @@ export default defineComponent({
 
 .creator-mode-compose-form__coverPhotoCroppa {
   display: block;
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .croppa-container {
+    background-color: light-dark(#f2f2f2, #222);
+  }
 }
 
 .creator-mode-compose-form__coverPhotoUploaderOverlay {
