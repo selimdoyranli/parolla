@@ -12,12 +12,16 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
       template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
   RoomBasicInfo(
+    ref="roomBasicInfoRef"
     :form="form"
     :user="user"
     :game-time-limit-minutes.sync="gameTimeLimitMinutes"
     @input-tag="handleInputTag"
     @add-tag="addTag"
     @remove-tag="removeTag"
+    @cover-photo-choose="handleCoverPhotoChoose"
+    @cover-photo-dirty="handleCoverPhotoDirty"
+    @cover-photo-remove="handleCoverPhotoRemove"
   )
 
   ChoiceList(
@@ -129,6 +133,8 @@ export default defineComponent({
     const router = useRouter()
     const { localePath } = useContext()
 
+    const roomBasicInfoRef = ref(null)
+
     const {
       user,
       form,
@@ -154,8 +160,11 @@ export default defineComponent({
       onFormFailed,
       handleSubmit,
       saveAsDraft,
-      isVisibleSaveDraftButton
-    } = useCreatorForm(props)
+      isVisibleSaveDraftButton,
+      handleCoverPhotoChoose,
+      handleCoverPhotoDirty,
+      handleCoverPhotoRemove
+    } = useCreatorForm(props, { roomBasicInfoRef })
 
     const handleConfirmCreatedRoomDialog = () => {
       router.push(
@@ -242,7 +251,11 @@ export default defineComponent({
       openAddChoicesDialog,
       closeAddChoicesDialog,
       handleBatchAddItems,
-      qaListLength
+      qaListLength,
+      roomBasicInfoRef,
+      handleCoverPhotoChoose,
+      handleCoverPhotoDirty,
+      handleCoverPhotoRemove
     }
   }
 })
