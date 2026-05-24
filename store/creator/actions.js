@@ -12,6 +12,7 @@ export default {
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
+        description: form.description?.trim() || null,
         quizType: form.quizType,
         qaList: (form.qaList || []).map(item => {
           const qaItem = {
@@ -83,6 +84,7 @@ export default {
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
+        description: form.description?.trim() || null,
         quizType: form.quizType,
         qaList: (form.qaList || []).map(item => {
           const qaItem = {
@@ -217,6 +219,36 @@ export default {
       data,
       error
     }
+  },
+
+  async uploadRoomCoverPhoto({ commit }, { documentId, file }) {
+    const token = this.$auth.strategy.token.get()
+    const formData = new FormData()
+    formData.append('files', file, `cover-photo-${Date.now()}.jpg`)
+    const { data, error } = await this.$appFetch({
+      path: `rooms/${documentId}/cover-photo`,
+      method: 'POST',
+      data: formData,
+      headers: {
+        Authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    return { data, error }
+  },
+
+  async deleteRoomCoverPhoto({ commit }, { documentId }) {
+    const token = this.$auth.strategy.token.get()
+    const { data, error } = await this.$appFetch({
+      path: `rooms/${documentId}/cover-photo`,
+      method: 'DELETE',
+      headers: {
+        Authorization: `${token}`
+      }
+    })
+
+    return { data, error }
   },
 
   async upvoteChoice({ commit }, { choiceDocumentId }) {
