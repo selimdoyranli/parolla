@@ -3,7 +3,7 @@ NuxtLink.quiz-card(
   :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
   :title="room.title"
   :style="cardStyle"
-  :class="{ 'quiz-card--photo': hasCoverPhoto, 'quiz-card--placeholder': !hasCoverPhoto }"
+  :class="{ 'quiz-card--hasCoverPhoto': hasCoverPhoto }"
   :data-index="index"
 )
   .quiz-card__media

@@ -199,10 +199,7 @@
     inset-block-end: 0;
   }
 
-  /* photo variant — bump the mid-stop opacity so the title stays legible
-     over arbitrary photo content; the placeholder gradient is darker by
-     design and doesn't need the extra weight */
-  &--photo &__media-shade {
+  &--hasCoverPhoto &__media-shade {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.9) 65%, rgba(0, 0, 0, 0.9) 100%);
   }
 
