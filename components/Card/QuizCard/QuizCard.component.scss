@@ -175,7 +175,7 @@
     overflow: hidden;
     color: light-dark(#fff, #ccc);
     font-weight: 700;
-    font-size: var(--font-size-text-5);
+    font-size: var(--font-size-text-4);
     line-height: 1.25;
     letter-spacing: -0.01em;
     text-align: left;
@@ -192,7 +192,7 @@
   &__media-shade {
     position: absolute;
     height: 75%;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.9) 100%);
+    background: linear-gradient(0deg, #000, transparent);
     pointer-events: none;
     inset: 0;
     inset-block-start: unset;
