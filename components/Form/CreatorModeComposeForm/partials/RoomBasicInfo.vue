@@ -212,12 +212,14 @@ export default defineComponent({
       }
     })
 
-    // In edit mode, lock pan/zoom on the existing server-side photo so
-    // the user can't accidentally re-crop it. Click X (remove) — or
-    // pick a new file — to release the lock. Compose mode never locks
-    // (no initial image to protect).
+    // Lock pan/zoom while the cropper is showing the server-side initial
+    // photo so the user can't accidentally re-crop it on submit. Once
+    // they click X (remove) or pick a new file, isDirty flips and the
+    // lock releases. Keyed on form.coverPhoto rather than props.room
+    // because RoomBasicInfo doesn't receive the original room — only the
+    // form, whose coverPhoto field already mirrors the initial value.
     const isCoverPhotoLocked = computed(() => {
-      return Boolean(props.room?.coverPhoto?.url) && !coverPhotoState.isDirty && coverPhotoState.hasImage
+      return Boolean(props.form.coverPhoto?.url) && !coverPhotoState.isDirty && coverPhotoState.hasImage
     })
 
     // Cache-bust to dodge CORS taint on the canvas — same trick as ProfileEditForm
