@@ -24,8 +24,8 @@
   border-radius: var(--quiz-card-radius);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 24px -18px rgba(0, 0, 0, 0.45);
   isolation: isolate;
-  transition: transform 0.32s var(--motion-01), border-color 0.28s var(--motion-01), box-shadow 0.32s var(--motion-01),
-    background-color 0.28s var(--motion-01);
+  transition: transform 0.1s var(--motion-01), border-color 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01),
+    background-color 0.1s var(--motion-01);
 
   /* staggered entrance — caps at index 11 so late items still animate */
   @for $i from 0 through 11 {
@@ -41,7 +41,7 @@
     background: linear-gradient(135deg, transparent 30%, rgba(255, 120, 120, 0) 50%, rgba(255, 120, 120, 0) 100%);
     border-radius: inherit;
     opacity: 0;
-    transition: opacity 0.32s var(--motion-01);
+    transition: opacity 0.1s var(--motion-01);
     content: '';
     pointer-events: none;
     inset: -1px;
@@ -60,6 +60,7 @@
       border-color: var(--quiz-card-border-hover);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
       transform: translateY(-3px);
+      transition: 0.1s;
 
       &::after {
         background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
@@ -100,7 +101,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s var(--motion-01);
+    transition: transform 0.1s var(--motion-01);
     will-change: transform;
     inset: 0;
   }
@@ -114,7 +115,7 @@
     background: radial-gradient(120% 90% at 18% 14%, var(--quiz-card-tint), transparent 55%),
       linear-gradient(135deg, var(--quiz-card-from), var(--quiz-card-to));
     filter: var(--quiz-card-placeholder-filter);
-    transition: transform 0.5s var(--motion-01);
+    transition: transform 0.1s var(--motion-01);
     will-change: transform;
     inset: 0;
   }
