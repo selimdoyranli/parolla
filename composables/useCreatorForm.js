@@ -5,7 +5,7 @@ import { roomTransformer } from '@/transformers'
 import { Notify } from 'vant'
 import useDeviceInfo from './useDeviceInfo'
 
-export default function useCreatorForm(props) {
+export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
   const { i18n, getRouteBaseName } = useContext()
   const store = useStore()
   const route = useRoute()
@@ -57,7 +57,11 @@ export default function useCreatorForm(props) {
             order: idx
           }))
         : [],
-    gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT
+    gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT,
+    description: props.room?.description || '',
+    coverPhoto: props.room?.coverPhoto || null,
+    coverPhotoFile: null,
+    coverPhotoRemoved: false
   })
 
   // Helper to transform flat list of choices
@@ -144,6 +148,19 @@ export default function useCreatorForm(props) {
 
   const removeTag = tag => {
     form.tags = form.tags.filter(t => t.toLowerCase() !== tag.toLowerCase())
+  }
+
+  const handleCoverPhotoChoose = () => {
+    form.coverPhotoRemoved = false
+  }
+
+  const handleCoverPhotoDirty = () => {
+    // Marker only — the blob is generated at submit time via the template ref.
+  }
+
+  const handleCoverPhotoRemove = () => {
+    form.coverPhotoRemoved = true
+    form.coverPhotoFile = null
   }
 
   const addItem = () => {
@@ -454,6 +471,15 @@ export default function useCreatorForm(props) {
   const handleSubmit = async ({ isDraft = false }) => {
     form.isBusy = true
 
+    // Stage cover photo blob if the croppa in <RoomBasicInfo> has a
+    // non-initial, dirty image. Uses methods exposed by the child via
+    // template ref.
+    const childRef = roomBasicInfoRef?.value
+
+    if (childRef && typeof childRef.coverPhotoIsCommittable === 'function' && childRef.coverPhotoIsCommittable()) {
+      form.coverPhotoFile = await childRef.generateCoverPhotoBlob()
+    }
+
     let itemsWithMedia = []
 
     // Both modes now use same structure for mediaFile on root item
@@ -465,7 +491,9 @@ export default function useCreatorForm(props) {
       itemsWithMedia = form.qaList.filter(item => item.mediaFile)
     }
 
-    const selectedMediaCount = itemsWithMedia.length
+    const hasCoverPhotoUpload = Boolean(form.coverPhotoFile)
+    const hasCoverPhotoDelete = Boolean(props.room && form.coverPhotoRemoved && form.coverPhoto && !form.coverPhotoFile)
+    const selectedMediaCount = itemsWithMedia.length + (hasCoverPhotoUpload ? 1 : 0)
 
     openCreatingRoomModal(selectedMediaCount)
 
@@ -582,6 +610,42 @@ export default function useCreatorForm(props) {
       let uploadedMediaCount = 0
 
       try {
+        // Cover photo step (compose or edit). Best-effort: failures notify
+        // but don't abort the qa media loop.
+        if (hasCoverPhotoUpload) {
+          updateCreatingRoomProgress({
+            currentMedia: { file: form.coverPhotoFile, url: null }
+          })
+          const { data: cpData, error: cpError } = await store.dispatch('creator/uploadRoomCoverPhoto', {
+            documentId: room.documentId,
+            file: form.coverPhotoFile
+          })
+
+          if (cpData) {
+            form.coverPhoto = cpData.data?.coverPhoto || cpData.coverPhoto || form.coverPhoto
+            form.coverPhotoFile = null
+            uploadedMediaCount++
+            updateCreatingRoomProgress({ uploadedCount: uploadedMediaCount })
+          } else if (cpError) {
+            getErrorNotify({
+              error: { message: i18n.t('form.creatorModeCompose.room.coverPhoto.error.uploadFailed') }
+            })
+          }
+        } else if (hasCoverPhotoDelete) {
+          const { data: cpDelData, error: cpDelError } = await store.dispatch('creator/deleteRoomCoverPhoto', {
+            documentId: room.documentId
+          })
+
+          if (cpDelData) {
+            form.coverPhoto = null
+            form.coverPhotoRemoved = false
+          } else if (cpDelError) {
+            getErrorNotify({
+              error: { message: cpDelError.message }
+            })
+          }
+        }
+
         if (form.quizType === quizTypeEnum.CHOICES) {
           // Handle choices media upload
           for (let i = 0; i < form.choices.length; i++) {
@@ -746,6 +810,9 @@ export default function useCreatorForm(props) {
     onFormFailed,
     handleSubmit,
     saveAsDraft,
-    isVisibleSaveDraftButton
+    isVisibleSaveDraftButton,
+    handleCoverPhotoChoose,
+    handleCoverPhotoDirty,
+    handleCoverPhotoRemove
   }
 }
