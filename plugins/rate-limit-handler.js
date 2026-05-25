@@ -4,8 +4,20 @@ const TOAST_DEDUPE_MS = 3000
 const lastToastByEndpoint = new Map()
 
 export default function ({ $axios, app }) {
+  // eslint-disable-next-line no-console
+  console.log('[rate-limit-handler] plugin loaded, registering $axios.onError')
+
   $axios.onError(error => {
-    if (!error || !error.response || error.response.status !== 429) {
+    const status = error?.response?.status
+    // eslint-disable-next-line no-console
+    console.log('[rate-limit-handler] $axios.onError fired:', {
+      hasResponse: !!error?.response,
+      status,
+      url: error?.config?.url,
+      message: error?.message
+    })
+
+    if (status !== 429) {
       return Promise.reject(error)
     }
 
@@ -22,7 +34,12 @@ export default function ({ $axios, app }) {
       const seconds = Number.isFinite(parsed) && parsed > 0 ? parsed : 30
 
       const message = app.i18n.t('error.rateLimited', { seconds })
-      showToast.fail(message)
+      try {
+        showToast.fail(message)
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[rate-limit-handler] showToast.fail threw:', err)
+      }
     }
 
     return Promise.reject(error)
