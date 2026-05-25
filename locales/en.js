@@ -25,7 +25,7 @@ export default {
     invalidYoutubeLinks: 'Some links are invalid, please check',
     choicesLength: 'You must add at least {min} and at most {max} choices',
     flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards',
-    rateLimited: 'You are going too fast. Please try again in {seconds} seconds.'
+    rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
   success: {
     success: 'Success'

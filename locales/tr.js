@@ -25,7 +25,7 @@ export default {
     invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
     choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin',
     flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır',
-    rateLimited: 'Çok hızlı işlem yapıyorsunuz. {seconds} saniye sonra tekrar deneyin.'
+    rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
   success: {
     success: 'Başarılı'

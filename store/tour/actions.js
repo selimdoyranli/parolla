@@ -41,7 +41,7 @@ export default {
           try {
             showToast.fail(message, {
               duration: WS_ERROR_TOAST_DURATION_MS,
-              className: 'ws-error-toast'
+              className: 'rate-limit-toast'
             })
           } catch (err) {
             // eslint-disable-next-line no-console

@@ -1,6 +1,6 @@
 import { showToast } from '@/helpers/toast'
 
-const TOAST_DEDUPE_MS = 3000
+const TOAST_DEDUPE_MS = 5000
 const lastToastByEndpoint = new Map()
 
 export default function ({ $axios, app }) {
@@ -35,7 +35,7 @@ export default function ({ $axios, app }) {
 
       const message = app.i18n.t('error.rateLimited', { seconds })
       try {
-        showToast.fail(message)
+        showToast.fail(message, { duration: TOAST_DEDUPE_MS, className: 'rate-limit-toast' })
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error('[rate-limit-handler] showToast.fail threw:', err)
