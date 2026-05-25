@@ -1,5 +1,37 @@
 # Changelog
 
+## v2.48.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.47.0...v2.48.0)
+
+
+### 🚀 Enhancements
+
+  - **rate-limit:** Handle 429 with localized toast ([f1f7803](https://github.com/selimdoyranli/parolla/commit/f1f7803))
+  - **tour-chat:** Show toast on WS error messages ([b7c2263](https://github.com/selimdoyranli/parolla/commit/b7c2263))
+
+### 💅 Refactors
+
+  - **app-ad:** Rename .app-add to .app-ad and resize room-list ad slot ([fb2d443](https://github.com/selimdoyranli/parolla/commit/fb2d443))
+
+### 🏡 Chore
+
+  - **rate-limit:** Add temporary diagnostic logs to interceptor ([0d97360](https://github.com/selimdoyranli/parolla/commit/0d97360))
+  - **rate-limit:** Remove diagnostic console.logs from interceptor ([3d09b68](https://github.com/selimdoyranli/parolla/commit/3d09b68))
+
+### 🎨 Styles
+
+  - **room-list:** Widen ad slot and align label color with theme tokens ([00fcee2](https://github.com/selimdoyranli/parolla/commit/00fcee2))
+  - **rate-limit-toast:** Unified styling, longer duration, multiline copy ([1fc8ccf](https://github.com/selimdoyranli/parolla/commit/1fc8ccf))
+
+### 🤖 CI
+
+  - Update gitattributes ([7142a96](https://github.com/selimdoyranli/parolla/commit/7142a96))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.47.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.46.0...v2.47.0)
