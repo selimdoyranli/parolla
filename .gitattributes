@@ -13,6 +13,7 @@
 *.css eol=crlf
 *.scss eol=crlf
 *.json eol=crlf
+*.html eol=crlf
 
 # Declare files that should have LF line endings on checkout.
 
