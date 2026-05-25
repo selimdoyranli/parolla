@@ -1,5 +1,6 @@
 export const wsTypeEnum = Object.freeze({
   CONNECTED: 'connected',
+  ERROR: 'error',
   CHAT_MESSAGE: 'chat_message',
   TOUR_QUESTION: 'question',
   TOUR_TIME_UPDATE: 'time_update',

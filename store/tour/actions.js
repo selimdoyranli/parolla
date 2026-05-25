@@ -1,10 +1,16 @@
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { showToast } from '@/helpers/toast'
+
+const WS_ERROR_TOAST_DEDUPE_MS = 2000
+const WS_ERROR_TOAST_DURATION_MS = 5000
+let lastWsErrorToastAt = 0
+let lastWsErrorMessage = ''
 
 export default {
   async listenWs({ commit, dispatch }, { ws }) {
     ws.onmessage = data => {
       const parsedData = JSON.parse(data.data)
-      const { type, players, totalCount, viewerCount, chatHistory, question } = parsedData
+      const { type, players, totalCount, viewerCount, chatHistory, question, message } = parsedData
 
       if (type === wsTypeEnum.TOUR_QUESTION) {
         commit('SET_TOUR', {
@@ -21,6 +27,27 @@ export default {
 
       if (type === wsTypeEnum.TOUR_USER_LIST) {
         commit('SET_USER_LIST', { players, totalCount, totalViewers: viewerCount })
+      }
+
+      if (type === wsTypeEnum.ERROR && message) {
+        const now = Date.now()
+        const sameAsLast = message === lastWsErrorMessage
+        const withinDedupe = now - lastWsErrorToastAt < WS_ERROR_TOAST_DEDUPE_MS
+
+        if (!(sameAsLast && withinDedupe)) {
+          lastWsErrorToastAt = now
+          lastWsErrorMessage = message
+
+          try {
+            showToast.fail(message, {
+              duration: WS_ERROR_TOAST_DURATION_MS,
+              className: 'ws-error-toast'
+            })
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error('[tour/listenWs] showToast.fail threw:', err)
+          }
+        }
       }
 
       dispatch('emitWebSocketEvent', { type, data: parsedData })
