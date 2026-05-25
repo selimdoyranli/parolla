@@ -4,18 +4,8 @@ const TOAST_DEDUPE_MS = 5000
 const lastToastByEndpoint = new Map()
 
 export default function ({ $axios, app }) {
-  // eslint-disable-next-line no-console
-  console.log('[rate-limit-handler] plugin loaded, registering $axios.onError')
-
   $axios.onError(error => {
     const status = error?.response?.status
-    // eslint-disable-next-line no-console
-    console.log('[rate-limit-handler] $axios.onError fired:', {
-      hasResponse: !!error?.response,
-      status,
-      url: error?.config?.url,
-      message: error?.message
-    })
 
     if (status !== 429) {
       return Promise.reject(error)
