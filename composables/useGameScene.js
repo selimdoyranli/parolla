@@ -592,6 +592,8 @@ export default () => {
   }
 
   const listenCountdown = async timeData => {
+    if (isGameOver.value) return
+
     let remainTime = timeData
     let remainTimeAsMs = await getRemainTimeAsMs(timeData)
 
@@ -602,7 +604,9 @@ export default () => {
       await window.localStorage.setItem('dailyRemainTime', remainTimeAsMs)
     }
 
-    await countdownTimerRef.value.start()
+    if (remainTimeAsMs > 0 && !isGameOver.value) {
+      await countdownTimerRef.value.start()
+    }
 
     if (timeData.minutes === 2 && timeData.seconds === 30) {
       halfTimeSoundFx.play()
@@ -615,6 +619,8 @@ export default () => {
   }
 
   const handleCountdownFinish = async () => {
+    if (isGameOver.value) return
+
     await showToast.default(i18n.t('gameScene.timeOver'))
     await endGame()
   }
