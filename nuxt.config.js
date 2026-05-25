@@ -97,6 +97,7 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/auth-control', ssr: false }, // https://www.npmjs.com/package/vuex-persist
+    { src: '~/plugins/rate-limit-handler', ssr: false },
     { src: '~/plugins/app-fetch', ssr: false },
     { src: '~/plugins/vuex-persist', ssr: false }, // https://www.npmjs.com/package/vuex-persist
     { src: '~/plugins/ua-injector', ssr: false },

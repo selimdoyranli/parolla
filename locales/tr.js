@@ -24,7 +24,8 @@ export default {
     tooManyFiles: 'En fazla {max} dosya seçebilirsiniz',
     invalidYoutubeLinks: 'Bazı linkler geçersiz, lütfen kontrol edin',
     choicesLength: 'En az {min}, en fazla {max} seçim eklemelisin',
-    flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır'
+    flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır',
+    rateLimited: 'Çok hızlı işlem yapıyorsunuz. {seconds} saniye sonra tekrar deneyin.'
   },
   success: {
     success: 'Başarılı'
