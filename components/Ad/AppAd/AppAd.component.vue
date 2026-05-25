@@ -1,5 +1,5 @@
 <template lang="pug">
-.app-add
+.app-ad
   script(src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5310998423283624" async crossorigin="anonymous")
   ins.adsbygoogle(
     style="display: block"
