@@ -10,6 +10,7 @@ export default model => {
     publishedAt: model.publishedAt,
     updatedAt: model.updatedAt,
     username: model.username,
+    role: model.role,
     ...(model.diceBear && {
       diceBear: {
         dataImage: model.diceBear.dataImage,

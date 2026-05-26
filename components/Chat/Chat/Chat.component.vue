@@ -121,9 +121,8 @@ export default defineComponent({
     const currentWs = ref(null)
 
     const handleWsMessage = data => {
-      const { type, chatHistory, playerId, playerName, diceBear, profilePhoto, avatarSource, message, isSystem, timestamp } = JSON.parse(
-        data.data
-      )
+      const { type, chatHistory, playerId, playerName, diceBear, profilePhoto, avatarSource, role, message, isSystem, timestamp } =
+        JSON.parse(data.data)
 
       if (type === wsTypeEnum.CONNECTED) {
         store.commit('tour/SET_CHAT_MESSAGES', chatHistory)
@@ -133,6 +132,12 @@ export default defineComponent({
         }, 0)
 
         emit('on-connected-ws')
+      }
+
+      if (type === wsTypeEnum.CLEAR_CHAT) {
+        store.commit('tour/SET_CHAT_MESSAGES', [])
+
+        return
       }
 
       if (type === wsTypeEnum.CHAT_MESSAGE) {
@@ -148,6 +153,7 @@ export default defineComponent({
               diceBear,
               profilePhoto,
               avatarSource,
+              role,
               message,
               timestamp
             }
@@ -211,15 +217,44 @@ export default defineComponent({
       }
     }
 
+    const isGm = computed(() => $auth.user?.role?.name === 'GM')
+
+    // GM-only slash commands. Server enforces the role check authoritatively;
+    // this just routes the message so non-GMs typing `/foo` still get it sent
+    // as a normal chat (and harmlessly ignored by the server).
+    const tryParseCommand = raw => {
+      if (!isGm.value) return null
+      const trimmed = raw.trim()
+
+      if (!trimmed.startsWith('/')) return null
+      const [name, ...args] = trimmed.slice(1).split(/\s+/)
+
+      if (!name) return null
+
+      return { command: name.toLowerCase(), args }
+    }
+
     const sendMessage = () => {
       if (!messageText.value.trim()) return
 
-      ws.value.send(
-        JSON.stringify({
-          type: wsTypeEnum.CHAT_MESSAGE,
-          message: messageText.value
-        })
-      )
+      const parsed = tryParseCommand(messageText.value)
+
+      if (parsed) {
+        ws.value.send(
+          JSON.stringify({
+            type: wsTypeEnum.CHAT_COMMAND,
+            command: parsed.command,
+            args: parsed.args
+          })
+        )
+      } else {
+        ws.value.send(
+          JSON.stringify({
+            type: wsTypeEnum.CHAT_MESSAGE,
+            message: messageText.value
+          })
+        )
+      }
 
       messageText.value = ''
     }
@@ -269,7 +304,8 @@ export default defineComponent({
       id: message.playerId,
       diceBear: message.diceBear,
       profilePhoto: message.profilePhoto,
-      avatarSource: message.avatarSource
+      avatarSource: message.avatarSource,
+      role: message.role
     })
 
     const handleFocus = () => {

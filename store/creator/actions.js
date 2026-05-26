@@ -308,7 +308,8 @@ export default {
       'pagination[page]': page || queryDefault.page,
       'pagination[pageSize]': limit || queryDefault.perPage,
       sort: getSort(state.room.sort) || queryDefault.sort,
-      'populate[user][populate]': 'diceBear',
+      'populate[user][populate][0]': 'diceBear',
+      'populate[user][populate][1]': 'role',
       populate: 'roomTags',
       locale: locale || queryDefault.locale
     }
@@ -380,7 +381,8 @@ export default {
       'pagination[page]': page || 1,
       'pagination[pageSize]': limit || 10,
       sort: 'createdAt:desc',
-      'populate[user][populate]': 'diceBear',
+      'populate[user][populate][0]': 'diceBear',
+      'populate[user][populate][1]': 'role',
       populate: 'roomTags',
       locale: locale || this.$i18n.locale
     }
@@ -460,6 +462,7 @@ export default {
       'filters[room][roomId][$eq]': roomId,
       'populate[user][populate][0]': 'diceBear',
       'populate[user][populate][1]': 'profilePhoto',
+      'populate[user][populate][2]': 'role',
       sort: 'createdAt:desc'
     })
 

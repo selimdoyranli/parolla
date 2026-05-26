@@ -135,7 +135,7 @@ export default defineComponent({
 
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
-    const isGm = computed(() => [257116, 258270, 262467].includes(props.player?.id))
+    const isGm = computed(() => props.player?.role?.name === 'GM')
 
     const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
 

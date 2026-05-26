@@ -88,13 +88,7 @@ export default defineComponent({
       }
     }
 
-    const isGm = computed(() => {
-      if (props.user?.id === 257116 || props.user?.id === 258270 || props.user?.id === 262467) {
-        return true
-      }
-
-      return false
-    })
+    const isGm = computed(() => props.user?.role?.name === 'GM')
 
     const generateAvatarDataImage = () => {
       return createAvatar(adventurer, {

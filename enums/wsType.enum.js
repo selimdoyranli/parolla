@@ -13,5 +13,7 @@ export const wsTypeEnum = Object.freeze({
   TOUR_USER_LIST: 'user_list',
   SET_CLIENT_IP: 'set_client_ip',
   REPORT_CHAT_MESSAGE: 'report_chat_message',
-  REPORT_CHAT_MESSAGE_RESULT: 'report_chat_message_result'
+  REPORT_CHAT_MESSAGE_RESULT: 'report_chat_message_result',
+  CHAT_COMMAND: 'chat_command',
+  CLEAR_CHAT: 'clear_chat'
 })
