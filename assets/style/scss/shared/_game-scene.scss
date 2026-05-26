@@ -5,6 +5,10 @@
   --answer-field-height: 54px;
   --answer-field-height--small: 40px;
 
+  @include media-breakpoint-down(mobile) {
+    --answer-field-height: 46px;
+  }
+
   outline: none;
 
   @media (max-height: 569px) {
@@ -43,6 +47,18 @@
         opacity: 0.4;
         user-select: none;
         pointer-events: none;
+      }
+    }
+  }
+
+  &--osk {
+    #{$game-scene} {
+      &__fieldSection {
+        &--withStats {
+          @include media-breakpoint-down(tablet) {
+            --field-section-stats-height: 16px;
+          }
+        }
       }
     }
   }
