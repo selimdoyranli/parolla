@@ -41,13 +41,30 @@ Dialog.dialog.menu-dialog(
   LoginForm(v-else)
 
   span.menu-dialog__title {{ $t('dialog.menu.title') }}
+
+  span.menu-dialog__subTitle {{ $t('dialog.menu.soundFx') }}
+  CellGroup.menu-dialog-nav
+    Cell.menu-dialog-nav__item.menu-dialog-nav__item--soundFx(
+      :label="$t('dialog.menu.reactionSoundFxDesc')"
+      icon="music-o"
+      size="large"
+      :title="$t('dialog.menu.reactionSoundFx')"
+    )
+      template(#right-icon)
+        SwitchInput(v-model="isActiveReactionSoundFx" size="22px" @change="toggleReactionSoundFx")
+    Cell.menu-dialog-nav__item.menu-dialog-nav__item--soundFx(
+      :label="$t('dialog.menu.gameSceneSoundFxDesc')"
+      icon="music-o"
+      size="large"
+      :title="$t('dialog.menu.gameSceneSoundFx')"
+    )
+      template(#right-icon)
+        SwitchInput(v-model="isActiveGameSceneSoundFx" size="22px" @change="toggleGameSceneSoundFx")
+
   CellGroup.menu-dialog-nav
     Cell.menu-dialog-nav__item(icon="eye-o" size="large" :title="$t('dialog.menu.darkTheme')")
       template(#right-icon)
         SwitchInput(v-model="isDark" size="22px" @change="toggleDarkTheme")
-    Cell.menu-dialog-nav__item(icon="music-o" size="large" :title="$t('dialog.menu.soundFx')")
-      template(#right-icon)
-        SwitchInput(v-model="isActiveSoundFx" size="22px" @change="toggleSoundFx")
     Cell.menu-dialog-nav__item.menu-dialog-nav__item--wordblockKeyboard(
       v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK"
       icon="font-o"
@@ -201,13 +218,20 @@ export default defineComponent({
       document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')?.setAttribute('content', statusBarStyle)
     }
 
-    const isActiveSoundFx = computed(() => store.getters['app/isActiveSoundFx'])
+    const isActiveReactionSoundFx = computed(() => store.getters['app/isActiveReactionSoundFx'])
 
-    const toggleSoundFx = isChecked => {
+    const toggleReactionSoundFx = isChecked => {
       // Fire BEFORE the mutation so the "off" tick is heard before
       // the watcher in plugins/acs.js mutes ACS.
       sfx.play(isChecked ? 'toggle-on' : 'toggle-off')
-      store.commit('app/SET_IS_ACTIVE_SOUND_FX', isChecked)
+      store.commit('app/SET_IS_ACTIVE_REACTION_SOUND_FX', isChecked)
+    }
+
+    const isActiveGameSceneSoundFx = computed(() => store.getters['app/isActiveGameSceneSoundFx'])
+
+    const toggleGameSceneSoundFx = isChecked => {
+      sfx.play(isChecked ? 'toggle-on' : 'toggle-off')
+      store.commit('app/SET_IS_ACTIVE_GAME_SCENE_SOUND_FX', isChecked)
     }
 
     const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
@@ -295,8 +319,10 @@ export default defineComponent({
       state,
       isDark,
       toggleDarkTheme,
-      isActiveSoundFx,
-      toggleSoundFx,
+      isActiveReactionSoundFx,
+      toggleReactionSoundFx,
+      isActiveGameSceneSoundFx,
+      toggleGameSceneSoundFx,
       isActiveKeyboard,
       toggleWordblockKeyboard,
       openSuggestQuestion,

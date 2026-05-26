@@ -28,6 +28,26 @@
     @include font-weight-semi-bold;
   }
 
+  &__subTitle {
+    display: block;
+    padding: 0 var(--base-p-x);
+    padding-block-end: calc(var(--base-p-y) / 2);
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    @include font-weight-medium;
+  }
+
+  .van-cell__label {
+    color: var(--color-text-03);
+  }
+
+  [class*='van-hairline']::after {
+    border: 0;
+  }
+
   &-profile {
     padding: calc(var(--base-p-y) / 2) var(--base-p-x);
 

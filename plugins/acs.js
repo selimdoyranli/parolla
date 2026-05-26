@@ -9,10 +9,10 @@ import 'acs-audio'
  * here at plugin-time is too late — ACS's loadStylesheets() has already
  * run and won't pick up dynamically-added <link> elements.
  *
- * Plugin responsibility is now just: reflect Vuex `app/isActiveSoundFx`
- * into window.ACS.setEnabled() so the existing MenuDialog "sound
- * effects" switch mutes Howler (game sounds, see useGameScene.js) and
- * ACS (UI sounds) through a single source of truth.
+ * Plugin responsibility: reflect Vuex `app/isActiveReactionSoundFx` into
+ * window.ACS.setEnabled(). ACS covers UI feedback (clicks, keyboard,
+ * popup appear/leave); game-scene sounds (Howler in useGameScene.js)
+ * are gated separately by `app/isActiveGameSceneSoundFx`.
  */
 export default function ({ store }) {
   if (!process.client || typeof window === 'undefined') return
@@ -24,9 +24,9 @@ export default function ({ store }) {
 
   // Initial sync. ACS may not be wired up yet on the very first tick
   // after import — retry once on the next microtask.
-  const initial = store.getters['app/isActiveSoundFx']
+  const initial = store.getters['app/isActiveReactionSoundFx']
   apply(initial)
-  Promise.resolve().then(() => apply(store.getters['app/isActiveSoundFx']))
+  Promise.resolve().then(() => apply(store.getters['app/isActiveReactionSoundFx']))
 
-  store.watch((_state, getters) => getters['app/isActiveSoundFx'], apply)
+  store.watch((_state, getters) => getters['app/isActiveReactionSoundFx'], apply)
 }

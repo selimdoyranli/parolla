@@ -7,7 +7,10 @@ export default {
     return state.ws
   },
 
-  isActiveSoundFx(state) {
-    return state.soundFx.isActive
+  isActiveReactionSoundFx(state) {
+    return state.soundFx.reactionActive
+  },
+  isActiveGameSceneSoundFx(state) {
+    return state.soundFx.gameSceneActive
   }
 }

@@ -371,10 +371,10 @@ export default () => {
     }
   })
 
-  const isActiveSoundFx = computed(() => store.getters['app/isActiveSoundFx'])
+  const isActiveGameSceneSoundFx = computed(() => store.getters['app/isActiveGameSceneSoundFx'])
 
   watch(
-    () => isActiveSoundFx.value,
+    () => isActiveGameSceneSoundFx.value,
     value => {
       if (value) {
         startSoundFx.mute(false)
@@ -408,38 +408,38 @@ export default () => {
 
   const startSoundFx = new Howl({
     src: [`/sound/fx/start.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   const correctSoundFx = new Howl({
     src: [`/sound/fx/correct.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   const wrongSoundFx = new Howl({
     src: [`/sound/fx/wrong.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   const passSoundFx = new Howl({
     src: [`/sound/fx/pass.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   const halfTimeSoundFx = new Howl({
     src: [`/sound/fx/half-time.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   const hurryUpSoundFx = new Howl({
     src: [`/sound/fx/tick-tock.wav`],
-    mute: isActiveSoundFx.value ? false : true,
+    mute: isActiveGameSceneSoundFx.value ? false : true,
     volume: 0.3
   })
 
   const countdownFinishSoundFx = new Howl({
     src: [`/sound/fx/notification1.wav`],
-    mute: isActiveSoundFx.value ? false : true
+    mute: isActiveGameSceneSoundFx.value ? false : true
   })
 
   soundFx.start = startSoundFx

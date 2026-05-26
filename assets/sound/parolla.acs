@@ -29,8 +29,11 @@
 .van-switch { sound-on-click: tick; volume: 0.4; }
 
 /* === Inputs === */
-input, textarea { sound-on-input: tick; volume: 0.3; }
-input:on-focus, textarea:on-focus { sound: tick; volume: 0.2; }
+input:on-input, textarea:on-input { sound: keystroke; }
+
+@media (hover: none) and (pointer: coarse) {
+  input:on-input, textarea:on-input { volume: 0 !important; }
+}
 
 /* === Dialog / Popup === */
 .van-dialog { sound-on-appear: modal-open; sound-on-leave: modal-close; }

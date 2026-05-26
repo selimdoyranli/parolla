@@ -1,6 +1,7 @@
 export default () => ({
   ws: null,
   soundFx: {
-    isActive: true
+    reactionActive: true,
+    gameSceneActive: true
   }
 })

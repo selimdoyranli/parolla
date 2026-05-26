@@ -34,4 +34,15 @@ export default ({ store }) => {
           : {}
     })
   }).plugin(store)
+
+  // One-shot migration: returning users may have the legacy single-flag
+  // soundFx.isActive. Map it to both new flags, then drop the old key so
+  // future saves don't keep it around.
+  const sfx = store.state.app.soundFx
+
+  if (sfx && typeof sfx.isActive === 'boolean') {
+    store.commit('app/SET_IS_ACTIVE_REACTION_SOUND_FX', sfx.isActive)
+    store.commit('app/SET_IS_ACTIVE_GAME_SCENE_SOUND_FX', sfx.isActive)
+    delete sfx.isActive
+  }
 }
