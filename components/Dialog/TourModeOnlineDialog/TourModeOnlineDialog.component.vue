@@ -54,7 +54,7 @@ Dialog.stats-dialog.dialog.tour-mode-online-dialog(
 </template>
 
 <script>
-import { defineComponent, reactive, ref, watch, useStore, nextTick, computed } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, watch, useContext, useStore, nextTick, computed } from '@nuxtjs/composition-api'
 import { Dialog, Tabs, Tab, Cell, Empty } from 'vant'
 
 export default defineComponent({
@@ -87,6 +87,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const context = useContext()
     const store = useStore()
     const user = store.getters['auth/user']
 
@@ -122,13 +123,15 @@ export default defineComponent({
     }
 
     const onChatMessageWs = () => {
-      chatRef.value.scrollToBottom()
+      if (chatRef.value.isScrollOnBottom()) {
+        chatRef.value.scrollToBottom()
+      }
     }
 
     const isChatFocused = ref(false)
 
     const chatOskClass = computed(() => {
-      return isChatFocused.value && 'chat-osk'
+      return context.$auth.loggedIn && isChatFocused.value && 'chat-osk'
     })
 
     const onChatFocus = () => {
