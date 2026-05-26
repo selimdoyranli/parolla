@@ -1,5 +1,28 @@
 # Changelog
 
+## v2.49.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.48.0...v2.49.0)
+
+
+### 🚀 Enhancements
+
+  - **sound-fx:** Split menu toggle into reaction + game-scene controls ([e16f86c](https://github.com/selimdoyranli/parolla/commit/e16f86c))
+  - **role,commands:** Role-driven GM badge and GM chat commands ([6d51d45](https://github.com/selimdoyranli/parolla/commit/6d51d45))
+
+### 🩹 Fixes
+
+  - **game-scene:** Stop countdown-finish loop replaying notify sound ([77bdcff](https://github.com/selimdoyranli/parolla/commit/77bdcff))
+  - **tour-online-dialog:** Only autoscroll chat when already at bottom ([3889841](https://github.com/selimdoyranli/parolla/commit/3889841))
+
+### 🎨 Styles
+
+  - **game-scene:** Shrink answer field and stats height on mobile OSK ([7dab365](https://github.com/selimdoyranli/parolla/commit/7dab365))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.48.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.47.0...v2.48.0)
