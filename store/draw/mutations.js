@@ -19,6 +19,24 @@ export default {
     state.drawerId = payload.currentDrawerId || null
     state.nextDrawerId = payload.nextDrawerId || null
     state.nextDrawerName = payload.nextDrawerName || null
+
+    // When the server flips the room back to 'lobby' (8 s after GAME_END,
+    // or after a host restart) the client needs to drop every per-game
+    // artefact too — otherwise finalScores stays truthy, the final overlay
+    // covers the screen forever, and the host can't reach 'Yeniden Başlat'.
+    if (payload.state === 'lobby') {
+      state.finalScores = null
+      state.lastRoundResult = null
+      state.iGuessedCorrectly = false
+      state.currentWord = null
+      state.maskedWord = null
+      state.wordOptions = null
+      state.pickTimeoutMs = 0
+      state.durationMs = 0
+      state.remainingMs = 0
+      state.strokes = []
+      state.nextRoundEndsAt = 0
+    }
   },
   SET_WORD_OPTIONS(state, payload) {
     state.wordOptions = payload.words || null
