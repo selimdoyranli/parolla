@@ -1,4 +1,5 @@
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { showToast } from '@/helpers/toast'
 
 export default {
   handleMessage({ commit }, message) {
@@ -60,6 +61,16 @@ export default {
         break
       case wsTypeEnum.DRAW_ERROR:
         commit('SET_ERROR', { code: message.code, message: message.message })
+        // eslint-disable-next-line no-console
+        console.warn('[draw] server error:', message.code, message.message)
+        try {
+          showToast.fail(message.message || `Hata: ${message.code}`, {
+            duration: 5000,
+            className: 'rate-limit-toast'
+          })
+        } catch (_e) {
+          /* ignore toast plugin not ready */
+        }
         break
       default:
         break
