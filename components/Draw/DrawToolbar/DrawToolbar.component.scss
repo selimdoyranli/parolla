@@ -1,0 +1,72 @@
+.draw-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+
+  &__group {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f6f1ff;
+    border-radius: 10px;
+  }
+
+  &__tool,
+  &__size,
+  &__swatch {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &.is-active {
+      color: #fff;
+      background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+    }
+  }
+
+  &__palette {
+    display: grid;
+    grid-template-rows: repeat(2, 22px);
+    grid-template-columns: repeat(8, 22px);
+    gap: 4px;
+    padding: 4px;
+    background: #f6f1ff;
+    border-radius: 10px;
+  }
+
+  &__swatch {
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    &.is-active {
+      outline: 2px solid #221a44;
+      outline-offset: 2px;
+    }
+  }
+
+  &__size i {
+    display: block;
+    background: #221a44;
+    border-radius: 50%;
+  }
+
+  &__size.is-active i {
+    background: #fff;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+  }
+}

@@ -1,0 +1,15 @@
+.draw-canvas {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px;
+  touch-action: none;
+
+  &__el {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+  }
+}
