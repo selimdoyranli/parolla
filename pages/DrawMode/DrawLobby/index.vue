@@ -6,9 +6,10 @@
     p.draw-lobby__subtitle Arkadaşlarınla gerçek zamanlı çizim ve tahmin oyunu. Bir oda kur ya da kodla katıl.
 
   .draw-lobby__actions
-    Button.draw-lobby__cta(type="primary" size="large" round block @click="onCreate")
-      AppIcon(name="tabler:pencil-plus" :width="18" :height="18")
-      span Yeni Oda Kur
+    Button.draw-lobby__cta(type="primary" size="large" round @click="onCreate")
+      .draw-lobby__cta-inner
+        AppIcon.draw-lobby__cta-icon(name="tabler:pencil-plus" :width="18" :height="18")
+        span Yeni Oda Kur
     .draw-lobby__join
       Field.draw-lobby__join-field(
         v-model="joinCode"

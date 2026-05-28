@@ -1,13 +1,11 @@
 <template lang="pug">
-Popup.draw-create-dialog(
+Dialog.draw-create-dialog(
   :value="true"
-  position="bottom"
-  round
-  closeable
-  close-icon-position="top-right"
+  :show-confirm-button="false"
+  :show-cancel-button="false"
   :close-on-click-overlay="true"
-  :style="{ maxHeight: '92vh' }"
-  @input="onPopupInput"
+  width="92%"
+  @input="onDialogInput"
 )
   .draw-create-dialog__inner
     header.draw-create-dialog__head
@@ -65,12 +63,12 @@ Popup.draw-create-dialog(
 
 <script>
 import { defineComponent, reactive } from '@nuxtjs/composition-api'
-import { Popup, Field, Button, Slider, Switch, Tag } from 'vant'
+import { Dialog, Field, Button, Slider, Switch, Tag } from 'vant'
 
 const ALL = ['hayvan', 'yemek', 'nesne', 'meslek', 'doga', 'spor', 'eylem', 'kavram', 'ulke', 'marka']
 
 export default defineComponent({
-  components: { Popup, Field, Button, Slider, Switch, Tag },
+  components: { Dialog, Field, Button, Slider, Switch, Tag },
   emits: ['close', 'submit'],
   setup(_, { emit }) {
     const form = reactive({
@@ -99,11 +97,11 @@ export default defineComponent({
       emit('submit', payload)
     }
 
-    const onPopupInput = v => {
+    const onDialogInput = v => {
       if (!v) emit('close')
     }
 
-    return { form, allCats: ALL, toggleCat, submit, onPopupInput, brand: '#ff7878' }
+    return { form, allCats: ALL, toggleCat, submit, onDialogInput, brand: '#ff7878' }
   }
 })
 </script>

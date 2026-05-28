@@ -1,40 +1,41 @@
 .draw-toolbar {
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
-  padding: 8px;
+  padding: 5px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(34, 26, 68, 0.25);
+  border: 1px solid var(--color-border-01);
+  border-radius: 10px;
 
   &__group {
     display: flex;
-    gap: 4px;
+    gap: 3px;
     align-items: center;
-    padding: 4px;
+    padding: 3px;
     background: #f6f1ff;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
   &__divider {
     width: 1px;
-    height: 28px;
+    height: 20px;
     margin: 0 2px;
     background: rgba(34, 26, 68, 0.08);
   }
 
   &__tool {
     display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     color: #221a44;
     background: transparent;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.15s, transform 0.08s;
+    place-items: center;
 
     &:hover {
       background: rgba(122, 90, 248, 0.12);
@@ -55,21 +56,21 @@
     }
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
     }
   }
 
   &__size {
     display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     background: transparent;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.15s;
+    place-items: center;
 
     &:hover {
       background: rgba(122, 90, 248, 0.12);
@@ -108,12 +109,12 @@
 
   &__color-current {
     position: relative;
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 30px;
     overflow: hidden;
-    border: 3px solid #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 0 rgba(34, 26, 68, 0.18);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 
     &::after {
       position: absolute;
@@ -125,18 +126,18 @@
 
   &__palette {
     display: grid;
-    grid-template-rows: repeat(2, 22px);
-    grid-template-columns: repeat(8, 22px);
-    gap: 4px;
-    padding: 4px;
+    grid-template-rows: repeat(2, 16px);
+    grid-template-columns: repeat(8, 16px);
+    gap: 3px;
+    padding: 3px;
     background: #f6f1ff;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
   &__swatch {
     position: relative;
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 6px;
@@ -162,17 +163,16 @@
 
   &__btn {
     display: inline-flex;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
-    padding: 8px 12px;
+    padding: 5px 10px;
     color: #221a44;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 11px;
     font-family: inherit;
     background: #f6f1ff;
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 0 rgba(34, 26, 68, 0.18);
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.15s, transform 0.08s;
 
@@ -194,8 +194,8 @@
     }
 
     svg {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
     }
   }
 

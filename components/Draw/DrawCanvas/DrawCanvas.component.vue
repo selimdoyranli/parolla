@@ -58,15 +58,34 @@ export default defineComponent({
       { immediate: true }
     )
 
+    // ── Normalization ─────────────────────────────────────────
+    // All chunks travel and are stored in normalized 0–1 coordinates so a
+    // stroke at (1, 0.5) lands at the right-middle of every client's canvas,
+    // no matter how wide or tall their canvas is. Size is normalized as a
+    // fraction of canvas width so an 8 px brush stays at the same VISUAL
+    // proportion (≈1% wide) on every client.
+    const normSize = px => {
+      const w = canvas.value ? canvas.value.clientWidth : 1
+
+      return w > 0 ? px / w : 0
+    }
+    const strokeWidth = nsize => {
+      const w = canvas.value ? canvas.value.clientWidth : 1
+
+      return Math.max(0.5, nsize * w)
+    }
+
     const drawStroke = s => {
       const c = ctx.value
 
-      if (!c || !s) return
+      if (!c || !s || !canvas.value) return
+      const w = canvas.value.clientWidth
+      const h = canvas.value.clientHeight
       c.lineCap = 'round'
       c.lineJoin = 'round'
       c.strokeStyle = s.color
       c.fillStyle = s.color
-      c.lineWidth = s.size
+      c.lineWidth = strokeWidth(s.size)
 
       if (s.tool === 'brush' || s.tool === 'eraser') {
         const p = s.points
@@ -75,15 +94,15 @@ export default defineComponent({
         c.beginPath()
 
         if (p.length === 1) {
-          c.arc(p[0].x, p[0].y, s.size / 2, 0, Math.PI * 2)
+          c.arc(p[0].x * w, p[0].y * h, c.lineWidth / 2, 0, Math.PI * 2)
           c.fill()
 
           return
         }
 
-        c.moveTo(p[0].x, p[0].y)
+        c.moveTo(p[0].x * w, p[0].y * h)
 
-        for (let i = 1; i < p.length; i++) c.lineTo(p[i].x, p[i].y)
+        for (let i = 1; i < p.length; i++) c.lineTo(p[i].x * w, p[i].y * h)
         c.stroke()
 
         return
@@ -91,28 +110,28 @@ export default defineComponent({
 
       if (s.tool === 'line') {
         c.beginPath()
-        c.moveTo(s.x1, s.y1)
-        c.lineTo(s.x2, s.y2)
+        c.moveTo(s.x1 * w, s.y1 * h)
+        c.lineTo(s.x2 * w, s.y2 * h)
         c.stroke()
 
         return
       }
 
       if (s.tool === 'rect') {
-        const x = Math.min(s.x1, s.x2)
-        const y = Math.min(s.y1, s.y2)
-        const w = Math.abs(s.x2 - s.x1)
-        const h = Math.abs(s.y2 - s.y1)
-        c.strokeRect(x, y, w, h)
+        const x = Math.min(s.x1, s.x2) * w
+        const y = Math.min(s.y1, s.y2) * h
+        const rw = Math.abs(s.x2 - s.x1) * w
+        const rh = Math.abs(s.y2 - s.y1) * h
+        c.strokeRect(x, y, rw, rh)
 
         return
       }
 
       if (s.tool === 'circle') {
-        const cx = (s.x1 + s.x2) / 2
-        const cy = (s.y1 + s.y2) / 2
-        const rx = Math.abs(s.x2 - s.x1) / 2
-        const ry = Math.abs(s.y2 - s.y1) / 2
+        const cx = ((s.x1 + s.x2) / 2) * w
+        const cy = ((s.y1 + s.y2) / 2) * h
+        const rx = (Math.abs(s.x2 - s.x1) / 2) * w
+        const ry = (Math.abs(s.y2 - s.y1) / 2) * h
         c.beginPath()
 
         if (c.ellipse) c.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2)
@@ -123,7 +142,7 @@ export default defineComponent({
       }
 
       if (s.tool === 'fill') {
-        floodFill(Math.floor(s.x), Math.floor(s.y), s.color)
+        floodFill(Math.floor(s.x * w), Math.floor(s.y * h), s.color)
       }
     }
 
@@ -202,8 +221,6 @@ export default defineComponent({
     const resize = () => {
       if (!canvas.value || !stage.value) return
       dpr.value = window.devicePixelRatio || 1
-      // Use the canvas's own client rect (not the stage's) so the drawing surface
-      // matches exactly what getBoundingClientRect returns for pointer events.
       const rect = canvas.value.getBoundingClientRect()
       canvas.value.width = Math.round(rect.width * dpr.value)
       canvas.value.height = Math.round(rect.height * dpr.value)
@@ -212,28 +229,26 @@ export default defineComponent({
     }
 
     const pointFromEvent = e => {
-      // getBoundingClientRect is live; recomputing per event keeps coords accurate
-      // even after layout shifts (e.g. masked-word appears/disappears above canvas).
       const r = canvas.value.getBoundingClientRect()
       const t = e.touches && e.touches.length ? e.touches[0] : (e.changedTouches && e.changedTouches[0]) || e
-      // Account for CSS scaling between display rect and the canvas's internal
-      // coordinate system (rare in this layout, but defensive).
-      const scaleX = canvas.value.clientWidth ? r.width / canvas.value.clientWidth : 1
-      const scaleY = canvas.value.clientHeight ? r.height / canvas.value.clientHeight : 1
 
+      // Return normalized 0–1 coords directly so everything downstream (preview
+      // buffer, emit, redraw) speaks the same coordinate system.
       return {
-        x: (t.clientX - r.left) / scaleX,
-        y: (t.clientY - r.top) / scaleY
+        x: r.width > 0 ? (t.clientX - r.left) / r.width : 0,
+        y: r.height > 0 ? (t.clientY - r.top) / r.height : 0
       }
     }
 
     const flushBatch = (final = false) => {
       if (currentBatchPoints.value.length > 0 && currentStrokeId.value) {
+        const isEraser = props.tool === 'eraser'
+
         emit('chunk', {
           strokeId: currentStrokeId.value,
-          tool: props.tool === 'eraser' ? 'eraser' : 'brush',
-          color: props.tool === 'eraser' ? '#ffffff' : props.color,
-          size: props.tool === 'eraser' ? props.size * 2.2 : props.size,
+          tool: isEraser ? 'eraser' : 'brush',
+          color: isEraser ? '#ffffff' : props.color,
+          size: normSize(isEraser ? props.size * 2.2 : props.size),
           points: currentBatchPoints.value.slice()
         })
         const last = currentBatchPoints.value[currentBatchPoints.value.length - 1]
@@ -255,7 +270,7 @@ export default defineComponent({
           strokeId: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           tool: 'fill',
           color: props.color,
-          size: props.size,
+          size: normSize(props.size),
           x: pt.x,
           y: pt.y
         }
@@ -270,11 +285,12 @@ export default defineComponent({
 
       if (t === 'brush' || t === 'eraser') {
         currentBatchPoints.value = [pt]
+        const isEraser = t === 'eraser'
         inProgress.value = {
           strokeId: currentStrokeId.value,
-          tool: t === 'eraser' ? 'eraser' : 'brush',
-          color: t === 'eraser' ? '#ffffff' : props.color,
-          size: t === 'eraser' ? props.size * 2.2 : props.size,
+          tool: isEraser ? 'eraser' : 'brush',
+          color: isEraser ? '#ffffff' : props.color,
+          size: normSize(isEraser ? props.size * 2.2 : props.size),
           points: [pt]
         }
         flushBatch()
@@ -286,7 +302,7 @@ export default defineComponent({
         strokeId: currentStrokeId.value,
         tool: t,
         color: props.color,
-        size: props.size,
+        size: normSize(props.size),
         x1: pt.x,
         y1: pt.y,
         x2: pt.x,
@@ -350,9 +366,10 @@ export default defineComponent({
       resize()
       window.addEventListener('resize', resize)
 
-      // Layout shifts inside the page (e.g. masked-word appearing/disappearing
-      // above the canvas) move the canvas without firing window.resize; the
-      // observer keeps cursor-to-stroke alignment correct.
+      // Layout shifts inside the page (masked-word, panels, toolbar appearing)
+      // move the canvas without firing window.resize; ResizeObserver also gives
+      // us the chance to re-paint when the canvas display size changes so all
+      // stored normalized strokes re-scale automatically.
       if (typeof ResizeObserver !== 'undefined' && stage.value) {
         resizeObserver = new ResizeObserver(() => resize())
         resizeObserver.observe(stage.value)

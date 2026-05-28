@@ -38,18 +38,34 @@
 
   &__actions {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
+    align-items: stretch;
     margin-bottom: 24px;
   }
 
   &__cta {
     --van-button-primary-background-color: var(--color-brand-02);
     --van-button-primary-border-color: var(--color-brand-02);
+
+    flex: 1 1 200px;
+  }
+
+  &__cta-inner {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  &__cta-icon {
+    flex-shrink: 0;
   }
 
   &__join {
     display: flex;
+    flex: 2 1 280px;
     gap: 8px;
     align-items: stretch;
   }

@@ -2,14 +2,17 @@
   --van-button-primary-background-color: var(--color-brand-02);
   --van-button-primary-border-color: var(--color-brand-02);
 
+  max-width: 480px !important;
   background: var(--color-ui-02) !important;
-  border-radius: 18px 18px 0 0 !important;
+  border-radius: 16px !important;
 
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: 20px 16px 28px;
+    gap: 16px;
+    max-height: 80vh;
+    padding: 20px 18px 18px;
+    overflow-y: auto;
     color: var(--color-text-01);
   }
 

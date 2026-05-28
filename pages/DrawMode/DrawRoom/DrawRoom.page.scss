@@ -1,21 +1,23 @@
 .draw-room {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 100%;
-  padding: 10px;
+  gap: 6px;
+  height: 100%;
+  min-height: 0;
+  padding: 6px;
+  overflow: hidden; // page itself never scrolls; inner panels handle their own overflow
   color: var(--color-text-01);
 
   // ── Topbar ──────────────────────────────────────────────
   &__topbar {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
-    padding: 8px 12px;
+    padding: 5px 10px;
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-01);
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   &__crumbs {
@@ -27,7 +29,7 @@
   &__crumb-label {
     color: var(--color-text-03);
     font-weight: 600;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.4px;
     text-transform: uppercase;
   }
@@ -35,25 +37,25 @@
   &__crumb-code {
     color: var(--color-text-01);
     font-weight: 700;
-    font-size: 15px;
+    font-size: 13px;
     letter-spacing: 2px;
   }
 
   &__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px;
     margin-left: auto;
   }
 
   &__chip {
     display: inline-flex;
-    gap: 5px;
+    gap: 4px;
     align-items: center;
-    padding: 4px 10px;
+    padding: 2px 8px;
     color: var(--color-text-02);
     font-weight: 600;
-    font-size: 11px;
+    font-size: 10px;
     background: var(--color-ui-01);
     border: 1px solid var(--color-border-02);
     border-radius: 999px;
@@ -83,19 +85,22 @@
   // ── Board (word bar + canvas + toolbar) ────────────────
   &__board {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+    min-height: 0; // critical so flex children can shrink below content
   }
 
   &__wordbar {
     display: flex;
+    flex-shrink: 0;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
-    padding: 8px 14px;
+    padding: 4px 10px;
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-01);
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   &__wordbar-label {
@@ -111,33 +116,36 @@
   }
 
   &__wordbar-timer {
-    min-width: 120px;
+    min-width: 110px;
   }
 
   &__canvas {
-    aspect-ratio: 16 / 11;
-    min-height: 240px;
-    max-height: 50vh;
+    flex: 1;
+    min-height: 120px;
   }
 
-  // ── Panels (skor + sohbet yan yana, tab YOK) ──────────
+  // ── Panels (skor + sohbet yan yana, hep görünür) ──────
   &__panels {
     display: grid;
-    grid-template-columns: minmax(0, 220px) 1fr;
-    gap: 10px;
+    flex-shrink: 0;
+    grid-template-columns: minmax(0, 200px) 1fr;
+    gap: 6px;
+    height: clamp(120px, 22vh, 200px);
     min-height: 0;
   }
 
   &__scoreboard,
   &__chat {
-    height: clamp(200px, 32vh, 320px);
+    height: 100%;
+    min-height: 0;
   }
 
   // ── Host actions ────────────────────────────────────────
   &__host-actions {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    flex-shrink: 0;
+    gap: 2px;
   }
 
   &__host-btn {
@@ -150,13 +158,13 @@
   &__host-hint {
     margin: 0;
     color: var(--color-text-03);
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
   }
 
   // ── Overlay ─────────────────────────────────────────────
   &__overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 80;
     display: grid;
@@ -167,19 +175,19 @@
 
   &__round-end,
   &__final {
-    width: min(420px, 92%);
-    padding: 24px;
+    width: min(380px, 92%);
+    padding: 18px;
     color: var(--color-text-01);
     text-align: center;
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-01);
-    border-radius: 16px;
+    border-radius: 14px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   }
 
   &__round-end-eyebrow {
     display: inline-block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     padding: 2px 10px;
     color: var(--color-brand-02);
     font-weight: 700;
@@ -191,9 +199,9 @@
   }
 
   &__round-end-title {
-    margin: 4px 0 8px;
+    margin: 4px 0 6px;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
 
     b {
       color: var(--color-brand-02);
@@ -202,17 +210,17 @@
   }
 
   &__round-end-reason {
-    margin: 0 0 16px;
+    margin: 0 0 12px;
     color: var(--color-text-03);
-    font-size: 13px;
+    font-size: 12px;
   }
 
   &__round-end-countdown {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
-    padding-top: 16px;
+    padding-top: 12px;
     border-top: 1px solid var(--color-border-02);
 
     b {
@@ -222,14 +230,14 @@
 
   &__round-end-countdown-label {
     color: var(--color-text-03);
-    font-size: 13px;
+    font-size: 12px;
   }
 
   &__round-end-countdown-clock {
     display: inline-flex;
     gap: 4px;
     align-items: baseline;
-    padding: 6px 14px;
+    padding: 4px 12px;
     background: var(--color-ui-01);
     border: 1px solid var(--color-border-01);
     border-radius: 999px;
@@ -238,7 +246,7 @@
   &__round-end-countdown-num {
     color: var(--color-brand-02);
     font-weight: 800;
-    font-size: 26px;
+    font-size: 22px;
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }
@@ -246,40 +254,40 @@
   &__round-end-countdown-unit {
     color: var(--color-text-03);
     font-weight: 600;
-    font-size: 12px;
+    font-size: 11px;
   }
 
   &__final-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin: 12px 0 0;
+    gap: 4px;
+    margin: 10px 0 0;
     padding: 0;
     text-align: left;
     list-style: none;
 
     li {
       display: grid;
-      grid-template-columns: 24px 1fr auto;
-      gap: 10px;
+      grid-template-columns: 20px 1fr auto;
+      gap: 8px;
       align-items: center;
-      padding: 8px 12px;
+      padding: 6px 10px;
       background: var(--color-ui-01);
-      border-radius: 10px;
+      border-radius: 8px;
     }
   }
 
   &__final-rank {
     color: var(--color-text-03);
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   &__final-name {
     overflow: hidden;
     color: var(--color-text-01);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -287,17 +295,14 @@
   &__final-score {
     color: var(--color-brand-02);
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     font-variant-numeric: tabular-nums;
   }
 
   // ── Narrow viewport ─────────────────────────────────────
   @include media-breakpoint-down(tablet) {
-    gap: 8px;
-    padding: 8px;
-
     &__topbar {
-      padding: 6px 10px;
+      padding: 4px 8px;
     }
 
     &__chips {
@@ -306,35 +311,12 @@
     }
 
     &__crumb-code {
-      font-size: 14px;
-    }
-
-    &__canvas {
-      aspect-ratio: 4 / 3;
-      min-height: 220px;
-      max-height: 45vh;
+      font-size: 12px;
     }
 
     &__panels {
       grid-template-columns: 1fr;
-    }
-
-    &__scoreboard {
-      height: clamp(150px, 22vh, 200px);
-    }
-
-    &__chat {
-      height: clamp(180px, 28vh, 280px);
-    }
-  }
-
-  @include media-breakpoint-down(mobile) {
-    &__chip {
-      font-size: 10px;
-    }
-
-    &__wordbar {
-      padding: 6px 10px;
+      height: clamp(160px, 26vh, 240px);
     }
   }
 }
