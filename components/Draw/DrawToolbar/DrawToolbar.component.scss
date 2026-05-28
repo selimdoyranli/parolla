@@ -6,30 +6,120 @@
   padding: 8px;
   background: #fff;
   border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(34, 26, 68, 0.25);
 
   &__group {
     display: flex;
     gap: 4px;
+    align-items: center;
     padding: 4px;
     background: #f6f1ff;
     border-radius: 10px;
   }
 
-  &__tool,
-  &__size,
-  &__swatch {
+  &__divider {
+    width: 1px;
+    height: 28px;
+    margin: 0 2px;
+    background: rgba(34, 26, 68, 0.08);
+  }
+
+  &__tool {
     display: grid;
     place-items: center;
     width: 36px;
     height: 36px;
+    color: #221a44;
     background: transparent;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background 0.15s, transform 0.08s;
+
+    &:hover {
+      background: rgba(122, 90, 248, 0.12);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
 
     &.is-active {
       color: #fff;
       background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+      box-shadow: 0 2px 0 rgba(34, 26, 68, 0.18);
+
+      &:hover {
+        background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+      }
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__size {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba(122, 90, 248, 0.12);
+    }
+
+    i {
+      display: block;
+      background: #221a44;
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+
+    &--s i {
+      width: 4px;
+      height: 4px;
+    }
+
+    &--m i {
+      width: 9px;
+      height: 9px;
+    }
+
+    &--l i {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.is-active {
+      background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+
+      i {
+        background: #fff;
+      }
+    }
+  }
+
+  &__color-current {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    overflow: hidden;
+    border: 3px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 0 rgba(34, 26, 68, 0.18);
+
+    &::after {
+      position: absolute;
+      background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.25) 50%);
+      content: '';
+      inset: 0;
     }
   }
 
@@ -44,29 +134,121 @@
   }
 
   &__swatch {
+    position: relative;
     width: 22px;
     height: 22px;
+    padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.12);
+    }
 
     &.is-active {
+      z-index: 2;
       outline: 2px solid #221a44;
       outline-offset: 2px;
     }
-  }
-
-  &__size i {
-    display: block;
-    background: #221a44;
-    border-radius: 50%;
-  }
-
-  &__size.is-active i {
-    background: #fff;
   }
 
   &__actions {
     display: flex;
     gap: 6px;
     margin-left: auto;
+  }
+
+  &__btn {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 8px 12px;
+    color: #221a44;
+    font-weight: 600;
+    font-size: 13px;
+    font-family: inherit;
+    background: #f6f1ff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(34, 26, 68, 0.18);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.08s;
+
+    &:hover {
+      background: #ebe1ff;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &--danger {
+      color: #d9213f;
+      background: #ffb3be;
+
+      &:hover {
+        background: #ffa1ae;
+      }
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    gap: 6px;
+    padding: 6px;
+
+    &__group {
+      gap: 2px;
+      padding: 3px;
+    }
+
+    &__tool {
+      width: 32px;
+      height: 32px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &__size {
+      width: 28px;
+      height: 28px;
+    }
+
+    &__palette {
+      flex: 1;
+      grid-template-rows: repeat(2, 22px);
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    &__swatch {
+      width: 100%;
+    }
+
+    &__color-current {
+      width: 34px;
+      height: 34px;
+    }
+
+    &__btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    &__btn-label {
+      display: none;
+    }
+
+    &__divider {
+      display: none;
+    }
   }
 }

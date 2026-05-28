@@ -15,7 +15,7 @@ import { defineComponent, computed } from '@nuxtjs/composition-api'
 export default defineComponent({
   props: {
     players: { type: Array, default: () => [] },
-    drawerId: { type: String, default: null }
+    drawerId: { type: [String, Number], default: null }
   },
   setup(props) {
     const sortedPlayers = computed(() => [...props.players].sort((a, b) => (b.score || 0) - (a.score || 0)))

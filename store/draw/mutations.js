@@ -40,6 +40,10 @@ export default {
     state.iGuessedCorrectly = false
     state.strokes = []
     state.lastRoundResult = null
+
+    // Server transitions to 'drawing' here but does not always re-broadcast room_state.
+    // Propagate locally so isDrawing getter and toolbar/canvas drawable react immediately.
+    if (state.room) state.room.state = 'drawing'
   },
   TIME_UPDATE(state, ms) {
     state.remainingMs = ms
@@ -86,9 +90,13 @@ export default {
     state.currentWord = null
     state.maskedWord = null
     state.wordOptions = null
+
+    if (state.room) state.room.state = 'roundEnd'
   },
   GAME_END(state, payload) {
     state.finalScores = payload.finalScores || []
+
+    if (state.room) state.room.state = 'gameEnd'
   },
   RESET_FOR_NEW_GAME(state) {
     state.finalScores = null

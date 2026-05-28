@@ -1,15 +1,35 @@
 .draw-canvas {
   position: relative;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
   background: #fff;
   border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(34, 26, 68, 0.25);
   touch-action: none;
 
   &__el {
     display: block;
     width: 100%;
     height: 100%;
-    cursor: crosshair;
+    background: #fff;
+    cursor: default;
+
+    &.is-drawable {
+      cursor: crosshair;
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    padding: 3px 8px;
+    color: #8a82a8;
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    pointer-events: none;
   }
 }

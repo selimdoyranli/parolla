@@ -1,73 +1,213 @@
 .draw-room {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   max-width: 1280px;
   height: 100vh;
   // stylelint-disable-next-line unit-no-unknown
   height: 100dvh;
   margin: 0 auto;
-  padding: 8px;
+  padding: 10px;
+  color: #221a44;
 
   &__header {
     display: flex;
     gap: 12px;
     align-items: center;
-    padding: 8px 12px;
+    justify-content: space-between;
+    padding: 8px 14px;
     color: #fff;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
   }
 
-  &__code {
+  &__brand {
+    display: flex;
+    gap: 8px;
+    align-items: center;
     font-weight: 700;
-    letter-spacing: 2px;
+    font-size: 18px;
   }
 
-  &__round {
-    margin-left: auto;
+  &__logo {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(34, 26, 68, 0.25);
+  }
+
+  &__hud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 10px;
+    color: #fff;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+
+    b {
+      margin-left: 4px;
+      color: #ffd02e;
+      letter-spacing: 2px;
+    }
+  }
+
+  &__timer-slot {
+    display: inline-flex;
+    align-items: center;
   }
 
   &__main {
     display: grid;
     flex: 1;
-    grid-template-columns: 1fr 280px;
-    gap: 8px;
+    grid-template-columns: 1fr 300px;
+    gap: 10px;
+    min-height: 0;
 
     @media (max-width: 760px) {
       grid-template-columns: 1fr;
     }
   }
 
-  &__stage {
+  &__stage-col {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     min-height: 0;
+  }
+
+  &__masked {
+    display: flex;
+    justify-content: center;
+    padding: 8px 12px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
   }
 
   &__side {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     min-height: 0;
+  }
+
+  &__host-actions {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__host-btn {
+    width: 100%;
+    padding: 12px 18px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: inherit;
+    background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 0 rgba(34, 26, 68, 0.25);
+    cursor: pointer;
+    transition: transform 0.1s;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
   }
 
   &__overlay {
     position: fixed;
     z-index: 80;
     display: grid;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(26, 19, 48, 0.7);
     inset: 0;
     place-items: center;
+    backdrop-filter: blur(4px);
   }
 
   &__round-end,
   &__final {
-    padding: 24px;
+    padding: 28px 36px;
     color: #fff;
     text-align: center;
-    background: #1a1330;
-    border-radius: 12px;
+    background: linear-gradient(160deg, #2a1b52 0%, #1a1330 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    b {
+      color: #ffd02e;
+      letter-spacing: 2px;
+    }
+
+    ol {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 760px) {
+    gap: 6px;
+    padding: 6px;
+
+    &__header {
+      padding: 6px 10px;
+    }
+
+    &__brand {
+      font-size: 15px;
+    }
+
+    &__logo {
+      width: 22px;
+      height: 22px;
+    }
+
+    &__hud {
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    &__chip {
+      padding: 3px 8px;
+
+      b {
+        letter-spacing: 1.5px;
+      }
+    }
   }
 }

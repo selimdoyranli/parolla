@@ -13,6 +13,7 @@ declare global {
   const useCreatorForm: typeof import('./composables/useCreatorForm.js')['default']
   const useDeviceInfo: typeof import('./composables/useDeviceInfo.js')['default']
   const useDialog: typeof import('./composables/useDialog.js')['default']
+  const useDrawSocket: typeof import('./composables/useDrawSocket.js')['useDrawSocket']
   const useFile: typeof import('./composables/useFile.js')['default']
   const useFlashcards: typeof import('./composables/useFlashcards.js')['default']
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
