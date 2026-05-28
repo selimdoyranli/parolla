@@ -4,50 +4,57 @@
     .draw-room__crumbs
       span.draw-room__crumb-label Oda
       span.draw-room__crumb-code {{ $route.params.code }}
-    .draw-room__status(v-if="drawerName")
-      AppIcon.draw-room__status-icon(name="tabler:pencil" :width="14" :height="14")
-      span.draw-room__status-label Çiziyor
-      span.draw-room__status-name {{ drawerName }}
-    .draw-room__status.draw-room__status--next(v-if="nextDrawerName && !isLobby && !isGameEnd")
-      AppIcon.draw-room__status-icon(name="tabler:chevron-right" :width="14" :height="14")
-      span.draw-room__status-label Sıradaki
-      span.draw-room__status-name {{ nextDrawerName }}
-    .draw-room__progress(v-if="roundCount")
-      span Tur
-      b {{ roundIndex + 1 }} / {{ roundCount }}
-    .draw-room__timer-slot(v-if="durationMs && isDrawing")
-      DrawTimer(:remainingMs="remainingMs" :durationMs="durationMs")
+    .draw-room__chips
+      span.draw-room__chip.draw-room__chip--drawer(v-if="drawerName")
+        AppIcon(name="tabler:pencil" :width="12" :height="12")
+        span.draw-room__chip-label Çiziyor
+        span.draw-room__chip-name {{ drawerName }}
+      span.draw-room__chip.draw-room__chip--next(v-if="nextDrawerName && !isLobby && !isGameEnd")
+        AppIcon(name="tabler:player-track-next" :width="12" :height="12")
+        span.draw-room__chip-label Sıradaki
+        span.draw-room__chip-name {{ nextDrawerName }}
+      span.draw-room__chip.draw-room__chip--progress(v-if="roundCount")
+        span.draw-room__chip-label Tur
+        span.draw-room__chip-name {{ roundIndex + 1 }} / {{ roundCount }}
 
-  .draw-room__layout
-    .draw-room__main
-      .draw-room__wordbar(v-if="iAmDrawer && currentWord")
-        span.draw-room__wordbar-label Çizmen gereken kelime
-        DrawMaskedWord(:plain="currentWord")
-      .draw-room__wordbar(v-else-if="maskedWord")
-        span.draw-room__wordbar-label Tahmin et
-        DrawMaskedWord(:mask="maskedWord")
-      DrawCanvas(
-        :color="color"
-        :drawable="iAmDrawer && isDrawing"
-        :strokes="strokes"
-        :tool="tool"
-        :size="size"
-        @chunk="onChunk"
-        @stroke-end="onStrokeEnd"
-      )
-      DrawToolbar(
-        v-if="iAmDrawer && isDrawing"
-        :color="color"
-        :tool="tool"
-        :size="size"
-        @update:tool="t => (tool = t)"
-        @update:color="c => (color = c)"
-        @update:size="s => (size = s)"
-        @undo="onUndo"
-        @clear="onClear"
-      )
-    aside.draw-room__side
-      DrawScoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
+  .draw-room__board
+    .draw-room__wordbar(v-if="iAmDrawer && currentWord")
+      span.draw-room__wordbar-label Kelimen
+      DrawMaskedWord(:plain="currentWord")
+      .draw-room__wordbar-spacer
+      DrawTimer.draw-room__wordbar-timer(v-if="durationMs && isDrawing" :remainingMs="remainingMs" :durationMs="durationMs")
+    .draw-room__wordbar(v-else-if="maskedWord")
+      span.draw-room__wordbar-label Tahmin et
+      DrawMaskedWord(:mask="maskedWord")
+      .draw-room__wordbar-spacer
+      DrawTimer.draw-room__wordbar-timer(v-if="durationMs && isDrawing" :remainingMs="remainingMs" :durationMs="durationMs")
+
+    DrawCanvas.draw-room__canvas(
+      :color="color"
+      :drawable="iAmDrawer && isDrawing"
+      :strokes="strokes"
+      :tool="tool"
+      :size="size"
+      @chunk="onChunk"
+      @stroke-end="onStrokeEnd"
+    )
+
+    DrawToolbar(
+      v-if="iAmDrawer && isDrawing"
+      :color="color"
+      :tool="tool"
+      :size="size"
+      @update:tool="t => (tool = t)"
+      @update:color="c => (color = c)"
+      @update:size="s => (size = s)"
+      @undo="onUndo"
+      @clear="onClear"
+    )
+
+  Tabs.draw-room__tabs(v-model="activeTab" sticky animated swipeable :ellipsis="false")
+    Tab(:title="`Skor (${players.length})`")
+      DrawScoreboard.draw-room__scoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
+    Tab(title="Sohbet" :info="unreadChat")
       DrawChat.draw-room__chat(
         :chat="chat"
         :iAmDrawer="iAmDrawer"
@@ -55,11 +62,10 @@
         :isDrawing="isDrawing"
         @send="onSend"
       )
-      .draw-room__host-actions(v-if="iAmHost && isLobby")
-        button.draw-room__host-btn(:disabled="players.length < 2" @click="startGame") Oyunu Başlat
-        p.draw-room__host-hint(v-if="players.length < 2") Başlatmak için en az 2 oyuncu gerek.
-      .draw-room__host-actions(v-if="iAmHost && isGameEnd")
-        button.draw-room__host-btn(@click="startGame") Yeniden Başlat
+
+  .draw-room__host-actions(v-if="iAmHost && (isLobby || isGameEnd)")
+    Button.draw-room__host-btn(type="primary" size="large" block round :disabled="startDisabled" @click="startGame") {{ startLabel }}
+    p.draw-room__host-hint(v-if="isLobby && players.length < 2") Başlatmak için en az 2 oyuncu gerek.
 
   DrawWordPicker(v-if="iAmDrawer && wordOptions" :words="wordOptions" :timeoutMs="pickTimeoutMs" @pick="onPick")
 
@@ -94,11 +100,13 @@
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { defineComponent, computed, getCurrentInstance, ref, watch, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { Tabs, Tab, Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
+  components: { Tabs, Tab, Button },
   middleware: 'auth',
   setup() {
     const { send } = useDrawSocket()
@@ -108,6 +116,8 @@ export default defineComponent({
     const tool = ref('brush')
     const color = ref('#000000')
     const size = ref(8)
+    const activeTab = ref(0)
+    const seenChatCount = ref(0)
 
     const players = computed(() => $store.state.draw.players)
     const strokes = computed(() => $store.state.draw.strokes)
@@ -135,8 +145,7 @@ export default defineComponent({
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
 
-    // Round-end countdown — ticks every 250ms locally based on the
-    // server-provided deadline timestamp. Survives across remounts.
+    // Local ticker drives the round-end countdown without leaning on a per-second WS message.
     const now = ref(Date.now())
     let nowInterval = null
     onMounted(() => {
@@ -154,6 +163,27 @@ export default defineComponent({
 
       return Math.ceil(ms / 1000)
     })
+
+    const startDisabled = computed(() => isLobby.value && players.value.length < 2)
+    const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
+
+    // Unread chat badge on the tab (cleared when the chat tab is active).
+    const unreadChat = computed(() => {
+      const diff = chat.value.length - seenChatCount.value
+
+      return diff > 0 ? String(diff) : ''
+    })
+
+    watch(activeTab, t => {
+      if (t === 1) seenChatCount.value = chat.value.length
+    })
+
+    watch(
+      () => chat.value.length,
+      len => {
+        if (activeTab.value === 1) seenChatCount.value = len
+      }
+    )
 
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)
@@ -181,6 +211,8 @@ export default defineComponent({
       tool,
       color,
       size,
+      activeTab,
+      unreadChat,
       players,
       strokes,
       chat,
@@ -206,6 +238,8 @@ export default defineComponent({
       lastRoundResult,
       finalScores,
       countdownSeconds,
+      startDisabled,
+      startLabel,
       onChunk,
       onStrokeEnd,
       onUndo,

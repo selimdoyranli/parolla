@@ -1,22 +1,20 @@
 .draw-lobby {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 28px 16px 48px;
+  padding: 24px 12px 36px;
   color: var(--color-text-01);
 
   &__hero {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
     text-align: center;
   }
 
   &__eyebrow {
     display: inline-block;
-    margin-bottom: 12px;
-    padding: 2px 10px;
+    margin-bottom: 10px;
+    padding: 3px 12px;
     color: var(--color-brand-02);
     font-weight: 700;
     font-size: 11px;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
     background: rgba(255, 120, 120, 0.12);
     border-radius: 999px;
@@ -24,71 +22,59 @@
 
   &__title {
     margin: 0 0 8px;
+    color: var(--color-text-01);
     font-weight: 800;
-    font-size: 36px;
-    letter-spacing: -0.5px;
+    font-size: 28px;
+    letter-spacing: -0.4px;
   }
 
   &__subtitle {
-    max-width: 560px;
-    margin: 0 auto 18px;
+    max-width: 480px;
+    margin: 0 auto;
     color: var(--color-text-03);
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.5;
   }
 
   &__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
-    justify-content: center;
+    margin-bottom: 24px;
   }
 
   &__cta {
-    padding: 12px 22px;
-    color: var(--color-text-04);
-    font-weight: 700;
-    font-size: 14px;
-    font-family: inherit;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    background: var(--color-brand-02);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: filter 0.15s, transform 0.1s;
-
-    &:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-    }
-
-    &:active {
-      transform: translateY(1px);
-    }
+    --van-button-primary-background-color: var(--color-brand-02);
+    --van-button-primary-border-color: var(--color-brand-02);
   }
 
   &__join {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     align-items: stretch;
-    padding: 4px;
-    background: var(--color-ui-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: 10px;
+  }
 
-    input {
-      width: 12ch;
-      padding: 8px 12px;
+  &__join-field {
+    flex: 1;
+    padding: 0 !important;
+    background: var(--color-field-01) !important;
+    border: 1px solid var(--color-border-01);
+    border-radius: 999px;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__body {
+      padding: 0 16px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__control {
+      height: 44px;
       color: var(--color-text-01);
       font-weight: 700;
-      font-family: inherit;
+      font-size: 14px;
       letter-spacing: 3px;
       text-align: center;
       text-transform: uppercase;
-      background: transparent;
-      border: none;
-      outline: none;
 
       &::placeholder {
         color: var(--color-text-03);
@@ -96,119 +82,122 @@
         letter-spacing: 1px;
       }
     }
-
-    button {
-      padding: 6px 14px;
-      color: var(--color-text-04);
-      font-weight: 600;
-      font-size: 13px;
-      font-family: inherit;
-      background: var(--color-text-02);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s;
-
-      &:hover {
-        background: var(--color-text-01);
-      }
-    }
   }
 
-  &__rooms {
+  &__join-btn {
+    min-width: 92px;
+  }
+
+  &__rooms-head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 8px;
+
     h2 {
-      margin: 0 0 12px;
+      margin: 0;
       color: var(--color-text-02);
       font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 0.5px;
+      font-size: 12px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
     }
   }
 
+  &__rooms-count {
+    padding: 1px 8px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 11px;
+    background: var(--color-ui-03);
+    border-radius: 999px;
+  }
+
   &__empty {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
     padding: 36px 20px;
     color: var(--color-text-03);
     text-align: center;
     background: var(--color-ui-02);
     border: 1px dashed var(--color-border-02);
-    border-radius: 12px;
-  }
+    border-radius: 14px;
 
-  &__room {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 14px;
-    align-items: center;
-    margin-bottom: 8px;
-    padding: 12px 14px;
-    background: var(--color-ui-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
-
-    &:hover {
-      background: var(--color-hover-01);
-      border-color: var(--color-brand-02);
-      transform: translateY(-1px);
+    p {
+      margin: 0;
+      font-size: 13px;
     }
   }
 
+  &__cells {
+    overflow: hidden;
+    border-radius: 14px !important;
+  }
+
+  &__room {
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-cell__title {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__room-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
   &__room-code {
-    padding: 6px 12px;
+    padding: 4px 10px;
     color: var(--color-text-01);
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     letter-spacing: 3px;
     background: var(--color-ui-01);
     border: 1px solid var(--color-border-02);
     border-radius: 8px;
   }
 
+  &__room-state {
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  &__room-lock {
+    color: var(--color-text-03);
+  }
+
   &__room-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 14px;
     align-items: center;
+    margin-top: 4px;
     color: var(--color-text-03);
-    font-size: 13px;
+    font-size: 12px;
 
-    .badge {
-      padding: 2px 8px;
-      color: var(--color-brand-02);
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      background: rgba(255, 120, 120, 0.12);
-      border-radius: 999px;
+    span {
+      display: inline-flex;
+      gap: 2px;
+      align-items: center;
     }
   }
 
-  &__room-count {
-    color: var(--color-text-01);
-    font-weight: 600;
-  }
-
-  &__room-arrow {
-    color: var(--color-text-03);
-  }
-
-  @include media-breakpoint-down(tablet) {
-    padding: 20px 12px 32px;
+  @include media-breakpoint-down(mobile) {
+    padding: 16px 10px 28px;
 
     &__title {
-      font-size: 28px;
+      font-size: 24px;
     }
 
-    &__room {
-      grid-template-rows: auto auto;
-      grid-template-columns: auto 1fr;
-    }
-
-    &__room-arrow {
-      display: none;
+    &__subtitle {
+      font-size: 13px;
     }
   }
 }

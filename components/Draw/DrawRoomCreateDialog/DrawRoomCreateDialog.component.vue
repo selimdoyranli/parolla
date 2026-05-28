@@ -1,40 +1,77 @@
 <template lang="pug">
-.draw-create-dialog
-  .draw-create-dialog__backdrop(@click="$emit('close')")
-  .draw-create-dialog__panel
-    h3 Yeni Oda
-    label
-      span Görünürlük
-      select(v-model="form.isPublic")
-        option(:value="true") Public
-        option(:value="false") Private (sadece kodla)
-    label
-      span Şifre (opsiyonel)
-      input(v-model="form.password" type="password" maxlength="32")
-    label
-      span Kapasite ({{ form.capacity }})
-      input(v-model.number="form.capacity" type="range" min="2" max="16")
-    label
-      span Tur Sayısı ({{ form.roundCount }})
-      input(v-model.number="form.roundCount" type="range" min="3" max="50")
-    label
-      span Tur Süresi ({{ form.roundDurationSec }}s)
-      input(v-model.number="form.roundDurationSec" type="range" min="30" max="180" step="5")
-    label
-      span Kategoriler
+Popup.draw-create-dialog(
+  :value="true"
+  position="bottom"
+  round
+  closeable
+  close-icon-position="top-right"
+  :close-on-click-overlay="true"
+  :style="{ maxHeight: '92vh' }"
+  @input="onPopupInput"
+)
+  .draw-create-dialog__inner
+    header.draw-create-dialog__head
+      h3.draw-create-dialog__title Yeni Oda
+      p.draw-create-dialog__subtitle Ayarları belirle, oyuna başla.
+
+    section.draw-create-dialog__section
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Görünürlük
+        Switch(v-model="form.isPublic" :active-color="brand")
+      p.draw-create-dialog__row-hint {{ form.isPublic ? 'Açık odalar lobide listelenir.' : 'Sadece kodla katılınabilir.' }}
+
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Şifre (opsiyonel)
+      Field.draw-create-dialog__field(
+        v-model="form.password"
+        type="password"
+        placeholder="Boş bırakırsan şifresiz olur"
+        clearable
+        :maxlength="32"
+      )
+
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Kapasite
+        span.draw-create-dialog__row-value {{ form.capacity }} oyuncu
+      Slider(v-model="form.capacity" :min="2" :max="16" :step="1" :active-color="brand" :bar-height="4")
+
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Tur sayısı
+        span.draw-create-dialog__row-value {{ form.roundCount }}
+      Slider(v-model="form.roundCount" :min="3" :max="50" :step="1" :active-color="brand" :bar-height="4")
+
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Tur süresi
+        span.draw-create-dialog__row-value {{ form.roundDurationSec }}sn
+      Slider(v-model="form.roundDurationSec" :min="30" :max="180" :step="5" :active-color="brand" :bar-height="4")
+
+    section.draw-create-dialog__section
+      .draw-create-dialog__row
+        span.draw-create-dialog__row-label Kategoriler
+        span.draw-create-dialog__row-value {{ form.categories.length }} / {{ allCats.length }}
       .draw-create-dialog__cats
-        button(v-for="c in allCats" :key="c" type="button" :class="{ active: form.categories.includes(c) }" @click="toggleCat(c)") {{ c }}
+        Tag.draw-create-dialog__cat(
+          v-for="c in allCats"
+          :key="c"
+          :type="form.categories.includes(c) ? 'primary' : 'default'"
+          :plain="!form.categories.includes(c)"
+          @click="toggleCat(c)"
+        ) {{ c }}
+
     .draw-create-dialog__actions
-      button.draw-create-dialog__btn.draw-create-dialog__btn--cancel(type="button" @click="$emit('close')") Vazgeç
-      button.draw-create-dialog__btn.draw-create-dialog__btn--submit(type="button" @click="submit") Oda Kur
+      Button(plain block round @click="$emit('close')") Vazgeç
+      Button(type="primary" block round @click="submit") Oda Kur
 </template>
 
 <script>
 import { defineComponent, reactive } from '@nuxtjs/composition-api'
+import { Popup, Field, Button, Slider, Switch, Tag } from 'vant'
 
 const ALL = ['hayvan', 'yemek', 'nesne', 'meslek', 'doga', 'spor', 'eylem', 'kavram', 'ulke', 'marka']
 
 export default defineComponent({
+  components: { Popup, Field, Button, Slider, Switch, Tag },
+  emits: ['close', 'submit'],
   setup(_, { emit }) {
     const form = reactive({
       isPublic: true,
@@ -62,7 +99,11 @@ export default defineComponent({
       emit('submit', payload)
     }
 
-    return { form, allCats: ALL, toggleCat, submit }
+    const onPopupInput = v => {
+      if (!v) emit('close')
+    }
+
+    return { form, allCats: ALL, toggleCat, submit, onPopupInput, brand: '#ff7878' }
   }
 })
 </script>
