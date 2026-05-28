@@ -1,0 +1,73 @@
+.draw-room {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 1280px;
+  height: 100vh;
+  // stylelint-disable-next-line unit-no-unknown
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 8px;
+
+  &__header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 12px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+  }
+
+  &__code {
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  &__round {
+    margin-left: auto;
+  }
+
+  &__main {
+    display: grid;
+    flex: 1;
+    grid-template-columns: 1fr 280px;
+    gap: 8px;
+
+    @media (max-width: 760px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__stage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+  }
+
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+  }
+
+  &__overlay {
+    position: fixed;
+    z-index: 80;
+    display: grid;
+    background: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    place-items: center;
+  }
+
+  &__round-end,
+  &__final {
+    padding: 24px;
+    color: #fff;
+    text-align: center;
+    background: #1a1330;
+    border-radius: 12px;
+  }
+}
