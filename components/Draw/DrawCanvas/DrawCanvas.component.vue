@@ -19,6 +19,15 @@ import { defineComponent, ref, onMounted, onBeforeUnmount, watch } from '@nuxtjs
 
 const STREAM_INTERVAL_MS = 50
 
+// Fixed reference width used to keep stroke thickness independent of the
+// drawer's canvas size. The toolbar offers sizes 3 / 8 / 18 designed around
+// a roughly 800 px canvas; we treat that as the source of truth so a mobile
+// drawer's 8 px brush still renders as ~8 px on a 1200 px viewer (instead of
+// inflating to ~24 px when proportionally scaled). Coordinates stay
+// proportional (0–1) so the drawing is in the right place; only the line
+// thickness is anchored to absolute pixels.
+const SIZE_REF_WIDTH = 800
+
 const TOOL_HINTS = {
   brush: 'Fırça',
   line: 'Çizgi',
@@ -59,21 +68,15 @@ export default defineComponent({
     )
 
     // ── Normalization ─────────────────────────────────────────
-    // All chunks travel and are stored in normalized 0–1 coordinates so a
-    // stroke at (1, 0.5) lands at the right-middle of every client's canvas,
-    // no matter how wide or tall their canvas is. Size is normalized as a
-    // fraction of canvas width so an 8 px brush stays at the same VISUAL
-    // proportion (≈1% wide) on every client.
-    const normSize = px => {
-      const w = canvas.value ? canvas.value.clientWidth : 1
-
-      return w > 0 ? px / w : 0
-    }
-    const strokeWidth = nsize => {
-      const w = canvas.value ? canvas.value.clientWidth : 1
-
-      return Math.max(0.5, nsize * w)
-    }
+    // Points: stored as normalized 0–1 coords so a stroke at (1, 0.5) lands
+    // at the right-middle of every client's canvas regardless of canvas size.
+    // Size: anchored to a fixed reference width (SIZE_REF_WIDTH), NOT the
+    // drawer's actual canvas. This way a mobile 400 px drawer using an 8 px
+    // brush emits the same normalized size as a desktop 1200 px drawer would
+    // for an 8 px brush — and both render at ~8 px on every viewer, instead
+    // of mobile drawings appearing comically thick on a wide screen.
+    const normSize = px => px / SIZE_REF_WIDTH
+    const strokeWidth = nsize => Math.max(0.5, nsize * SIZE_REF_WIDTH)
 
     const drawStroke = s => {
       const c = ctx.value
