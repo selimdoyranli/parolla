@@ -1,11 +1,11 @@
 <template lang="pug">
 Dialog.draw-create-dialog(
-  :value="true"
+  v-model="visible"
   :show-confirm-button="false"
   :show-cancel-button="false"
   :close-on-click-overlay="true"
   width="92%"
-  @input="onDialogInput"
+  @closed="$emit('close')"
 )
   .draw-create-dialog__inner
     header.draw-create-dialog__head
@@ -15,7 +15,7 @@ Dialog.draw-create-dialog(
     section.draw-create-dialog__section
       .draw-create-dialog__row
         span.draw-create-dialog__row-label Görünürlük
-        Switch(v-model="form.isPublic" :active-color="brand")
+        VanSwitch(v-model="form.isPublic" :active-color="brand")
       p.draw-create-dialog__row-hint {{ form.isPublic ? 'Açık odalar lobide listelenir.' : 'Sadece kodla katılınabilir.' }}
 
       .draw-create-dialog__row
@@ -57,20 +57,35 @@ Dialog.draw-create-dialog(
         ) {{ c }}
 
     .draw-create-dialog__actions
-      Button(plain block round @click="$emit('close')") Vazgeç
+      Button(plain block round @click="close") Vazgeç
       Button(type="primary" block round @click="submit") Oda Kur
 </template>
 
 <script>
-import { defineComponent, reactive } from '@nuxtjs/composition-api'
-import { Dialog, Field, Button, Slider, Switch, Tag } from 'vant'
+import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { Dialog, Field, Button, Slider, Switch as VanSwitch, Tag } from 'vant'
 
 const ALL = ['hayvan', 'yemek', 'nesne', 'meslek', 'doga', 'spor', 'eylem', 'kavram', 'ulke', 'marka']
 
 export default defineComponent({
-  components: { Dialog, Field, Button, Slider, Switch, Tag },
+  components: {
+    // Vant 2'de Dialog hem imperative API hem component; component formu için
+    // Dialog.Component register etmek gerekir, yoksa şablonda <Dialog> hiç render
+    // edilmez ve modal boş gözükür.
+    Dialog: Dialog.Component,
+    Field,
+    Button,
+    Slider,
+    // Switch ismi SVG <switch> ile çakışıyor (Vue reserved-tag uyarısı verir).
+    VanSwitch,
+    Tag
+  },
   emits: ['close', 'submit'],
   setup(_, { emit }) {
+    // Vant Dialog v-model is the source of truth for "shown"; flipping it to
+    // false drives the closed animation, then @closed bubbles up to the parent.
+    const visible = ref(true)
+
     const form = reactive({
       isPublic: true,
       password: '',
@@ -88,6 +103,10 @@ export default defineComponent({
       else form.categories.push(c)
     }
 
+    const close = () => {
+      visible.value = false
+    }
+
     const submit = () => {
       const payload = { ...form }
 
@@ -95,13 +114,10 @@ export default defineComponent({
 
       if (payload.categories.length === 0) payload.categories = [...ALL]
       emit('submit', payload)
+      visible.value = false
     }
 
-    const onDialogInput = v => {
-      if (!v) emit('close')
-    }
-
-    return { form, allCats: ALL, toggleCat, submit, onDialogInput, brand: '#ff7878' }
+    return { visible, form, allCats: ALL, toggleCat, close, submit, brand: '#ff7878' }
   }
 })
 </script>
