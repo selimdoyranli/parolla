@@ -71,6 +71,7 @@ const STATE_TAG_TYPES = {
 
 export default defineComponent({
   components: { Field, Button, Cell, CellGroup, Tag },
+  layout: 'Default/Default.layout',
   middleware: 'auth',
   setup() {
     const { send } = useDrawSocket()

@@ -115,48 +115,22 @@
   }
 
   &__canvas {
-    aspect-ratio: 16 / 10;
-    min-height: 280px;
-    max-height: 60vh;
+    aspect-ratio: 16 / 11;
+    min-height: 240px;
+    max-height: 50vh;
   }
 
-  // ── Tabs ────────────────────────────────────────────────
-  &__tabs {
-    overflow: hidden;
-    background: var(--color-ui-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: 12px;
-
-    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-    ::v-deep .van-tabs__wrap {
-      border-bottom: 1px solid var(--color-border-02);
-    }
-
-    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-    ::v-deep .van-tabs__nav {
-      background: transparent !important;
-    }
-
-    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-    ::v-deep .van-tab {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-    ::v-deep .van-tabs__line {
-      background-color: var(--color-brand-02) !important;
-    }
-
-    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
-    ::v-deep .van-tabs__content {
-      padding: 10px;
-    }
+  // ── Panels (skor + sohbet yan yana, tab YOK) ──────────
+  &__panels {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) 1fr;
+    gap: 10px;
+    min-height: 0;
   }
 
   &__scoreboard,
   &__chat {
-    height: clamp(220px, 38vh, 360px);
+    height: clamp(200px, 32vh, 320px);
   }
 
   // ── Host actions ────────────────────────────────────────
@@ -337,7 +311,20 @@
 
     &__canvas {
       aspect-ratio: 4 / 3;
-      min-height: 240px;
+      min-height: 220px;
+      max-height: 45vh;
+    }
+
+    &__panels {
+      grid-template-columns: 1fr;
+    }
+
+    &__scoreboard {
+      height: clamp(150px, 22vh, 200px);
+    }
+
+    &__chat {
+      height: clamp(180px, 28vh, 280px);
     }
   }
 

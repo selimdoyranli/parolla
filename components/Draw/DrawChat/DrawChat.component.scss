@@ -3,14 +3,18 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  padding: 8px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 12px;
 
   &__log {
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 8px;
-    padding: 8px 6px;
+    gap: 4px;
+    margin-bottom: 6px;
+    padding: 2px 2px 0;
     overflow-y: auto;
   }
 
@@ -30,7 +34,7 @@
 
   &__msg {
     color: var(--color-text-01);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.4;
     word-break: break-word;
 

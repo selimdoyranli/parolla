@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 12px;
+  padding: 8px;
   background: var(--color-ui-02);
   border: 1px solid var(--color-border-01);
   border-radius: 12px;
@@ -11,23 +11,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    padding: 0 2px;
 
     h3 {
       margin: 0;
       color: var(--color-text-01);
       font-weight: 700;
-      font-size: 14px;
+      font-size: 11px;
       letter-spacing: 0.4px;
       text-transform: uppercase;
     }
   }
 
   &__count {
-    padding: 2px 8px;
+    padding: 1px 7px;
     color: var(--color-text-03);
     font-weight: 600;
-    font-size: 12px;
+    font-size: 10px;
     background: var(--color-ui-03);
     border-radius: 999px;
   }
@@ -35,7 +36,7 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
     margin: 0;
     padding: 0;
     overflow-y: auto;
@@ -44,13 +45,13 @@
 
   &__row {
     display: grid;
-    grid-template-columns: 18px 28px 1fr auto;
-    gap: 10px;
+    grid-template-columns: 14px 22px 1fr auto;
+    gap: 6px;
     align-items: center;
-    padding: 6px 8px;
+    padding: 4px 6px;
     background: var(--color-ui-01);
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: background 0.15s, border-color 0.15s;
 
     &--me {
@@ -71,7 +72,7 @@
   &__rank {
     color: var(--color-text-03);
     font-weight: 700;
-    font-size: 12px;
+    font-size: 10px;
     text-align: center;
   }
 
@@ -82,7 +83,7 @@
   &__name {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
     min-width: 0;
   }
 
@@ -90,7 +91,7 @@
     overflow: hidden;
     color: var(--color-text-01);
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -98,14 +99,14 @@
   &__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 3px;
   }
 
   &__tag {
-    padding: 1px 6px;
+    padding: 0 5px;
     font-weight: 600;
-    font-size: 10px;
-    letter-spacing: 0.3px;
+    font-size: 9px;
+    letter-spacing: 0.2px;
     border-radius: 999px;
 
     &--host {
@@ -127,7 +128,7 @@
   &__score {
     color: var(--color-text-01);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     font-variant-numeric: tabular-nums;
   }
 }

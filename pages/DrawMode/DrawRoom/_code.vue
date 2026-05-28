@@ -51,17 +51,15 @@
       @clear="onClear"
     )
 
-  Tabs.draw-room__tabs(v-model="activeTab" sticky animated swipeable :ellipsis="false")
-    Tab(:title="`Skor (${players.length})`")
-      DrawScoreboard.draw-room__scoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
-    Tab(title="Sohbet" :info="unreadChat")
-      DrawChat.draw-room__chat(
-        :chat="chat"
-        :iAmDrawer="iAmDrawer"
-        :iGuessedCorrectly="iGuessedCorrectly"
-        :isDrawing="isDrawing"
-        @send="onSend"
-      )
+  .draw-room__panels
+    DrawScoreboard.draw-room__scoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
+    DrawChat.draw-room__chat(
+      :chat="chat"
+      :iAmDrawer="iAmDrawer"
+      :iGuessedCorrectly="iGuessedCorrectly"
+      :isDrawing="isDrawing"
+      @send="onSend"
+    )
 
   .draw-room__host-actions(v-if="iAmHost && (isLobby || isGameEnd)")
     Button.draw-room__host-btn(type="primary" size="large" block round :disabled="startDisabled" @click="startGame") {{ startLabel }}
@@ -100,13 +98,14 @@
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, ref, watch, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { Tabs, Tab, Button } from 'vant'
+import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
-  components: { Tabs, Tab, Button },
+  components: { Button },
+  layout: 'Default/Default.layout',
   middleware: 'auth',
   setup() {
     const { send } = useDrawSocket()
@@ -116,8 +115,6 @@ export default defineComponent({
     const tool = ref('brush')
     const color = ref('#000000')
     const size = ref(8)
-    const activeTab = ref(0)
-    const seenChatCount = ref(0)
 
     const players = computed(() => $store.state.draw.players)
     const strokes = computed(() => $store.state.draw.strokes)
@@ -145,7 +142,7 @@ export default defineComponent({
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
 
-    // Local ticker drives the round-end countdown without leaning on a per-second WS message.
+    // Local ticker drives the round-end countdown without needing a per-second WS message.
     const now = ref(Date.now())
     let nowInterval = null
     onMounted(() => {
@@ -166,24 +163,6 @@ export default defineComponent({
 
     const startDisabled = computed(() => isLobby.value && players.value.length < 2)
     const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
-
-    // Unread chat badge on the tab (cleared when the chat tab is active).
-    const unreadChat = computed(() => {
-      const diff = chat.value.length - seenChatCount.value
-
-      return diff > 0 ? String(diff) : ''
-    })
-
-    watch(activeTab, t => {
-      if (t === 1) seenChatCount.value = chat.value.length
-    })
-
-    watch(
-      () => chat.value.length,
-      len => {
-        if (activeTab.value === 1) seenChatCount.value = len
-      }
-    )
 
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)
@@ -211,8 +190,6 @@ export default defineComponent({
       tool,
       color,
       size,
-      activeTab,
-      unreadChat,
       players,
       strokes,
       chat,

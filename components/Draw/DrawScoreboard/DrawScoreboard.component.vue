@@ -10,7 +10,7 @@
       :class="{ 'draw-scoreboard__row--drawer': isDrawer(p.id), 'draw-scoreboard__row--next': isNext(p.id), 'draw-scoreboard__row--me': isMe(p.id) }"
     )
       span.draw-scoreboard__rank {{ i + 1 }}
-      PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="28")
+      PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="22")
       .draw-scoreboard__name
         span.draw-scoreboard__name-text {{ p.name }}
         .draw-scoreboard__tags
