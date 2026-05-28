@@ -1,0 +1,75 @@
+.draw-lobby {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+
+  &__hero {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  &__title {
+    margin-bottom: 8px;
+    font-size: 36px;
+  }
+
+  &__subtitle {
+    margin-bottom: 16px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  &__join {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__rooms {
+    h2 {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__empty {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &__room {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &__room-code {
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  &__room-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+
+    .badge {
+      padding: 2px 8px;
+      background: rgba(122, 90, 248, 0.25);
+      border-radius: 999px;
+    }
+  }
+}
