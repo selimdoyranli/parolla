@@ -1,0 +1,58 @@
+.draw-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  &__log {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+    overflow-y: auto;
+  }
+
+  &__msg {
+    font-size: 14px;
+
+    &.system .draw-chat__sys {
+      color: #ffd02e;
+      font-weight: 600;
+    }
+
+    &.close .draw-chat__sys {
+      color: #ff5ea8;
+    }
+  }
+
+  &__input {
+    display: flex;
+    gap: 6px;
+
+    input {
+      flex: 1;
+      padding: 8px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 8px 14px;
+      color: #fff;
+      background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.draw-masked-word {
+  display: inline-flex;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 2px;
+
+  &__char {
+    display: inline-block;
+    min-width: 14px;
+    text-align: center;
+    border-bottom: 2px solid currentColor;
+
+    &.separator {
+      padding: 0 4px;
+      border-bottom: none;
+    }
+  }
+}

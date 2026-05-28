@@ -1,0 +1,33 @@
+.draw-scoreboard {
+  padding: 12px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  h3 {
+    margin: 0 0 8px;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+
+    &.drawer {
+      background: rgba(255, 208, 46, 0.12);
+    }
+  }
+
+  &__name {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+  }
+}

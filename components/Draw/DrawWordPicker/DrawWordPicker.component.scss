@@ -1,0 +1,52 @@
+.draw-word-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  &__panel {
+    position: relative;
+    width: min(480px, 92vw);
+    padding: 24px 28px;
+    color: #fff;
+    text-align: center;
+    background: #1a1330;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  &__opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 16px 0;
+  }
+
+  &__opt {
+    padding: 14px 22px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  &__hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+  }
+}
