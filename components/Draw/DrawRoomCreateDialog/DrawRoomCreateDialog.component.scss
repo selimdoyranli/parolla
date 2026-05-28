@@ -1,0 +1,76 @@
+.draw-create-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  &__panel {
+    position: relative;
+    width: min(420px, 92vw);
+    padding: 20px;
+    color: #fff;
+    background: #1a1330;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+
+    h3 {
+      margin: 0 0 12px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+
+      span {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+      }
+
+      input,
+      select {
+        padding: 8px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+      }
+    }
+  }
+
+  &__cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    button {
+      padding: 4px 10px;
+      color: #fff;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      cursor: pointer;
+
+      &.active {
+        background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+        border-color: transparent;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+}
