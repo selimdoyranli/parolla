@@ -52,7 +52,13 @@
     )
 
   .draw-room__panels
-    DrawScoreboard.draw-room__scoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
+    DrawScoreboard.draw-room__scoreboard(
+      :players="players"
+      :drawerId="drawerId"
+      :nextDrawerId="nextDrawerId"
+      :myId="myId"
+      :correctGuesserIds="correctGuesserIds"
+    )
     DrawChat.draw-room__chat(
       :chat="chat"
       :iAmDrawer="iAmDrawer"
@@ -126,6 +132,7 @@ export default defineComponent({
     const nextDrawerId = computed(() => $store.state.draw.nextDrawerId)
     const nextDrawerName = computed(() => $store.state.draw.nextDrawerName)
     const myId = computed(() => $store.state.draw.myId)
+    const correctGuesserIds = computed(() => $store.state.draw.correctGuesserIds)
     const iAmDrawer = computed(() => $store.state.draw.iAmDrawer)
     const iAmHost = computed(() => $store.state.draw.iAmHost)
     const iGuessedCorrectly = computed(() => $store.state.draw.iGuessedCorrectly)
@@ -200,6 +207,7 @@ export default defineComponent({
       nextDrawerId,
       nextDrawerName,
       myId,
+      correctGuesserIds,
       iAmDrawer,
       iAmHost,
       iGuessedCorrectly,

@@ -2,9 +2,11 @@
 .draw-chat
   .draw-chat__log(ref="log")
     .draw-chat__empty(v-if="!chat.length") {{ disabled ? 'Çizim sırasında sohbet kapalı' : 'Tahmininizi yazın…' }}
-    .draw-chat__msg(v-for="(m, i) in chat" :key="i" :class="{ system: m.isSystem, close: m.isCloseHint }")
+    .draw-chat__msg(v-for="(m, i) in chat" :key="i" :class="msgClasses(m)")
       template(v-if="m.isSystem")
-        span.draw-chat__sys {{ m.message }}
+        span.draw-chat__sys
+          AppIcon.draw-chat__sys-icon(:name="iconFor(m)" :width="14" :height="14")
+          span.draw-chat__sys-text {{ m.message }}
       template(v-else)
         b.draw-chat__author {{ m.playerName }}
         span.draw-chat__text {{ m.message }}
@@ -32,6 +34,39 @@ export default defineComponent({
 
     const disabled = computed(() => props.iAmDrawer && props.isDrawing)
 
+    const kindOf = m => {
+      // Backward-compat: older payloads only had isCloseHint to mark a
+      // 'close guess' system message. New code attaches systemKind directly.
+      if (m.systemKind) return m.systemKind
+
+      if (m.isCloseHint) return 'warning'
+
+      return 'info'
+    }
+
+    const iconFor = m => {
+      const kind = kindOf(m)
+
+      if (kind === 'success') return 'tabler:circle-check'
+
+      if (kind === 'warning') return 'tabler:alert-triangle'
+
+      if (kind === 'danger') return 'tabler:alert-octagon'
+
+      return 'tabler:info-circle'
+    }
+
+    const msgClasses = m => {
+      if (!m.isSystem) return {}
+      const kind = kindOf(m)
+
+      return {
+        system: true,
+        [`system--${kind}`]: true,
+        close: !!m.isCloseHint
+      }
+    }
+
     const placeholder = computed(() => {
       if (props.iAmDrawer && props.isDrawing) return 'Çizim sırasında yazamazsın'
 
@@ -57,7 +92,7 @@ export default defineComponent({
       }
     )
 
-    return { text, log, disabled, placeholder, send }
+    return { text, log, disabled, placeholder, send, iconFor, msgClasses }
   }
 })
 </script>

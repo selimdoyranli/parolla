@@ -87,6 +87,13 @@
     min-width: 0;
   }
 
+  &__name-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    min-width: 0;
+  }
+
   &__name-text {
     overflow: hidden;
     color: var(--color-text-01);
@@ -94,6 +101,11 @@
     font-size: 12px;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  &__guessed {
+    flex-shrink: 0;
+    color: var(--color-success-02);
   }
 
   &__tags {

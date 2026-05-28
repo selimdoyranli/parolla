@@ -28,6 +28,7 @@ export default {
       state.finalScores = null
       state.lastRoundResult = null
       state.iGuessedCorrectly = false
+      state.correctGuesserIds = []
       state.currentWord = null
       state.maskedWord = null
       state.wordOptions = null
@@ -58,6 +59,7 @@ export default {
     state.category = payload.category || null
     state.iAmDrawer = state.myId === payload.drawerId
     state.iGuessedCorrectly = false
+    state.correctGuesserIds = []
     state.strokes = []
     state.lastRoundResult = null
 
@@ -90,15 +92,27 @@ export default {
   },
   MARK_GUESSED(state, payload) {
     state.iGuessedCorrectly = true
+
+    if (state.myId != null && !state.correctGuesserIds.includes(state.myId)) {
+      state.correctGuesserIds.push(state.myId)
+    }
+
     state.chat.push({
       isSystem: true,
+      systemKind: 'success',
       message: `Tebrikler! Doğru tahmin: ${payload.word} (+${payload.scoreEarned})`,
       timestamp: Date.now()
     })
   },
+  MARK_PLAYER_GUESSED(state, playerId) {
+    if (playerId != null && !state.correctGuesserIds.includes(playerId)) {
+      state.correctGuesserIds.push(playerId)
+    }
+  },
   PUSH_CLOSE_GUESS(state, guess) {
     state.chat.push({
       isSystem: true,
+      systemKind: 'warning',
       isCloseHint: true,
       message: 'Çok yakın!',
       guess,

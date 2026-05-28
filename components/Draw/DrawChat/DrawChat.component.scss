@@ -26,10 +26,21 @@
   }
 
   &__sys {
-    display: inline-block;
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
     padding: 3px 10px;
     background: var(--color-ui-01);
-    border-radius: 6px;
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+  }
+
+  &__sys-icon {
+    flex-shrink: 0;
+  }
+
+  &__sys-text {
+    white-space: normal;
   }
 
   &__msg {
@@ -39,13 +50,32 @@
     word-break: break-word;
 
     &.system .draw-chat__sys {
-      color: var(--color-success-02);
       font-weight: 600;
     }
 
-    &.close .draw-chat__sys {
+    // Per-kind color treatment (info / success / warning / danger).
+    &.system--info .draw-chat__sys {
+      color: var(--color-info-02);
+      background: rgba(77, 132, 250, 0.1);
+      border-color: rgba(77, 132, 250, 0.35);
+    }
+
+    &.system--success .draw-chat__sys {
+      color: var(--color-success-02);
+      background: rgba(37, 143, 37, 0.1);
+      border-color: rgba(37, 143, 37, 0.35);
+    }
+
+    &.system--warning .draw-chat__sys {
       color: var(--color-warning-02);
-      font-weight: 600;
+      background: rgba(255, 152, 0, 0.1);
+      border-color: rgba(255, 152, 0, 0.35);
+    }
+
+    &.system--danger .draw-chat__sys {
+      color: var(--color-danger-02);
+      background: rgba(244, 67, 54, 0.1);
+      border-color: rgba(244, 67, 54, 0.35);
     }
   }
 

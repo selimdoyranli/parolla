@@ -25,6 +25,7 @@ export default () => ({
   iAmDrawer: false,
   iAmHost: false,
   iGuessedCorrectly: false,
+  correctGuesserIds: [],
   lastRoundResult: null,
   finalScores: null,
   lastError: null

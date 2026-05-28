@@ -38,7 +38,10 @@ export default {
         commit('APPLY_SNAPSHOT', message)
         break
       case wsTypeEnum.DRAW_CHAT:
-        commit('PUSH_CHAT', { ...message, isSystem: false })
+        // Preserve server's isSystem / systemKind flags so info / danger
+        // system messages (join, leave, kick, pick skipped) render with
+        // the right icon + color instead of being forced into player-row UI.
+        commit('PUSH_CHAT', message)
         break
       case wsTypeEnum.DRAW_CLOSE_GUESS:
         commit('PUSH_CLOSE_GUESS', message.guess)
@@ -47,8 +50,10 @@ export default {
         commit('MARK_GUESSED', message)
         break
       case wsTypeEnum.DRAW_PLAYER_GUESSED:
+        commit('MARK_PLAYER_GUESSED', message.playerId)
         commit('PUSH_CHAT', {
           isSystem: true,
+          systemKind: 'success',
           message: `${message.playerName} doğru bildi (+${message.scoreEarned})`,
           timestamp: Date.now()
         })
