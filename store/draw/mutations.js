@@ -17,6 +17,8 @@ export default {
     state.iAmHost = state.myId === payload.hostId
     state.iAmDrawer = state.myId === payload.currentDrawerId
     state.drawerId = payload.currentDrawerId || null
+    state.nextDrawerId = payload.nextDrawerId || null
+    state.nextDrawerName = payload.nextDrawerName || null
   },
   SET_WORD_OPTIONS(state, payload) {
     state.wordOptions = payload.words || null
@@ -90,6 +92,9 @@ export default {
     state.currentWord = null
     state.maskedWord = null
     state.wordOptions = null
+    state.nextDrawerId = payload.nextDrawerId || null
+    state.nextDrawerName = payload.nextDrawerName || null
+    state.nextRoundEndsAt = payload.nextRoundInMs ? Date.now() + payload.nextRoundInMs : 0
 
     if (state.room) state.room.state = 'roundEnd'
   },

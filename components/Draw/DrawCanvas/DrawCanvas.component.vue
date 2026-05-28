@@ -202,17 +202,29 @@ export default defineComponent({
     const resize = () => {
       if (!canvas.value || !stage.value) return
       dpr.value = window.devicePixelRatio || 1
-      canvas.value.width = stage.value.clientWidth * dpr.value
-      canvas.value.height = stage.value.clientHeight * dpr.value
+      // Use the canvas's own client rect (not the stage's) so the drawing surface
+      // matches exactly what getBoundingClientRect returns for pointer events.
+      const rect = canvas.value.getBoundingClientRect()
+      canvas.value.width = Math.round(rect.width * dpr.value)
+      canvas.value.height = Math.round(rect.height * dpr.value)
       ctx.value.setTransform(dpr.value, 0, 0, dpr.value, 0, 0)
       redraw()
     }
 
     const pointFromEvent = e => {
+      // getBoundingClientRect is live; recomputing per event keeps coords accurate
+      // even after layout shifts (e.g. masked-word appears/disappears above canvas).
       const r = canvas.value.getBoundingClientRect()
-      const t = e.touches ? e.touches[0] : e
+      const t = e.touches && e.touches.length ? e.touches[0] : (e.changedTouches && e.changedTouches[0]) || e
+      // Account for CSS scaling between display rect and the canvas's internal
+      // coordinate system (rare in this layout, but defensive).
+      const scaleX = canvas.value.clientWidth ? r.width / canvas.value.clientWidth : 1
+      const scaleY = canvas.value.clientHeight ? r.height / canvas.value.clientHeight : 1
 
-      return { x: t.clientX - r.left, y: t.clientY - r.top }
+      return {
+        x: (t.clientX - r.left) / scaleX,
+        y: (t.clientY - r.top) / scaleY
+      }
     }
 
     const flushBatch = (final = false) => {
@@ -331,14 +343,26 @@ export default defineComponent({
       () => redraw()
     )
 
+    let resizeObserver = null
+
     onMounted(() => {
       ctx.value = canvas.value.getContext('2d')
       resize()
       window.addEventListener('resize', resize)
+
+      // Layout shifts inside the page (e.g. masked-word appearing/disappearing
+      // above the canvas) move the canvas without firing window.resize; the
+      // observer keeps cursor-to-stroke alignment correct.
+      if (typeof ResizeObserver !== 'undefined' && stage.value) {
+        resizeObserver = new ResizeObserver(() => resize())
+        resizeObserver.observe(stage.value)
+      }
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', resize)
+
+      if (resizeObserver) resizeObserver.disconnect()
 
       if (batchTimer.value) clearTimeout(batchTimer.value)
     })

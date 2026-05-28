@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
+  min-height: 0;
+  padding: 10px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 12px;
 
   &__log {
     display: flex;
@@ -12,19 +14,36 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 8px;
+    padding: 4px;
     overflow-y: auto;
   }
 
+  &__sys {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--color-ui-01);
+    border-radius: 6px;
+  }
+
   &__msg {
-    font-size: 14px;
+    color: var(--color-text-01);
+    font-size: 13px;
+    line-height: 1.4;
+    word-break: break-word;
+
+    b {
+      color: var(--color-text-02);
+      font-weight: 600;
+    }
 
     &.system .draw-chat__sys {
-      color: #ffd02e;
+      color: var(--color-success-02);
       font-weight: 600;
     }
 
     &.close .draw-chat__sys {
-      color: #ff5ea8;
+      color: var(--color-warning-02);
+      font-weight: 600;
     }
   }
 
@@ -34,24 +53,43 @@
 
     input {
       flex: 1;
-      padding: 8px;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 10px;
+      color: var(--color-text-01);
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--color-field-01);
+      border: 1px solid var(--color-border-01);
       border-radius: 8px;
+
+      &::placeholder {
+        color: var(--color-text-03);
+      }
+
+      &:focus {
+        border-color: var(--color-brand-02);
+        outline: none;
+      }
     }
 
     button {
       padding: 8px 14px;
-      color: #fff;
-      background: linear-gradient(135deg, #7a5af8, #ff5ea8);
+      color: var(--color-text-04);
+      font-weight: 600;
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--color-brand-02);
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      transition: filter 0.15s;
 
       &:disabled {
         cursor: not-allowed;
-        opacity: 0.5;
+        opacity: 0.45;
+      }
+
+      &:hover:not(:disabled) {
+        filter: brightness(1.05);
       }
     }
   }

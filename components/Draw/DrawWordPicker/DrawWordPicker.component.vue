@@ -2,10 +2,11 @@
 .draw-word-picker
   .draw-word-picker__backdrop
   .draw-word-picker__panel
+    span.draw-word-picker__title Sıra sende
     h3 Çizmek için bir kelime seç
     .draw-word-picker__opts
       button.draw-word-picker__opt(v-for="w in words" :key="w" @click="$emit('pick', w)") {{ w }}
-    p.draw-word-picker__hint {{ secondsLeft }}s içinde seçim yapmazsan otomatik seçilir.
+    p.draw-word-picker__hint {{ secondsLeft }}sn içinde seçmezsen rastgele seçilir.
 </template>
 
 <script>

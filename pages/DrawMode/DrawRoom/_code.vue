@@ -1,27 +1,30 @@
 <template lang="pug">
 .draw-room
-  header.draw-room__header
-    .draw-room__brand
-      span.draw-room__logo ✏️
-      | Çiz
-    .draw-room__hud
-      span.draw-room__chip
-        | Oda
-        b {{ $route.params.code }}
-      span.draw-room__chip(v-if="iAmDrawer && currentWord")
-        | Çiziyor
-        b {{ currentWord }}
-      span.draw-room__chip(v-else-if="drawerName")
-        | Çiziyor: {{ drawerName }}
-      span.draw-room__chip(v-if="roundCount")
-        | Tur
-        b {{ roundIndex + 1 }} / {{ roundCount }}
-      .draw-room__timer-slot(v-if="durationMs")
-        DrawTimer(:remainingMs="remainingMs" :durationMs="durationMs")
+  header.draw-room__topbar
+    .draw-room__crumbs
+      span.draw-room__crumb-label Oda
+      span.draw-room__crumb-code {{ $route.params.code }}
+    .draw-room__status(v-if="drawerName")
+      AppIcon.draw-room__status-icon(name="tabler:pencil" :width="14" :height="14")
+      span.draw-room__status-label Çiziyor
+      span.draw-room__status-name {{ drawerName }}
+    .draw-room__status.draw-room__status--next(v-if="nextDrawerName && !isLobby && !isGameEnd")
+      AppIcon.draw-room__status-icon(name="tabler:chevron-right" :width="14" :height="14")
+      span.draw-room__status-label Sıradaki
+      span.draw-room__status-name {{ nextDrawerName }}
+    .draw-room__progress(v-if="roundCount")
+      span Tur
+      b {{ roundIndex + 1 }} / {{ roundCount }}
+    .draw-room__timer-slot(v-if="durationMs && isDrawing")
+      DrawTimer(:remainingMs="remainingMs" :durationMs="durationMs")
 
-  .draw-room__main
-    .draw-room__stage-col
-      .draw-room__masked(v-if="!iAmDrawer && maskedWord")
+  .draw-room__layout
+    .draw-room__main
+      .draw-room__wordbar(v-if="iAmDrawer && currentWord")
+        span.draw-room__wordbar-label Çizmen gereken kelime
+        DrawMaskedWord(:plain="currentWord")
+      .draw-room__wordbar(v-else-if="maskedWord")
+        span.draw-room__wordbar-label Tahmin et
         DrawMaskedWord(:mask="maskedWord")
       DrawCanvas(
         :color="color"
@@ -44,30 +47,54 @@
         @clear="onClear"
       )
     aside.draw-room__side
-      DrawScoreboard(:players="players" :drawerId="drawerId")
-      DrawChat(:chat="chat" :iAmDrawer="iAmDrawer" :iGuessedCorrectly="iGuessedCorrectly" :isDrawing="isDrawing" @send="onSend")
+      DrawScoreboard(:players="players" :drawerId="drawerId" :nextDrawerId="nextDrawerId" :myId="myId")
+      DrawChat.draw-room__chat(
+        :chat="chat"
+        :iAmDrawer="iAmDrawer"
+        :iGuessedCorrectly="iGuessedCorrectly"
+        :isDrawing="isDrawing"
+        @send="onSend"
+      )
       .draw-room__host-actions(v-if="iAmHost && isLobby")
         button.draw-room__host-btn(:disabled="players.length < 2" @click="startGame") Oyunu Başlat
+        p.draw-room__host-hint(v-if="players.length < 2") Başlatmak için en az 2 oyuncu gerek.
       .draw-room__host-actions(v-if="iAmHost && isGameEnd")
         button.draw-room__host-btn(@click="startGame") Yeniden Başlat
 
   DrawWordPicker(v-if="iAmDrawer && wordOptions" :words="wordOptions" :timeoutMs="pickTimeoutMs" @pick="onPick")
-  .draw-room__overlay(v-if="lastRoundResult")
+
+  .draw-room__overlay(v-if="lastRoundResult && !finalScores")
     .draw-room__round-end
-      h3 Tur Sonu
-      p
+      span.draw-room__round-end-eyebrow Tur Sonu
+      h3.draw-room__round-end-title
         | Kelime:&nbsp;
         b {{ lastRoundResult.word }}
-      p(v-if="lastRoundResult.reason === 'drawer_left'") Çizen ayrıldı
+      p.draw-room__round-end-reason(v-if="lastRoundResult.reason === 'drawer_left'") Çizen oyundan ayrıldı
+      p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'all_guessed'") Herkes bildi!
+      p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'time_up'") Süre doldu
+      .draw-room__round-end-countdown(v-if="!lastRoundResult.isLastRound")
+        span.draw-room__round-end-countdown-label
+          template(v-if="lastRoundResult.nextDrawerName") Sıradaki: <b>{{ lastRoundResult.nextDrawerName }}</b>
+          template(v-else) Sıradaki tur başlıyor
+        .draw-room__round-end-countdown-clock
+          span.draw-room__round-end-countdown-num {{ countdownSeconds }}
+          span.draw-room__round-end-countdown-unit sn
+      .draw-room__round-end-countdown(v-else)
+        span.draw-room__round-end-countdown-label Oyun bitiyor…
+
   .draw-room__overlay(v-if="finalScores")
     .draw-room__final
-      h3 Oyun Bitti
-      ol
-        li(v-for="p in finalScores" :key="p.playerId") {{ p.name }} — {{ p.totalScore }}
+      span.draw-room__round-end-eyebrow Oyun Bitti
+      h3.draw-room__round-end-title Final Skoru
+      ol.draw-room__final-list
+        li(v-for="(p, i) in finalScores" :key="p.playerId")
+          span.draw-room__final-rank {{ i + 1 }}
+          span.draw-room__final-name {{ p.name }}
+          span.draw-room__final-score {{ p.totalScore }}
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, ref } from '@nuxtjs/composition-api'
+import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
@@ -89,6 +116,9 @@ export default defineComponent({
     const pickTimeoutMs = computed(() => $store.state.draw.pickTimeoutMs)
     const drawerId = computed(() => $store.state.draw.drawerId)
     const drawerName = computed(() => $store.state.draw.drawerName)
+    const nextDrawerId = computed(() => $store.state.draw.nextDrawerId)
+    const nextDrawerName = computed(() => $store.state.draw.nextDrawerName)
+    const myId = computed(() => $store.state.draw.myId)
     const iAmDrawer = computed(() => $store.state.draw.iAmDrawer)
     const iAmHost = computed(() => $store.state.draw.iAmHost)
     const iGuessedCorrectly = computed(() => $store.state.draw.iGuessedCorrectly)
@@ -103,9 +133,28 @@ export default defineComponent({
     const maskedWord = computed(() => $store.state.draw.maskedWord)
     const lastRoundResult = computed(() => $store.state.draw.lastRoundResult)
     const finalScores = computed(() => $store.state.draw.finalScores)
+    const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
 
-    // Drawer's own actions are also committed locally so the canvas reflects what
-    // they just drew — server forwards chunks to other players but doesn't echo back.
+    // Round-end countdown — ticks every 250ms locally based on the
+    // server-provided deadline timestamp. Survives across remounts.
+    const now = ref(Date.now())
+    let nowInterval = null
+    onMounted(() => {
+      nowInterval = setInterval(() => {
+        now.value = Date.now()
+      }, 250)
+    })
+    onBeforeUnmount(() => {
+      if (nowInterval) clearInterval(nowInterval)
+    })
+
+    const countdownSeconds = computed(() => {
+      if (!nextRoundEndsAt.value) return 0
+      const ms = Math.max(0, nextRoundEndsAt.value - now.value)
+
+      return Math.ceil(ms / 1000)
+    })
+
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)
       send(wsTypeEnum.DRAW_STROKE_CHUNK, payload)
@@ -139,6 +188,9 @@ export default defineComponent({
       pickTimeoutMs,
       drawerId,
       drawerName,
+      nextDrawerId,
+      nextDrawerName,
+      myId,
       iAmDrawer,
       iAmHost,
       iGuessedCorrectly,
@@ -153,6 +205,7 @@ export default defineComponent({
       maskedWord,
       lastRoundResult,
       finalScores,
+      countdownSeconds,
       onChunk,
       onStrokeEnd,
       onUndo,

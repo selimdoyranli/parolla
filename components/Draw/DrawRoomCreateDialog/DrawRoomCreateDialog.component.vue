@@ -25,8 +25,8 @@
       .draw-create-dialog__cats
         button(v-for="c in allCats" :key="c" type="button" :class="{ active: form.categories.includes(c) }" @click="toggleCat(c)") {{ c }}
     .draw-create-dialog__actions
-      button.btn.btn-secondary(@click="$emit('close')") Vazgeç
-      button.btn.btn-primary(@click="submit") Oda Kur
+      button.draw-create-dialog__btn.draw-create-dialog__btn--cancel(type="button" @click="$emit('close')") Vazgeç
+      button.draw-create-dialog__btn.draw-create-dialog__btn--submit(type="button" @click="submit") Oda Kur
 </template>
 
 <script>

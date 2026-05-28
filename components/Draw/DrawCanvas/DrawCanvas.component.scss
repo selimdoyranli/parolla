@@ -3,9 +3,9 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  background: #fff;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(34, 26, 68, 0.25);
   touch-action: none;
 
   &__el {
@@ -14,6 +14,7 @@
     height: 100%;
     background: #fff;
     cursor: default;
+    touch-action: none;
 
     &.is-drawable {
       cursor: crosshair;
@@ -24,11 +25,12 @@
     position: absolute;
     top: 10px;
     left: 12px;
+    z-index: 2;
     padding: 3px 8px;
-    color: #8a82a8;
+    color: var(--color-text-03);
     font-weight: 600;
     font-size: 11px;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--color-overlay-02);
     border-radius: 6px;
     pointer-events: none;
   }
