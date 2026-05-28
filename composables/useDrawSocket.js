@@ -1,28 +1,36 @@
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
 
+// Module-singleton so lobby + room pages share one WS connection across navigation.
+let sharedSocket = null
+const sharedStatus = ref('idle')
+let consumers = 0
+
 export const useDrawSocket = () => {
-  const ws = ref(null)
-  const status = ref('idle')
   const vm = getCurrentInstance().proxy
   const $auth = vm.$auth
   const $store = vm.$store
   const wsBase = process.env.WS_URL || 'wss://0.0.0.0:1881'
 
   const open = () => {
-    if (ws.value && ws.value.readyState === 1) return
+    if (sharedSocket && sharedSocket.readyState === 1) return
+
+    if (sharedSocket && sharedSocket.readyState === 0) return // already connecting
+
     const token = ($auth && $auth.strategy && $auth.strategy.token && $auth.strategy.token.get()) || ''
     const cleanToken = String(token).replace(/^Bearer\s+/i, '')
     const url = `${wsBase}?token=${encodeURIComponent(cleanToken)}&channel=draw`
-    status.value = 'connecting'
+
+    sharedStatus.value = 'connecting'
     const sock = new WebSocket(url)
-    ws.value = sock
+    sharedSocket = sock
 
     sock.onopen = () => {
-      status.value = 'connected'
+      sharedStatus.value = 'connected'
       $store.commit('draw/SET_STATUS', 'connected')
     }
     sock.onclose = () => {
-      status.value = 'disconnected'
+      sharedStatus.value = 'disconnected'
+      sharedSocket = null
       $store.commit('draw/SET_STATUS', 'disconnected')
     }
     sock.onerror = e => {
@@ -49,23 +57,41 @@ export const useDrawSocket = () => {
   }
 
   const send = (type, payload = {}) => {
-    if (!ws.value || ws.value.readyState !== 1) return
-    ws.value.send(JSON.stringify({ type, ...payload }))
+    if (!sharedSocket || sharedSocket.readyState !== 1) return
+    sharedSocket.send(JSON.stringify({ type, ...payload }))
   }
 
   const close = () => {
-    if (ws.value) {
+    if (sharedSocket) {
       try {
-        ws.value.close()
+        sharedSocket.close()
       } catch (_e) {
         /* ignore */
       }
-      ws.value = null
+      sharedSocket = null
     }
   }
 
-  onMounted(() => open())
-  onBeforeUnmount(() => close())
+  onMounted(() => {
+    consumers++
+    open()
+  })
 
-  return { ws, status, open, close, send }
+  onBeforeUnmount(() => {
+    consumers = Math.max(0, consumers - 1)
+
+    if (consumers === 0) close()
+  })
+
+  return {
+    ws: {
+      get value() {
+        return sharedSocket
+      }
+    },
+    status: sharedStatus,
+    open,
+    close,
+    send
+  }
 }
