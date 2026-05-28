@@ -316,6 +316,14 @@ module.exports = {
             tr: '/tur/liderlik/:period',
             en: '/tour/leaderboard/:period'
           },
+          'DrawMode/DrawLobby/index': {
+            tr: '/ciz',
+            en: '/draw'
+          },
+          'DrawMode/DrawRoom/_code': {
+            tr: '/ciz/oda/:code',
+            en: '/draw/room/:code'
+          },
           'Account/AccountEdit/index': {
             tr: '/hesap/duzenle',
             en: '/account/edit'
