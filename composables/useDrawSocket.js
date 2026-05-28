@@ -4,6 +4,12 @@ import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/com
 let sharedSocket = null
 const sharedStatus = ref('idle')
 let consumers = 0
+let closeTimer = null
+
+// Defer close on unmount so a route transition (lobby → room) does not
+// briefly drop consumers to 0 and tear the socket down between pages.
+// If a new consumer mounts within this window the pending close is cancelled.
+const CLOSE_DEFER_MS = 500
 
 export const useDrawSocket = () => {
   const vm = getCurrentInstance().proxy
@@ -74,13 +80,27 @@ export const useDrawSocket = () => {
 
   onMounted(() => {
     consumers++
+
+    if (closeTimer) {
+      clearTimeout(closeTimer)
+      closeTimer = null
+    }
+
     open()
   })
 
   onBeforeUnmount(() => {
     consumers = Math.max(0, consumers - 1)
 
-    if (consumers === 0) close()
+    if (consumers !== 0) return
+
+    if (closeTimer) clearTimeout(closeTimer)
+
+    closeTimer = setTimeout(() => {
+      closeTimer = null
+
+      if (consumers === 0) close()
+    }, CLOSE_DEFER_MS)
   })
 
   return {
