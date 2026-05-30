@@ -41,7 +41,7 @@ export default defineComponent({
     const text = ref('')
     const log = ref(null)
 
-    const disabled = computed(() => props.iAmDrawer && props.isDrawing)
+    const disabled = computed(() => false)
 
     const kindOf = m => {
       // Backward-compat: older payloads only had isCloseHint to mark a
@@ -84,8 +84,6 @@ export default defineComponent({
     }
 
     const placeholder = computed(() => {
-      if (props.iAmDrawer && props.isDrawing) return 'Çizim sırasında yazamazsın'
-
       if (props.iGuessedCorrectly) return 'Doğru bildin, kazananlarla sohbet et'
 
       return 'Tahmin et / sohbet et…'
