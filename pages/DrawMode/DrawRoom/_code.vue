@@ -172,6 +172,12 @@
       @send="onSend"
     )
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="onGuestDialogClose")
+  EnterPasswordDialog(
+    v-if="passwordPrompt.active"
+    :error-key="passwordPrompt.errorKey"
+    @close="onPasswordCancel"
+    @submit="onPasswordSubmit"
+  )
 </template>
 
 <script>
@@ -181,9 +187,10 @@ import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { useGuestIdentity } from '@/composables/useGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
+import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 
 export default defineComponent({
-  components: { Button, CreateGuestDrawerDialog },
+  components: { Button, CreateGuestDrawerDialog, EnterPasswordDialog },
   layout: 'Default/Default.layout',
   setup() {
     const { send } = useDrawSocket()
@@ -248,6 +255,23 @@ export default defineComponent({
     let nowInterval = null
 
     const showGuestDialog = ref(false)
+    // Direct-link join into a password-protected room hits `bad_password`
+    // before any room metadata has reached the FE, so we react to the error
+    // by opening the password dialog rather than peeking at hasPassword.
+    const passwordPrompt = ref({ active: false, errorKey: null })
+
+    const onPasswordSubmit = password => {
+      const codeParam = vm.$route.params.code
+
+      if (!codeParam) return
+      send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam, password })
+    }
+
+    const onPasswordCancel = () => {
+      passwordPrompt.value = { active: false, errorKey: null }
+      $store.commit('draw/LEAVE_ROOM')
+      vm.$router.push(vm.localePath({ name: 'DrawMode-DrawLobby' }))
+    }
 
     onMounted(async () => {
       nowInterval = setInterval(() => {
@@ -304,13 +328,23 @@ export default defineComponent({
     // Direct-link join into a non-existent / collapsed community room
     // bounces back to the lobby. Empty community rooms are torn down on
     // the server (no host or last player left) so the canonical signal
-    // is `room_not_found`; `join_fail` covers capacity races. We avoid
-    // bouncing on `bad_password` — that path opens the password dialog.
+    // is `room_not_found`; `join_fail` covers capacity races. `bad_password`
+    // opens the password dialog instead (with inline error on retry).
     watch(
       () => $store.state.draw.lastError,
       err => {
         if (!err) return
         const lobbyRedirectCodes = ['room_not_found', 'join_fail']
+
+        if (err.code === 'bad_password') {
+          passwordPrompt.value = {
+            active: true,
+            errorKey: passwordPrompt.value.active ? 'dialog.enterPassword.wrongPassword' : null
+          }
+          $store.commit('draw/SET_ERROR', null)
+
+          return
+        }
 
         if (!lobbyRedirectCodes.includes(err.code)) return
         $store.commit('draw/LEAVE_ROOM')
@@ -634,6 +668,9 @@ export default defineComponent({
       roomClosedTitle,
       roomClosedHint,
       onBackToLobby,
+      passwordPrompt,
+      onPasswordSubmit,
+      onPasswordCancel,
       lobbyEyebrow,
       lobbyTitle,
       lobbyHint,

@@ -518,6 +518,14 @@ export default {
       emptyTitle: 'Room closed',
       emptyHint: 'No one is left in the room.',
       backToLobby: 'Back to Lobby'
+    },
+    enterPassword: {
+      title: 'Protected Room',
+      hint: 'Enter the password to join this room.',
+      placeholder: 'Room password',
+      confirm: 'Join',
+      cancel: 'Cancel',
+      wrongPassword: 'Wrong password. Try again.'
     }
   },
   clipboard: {

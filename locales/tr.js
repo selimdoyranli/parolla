@@ -524,6 +524,14 @@ export default {
       emptyTitle: 'Oda kapatıldı',
       emptyHint: 'Odada kimse kalmadı.',
       backToLobby: 'Lobiye Dön'
+    },
+    enterPassword: {
+      title: 'Şifreli Oda',
+      hint: 'Bu odaya katılmak için şifreyi gir.',
+      placeholder: 'Oda şifresi',
+      confirm: 'Katıl',
+      cancel: 'Vazgeç',
+      wrongPassword: 'Şifre yanlış. Tekrar dene.'
     }
   },
   clipboard: {

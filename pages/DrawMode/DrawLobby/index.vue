@@ -17,6 +17,7 @@
 
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="showGuestDialog = false")
+  EnterPasswordDialog(v-if="passwordPrompt.code" :error-key="passwordPrompt.errorKey" @close="onPasswordCancel" @submit="onPasswordSubmit")
 </template>
 
 <script>
@@ -29,10 +30,11 @@ import { useDrawSocket } from '@/composables/useDrawSocket'
 import { useGuestIdentity } from '@/composables/useGuestIdentity'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
+import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 import { buildCategoryTitleMap, sortDrawCategories } from '@/helpers/draw-categories'
 
 export default defineComponent({
-  components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog, CreateGuestDrawerDialog },
+  components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog, CreateGuestDrawerDialog, EnterPasswordDialog },
   layout: 'Default/Default.layout',
   // No `middleware: 'auth'` — non-authenticated visitors can browse the
   // official and community room lists as viewers. Join/create actions
@@ -114,9 +116,42 @@ export default defineComponent({
       send(wsTypeEnum.DRAW_ROOM_JOIN, { code: identifier })
     }
 
+    // Two-step join for community rooms: if the card carries hasPassword,
+    // open the password dialog and defer the JOIN until the user confirms.
+    // Otherwise dispatch the join directly, same as the legacy path.
+    const passwordPrompt = ref({ code: null, errorKey: null })
+
     const onJoinCommunity = code => {
+      const room = (communityRooms.value || []).find(r => r.code === code)
+
+      if (room && room.hasPassword) {
+        passwordPrompt.value = { code, errorKey: null }
+
+        return
+      }
       send(wsTypeEnum.DRAW_ROOM_JOIN, { code })
     }
+
+    const onPasswordSubmit = password => {
+      send(wsTypeEnum.DRAW_ROOM_JOIN, { code: passwordPrompt.value.code, password })
+    }
+
+    const onPasswordCancel = () => {
+      passwordPrompt.value = { code: null, errorKey: null }
+    }
+
+    // Re-open the dialog with an inline error if the server bounced the
+    // attempt as 'bad_password' (vs. closing the toast and losing context).
+    store.watch(
+      s => s.draw.lastError,
+      err => {
+        if (!err || err.code !== 'bad_password') return
+
+        if (!passwordPrompt.value.code) return
+        passwordPrompt.value = { code: passwordPrompt.value.code, errorKey: 'dialog.enterPassword.wrongPassword' }
+        store.commit('draw/SET_ERROR', null)
+      }
+    )
 
     // For system rooms (kind='system') the URL should display the lowercase
     // slug ("/ciz/oda/yemekler"); community rooms keep the canonical 6-char
@@ -141,6 +176,9 @@ export default defineComponent({
       submitCreate,
       onJoinSystem,
       onJoinCommunity,
+      passwordPrompt,
+      onPasswordSubmit,
+      onPasswordCancel,
       isGuest,
       showGuestDialog,
       guestName,
