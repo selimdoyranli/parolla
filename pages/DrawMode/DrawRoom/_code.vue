@@ -162,6 +162,7 @@
       :isDrawing="isDrawing"
       @send="onSend"
     )
+  CreateGuestDrawerDialog(v-if="showGuestDialog" @close="onGuestDialogClose")
 </template>
 
 <script>
@@ -169,9 +170,11 @@ import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBefore
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { useGuestIdentity } from '@/composables/useGuestIdentity'
+import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 
 export default defineComponent({
-  components: { Button },
+  components: { Button, CreateGuestDrawerDialog },
   layout: 'Default/Default.layout',
   setup() {
     const { send } = useDrawSocket()
@@ -222,21 +225,46 @@ export default defineComponent({
     // needing a per-second WS message.
     const now = ref(Date.now())
     let nowInterval = null
-    onMounted(() => {
+
+    const showGuestDialog = ref(false)
+
+    onMounted(async () => {
       nowInterval = setInterval(() => {
         now.value = Date.now()
       }, 250)
 
-      // Direct-link join: if the user landed here by typing the URL or being
-      // shared a link, they aren't in any room yet — fire a join from the
-      // route param. Buffered by useDrawSocket if the socket is still
-      // connecting. Skipped if we already have a room (came from lobby).
+      const codeParam = vm.$route.params.code
+
+      if (!codeParam || $store.state.draw.room) return
+
+      const guest = useGuestIdentity()
+      const doJoin = () => send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
+
+      if (guest.isGuest.value) {
+        guest.ensureIdentity()
+        const SESSION_FLAG = 'draw_guest_dialog_shown'
+        const alreadyShown = typeof window !== 'undefined' && window.sessionStorage.getItem(SESSION_FLAG)
+
+        if (!alreadyShown) {
+          if (typeof window !== 'undefined') window.sessionStorage.setItem(SESSION_FLAG, '1')
+          showGuestDialog.value = true
+
+          // Defer join until the dialog closes (Onayla or dismiss).
+          return
+        }
+      }
+
+      doJoin()
+    })
+
+    const onGuestDialogClose = () => {
+      showGuestDialog.value = false
       const codeParam = vm.$route.params.code
 
       if (codeParam && !$store.state.draw.room) {
         send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
       }
-    })
+    }
     onBeforeUnmount(() => {
       if (nowInterval) clearInterval(nowInterval)
     })
@@ -556,7 +584,9 @@ export default defineComponent({
       isFinalScoreboard,
       waitingPresent,
       waitingRequired,
-      finalSecondsLeft
+      finalSecondsLeft,
+      showGuestDialog,
+      onGuestDialogClose
     }
   }
 })
