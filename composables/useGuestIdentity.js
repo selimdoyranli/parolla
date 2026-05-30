@@ -8,28 +8,28 @@ export const useGuestIdentity = () => {
   const isGuest = computed(() => !($auth && $auth.loggedIn))
 
   const identity = computed(() => ({
-    id: $store.state.guest.id,
-    name: $store.state.guest.name,
-    avatarSeed: $store.state.guest.avatarSeed
+    id: $store.state.draw.guest.id,
+    name: $store.state.draw.guest.name,
+    avatarSeed: $store.state.draw.guest.avatarSeed
   }))
 
   const ensureIdentity = () => {
-    $store.dispatch('guest/ensure')
+    $store.dispatch('draw/guest/ensure')
   }
 
   const regenerateName = () => {
-    $store.dispatch('guest/regenerateName')
+    $store.dispatch('draw/guest/regenerateName')
   }
 
   const regenerateAvatar = () => {
-    $store.dispatch('guest/regenerateAvatar')
+    $store.dispatch('draw/guest/regenerateAvatar')
   }
 
   const regenerateAll = () => {
-    $store.dispatch('guest/regenerateAll')
+    $store.dispatch('draw/guest/regenerateAll')
   }
 
-  const setName = name => $store.dispatch('guest/setName', name)
+  const setName = name => $store.dispatch('draw/guest/setName', name)
 
   return {
     isGuest,

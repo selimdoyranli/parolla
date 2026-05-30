@@ -32,13 +32,16 @@ export default ({ store }) => {
               }
             }
           : {},
-      guest: state.guest
-        ? {
-            id: state.guest.id,
-            name: state.guest.name,
-            avatarSeed: state.guest.avatarSeed
-          }
-        : {}
+      draw:
+        state.draw && state.draw.guest
+          ? {
+              guest: {
+                id: state.draw.guest.id,
+                name: state.draw.guest.name,
+                avatarSeed: state.draw.guest.avatarSeed
+              }
+            }
+          : {}
     })
   }).plugin(store)
 
