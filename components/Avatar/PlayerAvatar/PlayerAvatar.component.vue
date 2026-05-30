@@ -90,9 +90,20 @@ export default defineComponent({
 
     const isGm = computed(() => props.user?.role?.name === 'GM')
 
+    // Pick the seed used for client-side DiceBear generation. Guest players
+    // ship a stable `diceBear.seed` (UUID) that's independent of the visible
+    // username, so regenerating their avatar (or appending labels like
+    // "(misafir)") doesn't change the image. Auth users with a pre-rendered
+    // `diceBear.dataImage` short-circuit this path entirely below.
+    const avatarSeed = computed(() => {
+      if (!props.user) return null
+
+      return props.user.diceBear?.seed || props.user.username
+    })
+
     const generateAvatarDataImage = () => {
       return createAvatar(adventurer, {
-        ...generateAvatarConfigByUsername(props.user?.username)
+        ...generateAvatarConfigByUsername(avatarSeed.value)
       }).toDataUri()
     }
 

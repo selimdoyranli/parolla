@@ -1,4 +1,15 @@
 .create-guest-drawer-dialog {
+  width: 92%;
+  max-width: var(--mobile);
+
+  // Vant plain Button default text color is hard-coded gray and stays
+  // unreadable on the dark dialog background. Re-bind to the theme
+  // text token so both light/dark modes get correct contrast.
+  .van-button--plain {
+    color: var(--color-text-01);
+    border-color: var(--color-text-03);
+  }
+
   &__inner {
     padding: 24px 20px;
   }

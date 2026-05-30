@@ -4,7 +4,6 @@ Dialog.create-guest-drawer-dialog(
   :show-confirm-button="false"
   :show-cancel-button="false"
   :close-on-click-overlay="true"
-  width="92%"
   @closed="$emit('close')"
 )
   .create-guest-drawer-dialog__inner
@@ -39,7 +38,7 @@ export default defineComponent({
     Button
   },
   emits: ['close'],
-  setup(_, { emit }) {
+  setup() {
     const visible = ref(true)
 
     const { ensureIdentity, identity, regenerateName, regenerateAvatar, setName } = useGuestIdentity()
