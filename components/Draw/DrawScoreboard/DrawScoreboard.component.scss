@@ -78,6 +78,15 @@
       border-color: var(--color-border-02);
       border-style: dashed;
     }
+
+    &--guest {
+      cursor: default;
+      opacity: 0.85;
+
+      &:hover {
+        background: transparent;
+      }
+    }
   }
 
   &__rank {

@@ -7,17 +7,17 @@
     li.draw-scoreboard__row(
       v-for="(p, i) in sortedPlayers"
       :key="p.id"
-      role="button"
-      tabindex="0"
-      :class="rowClasses(p)"
-      @click="openPlayerDialog(p)"
-      @keyup.enter="openPlayerDialog(p)"
+      :role="p.isGuest ? null : 'button'"
+      :tabindex="p.isGuest ? null : 0"
+      :class="[rowClasses(p), { 'draw-scoreboard__row--guest': p.isGuest }]"
+      @click="!p.isGuest && openPlayerDialog(p)"
+      @keyup.enter="!p.isGuest && openPlayerDialog(p)"
     )
       span.draw-scoreboard__rank {{ i + 1 }}
       PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="22")
       .draw-scoreboard__name
         .draw-scoreboard__name-row
-          span.draw-scoreboard__name-text {{ p.name }}
+          span.draw-scoreboard__name-text {{ displayName(p) }}
           AppIcon.draw-scoreboard__guessed(v-if="hasGuessed(p.id)" name="tabler:circle-check-filled" :width="14" :height="14")
         .draw-scoreboard__tags
           span.draw-scoreboard__tag.draw-scoreboard__tag--host(v-if="p.isHost") Host
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore, getCurrentInstance } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -39,6 +39,8 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
+    const vm = getCurrentInstance().proxy
+    const displayName = p => (p.isGuest ? `${p.name} ${vm.$t('common.guestLabel')}` : p.name)
 
     const sortedPlayers = computed(() => [...props.players].sort((a, b) => (b.score || 0) - (a.score || 0)))
 
@@ -73,7 +75,7 @@ export default defineComponent({
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
     }
 
-    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, openPlayerDialog }
+    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, openPlayerDialog, displayName }
   }
 })
 </script>
