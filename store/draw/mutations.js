@@ -41,6 +41,14 @@ export default {
       state.strokes = []
       state.nextRoundEndsAt = 0
     }
+
+    // System rooms loop 50-round cycles without ever entering 'lobby'. When
+    // the cycle resets (next state is waiting / picking / drawing) drop the
+    // previous final scoreboard so the overlay doesn't stick.
+    if (payload.kind === 'system' && payload.state !== 'finalScoreboard' && payload.state !== 'roundEnd') {
+      state.finalScores = null
+      state.finalNextRoundInMs = 0
+    }
   },
   SET_WORD_OPTIONS(state, payload) {
     state.wordOptions = payload.words || null
@@ -176,9 +184,19 @@ export default {
   SET_WAITING(state, payload) {
     state.waitingPresent = payload.present || 0
     state.waitingRequired = payload.required || 2
+
+    // WS sends DRAW_WAITING without a follow-up DRAW_ROOM_STATE (the room
+    // state transition is conveyed by this message alone). Mirror it onto
+    // state.room so the isWaiting getter fires immediately.
+    if (state.room) state.room.state = 'waiting'
   },
   SET_FINAL_SCOREBOARD(state, payload) {
     state.finalScores = Array.isArray(payload.scores) ? payload.scores : null
     state.finalNextRoundInMs = payload.nextRoundInMs || 0
+
+    // Same rationale as SET_WAITING: WS sends DRAW_FINAL_SCOREBOARD without a
+    // paired DRAW_ROOM_STATE — flip the room state locally so isFinalScoreboard
+    // and the overlay logic react in the same tick.
+    if (state.room) state.room.state = 'finalScoreboard'
   }
 }
