@@ -180,7 +180,17 @@
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount, watch } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  computed,
+  getCurrentInstance,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  useContext,
+  useMeta
+} from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
@@ -194,8 +204,25 @@ export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
     const { send } = useDrawSocket()
+    const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
     const $store = vm.$store
+
+    useMeta(() => ({
+      title: `${i18n.t('seo.drawRoom.title')} - ${i18n.t('seo.main.title')}`,
+      meta: [
+        { hid: 'description', name: 'description', content: i18n.t('seo.drawRoom.description') },
+        { hid: 'keywords', name: 'keywords', content: i18n.t('seo.drawRoom.keywords') },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `${i18n.t('seo.drawRoom.title')} - ${i18n.t('seo.main.title')}`
+        },
+        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.drawRoom.description') },
+        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.drawRoom.description') },
+        { hid: 'robots', name: 'robots', content: 'noindex,nofollow' }
+      ]
+    }))
 
     const tool = ref('brush')
     const color = ref('#000000')
@@ -694,7 +721,8 @@ export default defineComponent({
       showGuestDialog,
       onGuestDialogClose
     }
-  }
+  },
+  head: {}
 })
 </script>
 

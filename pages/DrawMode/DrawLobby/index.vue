@@ -3,7 +3,7 @@
   .draw-lobby__hero
     span.draw-lobby__eyebrow Çiz Modu
     h1.draw-lobby__title Çiz, tahmin et, kazan
-    p.draw-lobby__subtitle Arkadaşlarınla gerçek zamanlı çizim ve tahmin oyunu.
+    p.draw-lobby__subtitle Gerçek zamanlı çizim ve tahmin oyunu.
     .draw-lobby__guest(v-if="isGuest" role="button" tabindex="0" @click="showGuestDialog = true" @keyup.enter="showGuestDialog = true")
       PlayerAvatar.draw-lobby__guest-avatar(:user="guestAvatarUser" :size="32")
       span.draw-lobby__guest-name {{ guestName }}
@@ -21,7 +21,16 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  computed,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  getCurrentInstance,
+  useContext,
+  useMeta
+} from '@nuxtjs/composition-api'
 import { Tab, Tabs } from 'vant'
 import SystemRoomList from '@/components/Draw/SystemRoomList/SystemRoomList.component.vue'
 import CommunityRoomList from '@/components/Draw/CommunityRoomList/CommunityRoomList.component.vue'
@@ -42,8 +51,24 @@ export default defineComponent({
   // remain auth-gated via the `auth-control` directive on their buttons.
   setup() {
     const { send } = useDrawSocket()
+    const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
     const store = vm.$store
+
+    useMeta(() => ({
+      title: `${i18n.t('seo.drawLobby.title')} - ${i18n.t('seo.main.title')}`,
+      meta: [
+        { hid: 'description', name: 'description', content: i18n.t('seo.drawLobby.description') },
+        { hid: 'keywords', name: 'keywords', content: i18n.t('seo.drawLobby.keywords') },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: `${i18n.t('seo.drawLobby.title')} - ${i18n.t('seo.main.title')}`
+        },
+        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.drawLobby.description') },
+        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.drawLobby.description') }
+      ]
+    }))
 
     const activeTab = ref('official')
     const showCreate = ref(false)
@@ -179,7 +204,8 @@ export default defineComponent({
       guestName,
       guestAvatarUser
     }
-  }
+  },
+  head: {}
 })
 </script>
 

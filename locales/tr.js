@@ -1058,6 +1058,17 @@ export default {
       title: 'Limitsiz',
       description: 'Sınırsız soru seti, bulmaca çöz, kelime oyunu oyna'
     },
+    drawLobby: {
+      title: 'Çiz Modu',
+      description:
+        'Gerçek zamanlı çizim ve tahmin oyunu. Arkadaşlarınla resmi odalara katıl, kendi odanı kur ve kategorilerden seçtiğin kelimeleri çizip tahmin et.',
+      keywords: 'çiz modu, çizim oyunu, kelime tahmin, multiplayer çizim, parolla çiz'
+    },
+    drawRoom: {
+      title: 'Çiz Odası',
+      description: 'Çiz modu odasına katıl, çiz ve tahmin et. Sırayla çizen oyuncular, kelime tahmin etme yarışı.',
+      keywords: 'çiz odası, çizim oyna, kelime tahmin, parolla çiz oda'
+    },
     creatorModeCompose: {
       title: 'Quiz oluştur',
       description: 'Quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',

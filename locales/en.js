@@ -1034,6 +1034,17 @@ export default {
       title: 'Unlimited',
       description: 'Unlimited question set, solve questions, play word game'
     },
+    drawLobby: {
+      title: 'Draw Mode',
+      description:
+        'Real-time draw and guess game. Join official rooms with friends, create your own room, and draw / guess words from curated categories.',
+      keywords: 'draw mode, drawing game, word guess, multiplayer drawing, parolla draw'
+    },
+    drawRoom: {
+      title: 'Draw Room',
+      description: 'Join a draw mode room. Take turns drawing while everyone races to guess the word.',
+      keywords: 'draw room, online drawing, word guess, parolla draw room'
+    },
     creatorModeCompose: {
       title: 'Create a quiz',
       description: 'Create a quiz or solve quizzes created by players',
