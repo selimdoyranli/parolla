@@ -1,0 +1,47 @@
+.system-room-list {
+  &__empty {
+    padding: 24px 0;
+    color: #999;
+    text-align: center;
+  }
+
+  &__group {
+    margin-bottom: 16px;
+
+    &-title {
+      margin: 0 0 8px;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__card {
+    padding: 12px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+
+    &-title {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    &-sub {
+      color: #ff7878;
+    }
+
+    &-meta {
+      margin-top: 4px;
+      color: #999;
+      font-size: 12px;
+    }
+  }
+}
