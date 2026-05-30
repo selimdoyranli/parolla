@@ -81,9 +81,6 @@ export default defineComponent({
     const stateLabel = s => STATE_LABELS[s] || s
     const isLive = s => LIVE_STATES.has(s)
 
-    // Community rooms ship one category slug (radio-style selection in the
-    // create dialog), so always pull the first entry. Title resolves via
-    // the prop map; slug as a safe fallback before the fetch lands.
     const categoryFor = r => {
       const slug = Array.isArray(r.categories) && r.categories.length ? r.categories[0] : null
 

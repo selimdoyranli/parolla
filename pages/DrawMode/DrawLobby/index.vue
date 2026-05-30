@@ -56,9 +56,6 @@ export default defineComponent({
       diceBear: { seed: identity.value.avatarSeed }
     }))
 
-    // Apply the same Genel/Yemekler/Meslekler priority sort to the system
-    // room grid so it doesn't depend on Strapi seed order. r.slug + r.categoryTitle
-    // are already on the WS DTO so no extra fetch needed.
     const systemRooms = computed(() => sortDrawCategories(store.state.draw.systemRooms || []))
     const communityRooms = computed(() =>
       store.state.draw.communityRooms.length ? store.state.draw.communityRooms : store.state.draw.publicRooms
@@ -116,9 +113,6 @@ export default defineComponent({
       send(wsTypeEnum.DRAW_ROOM_JOIN, { code: identifier })
     }
 
-    // Two-step join for community rooms: if the card carries hasPassword,
-    // open the password dialog and defer the JOIN until the user confirms.
-    // Otherwise dispatch the join directly, same as the legacy path.
     const passwordPrompt = ref({ code: null, errorKey: null })
 
     const onJoinCommunity = code => {

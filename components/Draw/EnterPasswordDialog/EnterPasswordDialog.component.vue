@@ -48,8 +48,6 @@ export default defineComponent({
     const visible = ref(true)
     const password = ref('')
 
-    // Clear the password whenever a new error lands so the user starts
-    // fresh on each retry (no stale value left in the masked field).
     watch(
       () => props.errorKey,
       v => {

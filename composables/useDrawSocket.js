@@ -30,7 +30,6 @@ export const useDrawSocket = () => {
     let urlParams
 
     if (isGuest) {
-      // Make sure the persisted identity exists before we hand it to the server.
       $store.dispatch('draw/guest/ensure')
       const g = $store.state.draw.guest
       urlParams = new URLSearchParams({

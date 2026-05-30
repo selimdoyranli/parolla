@@ -128,8 +128,6 @@ export default defineComponent({
           .map(c => ({ slug: c.slug || (c.attributes && c.attributes.slug), title: c.title || (c.attributes && c.attributes.title) }))
           .filter(c => c.slug && c.title)
 
-        // Order tags so "Genel / Yemekler / Meslekler" appear first regardless
-        // of the Strapi alpha sort, then the rest fall back to locale alpha.
         allCats.value = sortDrawCategories(normalized)
 
         if (allCats.value.length > 0 && !form.categorySlug) {

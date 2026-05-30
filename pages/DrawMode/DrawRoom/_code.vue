@@ -112,7 +112,6 @@
             p.draw-room__final-cycle-hint(v-if="isFinalScoreboard && finalSecondsLeft > 0")
               | Yeni döngü {{ finalSecondsLeft }}sn içinde
 
-      // ── Room-closed overlay (community host left or room emptied) ──
       transition(name="draw-room-overlay")
         .draw-room__canvas-overlay.draw-room__canvas-overlay--closed(v-if="roomClosedReason")
           .draw-room__closed
@@ -294,7 +293,6 @@ export default defineComponent({
           if (typeof window !== 'undefined') window.sessionStorage.setItem(SESSION_FLAG, '1')
           showGuestDialog.value = true
 
-          // Defer join until the dialog closes (Onayla or dismiss).
           return
         }
       }
@@ -527,9 +525,6 @@ export default defineComponent({
 
         if (!last.isSystem) return
 
-        // Only surface high-signal events as canvas toasts: turn-lost (danger)
-        // and round-end-shaped guesses (success). Info-level join/leave noise
-        // stays in chat only.
         if (last.systemKind !== 'danger' && last.systemKind !== 'success') return
 
         if (toastTimer) clearTimeout(toastTimer)
