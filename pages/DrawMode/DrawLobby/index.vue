@@ -32,6 +32,7 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 import { buildCategoryTitleMap, sortDrawCategories } from '@/helpers/draw-categories'
+import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
 
 export default defineComponent({
   components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog, CreateGuestDrawerDialog, EnterPasswordDialog },
@@ -147,15 +148,15 @@ export default defineComponent({
       }
     )
 
-    // For system rooms (kind='system') the URL should display the lowercase
-    // slug ("/ciz/oda/yemekler"); community rooms keep the canonical 6-char
+    // For system rooms the URL should display the lowercase slug
+    // ("/ciz/oda/yemekler"); community rooms keep the canonical 6-char
     // code as-is.
     store.watch(
       s => s.draw.room && s.draw.room.code,
       code => {
         if (!code) return
         const kind = store.state.draw.roomKind
-        const param = kind === 'system' ? String(code).toLowerCase() : code
+        const param = kind === drawRoomKindEnum.SYSTEM ? String(code).toLowerCase() : code
         vm.$router.push(vm.localePath({ name: 'DrawMode-DrawRoom-code', params: { code: param } }))
       }
     )

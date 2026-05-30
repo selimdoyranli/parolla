@@ -59,7 +59,7 @@
               span.draw-room__lobby-countdown-unit sn
             p.draw-room__lobby-hint(v-if="lobbyHint") {{ lobbyHint }}
             Button.draw-room__lobby-btn(
-              v-if="roomKind !== 'system' && iAmHost && (isLobby || isGameEnd)"
+              v-if="roomKind !== drawRoomKindEnum.SYSTEM && iAmHost && (isLobby || isGameEnd)"
               type="primary"
               size="large"
               round
@@ -187,6 +187,7 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 import { useGuestIdentity } from '@/composables/useGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
+import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
 
 export default defineComponent({
   components: { Button, CreateGuestDrawerDialog, EnterPasswordDialog },
@@ -689,6 +690,7 @@ export default defineComponent({
       waitingPresent,
       waitingRequired,
       finalSecondsLeft,
+      drawRoomKindEnum,
       showGuestDialog,
       onGuestDialogClose
     }

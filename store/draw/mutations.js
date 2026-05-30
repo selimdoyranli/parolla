@@ -1,3 +1,5 @@
+import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
+
 export default {
   SET_STATUS(state, s) {
     state.status = s
@@ -45,7 +47,7 @@ export default {
     // System rooms loop 50-round cycles without ever entering 'lobby'. When
     // the cycle resets (next state is waiting / picking / drawing) drop the
     // previous final scoreboard so the overlay doesn't stick.
-    if (payload.kind === 'system' && payload.state !== 'finalScoreboard' && payload.state !== 'roundEnd') {
+    if (payload.kind === drawRoomKindEnum.SYSTEM && payload.state !== 'finalScoreboard' && payload.state !== 'roundEnd') {
       state.finalScores = null
       state.finalNextRoundInMs = 0
     }
@@ -203,13 +205,13 @@ export default {
   },
   UPSERT_LOBBY_ROOM(state, room) {
     if (!room || !room.code) return
-    const list = room.kind === 'system' ? state.systemRooms : state.communityRooms
+    const list = room.kind === drawRoomKindEnum.SYSTEM ? state.systemRooms : state.communityRooms
     const i = list.findIndex(r => r.code === room.code)
 
     if (i >= 0) list.splice(i, 1, room)
     else list.push(room)
 
-    if (room.kind !== 'system') state.publicRooms = state.communityRooms
+    if (room.kind !== drawRoomKindEnum.SYSTEM) state.publicRooms = state.communityRooms
   },
   REMOVE_LOBBY_ROOM(state, code) {
     state.systemRooms = state.systemRooms.filter(r => r.code !== code)

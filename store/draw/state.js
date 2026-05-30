@@ -5,7 +5,7 @@ export default () => ({
   communityRooms: [], // new — drives Topluluk Odaları tab
   systemRooms: [], // new — drives Resmi Odalar tab
   lobbySubscribed: false,
-  roomKind: null, // 'community' | 'system' | null
+  roomKind: null, // drawRoomKindEnum value | null
   room: null,
   players: [],
   hostId: null,
