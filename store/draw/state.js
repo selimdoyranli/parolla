@@ -1,7 +1,11 @@
 export default () => ({
   status: 'idle',
   channel: 'draw',
-  publicRooms: [],
+  publicRooms: [], // legacy; kept for backward compat
+  communityRooms: [], // new — drives Topluluk Odaları tab
+  systemRooms: [], // new — drives Resmi Odalar tab
+  lobbySubscribed: false,
+  roomKind: null, // 'community' | 'system' | null
   room: null,
   players: [],
   hostId: null,
@@ -29,5 +33,8 @@ export default () => ({
   correctGuesserIds: [],
   lastRoundResult: null,
   finalScores: null,
+  finalNextRoundInMs: 0, // new — system-room cycle timer
+  waitingPresent: 0, // new — current player count when state=waiting
+  waitingRequired: 2, // new
   lastError: null
 })
