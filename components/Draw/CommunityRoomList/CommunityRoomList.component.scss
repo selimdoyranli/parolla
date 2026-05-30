@@ -111,6 +111,15 @@
     border-radius: 999px;
   }
 
+  &__room-category {
+    padding: 2px 8px;
+    color: var(--color-brand-02);
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(255, 120, 120, 0.12);
+    border-radius: 999px;
+  }
+
   &__live {
     display: inline-flex;
     gap: 4px;

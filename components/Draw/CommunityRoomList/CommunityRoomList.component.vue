@@ -20,6 +20,7 @@
       .community-room-list__room-main
         .community-room-list__room-head
           span.community-room-list__room-name {{ r.hostName || r.code }}
+          span.community-room-list__room-category(v-if="categoryFor(r)") {{ categoryFor(r) }}
           .community-room-list__live(v-if="isLive(r.state)")
             .community-room-list__live-dot
             span.community-room-list__live-label CANLI
@@ -53,10 +54,14 @@ const LIVE_STATES = new Set(['picking', 'drawing', 'roundEnd'])
 export default defineComponent({
   components: { Button, Field },
   props: {
-    communityRooms: { type: Array, default: () => [] }
+    communityRooms: { type: Array, default: () => [] },
+    // slug → title map fetched by the lobby. We get only slugs from the WS
+    // and resolve the localized title here. Falls back to the slug itself
+    // until the map populates (Strapi fetch latency).
+    categoryTitles: { type: Object, default: () => ({}) }
   },
   emits: ['create', 'join'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const joinCode = ref('')
     const canJoin = computed(() => joinCode.value.length === 6)
 
@@ -76,7 +81,18 @@ export default defineComponent({
     const stateLabel = s => STATE_LABELS[s] || s
     const isLive = s => LIVE_STATES.has(s)
 
-    return { joinCode, canJoin, onCodeInput, onJoin, onCreate, stateLabel, isLive }
+    // Community rooms ship one category slug (radio-style selection in the
+    // create dialog), so always pull the first entry. Title resolves via
+    // the prop map; slug as a safe fallback before the fetch lands.
+    const categoryFor = r => {
+      const slug = Array.isArray(r.categories) && r.categories.length ? r.categories[0] : null
+
+      if (!slug) return ''
+
+      return props.categoryTitles[slug] || slug
+    }
+
+    return { joinCode, canJoin, onCodeInput, onJoin, onCreate, stateLabel, isLive, categoryFor }
   }
 })
 </script>

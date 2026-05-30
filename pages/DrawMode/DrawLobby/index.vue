@@ -13,7 +13,7 @@
     Tab(name="official" title="Resmi Odalar")
       SystemRoomList(:system-rooms="systemRooms" @join="onJoinSystem")
     Tab(name="community" title="Topluluk Odaları")
-      CommunityRoomList(:community-rooms="communityRooms" @create="onCreate" @join="onJoinCommunity")
+      CommunityRoomList(:community-rooms="communityRooms" :category-titles="categoryTitleMap" @create="onCreate" @join="onJoinCommunity")
 
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="showGuestDialog = false")
@@ -29,6 +29,7 @@ import { useDrawSocket } from '@/composables/useDrawSocket'
 import { useGuestIdentity } from '@/composables/useGuestIdentity'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
+import { buildCategoryTitleMap, sortDrawCategories } from '@/helpers/draw-categories'
 
 export default defineComponent({
   components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog, CreateGuestDrawerDialog },
@@ -53,14 +54,48 @@ export default defineComponent({
       diceBear: { seed: identity.value.avatarSeed }
     }))
 
-    const systemRooms = computed(() => store.state.draw.systemRooms)
+    // Apply the same Genel/Yemekler/Meslekler priority sort to the system
+    // room grid so it doesn't depend on Strapi seed order. r.slug + r.categoryTitle
+    // are already on the WS DTO so no extra fetch needed.
+    const systemRooms = computed(() => sortDrawCategories(store.state.draw.systemRooms || []))
     const communityRooms = computed(() =>
       store.state.draw.communityRooms.length ? store.state.draw.communityRooms : store.state.draw.publicRooms
     )
 
-    onMounted(() => {
+    // slug → title map for community room cards. Populated once from Strapi
+    // on mount; rooms only ship category slugs over WS so we resolve titles
+    // client-side. Empty map until the fetch resolves; the card falls back
+    // to the slug in that window.
+    const categoryTitleMap = ref({})
+
+    onMounted(async () => {
       if (isGuest.value) ensureIdentity()
       send(wsTypeEnum.DRAW_LOBBY_SUBSCRIBE)
+
+      try {
+        const { data } = await vm.$appFetch({
+          path: 'draw-word-categories',
+          query: {
+            'filters[isActive][$eq]': true,
+            'pagination[pageSize]': 100,
+            sort: 'title:asc',
+            locale: vm.$i18n.locale === 'en' ? 'en' : 'tr-TR'
+          }
+        })
+
+        const items = (data && data.data) || []
+        const normalized = items
+          .map(c => ({
+            slug: c.slug || (c.attributes && c.attributes.slug),
+            title: c.title || (c.attributes && c.attributes.title)
+          }))
+          .filter(c => c.slug && c.title)
+        const sorted = sortDrawCategories(normalized)
+
+        categoryTitleMap.value = buildCategoryTitleMap(sorted)
+      } catch (_e) {
+        categoryTitleMap.value = {}
+      }
     })
     onBeforeUnmount(() => {
       send(wsTypeEnum.DRAW_LOBBY_UNSUBSCRIBE)
@@ -100,6 +135,7 @@ export default defineComponent({
       activeTab,
       systemRooms,
       communityRooms,
+      categoryTitleMap,
       showCreate,
       onCreate,
       submitCreate,

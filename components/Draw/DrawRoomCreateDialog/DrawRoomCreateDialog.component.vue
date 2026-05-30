@@ -65,6 +65,7 @@ Dialog.draw-create-dialog(
 <script>
 import { defineComponent, reactive, ref, computed, onMounted, getCurrentInstance } from '@nuxtjs/composition-api'
 import { Dialog, Field, Button, Slider, Switch as VanSwitch, Tag } from 'vant'
+import { sortDrawCategories } from '@/helpers/draw-categories'
 
 export default defineComponent({
   components: {
@@ -121,9 +122,13 @@ export default defineComponent({
         })
 
         const items = (data && data.data) || []
-        allCats.value = items
+        const normalized = items
           .map(c => ({ slug: c.slug || (c.attributes && c.attributes.slug), title: c.title || (c.attributes && c.attributes.title) }))
           .filter(c => c.slug && c.title)
+
+        // Order tags so "Genel / Yemekler / Meslekler" appear first regardless
+        // of the Strapi alpha sort, then the rest fall back to locale alpha.
+        allCats.value = sortDrawCategories(normalized)
 
         if (allCats.value.length > 0 && !form.categorySlug) {
           form.categorySlug = allCats.value[0].slug
