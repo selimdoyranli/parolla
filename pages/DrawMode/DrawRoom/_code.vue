@@ -227,6 +227,16 @@ export default defineComponent({
       nowInterval = setInterval(() => {
         now.value = Date.now()
       }, 250)
+
+      // Direct-link join: if the user landed here by typing the URL or being
+      // shared a link, they aren't in any room yet — fire a join from the
+      // route param. Buffered by useDrawSocket if the socket is still
+      // connecting. Skipped if we already have a room (came from lobby).
+      const codeParam = vm.$route.params.code
+
+      if (codeParam && !$store.state.draw.room) {
+        send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
+      }
     })
     onBeforeUnmount(() => {
       if (nowInterval) clearInterval(nowInterval)

@@ -26,7 +26,9 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 export default defineComponent({
   components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog },
   layout: 'Default/Default.layout',
-  middleware: 'auth',
+  // No `middleware: 'auth'` — non-authenticated visitors can browse the
+  // official and community room lists as viewers. Join/create actions
+  // remain auth-gated via the `auth-control` directive on their buttons.
   setup() {
     const { send } = useDrawSocket()
     const vm = getCurrentInstance().proxy
@@ -64,10 +66,16 @@ export default defineComponent({
       send(wsTypeEnum.DRAW_ROOM_JOIN, { code })
     }
 
+    // For system rooms (kind='system') the URL should display the lowercase
+    // slug ("/ciz/oda/yemekler"); community rooms keep the canonical 6-char
+    // code as-is.
     store.watch(
       s => s.draw.room && s.draw.room.code,
       code => {
-        if (code) vm.$router.push(vm.localePath({ name: 'DrawMode-DrawRoom-code', params: { code } }))
+        if (!code) return
+        const kind = store.state.draw.roomKind
+        const param = kind === 'system' ? String(code).toLowerCase() : code
+        vm.$router.push(vm.localePath({ name: 'DrawMode-DrawRoom-code', params: { code: param } }))
       }
     )
 
