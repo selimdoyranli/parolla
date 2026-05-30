@@ -151,6 +151,43 @@ export default {
     state.roundIndex = 0
     state.iGuessedCorrectly = false
   },
+  // Wipe per-room state when the user leaves the room (back nav, leave
+  // button, or kick). Without this, state.room.code lingers, so the
+  // lobby's "code changed → push to room" watcher never fires on a
+  // subsequent re-join of the SAME room.
+  // Preserved: myId, status, lobby room lists, persisted guest identity.
+  LEAVE_ROOM(state) {
+    state.room = null
+    state.roomKind = null
+    state.players = []
+    state.hostId = null
+    state.iAmHost = false
+    state.iAmDrawer = false
+    state.drawerId = null
+    state.drawerName = null
+    state.nextDrawerId = null
+    state.nextDrawerName = null
+    state.roundIndex = 0
+    state.roundCount = 0
+    state.currentWord = null
+    state.maskedWord = null
+    state.category = null
+    state.durationMs = 0
+    state.remainingMs = 0
+    state.pickEndsAt = 0
+    state.nextRoundEndsAt = 0
+    state.strokes = []
+    state.chat = []
+    state.wordOptions = null
+    state.pickTimeoutMs = 0
+    state.iGuessedCorrectly = false
+    state.correctGuesserIds = []
+    state.lastRoundResult = null
+    state.finalScores = null
+    state.finalNextRoundInMs = 0
+    state.waitingPresent = 0
+    state.waitingRequired = 2
+  },
   SET_ERROR(state, e) {
     state.lastError = e
   },

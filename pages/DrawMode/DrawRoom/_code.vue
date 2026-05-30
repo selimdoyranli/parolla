@@ -270,9 +270,13 @@ export default defineComponent({
 
       // WS is a singleton shared with the lobby — leaving the route does not
       // close it, so the server still tracks us as room-resident and the
-      // next join hits `already_in_room`. Tell it we left.
+      // next join hits `already_in_room`. Tell it we left and wipe the
+      // local room state too: otherwise state.room.code lingers and the
+      // lobby's `code changed → push` watcher won't fire on a re-join of
+      // the same room.
       if ($store.state.draw.room) {
         send(wsTypeEnum.DRAW_ROOM_LEAVE)
+        $store.commit('draw/LEAVE_ROOM')
       }
     })
 
