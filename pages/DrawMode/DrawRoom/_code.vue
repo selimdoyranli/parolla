@@ -301,6 +301,24 @@ export default defineComponent({
       }
     })
 
+    // Direct-link join into a non-existent / collapsed community room
+    // bounces back to the lobby. Empty community rooms are torn down on
+    // the server (no host or last player left) so the canonical signal
+    // is `room_not_found`; `join_fail` covers capacity races. We avoid
+    // bouncing on `bad_password` — that path opens the password dialog.
+    watch(
+      () => $store.state.draw.lastError,
+      err => {
+        if (!err) return
+        const lobbyRedirectCodes = ['room_not_found', 'join_fail']
+
+        if (!lobbyRedirectCodes.includes(err.code)) return
+        $store.commit('draw/LEAVE_ROOM')
+        $store.commit('draw/SET_ERROR', null)
+        vm.$router.push(vm.localePath({ name: 'DrawMode-DrawLobby' }))
+      }
+    )
+
     const countdownSeconds = computed(() => {
       if (!nextRoundEndsAt.value) return 0
       const ms = Math.max(0, nextRoundEndsAt.value - now.value)
