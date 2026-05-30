@@ -504,6 +504,13 @@ export default {
     deleteProfilePhoto: {
       title: 'Delete profile photo',
       message: 'Your uploaded profile photo will be permanently removed. Continue?'
+    },
+    guestDrawer: {
+      title: 'Guest Profile',
+      regenerateAvatar: 'Regenerate Avatar',
+      regenerateName: 'Random',
+      confirm: 'Confirm',
+      usernameLabel: 'Username'
     }
   },
   clipboard: {
@@ -1125,5 +1132,9 @@ export default {
   },
   account: {
     edit: { title: 'Edit profile' }
+  },
+  common: {
+    invalidUsername: 'Invalid username',
+    guestLabel: '(guest)'
   }
 }

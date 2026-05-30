@@ -510,6 +510,13 @@ export default {
     deleteProfilePhoto: {
       title: 'Profil fotoğrafını sil',
       message: 'Yüklediğin profil fotoğrafı kalıcı olarak silinecek. Devam etmek istiyor musun?'
+    },
+    guestDrawer: {
+      title: 'Misafir Profili',
+      regenerateAvatar: 'Avatarı Yenile',
+      regenerateName: 'Rastgele',
+      confirm: 'Onayla',
+      usernameLabel: 'Kullanıcı Adı'
     }
   },
   clipboard: {
@@ -1149,5 +1156,9 @@ export default {
   },
   account: {
     edit: { title: 'Profili düzenle' }
+  },
+  common: {
+    invalidUsername: 'Geçersiz kullanıcı adı',
+    guestLabel: '(misafir)'
   }
 }
