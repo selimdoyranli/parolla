@@ -52,7 +52,18 @@
     background: var(--color-ui-01);
     border: 1px solid transparent;
     border-radius: 8px;
-    transition: background 0.15s, border-color 0.15s;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.12s;
+
+    &:hover {
+      background: var(--color-hover-01);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-brand-02);
+      outline-offset: 2px;
+    }
 
     &--me {
       background: var(--color-hover-01);

@@ -5,8 +5,6 @@
   align-items: center;
   justify-content: center;
   min-height: 0;
-  // Wrapper fills the board's free space; the actual canvas inside is the
-  // aspect-locked surface so flex-grow doesn't fight aspect-ratio.
   overflow: hidden;
   background: var(--color-ui-01);
   border: 1px dashed var(--color-border-02);
@@ -16,6 +14,7 @@
   &__el {
     display: block;
     width: auto;
+    width: 100%;
     max-width: 100%;
     height: auto;
     max-height: 100%;
@@ -24,11 +23,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     cursor: default;
     touch-action: none;
-    // Force a single aspect ratio across all clients so normalized (0–1)
-    // coordinates map to identical visual locations everywhere — without
-    // this, the drawer's right edge could fall outside a guesser's narrower
-    // canvas, and circles would render as ellipses.
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 12 / 7;
 
     &.is-drawable {
       cursor: crosshair;

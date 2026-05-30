@@ -4,7 +4,15 @@
     h3 Skor
     span.draw-scoreboard__count {{ sortedPlayers.length }}
   ul.draw-scoreboard__list
-    li.draw-scoreboard__row(v-for="(p, i) in sortedPlayers" :key="p.id" :class="rowClasses(p)")
+    li.draw-scoreboard__row(
+      v-for="(p, i) in sortedPlayers"
+      :key="p.id"
+      role="button"
+      tabindex="0"
+      :class="rowClasses(p)"
+      @click="openPlayerDialog(p)"
+      @keyup.enter="openPlayerDialog(p)"
+    )
       span.draw-scoreboard__rank {{ i + 1 }}
       PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="22")
       .draw-scoreboard__name
@@ -19,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -30,6 +38,8 @@ export default defineComponent({
     correctGuesserIds: { type: Array, default: () => [] }
   },
   setup(props) {
+    const store = useStore()
+
     const sortedPlayers = computed(() => [...props.players].sort((a, b) => (b.score || 0) - (a.score || 0)))
 
     const isDrawer = id => props.drawerId != null && String(id) === String(props.drawerId)
@@ -54,7 +64,16 @@ export default defineComponent({
       role: p.role
     })
 
-    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser }
+    // Mirrors PlayerAvatar's openPlayerDialogOnClick behaviour so the whole
+    // row is a click target — easier to hit than the 22px avatar alone.
+    const openPlayerDialog = p => {
+      if (p == null || p.id == null) return
+      store.commit('profile/SET_PLAYER_ID', p.id)
+      store.commit('profile/SET_PLAYER_USERNAME', p.name)
+      store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
+    }
+
+    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, openPlayerDialog }
   }
 })
 </script>

@@ -2,14 +2,21 @@
 .draw-chat
   .draw-chat__log(ref="log")
     .draw-chat__empty(v-if="!chat.length") {{ disabled ? 'Çizim sırasında sohbet kapalı' : 'Tahmininizi yazın…' }}
-    .draw-chat__msg(v-for="(m, i) in chat" :key="i" :class="msgClasses(m)")
-      template(v-if="m.isSystem")
-        span.draw-chat__sys
+    template(v-else)
+      .draw-chat__msg(v-for="(m, i) in chat" :key="i" :class="msgClasses(m)")
+        // ── System rows: inline label + text, no bubble, left-aligned ──
+        template(v-if="m.isSystem")
           AppIcon.draw-chat__sys-icon(:name="iconFor(m)" :width="14" :height="14")
+          span.draw-chat__sys-label Sistem
+          span.draw-chat__sep &nbsp;:&nbsp;
           span.draw-chat__sys-text {{ m.message }}
-      template(v-else)
-        b.draw-chat__author {{ m.playerName }}
-        span.draw-chat__text {{ m.message }}
+
+        // ── Player rows: inline avatar+username, then ": text", no bubble ──
+        template(v-else)
+          PlayerAvatar.draw-chat__avatar(with-username open-player-dialog-on-click :user="buildAvatarUser(m)" :size="22")
+          span.draw-chat__sep &nbsp;:&nbsp;
+          span.draw-chat__text {{ m.message }}
+
   .draw-chat__input
     Field.draw-chat__field(v-model="text" :placeholder="placeholder" :maxlength="64" :disabled="disabled" @keyup.enter.native="send")
     Button.draw-chat__send(type="primary" size="small" round :disabled="disabled || !text.trim()" @click="send") Gönder
@@ -23,6 +30,8 @@ export default defineComponent({
   components: { Field, Button },
   props: {
     chat: { type: Array, default: () => [] },
+    players: { type: Array, default: () => [] },
+    myId: { type: [String, Number], default: null },
     iAmDrawer: { type: Boolean, default: false },
     iGuessedCorrectly: { type: Boolean, default: false },
     isDrawing: { type: Boolean, default: false }
@@ -57,13 +66,20 @@ export default defineComponent({
     }
 
     const msgClasses = m => {
-      if (!m.isSystem) return {}
+      const isMine = !m.isSystem && props.myId != null && String(m.playerId) === String(props.myId)
+
+      if (!m.isSystem) {
+        return {
+          'draw-chat__msg--player': true,
+          'draw-chat__msg--mine': isMine
+        }
+      }
+
       const kind = kindOf(m)
 
       return {
-        system: true,
-        [`system--${kind}`]: true,
-        close: !!m.isCloseHint
+        'draw-chat__msg--system': true,
+        [`draw-chat__msg--system-${kind}`]: true
       }
     }
 
@@ -92,7 +108,34 @@ export default defineComponent({
       }
     )
 
-    return { text, log, disabled, placeholder, send, iconFor, msgClasses }
+    // Chat WS payloads only carry playerId + playerName. Look the sender up
+    // in the room's player list so PlayerAvatar can render real avatar art
+    // (uploaded photo / diceBear config) and so the click→player-dialog flow
+    // works for everyone, not just senders whose data was fully attached.
+    const playersById = computed(() => {
+      const map = new Map()
+
+      for (const p of props.players || []) {
+        if (p && p.id != null) map.set(String(p.id), p)
+      }
+
+      return map
+    })
+
+    const buildAvatarUser = message => {
+      const enriched = message.playerId != null ? playersById.value.get(String(message.playerId)) : null
+
+      return {
+        id: message.playerId,
+        username: enriched?.name || message.playerName,
+        avatarSource: enriched?.avatarSource,
+        profilePhoto: typeof enriched?.profilePhoto === 'string' ? { url: enriched.profilePhoto } : enriched?.profilePhoto,
+        diceBear: enriched?.diceBear,
+        role: enriched?.role
+      }
+    }
+
+    return { text, log, disabled, placeholder, send, iconFor, msgClasses, buildAvatarUser }
   }
 })
 </script>

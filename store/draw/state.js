@@ -18,6 +18,7 @@ export default () => ({
   category: null,
   durationMs: 0,
   remainingMs: 0,
+  pickEndsAt: 0,
   strokes: [],
   chat: [],
   wordOptions: null,

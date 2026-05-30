@@ -19,6 +19,7 @@ export default {
     state.drawerId = payload.currentDrawerId || null
     state.nextDrawerId = payload.nextDrawerId || null
     state.nextDrawerName = payload.nextDrawerName || null
+    state.pickEndsAt = payload.pickEndsAt || 0
 
     // When the server flips the room back to 'lobby' (8 s after GAME_END,
     // or after a host restart) the client needs to drop every per-game
@@ -33,6 +34,7 @@ export default {
       state.maskedWord = null
       state.wordOptions = null
       state.pickTimeoutMs = 0
+      state.pickEndsAt = 0
       state.durationMs = 0
       state.remainingMs = 0
       state.strokes = []

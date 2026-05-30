@@ -23,6 +23,13 @@
       min-width: 96px;
       text-align: center;
 
+      // Placeholder slots reserve podium space when fewer than 3 scorers exist
+      // so rank-1 stays centered (with rank-2 on the left, rank-3 on the right).
+      &--placeholder {
+        visibility: hidden;
+        pointer-events: none;
+      }
+
       @include media-breakpoint-up(mobile) {
         min-width: 160px;
       }

@@ -5,10 +5,10 @@
   height: 100%;
   min-height: 0;
   padding: 6px;
-  overflow: hidden; // page itself never scrolls; inner panels handle their own overflow
+  overflow: hidden;
   color: var(--color-text-01);
 
-  // ── Topbar ──────────────────────────────────────────────
+  // ── Topbar (no wordbar — word lives on the canvas now) ────
   &__topbar {
     display: flex;
     flex-wrap: wrap;
@@ -82,41 +82,71 @@
     font-weight: 700;
   }
 
-  // ── Board (word bar + canvas + toolbar) ────────────────
+  // ── Board ──────────────────────────────────────────────
   &__board {
     display: flex;
     flex: 1;
     flex-direction: column;
     gap: 6px;
-    min-height: 0; // critical so flex children can shrink below content
+    min-height: 0;
   }
 
-  &__wordbar {
+  // ── Board head: word (left) + timer (right) — fixed-height row OUTSIDE
+  //    the canvas so neither can overlap the drawing area.
+  &__board-head {
     display: flex;
     flex-shrink: 0;
-    flex-wrap: wrap;
     gap: 8px;
     align-items: center;
-    padding: 4px 10px;
+    justify-content: space-between;
+    min-height: 28px;
+    padding: 0 2px;
+  }
+
+  &__head-spacer {
+    flex: 0 0 0;
+  }
+
+  &__head-word {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    max-width: 60%;
+    padding: 3px 10px;
+    color: var(--color-text-01);
+    font-size: 12px;
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-01);
-    border-radius: 10px;
+    border-radius: 999px;
+
+    &--drawer {
+      color: var(--color-brand-02);
+      background: rgba(255, 120, 120, 0.12);
+      border-color: rgba(255, 120, 120, 0.45);
+    }
   }
 
-  &__wordbar-label {
-    color: var(--color-text-03);
-    font-weight: 600;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+  &__head-word-icon {
+    flex-shrink: 0;
+    opacity: 0.85;
   }
 
-  &__wordbar-spacer {
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  &__head-word ::v-deep .draw-masked-word {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  &__head-timer {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  &__stage {
+    position: relative;
+    display: flex;
     flex: 1;
-  }
-
-  &__wordbar-timer {
-    min-width: 110px;
+    min-height: 0;
   }
 
   &__canvas {
@@ -124,65 +154,307 @@
     min-height: 120px;
   }
 
-  // ── Panels (skor + sohbet yan yana, hep görünür) ──────
-  &__panels {
-    display: grid;
-    flex-shrink: 0;
-    grid-template-columns: minmax(0, 200px) 1fr;
-    gap: 6px;
-    height: clamp(120px, 22vh, 200px);
-    min-height: 0;
-  }
-
-  &__scoreboard,
-  &__chat {
-    height: 100%;
-    min-height: 0;
-  }
-
-  // ── Host actions ────────────────────────────────────────
-  &__host-actions {
+  // ── Toolbar slot: always reserves the toolbar's height so canvas geometry
+  //    never shifts when drawing starts/stops. The real DrawToolbar mounts
+  //    only when the local player is the active drawer.
+  &__toolbar-slot {
     display: flex;
-    flex-direction: column;
     flex-shrink: 0;
-    gap: 2px;
+    min-height: 38px;
   }
 
-  &__host-btn {
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  &__toolbar-slot ::v-deep .draw-toolbar {
+    width: 100%;
+  }
+
+  // ── Canvas overlays (lobby, picker, round-end, final) ────
+  &__canvas-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.55));
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    place-items: center;
+
+    &--picker {
+      z-index: 25;
+    }
+
+    &--round-end,
+    &--final {
+      z-index: 30;
+    }
+  }
+
+  // ── Lobby card (host start button, waiting messages) ─────
+  &__lobby-card {
+    width: min(420px, 86%);
+    padding: 22px 24px;
+    color: var(--color-text-01);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+  }
+
+  &__lobby-eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 3px 12px;
+    color: var(--color-brand-02);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    background: rgba(255, 120, 120, 0.14);
+    border-radius: 999px;
+  }
+
+  &__lobby-title {
+    margin: 4px 0 8px;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  &__lobby-hint {
+    margin: 0 0 14px;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  // Picking countdown shown to all players (drawer sees their own picker).
+  // display:flex + width:fit-content + margin auto makes each one its own
+  // centered row, so the loader can stack below it instead of sitting beside.
+  &__lobby-countdown {
+    display: flex;
+    gap: 4px;
+    align-items: baseline;
+    width: fit-content;
+    margin: 6px auto 10px;
+    padding: 4px 14px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+  }
+
+  &__lobby-countdown-num {
+    color: var(--color-brand-02);
+    font-weight: 800;
+    font-size: 22px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  &__lobby-countdown-unit {
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 11px;
+  }
+
+  &__lobby-btn {
     --van-button-primary-background-color: var(--color-brand-02);
     --van-button-primary-border-color: var(--color-brand-02);
 
     width: 100%;
   }
 
-  &__host-hint {
+  &__lobby-loader {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    width: fit-content;
+    margin: 6px auto 0;
+  }
+
+  &__lobby-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-brand-02);
+    border-radius: 999px;
+    animation: draw-room-pulse 1.2s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.18s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.36s;
+    }
+  }
+
+  @keyframes draw-room-pulse {
+    0%,
+    100% {
+      transform: scale(0.85);
+      opacity: 0.25;
+    }
+
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  // ── Word picker overlay ──────────────────────────────────
+  &__picker {
+    width: min(480px, 90%);
+    padding: 22px 26px;
+    color: var(--color-text-01);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+  }
+
+  &__picker-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 2px 10px;
+    color: var(--color-brand-02);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    background: rgba(255, 120, 120, 0.14);
+    border-radius: 999px;
+  }
+
+  &__picker-title {
+    margin: 0 0 14px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  &__picker-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  &__picker-opt {
+    padding: 12px 18px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 16px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.12s, border-color 0.15s, background 0.15s;
+
+    &:hover {
+      background: var(--color-hover-01);
+      border-color: var(--color-brand-02);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__picker-hint {
     margin: 0;
     color: var(--color-text-03);
-    font-size: 11px;
-    text-align: center;
+    font-size: 12px;
   }
 
-  // ── Overlay ─────────────────────────────────────────────
-  &__overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 80;
-    display: grid;
-    background: var(--color-overlay-01);
-    backdrop-filter: blur(4px);
-    place-items: center;
-  }
-
-  &__round-end,
-  &__final {
-    width: min(380px, 92%);
+  // ── Round-end card (canvas-relative now) ─────────────────
+  &__round-end {
+    width: min(380px, 88%);
     padding: 18px;
     color: var(--color-text-01);
     text-align: center;
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-01);
     border-radius: 14px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+  }
+
+  // ── Final card — wider to fit the Leaderboard podium ─────
+  &__final {
+    width: min(560px, 92%);
+    padding: 22px 22px 16px;
+    color: var(--color-text-01);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+  }
+
+  &__final-board {
+    margin-top: 6px;
+
+    // Scale podium down to fit inside the canvas overlay
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .top-scorer-list {
+      margin: 6px 0;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .top-scorer-list-item {
+      min-width: 110px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .top-scorer-list-item-score {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+  }
+
+  // ── Clear-confirm overlay ───────────────────────────────
+  &__confirm {
+    width: min(380px, 88%);
+    padding: 22px;
+    color: var(--color-text-01);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  &__confirm-icon {
+    color: var(--color-danger-02);
+  }
+
+  &__confirm-title {
+    margin: 8px 0 4px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  &__confirm-text {
+    margin: 0 0 16px;
+    color: var(--color-text-03);
+    font-size: 13px;
+  }
+
+  &__confirm-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  &__confirm-btn {
+    min-width: 110px;
+
+    &--cancel {
+      --van-button-default-background-color: var(--color-ui-01);
+      --van-button-default-border-color: var(--color-border-02);
+
+      color: var(--color-text-02);
+    }
+
+    &--danger {
+      --van-button-primary-background-color: var(--color-danger-02);
+      --van-button-primary-border-color: var(--color-danger-02);
+    }
   }
 
   &__round-end-eyebrow {
@@ -257,46 +529,98 @@
     font-size: 11px;
   }
 
-  &__final-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin: 10px 0 0;
-    padding: 0;
-    text-align: left;
-    list-style: none;
+  // ── 5s transient canvas toast ───────────────────────────
+  // Survives chat scroll-out for high-signal events: turn-lost (danger) and
+  // big positive moments (success).
+  &__canvas-toast {
+    position: absolute;
+    bottom: 56px;
+    left: 50%;
+    z-index: 35;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 18px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 999px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    transform: translateX(-50%);
 
-    li {
-      display: grid;
-      grid-template-columns: 20px 1fr auto;
-      gap: 8px;
-      align-items: center;
-      padding: 6px 10px;
-      background: var(--color-ui-01);
-      border-radius: 8px;
+    &--danger {
+      color: #fff;
+      background: linear-gradient(135deg, #f04444, #c62828);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    &--success {
+      color: #fff;
+      background: linear-gradient(135deg, #2ea860, #1e7d40);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    &--warning {
+      color: var(--color-text-04);
+      background: linear-gradient(135deg, #ffb74d, #f57c00);
+      border-color: rgba(255, 255, 255, 0.18);
     }
   }
 
-  &__final-rank {
-    color: var(--color-text-03);
-    font-weight: 700;
-    font-size: 12px;
+  &__canvas-toast-icon {
+    flex-shrink: 0;
   }
 
-  &__final-name {
+  &__canvas-toast-text {
+    max-width: min(70vw, 520px);
     overflow: hidden;
-    color: var(--color-text-01);
-    font-weight: 600;
-    font-size: 13px;
+    line-height: 1.3;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  &__final-score {
-    color: var(--color-brand-02);
-    font-weight: 700;
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
+  // ── Transitions ─────────────────────────────────────────
+  .draw-room-overlay-enter-active,
+  .draw-room-overlay-leave-active {
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .draw-room-overlay-enter,
+  .draw-room-overlay-leave-to {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+
+  .draw-room-toast-enter-active,
+  .draw-room-toast-leave-active {
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .draw-room-toast-enter {
+    transform: translate(-50%, 14px);
+    opacity: 0;
+  }
+
+  .draw-room-toast-leave-to {
+    transform: translate(-50%, -8px);
+    opacity: 0;
+  }
+
+  &__panels {
+    display: grid;
+    flex-shrink: 0;
+    grid-template-columns: minmax(0, 300px) 1fr;
+    gap: 6px;
+    height: clamp(200px, 32vh, 320px);
+    min-height: 0;
+  }
+
+  &__scoreboard,
+  &__chat {
+    height: 100%;
+    min-height: 0;
   }
 
   // ── Narrow viewport ─────────────────────────────────────
@@ -314,9 +638,27 @@
       font-size: 12px;
     }
 
+    &__head-word {
+      max-width: 70%;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    &__head-word ::v-deep .draw-masked-word {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+    }
+
+    &__toolbar-slot {
+      // Toolbar wraps to 2 rows on narrow screens — reserve enough space
+      // so the canvas still doesn't shift when it appears/disappears.
+      min-height: 68px;
+    }
+
     &__panels {
       grid-template-columns: 1fr;
-      height: clamp(160px, 26vh, 240px);
+      height: clamp(240px, 38vh, 360px);
     }
   }
 }

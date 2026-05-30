@@ -32,7 +32,9 @@ const TOOL_HINTS = {
   brush: 'Fırça',
   line: 'Çizgi',
   rect: 'Dikdörtgen',
+  'rect-fill': 'Dolu Dikdörtgen',
   circle: 'Daire',
+  'circle-fill': 'Dolu Daire',
   fill: 'Doldur',
   eraser: 'Silgi'
 }
@@ -120,17 +122,19 @@ export default defineComponent({
         return
       }
 
-      if (s.tool === 'rect') {
+      if (s.tool === 'rect' || s.tool === 'rect-fill') {
         const x = Math.min(s.x1, s.x2) * w
         const y = Math.min(s.y1, s.y2) * h
         const rw = Math.abs(s.x2 - s.x1) * w
         const rh = Math.abs(s.y2 - s.y1) * h
-        c.strokeRect(x, y, rw, rh)
+
+        if (s.tool === 'rect-fill') c.fillRect(x, y, rw, rh)
+        else c.strokeRect(x, y, rw, rh)
 
         return
       }
 
-      if (s.tool === 'circle') {
+      if (s.tool === 'circle' || s.tool === 'circle-fill') {
         const cx = ((s.x1 + s.x2) / 2) * w
         const cy = ((s.y1 + s.y2) / 2) * h
         const rx = (Math.abs(s.x2 - s.x1) / 2) * w
@@ -139,7 +143,9 @@ export default defineComponent({
 
         if (c.ellipse) c.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2)
         else c.arc(cx, cy, Math.max(rx, ry), 0, Math.PI * 2)
-        c.stroke()
+
+        if (s.tool === 'circle-fill') c.fill()
+        else c.stroke()
 
         return
       }

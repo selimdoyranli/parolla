@@ -5,10 +5,10 @@
       span.draw-room__crumb-label Oda
       span.draw-room__crumb-code {{ $route.params.code }}
     .draw-room__chips
-      span.draw-room__chip.draw-room__chip--drawer(v-if="drawerName")
+      span.draw-room__chip.draw-room__chip--drawer(v-if="isDrawing && activeDrawerName")
         AppIcon(name="tabler:pencil" :width="12" :height="12")
         span.draw-room__chip-label Çiziyor
-        span.draw-room__chip-name {{ drawerName }}
+        span.draw-room__chip-name {{ activeDrawerName }}
       span.draw-room__chip.draw-room__chip--next(v-if="nextDrawerName && !isLobby && !isGameEnd")
         AppIcon(name="tabler:player-track-next" :width="12" :height="12")
         span.draw-room__chip-label Sıradaki
@@ -18,38 +18,130 @@
         span.draw-room__chip-name {{ roundIndex + 1 }} / {{ roundCount }}
 
   .draw-room__board
-    .draw-room__wordbar(v-if="iAmDrawer && currentWord")
-      span.draw-room__wordbar-label Kelimen
-      DrawMaskedWord(:plain="currentWord")
-      .draw-room__wordbar-spacer
-      DrawTimer.draw-room__wordbar-timer(v-if="durationMs && isDrawing" :remainingMs="remainingMs" :durationMs="durationMs")
-    .draw-room__wordbar(v-else-if="maskedWord")
-      span.draw-room__wordbar-label Tahmin et
-      DrawMaskedWord(:mask="maskedWord")
-      .draw-room__wordbar-spacer
-      DrawTimer.draw-room__wordbar-timer(v-if="durationMs && isDrawing" :remainingMs="remainingMs" :durationMs="durationMs")
+    // Word + timer live OUTSIDE the canvas now so they can never visually
+    // overlap the drawing area. Both slots are always rendered so the row
+    // keeps a stable height regardless of game state (no layout shift when
+    // drawing starts/ends).
+    .draw-room__board-head
+      .draw-room__head-word(v-if="wordBadgeVisible" :class="{ 'draw-room__head-word--drawer': iAmDrawer }")
+        AppIcon.draw-room__head-word-icon(:name="iAmDrawer ? 'tabler:eye' : 'tabler:bulb'" :width="12" :height="12")
+        DrawMaskedWord(v-if="iAmDrawer && currentWord" :plain="currentWord")
+        DrawMaskedWord(v-else-if="maskedWord" :mask="maskedWord")
+      .draw-room__head-spacer(v-else)
+      .draw-room__head-timer(v-if="durationMs && isDrawing")
+        DrawTimer(:remainingMs="remainingMs" :durationMs="durationMs")
+      .draw-room__head-spacer(v-else)
 
-    DrawCanvas.draw-room__canvas(
-      :color="color"
-      :drawable="iAmDrawer && isDrawing"
-      :strokes="strokes"
-      :tool="tool"
-      :size="size"
-      @chunk="onChunk"
-      @stroke-end="onStrokeEnd"
-    )
+    .draw-room__stage
+      DrawCanvas.draw-room__canvas(
+        :color="color"
+        :drawable="iAmDrawer && isDrawing"
+        :strokes="strokes"
+        :tool="tool"
+        :size="size"
+        @chunk="onChunk"
+        @stroke-end="onStrokeEnd"
+      )
 
-    DrawToolbar(
-      v-if="iAmDrawer && isDrawing"
-      :color="color"
-      :tool="tool"
-      :size="size"
-      @update:tool="t => (tool = t)"
-      @update:color="c => (color = c)"
-      @update:size="s => (size = s)"
-      @undo="onUndo"
-      @clear="onClear"
-    )
+      // ── Canvas overlays. activeOverlay is a single source of truth so only
+      //    one overlay can be visible at a time — prevents the round-end card
+      //    from hanging around and covering the picker once picking starts.
+      // ── Lobby / waiting overlay (start game, need 2 players, waiting for round) ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--lobby(v-if="activeOverlay === 'lobby'")
+          .draw-room__lobby-card
+            .draw-room__lobby-eyebrow {{ lobbyEyebrow }}
+            h3.draw-room__lobby-title {{ lobbyTitle }}
+            // Picking countdown — visible to non-drawers so they see the
+            // same urgency the drawer feels in their picker.
+            .draw-room__lobby-countdown(v-if="pickingCountdown > 0")
+              span.draw-room__lobby-countdown-num {{ pickingCountdown }}
+              span.draw-room__lobby-countdown-unit sn
+            p.draw-room__lobby-hint(v-if="lobbyHint") {{ lobbyHint }}
+            Button.draw-room__lobby-btn(
+              v-if="iAmHost && (isLobby || isGameEnd)"
+              type="primary"
+              size="large"
+              round
+              :disabled="startDisabled"
+              @click="startGame"
+            ) {{ startLabel }}
+            .draw-room__lobby-loader(v-else)
+              span.draw-room__lobby-dot
+              span.draw-room__lobby-dot
+              span.draw-room__lobby-dot
+
+      // ── Word picker overlay (drawer only) ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--picker(v-if="activeOverlay === 'picker'")
+          .draw-room__picker
+            span.draw-room__picker-eyebrow Sıra Sende
+            h3.draw-room__picker-title Çizmek için bir kelime seç
+            .draw-room__picker-opts
+              button.draw-room__picker-opt(v-for="w in wordOptions" :key="w" @click="onPick(w)") {{ w }}
+            p.draw-room__picker-hint {{ pickSecondsLeft }}sn içinde seçmezsen sıranı kaybedersin.
+
+      // ── Round-end overlay ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--round-end(v-if="activeOverlay === 'roundEnd'")
+          .draw-room__round-end
+            span.draw-room__round-end-eyebrow Tur Sonu
+            h3.draw-room__round-end-title
+              | Kelime:&nbsp;
+              b {{ lastRoundResult.word }}
+            p.draw-room__round-end-reason(v-if="lastRoundResult.reason === 'drawer_left'") Çizen oyundan ayrıldı
+            p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'all_guessed'") Herkes bildi!
+            p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'time_up'") Süre doldu
+            .draw-room__round-end-countdown(v-if="!lastRoundResult.isLastRound")
+              span.draw-room__round-end-countdown-label
+                template(v-if="lastRoundResult.nextDrawerName") Sıradaki: <b>{{ lastRoundResult.nextDrawerName }}</b>
+                template(v-else) Sıradaki tur başlıyor
+              .draw-room__round-end-countdown-clock
+                span.draw-room__round-end-countdown-num {{ countdownSeconds }}
+                span.draw-room__round-end-countdown-unit sn
+            .draw-room__round-end-countdown(v-else)
+              span.draw-room__round-end-countdown-label Oyun bitiyor…
+
+      // ── Final scores overlay — top 3 via Leaderboard ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--final(v-if="activeOverlay === 'final'")
+          .draw-room__final
+            span.draw-room__round-end-eyebrow Oyun Bitti
+            h3.draw-room__round-end-title Final Skoru
+            Leaderboard.draw-room__final-board(:scorers="finalTopThree")
+
+      // ── Clear-confirmation overlay (drawer-only) ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--confirm(v-if="confirmClearOpen")
+          .draw-room__confirm
+            AppIcon.draw-room__confirm-icon(name="tabler:trash" :width="28" :height="28")
+            h3.draw-room__confirm-title Çizimi temizle?
+            p.draw-room__confirm-text Tüm çizim silinecek. Bu işlem geri alınamaz.
+            .draw-room__confirm-actions
+              Button.draw-room__confirm-btn.draw-room__confirm-btn--cancel(round @click="cancelClear") Vazgeç
+              Button.draw-room__confirm-btn.draw-room__confirm-btn--danger(type="primary" round @click="confirmClear") Evet, temizle
+
+      // ── 5s transient turn-lost toast ──
+      transition(name="draw-room-toast")
+        .draw-room__canvas-toast(v-if="canvasToast" :class="`draw-room__canvas-toast--${canvasToast.kind}`")
+          AppIcon.draw-room__canvas-toast-icon(:name="canvasToastIcon" :width="18" :height="18")
+          span.draw-room__canvas-toast-text {{ canvasToast.message }}
+
+    // Toolbar slot is always rendered with a fixed min-height so the canvas
+    // never shifts when drawing starts/ends. The DrawToolbar itself only
+    // mounts when the local player is the active drawer.
+    .draw-room__toolbar-slot
+      DrawToolbar(
+        v-if="iAmDrawer && isDrawing"
+        :color="color"
+        :tool="tool"
+        :size="size"
+        @update:tool="t => (tool = t)"
+        @update:color="c => (color = c)"
+        @update:size="s => (size = s)"
+        @undo="onUndo"
+        @clear="askClear"
+      )
 
   .draw-room__panels
     DrawScoreboard.draw-room__scoreboard(
@@ -61,50 +153,17 @@
     )
     DrawChat.draw-room__chat(
       :chat="chat"
+      :players="players"
+      :myId="myId"
       :iAmDrawer="iAmDrawer"
       :iGuessedCorrectly="iGuessedCorrectly"
       :isDrawing="isDrawing"
       @send="onSend"
     )
-
-  .draw-room__host-actions(v-if="iAmHost && (isLobby || isGameEnd)")
-    Button.draw-room__host-btn(type="primary" size="large" block round :disabled="startDisabled" @click="startGame") {{ startLabel }}
-    p.draw-room__host-hint(v-if="isLobby && players.length < 2") Başlatmak için en az 2 oyuncu gerek.
-
-  DrawWordPicker(v-if="iAmDrawer && wordOptions" :words="wordOptions" :timeoutMs="pickTimeoutMs" @pick="onPick")
-
-  .draw-room__overlay(v-if="lastRoundResult && !finalScores")
-    .draw-room__round-end
-      span.draw-room__round-end-eyebrow Tur Sonu
-      h3.draw-room__round-end-title
-        | Kelime:&nbsp;
-        b {{ lastRoundResult.word }}
-      p.draw-room__round-end-reason(v-if="lastRoundResult.reason === 'drawer_left'") Çizen oyundan ayrıldı
-      p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'all_guessed'") Herkes bildi!
-      p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'time_up'") Süre doldu
-      .draw-room__round-end-countdown(v-if="!lastRoundResult.isLastRound")
-        span.draw-room__round-end-countdown-label
-          template(v-if="lastRoundResult.nextDrawerName") Sıradaki: <b>{{ lastRoundResult.nextDrawerName }}</b>
-          template(v-else) Sıradaki tur başlıyor
-        .draw-room__round-end-countdown-clock
-          span.draw-room__round-end-countdown-num {{ countdownSeconds }}
-          span.draw-room__round-end-countdown-unit sn
-      .draw-room__round-end-countdown(v-else)
-        span.draw-room__round-end-countdown-label Oyun bitiyor…
-
-  .draw-room__overlay(v-if="finalScores")
-    .draw-room__final
-      span.draw-room__round-end-eyebrow Oyun Bitti
-      h3.draw-room__round-end-title Final Skoru
-      ol.draw-room__final-list
-        li(v-for="(p, i) in finalScores" :key="p.playerId")
-          span.draw-room__final-rank {{ i + 1 }}
-          span.draw-room__final-name {{ p.name }}
-          span.draw-room__final-score {{ p.totalScore }}
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBeforeUnmount, watch } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
@@ -138,6 +197,8 @@ export default defineComponent({
     const iGuessedCorrectly = computed(() => $store.state.draw.iGuessedCorrectly)
     const isDrawing = computed(() => $store.getters['draw/isDrawing'])
     const isLobby = computed(() => $store.getters['draw/isLobby'])
+    const isPicking = computed(() => $store.getters['draw/isPicking'])
+    const isRoundEnd = computed(() => $store.getters['draw/isRoundEnd'])
     const isGameEnd = computed(() => $store.getters['draw/isGameEnd'])
     const remainingMs = computed(() => $store.state.draw.remainingMs)
     const durationMs = computed(() => $store.state.draw.durationMs)
@@ -148,8 +209,10 @@ export default defineComponent({
     const lastRoundResult = computed(() => $store.state.draw.lastRoundResult)
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
+    const pickEndsAt = computed(() => $store.state.draw.pickEndsAt)
 
-    // Local ticker drives the round-end countdown without needing a per-second WS message.
+    // Local ticker drives the round-end countdown and word-pick timer without
+    // needing a per-second WS message.
     const now = ref(Date.now())
     let nowInterval = null
     onMounted(() => {
@@ -168,8 +231,170 @@ export default defineComponent({
       return Math.ceil(ms / 1000)
     })
 
+    // Mirror DrawWordPicker's internal countdown so we can render the hint
+    // inside the canvas overlay without re-mounting the legacy picker.
+    const pickerStartedAt = ref(0)
+    watch(
+      () => wordOptions.value,
+      v => {
+        if (v) pickerStartedAt.value = Date.now()
+      }
+    )
+    const pickSecondsLeft = computed(() => {
+      if (!wordOptions.value || !pickTimeoutMs.value || !pickerStartedAt.value) return 0
+      const elapsed = now.value - pickerStartedAt.value
+
+      return Math.max(0, Math.ceil((pickTimeoutMs.value - elapsed) / 1000))
+    })
+
+    // Server broadcasts `pickEndsAt` in room_state during picking so non-drawers
+    // can render the same urgency the drawer feels in their picker overlay.
+    const pickingCountdown = computed(() => {
+      if (!pickEndsAt.value || !isPicking.value) return 0
+
+      return Math.max(0, Math.ceil((pickEndsAt.value - now.value) / 1000))
+    })
+
     const startDisabled = computed(() => isLobby.value && players.value.length < 2)
     const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
+
+    const wordBadgeVisible = computed(() => {
+      if (!isDrawing.value) return false
+
+      return (iAmDrawer.value && !!currentWord.value) || !!maskedWord.value
+    })
+
+    // Single source of truth for which canvas overlay is showing. Picker
+    // outranks the stale round-end card so the drawer never has tur-sonu
+    // covering their word options; the round-end card disappears once the
+    // countdown elapses so non-drawers don't get stuck on "0sn" while the
+    // drawer is still picking.
+    const activeOverlay = computed(() => {
+      if (finalScores.value) return 'final'
+
+      if (iAmDrawer.value && wordOptions.value) return 'picker'
+
+      if (lastRoundResult.value) {
+        // Last round: keep card up until GAME_END flips finalScores
+        if (lastRoundResult.value.isLastRound) return 'roundEnd'
+
+        // Mid-game: only while the visible countdown is still ticking
+        if (countdownSeconds.value > 0) return 'roundEnd'
+
+        // Countdown expired but ROUND_START hasn't arrived → waiting card
+        return 'lobby'
+      }
+
+      if (isPicking.value && !iAmDrawer.value) return 'lobby'
+
+      if (isGameEnd.value) return 'lobby'
+
+      if (isLobby.value) return 'lobby'
+
+      if (isRoundEnd.value) return 'lobby' // safety net for any post-roundEnd gap
+
+      return null
+    })
+
+    const lobbyEyebrow = computed(() => {
+      if (isGameEnd.value && !lastRoundResult.value) return 'Oyun Sonu'
+
+      if (isLobby.value) return 'Lobi'
+
+      if (isPicking.value || lastRoundResult.value) return 'Hazırlanıyor'
+
+      return 'Bekleniyor'
+    })
+
+    // SET_ROOM_STATE updates drawerId during picking but leaves drawerName
+    // pointing at the previous round's drawer (ROUND_START is the only writer
+    // for drawerName). Resolve the live name straight from the players list
+    // so "X kelime seçiyor…" can't lag the actual drawer.
+    const activeDrawerName = computed(() => {
+      if (drawerId.value == null) return drawerName.value || ''
+      const live = (players.value || []).find(p => String(p.id) === String(drawerId.value))
+
+      return live?.name || drawerName.value || ''
+    })
+
+    const lobbyTitle = computed(() => {
+      if (isGameEnd.value && !lastRoundResult.value) return 'Yeni Tur İçin Hazır mısın?'
+
+      if (isLobby.value) return iAmHost.value ? 'Oyunu Başlat' : 'Host oyunu başlatacak'
+
+      // During picking phase activeDrawerName names whoever is picking (resolved
+      // from the live players list, not the stale drawerName state field).
+      if (isPicking.value && !iAmDrawer.value) {
+        return activeDrawerName.value ? `${activeDrawerName.value} kelime seçiyor…` : 'Çizen kelime seçiyor…'
+      }
+
+      return 'Yeni tur bekleniyor…'
+    })
+
+    const lobbyHint = computed(() => {
+      if (isLobby.value && players.value.length < 2) return 'Başlatmak için en az 2 oyuncu gerek.'
+
+      if (isLobby.value && !iAmHost.value) return 'Yalnızca host başlatabilir.'
+
+      return ''
+    })
+
+    // ── 5s transient turn-lost / important toast ──
+    // The user complained that "X sırasını kaybetti" (drawer didn't pick a
+    // word — broadcast as a 'danger' systemKind chat) gets buried when new
+    // chat messages arrive. We surface these as a 5-second toast directly on
+    // the canvas so they survive scrolling chat.
+    const canvasToast = ref(null)
+    let toastTimer = null
+    const lastSeenChatTs = ref(0)
+    onMounted(() => {
+      // Treat any history already loaded at mount as "seen" so we don't
+      // flash an old danger message when re-entering the room.
+      const last = chat.value[chat.value.length - 1]
+      lastSeenChatTs.value = last?.timestamp || Date.now()
+    })
+    watch(
+      () => chat.value.length,
+      () => {
+        const last = chat.value[chat.value.length - 1]
+
+        if (!last || !last.timestamp || last.timestamp <= lastSeenChatTs.value) return
+        lastSeenChatTs.value = last.timestamp
+
+        if (!last.isSystem) return
+
+        // Only surface high-signal events as canvas toasts: turn-lost (danger)
+        // and round-end-shaped guesses (success). Info-level join/leave noise
+        // stays in chat only.
+        if (last.systemKind !== 'danger' && last.systemKind !== 'success') return
+
+        if (toastTimer) clearTimeout(toastTimer)
+        canvasToast.value = {
+          kind: last.systemKind,
+          message: last.message,
+          ts: last.timestamp
+        }
+        toastTimer = setTimeout(() => {
+          canvasToast.value = null
+          toastTimer = null
+        }, 5000)
+      }
+    )
+    onBeforeUnmount(() => {
+      if (toastTimer) clearTimeout(toastTimer)
+    })
+
+    const canvasToastIcon = computed(() => {
+      if (!canvasToast.value) return 'tabler:info-circle'
+
+      if (canvasToast.value.kind === 'danger') return 'tabler:alert-octagon'
+
+      if (canvasToast.value.kind === 'success') return 'tabler:circle-check'
+
+      if (canvasToast.value.kind === 'warning') return 'tabler:alert-triangle'
+
+      return 'tabler:info-circle'
+    })
 
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)
@@ -184,6 +409,47 @@ export default defineComponent({
       $store.commit('draw/CLEAR_STROKES')
       send(wsTypeEnum.DRAW_CLEAR)
     }
+
+    // ── Clear-confirmation overlay ──
+    // The toolbar's trash button now asks instead of acting. onClear() only
+    // fires after the user confirms in the canvas-relative overlay below.
+    const confirmClearOpen = ref(false)
+    const askClear = () => {
+      if (!strokes.value.length) return
+      confirmClearOpen.value = true
+    }
+    const cancelClear = () => {
+      confirmClearOpen.value = false
+    }
+    const confirmClear = () => {
+      onClear()
+      confirmClearOpen.value = false
+    }
+
+    // ── Final scores → Leaderboard (top 3 only) ──
+    // The Leaderboard component takes a `scorers` array shaped like the player
+    // dialog expects: { id, username, score, ...avatarFields }. The server only
+    // emits { playerId, name, totalScore } in finalScores, so we enrich each
+    // entry from the live players list so avatars (diceBear/profilePhoto)
+    // render correctly on the podium.
+    const finalTopThree = computed(() => {
+      if (!finalScores.value) return []
+      const byId = new Map((players.value || []).map(p => [String(p.id), p]))
+
+      return finalScores.value.slice(0, 3).map(f => {
+        const live = byId.get(String(f.playerId)) || {}
+
+        return {
+          id: f.playerId,
+          username: f.name,
+          score: f.totalScore,
+          avatarSource: live.avatarSource,
+          profilePhoto: typeof live.profilePhoto === 'string' ? { url: live.profilePhoto } : live.profilePhoto,
+          diceBear: live.diceBear,
+          role: live.role
+        }
+      })
+    })
     const onPick = word => send(wsTypeEnum.DRAW_WORD_CHOOSE, { word })
 
     const onSend = text => {
@@ -213,6 +479,8 @@ export default defineComponent({
       iGuessedCorrectly,
       isDrawing,
       isLobby,
+      isPicking,
+      isRoundEnd,
       isGameEnd,
       remainingMs,
       durationMs,
@@ -223,15 +491,30 @@ export default defineComponent({
       lastRoundResult,
       finalScores,
       countdownSeconds,
+      pickSecondsLeft,
+      pickingCountdown,
       startDisabled,
       startLabel,
+      wordBadgeVisible,
+      activeOverlay,
+      activeDrawerName,
+      lobbyEyebrow,
+      lobbyTitle,
+      lobbyHint,
+      canvasToast,
+      canvasToastIcon,
       onChunk,
       onStrokeEnd,
       onUndo,
       onClear,
       onPick,
       onSend,
-      startGame
+      startGame,
+      confirmClearOpen,
+      askClear,
+      cancelClear,
+      confirmClear,
+      finalTopThree
     }
   }
 })
