@@ -77,6 +77,27 @@ export default {
           /* ignore toast plugin not ready */
         }
         break
+      case wsTypeEnum.DRAW_LOBBY_SNAPSHOT:
+        commit('SET_LOBBY_SNAPSHOT', {
+          systemRooms: message.systemRooms,
+          communityRooms: message.communityRooms
+        })
+        break
+      case wsTypeEnum.DRAW_LOBBY_ROOM_UPSERT:
+        commit('UPSERT_LOBBY_ROOM', message.room)
+        break
+      case wsTypeEnum.DRAW_LOBBY_ROOM_REMOVE:
+        commit('REMOVE_LOBBY_ROOM', message.code)
+        break
+      case wsTypeEnum.DRAW_WAITING:
+        commit('SET_WAITING', { present: message.present, required: message.required })
+        break
+      case wsTypeEnum.DRAW_FINAL_SCOREBOARD:
+        commit('SET_FINAL_SCOREBOARD', {
+          scores: message.scores,
+          nextRoundInMs: message.nextRoundInMs
+        })
+        break
       default:
         break
     }
