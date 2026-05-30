@@ -2,21 +2,14 @@
 .system-room-list
   .system-room-list__empty(v-if="!grouped.length") Resmi oda yok.
 
-  .system-room-list__group(
-    v-for="g in grouped"
-    :key="g.slug"
-  )
+  .system-room-list__group(v-for="g in grouped" :key="g.slug")
     h4.system-room-list__group-title {{ g.title }}
 
     .system-room-list__cards
-      .system-room-list__card(
-        v-for="r in g.rooms"
-        :key="r.code"
-        @click="$emit('join', linkFor(r))"
-      )
+      .system-room-list__card(v-for="r in g.rooms" :key="r.code" @click="$emit('join', linkFor(r))")
         .system-room-list__card-title
           span {{ g.title }}
-          span.system-room-list__card-sub(v-if="r.subIndex > 1") &nbsp;#{{ r.subIndex }}
+          span.system-room-list__card-sub(v-if="r.subIndex > 1") &nbsp;{{ '#' + r.subIndex }}
         .system-room-list__card-meta
           | {{ r.playerCount }}/{{ r.capacity }} ·
           | &nbsp;{{ stateLabel(r) }}
