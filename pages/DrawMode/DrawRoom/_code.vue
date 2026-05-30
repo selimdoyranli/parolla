@@ -173,7 +173,6 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 export default defineComponent({
   components: { Button },
   layout: 'Default/Default.layout',
-  middleware: 'auth',
   setup() {
     const { send } = useDrawSocket()
     const vm = getCurrentInstance().proxy
