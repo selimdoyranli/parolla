@@ -1,0 +1,38 @@
+.community-room-list {
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__join {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__join-field {
+    flex: 1;
+  }
+
+  &__empty {
+    padding: 24px 0;
+    color: #999;
+    text-align: center;
+  }
+
+  &__room-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__room-code {
+    font-weight: 600;
+  }
+
+  &__room-meta {
+    color: #999;
+    font-size: 12px;
+  }
+}
