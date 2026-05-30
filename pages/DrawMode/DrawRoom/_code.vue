@@ -208,21 +208,36 @@ export default defineComponent({
     const vm = getCurrentInstance().proxy
     const $store = vm.$store
 
-    useMeta(() => ({
-      title: `${i18n.t('seo.drawRoom.title')} - ${i18n.t('seo.main.title')}`,
-      meta: [
-        { hid: 'description', name: 'description', content: i18n.t('seo.drawRoom.description') },
-        { hid: 'keywords', name: 'keywords', content: i18n.t('seo.drawRoom.keywords') },
-        {
-          hid: 'og:title',
-          name: 'og:title',
-          content: `${i18n.t('seo.drawRoom.title')} - ${i18n.t('seo.main.title')}`
-        },
-        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.drawRoom.description') },
-        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.drawRoom.description') },
-        { hid: 'robots', name: 'robots', content: 'noindex,nofollow' }
-      ]
-    }))
+    // SEO title is derived from the live room: system rooms use the
+    // localized categoryTitle (or the lowercase slug fallback), community
+    // rooms use the 6-char code. Before the room_state arrives we fall
+    // back to the generic "Çiz" lobby title.
+    const seoRoomName = computed(() => {
+      const r = $store.state.draw.room
+
+      if (!r) return null
+
+      if (r.kind === drawRoomKindEnum.SYSTEM) return r.categoryTitle || r.slug || null
+
+      return r.code || null
+    })
+
+    useMeta(() => {
+      const baseTitle = `${i18n.t('seo.drawLobby.title')} - ${i18n.t('seo.main.title')}`
+      const fullTitle = seoRoomName.value ? `${seoRoomName.value} - ${baseTitle}` : baseTitle
+
+      return {
+        title: fullTitle,
+        meta: [
+          { hid: 'description', name: 'description', content: i18n.t('seo.drawRoom.description') },
+          { hid: 'keywords', name: 'keywords', content: i18n.t('seo.drawRoom.keywords') },
+          { hid: 'og:title', name: 'og:title', content: fullTitle },
+          { hid: 'og:description', name: 'og:description', content: i18n.t('seo.drawRoom.description') },
+          { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.drawRoom.description') },
+          { hid: 'robots', name: 'robots', content: 'noindex,nofollow' }
+        ]
+      }
+    })
 
     const tool = ref('brush')
     const color = ref('#000000')
