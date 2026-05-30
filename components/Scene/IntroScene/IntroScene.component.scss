@@ -56,6 +56,13 @@
     }
 
     &-item {
+      &--draw {
+        .intro-button__label {
+          color: var(--color-text-04);
+          background-color: var(--color-warning-01);
+        }
+      }
+
       &--unlimited {
         &::after {
           display: none;

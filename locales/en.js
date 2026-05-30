@@ -144,7 +144,8 @@ export default {
       draw: {
         title: 'DRAW',
         description: 'Draw, guess, win — live drawing game',
-        label: 'LIVE'
+        label: 'LIVE',
+        newLabel: 'New'
       },
       knowledgeKingdom: {
         title: 'KNOWLEDGE KINGDOM',

@@ -148,8 +148,9 @@ export default {
       },
       draw: {
         title: 'ÇİZ',
-        description: 'Çiz, tahmin et, kazan — canlı çizim oyunu',
-        label: 'CANLI'
+        description: 'Verilen kelimeyi çiz , çizimi tahmin et',
+        label: 'CANLI',
+        newLabel: 'Yeni'
       },
       knowledgeKingdom: {
         title: 'BİLGİ KRALLIĞI',

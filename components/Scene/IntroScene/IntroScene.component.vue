@@ -106,6 +106,7 @@
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--draw(
         v-if="$i18n.locale === $i18n.defaultLocale"
+        :label="$t('introScene.modeList.draw.newLabel')"
         icon="noto:artist-palette"
         :to="localePath({ name: 'DrawMode-DrawLobby' })"
         :title="$t('introScene.modeList.draw.title')"
