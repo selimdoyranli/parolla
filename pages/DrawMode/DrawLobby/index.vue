@@ -1,8 +1,8 @@
 <template lang="pug">
 .draw-lobby
   .draw-lobby__hero
-    span.draw-lobby__eyebrow Çiz Modu
-    h1.draw-lobby__title Çiz, tahmin et, kazan
+    span.draw-lobby__eyebrow Çiz
+    h1.draw-lobby__title Çiz, tahmin et, kazan, canlı çizim oyunu
     p.draw-lobby__subtitle Gerçek zamanlı çizim ve tahmin oyunu.
     .draw-lobby__guest(v-if="isGuest" role="button" tabindex="0" @click="showGuestDialog = true" @keyup.enter="showGuestDialog = true")
       PlayerAvatar.draw-lobby__guest-avatar(:user="guestAvatarUser" :size="32")

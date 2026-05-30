@@ -1059,7 +1059,7 @@ export default {
       description: 'Sınırsız soru seti, bulmaca çöz, kelime oyunu oyna'
     },
     drawLobby: {
-      title: 'Çiz Modu',
+      title: 'Çiz',
       description:
         'Gerçek zamanlı çizim ve tahmin oyunu. Arkadaşlarınla resmi odalara katıl, kendi odanı kur ve kategorilerden seçtiğin kelimeleri çizip tahmin et.',
       keywords: 'çiz modu, çizim oyunu, kelime tahmin, multiplayer çizim, parolla çiz'

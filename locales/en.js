@@ -1035,7 +1035,7 @@ export default {
       description: 'Unlimited question set, solve questions, play word game'
     },
     drawLobby: {
-      title: 'Draw Mode',
+      title: 'Draw',
       description:
         'Real-time draw and guess game. Join official rooms with friends, create your own room, and draw / guess words from curated categories.',
       keywords: 'draw mode, drawing game, word guess, multiplayer drawing, parolla draw'
