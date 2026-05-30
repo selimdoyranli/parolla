@@ -59,7 +59,7 @@
               span.draw-room__lobby-countdown-unit sn
             p.draw-room__lobby-hint(v-if="lobbyHint") {{ lobbyHint }}
             Button.draw-room__lobby-btn(
-              v-if="iAmHost && (isLobby || isGameEnd)"
+              v-if="roomKind !== 'system' && iAmHost && (isLobby || isGameEnd)"
               type="primary"
               size="large"
               round
@@ -106,9 +106,11 @@
       transition(name="draw-room-overlay")
         .draw-room__canvas-overlay.draw-room__canvas-overlay--final(v-if="activeOverlay === 'final'")
           .draw-room__final
-            span.draw-room__round-end-eyebrow Oyun Bitti
+            span.draw-room__round-end-eyebrow {{ isFinalScoreboard ? 'Tur Bitti' : 'Oyun Bitti' }}
             h3.draw-room__round-end-title Final Skoru
             Leaderboard.draw-room__final-board(:scorers="finalTopThree")
+            p.draw-room__final-cycle-hint(v-if="isFinalScoreboard && finalSecondsLeft > 0")
+              | Yeni döngü {{ finalSecondsLeft }}sn içinde
 
       // ── Clear-confirmation overlay (drawer-only) ──
       transition(name="draw-room-overlay")
@@ -210,6 +212,12 @@ export default defineComponent({
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
     const pickEndsAt = computed(() => $store.state.draw.pickEndsAt)
+    const roomKind = computed(() => $store.state.draw.roomKind)
+    const isWaiting = computed(() => $store.getters['draw/isWaiting'])
+    const isFinalScoreboard = computed(() => $store.getters['draw/isFinalScoreboard'])
+    const waitingPresent = computed(() => $store.state.draw.waitingPresent)
+    const waitingRequired = computed(() => $store.state.draw.waitingRequired)
+    const finalNextRoundInMs = computed(() => $store.state.draw.finalNextRoundInMs)
 
     // Local ticker drives the round-end countdown and word-pick timer without
     // needing a per-second WS message.
@@ -255,6 +263,20 @@ export default defineComponent({
       return Math.max(0, Math.ceil((pickEndsAt.value - now.value) / 1000))
     })
 
+    // System-room final scoreboard runs for ~15 s before auto-resetting.
+    // finalShownAt is captured on entry so the countdown is monotonic across
+    // re-renders.
+    const finalShownAt = ref(0)
+    watch(isFinalScoreboard, v => {
+      if (v) finalShownAt.value = Date.now()
+    })
+    const finalSecondsLeft = computed(() => {
+      if (!isFinalScoreboard.value || !finalShownAt.value || !finalNextRoundInMs.value) return 0
+      const remaining = finalNextRoundInMs.value - (now.value - finalShownAt.value)
+
+      return Math.max(0, Math.ceil(remaining / 1000))
+    })
+
     const startDisabled = computed(() => isLobby.value && players.value.length < 2)
     const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
 
@@ -270,18 +292,17 @@ export default defineComponent({
     // countdown elapses so non-drawers don't get stuck on "0sn" while the
     // drawer is still picking.
     const activeOverlay = computed(() => {
+      if (isFinalScoreboard.value) return 'final'
+
       if (finalScores.value) return 'final'
 
       if (iAmDrawer.value && wordOptions.value) return 'picker'
 
       if (lastRoundResult.value) {
-        // Last round: keep card up until GAME_END flips finalScores
         if (lastRoundResult.value.isLastRound) return 'roundEnd'
 
-        // Mid-game: only while the visible countdown is still ticking
         if (countdownSeconds.value > 0) return 'roundEnd'
 
-        // Countdown expired but ROUND_START hasn't arrived → waiting card
         return 'lobby'
       }
 
@@ -289,14 +310,18 @@ export default defineComponent({
 
       if (isGameEnd.value) return 'lobby'
 
+      if (isWaiting.value) return 'lobby'
+
       if (isLobby.value) return 'lobby'
 
-      if (isRoundEnd.value) return 'lobby' // safety net for any post-roundEnd gap
+      if (isRoundEnd.value) return 'lobby'
 
       return null
     })
 
     const lobbyEyebrow = computed(() => {
+      if (isWaiting.value) return 'Bekleniyor'
+
       if (isGameEnd.value && !lastRoundResult.value) return 'Oyun Sonu'
 
       if (isLobby.value) return 'Lobi'
@@ -318,12 +343,12 @@ export default defineComponent({
     })
 
     const lobbyTitle = computed(() => {
+      if (isWaiting.value) return 'Oyuncular bekleniyor'
+
       if (isGameEnd.value && !lastRoundResult.value) return 'Yeni Tur İçin Hazır mısın?'
 
       if (isLobby.value) return iAmHost.value ? 'Oyunu Başlat' : 'Host oyunu başlatacak'
 
-      // During picking phase activeDrawerName names whoever is picking (resolved
-      // from the live players list, not the stale drawerName state field).
       if (isPicking.value && !iAmDrawer.value) {
         return activeDrawerName.value ? `${activeDrawerName.value} kelime seçiyor…` : 'Çizen kelime seçiyor…'
       }
@@ -332,6 +357,8 @@ export default defineComponent({
     })
 
     const lobbyHint = computed(() => {
+      if (isWaiting.value) return `${waitingPresent.value || 0} / ${waitingRequired.value || 2}`
+
       if (isLobby.value && players.value.length < 2) return 'Başlatmak için en az 2 oyuncu gerek.'
 
       if (isLobby.value && !iAmHost.value) return 'Yalnızca host başlatabilir.'
@@ -514,7 +541,13 @@ export default defineComponent({
       askClear,
       cancelClear,
       confirmClear,
-      finalTopThree
+      finalTopThree,
+      roomKind,
+      isWaiting,
+      isFinalScoreboard,
+      waitingPresent,
+      waitingRequired,
+      finalSecondsLeft
     }
   }
 })
