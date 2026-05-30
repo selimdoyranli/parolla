@@ -10,6 +10,7 @@ export default {
   },
   SET_ROOM_STATE(state, payload) {
     state.room = payload
+    state.roomKind = payload.kind || null
     state.players = payload.players || []
     state.hostId = payload.hostId
     state.roundIndex = payload.currentRoundIndex || 0
@@ -144,5 +145,40 @@ export default {
   },
   SET_ERROR(state, e) {
     state.lastError = e
+  },
+  SET_LOBBY_SNAPSHOT(state, { systemRooms, communityRooms }) {
+    state.systemRooms = Array.isArray(systemRooms) ? systemRooms : []
+    state.communityRooms = Array.isArray(communityRooms) ? communityRooms : []
+    state.publicRooms = state.communityRooms
+    state.lobbySubscribed = true
+  },
+  UPSERT_LOBBY_ROOM(state, room) {
+    if (!room || !room.code) return
+    const list = room.kind === 'system' ? state.systemRooms : state.communityRooms
+    const i = list.findIndex(r => r.code === room.code)
+
+    if (i >= 0) list.splice(i, 1, room)
+    else list.push(room)
+
+    if (room.kind !== 'system') state.publicRooms = state.communityRooms
+  },
+  REMOVE_LOBBY_ROOM(state, code) {
+    state.systemRooms = state.systemRooms.filter(r => r.code !== code)
+    state.communityRooms = state.communityRooms.filter(r => r.code !== code)
+    state.publicRooms = state.communityRooms
+  },
+  SET_LOBBY_SUBSCRIBED(state, v) {
+    state.lobbySubscribed = !!v
+  },
+  SET_ROOM_KIND(state, kind) {
+    state.roomKind = kind || null
+  },
+  SET_WAITING(state, payload) {
+    state.waitingPresent = payload.present || 0
+    state.waitingRequired = payload.required || 2
+  },
+  SET_FINAL_SCOREBOARD(state, payload) {
+    state.finalScores = Array.isArray(payload.scores) ? payload.scores : null
+    state.finalNextRoundInMs = payload.nextRoundInMs || 0
   }
 }
