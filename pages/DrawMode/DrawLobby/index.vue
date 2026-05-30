@@ -3,85 +3,49 @@
   .draw-lobby__hero
     span.draw-lobby__eyebrow Çiz Modu
     h1.draw-lobby__title Çiz, tahmin et, kazan
-    p.draw-lobby__subtitle Arkadaşlarınla gerçek zamanlı çizim ve tahmin oyunu. Bir oda kur ya da kodla katıl.
+    p.draw-lobby__subtitle Arkadaşlarınla gerçek zamanlı çizim ve tahmin oyunu.
 
-  .draw-lobby__actions
-    Button.draw-lobby__cta(type="primary" size="large" round @click="onCreate")
-      .draw-lobby__cta-inner
-        AppIcon.draw-lobby__cta-icon(name="tabler:pencil-plus" :width="18" :height="18")
-        span Yeni Oda Kur
-    .draw-lobby__join
-      Field.draw-lobby__join-field(
-        v-model="joinCode"
-        placeholder="Oda kodu"
-        :maxlength="6"
-        @keyup.enter.native="onJoin"
-        @input="onJoinInput"
-      )
-      Button.draw-lobby__join-btn(type="default" size="large" round @click="onJoin") Katıl
-
-  section.draw-lobby__rooms
-    .draw-lobby__rooms-head
-      h2 Açık odalar
-      span.draw-lobby__rooms-count(v-if="publicRooms.length") {{ publicRooms.length }}
-
-    .draw-lobby__empty(v-if="!publicRooms.length")
-      AppIcon(name="tabler:door" :width="28" :height="28")
-      p Şu anda açık oda yok. İlk odayı sen kur.
-
-    CellGroup.draw-lobby__cells(v-else inset)
-      Cell.draw-lobby__room(v-for="r in publicRooms" :key="r.code" is-link @click="joinPublic(r)")
-        template(#title)
-          .draw-lobby__room-line
-            span.draw-lobby__room-code {{ r.code }}
-            Tag.draw-lobby__room-state(:type="stateTagType(r.state)" plain) {{ stateLabel(r.state) }}
-            AppIcon.draw-lobby__room-lock(v-if="r.hasPassword" name="tabler:lock" :width="14" :height="14")
-        template(#label)
-          .draw-lobby__room-meta
-            span
-              AppIcon(name="tabler:users" :width="12" :height="12")
-              | &nbsp;{{ r.playerCount }}/{{ r.capacity }}
-            span
-              AppIcon(name="tabler:rotate" :width="12" :height="12")
-              | &nbsp;{{ r.roundCount }} tur
+  Tabs.draw-lobby__tabs(v-model="activeTab" :swipeable="false" :line-width="40")
+    Tab(name="official" title="Resmi Odalar")
+      SystemRoomList(:system-rooms="systemRooms" @join="onJoinSystem")
+    Tab(name="community" title="Topluluk Odaları")
+      CommunityRoomList(:community-rooms="communityRooms" @create="onCreate" @join="onJoinCommunity")
 
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
 </template>
 
 <script>
-import { defineComponent, computed, ref, getCurrentInstance } from '@nuxtjs/composition-api'
-import { Field, Button, Cell, CellGroup, Tag } from 'vant'
+import { defineComponent, computed, ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
+import { Tab, Tabs } from 'vant'
+import SystemRoomList from '@/components/Draw/SystemRoomList/SystemRoomList.component.vue'
+import CommunityRoomList from '@/components/Draw/CommunityRoomList/CommunityRoomList.component.vue'
+import DrawRoomCreateDialog from '@/components/Draw/DrawRoomCreateDialog/DrawRoomCreateDialog.component.vue'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
-const STATE_LABELS = {
-  lobby: 'Lobi',
-  picking: 'Seçiliyor',
-  drawing: 'Oynuyor',
-  roundEnd: 'Ara',
-  gameEnd: 'Bitti'
-}
-
-const STATE_TAG_TYPES = {
-  lobby: 'success',
-  picking: 'warning',
-  drawing: 'primary',
-  roundEnd: 'default',
-  gameEnd: 'default'
-}
-
 export default defineComponent({
-  components: { Field, Button, Cell, CellGroup, Tag },
+  components: { Tab, Tabs, SystemRoomList, CommunityRoomList, DrawRoomCreateDialog },
   layout: 'Default/Default.layout',
   middleware: 'auth',
   setup() {
     const { send } = useDrawSocket()
-    const joinCode = ref('')
-    const showCreate = ref(false)
     const vm = getCurrentInstance().proxy
     const store = vm.$store
 
-    const publicRooms = computed(() => store.state.draw.publicRooms)
+    const activeTab = ref('official')
+    const showCreate = ref(false)
+
+    const systemRooms = computed(() => store.state.draw.systemRooms)
+    const communityRooms = computed(() =>
+      store.state.draw.communityRooms.length ? store.state.draw.communityRooms : store.state.draw.publicRooms
+    )
+
+    onMounted(() => {
+      send(wsTypeEnum.DRAW_LOBBY_SUBSCRIBE)
+    })
+    onBeforeUnmount(() => {
+      send(wsTypeEnum.DRAW_LOBBY_UNSUBSCRIBE)
+    })
 
     const onCreate = () => {
       showCreate.value = true
@@ -92,26 +56,13 @@ export default defineComponent({
       showCreate.value = false
     }
 
-    const onJoinInput = v => {
-      joinCode.value = String(v || '')
-        .toUpperCase()
-        .replace(/[^A-Z0-9]/g, '')
-        .slice(0, 6)
+    const onJoinSystem = identifier => {
+      send(wsTypeEnum.DRAW_ROOM_JOIN, { code: identifier })
     }
 
-    const onJoin = () => {
-      const code = joinCode.value.trim().toUpperCase()
-
-      if (!code) return
+    const onJoinCommunity = code => {
       send(wsTypeEnum.DRAW_ROOM_JOIN, { code })
     }
-
-    const joinPublic = r => {
-      send(wsTypeEnum.DRAW_ROOM_JOIN, { code: r.code })
-    }
-
-    const stateLabel = s => STATE_LABELS[s] || s
-    const stateTagType = s => STATE_TAG_TYPES[s] || 'default'
 
     store.watch(
       s => s.draw.room && s.draw.room.code,
@@ -121,16 +72,14 @@ export default defineComponent({
     )
 
     return {
-      publicRooms,
-      joinCode,
-      onCreate,
-      onJoin,
-      onJoinInput,
-      joinPublic,
-      submitCreate,
+      activeTab,
+      systemRooms,
+      communityRooms,
       showCreate,
-      stateLabel,
-      stateTagType
+      onCreate,
+      submitCreate,
+      onJoinSystem,
+      onJoinCommunity
     }
   }
 })
