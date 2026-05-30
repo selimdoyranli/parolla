@@ -26,9 +26,28 @@ export const useDrawSocket = () => {
 
     if (sharedSocket && sharedSocket.readyState === 0) return // already connecting
 
-    const token = ($auth && $auth.strategy && $auth.strategy.token && $auth.strategy.token.get()) || ''
-    const cleanToken = String(token).replace(/^Bearer\s+/i, '')
-    const url = `${wsBase}?token=${encodeURIComponent(cleanToken)}&channel=draw`
+    const isGuest = !($auth && $auth.loggedIn)
+    let urlParams
+
+    if (isGuest) {
+      // Make sure the persisted identity exists before we hand it to the server.
+      $store.dispatch('guest/ensure')
+      const g = $store.state.guest
+      urlParams = new URLSearchParams({
+        channel: 'draw',
+        guestId: g.id || '',
+        guestName: g.name || '',
+        guestAvatarSeed: g.avatarSeed || ''
+      })
+    } else {
+      const token = ($auth && $auth.strategy && $auth.strategy.token && $auth.strategy.token.get()) || ''
+      const cleanToken = String(token).replace(/^Bearer\s+/i, '')
+      urlParams = new URLSearchParams({
+        channel: 'draw',
+        token: cleanToken
+      })
+    }
+    const url = `${wsBase}?${urlParams.toString()}`
 
     sharedStatus.value = 'connecting'
     const sock = new WebSocket(url)
@@ -40,7 +59,6 @@ export const useDrawSocket = () => {
 
       while (pendingMessages.length) {
         const m = pendingMessages.shift()
-
         try {
           sock.send(m)
         } catch (_e) {
@@ -59,7 +77,6 @@ export const useDrawSocket = () => {
     }
     sock.onmessage = evt => {
       let data = null
-
       try {
         data = JSON.parse(evt.data)
       } catch (_e) {
