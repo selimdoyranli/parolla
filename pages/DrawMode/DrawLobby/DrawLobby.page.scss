@@ -36,6 +36,27 @@
     line-height: 1.5;
   }
 
+  &__guest {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+  }
+
   &__actions {
     display: flex;
     flex-wrap: wrap;
