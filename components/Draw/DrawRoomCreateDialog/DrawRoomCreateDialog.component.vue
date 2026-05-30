@@ -45,16 +45,17 @@ Dialog.draw-create-dialog(
 
     section.draw-create-dialog__section
       .draw-create-dialog__row
-        span.draw-create-dialog__row-label Kategoriler
-        span.draw-create-dialog__row-value {{ form.categories.length }} / {{ allCats.length }}
-      .draw-create-dialog__cats
+        span.draw-create-dialog__row-label Kategori
+        span.draw-create-dialog__row-value {{ selectedTitle }}
+      .draw-create-dialog__cats(v-if="allCats.length")
         Tag.draw-create-dialog__cat(
           v-for="c in allCats"
-          :key="c"
-          :type="form.categories.includes(c) ? 'primary' : 'default'"
-          :plain="!form.categories.includes(c)"
-          @click="toggleCat(c)"
-        ) {{ c }}
+          :key="c.slug"
+          :type="form.categorySlug === c.slug ? 'primary' : 'default'"
+          :plain="form.categorySlug !== c.slug"
+          @click="selectCat(c.slug)"
+        ) {{ c.title }}
+      p.draw-create-dialog__row-hint(v-else) {{ catsLoading ? 'Kategoriler yükleniyor…' : 'Kategori bulunamadı.' }}
 
     .draw-create-dialog__actions
       Button(plain block round @click="close") Vazgeç
@@ -62,10 +63,8 @@ Dialog.draw-create-dialog(
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, computed, onMounted, getCurrentInstance } from '@nuxtjs/composition-api'
 import { Dialog, Field, Button, Slider, Switch as VanSwitch, Tag } from 'vant'
-
-const ALL = ['hayvan', 'yemek', 'nesne', 'meslek', 'doga', 'spor', 'eylem', 'kavram', 'ulke', 'marka']
 
 export default defineComponent({
   components: {
@@ -85,6 +84,12 @@ export default defineComponent({
     // Vant Dialog v-model is the source of truth for "shown"; flipping it to
     // false drives the closed animation, then @closed bubbles up to the parent.
     const visible = ref(true)
+    const vm = getCurrentInstance().proxy
+
+    // Categories are fetched from Strapi DrawWordCategory so the dialog never
+    // drifts from the seeded JSON.
+    const allCats = ref([])
+    const catsLoading = ref(true)
 
     const form = reactive({
       isPublic: true,
@@ -92,15 +97,46 @@ export default defineComponent({
       capacity: 12,
       roundCount: 10,
       roundDurationSec: 60,
-      categories: [...ALL],
+      // Exactly one category per room (radio-style). null until allCats loads.
+      categorySlug: null,
       locale: 'tr-TR'
     })
 
-    const toggleCat = c => {
-      const i = form.categories.indexOf(c)
+    const selectedTitle = computed(() => {
+      const found = allCats.value.find(c => c.slug === form.categorySlug)
 
-      if (i >= 0) form.categories.splice(i, 1)
-      else form.categories.push(c)
+      return found ? found.title : catsLoading.value ? '—' : 'Seçili değil'
+    })
+
+    onMounted(async () => {
+      try {
+        const { data } = await vm.$appFetch({
+          path: 'draw-word-categories',
+          query: {
+            'filters[isActive][$eq]': true,
+            'pagination[pageSize]': 100,
+            sort: 'title:asc',
+            locale: form.locale
+          }
+        })
+
+        const items = (data && data.data) || []
+        allCats.value = items
+          .map(c => ({ slug: c.slug || (c.attributes && c.attributes.slug), title: c.title || (c.attributes && c.attributes.title) }))
+          .filter(c => c.slug && c.title)
+
+        if (allCats.value.length > 0 && !form.categorySlug) {
+          form.categorySlug = allCats.value[0].slug
+        }
+      } catch (e) {
+        allCats.value = []
+      } finally {
+        catsLoading.value = false
+      }
+    })
+
+    const selectCat = slug => {
+      form.categorySlug = slug
     }
 
     const close = () => {
@@ -108,16 +144,23 @@ export default defineComponent({
     }
 
     const submit = () => {
-      const payload = { ...form }
+      if (!form.categorySlug) return
+      // WS contract still uses `categories` (array); we always send exactly one.
+      const payload = {
+        isPublic: form.isPublic,
+        password: form.password || null,
+        capacity: form.capacity,
+        roundCount: form.roundCount,
+        roundDurationSec: form.roundDurationSec,
+        locale: form.locale,
+        categories: [form.categorySlug]
+      }
 
-      if (!payload.password) payload.password = null
-
-      if (payload.categories.length === 0) payload.categories = [...ALL]
       emit('submit', payload)
       visible.value = false
     }
 
-    return { visible, form, allCats: ALL, toggleCat, close, submit, brand: '#ff7878' }
+    return { visible, form, allCats, catsLoading, selectedTitle, selectCat, close, submit, brand: '#ff7878' }
   }
 })
 </script>
