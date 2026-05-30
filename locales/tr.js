@@ -517,6 +517,13 @@ export default {
       regenerateName: 'Rastgele',
       confirm: 'Onayla',
       usernameLabel: 'Kullanıcı Adı'
+    },
+    drawRoomClosed: {
+      hostLeftTitle: 'Host odadan ayrıldı',
+      hostLeftHint: 'Oda kapatıldı. Lobiye dönebilirsin.',
+      emptyTitle: 'Oda kapatıldı',
+      emptyHint: 'Odada kimse kalmadı.',
+      backToLobby: 'Lobiye Dön'
     }
   },
   clipboard: {

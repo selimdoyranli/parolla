@@ -511,6 +511,13 @@ export default {
       regenerateName: 'Random',
       confirm: 'Confirm',
       usernameLabel: 'Username'
+    },
+    drawRoomClosed: {
+      hostLeftTitle: 'Host left the room',
+      hostLeftHint: 'The room is closed. You can return to the lobby.',
+      emptyTitle: 'Room closed',
+      emptyHint: 'No one is left in the room.',
+      backToLobby: 'Back to Lobby'
     }
   },
   clipboard: {

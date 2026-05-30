@@ -36,5 +36,9 @@ export default () => ({
   finalNextRoundInMs: 0, // new — system-room cycle timer
   waitingPresent: 0, // new — current player count when state=waiting
   waitingRequired: 2, // new
+  // Set when the server pushes DRAW_ROOM_CLOSED (community host left,
+  // or room emptied). Drives the DrawRoom canvas overlay that offers
+  // a "Lobiye Dön" button. Cleared by LEAVE_ROOM on navigation.
+  roomClosedReason: null,
   lastError: null
 })

@@ -112,6 +112,15 @@
             p.draw-room__final-cycle-hint(v-if="isFinalScoreboard && finalSecondsLeft > 0")
               | Yeni döngü {{ finalSecondsLeft }}sn içinde
 
+      // ── Room-closed overlay (community host left or room emptied) ──
+      transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--closed(v-if="roomClosedReason")
+          .draw-room__closed
+            AppIcon.draw-room__closed-icon(name="tabler:door-exit" :width="32" :height="32")
+            h3.draw-room__closed-title {{ roomClosedTitle }}
+            p.draw-room__closed-text {{ roomClosedHint }}
+            Button.draw-room__closed-btn(type="primary" round @click="onBackToLobby") {{ $t('dialog.drawRoomClosed.backToLobby') }}
+
       // ── Clear-confirmation overlay (drawer-only) ──
       transition(name="draw-room-overlay")
         .draw-room__canvas-overlay.draw-room__canvas-overlay--confirm(v-if="confirmClearOpen")
@@ -220,6 +229,18 @@ export default defineComponent({
     const waitingPresent = computed(() => $store.state.draw.waitingPresent)
     const waitingRequired = computed(() => $store.state.draw.waitingRequired)
     const finalNextRoundInMs = computed(() => $store.state.draw.finalNextRoundInMs)
+    const roomClosedReason = computed(() => $store.state.draw.roomClosedReason)
+    const roomClosedTitle = computed(() =>
+      roomClosedReason.value === 'host_left' ? vm.$t('dialog.drawRoomClosed.hostLeftTitle') : vm.$t('dialog.drawRoomClosed.emptyTitle')
+    )
+    const roomClosedHint = computed(() =>
+      roomClosedReason.value === 'host_left' ? vm.$t('dialog.drawRoomClosed.hostLeftHint') : vm.$t('dialog.drawRoomClosed.emptyHint')
+    )
+
+    const onBackToLobby = () => {
+      $store.commit('draw/LEAVE_ROOM')
+      vm.$router.push(vm.localePath({ name: 'DrawMode-DrawLobby' }))
+    }
 
     // Local ticker drives the round-end countdown and word-pick timer without
     // needing a per-second WS message.
@@ -591,6 +612,10 @@ export default defineComponent({
       activeDrawerName,
       activeDrawerDisplay,
       nextDrawerDisplay,
+      roomClosedReason,
+      roomClosedTitle,
+      roomClosedHint,
+      onBackToLobby,
       lobbyEyebrow,
       lobbyTitle,
       lobbyHint,

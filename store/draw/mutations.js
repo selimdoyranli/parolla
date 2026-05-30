@@ -187,6 +187,10 @@ export default {
     state.finalNextRoundInMs = 0
     state.waitingPresent = 0
     state.waitingRequired = 2
+    state.roomClosedReason = null
+  },
+  SET_ROOM_CLOSED(state, reason) {
+    state.roomClosedReason = reason || 'closed'
   },
   SET_ERROR(state, e) {
     state.lastError = e
