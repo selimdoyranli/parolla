@@ -30,18 +30,20 @@ Dialog.draw-create-dialog(
 
       .draw-create-dialog__row
         span.draw-create-dialog__row-label Kapasite
-        span.draw-create-dialog__row-value {{ form.capacity }} oyuncu
-      Slider(v-model="form.capacity" :min="2" :max="16" :step="1" :active-color="brand" :bar-height="4")
+        .draw-create-dialog__stepper
+          Stepper(v-model="form.capacity" :min="2" :max="16" :step="1" :integer="true")
+          span.draw-create-dialog__stepper-unit oyuncu
 
       .draw-create-dialog__row
         span.draw-create-dialog__row-label Tur sayısı
-        span.draw-create-dialog__row-value {{ form.roundCount }}
-      Slider(v-model="form.roundCount" :min="3" :max="50" :step="1" :active-color="brand" :bar-height="4")
+        .draw-create-dialog__stepper
+          Stepper(v-model="form.roundCount" :min="3" :max="50" :step="1" :integer="true")
 
       .draw-create-dialog__row
         span.draw-create-dialog__row-label Tur süresi
-        span.draw-create-dialog__row-value {{ form.roundDurationSec }}sn
-      Slider(v-model="form.roundDurationSec" :min="30" :max="180" :step="5" :active-color="brand" :bar-height="4")
+        .draw-create-dialog__stepper
+          Stepper(v-model="form.roundDurationSec" :min="30" :max="180" :step="5" :integer="true")
+          span.draw-create-dialog__stepper-unit sn
 
     section.draw-create-dialog__section
       .draw-create-dialog__row
@@ -64,7 +66,7 @@ Dialog.draw-create-dialog(
 
 <script>
 import { defineComponent, reactive, ref, computed, onMounted, getCurrentInstance } from '@nuxtjs/composition-api'
-import { Dialog, Field, Button, Slider, Switch as VanSwitch, Tag } from 'vant'
+import { Dialog, Field, Button, Stepper, Switch as VanSwitch, Tag } from 'vant'
 import { sortDrawCategories } from '@/helpers/draw-categories'
 
 export default defineComponent({
@@ -75,7 +77,7 @@ export default defineComponent({
     Dialog: Dialog.Component,
     Field,
     Button,
-    Slider,
+    Stepper,
     // Switch ismi SVG <switch> ile çakışıyor (Vue reserved-tag uyarısı verir).
     VanSwitch,
     Tag
@@ -96,7 +98,7 @@ export default defineComponent({
       isPublic: true,
       password: '',
       capacity: 12,
-      roundCount: 10,
+      roundCount: 25,
       roundDurationSec: 60,
       // Exactly one category per room (radio-style). null until allCats loads.
       categorySlug: null,
