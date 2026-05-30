@@ -40,5 +40,12 @@ export const wsTypeEnum = Object.freeze({
   DRAW_CHAT: 'draw_chat',
   DRAW_ROUND_END: 'draw_round_end',
   DRAW_GAME_END: 'draw_game_end',
-  DRAW_ERROR: 'draw_error'
+  DRAW_ERROR: 'draw_error',
+  DRAW_LOBBY_SUBSCRIBE: 'draw_lobby_subscribe',
+  DRAW_LOBBY_UNSUBSCRIBE: 'draw_lobby_unsubscribe',
+  DRAW_LOBBY_SNAPSHOT: 'draw_lobby_snapshot',
+  DRAW_LOBBY_ROOM_UPSERT: 'draw_lobby_room_upsert',
+  DRAW_LOBBY_ROOM_REMOVE: 'draw_lobby_room_remove',
+  DRAW_FINAL_SCOREBOARD: 'draw_final_scoreboard',
+  DRAW_WAITING: 'draw_waiting'
 })
