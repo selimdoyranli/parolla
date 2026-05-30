@@ -1,47 +1,304 @@
 .system-room-list {
+  --src-from: #ff7878;
+  --src-to: #c83a5a;
+  --src-tint: rgba(255, 220, 220, 0.18);
+  --src-radius: 18px;
+  --src-border: var(--color-border-01);
+  --src-border-hover: rgba(255, 120, 120, 0.45);
+  --src-surface: var(--color-ui-02);
+  --src-surface-hover: var(--color-hover-02);
+  --van-button-primary-background-color: var(--color-brand-02);
+  --van-button-primary-border-color: var(--color-brand-02);
+
   &__empty {
-    padding: 24px 0;
-    color: #999;
+    padding: 16px 0;
+    color: var(--color-text-02);
+    font-size: 14px;
     text-align: center;
   }
 
-  &__group {
-    margin-bottom: 16px;
-
-    &-title {
-      margin: 0 0 8px;
-      color: #666;
-      font-size: 14px;
-    }
-  }
-
-  &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
   }
 
   &__card {
-    padding: 12px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: inherit;
+    background: var(--src-surface);
+    border: 1px solid var(--src-border);
+    border-radius: var(--src-radius);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 24px -18px rgba(0, 0, 0, 0.45);
     cursor: pointer;
+    isolation: isolate;
+    transition: transform 0.1s var(--motion-01), border-color 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01),
+      background-color 0.1s var(--motion-01);
+    user-select: none;
 
-    &-title {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
+    @for $i from 0 through 15 {
+      &[data-index='#{$i}'] {
+        animation: system-room-card-in 0.42s var(--motion-01) both;
+        animation-delay: #{$i * 35}ms;
+      }
     }
 
-    &-sub {
-      color: #ff7878;
+    &::after {
+      position: absolute;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent 30%, rgba(255, 120, 120, 0) 50%, rgba(255, 120, 120, 0) 100%);
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.1s var(--motion-01);
+      content: '';
+      pointer-events: none;
+      inset: -1px;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
     }
 
-    &-meta {
-      margin-top: 4px;
-      color: #999;
-      font-size: 12px;
+    @media (pointer: fine) {
+      &:hover {
+        background: var(--src-surface-hover);
+        border-color: var(--src-border-hover);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
+        transform: translateY(-3px);
+        transition: 0.1s;
+
+        &::after {
+          background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
+          opacity: 1;
+        }
+      }
+    }
+
+    &:focus-visible {
+      background: var(--src-surface-hover);
+      border-color: var(--src-border-hover);
+      outline: 2px solid var(--color-brand-02);
+      outline-offset: 3px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
+      transform: translateY(-3px);
+
+      &::after {
+        background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
+        opacity: 1;
+      }
+    }
+  }
+
+  /* --------------------------------------------------------------------- */
+
+  /* Cover area — 16:9, gradient background + emoji                        */
+
+  /* --------------------------------------------------------------------- */
+  &__cover {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+  }
+
+  &__cover-gradient {
+    position: absolute;
+    background: radial-gradient(120% 90% at 18% 14%, var(--src-tint), transparent 55%),
+      linear-gradient(135deg, var(--src-from), var(--src-to));
+    inset: 0;
+  }
+
+  /* stylelint-disable indentation */
+  &__cover-noise {
+    position: absolute;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.6;
+    pointer-events: none;
+    inset: 0;
+  }
+  /* stylelint-enable indentation */
+
+  &__live {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    padding: 3px 8px 3px 5px;
+    background: rgba(15, 17, 24, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    backdrop-filter: blur(8px) saturate(140%);
+    inset-block-start: 10px;
+    inset-inline-start: 10px;
+  }
+
+  &__live-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    background: var(--color-success-01);
+    border-radius: 50%;
+    animation: system-room-pulse 1.4s infinite;
+  }
+
+  &__live-label {
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+  }
+
+  &__sub-chip {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    inset-block-start: 10px;
+    inset-inline-end: 10px;
+  }
+
+  &__emoji {
+    position: relative;
+    z-index: 1;
+    font-size: 72px;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    user-select: none;
+
+    @media (max-width: 480px) {
+      font-size: 56px;
+    }
+  }
+
+  /* --------------------------------------------------------------------- */
+
+  /* Body                                                                  */
+
+  /* --------------------------------------------------------------------- */
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px 10px;
+  }
+
+  &__title {
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    overflow: hidden;
+    color: var(--color-text-02);
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* --------------------------------------------------------------------- */
+
+  /* Footer                                                                */
+
+  /* --------------------------------------------------------------------- */
+  &__footer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px 14px;
+    border-block-start: 1px dashed var(--color-border-01);
+  }
+
+  &__stats {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  &__stat-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--color-text-02);
+  }
+
+  &__stat-value {
+    color: var(--color-text-02);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__join-btn {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes system-room-card-in {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes system-room-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(64, 196, 99, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(64, 196, 99, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-room-list {
+    &__card {
+      transition: none !important;
+      animation: none !important;
+
+      &:hover,
+      &:focus-visible {
+        transform: none;
+      }
+    }
+
+    &__live-dot {
+      animation: none !important;
     }
   }
 }

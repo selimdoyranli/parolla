@@ -1,9 +1,22 @@
 .community-room-list {
+  --crl-radius: 14px;
+  --crl-surface: var(--color-ui-02);
+  --crl-surface-hover: var(--color-hover-02);
+  --crl-border: var(--color-border-01);
+  --crl-border-hover: rgba(255, 120, 120, 0.45);
+  --van-button-primary-background-color: var(--color-brand-02);
+  --van-button-primary-border-color: var(--color-brand-02);
+
   &__top {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__create {
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
 
   &__join {
@@ -13,26 +26,164 @@
 
   &__join-field {
     flex: 1;
+    color: var(--color-text-01);
+    background: var(--color-ui-03);
+    border: 1px solid var(--crl-border);
+    border-radius: 999px;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__control {
+      color: var(--color-text-01);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__join-btn {
+    flex-shrink: 0;
+    min-width: 84px;
   }
 
   &__empty {
-    padding: 24px 0;
-    color: #999;
+    padding: 28px 0;
+    color: var(--color-text-02);
+    font-size: 14px;
     text-align: center;
   }
 
-  &__room-line {
+  &__rooms {
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__room {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--crl-surface);
+    border: 1px solid var(--crl-border);
+    border-radius: var(--crl-radius);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 6px 16px -12px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: transform 0.1s var(--motion-01), border-color 0.1s var(--motion-01), background-color 0.1s var(--motion-01);
+
+    @media (pointer: fine) {
+      &:hover {
+        background: var(--crl-surface-hover);
+        border-color: var(--crl-border-hover);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  &__room-main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__room-head {
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     align-items: center;
   }
 
-  &__room-code {
-    font-weight: 600;
+  &__room-name {
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__room-state {
+    padding: 2px 8px;
+    color: var(--color-text-02);
+    font-size: 11px;
+    background: var(--color-ui-03);
+    border: 1px solid var(--crl-border);
+    border-radius: 999px;
+  }
+
+  &__live {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 8px 2px 6px;
+    background: rgba(64, 196, 99, 0.12);
+    border: 1px solid rgba(64, 196, 99, 0.32);
+    border-radius: 999px;
+  }
+
+  &__live-dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    background: var(--color-success-01);
+    border-radius: 50%;
+    animation: community-room-pulse 1.4s infinite;
+  }
+
+  &__live-label {
+    color: var(--color-success-01);
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.06em;
   }
 
   &__room-meta {
-    color: #999;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__meta-pill {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--color-text-02);
     font-size: 12px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__meta-icon {
+    flex-shrink: 0;
+    color: var(--color-text-02);
+  }
+
+  &__room-cta {
+    flex-shrink: 0;
+    min-width: 70px;
+  }
+}
+
+@keyframes community-room-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(64, 196, 99, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 0 5px rgba(64, 196, 99, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-room-list {
+    &__room {
+      transition: none !important;
+    }
+
+    &__live-dot {
+      animation: none !important;
+    }
   }
 }

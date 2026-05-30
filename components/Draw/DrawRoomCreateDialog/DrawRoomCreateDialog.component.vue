@@ -58,7 +58,7 @@ Dialog.draw-create-dialog(
       p.draw-create-dialog__row-hint(v-else) {{ catsLoading ? 'Kategoriler yükleniyor…' : 'Kategori bulunamadı.' }}
 
     .draw-create-dialog__actions
-      Button(plain block round @click="close") Vazgeç
+      Button.draw-create-dialog__cancel(plain block round @click="close") Vazgeç
       Button(type="primary" block round @click="submit") Oda Kur
 </template>
 

@@ -116,4 +116,13 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
+
+  // Vant `plain` button defaults to its border color for the text, which in
+  // dark mode renders almost-black on a near-black background. Pin the text
+  // to the themed body color so the "Vazgeç" label stays readable.
+  &__cancel.van-button--plain {
+    color: var(--color-text-01) !important;
+    background: transparent !important;
+    border-color: var(--color-border-01) !important;
+  }
 }
