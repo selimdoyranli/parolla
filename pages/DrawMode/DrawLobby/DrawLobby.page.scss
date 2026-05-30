@@ -2,6 +2,13 @@
   padding: 24px 12px 36px;
   color: var(--color-text-01);
 
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__wrap {
+    overflow: hidden;
+    margin-block-end: 16px;
+    border-radius: 12px;
+  }
+
   &__hero {
     margin-bottom: 20px;
     text-align: center;
