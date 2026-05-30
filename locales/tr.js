@@ -146,6 +146,11 @@ export default {
         description: 'Şarkıları dinle ve tahmin et',
         label: 'Dilediğin sanatçıya ait şarkılar'
       },
+      draw: {
+        title: 'ÇİZ',
+        description: 'Çiz, tahmin et, kazan — canlı çizim oyunu',
+        label: 'CANLI'
+      },
       knowledgeKingdom: {
         title: 'BİLGİ KRALLIĞI',
         description: 'Tıkla, kazan, yüksel',

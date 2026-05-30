@@ -141,6 +141,11 @@ export default {
         description: 'Listen to songs and guess them',
         label: 'Songs of the artist you want'
       },
+      draw: {
+        title: 'DRAW',
+        description: 'Draw, guess, win — live drawing game',
+        label: 'LIVE'
+      },
       knowledgeKingdom: {
         title: 'KNOWLEDGE KINGDOM',
         description: 'Click, earn, rise',

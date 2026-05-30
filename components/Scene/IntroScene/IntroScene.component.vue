@@ -104,6 +104,15 @@
         :description="$t('introScene.modeList.music.description')"
       )
 
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--draw(
+        v-if="$i18n.locale === $i18n.defaultLocale"
+        icon="noto:artist-palette"
+        :to="localePath({ name: 'DrawMode-DrawLobby' })"
+        :title="$t('introScene.modeList.draw.title')"
+        :headLabel="{ title: $t('introScene.modeList.draw.label'), icon: 'tabler:users', pulse: true }"
+        :description="$t('introScene.modeList.draw.description')"
+      )
+
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--knowledge-kingdom(
         v-if="false"
         icon="noto:crown"

@@ -32,6 +32,13 @@ export default () => {
     if (route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong' }))) {
       return gameModeKeyEnum.MUSIC
     }
+
+    if (
+      route.value.path === localePath({ name: 'DrawMode-DrawLobby' }) ||
+      route.value.name.startsWith(getRouteBaseName({ name: 'DrawMode-DrawRoom-code' }))
+    ) {
+      return gameModeKeyEnum.DRAW
+    }
   })
 
   return {
