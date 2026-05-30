@@ -8,11 +8,11 @@
       span.draw-room__chip.draw-room__chip--drawer(v-if="isDrawing && activeDrawerName")
         AppIcon(name="tabler:pencil" :width="12" :height="12")
         span.draw-room__chip-label Çiziyor
-        span.draw-room__chip-name {{ activeDrawerName }}
+        span.draw-room__chip-name {{ activeDrawerDisplay }}
       span.draw-room__chip.draw-room__chip--next(v-if="nextDrawerName && !isLobby && !isGameEnd")
         AppIcon(name="tabler:player-track-next" :width="12" :height="12")
         span.draw-room__chip-label Sıradaki
-        span.draw-room__chip-name {{ nextDrawerName }}
+        span.draw-room__chip-name {{ nextDrawerDisplay }}
       span.draw-room__chip.draw-room__chip--progress(v-if="roundCount")
         span.draw-room__chip-label Tur
         span.draw-room__chip-name {{ roundIndex + 1 }} / {{ roundCount }}
@@ -267,6 +267,13 @@ export default defineComponent({
     }
     onBeforeUnmount(() => {
       if (nowInterval) clearInterval(nowInterval)
+
+      // WS is a singleton shared with the lobby — leaving the route does not
+      // close it, so the server still tracks us as room-resident and the
+      // next join hits `already_in_room`. Tell it we left.
+      if ($store.state.draw.room) {
+        send(wsTypeEnum.DRAW_ROOM_LEAVE)
+      }
     })
 
     const countdownSeconds = computed(() => {
@@ -378,6 +385,22 @@ export default defineComponent({
 
       return live?.name || drawerName.value || ''
     })
+
+    // Chip variants append "(misafir)" for guests so the same hint is visible
+    // in the topbar that scoreboard/chat already show. Kept separate from
+    // activeDrawerName so prose like "X kelime seçiyor…" stays unsuffixed.
+    const labelWithGuestSuffix = id => {
+      if (id == null) return null
+      const p = (players.value || []).find(x => String(x.id) === String(id))
+
+      if (!p) return null
+
+      return p.isGuest ? `${p.name} ${vm.$t('common.guestLabel')}` : p.name
+    }
+
+    const activeDrawerDisplay = computed(() => labelWithGuestSuffix(drawerId.value) || activeDrawerName.value)
+
+    const nextDrawerDisplay = computed(() => labelWithGuestSuffix(nextDrawerId.value) || nextDrawerName.value || '')
 
     const lobbyTitle = computed(() => {
       if (isWaiting.value) return 'Oyuncular bekleniyor'
@@ -562,6 +585,8 @@ export default defineComponent({
       wordBadgeVisible,
       activeOverlay,
       activeDrawerName,
+      activeDrawerDisplay,
+      nextDrawerDisplay,
       lobbyEyebrow,
       lobbyTitle,
       lobbyHint,
