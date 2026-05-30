@@ -184,7 +184,7 @@ import { defineComponent, computed, getCurrentInstance, ref, onMounted, onBefore
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
-import { useGuestIdentity } from '@/composables/useGuestIdentity'
+import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
@@ -282,7 +282,7 @@ export default defineComponent({
 
       if (!codeParam || $store.state.draw.room) return
 
-      const guest = useGuestIdentity()
+      const guest = useDrawGuestIdentity()
       const doJoin = () => send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
 
       if (guest.isGuest.value) {

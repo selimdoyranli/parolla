@@ -27,7 +27,7 @@ import SystemRoomList from '@/components/Draw/SystemRoomList/SystemRoomList.comp
 import CommunityRoomList from '@/components/Draw/CommunityRoomList/CommunityRoomList.component.vue'
 import DrawRoomCreateDialog from '@/components/Draw/DrawRoomCreateDialog/DrawRoomCreateDialog.component.vue'
 import { useDrawSocket } from '@/composables/useDrawSocket'
-import { useGuestIdentity } from '@/composables/useGuestIdentity'
+import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
@@ -48,7 +48,7 @@ export default defineComponent({
     const activeTab = ref('official')
     const showCreate = ref(false)
 
-    const { isGuest, identity, ensureIdentity } = useGuestIdentity()
+    const { isGuest, identity, ensureIdentity } = useDrawGuestIdentity()
     const showGuestDialog = ref(false)
     const guestName = computed(() => identity.value.name || '')
     const guestAvatarUser = computed(() => ({

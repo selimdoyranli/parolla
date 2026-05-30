@@ -27,7 +27,7 @@ Dialog.create-guest-drawer-dialog(
 <script>
 import { defineComponent, ref, computed, onMounted } from '@nuxtjs/composition-api'
 import { Dialog, Field, Button } from 'vant'
-import { useGuestIdentity } from '@/composables/useGuestIdentity'
+import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
@@ -41,7 +41,7 @@ export default defineComponent({
   setup() {
     const visible = ref(true)
 
-    const { ensureIdentity, identity, regenerateName, regenerateAvatar, setName } = useGuestIdentity()
+    const { ensureIdentity, identity, regenerateName, regenerateAvatar, setName } = useDrawGuestIdentity()
     const { send } = useDrawSocket()
 
     const inputName = ref('')

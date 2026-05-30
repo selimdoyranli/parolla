@@ -1,6 +1,6 @@
 import { computed, getCurrentInstance } from '@nuxtjs/composition-api'
 
-export const useGuestIdentity = () => {
+export const useDrawGuestIdentity = () => {
   const vm = getCurrentInstance().proxy
   const $store = vm.$store
   const $auth = vm.$auth
