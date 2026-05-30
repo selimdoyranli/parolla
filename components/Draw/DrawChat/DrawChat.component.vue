@@ -13,7 +13,7 @@
 
         // ── Player rows: inline avatar+username, then ": text", no bubble ──
         template(v-else)
-          PlayerAvatar.draw-chat__avatar(with-username open-player-dialog-on-click :user="buildAvatarUser(m)" :size="22")
+          PlayerAvatar.draw-chat__avatar(with-username :open-player-dialog-on-click="!m.isGuest" :user="buildAvatarUser(m)" :size="22")
           span.draw-chat__sep &nbsp;:&nbsp;
           span.draw-chat__text {{ m.message }}
 
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, nextTick } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, watch, nextTick, getCurrentInstance } from '@nuxtjs/composition-api'
 import { Field, Button } from 'vant'
 
 export default defineComponent({
@@ -38,6 +38,7 @@ export default defineComponent({
   },
   emits: ['send'],
   setup(props, { emit }) {
+    const vm = getCurrentInstance().proxy
     const text = ref('')
     const log = ref(null)
 
@@ -122,14 +123,18 @@ export default defineComponent({
 
     const buildAvatarUser = message => {
       const enriched = message.playerId != null ? playersById.value.get(String(message.playerId)) : null
+      const isGuest = !!message.isGuest || !!(enriched && enriched.isGuest)
+      const rawName = enriched?.name || message.playerName || ''
+      const labeledName = isGuest ? `${rawName} ${vm.$t('common.guestLabel')}` : rawName
 
       return {
         id: message.playerId,
-        username: enriched?.name || message.playerName,
+        username: labeledName,
         avatarSource: enriched?.avatarSource,
         profilePhoto: typeof enriched?.profilePhoto === 'string' ? { url: enriched.profilePhoto } : enriched?.profilePhoto,
         diceBear: enriched?.diceBear,
-        role: enriched?.role
+        role: enriched?.role,
+        isGuest
       }
     }
 
