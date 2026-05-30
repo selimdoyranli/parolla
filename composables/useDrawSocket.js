@@ -5,6 +5,10 @@ let sharedSocket = null
 const sharedStatus = ref('idle')
 let consumers = 0
 let closeTimer = null
+// Buffer messages dispatched before the socket finishes connecting. Without
+// this, the lobby's onMounted draw_lobby_subscribe fires while readyState is
+// still CONNECTING (0) and silently drops, so the snapshot push never lands.
+const pendingMessages = []
 
 // Defer close on unmount so a route transition (lobby → room) does not
 // briefly drop consumers to 0 and tear the socket down between pages.
@@ -33,6 +37,16 @@ export const useDrawSocket = () => {
     sock.onopen = () => {
       sharedStatus.value = 'connected'
       $store.commit('draw/SET_STATUS', 'connected')
+
+      while (pendingMessages.length) {
+        const m = pendingMessages.shift()
+
+        try {
+          sock.send(m)
+        } catch (_e) {
+          /* ignore */
+        }
+      }
     }
     sock.onclose = () => {
       sharedStatus.value = 'disconnected'
@@ -63,8 +77,18 @@ export const useDrawSocket = () => {
   }
 
   const send = (type, payload = {}) => {
-    if (!sharedSocket || sharedSocket.readyState !== 1) return
-    sharedSocket.send(JSON.stringify({ type, ...payload }))
+    const msg = JSON.stringify({ type, ...payload })
+
+    if (sharedSocket && sharedSocket.readyState === 1) {
+      sharedSocket.send(msg)
+
+      return
+    }
+
+    // Queue while the socket is still connecting (or before it's been
+    // open()'d at all). Flushed in sock.onopen above. Cap the queue so a
+    // never-opening socket can't grow it unbounded.
+    if (pendingMessages.length < 32) pendingMessages.push(msg)
   }
 
   const close = () => {
