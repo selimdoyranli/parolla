@@ -17,9 +17,9 @@
           span.draw-chat__sep &nbsp;:&nbsp;
           span.draw-chat__text {{ m.message }}
 
-  .draw-chat__input(auth-control)
+  .draw-chat__input
     Field.draw-chat__field(v-model="text" :placeholder="placeholder" :maxlength="64" :disabled="disabled" @keyup.enter.native="send")
-    Button.draw-chat__send(type="primary" auth-control size="small" round :disabled="disabled || !text.trim()" @click="send") Gönder
+    Button.draw-chat__send(type="primary" size="small" round :disabled="disabled || !text.trim()" @click="send") Gönder
 </template>
 
 <script>

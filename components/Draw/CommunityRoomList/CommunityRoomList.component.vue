@@ -1,7 +1,7 @@
 <template lang="pug">
 .community-room-list
   .community-room-list__top
-    Button.community-room-list__create(type="primary" auth-control round block @click="onCreate")
+    Button.community-room-list__create(type="primary" round block @click="onCreate")
       | Yeni Oda Kur
     .community-room-list__join
       Field.community-room-list__join-field(
