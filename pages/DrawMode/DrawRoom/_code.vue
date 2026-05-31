@@ -124,6 +124,11 @@
               | Yeni döngü {{ finalSecondsLeft }}sn içinde
 
       transition(name="draw-room-overlay")
+        .draw-room__canvas-overlay.draw-room__canvas-overlay--loading(v-if="showSocketLoading")
+          .draw-room__socket-loading
+            Loading(color="var(--color-brand-02)") {{ $t('general.loading') }}...
+
+      transition(name="draw-room-overlay")
         .draw-room__canvas-overlay.draw-room__canvas-overlay--closed(v-if="roomClosedReason")
           .draw-room__closed
             AppIcon.draw-room__closed-icon(name="tabler:door-exit" :width="32" :height="32")
@@ -202,7 +207,7 @@ import {
   useContext,
   useMeta
 } from '@nuxtjs/composition-api'
-import { Button } from 'vant'
+import { Button, Loading } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { useDrawSoundFx } from '@/composables/useDrawSoundFx'
 import { wsTypeEnum } from '@/enums/wsType.enum'
@@ -213,7 +218,7 @@ import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPass
 import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
 
 export default defineComponent({
-  components: { Button, CreateGuestDrawerDialog, EnterPasswordDialog },
+  components: { Button, Loading, CreateGuestDrawerDialog, EnterPasswordDialog },
   layout: 'Default/Default.layout',
   setup() {
     const { send } = useDrawSocket()
@@ -293,6 +298,9 @@ export default defineComponent({
     const waitingRequired = computed(() => $store.state.draw.waitingRequired)
     const finalNextRoundInMs = computed(() => $store.state.draw.finalNextRoundInMs)
     const roomClosedReason = computed(() => $store.state.draw.roomClosedReason)
+    const socketStatus = computed(() => $store.state.draw.status)
+    const room = computed(() => $store.state.draw.room)
+    const showSocketLoading = computed(() => !room.value && !roomClosedReason.value && socketStatus.value !== 'connected')
     const roomClosedTitle = computed(() =>
       roomClosedReason.value === 'host_left' ? vm.$t('dialog.drawRoomClosed.hostLeftTitle') : vm.$t('dialog.drawRoomClosed.emptyTitle')
     )
@@ -763,6 +771,7 @@ export default defineComponent({
       activeDrawerDisplay,
       nextDrawerDisplay,
       roomClosedReason,
+      showSocketLoading,
       roomClosedTitle,
       roomClosedHint,
       onBackToLobby,

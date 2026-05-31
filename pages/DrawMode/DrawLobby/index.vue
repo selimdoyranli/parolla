@@ -11,9 +11,15 @@
 
   Tabs.draw-lobby__tabs(v-model="activeTab" :swipeable="false" :line-width="40")
     Tab(name="official" title="Resmi Odalar")
-      SystemRoomList(:system-rooms="systemRooms" @join="onJoinSystem")
+      SystemRoomList(:system-rooms="systemRooms" :loading="isSocketConnecting" @join="onJoinSystem")
     Tab(name="community" title="Topluluk Odaları")
-      CommunityRoomList(:community-rooms="communityRooms" :category-titles="categoryTitleMap" @create="onCreate" @join="onJoinCommunity")
+      CommunityRoomList(
+        :community-rooms="communityRooms"
+        :category-titles="categoryTitleMap"
+        :loading="isSocketConnecting"
+        @create="onCreate"
+        @join="onJoinCommunity"
+      )
 
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="showGuestDialog = false")
@@ -86,6 +92,7 @@ export default defineComponent({
     const communityRooms = computed(() =>
       store.state.draw.communityRooms.length ? store.state.draw.communityRooms : store.state.draw.publicRooms
     )
+    const isSocketConnecting = computed(() => store.state.draw.status !== 'connected')
 
     // slug → title map for community room cards. Populated once from Strapi
     // on mount; rooms only ship category slugs over WS so we resolve titles
@@ -190,6 +197,7 @@ export default defineComponent({
       activeTab,
       systemRooms,
       communityRooms,
+      isSocketConnecting,
       categoryTitleMap,
       showCreate,
       onCreate,

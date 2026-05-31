@@ -1,6 +1,9 @@
 <template lang="pug">
 .system-room-list
-  .system-room-list__empty(v-if="!systemRooms.length") Resmi oda yok.
+  .system-room-list__loading(v-if="loading && !systemRooms.length")
+    Loading(color="var(--color-brand-02)") {{ $t('general.loading') }}...
+
+  .system-room-list__empty(v-else-if="!systemRooms.length") Resmi oda yok.
 
   .system-room-list__grid(v-else)
     .system-room-list__card(
@@ -40,7 +43,7 @@
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
-import { Button } from 'vant'
+import { Button, Loading } from 'vant'
 
 const PLACEHOLDER_PALETTES = [
   { from: '#ff7878', to: '#c83a5a', tint: 'rgba(255, 220, 220, 0.18)' },
@@ -89,9 +92,10 @@ function stateLabelFor(r) {
 
 export default defineComponent({
   name: 'SystemRoomList',
-  components: { Button },
+  components: { Button, Loading },
   props: {
-    systemRooms: { type: Array, default: () => [] }
+    systemRooms: { type: Array, default: () => [] },
+    loading: { type: Boolean, default: false }
   },
   emits: ['join'],
   setup(_, { emit }) {

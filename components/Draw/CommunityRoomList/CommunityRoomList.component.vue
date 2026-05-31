@@ -13,7 +13,10 @@
       )
       Button.community-room-list__join-btn(type="primary" round :disabled="!canJoin" @click="onJoin") Katıl
 
-  .community-room-list__empty(v-if="!communityRooms.length") Açık oda yok. İlk odayı sen kur.
+  .community-room-list__loading(v-if="loading && !communityRooms.length")
+    Loading(color="var(--color-brand-02)") {{ $t('general.loading') }}...
+
+  .community-room-list__empty(v-else-if="!communityRooms.length") Açık oda yok. İlk odayı sen kur.
 
   .community-room-list__rooms(v-else)
     .community-room-list__room(v-for="r in communityRooms" :key="r.code" @click="$emit('join', r.code)")
@@ -39,7 +42,7 @@
 
 <script>
 import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
-import { Button, Field } from 'vant'
+import { Button, Field, Loading } from 'vant'
 
 const STATE_LABELS = {
   lobby: 'Lobi',
@@ -52,13 +55,14 @@ const STATE_LABELS = {
 const LIVE_STATES = new Set(['picking', 'drawing', 'roundEnd'])
 
 export default defineComponent({
-  components: { Button, Field },
+  components: { Button, Field, Loading },
   props: {
     communityRooms: { type: Array, default: () => [] },
     // slug → title map fetched by the lobby. We get only slugs from the WS
     // and resolve the localized title here. Falls back to the slug itself
     // until the map populates (Strapi fetch latency).
-    categoryTitles: { type: Object, default: () => ({}) }
+    categoryTitles: { type: Object, default: () => ({}) },
+    loading: { type: Boolean, default: false }
   },
   emits: ['create', 'join'],
   setup(props, { emit }) {

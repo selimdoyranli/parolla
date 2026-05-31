@@ -51,6 +51,12 @@
     text-align: center;
   }
 
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: 28px 0;
+  }
+
   &__rooms {
     display: flex;
     flex-direction: column;
