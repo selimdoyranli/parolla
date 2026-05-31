@@ -18,7 +18,15 @@
           span.draw-chat__text {{ m.message }}
 
   .draw-chat__input
-    Field.draw-chat__field(v-model="text" :placeholder="placeholder" :maxlength="64" :disabled="disabled" @keyup.enter.native="send")
+    Field.draw-chat__field(
+      v-model="text"
+      :placeholder="placeholder"
+      :maxlength="64"
+      :disabled="disabled"
+      @keyup.enter.native="send"
+      @focus="$emit('input-focus')"
+      @blur="$emit('input-blur')"
+    )
     Button.draw-chat__send(type="primary" size="small" round :disabled="disabled || !text.trim()" @click="send") Gönder
 </template>
 
@@ -36,7 +44,7 @@ export default defineComponent({
     iGuessedCorrectly: { type: Boolean, default: false },
     isDrawing: { type: Boolean, default: false }
   },
-  emits: ['send'],
+  emits: ['send', 'input-focus', 'input-blur'],
   setup(props, { emit }) {
     const vm = getCurrentInstance().proxy
     const text = ref('')

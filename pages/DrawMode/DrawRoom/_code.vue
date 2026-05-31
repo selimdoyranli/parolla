@@ -1,5 +1,5 @@
 <template lang="pug">
-.draw-room
+.draw-room(:class="{ 'draw-room--osk': isOskOpen }")
   header.draw-room__topbar
     .draw-room__crumbs
       span.draw-room__crumb-label Oda
@@ -185,6 +185,8 @@
       :iGuessedCorrectly="iGuessedCorrectly"
       :isDrawing="isDrawing"
       @send="onSend"
+      @input-focus="onChatFocus"
+      @input-blur="onChatBlur"
     )
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="onGuestDialogClose")
   EnterPasswordDialog(
@@ -317,6 +319,23 @@ export default defineComponent({
     // needing a per-second WS message.
     const now = ref(Date.now())
     let nowInterval = null
+
+    const isOskOpen = ref(false)
+    const isTouchDevice = () => typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches
+
+    const onChatFocus = () => {
+      if (isTouchDevice()) {
+        isOskOpen.value = true
+
+        setTimeout(() => {
+          window.scrollTo(0, 0)
+        }, 100)
+      }
+    }
+
+    const onChatBlur = () => {
+      isOskOpen.value = false
+    }
 
     const showGuestDialog = ref(false)
     // Direct-link join into a password-protected room hits `bad_password`
@@ -772,6 +791,9 @@ export default defineComponent({
       nextDrawerDisplay,
       roomClosedReason,
       showSocketLoading,
+      isOskOpen,
+      onChatFocus,
+      onChatBlur,
       roomClosedTitle,
       roomClosedHint,
       onBackToLobby,

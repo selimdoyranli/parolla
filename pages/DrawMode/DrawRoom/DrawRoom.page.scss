@@ -697,6 +697,42 @@
     min-height: 0;
   }
 
+  &--osk {
+    .draw-room__topbar {
+      display: none;
+    }
+
+    .draw-room__panels {
+      grid-template-columns: 1fr;
+      height: 30dvh;
+    }
+
+    .draw-room__scoreboard {
+      display: none;
+    }
+
+    .draw-room__toolbar-slot {
+      display: none;
+    }
+  }
+
+  @at-root html[ua-is-from-ios='true'] {
+    .draw-room--osk {
+      position: fixed;
+      top: var(--header-height);
+      left: 50%;
+      z-index: 5;
+      width: 100%;
+      max-width: var(--layout-max-width);
+      height: calc(var(--vh) - var(--header-height));
+      transform: translateX(-50%);
+
+      .draw-room__panels {
+        height: calc(var(--vh) * 0.3);
+      }
+    }
+  }
+
   // ── Narrow viewport ─────────────────────────────────────
   @include media-breakpoint-down(tablet) {
     &__topbar {
@@ -725,8 +761,6 @@
     }
 
     &__toolbar-slot {
-      // Toolbar wraps to 2 rows on narrow screens — reserve enough space
-      // so the canvas still doesn't shift when it appears/disappears.
       min-height: 68px;
     }
 
