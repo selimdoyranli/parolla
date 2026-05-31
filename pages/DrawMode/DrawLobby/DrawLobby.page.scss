@@ -1,5 +1,5 @@
 .draw-lobby {
-  padding: 24px 12px 36px;
+  padding: 24px 12px calc(36px + env(safe-area-inset-bottom));
   color: var(--color-text-01);
 
   /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
@@ -234,7 +234,7 @@
   }
 
   @include media-breakpoint-down(mobile) {
-    padding: 16px 10px 28px;
+    padding: 16px 10px calc(28px + env(safe-area-inset-bottom));
 
     &__title {
       font-size: 24px;

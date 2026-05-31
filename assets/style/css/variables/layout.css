@@ -2,4 +2,5 @@
   --layout-width: 100%;
   --layout-max-width: var(--tablet);
   --layout-height: 100vh;
+  --layout-height: 100dvh;
 }

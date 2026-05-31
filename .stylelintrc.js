@@ -23,6 +23,12 @@ module.exports = {
     ],
     'color-named': 'never',
     'at-rule-no-unknown': null,
+    'unit-no-unknown': [
+      true,
+      {
+        ignoreUnits: ['dvh', 'svh', 'lvh', 'dvw', 'svw', 'lvw']
+      }
+    ],
     'declaration-empty-line-before': [
       'always',
       {

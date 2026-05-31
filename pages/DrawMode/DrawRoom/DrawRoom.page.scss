@@ -4,7 +4,7 @@
   gap: 6px;
   height: 100%;
   min-height: 0;
-  padding: 6px;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
   overflow: hidden;
   color: var(--color-text-01);
 
@@ -687,7 +687,7 @@
     flex-shrink: 0;
     grid-template-columns: minmax(0, 300px) 1fr;
     gap: 6px;
-    height: clamp(200px, 32vh, 320px);
+    height: clamp(200px, 32dvh, 320px);
     min-height: 0;
   }
 
