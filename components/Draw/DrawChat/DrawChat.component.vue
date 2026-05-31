@@ -1,5 +1,5 @@
 <template lang="pug">
-.draw-chat
+.draw-chat(ref="rootRef")
   .draw-chat__log(ref="log")
     .draw-chat__empty(v-if="!chat.length") {{ disabled ? 'Çizim sırasında sohbet kapalı' : 'Tahmininizi yazın…' }}
     template(v-else)
@@ -18,24 +18,34 @@
           span.draw-chat__text {{ m.message }}
 
   .draw-chat__input
-    Field.draw-chat__field(
-      v-model="text"
+    input.draw-chat__field(
+      type="text"
+      :value="text"
       :placeholder="placeholder"
+      spellcheck="false"
+      autocomplete="off"
       :maxlength="64"
       :disabled="disabled"
-      @keyup.enter.native="send"
+      @input="onInput"
+      @keypress.enter="send"
       @focus="$emit('input-focus')"
       @blur="$emit('input-blur')"
     )
-    Button.draw-chat__send(type="primary" size="small" round :disabled="disabled || !text.trim()" @click="send") Gönder
+    Button.draw-chat__send.do-not-hide-keyboard.do-not-hide-keyboard--send(
+      type="primary"
+      size="small"
+      round
+      :disabled="disabled || !text.trim()"
+      @click="send"
+    ) Gönder
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, nextTick, getCurrentInstance } from '@nuxtjs/composition-api'
-import { Field, Button } from 'vant'
+import { defineComponent, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
+import { Button } from 'vant'
 
 export default defineComponent({
-  components: { Field, Button },
+  components: { Button },
   props: {
     chat: { type: Array, default: () => [] },
     players: { type: Array, default: () => [] },
@@ -49,8 +59,13 @@ export default defineComponent({
     const vm = getCurrentInstance().proxy
     const text = ref('')
     const log = ref(null)
+    const rootRef = ref(null)
 
     const disabled = computed(() => false)
+
+    const onInput = e => {
+      text.value = e.target.value
+    }
 
     const kindOf = m => {
       // Backward-compat: older payloads only had isCloseHint to mark a
@@ -106,6 +121,22 @@ export default defineComponent({
       text.value = ''
     }
 
+    const onRootTouchEnd = event => {
+      const target = event.target.closest && event.target.closest('.do-not-hide-keyboard')
+
+      if (!target) return
+      event.preventDefault()
+
+      if (target.classList.contains('do-not-hide-keyboard--send')) send()
+    }
+
+    onMounted(() => {
+      if (rootRef.value) rootRef.value.addEventListener('touchend', onRootTouchEnd)
+    })
+    onBeforeUnmount(() => {
+      if (rootRef.value) rootRef.value.removeEventListener('touchend', onRootTouchEnd)
+    })
+
     watch(
       () => props.chat.length,
       async () => {
@@ -146,7 +177,7 @@ export default defineComponent({
       }
     }
 
-    return { text, log, disabled, placeholder, send, iconFor, msgClasses, buildAvatarUser }
+    return { text, log, rootRef, disabled, placeholder, send, onInput, iconFor, msgClasses, buildAvatarUser }
   }
 })
 </script>
