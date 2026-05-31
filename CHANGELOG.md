@@ -1,5 +1,106 @@
 # Changelog
 
+## v2.50.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.49.0...v2.50.0)
+
+
+### 🚀 Enhancements
+
+  - **draw:** Add ws enums, i18n routes, and store/draw module ([5b57d21](https://github.com/selimdoyranli/parolla/commit/5b57d21))
+  - **draw:** Add useDrawSocket composable for channel-aware WS ([6a43c91](https://github.com/selimdoyranli/parolla/commit/6a43c91))
+  - **draw:** Add DrawLobby page (public rooms list + create/join) ([5097794](https://github.com/selimdoyranli/parolla/commit/5097794))
+  - **draw:** Add DrawRoomCreateDialog component ([77026f5](https://github.com/selimdoyranli/parolla/commit/77026f5))
+  - **draw:** Add DrawCanvas + DrawToolbar components (gartic-style) ([79cab3b](https://github.com/selimdoyranli/parolla/commit/79cab3b))
+  - **draw:** Add masked-word, timer, word-picker, chat, scoreboard components ([4c38c48](https://github.com/selimdoyranli/parolla/commit/4c38c48))
+  - **draw:** Add DrawRoom page assembling canvas/chat/scoreboard ([6175847](https://github.com/selimdoyranli/parolla/commit/6175847))
+  - **draw:** Layout integration + project tokens + drawer labels + round countdown ([cb5a3b1](https://github.com/selimdoyranli/parolla/commit/cb5a3b1))
+  - **draw:** Typed system chat (info/success/warning/danger) + scoreboard guess checkmark ([d50e052](https://github.com/selimdoyranli/parolla/commit/d50e052))
+  - **draw:** Canvas-anchored layout, avatar chat, toolbar redesign ([1845609](https://github.com/selimdoyranli/parolla/commit/1845609))
+  - **draw:** Mirror new draw lobby/system message types in FE enum ([ddde401](https://github.com/selimdoyranli/parolla/commit/ddde401))
+  - **draw:** Extend Vuex state for system rooms + waiting + final cycle ([cd1a7b1](https://github.com/selimdoyranli/parolla/commit/cd1a7b1))
+  - **draw:** Add lobby + waiting + final scoreboard mutations ([49a7317](https://github.com/selimdoyranli/parolla/commit/49a7317))
+  - **draw:** Handle new lobby + waiting + final scoreboard WS messages ([6d07017](https://github.com/selimdoyranli/parolla/commit/6d07017))
+  - **draw:** Extract CommunityRoomList component ([d3294f1](https://github.com/selimdoyranli/parolla/commit/d3294f1))
+  - **draw:** Add SystemRoomList component (category-grouped) ([5706484](https://github.com/selimdoyranli/parolla/commit/5706484))
+  - **draw:** Tabbed lobby - Resmi Odalar (default) + Topluluk Odaları ([47e15c7](https://github.com/selimdoyranli/parolla/commit/47e15c7))
+  - **draw:** Add isWaiting + isFinalScoreboard getters ([b1c3b27](https://github.com/selimdoyranli/parolla/commit/b1c3b27))
+  - **draw:** Draw room handles system-room waiting + final scoreboard states ([8364c5f](https://github.com/selimdoyranli/parolla/commit/8364c5f))
+  - **draw:** Let the drawer type in the chat field while drawing ([f1df8f5](https://github.com/selimdoyranli/parolla/commit/f1df8f5))
+  - **draw:** Wire Draw mode into game-mode infra + IntroScene entry ([68d322b](https://github.com/selimdoyranli/parolla/commit/68d322b))
+  - **draw:** Lowercase system slugs in URL + direct-link join + viewer browse ([ce8014b](https://github.com/selimdoyranli/parolla/commit/ce8014b))
+  - **guest:** Add guest identity helper with adjective+noun usernames ([5556ec5](https://github.com/selimdoyranli/parolla/commit/5556ec5))
+  - **store:** Add guest identity module ([a74463f](https://github.com/selimdoyranli/parolla/commit/a74463f))
+  - **persist:** Include guest identity in vuex-persist whitelist ([fdb28a5](https://github.com/selimdoyranli/parolla/commit/fdb28a5))
+  - **composables:** Add useGuestIdentity ([4ac3e05](https://github.com/selimdoyranli/parolla/commit/4ac3e05))
+  - **ws:** Add DRAW_GUEST_PROFILE_UPDATE enum entries ([e382ee3](https://github.com/selimdoyranli/parolla/commit/e382ee3))
+  - **i18n:** Add guest dialog and label strings ([dafcc56](https://github.com/selimdoyranli/parolla/commit/dafcc56))
+  - **draw:** Add CreateGuestDrawerDialog with avatar/name regen ([eef8606](https://github.com/selimdoyranli/parolla/commit/eef8606))
+  - **draw:** Send guest handshake params when user is not authenticated ([1ed4e47](https://github.com/selimdoyranli/parolla/commit/1ed4e47))
+  - **draw:** Drop auth middleware from DrawRoom for guest access ([4942dd8](https://github.com/selimdoyranli/parolla/commit/4942dd8))
+  - **draw:** Open guest dialog on direct-link before joining room ([579aaa5](https://github.com/selimdoyranli/parolla/commit/579aaa5))
+  - **draw:** Show guest identity widget in lobby header ([df61b25](https://github.com/selimdoyranli/parolla/commit/df61b25))
+  - **draw:** Label guest scoreboard rows and block PlayerDialog click ([67b57d8](https://github.com/selimdoyranli/parolla/commit/67b57d8))
+  - **draw:** Label guest chat messages and block PlayerDialog click ([9d1c664](https://github.com/selimdoyranli/parolla/commit/9d1c664))
+  - **draw:** Canvas overlay + back-to-lobby button on room close ([c49aee5](https://github.com/selimdoyranli/parolla/commit/c49aee5))
+  - **draw:** Show category badge on community card + priority sort ([7694b8e](https://github.com/selimdoyranli/parolla/commit/7694b8e))
+  - **draw:** Prompt for password before joining protected rooms ([71fd136](https://github.com/selimdoyranli/parolla/commit/71fd136))
+  - **draw:** Add SEO meta to DrawLobby + DrawRoom and trim subtitle ([4da1a8c](https://github.com/selimdoyranli/parolla/commit/4da1a8c))
+  - **draw:** Dynamic SEO title per room + player-list on intro tile ([ef1e0e5](https://github.com/selimdoyranli/parolla/commit/ef1e0e5))
+  - **intro:** Add yellow "Yeni" badge to draw tile ([baeed2a](https://github.com/selimdoyranli/parolla/commit/baeed2a))
+  - **draw:** Add report button to draw-room board head ([734cf72](https://github.com/selimdoyranli/parolla/commit/734cf72))
+  - **draw:** Add Howler SFX for round start, correct guess, last 5s tick-tock ([a7d46d1](https://github.com/selimdoyranli/parolla/commit/a7d46d1))
+
+### 🩹 Fixes
+
+  - **draw:** Make useDrawSocket a module-level singleton (shared WS across lobby+room) ([65b0b21](https://github.com/selimdoyranli/parolla/commit/65b0b21))
+  - **draw:** Defer WS close on unmount so route transition doesn't drop the room ([1ba69d1](https://github.com/selimdoyranli/parolla/commit/1ba69d1))
+  - **draw:** Surface server draw_error via toast + console (was silent) ([b4939be](https://github.com/selimdoyranli/parolla/commit/b4939be))
+  - **draw:** Unblock drawing + restore reference design ([e92140d](https://github.com/selimdoyranli/parolla/commit/e92140d))
+  - **draw:** Normalize canvas coords + popup→dialog + compact toolbar + tight height ([f5840a1](https://github.com/selimdoyranli/parolla/commit/f5840a1))
+  - **draw:** Wire Vant Dialog properly (Dialog.Component) + rename Switch ([30e5aae](https://github.com/selimdoyranli/parolla/commit/30e5aae))
+  - **draw:** Anchor stroke width to fixed reference, not drawer's canvas width ([7b5cf3c](https://github.com/selimdoyranli/parolla/commit/7b5cf3c))
+  - **draw:** Clear final overlay state when server flips room back to lobby ([23ae661](https://github.com/selimdoyranli/parolla/commit/23ae661))
+  - **draw:** Clear final scores on cycle reset + mirror waiting/final state locally ([29fa715](https://github.com/selimdoyranli/parolla/commit/29fa715))
+  - **draw:** Escape pug interpolation conflict in system room sub-index label ([0ded3b6](https://github.com/selimdoyranli/parolla/commit/0ded3b6))
+  - **draw:** Buffer outgoing WS messages while socket is still connecting ([d5bed0b](https://github.com/selimdoyranli/parolla/commit/d5bed0b))
+  - **draw:** Leave room on unmount + (misafir) on drawer chips ([bc75b6f](https://github.com/selimdoyranli/parolla/commit/bc75b6f))
+  - **draw:** Drop auth-control gates from chat and create-room button ([9151e44](https://github.com/selimdoyranli/parolla/commit/9151e44))
+  - **draw:** Wipe local room state on unmount so re-join navigates ([600ab25](https://github.com/selimdoyranli/parolla/commit/600ab25))
+  - **guest-dialog:** Regenerate now updates avatar + dark-mode + width ([5d75f54](https://github.com/selimdoyranli/parolla/commit/5d75f54))
+  - **draw:** Bounce direct-link join to lobby on room-not-found / join-fail ([8c95682](https://github.com/selimdoyranli/parolla/commit/8c95682))
+  - **draw:** Defer FE message queue flush until server CONNECTED handshake ([7bc5960](https://github.com/selimdoyranli/parolla/commit/7bc5960))
+
+### 💅 Refactors
+
+  - **draw:** Single-column layout + Vant2 components for 768px-wide layout ([dfc85c0](https://github.com/selimdoyranli/parolla/commit/dfc85c0))
+  - **draw:** Explicit Default layout binding + side-by-side score/chat panels ([811d02f](https://github.com/selimdoyranli/parolla/commit/811d02f))
+  - **draw:** Single-category room + fetch categories from Strapi ([e09c86a](https://github.com/selimdoyranli/parolla/commit/e09c86a))
+  - **draw:** Redesign room cards + auth gates + dark-mode polish ([def7a98](https://github.com/selimdoyranli/parolla/commit/def7a98))
+  - **draw:** Nest guest store module under draw namespace ([be4eb01](https://github.com/selimdoyranli/parolla/commit/be4eb01))
+  - **draw-create:** Use Stepper for capacity/round count/duration ([18a0827](https://github.com/selimdoyranli/parolla/commit/18a0827))
+  - **draw:** Centralize community/system kind in drawRoomKindEnum ([2de3774](https://github.com/selimdoyranli/parolla/commit/2de3774))
+  - **composables:** Rename useGuestIdentity → useDrawGuestIdentity ([c19e169](https://github.com/selimdoyranli/parolla/commit/c19e169))
+
+### 📖 Documentation
+
+  - Mention /ciz draw mode ([5cd8125](https://github.com/selimdoyranli/parolla/commit/5cd8125))
+  - **draw:** Spec for system (official) rooms feature ([b7457f5](https://github.com/selimdoyranli/parolla/commit/b7457f5))
+  - **draw:** Implementation plan for system (official) rooms ([4537e34](https://github.com/selimdoyranli/parolla/commit/4537e34))
+
+### 🏡 Chore
+
+  - **draw:** Prune comments that restated their own code ([5e6eac8](https://github.com/selimdoyranli/parolla/commit/5e6eac8))
+  - **draw:** Tighten lobby hero + seo title copy ([e0c4642](https://github.com/selimdoyranli/parolla/commit/e0c4642))
+
+### 🎨 Styles
+
+  - **draw-lobby:** Round van-tabs__wrap and add bottom margin ([4bf12b7](https://github.com/selimdoyranli/parolla/commit/4bf12b7))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.49.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.48.0...v2.49.0)
