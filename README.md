@@ -183,3 +183,12 @@ Copyright (c) Selim Doyranlı <selimdoyranli@gmail.com>
 [changelog-href]: ./CHANGELOG.md
 [license-src]: https://img.shields.io/badge/License-CC%20BY‑NC%204.0-blue.svg
 [license-href]: ./LICENSE
+
+## Draw Mode (Çiz)
+
+Çoklu oyunculu çizim+tahmin oyunu. Routes:
+
+- `/ciz` (`/draw`) — lobby; aktif odalar + oda kodu ile katılım + yeni oda kurma
+- `/ciz/oda/:code` (`/draw/room/:code`) — oyun ekranı; canvas, sohbet/tahmin penceresi, skor tablosu
+
+Backend tarafında `parolla-ws`'nin `?channel=draw` kanalına bağlanır; kelimeler `parolla-strapi`'deki `DrawWord` koleksiyonundan çekilir.

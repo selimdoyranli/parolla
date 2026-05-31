@@ -1,0 +1,46 @@
+.draw-canvas {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-ui-01);
+  border: 1px dashed var(--color-border-02);
+  border-radius: 10px;
+  touch-action: none;
+
+  &__el {
+    display: block;
+    width: auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    cursor: default;
+    touch-action: none;
+    aspect-ratio: 12 / 7;
+
+    &.is-drawable {
+      cursor: crosshair;
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 2;
+    padding: 3px 8px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 11px;
+    background: var(--color-overlay-02);
+    border-radius: 6px;
+    pointer-events: none;
+  }
+}

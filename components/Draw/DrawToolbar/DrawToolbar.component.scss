@@ -1,0 +1,418 @@
+.draw-toolbar {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  padding: 4px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 8px;
+
+  &__group {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    padding: 2px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 6px;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 16px;
+    margin: 0 1px;
+    background: var(--color-border-02);
+  }
+
+  &__tool {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    color: var(--color-text-02);
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.08s, color 0.15s;
+    place-items: center;
+
+    &:hover {
+      color: var(--color-text-01);
+      background: var(--color-hover-01);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &.is-active {
+      color: var(--color-text-04);
+      background: var(--color-brand-02);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background: var(--color-brand-02);
+      }
+    }
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  &__size {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: var(--color-hover-01);
+    }
+
+    // Explicit margin reset + inline-block ensures the dot sits dead-center.
+    // (Default `i` font-style/inline behaviour was nudging it off-axis.)
+    i {
+      display: inline-block;
+      margin: 0;
+      background: var(--color-text-01);
+      border-radius: 50%;
+      transition: background 0.15s;
+    }
+
+    &--s i {
+      width: 4px;
+      height: 4px;
+    }
+
+    &--m i {
+      width: 9px;
+      height: 9px;
+    }
+
+    &--l i {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.is-active {
+      background: var(--color-brand-02);
+
+      i {
+        background: var(--color-text-04);
+      }
+    }
+  }
+
+  &__color-current {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    overflow: hidden;
+    border: 2px solid var(--color-ui-02);
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px var(--color-border-02);
+
+    &::after {
+      position: absolute;
+      background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%);
+      content: '';
+      inset: 0;
+    }
+  }
+
+  &__palette {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 3px;
+    align-items: center;
+    padding: 3px 5px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 6px;
+  }
+
+  &__swatch {
+    position: relative;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s;
+
+    &:hover {
+      transform: scale(1.14);
+    }
+
+    &.is-active {
+      z-index: 2;
+      box-shadow: 0 0 0 2px var(--color-ui-02), 0 0 0 3px var(--color-brand-02);
+    }
+  }
+
+  // ── Color picker (circular trigger + floating popup) ──────
+  &__picker-anchor {
+    position: relative;
+    display: inline-flex;
+    margin-left: 2px;
+  }
+
+  &__picker-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: var(--color-text-04);
+    background: var(--color-text-01);
+    border: 2px solid var(--color-ui-02);
+    border-radius: 999px;
+    box-shadow: 0 0 0 1.5px var(--color-border-02);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.15s;
+
+    &:hover {
+      box-shadow: 0 0 0 1.5px var(--color-brand-02);
+      transform: scale(1.06);
+    }
+
+    &.is-active {
+      box-shadow: 0 0 0 2px var(--color-brand-02);
+    }
+
+    // Conic gradient ring — distinguishes the picker visually from regular swatches
+    &::before {
+      position: absolute;
+      z-index: -1;
+      background: conic-gradient(#ed1c24, #ff7f27, #fff200, #22b14c, #00a2e8, #3f48cc, #a349a4, #ed1c24);
+      border-radius: 999px;
+      opacity: 0.85;
+      filter: blur(0.5px);
+      content: '';
+      inset: -5px;
+    }
+  }
+
+  &__picker {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: -4px;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 224px;
+    padding: 10px;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    transform-origin: top right;
+
+    // Tail pointing back at the trigger
+    &::before {
+      position: absolute;
+      top: -6px;
+      right: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--color-ui-02);
+      border-top: 1px solid var(--color-border-01);
+      border-left: 1px solid var(--color-border-01);
+      transform: rotate(45deg);
+      content: '';
+    }
+  }
+
+  &__picker-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+
+  &__picker-swatch {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.is-active {
+      box-shadow: 0 0 0 2px var(--color-ui-02), 0 0 0 4px var(--color-brand-02);
+    }
+  }
+
+  &__picker-native {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6px;
+    border-top: 1px solid var(--color-border-02);
+    cursor: pointer;
+  }
+
+  &__picker-input {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__picker-native-label {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 5px 10px;
+    color: var(--color-text-02);
+    font-weight: 600;
+    font-size: 11px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+    transition: color 0.15s, border-color 0.15s;
+
+    &:hover {
+      color: var(--color-brand-02);
+      border-color: var(--color-brand-02);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  &__btn {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    color: var(--color-text-02);
+    font-weight: 600;
+    font-size: 11px;
+    font-family: inherit;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, transform 0.08s, border-color 0.15s;
+
+    &:hover {
+      color: var(--color-text-01);
+      background: var(--color-hover-01);
+      border-color: var(--color-brand-02);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &--danger {
+      color: var(--color-danger-01);
+      border-color: rgba(244, 67, 54, 0.35);
+
+      &:hover {
+        color: var(--color-text-04);
+        background: var(--color-danger-01);
+        border-color: var(--color-danger-01);
+      }
+    }
+  }
+
+  // ── Popup transitions ────────────────────────────────────
+  .draw-toolbar-pop-enter-active,
+  .draw-toolbar-pop-leave-active {
+    transition: opacity 0.14s ease, transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .draw-toolbar-pop-enter,
+  .draw-toolbar-pop-leave-to {
+    transform: translateY(-4px) scale(0.96);
+    opacity: 0;
+  }
+
+  @media (max-width: 760px) {
+    gap: 4px;
+    padding: 4px;
+
+    // Keep every row short on mobile — wrapping is fine, height is not.
+    &__group {
+      gap: 2px;
+      padding: 2px;
+    }
+
+    &__tool {
+      width: 26px;
+      height: 26px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    &__size {
+      width: 24px;
+      height: 24px;
+    }
+
+    &__palette {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    &__swatch {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__picker-btn {
+      width: 22px;
+      height: 22px;
+    }
+
+    &__color-current {
+      width: 26px;
+      height: 26px;
+    }
+
+    &__btn {
+      height: 26px;
+      padding: 0 8px;
+      font-size: 12px;
+    }
+
+    &__btn-label {
+      display: none;
+    }
+
+    &__divider {
+      display: none;
+    }
+  }
+}

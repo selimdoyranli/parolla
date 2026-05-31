@@ -104,6 +104,17 @@
         :description="$t('introScene.modeList.music.description')"
       )
 
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--draw(
+        v-if="$i18n.locale === $i18n.defaultLocale"
+        :label="$t('introScene.modeList.draw.newLabel')"
+        icon="noto:artist-palette"
+        :to="localePath({ name: 'DrawMode-DrawLobby' })"
+        :title="$t('introScene.modeList.draw.title')"
+        :headLabel="{ title: $t('introScene.modeList.draw.label'), icon: 'tabler:users', pulse: true }"
+        :description="$t('introScene.modeList.draw.description')"
+        :playerList="drawUserList"
+      )
+
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--knowledge-kingdom(
         v-if="false"
         icon="noto:crown"
@@ -155,6 +166,12 @@ export default defineComponent({
         username: `Player ${Math.random().toString(36).substring(2, 15)}`
       }))
     })
+    const drawUserList = computed(() => {
+      return Array.from({ length: 10 }, (_, index) => ({
+        id: index + 1,
+        username: `Player ${Math.random().toString(36).substring(2, 15)}`
+      }))
+    })
     const tourLeaderboard = computed(() => store.getters['tour/leaderboard'])
     const todaysTourBestScorer = computed(() => tourLeaderboard.value.items?.[0])
 
@@ -180,6 +197,7 @@ export default defineComponent({
       todaysDailyBestScorer,
       dailyScores,
       tourUserList,
+      drawUserList,
       tourLeaderboard,
       todaysTourBestScorer,
       creatorDailyPlayingCount,

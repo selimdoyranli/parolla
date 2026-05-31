@@ -1,0 +1,70 @@
+.create-guest-drawer-dialog {
+  width: 92%;
+  max-width: var(--mobile);
+
+  // Vant plain Button default text color is hard-coded gray and stays
+  // unreadable on the dark dialog background. Re-bind to the theme
+  // text token so both light/dark modes get correct contrast.
+  .van-button--plain {
+    color: var(--color-text-01);
+    border-color: var(--color-text-03);
+  }
+
+  &__inner {
+    padding: 24px 20px;
+  }
+
+  &__head {
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  &__avatar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &__avatar {
+    width: 96px;
+    height: 96px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  &__field-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 8px;
+  }
+
+  &__field {
+    flex: 1;
+  }
+
+  &__error {
+    margin-bottom: 8px;
+    color: #e74c3c;
+    font-size: 12px;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  &__actions {
+    margin-top: 16px;
+  }
+}

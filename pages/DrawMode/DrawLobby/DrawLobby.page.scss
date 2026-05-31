@@ -1,0 +1,247 @@
+.draw-lobby {
+  padding: 24px 12px 36px;
+  color: var(--color-text-01);
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-tabs__wrap {
+    overflow: hidden;
+    margin-block-end: 16px;
+    border-radius: 12px;
+  }
+
+  &__hero {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 3px 12px;
+    color: var(--color-brand-02);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    background: rgba(255, 120, 120, 0.12);
+    border-radius: 999px;
+  }
+
+  &__title {
+    margin: 0 0 8px;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.4px;
+  }
+
+  &__subtitle {
+    max-width: 480px;
+    margin: 0 auto;
+    color: var(--color-text-03);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__guest {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+
+  &__cta {
+    --van-button-primary-background-color: var(--color-brand-02);
+    --van-button-primary-border-color: var(--color-brand-02);
+
+    flex: 1 1 200px;
+  }
+
+  &__cta-inner {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  &__cta-icon {
+    flex-shrink: 0;
+  }
+
+  &__join {
+    display: flex;
+    flex: 2 1 280px;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  &__join-field {
+    flex: 1;
+    padding: 0 !important;
+    background: var(--color-field-01) !important;
+    border: 1px solid var(--color-border-01);
+    border-radius: 999px;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__body {
+      padding: 0 16px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__control {
+      height: 44px;
+      color: var(--color-text-01);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-align: center;
+      text-transform: uppercase;
+
+      &::placeholder {
+        color: var(--color-text-03);
+        font-weight: 400;
+        letter-spacing: 1px;
+      }
+    }
+  }
+
+  &__join-btn {
+    min-width: 92px;
+  }
+
+  &__rooms-head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 8px;
+
+    h2 {
+      margin: 0;
+      color: var(--color-text-02);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+  }
+
+  &__rooms-count {
+    padding: 1px 8px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 11px;
+    background: var(--color-ui-03);
+    border-radius: 999px;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 36px 20px;
+    color: var(--color-text-03);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px dashed var(--color-border-02);
+    border-radius: 14px;
+
+    p {
+      margin: 0;
+      font-size: 13px;
+    }
+  }
+
+  &__cells {
+    overflow: hidden;
+    border-radius: 14px !important;
+  }
+
+  &__room {
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-cell__title {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  &__room-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__room-code {
+    padding: 4px 10px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 3px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 8px;
+  }
+
+  &__room-state {
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  &__room-lock {
+    color: var(--color-text-03);
+  }
+
+  &__room-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    margin-top: 4px;
+    color: var(--color-text-03);
+    font-size: 12px;
+
+    span {
+      display: inline-flex;
+      gap: 2px;
+      align-items: center;
+    }
+  }
+
+  @include media-breakpoint-down(mobile) {
+    padding: 16px 10px 28px;
+
+    &__title {
+      font-size: 24px;
+    }
+
+    &__subtitle {
+      font-size: 13px;
+    }
+  }
+}

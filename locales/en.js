@@ -141,6 +141,12 @@ export default {
         description: 'Listen to songs and guess them',
         label: 'Songs of the artist you want'
       },
+      draw: {
+        title: 'DRAW',
+        description: 'Draw, guess, win — live drawing game',
+        label: 'LIVE',
+        newLabel: 'New'
+      },
       knowledgeKingdom: {
         title: 'KNOWLEDGE KINGDOM',
         description: 'Click, earn, rise',
@@ -499,6 +505,28 @@ export default {
     deleteProfilePhoto: {
       title: 'Delete profile photo',
       message: 'Your uploaded profile photo will be permanently removed. Continue?'
+    },
+    guestDrawer: {
+      title: 'Guest Profile',
+      regenerateAvatar: 'Regenerate Avatar',
+      regenerateName: 'Random',
+      confirm: 'Confirm',
+      usernameLabel: 'Username'
+    },
+    drawRoomClosed: {
+      hostLeftTitle: 'Host left the room',
+      hostLeftHint: 'The room is closed. You can return to the lobby.',
+      emptyTitle: 'Room closed',
+      emptyHint: 'No one is left in the room.',
+      backToLobby: 'Back to Lobby'
+    },
+    enterPassword: {
+      title: 'Protected Room',
+      hint: 'Enter the password to join this room.',
+      placeholder: 'Room password',
+      confirm: 'Join',
+      cancel: 'Cancel',
+      wrongPassword: 'Wrong password. Try again.'
     }
   },
   clipboard: {
@@ -1007,6 +1035,17 @@ export default {
       title: 'Unlimited',
       description: 'Unlimited question set, solve questions, play word game'
     },
+    drawLobby: {
+      title: 'Draw',
+      description:
+        'Real-time draw and guess game. Join official rooms with friends, create your own room, and draw / guess words from curated categories.',
+      keywords: 'draw mode, drawing game, word guess, multiplayer drawing, parolla draw'
+    },
+    drawRoom: {
+      title: 'Draw Room',
+      description: 'Join a draw mode room. Take turns drawing while everyone races to guess the word.',
+      keywords: 'draw room, online drawing, word guess, parolla draw room'
+    },
     creatorModeCompose: {
       title: 'Create a quiz',
       description: 'Create a quiz or solve quizzes created by players',
@@ -1120,5 +1159,9 @@ export default {
   },
   account: {
     edit: { title: 'Edit profile' }
+  },
+  common: {
+    invalidUsername: 'Invalid username',
+    guestLabel: '(guest)'
   }
 }

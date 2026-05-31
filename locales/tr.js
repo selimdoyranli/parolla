@@ -146,6 +146,12 @@ export default {
         description: 'Şarkıları dinle ve tahmin et',
         label: 'Dilediğin sanatçıya ait şarkılar'
       },
+      draw: {
+        title: 'ÇİZ',
+        description: 'Verilen kelimeyi çiz , çizimi tahmin et',
+        label: 'CANLI',
+        newLabel: 'Yeni'
+      },
       knowledgeKingdom: {
         title: 'BİLGİ KRALLIĞI',
         description: 'Tıkla, kazan, yüksel',
@@ -505,6 +511,28 @@ export default {
     deleteProfilePhoto: {
       title: 'Profil fotoğrafını sil',
       message: 'Yüklediğin profil fotoğrafı kalıcı olarak silinecek. Devam etmek istiyor musun?'
+    },
+    guestDrawer: {
+      title: 'Misafir Profili',
+      regenerateAvatar: 'Avatarı Yenile',
+      regenerateName: 'Rastgele',
+      confirm: 'Onayla',
+      usernameLabel: 'Kullanıcı Adı'
+    },
+    drawRoomClosed: {
+      hostLeftTitle: 'Host odadan ayrıldı',
+      hostLeftHint: 'Oda kapatıldı. Lobiye dönebilirsin.',
+      emptyTitle: 'Oda kapatıldı',
+      emptyHint: 'Odada kimse kalmadı.',
+      backToLobby: 'Lobiye Dön'
+    },
+    enterPassword: {
+      title: 'Şifreli Oda',
+      hint: 'Bu odaya katılmak için şifreyi gir.',
+      placeholder: 'Oda şifresi',
+      confirm: 'Katıl',
+      cancel: 'Vazgeç',
+      wrongPassword: 'Şifre yanlış. Tekrar dene.'
     }
   },
   clipboard: {
@@ -1031,6 +1059,17 @@ export default {
       title: 'Limitsiz',
       description: 'Sınırsız soru seti, bulmaca çöz, kelime oyunu oyna'
     },
+    drawLobby: {
+      title: 'Çiz',
+      description:
+        'Gerçek zamanlı çizim ve tahmin oyunu. Arkadaşlarınla resmi odalara katıl, kendi odanı kur ve kategorilerden seçtiğin kelimeleri çizip tahmin et.',
+      keywords: 'çiz modu, çizim oyunu, kelime tahmin, multiplayer çizim, parolla çiz'
+    },
+    drawRoom: {
+      title: 'Çiz Odası',
+      description: 'Çiz modu odasına katıl, çiz ve tahmin et. Sırayla çizen oyuncular, kelime tahmin etme yarışı.',
+      keywords: 'çiz odası, çizim oyna, kelime tahmin, parolla çiz oda'
+    },
     creatorModeCompose: {
       title: 'Quiz oluştur',
       description: 'Quiz oluştur ya da oyuncuların oluşturduğu quizleri çöz',
@@ -1144,5 +1183,9 @@ export default {
   },
   account: {
     edit: { title: 'Profili düzenle' }
+  },
+  common: {
+    invalidUsername: 'Geçersiz kullanıcı adı',
+    guestLabel: '(misafir)'
   }
 }

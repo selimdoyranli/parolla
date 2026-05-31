@@ -1,0 +1,155 @@
+.draw-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 8px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 12px;
+
+  &__log {
+    flex: 1;
+    margin-bottom: 6px;
+    padding: 4px 4px 0;
+    overflow-y: auto;
+  }
+
+  &__empty {
+    padding: 16px;
+    color: var(--color-text-03);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  // ── One message per visual row, no bubble background ─────
+  // Inline avatar (PlayerAvatar with-username) followed by " : message" — the
+  // avatar/username uses inline-flex so the entire row sits on a single text
+  // baseline; long messages wrap and continue under the avatar block.
+  &__msg {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-text-01);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+    word-break: break-word;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__avatar {
+    display: inline-flex;
+    margin-right: 2px;
+    vertical-align: middle;
+    cursor: pointer;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .player-avatar__username {
+      color: var(--color-text-01);
+      font-weight: 700;
+      font-size: 13px;
+    }
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  &__msg--mine &__avatar ::v-deep .player-avatar__username {
+    color: var(--color-brand-02);
+  }
+
+  &__sep {
+    color: var(--color-text-03);
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
+  &__text {
+    color: var(--color-text-02);
+    vertical-align: middle;
+  }
+
+  // ── System rows: inline-flow, left-aligned, color-coded, no bubble ─
+  &__msg--system {
+    color: var(--color-text-02);
+    font-size: 13px;
+  }
+
+  &__sys-icon {
+    display: inline-block;
+    margin-right: 3px;
+    color: var(--color-info-02);
+    vertical-align: -2px;
+  }
+
+  &__sys-label {
+    color: var(--color-text-03);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  &__sys-text {
+    color: var(--color-text-02);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  &__msg--system-success &__sys-icon,
+  &__msg--system-success &__sys-text {
+    color: var(--color-success-02);
+  }
+
+  &__msg--system-warning &__sys-icon,
+  &__msg--system-warning &__sys-text {
+    color: var(--color-warning-02);
+  }
+
+  &__msg--system-danger &__sys-icon,
+  &__msg--system-danger &__sys-text {
+    color: var(--color-danger-02);
+  }
+
+  // ── Input row ───────────────────────────────────────────
+  &__input {
+    display: flex;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  &__field {
+    flex: 1;
+    padding: 0 !important;
+    background: var(--color-field-01) !important;
+    border: 1px solid var(--color-border-01);
+    border-radius: 10px;
+    transition: border-color 0.15s;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__body {
+      padding: 0 12px;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-field__control {
+      height: 36px;
+      color: var(--color-text-01);
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    &:focus-within {
+      border-color: var(--color-brand-02);
+    }
+  }
+
+  &__send {
+    --van-button-primary-background-color: var(--color-brand-02);
+    --van-button-primary-border-color: var(--color-brand-02);
+
+    min-width: 78px;
+  }
+}

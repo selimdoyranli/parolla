@@ -31,6 +31,16 @@ export default ({ store }) => {
                 ownedItems: state.tycoon['knowledge-kingdom'].ownedItems
               }
             }
+          : {},
+      draw:
+        state.draw && state.draw.guest
+          ? {
+              guest: {
+                id: state.draw.guest.id,
+                name: state.draw.guest.name,
+                avatarSeed: state.draw.guest.avatarSeed
+              }
+            }
           : {}
     })
   }).plugin(store)
