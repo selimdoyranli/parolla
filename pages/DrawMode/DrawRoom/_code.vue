@@ -28,6 +28,16 @@
         DrawMaskedWord(v-if="iAmDrawer && currentWord" :plain="currentWord")
         DrawMaskedWord(v-else-if="maskedWord" :mask="maskedWord")
       .draw-room__head-spacer(v-else)
+      button.draw-room__head-report(
+        v-if="canReportDrawer"
+        type="button"
+        :class="{ 'draw-room__head-report--done': hasReportedDrawer }"
+        :aria-label="hasReportedDrawer ? 'Çizim raporlandı' : 'Çizeni raporla'"
+        :title="hasReportedDrawer ? 'Çizim raporlandı' : 'Çizeni raporla'"
+        :disabled="hasReportedDrawer"
+        @click="onReportDrawer"
+      )
+        AppIcon(:name="hasReportedDrawer ? 'tabler:flag-check' : 'tabler:flag'" :width="14" :height="14")
       .draw-room__head-timer(v-if="durationMs && isDrawing")
         DrawTimer(:remainingMs="remainingMs" :durationMs="durationMs")
       .draw-room__head-spacer(v-else)
@@ -92,6 +102,7 @@
             p.draw-room__round-end-reason(v-if="lastRoundResult.reason === 'drawer_left'") Çizen oyundan ayrıldı
             p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'all_guessed'") Herkes bildi!
             p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'time_up'") Süre doldu
+            p.draw-room__round-end-reason(v-else-if="lastRoundResult.reason === 'reported'") Çizen raporlandı
             .draw-room__round-end-countdown(v-if="!lastRoundResult.isLastRound")
               span.draw-room__round-end-countdown-label
                 template(v-if="lastRoundResult.nextDrawerName") Sıradaki: <b>{{ lastRoundResult.nextDrawerName }}</b>
@@ -194,6 +205,7 @@ import {
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { showToast } from '@/helpers/toast'
 import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
@@ -598,6 +610,25 @@ export default defineComponent({
       return 'tabler:info-circle'
     })
 
+    // ── Drawer report ──
+    // A guesser can flag the active drawer (e.g. drawing nonsense / not the word).
+    // Once half of the room's players have reported, the server skips the round
+    // and broadcasts a red system message. The button shows a confirmation toast
+    // optimistically; the server treats repeat reports as a no-op so spam is safe.
+    const hasReportedDrawer = ref(false)
+    watch(drawerId, () => {
+      hasReportedDrawer.value = false
+    })
+    const canReportDrawer = computed(
+      () => isDrawing.value && !iAmDrawer.value && drawerId.value != null && (players.value || []).length >= 3
+    )
+    const onReportDrawer = () => {
+      if (!canReportDrawer.value || hasReportedDrawer.value) return
+      hasReportedDrawer.value = true
+      send(wsTypeEnum.DRAW_REPORT_DRAWER)
+      showToast.info('Çizim raporlandı', { duration: 2500 })
+    }
+
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)
       send(wsTypeEnum.DRAW_STROKE_CHUNK, payload)
@@ -714,6 +745,9 @@ export default defineComponent({
       lobbyHint,
       canvasToast,
       canvasToastIcon,
+      hasReportedDrawer,
+      canReportDrawer,
+      onReportDrawer,
       onChunk,
       onStrokeEnd,
       onUndo,
