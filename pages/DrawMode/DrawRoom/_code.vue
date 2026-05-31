@@ -204,6 +204,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { useDrawSocket } from '@/composables/useDrawSocket'
+import { useDrawSoundFx } from '@/composables/useDrawSoundFx'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { showToast } from '@/helpers/toast'
 import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
@@ -216,6 +217,7 @@ export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
     const { send } = useDrawSocket()
+    const { playStart, playCorrect, playTickTock } = useDrawSoundFx()
     const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
     const $store = vm.$store
@@ -628,6 +630,33 @@ export default defineComponent({
       send(wsTypeEnum.DRAW_REPORT_DRAWER)
       showToast.info('Çizim raporlandı', { duration: 2500 })
     }
+
+    // ── Howler SFX triggers ──
+    // start.wav: each round transition into the drawing phase (isDrawing rising
+    //   edge). On initial mount Vue's watcher does not fire for the seed value,
+    //   so joining mid-round won't double-play.
+    // correct.wav: only on the local guesser's correct guess (iGuessedCorrectly
+    //   is set exclusively by the per-recipient draw_correct_guess message).
+    // tick-tock.wav: once per round when the drawing clock first dips to ≤5 s.
+    //   Reset per drawer change so subsequent rounds re-arm the trigger.
+    watch(isDrawing, (v, prev) => {
+      if (v && !prev) playStart()
+    })
+    watch(iGuessedCorrectly, (v, prev) => {
+      if (v && !prev) playCorrect()
+    })
+    const tickTockArmed = ref(true)
+    watch(drawerId, () => {
+      tickTockArmed.value = true
+    })
+    watch(remainingMs, ms => {
+      if (!isDrawing.value || !tickTockArmed.value) return
+
+      if (ms > 0 && ms <= 5000) {
+        tickTockArmed.value = false
+        playTickTock()
+      }
+    })
 
     const onChunk = payload => {
       $store.commit('draw/PUSH_STROKE', payload)

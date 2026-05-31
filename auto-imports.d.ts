@@ -15,6 +15,7 @@ declare global {
   const useDialog: typeof import('./composables/useDialog.js')['default']
   const useDrawGuestIdentity: typeof import('./composables/useDrawGuestIdentity.js')['useDrawGuestIdentity']
   const useDrawSocket: typeof import('./composables/useDrawSocket.js')['useDrawSocket']
+  const useDrawSoundFx: typeof import('./composables/useDrawSoundFx.js')['useDrawSoundFx']
   const useFile: typeof import('./composables/useFile.js')['default']
   const useFlashcards: typeof import('./composables/useFlashcards.js')['default']
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
