@@ -5,9 +5,6 @@
     ref="canvas"
     :class="{ 'is-drawable': drawable }"
     @mousedown.prevent="start"
-    @mousemove.prevent="move"
-    @mouseup.prevent="end"
-    @mouseleave.prevent="end"
     @touchstart.prevent="start"
     @touchmove.prevent="move"
     @touchend.prevent="end"
@@ -269,6 +266,15 @@ export default defineComponent({
       }
     }
 
+    // Bound on window during drag so release outside the canvas still ends
+    // the stroke; touch stays on the canvas (browser captures touches itself).
+    const onWindowMouseMove = e => move(e)
+    const onWindowMouseUp = () => {
+      window.removeEventListener('mousemove', onWindowMouseMove)
+      window.removeEventListener('mouseup', onWindowMouseUp)
+      end()
+    }
+
     const start = e => {
       if (!props.drawable) return
       const pt = pointFromEvent(e)
@@ -291,6 +297,11 @@ export default defineComponent({
 
       drawing.value = true
       currentStrokeId.value = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+
+      if (e.type === 'mousedown') {
+        window.addEventListener('mousemove', onWindowMouseMove)
+        window.addEventListener('mouseup', onWindowMouseUp)
+      }
 
       if (t === 'brush' || t === 'eraser') {
         currentBatchPoints.value = [pt]
@@ -387,6 +398,8 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', onWindowMouseMove)
+      window.removeEventListener('mouseup', onWindowMouseUp)
 
       if (resizeObserver) resizeObserver.disconnect()
 
