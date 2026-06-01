@@ -6,6 +6,8 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const getDrawSocket: typeof import('./composables/useDrawSocket.js')['getDrawSocket']
+  const isDrawSocketReady: typeof import('./composables/useDrawSocket.js')['isDrawSocketReady']
   const useAuth: typeof import('./composables/useAuth.js')['default']
   const useAvatar: typeof import('./composables/useAvatar.js')['default']
   const useCensorBadwords: typeof import('./composables/useCensorBadwords.js')['default']
