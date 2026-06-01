@@ -435,6 +435,18 @@ export default defineComponent({
       }
     )
 
+    // On direct-link joins the dialog lives on the same page as the room, so
+    // a successful submit won't unmount it the way the lobby's route change
+    // does. Close it explicitly the moment room_state lands.
+    watch(
+      () => $store.state.draw.room,
+      r => {
+        if (r && passwordPrompt.value.active) {
+          passwordPrompt.value = { active: false, errorKey: null }
+        }
+      }
+    )
+
     const countdownSeconds = computed(() => {
       if (!nextRoundEndsAt.value) return 0
       const ms = Math.max(0, nextRoundEndsAt.value - now.value)

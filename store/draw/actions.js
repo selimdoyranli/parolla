@@ -68,13 +68,19 @@ export default {
         commit('SET_ERROR', { code: message.code, message: message.message })
         // eslint-disable-next-line no-console
         console.warn('[draw] server error:', message.code, message.message)
-        try {
-          showToast.fail(message.message || `Hata: ${message.code}`, {
-            duration: 5000,
-            className: 'rate-limit-toast'
-          })
-        } catch (_e) {
-          /* ignore toast plugin not ready */
+        // bad_password is surfaced inline by EnterPasswordDialog. A global
+        // toast on top double-notifies and — on direct-link joins — fires
+        // before the dialog has even opened, looking like a false alarm.
+
+        if (message.code !== 'bad_password') {
+          try {
+            showToast.fail(message.message || `Hata: ${message.code}`, {
+              duration: 5000,
+              className: 'rate-limit-toast'
+            })
+          } catch (_e) {
+            /* ignore toast plugin not ready */
+          }
         }
         break
       case wsTypeEnum.DRAW_LOBBY_SNAPSHOT:
