@@ -97,6 +97,20 @@ export default {
   },
   APPLY_SNAPSHOT(state, payload) {
     state.strokes = payload.strokes || []
+
+    // Mid-round joiners miss ROUND_START, so the server now ships the round's
+    // word/timer/category and a chat backlog inside the snapshot. Apply only
+    // the fields actually present so the same mutation still works for the
+    // legacy strokes-only payload.
+    if (Array.isArray(payload.chat)) state.chat = payload.chat
+
+    if (payload.maskedWord !== undefined) state.maskedWord = payload.maskedWord
+
+    if (payload.category !== undefined) state.category = payload.category
+
+    if (payload.durationMs !== undefined) state.durationMs = payload.durationMs
+
+    if (payload.remainingMs !== undefined) state.remainingMs = payload.remainingMs
   },
   PUSH_CHAT(state, m) {
     state.chat.push(m)
