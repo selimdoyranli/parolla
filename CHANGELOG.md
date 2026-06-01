@@ -1,5 +1,33 @@
 # Changelog
 
+## v2.51.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.50.0...v2.51.0)
+
+
+### 🚀 Enhancements
+
+  - **draw:** Show loading state while draw socket is connecting ([4c0379f](https://github.com/selimdoyranli/parolla/commit/4c0379f))
+  - **draw:** Rework room layout when on-screen keyboard is open ([a33876f](https://github.com/selimdoyranli/parolla/commit/a33876f))
+  - **draw:** Apply mid-join snapshot fields for word, timer, and chat ([f191e90](https://github.com/selimdoyranli/parolla/commit/f191e90))
+  - **draw:** Chat-message reports via flag-icon dialog ([423a2fe](https://github.com/selimdoyranli/parolla/commit/423a2fe))
+
+### 🩹 Fixes
+
+  - **draw:** Respect mobile viewport and safe area on lobby + room ([23ac78e](https://github.com/selimdoyranli/parolla/commit/23ac78e))
+  - **draw-chat:** Keep send button live and the keyboard up on mobile ([0ef931e](https://github.com/selimdoyranli/parolla/commit/0ef931e))
+  - **draw:** Suppress wrong-password toast and close dialog on join ([dce9180](https://github.com/selimdoyranli/parolla/commit/dce9180))
+  - **draw-canvas:** Keep stroke alive while dragging outside the canvas ([88e9175](https://github.com/selimdoyranli/parolla/commit/88e9175))
+  - **draw:** Undo erases the whole brush/eraser drag, not just one chunk ([68cd7a8](https://github.com/selimdoyranli/parolla/commit/68cd7a8))
+
+### 🏡 Chore
+
+  - Update autoimport ([8c7e181](https://github.com/selimdoyranli/parolla/commit/8c7e181))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.50.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.49.0...v2.50.0)
