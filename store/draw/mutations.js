@@ -93,7 +93,21 @@ export default {
     state.strokes = []
   },
   POP_STROKE(state) {
-    state.strokes.pop()
+    if (!state.strokes.length) return
+
+    // Brush/eraser strokes stream as multiple chunks sharing one strokeId.
+    // Undo should drop the whole drag, not just the trailing chunk.
+    const lastId = state.strokes[state.strokes.length - 1].strokeId
+
+    if (lastId == null) {
+      state.strokes.pop()
+
+      return
+    }
+
+    while (state.strokes.length && state.strokes[state.strokes.length - 1].strokeId === lastId) {
+      state.strokes.pop()
+    }
   },
   APPLY_SNAPSHOT(state, payload) {
     state.strokes = payload.strokes || []
