@@ -1,4 +1,5 @@
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
+import { fetchClientIp } from '@/helpers/client-ip'
 
 // Module-singleton so lobby + room pages share one WS connection across navigation.
 let sharedSocket = null
@@ -101,6 +102,12 @@ export const useDrawSocket = () => {
               /* ignore */
             }
           }
+
+          fetchClientIp().then(ip => {
+            if (ip && sock.readyState === 1) {
+              sock.send(JSON.stringify({ type: 'draw_set_client_ip', ip }))
+            }
+          })
         }
       }
 
@@ -172,3 +179,6 @@ export const useDrawSocket = () => {
     send
   }
 }
+
+export const getDrawSocket = () => sharedSocket
+export const isDrawSocketReady = () => !!sharedSocket && sharedSocket.readyState === 1 && serverReady

@@ -15,7 +15,17 @@
         template(v-else)
           PlayerAvatar.draw-chat__avatar(with-username :open-player-dialog-on-click="!m.isGuest" :user="buildAvatarUser(m)" :size="22")
           span.draw-chat__sep &nbsp;:&nbsp;
-          span.draw-chat__text {{ m.message }}
+          span.draw-chat__text(v-longpress="() => openReport(m)") {{ m.message }}
+          span.draw-chat__report(v-if="canReport(m)" @click="openReport(m)")
+            AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="12" :height="12")
+
+  MountingPortal(mount-to="body" append)
+    ReportDialog(
+      :is-open="isOpenReportDialog"
+      :scope="reportTypeEnum.DRAW_CHAT"
+      :additional="reportAdditional"
+      @closed="isOpenReportDialog = false"
+    )
 
   .draw-chat__input
     input.draw-chat__field(
@@ -43,9 +53,52 @@
 <script>
 import { defineComponent, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
+import { reportTypeEnum } from '@/enums/report-type.enum'
+
+const longpressDirective = {
+  bind(el, binding) {
+    let timer = null
+    const delay = 500
+
+    const start = e => {
+      if (e.type === 'click' && e.button !== 0) return
+
+      timer = setTimeout(() => {
+        if (typeof binding.value === 'function') {
+          binding.value(e)
+        }
+      }, delay)
+    }
+
+    const cancel = () => {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+    }
+
+    el.addEventListener('touchstart', start, { passive: true })
+    el.addEventListener('touchend', cancel)
+    el.addEventListener('touchmove', cancel)
+
+    el._longpressCleanup = () => {
+      el.removeEventListener('touchstart', start)
+      el.removeEventListener('touchend', cancel)
+      el.removeEventListener('touchmove', cancel)
+    }
+  },
+  unbind(el) {
+    if (el._longpressCleanup) {
+      el._longpressCleanup()
+    }
+  }
+}
 
 export default defineComponent({
   components: { Button },
+  directives: {
+    longpress: longpressDirective
+  },
   props: {
     chat: { type: Array, default: () => [] },
     players: { type: Array, default: () => [] },
@@ -177,7 +230,56 @@ export default defineComponent({
       }
     }
 
-    return { text, log, rootRef, disabled, placeholder, send, onInput, iconFor, msgClasses, buildAvatarUser }
+    const canReport = m => {
+      if (!m || m.isSystem) return false
+
+      if (props.myId != null && String(m.playerId) === String(props.myId)) return false
+
+      return true
+    }
+
+    const isOpenReportDialog = ref(false)
+    const reportAdditional = ref(null)
+
+    const openReport = m => {
+      if (!canReport(m)) return
+
+      reportAdditional.value = JSON.stringify({
+        reportedMessage: {
+          playerId: m.playerId,
+          playerName: m.playerName,
+          message: m.message,
+          timestamp: m.timestamp
+        },
+        chatHistory: (props.chat || [])
+          .filter(x => !x.isSystem)
+          .map(x => ({
+            playerId: x.playerId,
+            playerName: x.playerName,
+            message: x.message,
+            timestamp: x.timestamp
+          }))
+      })
+      isOpenReportDialog.value = true
+    }
+
+    return {
+      text,
+      log,
+      rootRef,
+      disabled,
+      placeholder,
+      send,
+      onInput,
+      iconFor,
+      msgClasses,
+      buildAvatarUser,
+      reportTypeEnum,
+      canReport,
+      openReport,
+      isOpenReportDialog,
+      reportAdditional
+    }
   }
 })
 </script>

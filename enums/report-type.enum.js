@@ -1,4 +1,5 @@
 export const reportTypeEnum = Object.freeze({
   PROFILE: 'profile',
-  CHAT: 'chat'
+  CHAT: 'chat',
+  DRAW_CHAT: 'drawChat'
 })

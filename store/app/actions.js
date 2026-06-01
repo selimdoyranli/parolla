@@ -1,4 +1,6 @@
 import WebSocket from 'isomorphic-ws'
+import { getDrawSocket, isDrawSocketReady } from '@/composables/useDrawSocket'
+import { fetchClientIp } from '@/helpers/client-ip'
 
 export default {
   initWs({ commit, rootState, state }) {
@@ -25,22 +27,11 @@ export default {
     // Create WebSocket instance
     const ws = new WebSocket(wsUrl)
 
-    // Send client IP to WS server when connection is established
     ws.addEventListener('open', async () => {
-      try {
-        const response = await fetch('https://ipinfo.io/json')
-        const ipData = await response.json()
+      const ip = await fetchClientIp()
 
-        if (ipData && ipData.ip && ws.readyState === WebSocket.OPEN) {
-          ws.send(
-            JSON.stringify({
-              type: 'set_client_ip',
-              ip: ipData.ip
-            })
-          )
-        }
-      } catch (error) {
-        console.error('Error fetching client IP:', error)
+      if (ip && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'set_client_ip', ip }))
       }
     })
 
@@ -74,6 +65,61 @@ export default {
 
   async report({ commit, state }, params) {
     const { scope, detail, additional } = params
+
+    if (scope === 'drawChat' && isDrawSocketReady()) {
+      let parsedAdditional = {}
+
+      try {
+        parsedAdditional = additional ? JSON.parse(additional) : {}
+      } catch {
+        parsedAdditional = {}
+      }
+
+      const reportedMessage = parsedAdditional.reportedMessage
+
+      if (!reportedMessage) {
+        return { data: null, error: 'Reported message not found' }
+      }
+
+      const drawSocket = getDrawSocket()
+
+      return new Promise(resolve => {
+        const handler = event => {
+          try {
+            const responseData = JSON.parse(event.data)
+
+            if (responseData.type === 'draw_report_chat_message_result') {
+              drawSocket.removeEventListener('message', handler)
+              clearTimeout(timeout)
+
+              if (responseData.success) {
+                resolve({ data: { data: { id: responseData.reportId } }, error: null })
+              } else {
+                resolve({ data: null, error: responseData.error || 'Failed to create report' })
+              }
+            }
+          } catch {
+            // Not JSON or not our message — keep listening.
+          }
+        }
+
+        drawSocket.addEventListener('message', handler)
+
+        drawSocket.send(
+          JSON.stringify({
+            type: 'draw_report_chat_message',
+            messageTimestamp: reportedMessage.timestamp,
+            messagePlayerId: reportedMessage.playerId,
+            detail: detail
+          })
+        )
+
+        const timeout = setTimeout(() => {
+          drawSocket.removeEventListener('message', handler)
+          resolve({ data: null, error: 'Request timeout' })
+        }, 10000)
+      })
+    }
 
     // Chat reports are sent through WS (IP is added server-side)
     if (scope === 'chat' && state.ws && state.ws.readyState === WebSocket.OPEN) {

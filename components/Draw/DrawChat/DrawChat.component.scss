@@ -70,6 +70,26 @@
     vertical-align: middle;
   }
 
+  &__report {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
+    padding: 0 2px;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
+  &__msg:hover &__report {
+    opacity: 0.5;
+  }
+
   // ── System rows: inline-flow, left-aligned, color-coded, no bubble ─
   &__msg--system {
     color: var(--color-text-02);

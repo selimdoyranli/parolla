@@ -435,9 +435,6 @@ export default defineComponent({
       }
     )
 
-    // On direct-link joins the dialog lives on the same page as the room, so
-    // a successful submit won't unmount it the way the lobby's route change
-    // does. Close it explicitly the moment room_state lands.
     watch(
       () => $store.state.draw.room,
       r => {

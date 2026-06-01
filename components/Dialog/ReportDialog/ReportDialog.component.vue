@@ -166,7 +166,9 @@ export default defineComponent({
     })
 
     const reportedMessage = computed(() => {
-      if (props.scope !== reportTypeEnum.CHAT || !props.additional) return null
+      const isMessageScope = props.scope === reportTypeEnum.CHAT || props.scope === reportTypeEnum.DRAW_CHAT
+
+      if (!isMessageScope || !props.additional) return null
 
       try {
         const parsed = JSON.parse(props.additional)
