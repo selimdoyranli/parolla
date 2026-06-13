@@ -48,7 +48,7 @@ export default () => {
     const hex = generateDeterministicColorByUsername(username)
 
     return {
-      seed: username,
+      seed: username ?? '',
       backgroundColor: [hex]
     }
   }
