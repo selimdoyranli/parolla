@@ -101,3 +101,6 @@ sw.*
 package-lock.json
 
 .vercel
+
+# Custom data output
+data_output
