@@ -71,7 +71,7 @@
     position: relative;
     width: var(--alphabet-width);
     height: var(--alphabet-height);
-    margin-bottom: calc(var(--base-m-y) * 2);
+    margin-bottom: calc(var(--base-m-y) / 2);
     padding: var(--base-p-y) 0;
 
     @include media-breakpoint-down(mobile) {
@@ -80,6 +80,11 @@
 
     @include media-breakpoint-down(mobile-l) {
       margin-bottom: calc(var(--base-m-y) / 4);
+    }
+
+    @include media-breakpoint-down(mobile-m) {
+      margin-bottom: calc(var(--base-m-y) / 4);
+      padding: calc(var(--base-p-y) / 2) 0;
     }
 
     @at-root .unsupported-height {
@@ -159,12 +164,34 @@
     &__icon {
       margin-right: calc(var(--base-m-x) / 2) !important;
       color: var(--color-icon-01);
+
+      svg {
+        @include media-breakpoint-down(mobile-l) {
+          width: 18px !important;
+          height: 18px !important;
+          font-size: 18px !important;
+        }
+
+        @include media-breakpoint-down(mobile-m) {
+          width: 16px !important;
+          height: 16px !important;
+          font-size: 16px !important;
+        }
+      }
     }
 
     &__timer {
       color: var(--color-text-02);
       font-size: var(--font-size-text-6) !important;
       font-variant-numeric: tabular-nums !important;
+
+      @include media-breakpoint-down(mobile-l) {
+        font-size: var(--font-size-text-8) !important;
+      }
+
+      @include media-breakpoint-down(mobile-m) {
+        font-size: var(--font-size-text-9) !important;
+      }
     }
   }
 
@@ -291,6 +318,10 @@
 
     &--withStats {
       --field-section-stats-height: 34px;
+
+      @include media-breakpoint-down(tablet) {
+        --field-section-stats-height: 24px;
+      }
 
       top: calc(var(--vh) - var(--answer-field-height) - var(--field-section-stats-height) - var(--base-p-y));
     }
@@ -480,17 +511,17 @@
   // Carousels
   .alphabet-carousel {
     .swiper-slide {
-      width: calc(100px - var(--base-p-x));
-      height: calc(100px - var(--base-p-y));
-
-      @include media-breakpoint-down(desktop) {
-        width: calc(72px - var(--base-p-y));
-        height: calc(72px - var(--base-p-x));
-      }
+      width: calc(72px - var(--base-p-x));
+      height: calc(72px - var(--base-p-y));
 
       @include media-breakpoint-down(tablet) {
         width: calc(64px - var(--base-p-y));
         height: calc(64px - var(--base-p-x));
+      }
+
+      @include media-breakpoint-down(mobile) {
+        width: calc(56px - var(--base-p-y)) !important;
+        height: calc(56px - var(--base-p-x)) !important;
       }
 
       @at-root .unsupported-height {

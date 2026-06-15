@@ -179,11 +179,19 @@
     &--activeAnswerTypeTrivia {
       .question {
         img {
-          max-height: calc(100vh - 300px * 2);
+          max-height: calc(var(--vh) - 300px * 2);
+
+          @include media-breakpoint-down(wide2x) {
+            max-height: calc(var(--vh) - 300px * 2 + 100px);
+          }
 
           @include media-breakpoint-down(tablet) {
-            aspect-ratio: 16/9 !important;
+            aspect-ratio: 4/3 !important;
             max-height: unset;
+          }
+
+          @include media-breakpoint-down(mobile-m) {
+            aspect-ratio: 16/9 !important;
           }
         }
       }
@@ -210,6 +218,10 @@
         margin-block-start: auto;
         padding-block: 0;
         padding-block-end: $spacer * 16;
+
+        @include media-breakpoint-down(wide2x) {
+          padding-block-end: $spacer * 4;
+        }
 
         @include media-breakpoint-down(mobile) {
           height: auto;
@@ -240,11 +252,14 @@
                 .answer-field {
                   &__button {
                     &--pass {
-                      @include media-breakpoint-down(mobile) {
-                        width: 100px;
-                        transform: none !important;
-                        inset-inline-end: 0;
-                        inset-inline-start: auto;
+                      width: 100px;
+                      transform: none !important;
+                      inset-inline-end: 0;
+                      inset-inline-start: auto;
+                      inset-block-start: -200px;
+                      opacity: 0.9;
+
+                      @include media-breakpoint-down(mobile-m) {
                         inset-block-start: -160px;
                       }
                     }

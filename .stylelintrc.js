@@ -29,6 +29,14 @@ module.exports = {
         ignoreUnits: ['dvh', 'svh', 'lvh', 'dvw', 'svw', 'lvw']
       }
     ],
+    // text-wrap and its longhands are newer than this stylelint version's
+    // known-properties list (baseline: Chrome/Edge 130, Firefox 124, Safari 17).
+    'property-no-unknown': [
+      true,
+      {
+        ignoreProperties: ['text-wrap', 'text-wrap-style', 'text-wrap-mode']
+      }
+    ],
     'declaration-empty-line-before': [
       'always',
       {
