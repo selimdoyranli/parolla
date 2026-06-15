@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.51.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.51.0...v2.51.1)
+
+
+### 🩹 Fixes
+
+  - **avatar:** Coerce null seed to string for anonymous avatars ([0c44a32](https://github.com/selimdoyranli/parolla/commit/0c44a32))
+  - **game-scene:** Stop trivia PAS button overlapping the media note ([5a9db58](https://github.com/selimdoyranli/parolla/commit/5a9db58))
+
+### 🏡 Chore
+
+  - Ignore data_output directory and update auto-imports ([76e962e](https://github.com/selimdoyranli/parolla/commit/76e962e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.51.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.50.0...v2.51.0)
