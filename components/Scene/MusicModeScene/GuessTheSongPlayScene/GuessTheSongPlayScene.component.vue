@@ -96,6 +96,7 @@
     :is-open="isStatsDialogOpen"
     :stats="stats"
     :selected-artists="selectedArtists"
+    :playlist="playlist"
     :cancel-button-text="$t('general.playAgain')"
     :confirm-button-text="$t('musicMode.guessTheSong.stats.backToMusicMode')"
     @closed="handleStatsClosed"
@@ -142,6 +143,8 @@ export default defineComponent({
         .filter(Boolean)
         .map(id => String(id))
     )
+    const playlistId = computed(() => route.value.query.playlistId)
+    const playlist = ref(null)
 
     const TOTAL_ROUNDS = 10
     const OPTIONS_PER_ROUND = 3
@@ -158,14 +161,29 @@ export default defineComponent({
     const isStatsDialogOpen = ref(false)
 
     const { fetch, fetchState } = useFetch(async () => {
-      const ids = selectedArtistIds.value
-      const { data, meta } = await store.dispatch('music/fetchSongs', { artistIds: ids })
+      if (playlistId.value) {
+        const { data, meta, error } = await store.dispatch('music/fetchPlaylistSongs', { playlistId: playlistId.value })
 
-      selectedArtists.value = meta?.artists || []
+        if (error) {
+          throw new Error(error.message || 'Failed to fetch playlist songs')
+        }
 
-      const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
-      songs.value = ids.length === 0 ? previewable : previewable.filter(song => ids.includes(String(song.artistId)))
-      rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, ids)
+        playlist.value = meta?.playlist || null
+
+        const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
+        songs.value = previewable
+        rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, [])
+      } else {
+        const ids = selectedArtistIds.value
+        const { data, meta } = await store.dispatch('music/fetchSongs', { artistIds: ids })
+
+        selectedArtists.value = meta?.artists || []
+
+        const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
+        songs.value = ids.length === 0 ? previewable : previewable.filter(song => ids.includes(String(song.artistId)))
+        rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, ids)
+      }
+
       roundIndex.value = 0
       selectedOptionId.value = null
       roundResults.value = new Array(TOTAL_ROUNDS).fill('pending')
@@ -374,6 +392,10 @@ export default defineComponent({
 
     const selectedArtists = ref([])
 
+    const contextLabel = computed(() =>
+      playlist.value ? playlist.value.name : selectedArtists.value.map(artist => artist.artistName).join(',')
+    )
+
     const statsButtonLabel = computed(() => (isLastRound.value ? finishLabel.value : nextLabel.value))
 
     const stopAudio = (resetElapsed = true) => {
@@ -552,34 +574,34 @@ export default defineComponent({
     }
 
     useMeta(() => ({
-      title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: selectedArtists.value.map(artist => artist.artistName).join(',') }),
+      title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: contextLabel.value }),
       meta: [
         {
           hid: 'description',
           name: 'description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'og:title',
           name: 'og:title',
           content: i18n.t('seo.musicMode.guessTheSongPlay.title', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'og:description',
           name: 'og:description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
@@ -623,6 +645,7 @@ export default defineComponent({
       isStatsDialogOpen,
       stats,
       selectedArtists,
+      playlist,
       statsButtonLabel,
       handleStatsClosed,
       handleStatsCancelled,
