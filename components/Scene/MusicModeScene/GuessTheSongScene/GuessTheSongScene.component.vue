@@ -10,7 +10,7 @@
       p.guess-the-song-scene__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
 
     form.guess-the-song-scene-form
-      MusicArtistSelect(ref="musicArtistSelectRef" @select="handleArtistSelect" @remove="handleArtistRemove")
+      MusicArtistSelect(ref="musicArtistSelectRef" @select="handleSelect" @remove="handleArtistRemove")
 
     .guess-the-song-scene-selected-artists
       span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.selectedArtists.title') }}
@@ -34,7 +34,19 @@
             button.guess-the-song-scene-selected-artist-remove(type="button" @click="handleArtistRemove(selectedArtist)") ×
           span.guess-the-song-scene-selected-artist-text {{ selectedArtist.artistName }}
 
-    Button.guess-the-song-scene-play-button(type="button" :disabled="selectedArtists.length === 0" @click="handleClickPlayButton")
+    .guess-the-song-scene-selected-playlist(v-if="selectedPlaylist")
+      span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.groups.playlists') }}
+      .guess-the-song-scene-selected-playlist-card
+        img.guess-the-song-scene-selected-playlist-image(
+          v-if="selectedPlaylist.artworkUrl"
+          :src="selectedPlaylist.artworkUrl"
+          :alt="selectedPlaylist.name"
+        )
+        AppIcon.guess-the-song-scene-selected-playlist-icon(v-else name="tabler:playlist" :width="60" :height="60")
+        span.guess-the-song-scene-selected-playlist-text {{ selectedPlaylist.name }}
+        button.guess-the-song-scene-selected-artist-remove(type="button" @click="handlePlaylistRemove") ×
+
+    Button.guess-the-song-scene-play-button(type="button" :disabled="!canPlay" @click="handleClickPlayButton")
       | {{ $t('musicMode.play') }}
 
     .guess-the-song-scene-popular-artists(:class="[disabledPopularArtistsClass]")
@@ -85,9 +97,9 @@ export default defineComponent({
     const { localePath } = useContext()
     const router = useRouter()
 
-    const artists = ref([])
     const selectedArtists = ref([])
     const playlists = ref([])
+    const selectedPlaylist = ref(null)
 
     useFetch(async () => {
       const { data } = await store.dispatch('music/fetchPlaylists')
@@ -97,12 +109,8 @@ export default defineComponent({
     const handleClickPlaylist = playlist => {
       if (!playlist) return
 
-      router.push(
-        localePath({
-          name: 'MusicMode-GuessTheSong-Play',
-          query: { playlistId: playlist.playlistId }
-        })
-      )
+      handlePlaylistSelect(playlist)
+      document.querySelector('.layout__main').scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const form = reactive({
@@ -111,8 +119,32 @@ export default defineComponent({
 
     const handleArtistSelect = artist => {
       if (artist && !selectedArtists.value.find(a => a.artistId === artist.artistId)) {
+        selectedPlaylist.value = null
         selectedArtists.value.push(artist)
       }
+    }
+
+    const handlePlaylistSelect = playlist => {
+      if (!playlist) return
+
+      selectedArtists.value = []
+      selectedPlaylist.value = { playlistId: playlist.playlistId, name: playlist.name, artworkUrl: playlist.artworkUrl }
+    }
+
+    const handlePlaylistRemove = () => {
+      selectedPlaylist.value = null
+    }
+
+    const handleSelect = option => {
+      if (!option) return
+
+      if (option.type === 'playlist') {
+        handlePlaylistSelect(option)
+
+        return
+      }
+
+      handleArtistSelect(option)
     }
 
     const handleArtistRemove = artist => {
@@ -122,24 +154,15 @@ export default defineComponent({
         if (index > -1) {
           selectedArtists.value.splice(index, 1)
         }
-
-        if (musicArtistSelectRef.value && musicArtistSelectRef.value.selectedArtist) {
-          const selectIndex = musicArtistSelectRef.value.selectedArtist.findIndex(a => a.artistId === artist.artistId)
-
-          if (selectIndex > -1) {
-            musicArtistSelectRef.value.selectedArtist.splice(selectIndex, 1)
-          }
-        }
       }
     }
 
     const handleClickPlayButton = () => {
-      router.push(
-        localePath({
-          name: 'MusicMode-GuessTheSong-Play',
-          query: { artistIds: selectedArtists.value.map(artist => artist.artistId).join(',') }
-        })
-      )
+      const query = selectedPlaylist.value
+        ? { playlistId: selectedPlaylist.value.playlistId }
+        : { artistIds: selectedArtists.value.map(artist => artist.artistId).join(',') }
+
+      router.push(localePath({ name: 'MusicMode-GuessTheSong-Play', query }))
     }
 
     const popularArtists = computed(() => {
@@ -296,20 +319,24 @@ export default defineComponent({
       return selectedArtists.value.length >= 3 ? 'disabled' : null
     })
 
+    const canPlay = computed(() => selectedArtists.value.length > 0 || !!selectedPlaylist.value)
+
     return {
       rootRef,
       musicArtistSelectRef,
       form,
-      artists,
       selectedArtists,
-      handleArtistSelect,
       handleArtistRemove,
       handleClickPlayButton,
       popularArtists,
       handleClickPopularArtist,
       disabledPopularArtistsClass,
       playlists,
-      handleClickPlaylist
+      handleClickPlaylist,
+      selectedPlaylist,
+      handleSelect,
+      handlePlaylistRemove,
+      canPlay
     }
   }
 })

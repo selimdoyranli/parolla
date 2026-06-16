@@ -329,4 +329,38 @@
       text-align: center;
     }
   }
+
+  &-selected-playlist {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 4;
+
+    &-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: $spacer * 2;
+      align-items: center;
+      width: max-content;
+      margin: 0 auto;
+    }
+
+    &-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--border-radius-01);
+    }
+
+    &-icon {
+      width: 80px !important;
+      height: 80px !important;
+    }
+
+    &-text {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+    }
+  }
 }
