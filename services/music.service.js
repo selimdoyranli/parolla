@@ -19,8 +19,10 @@ const fetchJson = async url => {
   }
 }
 
-export const fetchPlaylists = () => fetchJson('/api/music/playlists')
+export const fetchPlaylists = locale => fetchJson(`/api/music/playlists?locale=${encodeURIComponent(locale || '')}`)
 
-export const fetchPlaylistSongs = playlistId => fetchJson(`/api/music/playlist-songs?playlistId=${encodeURIComponent(playlistId)}`)
+export const fetchPlaylistSongs = (playlistId, locale) =>
+  fetchJson(`/api/music/playlist-songs?playlistId=${encodeURIComponent(playlistId)}&locale=${encodeURIComponent(locale || '')}`)
 
-export const searchPlaylists = term => fetchJson(`/api/music/search-playlists?term=${encodeURIComponent(term)}`)
+export const searchPlaylists = (term, locale) =>
+  fetchJson(`/api/music/search-playlists?term=${encodeURIComponent(term)}&locale=${encodeURIComponent(locale || '')}`)

@@ -162,7 +162,10 @@ export default defineComponent({
 
     const { fetch, fetchState } = useFetch(async () => {
       if (playlistId.value) {
-        const { data, meta, error } = await store.dispatch('music/fetchPlaylistSongs', { playlistId: playlistId.value })
+        const { data, meta, error } = await store.dispatch('music/fetchPlaylistSongs', {
+          playlistId: playlistId.value,
+          locale: i18n.locale
+        })
 
         if (error) {
           throw new Error(error.message || 'Failed to fetch playlist songs')

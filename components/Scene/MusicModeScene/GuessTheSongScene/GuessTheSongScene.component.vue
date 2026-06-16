@@ -94,7 +94,7 @@ export default defineComponent({
     const musicArtistSelectRef = ref(null)
 
     const store = useStore()
-    const { localePath } = useContext()
+    const { i18n, localePath } = useContext()
     const router = useRouter()
 
     const selectedArtists = ref([])
@@ -102,7 +102,7 @@ export default defineComponent({
     const selectedPlaylist = ref(null)
 
     useFetch(async () => {
-      const { data } = await store.dispatch('music/fetchPlaylists')
+      const { data } = await store.dispatch('music/fetchPlaylists', { locale: i18n.locale })
       playlists.value = Array.isArray(data) ? data : []
     })
 

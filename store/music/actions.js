@@ -35,20 +35,20 @@ export default {
     }
   },
 
-  async fetchPlaylists() {
-    const { data, meta, error } = await fetchPlaylistsFromCf()
+  async fetchPlaylists({ commit }, { locale } = {}) {
+    const { data, meta, error } = await fetchPlaylistsFromCf(locale)
 
     return { data: data || [], meta, error }
   },
 
-  async fetchPlaylistSongs({ commit }, { playlistId }) {
-    const { data, meta, error } = await fetchPlaylistSongsFromCf(playlistId)
+  async fetchPlaylistSongs({ commit }, { playlistId, locale }) {
+    const { data, meta, error } = await fetchPlaylistSongsFromCf(playlistId, locale)
 
     return { data: data || [], meta, error }
   },
 
-  async searchPlaylists({ commit }, { term }) {
-    const { data, meta, error } = await searchPlaylistsFromCf(term)
+  async searchPlaylists({ commit }, { term, locale }) {
+    const { data, meta, error } = await searchPlaylistsFromCf(term, locale)
 
     return { data: data || [], meta, error }
   }

@@ -76,7 +76,7 @@ export default defineComponent({
       try {
         const [artistsResult, playlistsResult] = await Promise.all([
           store.dispatch('music/fetchArtists', { term: searchQuery.trim() }),
-          store.dispatch('music/searchPlaylists', { term: searchQuery.trim() })
+          store.dispatch('music/searchPlaylists', { term: searchQuery.trim(), locale: i18n.locale })
         ])
 
         const artistItems = (artistsResult?.data || []).map(artist => ({
