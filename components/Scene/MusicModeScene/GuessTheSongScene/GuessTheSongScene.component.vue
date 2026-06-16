@@ -54,12 +54,21 @@
           AppIcon.guess-the-song-scene-popular-artist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-popular-artist-text {{ popularArtist.artistName }}
 
+    .guess-the-song-scene-playlists(v-if="playlists.length")
+      span.guess-the-song-scene-playlists-title {{ $t('musicMode.playlists') }}
+
+      .guess-the-song-scene-playlists__list
+        .guess-the-song-scene-playlist(v-for="playlist in playlists" :key="playlist.playlistId" @click="handleClickPlaylist(playlist)")
+          img.guess-the-song-scene-playlist-image(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
+          AppIcon.guess-the-song-scene-playlist-icon(v-else name="tabler:music" :width="100" :height="100")
+          span.guess-the-song-scene-playlist-text {{ playlist.name }}
+
     // Ad
     AppAd(:data-ad-slot="9964323575")
 </template>
 
 <script>
-import { defineComponent, useContext, useRouter, ref, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, useRouter, useFetch, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { Button, Empty, Field } from 'vant'
 
 export default defineComponent({
@@ -72,11 +81,29 @@ export default defineComponent({
     const rootRef = ref(null)
     const musicArtistSelectRef = ref(null)
 
+    const store = useStore()
     const { localePath } = useContext()
     const router = useRouter()
 
     const artists = ref([])
     const selectedArtists = ref([])
+    const playlists = ref([])
+
+    useFetch(async () => {
+      const { data } = await store.dispatch('music/fetchPlaylists')
+      playlists.value = Array.isArray(data) ? data : []
+    })
+
+    const handleClickPlaylist = playlist => {
+      if (!playlist) return
+
+      router.push(
+        localePath({
+          name: 'MusicMode-GuessTheSong-Play',
+          query: { playlistId: playlist.playlistId }
+        })
+      )
+    }
 
     const form = reactive({
       artistKeyword: ''
@@ -280,7 +307,9 @@ export default defineComponent({
       handleClickPlayButton,
       popularArtists,
       handleClickPopularArtist,
-      disabledPopularArtistsClass
+      disabledPopularArtistsClass,
+      playlists,
+      handleClickPlaylist
     }
   }
 })
