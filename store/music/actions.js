@@ -28,5 +28,32 @@ export default {
       meta: result.meta,
       error: result.error
     }
+  },
+
+  async fetchPlaylists() {
+    const { data, error } = await this.$appFetch({
+      method: 'GET',
+      path: 'modes/music/playlists'
+    })
+
+    return {
+      data: data?.data || [],
+      meta: data?.meta,
+      error
+    }
+  },
+
+  async fetchPlaylistSongs({ commit }, { playlistId }) {
+    const { data, error } = await this.$appFetch({
+      method: 'GET',
+      path: 'modes/music/songs',
+      query: { playlistId }
+    })
+
+    return {
+      data: data?.data || [],
+      meta: data?.meta,
+      error
+    }
   }
 }
