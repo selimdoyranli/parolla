@@ -1,0 +1,7 @@
+name = "parolla"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "MUSIC_KV"
+id = "REPLACE_WITH_PROD_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"

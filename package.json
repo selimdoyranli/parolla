@@ -35,7 +35,8 @@
     "lint:stylelint:fix": "stylelint --ignore-path .stylelintignore \"{assets/style,components,layouts,pages}/**/*.{css,sass,scss,less,stylus,vue}\" --fix",
     "prettier": "prettier --config ./.prettierrc.js --ignore-path ./.prettierignore --write \"**/*.{js,json,css,scss,vue,html,pug}\" --end-of-line crlf",
     "commit": "cz",
-    "changelog": "changelogen"
+    "changelog": "changelogen",
+    "dev:cf": "wrangler pages dev --proxy 3000 --port 8788 --kv MUSIC_KV"
   },
   "lint-staged": {
     "*.{js,vue,json}": [
@@ -124,7 +125,8 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.18.0",
-    "unplugin-auto-import": "^0.18.3"
+    "unplugin-auto-import": "^0.18.3",
+    "wrangler": "^4.101.0"
   },
   "config": {
     "commitizen": {
