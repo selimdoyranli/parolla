@@ -1,4 +1,9 @@
 import { fetchArtists as fetchArtistsFromItunes, fetchSongs as fetchSongsFromItunes } from '@/services/itunes.service'
+import {
+  fetchPlaylists as fetchPlaylistsFromCf,
+  fetchPlaylistSongs as fetchPlaylistSongsFromCf,
+  searchPlaylists as searchPlaylistsFromCf
+} from '@/services/music.service'
 
 export default {
   async fetchArtists({ commit }, { term }) {
@@ -31,29 +36,20 @@ export default {
   },
 
   async fetchPlaylists() {
-    const { data, error } = await this.$appFetch({
-      method: 'GET',
-      path: 'modes/music/playlists'
-    })
+    const { data, meta, error } = await fetchPlaylistsFromCf()
 
-    return {
-      data: data?.data || [],
-      meta: data?.meta,
-      error
-    }
+    return { data: data || [], meta, error }
   },
 
   async fetchPlaylistSongs({ commit }, { playlistId }) {
-    const { data, error } = await this.$appFetch({
-      method: 'GET',
-      path: 'modes/music/songs',
-      query: { playlistId }
-    })
+    const { data, meta, error } = await fetchPlaylistSongsFromCf(playlistId)
 
-    return {
-      data: data?.data || [],
-      meta: data?.meta,
-      error
-    }
+    return { data: data || [], meta, error }
+  },
+
+  async searchPlaylists({ commit }, { term }) {
+    const { data, meta, error } = await searchPlaylistsFromCf(term)
+
+    return { data: data || [], meta, error }
   }
 }
