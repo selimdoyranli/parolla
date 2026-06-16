@@ -946,6 +946,7 @@ export default {
     },
     play: 'Oyna',
     popularArtists: 'Popular artists',
+    playlists: 'Playlists',
     guessTheSong: {
       title: 'Music quiz',
       subtitle: 'Listen to songs and guess them',
@@ -953,6 +954,7 @@ export default {
       stats: {
         score: 'Score',
         selectedArtists: 'Selected artists',
+        playlist: 'Playlist',
         backToMusicMode: 'Back to music quiz'
       }
     },

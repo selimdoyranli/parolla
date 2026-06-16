@@ -976,6 +976,7 @@ export default {
     },
     play: 'Oyna',
     popularArtists: 'Popüler sanatçılar',
+    playlists: 'Çalma listeleri',
     guessTheSong: {
       title: 'Müzik quiz',
       subtitle: 'Şarkıları dinle ve tahmin et',
@@ -983,6 +984,7 @@ export default {
       stats: {
         score: 'Skorum',
         selectedArtists: 'Seçilen sanatçılar',
+        playlist: 'Çalma listesi',
         backToMusicMode: "Müzik quiz'e geri dön"
       }
     },
