@@ -12,15 +12,8 @@
     form.guess-the-song-scene-form
       MusicArtistSelect(ref="musicArtistSelectRef" @select="handleSelect" @remove="handleArtistRemove")
 
-    .guess-the-song-scene-selected-artists
+    .guess-the-song-scene-selected-artists(v-if="selectedArtists.length")
       span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.selectedArtists.title') }}
-
-      Empty.guess-the-song-scene-selected-artists-empty(
-        v-if="selectedArtists.length === 0"
-        :description="$t('musicMode.selectedArtists.empty')"
-      )
-        template(#image)
-          AppIcon(name="emojione:microphone" color="var(--color-icon-01)" :width="100" :height="100")
 
       .guess-the-song-scene-selected-artists__list
         .guess-the-song-scene-selected-artist(v-for="selectedArtist in selectedArtists" :key="selectedArtist.artistId")
