@@ -2,11 +2,14 @@
 .music-artist-select
   span.music-artist-select__label {{ $t('musicMode.form.searchArtist.label') }}
   multiselect(
-    v-model="selectedArtist"
-    label="artistName"
+    v-model="selected"
+    label="displayName"
     :placeholder="$t('musicMode.form.searchArtist.placeholder')"
-    track-by="artistId"
-    :options="artists"
+    track-by="key"
+    group-label="groupLabel"
+    group-values="items"
+    :options="groups"
+    :group-select="false"
     :searchable="true"
     :multiple="true"
     :internal-search="false"
@@ -25,10 +28,12 @@
         AppIcon.placeholder__icon(name="tabler:search" :width="20" :height="20")
         span.placeholder__text {{ $t('musicMode.form.searchArtist.placeholder') }}
     template(slot="option" slot-scope="{ option }")
-      .music-artist-select__option
-        img.music-artist-select__option-image(v-if="option.artwork?.artworkUrl" :src="option.artwork.artworkUrl" :alt="option.artistName")
-        AppIcon.music-artist-select__option-icon(v-else name="tabler:music")
-        span.music-artist-select__option-text {{ option.artistName }}
+      .music-artist-select__option(v-if="option.$isLabel")
+        span.music-artist-select__option-group {{ option.$groupLabel }}
+      .music-artist-select__option(v-else)
+        img.music-artist-select__option-image(v-if="option.artworkUrl" :src="option.artworkUrl" :alt="option.displayName")
+        AppIcon.music-artist-select__option-icon(v-else :name="option.type === 'playlist' ? 'tabler:playlist' : 'tabler:music'")
+        span.music-artist-select__option-text {{ option.displayName }}
         span.music-artist-select__option-genre(v-if="option.primaryGenreName") {{ option.primaryGenreName }}
     template(slot="noResult")
       .music-artist-select__no-result
@@ -42,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore, useContext } from '@nuxtjs/composition-api'
 import { useDebounceFn } from '@vueuse/core'
 import Multiselect from 'vue-multiselect'
 
@@ -53,14 +58,15 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
+    const { i18n } = useContext()
 
-    const selectedArtist = ref([])
-    const artists = ref([])
+    const selected = ref([])
+    const groups = ref([])
     const isLoading = ref(false)
 
-    const searchArtists = async searchQuery => {
+    const searchMusic = async searchQuery => {
       if (!searchQuery || searchQuery.trim().length < 2) {
-        artists.value = []
+        groups.value = []
 
         return
       }
@@ -68,27 +74,46 @@ export default defineComponent({
       isLoading.value = true
 
       try {
-        const { data, error } = await store.dispatch('music/fetchArtists', {
-          term: searchQuery.trim()
-        })
+        const [artistsResult, playlistsResult] = await Promise.all([
+          store.dispatch('music/fetchArtists', { term: searchQuery.trim() }),
+          store.dispatch('music/searchPlaylists', { term: searchQuery.trim() })
+        ])
 
-        if (data?.length) {
-          artists.value = data || []
+        const artistItems = (artistsResult?.data || []).map(artist => ({
+          ...artist,
+          type: 'artist',
+          key: `artist:${artist.artistId}`,
+          displayName: artist.artistName,
+          artworkUrl: artist.artwork?.artworkUrl || null
+        }))
+
+        const playlistItems = (playlistsResult?.data || []).map(playlist => ({
+          ...playlist,
+          type: 'playlist',
+          key: `playlist:${playlist.playlistId}`,
+          displayName: playlist.name
+        }))
+
+        const nextGroups = []
+
+        if (artistItems.length) {
+          nextGroups.push({ groupLabel: i18n.t('musicMode.groups.artists'), items: artistItems })
         }
 
-        if (error) {
-          console.error('Error fetching artists:', error)
-          artists.value = []
+        if (playlistItems.length) {
+          nextGroups.push({ groupLabel: i18n.t('musicMode.groups.playlists'), items: playlistItems })
         }
+
+        groups.value = nextGroups
       } catch (error) {
-        console.error('Error fetching artists:', error)
-        artists.value = []
+        console.error('Error searching music:', error)
+        groups.value = []
       } finally {
         isLoading.value = false
       }
     }
 
-    const debouncedSearch = useDebounceFn(searchArtists, 500)
+    const debouncedSearch = useDebounceFn(searchMusic, 500)
 
     const handleSearchChange = searchQuery => {
       debouncedSearch(searchQuery)
@@ -103,8 +128,8 @@ export default defineComponent({
     }
 
     return {
-      selectedArtist,
-      artists,
+      selected,
+      groups,
       isLoading,
       handleSearchChange,
       handleSelect,
