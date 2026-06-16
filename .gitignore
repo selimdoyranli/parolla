@@ -104,3 +104,8 @@ package-lock.json
 
 # Custom data output
 data_output
+
+# Cloudflare wrangler / Pages local dev
+.wrangler
+.dev.vars
+.dev.vars.*
