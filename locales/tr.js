@@ -963,8 +963,8 @@ export default {
     subtitle: 'Şarkıları veya sanatçıları tahmin et',
     form: {
       searchArtist: {
-        label: 'Sanatçı ara',
-        placeholder: 'Sanatçı adı yaz',
+        label: 'Sanatçı ya da Playlist ara',
+        placeholder: 'Sanatçı ya da Playlist adı yaz',
         noResult: 'Sonuç bulunamadı',
         noOptions: 'Arama yapmak için yazmaya başlayın',
         maxElements: 'Maksimum 3 sanatçı seçebilirsin'
@@ -977,6 +977,10 @@ export default {
     play: 'Oyna',
     popularArtists: 'Popüler sanatçılar',
     playlists: 'Çalma listeleri',
+    groups: {
+      artists: 'Sanatçılar',
+      playlists: 'Çalma listeleri'
+    },
     guessTheSong: {
       title: 'Müzik quiz',
       subtitle: 'Şarkıları dinle ve tahmin et',

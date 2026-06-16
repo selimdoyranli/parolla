@@ -933,8 +933,8 @@ export default {
     subtitle: 'Guess the songs or artists',
     form: {
       searchArtist: {
-        label: 'Search artist',
-        placeholder: 'Type artist name',
+        label: 'Search artist or playlist',
+        placeholder: 'Type artist or playlist name',
         noResult: 'No results found',
         noOptions: 'Start typing to search',
         maxElements: 'Maximum 3 artists can be selected'
@@ -947,6 +947,10 @@ export default {
     play: 'Oyna',
     popularArtists: 'Popular artists',
     playlists: 'Playlists',
+    groups: {
+      artists: 'Artists',
+      playlists: 'Playlists'
+    },
     guessTheSong: {
       title: 'Music quiz',
       subtitle: 'Listen to songs and guess them',
