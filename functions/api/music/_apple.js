@@ -77,11 +77,16 @@ export const getToken = async env => {
   return token
 }
 
-const storefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
+export const localeToStorefront = locale => (locale === 'tr' ? 'tr' : 'us')
 
-export const ampFetch = async (env, path) => {
+export const localeToLang = locale => (locale === 'tr' ? 'tr' : 'en-US')
+
+const defaultStorefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
+
+export const ampFetch = async (env, path, storefront) => {
+  const sf = storefront || defaultStorefront(env)
   const doFetch = token =>
-    fetch(`${AMP_BASE}/${storefront(env)}${path}`, {
+    fetch(`${AMP_BASE}/${sf}${path}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Origin: 'https://music.apple.com',

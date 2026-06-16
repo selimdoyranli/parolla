@@ -1,4 +1,4 @@
-import { ampFetch, formatArtwork, jsonResponse } from './_apple.js'
+import { ampFetch, formatArtwork, jsonResponse, localeToStorefront, localeToLang } from './_apple.js'
 
 const toTrack = resource => {
   const a = resource.attributes
@@ -18,6 +18,8 @@ export async function onRequestGet(context) {
   const { request, env } = context
   const params = new URL(request.url).searchParams
   const playlistId = params.get('playlistId')
+  const storefront = localeToStorefront(params.get('locale'))
+  const lang = localeToLang(params.get('locale'))
 
   if (!playlistId) {
     return jsonResponse({ data: [], error: 'playlistId is required' }, 400)
@@ -27,7 +29,11 @@ export async function onRequestGet(context) {
   const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(Math.floor(limitParam), 300) : 100
 
   try {
-    const json = await ampFetch(env, `/playlists/${encodeURIComponent(playlistId)}?include=tracks&limit%5Btracks%5D=300`)
+    const json = await ampFetch(
+      env,
+      `/playlists/${encodeURIComponent(playlistId)}?include=tracks&limit%5Btracks%5D=300&l=${lang}`,
+      storefront
+    )
     const root = json?.data?.[0]
     const attr = root?.attributes
     const refs = root?.relationships?.tracks?.data ?? []

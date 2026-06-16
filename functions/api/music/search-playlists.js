@@ -1,15 +1,18 @@
-import { ampFetch, formatArtwork, jsonResponse } from './_apple.js'
+import { ampFetch, formatArtwork, jsonResponse, localeToStorefront, localeToLang } from './_apple.js'
 
 export async function onRequestGet(context) {
   const { request, env } = context
-  const term = new URL(request.url).searchParams.get('term')
+  const params = new URL(request.url).searchParams
+  const term = params.get('term')
+  const storefront = localeToStorefront(params.get('locale'))
+  const lang = localeToLang(params.get('locale'))
 
   if (!term || term.trim().length < 2) {
     return jsonResponse({ data: [] })
   }
 
   try {
-    const json = await ampFetch(env, `/search?term=${encodeURIComponent(term.trim())}&types=playlists&limit=10&l=en-US`)
+    const json = await ampFetch(env, `/search?term=${encodeURIComponent(term.trim())}&types=playlists&limit=10&l=${lang}`, storefront)
     const items = json?.results?.playlists?.data ?? []
     const data = items.map(p => ({
       playlistId: p.id,

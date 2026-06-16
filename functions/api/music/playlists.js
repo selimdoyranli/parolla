@@ -1,7 +1,10 @@
-import { ampFetch, formatArtwork, jsonResponse } from './_apple.js'
+import { ampFetch, formatArtwork, jsonResponse, localeToStorefront, localeToLang } from './_apple.js'
 
 export async function onRequestGet(context) {
-  const { env } = context
+  const { request, env } = context
+  const params = new URL(request.url).searchParams
+  const storefront = localeToStorefront(params.get('locale'))
+  const lang = localeToLang(params.get('locale'))
   const strapiBase = env.STRAPI_API_URL || 'https://strapi.parolla.app/api'
 
   let ids = []
@@ -23,7 +26,7 @@ export async function onRequestGet(context) {
     const results = await Promise.all(
       ids.map(async id => {
         try {
-          const json = await ampFetch(env, `/playlists/${encodeURIComponent(id)}`)
+          const json = await ampFetch(env, `/playlists/${encodeURIComponent(id)}?l=${lang}`, storefront)
           const attr = json?.data?.[0]?.attributes
 
           if (!attr) {
