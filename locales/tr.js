@@ -980,8 +980,12 @@ export default {
     },
     play: 'Oyna',
     playHint: 'Sanatçı veya playlist arayın ve seçin',
-    popularArtists: 'Popüler sanatçılar',
-    playlists: 'Çalma listeleri',
+    popularArtists: 'Öne Çıkan Sanatçılar',
+    playlists: 'Öne Çıkan Çalma Listeleri',
+    tagResults: {
+      noMore: 'Hepsi bu kadar',
+      empty: 'Sonuç bulunamadı'
+    },
     groups: {
       artists: 'Sanatçılar',
       playlists: 'Çalma listeleri'

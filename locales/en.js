@@ -950,8 +950,12 @@ export default {
     },
     play: 'Oyna',
     playHint: 'Search and select an artist or playlist',
-    popularArtists: 'Popular artists',
-    playlists: 'Playlists',
+    popularArtists: 'Featured artists',
+    playlists: 'Featured playlists',
+    tagResults: {
+      noMore: "That's all",
+      empty: 'No results found'
+    },
     groups: {
       artists: 'Artists',
       playlists: 'Playlists'
