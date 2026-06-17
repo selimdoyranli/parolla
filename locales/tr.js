@@ -963,10 +963,11 @@ export default {
     subtitle: 'Şarkıları veya sanatçıları tahmin et',
     form: {
       searchArtist: {
-        label: 'Sanatçı ara',
-        placeholder: 'Sanatçı adı yaz',
+        label: 'Sanatçı ya da Playlist ara',
+        placeholder: 'Sanatçı veya playlist arayın... örn. Tarkan, 90lar pop',
         noResult: 'Sonuç bulunamadı',
         noOptions: 'Arama yapmak için yazmaya başlayın',
+        searching: 'Aranıyor…',
         maxElements: 'Maksimum 3 sanatçı seçebilirsin'
       }
     },
@@ -974,8 +975,21 @@ export default {
       title: 'Seçilen sanatçılar',
       empty: 'Başlamak için sanatçı seç'
     },
+    selectedPlaylist: {
+      title: 'Seçilen çalma listesi'
+    },
     play: 'Oyna',
-    popularArtists: 'Popüler sanatçılar',
+    playHint: 'Sanatçı veya playlist arayın ve seçin',
+    popularArtists: 'Öne Çıkan Sanatçılar',
+    playlists: 'Öne Çıkan Çalma Listeleri',
+    tagResults: {
+      noMore: 'Hepsi bu kadar',
+      empty: 'Sonuç bulunamadı'
+    },
+    groups: {
+      artists: 'Sanatçılar',
+      playlists: 'Çalma listeleri'
+    },
     guessTheSong: {
       title: 'Müzik quiz',
       subtitle: 'Şarkıları dinle ve tahmin et',
@@ -983,6 +997,7 @@ export default {
       stats: {
         score: 'Skorum',
         selectedArtists: 'Seçilen sanatçılar',
+        playlist: 'Çalma listesi',
         backToMusicMode: "Müzik quiz'e geri dön"
       }
     },

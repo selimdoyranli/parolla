@@ -16,7 +16,14 @@ Dialog.dialog.stats-dialog.guess-the-song-stats-dialog(
       span.results__score-label {{ $t('musicMode.guessTheSong.stats.score') }}
       span.results__score-value {{ correctAnswerCount }}/{{ totalAnswerCount }}
 
-    .results__selected-artists.mb-base(v-if="selectedArtistsList.length")
+    .results__selected-artists.mb-base(v-if="playlist")
+      span.results__selected-artists-title {{ $t('musicMode.guessTheSong.stats.playlist') }}
+      .results__selected-artists-list
+        .results__artist
+          img.results__artist-avatar(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
+          span.results__artist-name {{ playlist.name }}
+
+    .results__selected-artists.mb-base(v-else-if="selectedArtistsList.length")
       span.results__selected-artists-title {{ $t('musicMode.selectedArtists.title') }}
       .results__selected-artists-list
         .results__artist(v-for="artist in selectedArtistsList" :key="artist.artistId")
@@ -79,6 +86,11 @@ export default defineComponent({
       type: Array,
       required: false,
       default: () => []
+    },
+    playlist: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   setup(props) {
@@ -103,7 +115,7 @@ export default defineComponent({
     const shareResults = async () => {
       const shareText = i18n.t('sharer.guessTheSongStats.description', {
         score: `${correctAnswerCount.value}/${totalAnswerCount.value}`,
-        artists: selectedArtistsList.value.map(artist => artist.artistName).join(', '),
+        artists: props.playlist ? props.playlist.name : selectedArtistsList.value.map(artist => artist.artistName).join(', '),
         url: window.location.href
       })
 

@@ -1,0 +1,7 @@
+name = "parolla"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "MUSIC_KV"
+id = "2792ec6369834ba4b693c44a41e5e91e"
+preview_id = "2792ec6369834ba4b693c44a41e5e91e"

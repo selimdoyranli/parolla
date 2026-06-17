@@ -933,10 +933,11 @@ export default {
     subtitle: 'Guess the songs or artists',
     form: {
       searchArtist: {
-        label: 'Search artist',
-        placeholder: 'Type artist name',
+        label: 'Search artist or playlist',
+        placeholder: 'Search an artist or playlist... e.g. Rihanna, 90s pop',
         noResult: 'No results found',
         noOptions: 'Start typing to search',
+        searching: 'Searching…',
         maxElements: 'Maximum 3 artists can be selected'
       }
     },
@@ -944,8 +945,21 @@ export default {
       title: 'Selected artists',
       empty: 'Select an artist to start'
     },
+    selectedPlaylist: {
+      title: 'Selected playlist'
+    },
     play: 'Oyna',
-    popularArtists: 'Popular artists',
+    playHint: 'Search and select an artist or playlist',
+    popularArtists: 'Featured artists',
+    playlists: 'Featured playlists',
+    tagResults: {
+      noMore: "That's all",
+      empty: 'No results found'
+    },
+    groups: {
+      artists: 'Artists',
+      playlists: 'Playlists'
+    },
     guessTheSong: {
       title: 'Music quiz',
       subtitle: 'Listen to songs and guess them',
@@ -953,6 +967,7 @@ export default {
       stats: {
         score: 'Score',
         selectedArtists: 'Selected artists',
+        playlist: 'Playlist',
         backToMusicMode: 'Back to music quiz'
       }
     },

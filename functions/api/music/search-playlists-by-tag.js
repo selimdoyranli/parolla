@@ -1,0 +1,42 @@
+import { ampFetch, formatArtwork, jsonResponse, localeToStorefront, localeToLang } from './_apple.js'
+
+const DEFAULT_LIMIT = 21
+const MAX_LIMIT = 25
+
+export async function onRequestGet(context) {
+  const { request, env } = context
+  const params = new URL(request.url).searchParams
+  const term = (params.get('term') || '').trim()
+  const storefront = localeToStorefront(params.get('locale'))
+  const lang = localeToLang(params.get('locale'))
+
+  const limitParam = Number(params.get('limit'))
+  const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(Math.floor(limitParam), MAX_LIMIT) : DEFAULT_LIMIT
+
+  const offsetParam = Number(params.get('offset'))
+  const offset = Number.isFinite(offsetParam) && offsetParam > 0 ? Math.floor(offsetParam) : 0
+
+  if (term.length < 1) {
+    return jsonResponse({ data: [], meta: { offset, limit, hasMore: false } })
+  }
+
+  try {
+    const json = await ampFetch(
+      env,
+      `/search?term=${encodeURIComponent(term)}&types=playlists&limit=${limit}&offset=${offset}&l=${lang}`,
+      storefront
+    )
+    const playlists = json?.results?.playlists
+    const items = playlists?.data ?? []
+    const data = items.map(p => ({
+      playlistId: p.id,
+      name: p.attributes?.name,
+      artworkUrl: formatArtwork(p.attributes?.artwork?.url, 300)
+    }))
+    const hasMore = Boolean(playlists?.next) || data.length === limit
+
+    return jsonResponse({ data, meta: { offset, limit, hasMore } })
+  } catch (err) {
+    return jsonResponse({ data: [], error: String((err && err.message) || err), meta: { offset, limit, hasMore: false } }, 502)
+  }
+}

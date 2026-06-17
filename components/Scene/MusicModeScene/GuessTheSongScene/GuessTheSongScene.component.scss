@@ -55,6 +55,7 @@
       display: flex;
       justify-content: center;
       margin: 0;
+      margin-block-end: 12px;
       color: var(--color-text-02);
       font-size: var(--font-size-text-10);
       letter-spacing: 0.05em;
@@ -194,7 +195,28 @@
       opacity: 0.5;
     }
 
+    &__icon {
+      display: inline-flex;
+      align-items: center;
+      margin-inline-end: $spacer * 2;
+    }
+
+    .van-button__text {
+      display: flex;
+      align-items: center;
+    }
+
     @include font-weight-semi-bold;
+  }
+
+  &-play-hint {
+    display: block;
+    max-width: var(--mobile);
+    margin: 0 auto;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+    text-align: center;
+    margin-block-start: $spacer * 3;
   }
 
   &-popular-artists {
@@ -204,7 +226,7 @@
     padding-block-end: $spacer * 8;
 
     @include media-breakpoint-down(mobile) {
-      padding-block-end: 20vh;
+      padding-block-end: $spacer * 4;
     }
 
     &-title {
@@ -265,5 +287,208 @@
       font-size: var(--font-size-text-9);
       text-align: center;
     }
+  }
+
+  &-playlists {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 8;
+    padding-block-end: $spacer * 8;
+
+    &-title {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-10);
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+      margin-block-end: $spacer * 4;
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: $spacer * 4;
+    }
+  }
+
+  &-playlist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+    background-color: transparent;
+    border-radius: var(--border-radius-01);
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+
+    &-icon {
+      width: 80px !important;
+      height: 80px !important;
+    }
+
+    &-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--border-radius-01);
+    }
+
+    &-text {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+    }
+  }
+
+  &-selected-playlist {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 4;
+
+    &-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: $spacer * 2;
+      align-items: center;
+      width: max-content;
+      margin: 0 auto;
+    }
+
+    &-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--border-radius-01);
+    }
+
+    &-icon {
+      width: 80px !important;
+      height: 80px !important;
+    }
+
+    &-text {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+    }
+  }
+
+  &-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer * 2;
+    justify-content: center;
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 8;
+  }
+
+  &-tag {
+    padding: $spacer * 2 $spacer * 4;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+
+    &:hover {
+      color: var(--color-text-01);
+      border-color: var(--color-brand-02);
+    }
+
+    &--active {
+      color: #fff;
+      background-color: var(--color-brand-02);
+      border-color: var(--color-brand-02);
+    }
+  }
+
+  &-tag-results {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block-start: $spacer * 6;
+    padding-block-end: $spacer * 8;
+
+    @include media-breakpoint-down(mobile) {
+      padding-block-end: 20vh;
+    }
+
+    &__hint {
+      display: block;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      text-align: center;
+      padding-block: $spacer * 4;
+    }
+  }
+
+  &-skeleton-artist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+
+    &__avatar {
+      width: 60px;
+      height: 60px;
+      background-color: #d6d6d6;
+      border-radius: 100%;
+      animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+    }
+  }
+
+  &-skeleton-playlist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+
+    &__cover {
+      width: 80px;
+      height: 80px;
+      background-color: #d6d6d6;
+      border-radius: var(--border-radius-01);
+      animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+    }
+  }
+
+  &-skeleton-line {
+    width: 64px;
+    height: 10px;
+    background-color: #d6d6d6;
+    border-radius: 999px;
+    animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+  }
+
+  .dark-mode & {
+    .guess-the-song-scene-skeleton-artist__avatar,
+    .guess-the-song-scene-skeleton-playlist__cover,
+    .guess-the-song-scene-skeleton-line {
+      background-color: #343434;
+    }
+  }
+}
+
+@keyframes guess-the-song-scene-skeleton {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
   }
 }

@@ -1,180 +1,418 @@
 .music-artist-select {
   position: relative;
 
-  &__label {
-    display: block;
-    color: var(--color-text-02);
-    font-weight: var(--font-weight-semi-bold);
-    font-size: var(--font-size-text-10);
-    margin-block-end: $spacer * 2;
-  }
-
-  .placeholder {
+  // ── Search field ──────────────────────────────────────────────
+  &__search {
+    position: relative;
     display: flex;
     align-items: center;
+    height: 60px;
+    padding-inline: $spacer * 5;
+    background-color: var(--color-field-01);
+    border: 2px solid var(--color-border-02);
+    border-radius: 999px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
-    &__icon {
-      margin-inline-end: $spacer * 2;
+    &--focused {
+      border-color: var(--color-brand-02);
+      box-shadow: 0 0 0 4px rgba(255, 120, 120, 0.16);
     }
-  }
 
-  .multiselect {
-    color: var(--color-text-02);
+    &-icon {
+      flex-shrink: 0;
+      margin-inline-end: $spacer * 3;
+      color: var(--color-text-03);
+      transition: color 0.2s ease;
 
-    &__select {
-      display: none;
+      .music-artist-select__search--focused & {
+        color: var(--color-brand-02);
+      }
     }
 
-    &__tags {
+    &-input {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-8);
+      background-color: transparent;
+      border: none;
+      outline: none;
+
+      &::placeholder {
+        color: var(--color-text-03);
+
+        @include media-breakpoint-down(mobile) {
+          font-size: var(--font-size-text-10);
+        }
+      }
+    }
+
+    &-clear {
       display: flex;
       align-items: center;
-      height: 56px;
-      background-color: var(--color-field-01);
-      border: 2px solid var(--color-border-02);
-      border-radius: var(--border-radius-01);
-
-      input {
-        color: var(--color-text-02);
-        background-color: transparent;
-
-        &::placeholder {
-          color: var(--color-text-03);
-        }
-      }
-    }
-
-    &__spinner {
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-inline-start: $spacer * 2;
+      padding: 0;
+      color: var(--color-text-03);
       background-color: transparent;
-
-      &::before,
-      &::after {
-        border-top-color: var(--color-brand-02) !important;
-      }
-    }
-
-    &__tag {
-      padding: $spacer $spacer * 2;
-      background-color: var(--color-brand-02);
-
-      &-icon {
-        &:hover,
-        &:focus {
-          background-color: var(--color-danger-01);
-        }
-      }
-
-      i {
-        display: none;
-
-        &::after {
-          color: #fff;
-        }
-      }
-    }
-
-    &__content-wrapper {
-      background-color: var(--color-ui-02);
-      border: 2px solid var(--color-border-02);
-    }
-
-    .multiselect__option--highlight {
-      background-color: var(--color-hover-01) !important;
-    }
-
-    &__single {
-      background-color: transparent;
-    }
-  }
-
-  &__tag {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin: 2px;
-    padding: 4px 8px;
-    background-color: var(--color-selected-01);
-    border-radius: calc(var(--border-radius-01) / 2);
-
-    &-image {
-      width: 20px;
-      height: 20px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-
-    &-text {
-      flex: 1;
-      font-size: 14px;
-    }
-
-    &-remove {
-      margin-left: 4px;
-      color: var(--color-text-02);
-      font-size: 18px;
-      line-height: 1;
+      border: none;
+      border-radius: 100%;
       cursor: pointer;
-      transition: color 0.2s;
-      pointer-events: none;
+      transition: color 0.15s ease, background-color 0.15s ease;
 
       &:hover {
         color: var(--color-text-01);
+        background-color: var(--color-hover-01);
+      }
+    }
+
+    &-spinner {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      margin-inline-start: $spacer * 2;
+      border: 2px solid var(--color-border-02);
+      border-top-color: var(--color-brand-02);
+      border-radius: 100%;
+      animation: music-artist-select-spin 0.7s linear infinite;
+    }
+  }
+
+  // ── Results panel ─────────────────────────────────────────────
+  &__results {
+    margin-block-start: $spacer * 4;
+    padding: $spacer * 5 0;
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: var(--border-radius-01);
+    box-shadow: 0 18px 48px -24px rgba(0, 0, 0, 0.55);
+  }
+
+  &__state {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 3;
+    align-items: center;
+    justify-content: center;
+    padding-block: $spacer * 8;
+    padding-inline: $spacer * 5;
+
+    &-icon {
+      color: var(--color-text-03);
+    }
+
+    &-text {
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      text-align: center;
+    }
+
+    &-spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--color-border-02);
+      border-top-color: var(--color-brand-02);
+      border-radius: 100%;
+      animation: music-artist-select-spin 0.7s linear infinite;
+    }
+  }
+
+  // ── Group (Artists / Playlists) ───────────────────────────────
+  &-group {
+    & + & {
+      margin-block-start: $spacer * 5;
+      padding-block-start: $spacer * 5;
+      border-block-start: 1px solid var(--color-border-02);
+    }
+
+    &__header {
+      display: flex;
+      gap: $spacer * 2;
+      align-items: center;
+      justify-content: center;
+      margin-block-end: $spacer * 4;
+      padding-inline: $spacer * 5;
+
+      &-icon {
+        color: var(--color-brand-02);
+      }
+
+      &-text {
+        color: var(--color-text-02);
+        font-weight: var(--font-weight-semi-bold);
+        font-size: var(--font-size-text-10);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+    }
+
+    &__carousel {
+      position: relative;
+    }
+
+    &__swiper {
+      padding-inline: $spacer * 5;
+
+      // cssMode native scroll — hide the scrollbar across engines
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      // slidesPerView: 'auto' reads each slide's CSS width (artist default)
+      .swiper-slide {
+        width: 88px;
+      }
+    }
+
+    // Playlist slides are wider cards
+    &--playlists &__swiper .swiper-slide {
+      width: 280px;
+
+      @include media-breakpoint-down(mobile) {
+        width: 248px;
+      }
+    }
+
+    // Edge navigation
+    &__nav {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      color: var(--color-brand-02);
+      background-color: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: 100%;
+      box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.5);
+      transform: translateY(-50%);
+      cursor: pointer;
+      transition: color 0.15s ease, background-color 0.15s ease, opacity 0.2s ease;
+
+      &:hover {
+        color: #fff;
+        background-color: var(--color-brand-02);
+      }
+
+      &--prev {
+        inset-inline-start: -2px;
+      }
+
+      &--next {
+        inset-inline-end: -2px;
+      }
+
+      &.swiper-button-disabled {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &.swiper-button-lock {
+        display: none;
       }
     }
   }
 
-  &__selected-label {
+  // ── Artist item ───────────────────────────────────────────────
+  &-artist {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: $spacer * 2;
     align-items: center;
-    padding: $spacer $spacer * 2;
-    background-color: var(--color-selected-01);
-    border-radius: calc(var(--border-radius-01) / 2);
+    cursor: pointer;
 
-    &-image {
-      width: 24px;
-      height: 24px;
+    &__avatar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px;
+      height: 76px;
+      overflow: hidden;
+      color: var(--color-text-03);
+      background-color: var(--color-field-01);
+      border: 2px solid var(--color-border-02);
+      border-radius: 100%;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    &__image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 4px;
     }
 
-    &-icon {
-      width: 24px;
-      height: 24px;
+    &__check {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 26px;
+      color: #fff;
+      background-color: var(--color-brand-02);
+      transform: translateY(100%);
+      opacity: 0;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      inset-block-end: 0;
+      inset-inline: 0;
     }
 
-    &-text {
-      flex: 1;
+    &__name {
+      max-width: 100%;
+      overflow: hidden;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      white-space: nowrap;
+      text-align: center;
+      text-overflow: ellipsis;
+      transition: color 0.18s ease;
+    }
+
+    &--selected {
+      .music-artist-select-artist__avatar {
+        border-color: var(--color-brand-02);
+        box-shadow: 0 0 0 3px rgba(255, 120, 120, 0.25);
+      }
+
+      .music-artist-select-artist__check {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .music-artist-select-artist__name {
+        color: var(--color-brand-02);
+      }
+    }
+
+    &:hover {
+      .music-artist-select-artist__avatar {
+        border-color: var(--color-brand-02);
+      }
+
+      .music-artist-select-artist__name {
+        color: var(--color-text-01);
+      }
+    }
+
+    &--disabled {
+      opacity: 0.45;
+      pointer-events: none;
     }
   }
 
-  &__option {
+  // ── Playlist item ─────────────────────────────────────────────
+  &-playlist {
     display: flex;
-    gap: 8px;
+    gap: $spacer * 3;
     align-items: center;
+    padding: $spacer * 3;
+    background-color: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: var(--border-radius-01);
+    cursor: pointer;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
 
-    &--highlight {
-      background-color: var(--color-hover-01) !important;
+    &:hover {
+      border-color: var(--color-brand-02);
     }
 
-    &-image {
-      width: 32px;
-      height: 32px;
+    &__art {
+      position: relative;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      overflow: hidden;
+      color: var(--color-text-03);
+      background-color: var(--color-ui-02);
+      border-radius: calc(var(--border-radius-01) / 2);
+    }
+
+    &__image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 4px;
     }
 
-    &-icon {
-      width: 32px;
-      height: 32px;
-    }
-
-    &-text {
+    &__info {
+      display: flex;
       flex: 1;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
     }
 
-    &-genre {
-      color: var(--color-text-02, #666);
-      font-size: 12px;
+    &__name {
+      display: -webkit-box;
+      overflow: hidden;
+      color: var(--color-text-01);
+      font-weight: var(--font-weight-semi-bold);
+      font-size: var(--font-size-text-9);
+      line-height: 1.3;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
+
+    &__meta {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+    }
+
+    &__check {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: #fff;
+      background-color: var(--color-brand-02);
+      border-radius: 100%;
+      transform: scale(0.6);
+      opacity: 0;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    &--selected {
+      background-color: var(--color-hover-01);
+      border-color: var(--color-brand-02);
+
+      .music-artist-select-playlist__check {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// Results enter / leave
+.music-artist-select-results-enter-active {
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.music-artist-select-results-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.music-artist-select-results-enter,
+.music-artist-select-results-leave-to {
+  transform: translateY(-8px);
+  opacity: 0;
+}
+
+@keyframes music-artist-select-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

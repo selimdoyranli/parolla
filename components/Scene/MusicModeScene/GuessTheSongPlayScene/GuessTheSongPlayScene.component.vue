@@ -18,12 +18,21 @@
         Button(@click="reFetch") {{ $t('error.tryAgain') }}
 
     template(v-else)
-      .guess-the-song-play-scene-rounds
-        .guess-the-song-play-scene-round(
-          v-for="indicator in roundIndicators"
-          :key="indicator.index"
-          :class="getRoundIndicatorClass(indicator.index)"
-        ) {{ indicator.index + 1 }}
+      .guess-the-song-play-scene-context(v-if="playlist || selectedArtists.length")
+        .guess-the-song-play-scene-context__playlist(v-if="playlist")
+          img.guess-the-song-play-scene-context__cover(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
+          AppIcon.guess-the-song-play-scene-context__cover-icon(v-else name="tabler:playlist" :width="36" :height="36")
+          span.guess-the-song-play-scene-context__name {{ playlist.name }}
+
+        .guess-the-song-play-scene-context__artists(v-else)
+          .guess-the-song-play-scene-context__artist(v-for="artist in selectedArtists" :key="artist.artistId")
+            img.guess-the-song-play-scene-context__avatar(v-if="artist.artworkUrl100" :src="artist.artworkUrl100" :alt="artist.artistName")
+            AppIcon.guess-the-song-play-scene-context__avatar-icon(v-else name="tabler:music" :width="22" :height="22")
+            span.guess-the-song-play-scene-context__artist-name {{ artist.artistName }}
+
+      .guess-the-song-play-scene-counter(v-if="currentRound")
+        AppIcon.guess-the-song-play-scene-counter__icon(name="tabler:music" :width="16" :height="16")
+        span {{ roundLabel }}
 
       Empty(v-if="!currentRound" :description="$t('gameScene.pendingQuestions')")
 
@@ -96,6 +105,7 @@
     :is-open="isStatsDialogOpen"
     :stats="stats"
     :selected-artists="selectedArtists"
+    :playlist="playlist"
     :cancel-button-text="$t('general.playAgain')"
     :confirm-button-text="$t('musicMode.guessTheSong.stats.backToMusicMode')"
     @closed="handleStatsClosed"
@@ -142,6 +152,8 @@ export default defineComponent({
         .filter(Boolean)
         .map(id => String(id))
     )
+    const playlistId = computed(() => route.value.query.playlistId)
+    const playlist = ref(null)
 
     const TOTAL_ROUNDS = 10
     const OPTIONS_PER_ROUND = 3
@@ -158,14 +170,32 @@ export default defineComponent({
     const isStatsDialogOpen = ref(false)
 
     const { fetch, fetchState } = useFetch(async () => {
-      const ids = selectedArtistIds.value
-      const { data, meta } = await store.dispatch('music/fetchSongs', { artistIds: ids })
+      if (playlistId.value) {
+        const { data, meta, error } = await store.dispatch('music/fetchPlaylistSongs', {
+          playlistId: playlistId.value,
+          locale: i18n.locale
+        })
 
-      selectedArtists.value = meta?.artists || []
+        if (error) {
+          throw new Error(error.message || 'Failed to fetch playlist songs')
+        }
 
-      const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
-      songs.value = ids.length === 0 ? previewable : previewable.filter(song => ids.includes(String(song.artistId)))
-      rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, ids)
+        playlist.value = meta?.playlist || null
+
+        const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
+        songs.value = previewable
+        rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, [])
+      } else {
+        const ids = selectedArtistIds.value
+        const { data, meta } = await store.dispatch('music/fetchSongs', { artistIds: ids })
+
+        selectedArtists.value = meta?.artists || []
+
+        const previewable = Array.isArray(data) ? data.filter(song => !!song.previewUrl) : []
+        songs.value = ids.length === 0 ? previewable : previewable.filter(song => ids.includes(String(song.artistId)))
+        rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, ids)
+      }
+
       roundIndex.value = 0
       selectedOptionId.value = null
       roundResults.value = new Array(TOTAL_ROUNDS).fill('pending')
@@ -350,7 +380,6 @@ export default defineComponent({
     const isLastRound = computed(() => roundIndex.value === rounds.value.length - 1)
     const isAnswerLocked = computed(() => selectedOptionId.value !== null)
     const roundLabel = computed(() => `${Math.min(roundIndex.value + 1, rounds.value.length)}/${rounds.value.length || TOTAL_ROUNDS}`)
-    const roundIndicators = computed(() => Array.from({ length: TOTAL_ROUNDS }, (_, idx) => ({ index: idx })))
     const playLabel = computed(() => i18n.t('musicMode.play'))
     const pauseLabel = computed(() => i18n.t('musicMode.pause'))
     const nextLabel = computed(() => i18n.t('musicMode.nextRound'))
@@ -373,6 +402,10 @@ export default defineComponent({
     }))
 
     const selectedArtists = ref([])
+
+    const contextLabel = computed(() =>
+      playlist.value ? playlist.value.name : selectedArtists.value.map(artist => artist.artistName).join(',')
+    )
 
     const statsButtonLabel = computed(() => (isLastRound.value ? finishLabel.value : nextLabel.value))
 
@@ -499,18 +532,6 @@ export default defineComponent({
       return ''
     }
 
-    const getRoundIndicatorClass = idx => {
-      const status = roundResults.value[idx]
-
-      if (status === 'correct') return 'is-correct'
-
-      if (status === 'wrong') return 'is-wrong'
-
-      if (idx === roundIndex.value) return 'is-active'
-
-      return ''
-    }
-
     watch(
       () => currentRound.value?.roundId,
       () => {
@@ -552,34 +573,34 @@ export default defineComponent({
     }
 
     useMeta(() => ({
-      title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: selectedArtists.value.map(artist => artist.artistName).join(',') }),
+      title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: contextLabel.value }),
       meta: [
         {
           hid: 'description',
           name: 'description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'og:title',
           name: 'og:title',
           content: i18n.t('seo.musicMode.guessTheSongPlay.title', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'og:description',
           name: 'og:description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
           content: i18n.t('seo.musicMode.guessTheSongPlay.description', {
-            artists: selectedArtists.value.map(artist => artist.artistName).join(',')
+            artists: contextLabel.value
           })
         },
         {
@@ -611,18 +632,17 @@ export default defineComponent({
       remainingLabel,
       limitLabel,
       audioToggleIcon,
-      roundIndicators,
       audioEl,
       toggleAudio,
       handleSelectOption,
       getOptionClass,
-      getRoundIndicatorClass,
       handleTimeUpdate,
       handleEnded,
       goNextRound,
       isStatsDialogOpen,
       stats,
       selectedArtists,
+      playlist,
       statsButtonLabel,
       handleStatsClosed,
       handleStatsCancelled,
