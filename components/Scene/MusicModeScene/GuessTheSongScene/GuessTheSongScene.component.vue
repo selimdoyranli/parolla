@@ -193,15 +193,21 @@ export default defineComponent({
         })
 
         const items = Array.isArray(data) ? data : []
+        const seen = new Set(tagResults.value.map(playlist => playlist.playlistId))
+        const freshItems = items.filter(playlist => !seen.has(playlist.playlistId))
+
+        if (freshItems.length) {
+          tagResults.value.push(...freshItems)
+        }
 
         if (items.length) {
-          tagResults.value.push(...items)
           tagOffset.value += TAG_PAGE_LIMIT
-          $state.loaded()
         }
 
         if (!items.length || !meta?.hasMore) {
           $state.complete()
+        } else {
+          $state.loaded()
         }
       } catch (error) {
         $state.complete()
