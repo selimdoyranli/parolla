@@ -87,30 +87,28 @@
       ) {{ tag }}
 
     .guess-the-song-scene-tag-results(v-if="activeTag")
-      .guess-the-song-scene-playlists__list
+      .guess-the-song-scene-playlists__list(v-if="tagResults.length")
         .guess-the-song-scene-playlist(v-for="playlist in tagResults" :key="playlist.playlistId" @click="handleClickPlaylist(playlist)")
           img.guess-the-song-scene-playlist-image(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
           AppIcon.guess-the-song-scene-playlist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-playlist-text {{ playlist.name }}
 
       client-only
-        infinite-loading(force-use-infinite-wrapper=".layout__main" :identifier="infiniteId" @infinite="handleInfinite")
-          template(#no-more)
-            span.guess-the-song-scene-tag-results__hint {{ $t('musicMode.tagResults.noMore') }}
-          template(#no-results)
-            span.guess-the-song-scene-tag-results__hint {{ $t('musicMode.tagResults.empty') }}
+        infinite-loading(v-if="tagHasMore" force-use-infinite-wrapper=".layout__main" :identifier="infiniteId" @infinite="handleInfinite")
+
+      span.guess-the-song-scene-tag-results__hint(v-if="!tagLoading && !tagResults.length") {{ $t('musicMode.tagResults.empty') }}
 
     // Ad
     AppAd(:data-ad-slot="9964323575")
 </template>
 
 <script>
-import { defineComponent, useContext, useStore, useRouter, useFetch, ref, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, useRouter, useFetch, onMounted, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { Button, Empty, Field } from 'vant'
 
 const FEATURED_TAGS = {
-  tr: ['En iyiler', 'Pop', 'Rock', 'Rap', 'Türkçe Pop', 'Metal', 'Elektronik', 'Hip-Hop', 'Dans', "90'lar", 'Arabesk'],
-  en: ['Best of', 'Pop', 'Rock', 'Rap', 'Metal', 'Electronic', 'Hip-Hop', 'Dance', '90s', 'R&B', 'Indie']
+  tr: ['Pop', 'Rock', 'Rap', 'Türkçe Pop', 'Metal', 'Elektronik', 'Hip-Hop', "2000'ler", "90'lar", 'Arabesk'],
+  en: ['Pop', 'Rock', 'Rap', 'Metal', 'Electronic', 'Hip-Hop', '2000s', '90s', 'R&B', 'Indie']
 }
 
 const TAG_PAGE_LIMIT = 21
@@ -134,12 +132,14 @@ export default defineComponent({
     const popularArtists = ref([])
     const selectedPlaylist = ref(null)
 
-    const activeTag = ref(null)
+    const featuredTags = computed(() => FEATURED_TAGS[i18n.locale] || FEATURED_TAGS.en)
+
+    const activeTag = ref(featuredTags.value[0] || null)
     const tagResults = ref([])
     const tagOffset = ref(0)
+    const tagHasMore = ref(false)
+    const tagLoading = ref(true)
     const infiniteId = ref(0)
-
-    const featuredTags = computed(() => FEATURED_TAGS[i18n.locale] || FEATURED_TAGS.en)
 
     useFetch(async () => {
       const [playlistsRes, artistsRes] = await Promise.all([
@@ -162,23 +162,45 @@ export default defineComponent({
       scrollToPlayButton()
     }
 
-    const handleSelectTag = tag => {
-      if (activeTag.value === tag) {
-        activeTag.value = null
-        tagResults.value = []
-        tagOffset.value = 0
+    const loadTagFirstPage = async () => {
+      if (!activeTag.value) return
 
-        return
-      }
-
-      activeTag.value = tag
       tagResults.value = []
       tagOffset.value = 0
-      infiniteId.value += 1
+      tagHasMore.value = false
+      tagLoading.value = true
+
+      try {
+        const { data, meta } = await store.dispatch('music/searchPlaylistsByTag', {
+          term: activeTag.value,
+          offset: 0,
+          limit: TAG_PAGE_LIMIT,
+          locale: i18n.locale
+        })
+
+        const items = Array.isArray(data) ? data : []
+
+        tagResults.value = items
+        tagOffset.value = items.length ? TAG_PAGE_LIMIT : 0
+        tagHasMore.value = Boolean(meta?.hasMore) && items.length > 0
+      } catch (error) {
+        tagResults.value = []
+        tagHasMore.value = false
+      } finally {
+        tagLoading.value = false
+        infiniteId.value += 1
+      }
+    }
+
+    const handleSelectTag = tag => {
+      if (activeTag.value === tag) return
+
+      activeTag.value = tag
+      loadTagFirstPage()
     }
 
     const handleInfinite = async $state => {
-      if (!activeTag.value) {
+      if (!activeTag.value || !tagHasMore.value) {
         $state.complete()
 
         return
@@ -204,15 +226,21 @@ export default defineComponent({
           tagOffset.value += TAG_PAGE_LIMIT
         }
 
-        if (!items.length || !meta?.hasMore) {
-          $state.complete()
-        } else {
+        tagHasMore.value = Boolean(meta?.hasMore) && items.length > 0
+
+        if (tagHasMore.value) {
           $state.loaded()
+        } else {
+          $state.complete()
         }
       } catch (error) {
         $state.complete()
       }
     }
+
+    onMounted(() => {
+      loadTagFirstPage()
+    })
 
     const form = reactive({
       artistKeyword: ''
@@ -317,6 +345,8 @@ export default defineComponent({
       featuredTags,
       activeTag,
       tagResults,
+      tagHasMore,
+      tagLoading,
       infiniteId,
       handleSelectTag,
       handleInfinite
