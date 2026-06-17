@@ -73,6 +73,7 @@ input:on-input, textarea:on-input { sound: keystroke; }
 .guess-the-song-scene-playlist,
 .music-artist-select-artist,
 .music-artist-select-playlist { sound-on-click: pop; }
+.guess-the-song-scene-tag { sound-on-click: tick; }
 .guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
 
 /* === Remove / destructive actions — thunk (decisive removal) ===
