@@ -1,8 +1,10 @@
 import { fetchArtists as fetchArtistsFromItunes, fetchSongs as fetchSongsFromItunes } from '@/services/itunes.service'
 import {
-  fetchPlaylists as fetchPlaylistsFromCf,
+  fetchFeaturedPlaylists as fetchFeaturedPlaylistsFromCf,
+  fetchFeaturedArtists as fetchFeaturedArtistsFromCf,
   fetchPlaylistSongs as fetchPlaylistSongsFromCf,
-  searchPlaylists as searchPlaylistsFromCf
+  searchPlaylists as searchPlaylistsFromCf,
+  searchPlaylistsByTag as searchPlaylistsByTagFromCf
 } from '@/services/music.service'
 
 export default {
@@ -35,8 +37,14 @@ export default {
     }
   },
 
-  async fetchPlaylists({ commit }, { locale } = {}) {
-    const { data, meta, error } = await fetchPlaylistsFromCf(locale)
+  async fetchFeaturedPlaylists({ commit }, { locale } = {}) {
+    const { data, meta, error } = await fetchFeaturedPlaylistsFromCf(locale)
+
+    return { data: data || [], meta, error }
+  },
+
+  async fetchFeaturedArtists({ commit }, { locale } = {}) {
+    const { data, meta, error } = await fetchFeaturedArtistsFromCf(locale)
 
     return { data: data || [], meta, error }
   },
@@ -49,6 +57,12 @@ export default {
 
   async searchPlaylists({ commit }, { term, locale }) {
     const { data, meta, error } = await searchPlaylistsFromCf(term, locale)
+
+    return { data: data || [], meta, error }
+  },
+
+  async searchPlaylistsByTag({ commit }, { term, offset, limit, locale }) {
+    const { data, meta, error } = await searchPlaylistsByTagFromCf({ term, offset, limit, locale })
 
     return { data: data || [], meta, error }
   }
