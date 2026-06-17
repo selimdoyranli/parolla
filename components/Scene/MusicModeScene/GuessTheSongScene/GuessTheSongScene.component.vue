@@ -51,10 +51,10 @@
 
     span.guess-the-song-scene-play-hint {{ $t('musicMode.playHint') }}
 
-    .guess-the-song-scene-popular-artists(v-if="popularArtists.length" :class="[disabledPopularArtistsClass]")
+    .guess-the-song-scene-popular-artists(v-if="fetchState.pending || popularArtists.length" :class="[disabledPopularArtistsClass]")
       span.guess-the-song-scene-popular-artists-title {{ $t('musicMode.popularArtists') }}
 
-      .guess-the-song-scene-popular-artists__list
+      .guess-the-song-scene-popular-artists__list(v-if="popularArtists.length")
         .guess-the-song-scene-popular-artist(
           v-for="popularArtist in popularArtists"
           :key="popularArtist.artistId"
@@ -68,14 +68,24 @@
           AppIcon.guess-the-song-scene-popular-artist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-popular-artist-text {{ popularArtist.artistName }}
 
-    .guess-the-song-scene-playlists(v-if="playlists.length")
+      .guess-the-song-scene-popular-artists__list(v-else)
+        .guess-the-song-scene-skeleton-artist(v-for="n in 6" :key="n")
+          .guess-the-song-scene-skeleton-artist__avatar
+          .guess-the-song-scene-skeleton-line
+
+    .guess-the-song-scene-playlists(v-if="fetchState.pending || playlists.length")
       span.guess-the-song-scene-playlists-title {{ $t('musicMode.playlists') }}
 
-      .guess-the-song-scene-playlists__list
+      .guess-the-song-scene-playlists__list(v-if="playlists.length")
         .guess-the-song-scene-playlist(v-for="playlist in playlists" :key="playlist.playlistId" @click="handleClickPlaylist(playlist)")
           img.guess-the-song-scene-playlist-image(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
           AppIcon.guess-the-song-scene-playlist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-playlist-text {{ playlist.name }}
+
+      .guess-the-song-scene-playlists__list(v-else)
+        .guess-the-song-scene-skeleton-playlist(v-for="n in 6" :key="n")
+          .guess-the-song-scene-skeleton-playlist__cover
+          .guess-the-song-scene-skeleton-line
 
     .guess-the-song-scene-tags(v-if="featuredTags.length")
       button.guess-the-song-scene-tag(
@@ -92,6 +102,11 @@
           img.guess-the-song-scene-playlist-image(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
           AppIcon.guess-the-song-scene-playlist-icon(v-else name="tabler:music" :width="100" :height="100")
           span.guess-the-song-scene-playlist-text {{ playlist.name }}
+
+      .guess-the-song-scene-playlists__list(v-else-if="tagLoading")
+        .guess-the-song-scene-skeleton-playlist(v-for="n in 6" :key="n")
+          .guess-the-song-scene-skeleton-playlist__cover
+          .guess-the-song-scene-skeleton-line
 
       client-only
         infinite-loading(v-if="tagHasMore" force-use-infinite-wrapper=".layout__main" :identifier="infiniteId" @infinite="handleInfinite")
@@ -141,7 +156,7 @@ export default defineComponent({
     const tagLoading = ref(true)
     const infiniteId = ref(0)
 
-    useFetch(async () => {
+    const { fetchState } = useFetch(async () => {
       const [playlistsRes, artistsRes] = await Promise.all([
         store.dispatch('music/fetchFeaturedPlaylists', { locale: i18n.locale }),
         store.dispatch('music/fetchFeaturedArtists', { locale: i18n.locale })
@@ -328,6 +343,7 @@ export default defineComponent({
     return {
       rootRef,
       musicArtistSelectRef,
+      fetchState,
       form,
       selectedArtists,
       handleArtistRemove,

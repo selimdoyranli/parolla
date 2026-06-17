@@ -432,4 +432,55 @@
       padding-block: $spacer * 4;
     }
   }
+
+  &-skeleton-artist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+
+    &__avatar {
+      width: 60px;
+      height: 60px;
+      background-color: var(--color-ui-03);
+      border-radius: 100%;
+      animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+    }
+  }
+
+  &-skeleton-playlist {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    padding: $spacer * 2 $spacer * 4;
+
+    &__cover {
+      width: 80px;
+      height: 80px;
+      background-color: var(--color-ui-03);
+      border-radius: var(--border-radius-01);
+      animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+    }
+  }
+
+  &-skeleton-line {
+    width: 64px;
+    height: 10px;
+    background-color: var(--color-ui-03);
+    border-radius: 999px;
+    animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes guess-the-song-scene-skeleton {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
 }
