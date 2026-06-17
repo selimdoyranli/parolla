@@ -159,12 +159,44 @@ export const formatArtwork = (url, size) => {
   return url.replace('{w}', String(size)).replace('{h}', String(size)).replace('{f}', 'jpg')
 }
 
-export const jsonResponse = (body, status = 200) =>
+// TTLs are long on purpose: featured lists come from Strapi (rarely change),
+// playlist contents change slowly, search results are stable. A Strapi edit
+// surfaces after at most CACHE_TTL.featured seconds.
+export const CACHE_TTL = {
+  featured: 86400, // 24h — featured-playlists, featured-artists
+  playlistSongs: 43200, // 12h
+  search: 21600 // 6h — search-playlists, search-playlists-by-tag
+}
+
+export const jsonResponse = (body, status = 200, { maxAge = 0 } = {}) =>
   new Response(JSON.stringify(body), {
     status,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'no-store'
+      'Cache-Control': maxAge > 0 ? `public, max-age=${maxAge}` : 'no-store'
     }
   })
+
+// Serves from Cloudflare's edge cache when warm, skipping the expensive AMP
+// fetch + token scrape entirely. The worker still gets invoked, but a cache hit
+// returns before any upstream work. Only responses the handler marks cacheable
+// (a positive max-age via jsonResponse) are stored — errors and empties aren't.
+export const withCache = async (context, handler) => {
+  const cache = caches.default
+  const cacheKey = new Request(new URL(context.request.url).toString(), { method: 'GET' })
+  const hit = await cache.match(cacheKey)
+
+  if (hit) {
+    return hit
+  }
+
+  const response = await handler()
+  const cacheControl = response.headers.get('Cache-Control') || ''
+
+  if (response.status === 200 && cacheControl.includes('max-age') && !cacheControl.includes('no-store')) {
+    context.waitUntil(cache.put(cacheKey, response.clone()))
+  }
+
+  return response
+}
