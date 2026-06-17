@@ -1,6 +1,6 @@
 const DESKTOP_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
 const APPLE_MUSIC_HOME = 'https://music.apple.com/us/new'
-const AMP_BASE = 'https://amp-api.music.apple.com/v1/catalog'
+const AMP_BASE = 'https://amp-api-edge.music.apple.com/v1/catalog'
 const JWT_REGEX = /eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/
 const KV_KEY = 'amp_token'
 const FETCH_TIMEOUT_MS = 8000
