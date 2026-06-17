@@ -19,10 +19,19 @@ const fetchJson = async url => {
   }
 }
 
-export const fetchPlaylists = locale => fetchJson(`/api/music/playlists?locale=${encodeURIComponent(locale || '')}`)
+export const fetchFeaturedPlaylists = locale => fetchJson(`/api/music/featured-playlists?locale=${encodeURIComponent(locale || '')}`)
+
+export const fetchFeaturedArtists = locale => fetchJson(`/api/music/featured-artists?locale=${encodeURIComponent(locale || '')}`)
 
 export const fetchPlaylistSongs = (playlistId, locale) =>
   fetchJson(`/api/music/playlist-songs?playlistId=${encodeURIComponent(playlistId)}&locale=${encodeURIComponent(locale || '')}`)
 
 export const searchPlaylists = (term, locale) =>
   fetchJson(`/api/music/search-playlists?term=${encodeURIComponent(term)}&locale=${encodeURIComponent(locale || '')}`)
+
+export const searchPlaylistsByTag = ({ term, offset = 0, limit = 21, locale }) =>
+  fetchJson(
+    `/api/music/search-playlists-by-tag?term=${encodeURIComponent(term)}&offset=${offset}&limit=${limit}&locale=${encodeURIComponent(
+      locale || ''
+    )}`
+  )
