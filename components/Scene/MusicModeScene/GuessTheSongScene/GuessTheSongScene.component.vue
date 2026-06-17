@@ -10,7 +10,13 @@
       p.guess-the-song-scene__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
 
     form.guess-the-song-scene-form
-      MusicArtistSelect(ref="musicArtistSelectRef" @select="handleSelect" @remove="handleArtistRemove")
+      MusicArtistSelect(
+        ref="musicArtistSelectRef"
+        :selected-keys="selectedKeys"
+        :artists-disabled="selectedArtists.length >= 3"
+        @select="handleSelect"
+        @remove="handleArtistRemove"
+      )
 
     .guess-the-song-scene-selected-artists(v-if="selectedArtists.length")
       span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.selectedArtists.title') }}
@@ -28,7 +34,7 @@
           span.guess-the-song-scene-selected-artist-text {{ selectedArtist.artistName }}
 
     .guess-the-song-scene-selected-playlist(v-if="selectedPlaylist")
-      span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.groups.playlists') }}
+      span.guess-the-song-scene-selected-artists-title {{ $t('musicMode.selectedPlaylist.title') }}
       .guess-the-song-scene-selected-playlist-card
         img.guess-the-song-scene-selected-playlist-image(
           v-if="selectedPlaylist.artworkUrl"
@@ -40,7 +46,10 @@
         button.guess-the-song-scene-selected-artist-remove(type="button" @click="handlePlaylistRemove") ×
 
     Button.guess-the-song-scene-play-button(type="button" :disabled="!canPlay" @click="handleClickPlayButton")
-      | {{ $t('musicMode.play') }}
+      AppIcon.guess-the-song-scene-play-button__icon(name="tabler:player-play-filled" :width="20" :height="20")
+      span.guess-the-song-scene-play-button__text {{ $t('musicMode.play') }}
+
+    span.guess-the-song-scene-play-hint {{ $t('musicMode.playHint') }}
 
     .guess-the-song-scene-popular-artists(:class="[disabledPopularArtistsClass]")
       span.guess-the-song-scene-popular-artists-title {{ $t('musicMode.popularArtists') }}
@@ -99,11 +108,15 @@ export default defineComponent({
       playlists.value = Array.isArray(data) ? data : []
     })
 
+    const scrollToPlayButton = () => {
+      document.querySelector('.guess-the-song-scene-play-button')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+
     const handleClickPlaylist = playlist => {
       if (!playlist) return
 
       handlePlaylistSelect(playlist)
-      document.querySelector('.layout__main').scrollTo({ top: 0, behavior: 'smooth' })
+      scrollToPlayButton()
     }
 
     const form = reactive({
@@ -111,11 +124,23 @@ export default defineComponent({
     })
 
     const handleArtistSelect = artist => {
-      if (artist && !selectedArtists.value.find(a => a.artistId === artist.artistId)) {
+      if (!artist || selectedArtists.value.length >= 3) return
+
+      if (!selectedArtists.value.find(a => a.artistId === artist.artistId)) {
         selectedPlaylist.value = null
         selectedArtists.value.push(artist)
       }
     }
+
+    const selectedKeys = computed(() => {
+      const keys = selectedArtists.value.map(artist => `artist:${artist.artistId}`)
+
+      if (selectedPlaylist.value) {
+        keys.push(`playlist:${selectedPlaylist.value.playlistId}`)
+      }
+
+      return keys
+    })
 
     const handlePlaylistSelect = playlist => {
       if (!playlist) return
@@ -133,11 +158,11 @@ export default defineComponent({
 
       if (option.type === 'playlist') {
         handlePlaylistSelect(option)
-
-        return
+      } else {
+        handleArtistSelect(option)
       }
 
-      handleArtistSelect(option)
+      scrollToPlayButton()
     }
 
     const handleArtistRemove = artist => {
@@ -304,7 +329,7 @@ export default defineComponent({
           }
         }
         handleArtistSelect(mappedArtist)
-        document.querySelector('.layout__main').scrollTo({ top: 0, behavior: 'smooth' })
+        scrollToPlayButton()
       }
     }
 
@@ -329,6 +354,7 @@ export default defineComponent({
       selectedPlaylist,
       handleSelect,
       handlePlaylistRemove,
+      selectedKeys,
       canPlay
     }
   }

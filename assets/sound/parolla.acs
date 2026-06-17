@@ -68,8 +68,11 @@ input:on-input, textarea:on-input { sound: keystroke; }
 /* Creator compose form question/answer type switch cells. */
 .creator-mode-compose-form__typeSwitchCell { sound-on-click: tick; }
 
-/* Music mode — popular artist tile select + selected artist remove (×). */
-.guess-the-song-scene-popular-artist { sound-on-click: pop; }
+/* Music mode — popular artist + playlist tiles, search-result tiles, selected artist remove (×). */
+.guess-the-song-scene-popular-artist,
+.guess-the-song-scene-playlist,
+.music-artist-select-artist,
+.music-artist-select-playlist { sound-on-click: pop; }
 .guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
 
 /* === Remove / destructive actions — thunk (decisive removal) ===

@@ -934,9 +934,10 @@ export default {
     form: {
       searchArtist: {
         label: 'Search artist or playlist',
-        placeholder: 'Type artist or playlist name',
+        placeholder: 'Search an artist or playlist... e.g. Tarkan, 90s pop',
         noResult: 'No results found',
         noOptions: 'Start typing to search',
+        searching: 'Searching…',
         maxElements: 'Maximum 3 artists can be selected'
       }
     },
@@ -944,7 +945,11 @@ export default {
       title: 'Selected artists',
       empty: 'Select an artist to start'
     },
+    selectedPlaylist: {
+      title: 'Selected playlist'
+    },
     play: 'Oyna',
+    playHint: 'Search and select an artist or playlist',
     popularArtists: 'Popular artists',
     playlists: 'Playlists',
     groups: {

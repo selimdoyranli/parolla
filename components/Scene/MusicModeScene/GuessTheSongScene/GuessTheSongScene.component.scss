@@ -195,7 +195,28 @@
       opacity: 0.5;
     }
 
+    &__icon {
+      display: inline-flex;
+      align-items: center;
+      margin-inline-end: $spacer * 2;
+    }
+
+    .van-button__text {
+      display: flex;
+      align-items: center;
+    }
+
     @include font-weight-semi-bold;
+  }
+
+  &-play-hint {
+    display: block;
+    max-width: var(--mobile);
+    margin: 0 auto;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+    text-align: center;
+    margin-block-start: $spacer * 3;
   }
 
   &-popular-artists {
@@ -205,7 +226,7 @@
     padding-block-end: $spacer * 8;
 
     @include media-breakpoint-down(mobile) {
-      padding-block-end: 20vh;
+      padding-block-end: $spacer * 4;
     }
 
     &-title {

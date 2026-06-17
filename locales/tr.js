@@ -964,9 +964,10 @@ export default {
     form: {
       searchArtist: {
         label: 'Sanatçı ya da Playlist ara',
-        placeholder: 'Sanatçı ya da Playlist adı yaz',
+        placeholder: 'Sanatçı veya playlist arayın... örn. Tarkan, 90lar pop',
         noResult: 'Sonuç bulunamadı',
         noOptions: 'Arama yapmak için yazmaya başlayın',
+        searching: 'Aranıyor…',
         maxElements: 'Maksimum 3 sanatçı seçebilirsin'
       }
     },
@@ -974,7 +975,11 @@ export default {
       title: 'Seçilen sanatçılar',
       empty: 'Başlamak için sanatçı seç'
     },
+    selectedPlaylist: {
+      title: 'Seçilen çalma listesi'
+    },
     play: 'Oyna',
+    playHint: 'Sanatçı veya playlist arayın ve seçin',
     popularArtists: 'Popüler sanatçılar',
     playlists: 'Çalma listeleri',
     groups: {
