@@ -443,7 +443,7 @@
     &__avatar {
       width: 60px;
       height: 60px;
-      background-color: var(--color-ui-03);
+      background-color: #d6d6d6;
       border-radius: 100%;
       animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
     }
@@ -459,7 +459,7 @@
     &__cover {
       width: 80px;
       height: 80px;
-      background-color: var(--color-ui-03);
+      background-color: #d6d6d6;
       border-radius: var(--border-radius-01);
       animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
     }
@@ -468,9 +468,17 @@
   &-skeleton-line {
     width: 64px;
     height: 10px;
-    background-color: var(--color-ui-03);
+    background-color: #d6d6d6;
     border-radius: 999px;
     animation: guess-the-song-scene-skeleton 1.2s ease-in-out infinite;
+  }
+
+  .dark-mode & {
+    .guess-the-song-scene-skeleton-artist__avatar,
+    .guess-the-song-scene-skeleton-playlist__cover,
+    .guess-the-song-scene-skeleton-line {
+      background-color: #343434;
+    }
   }
 }
 
