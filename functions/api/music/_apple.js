@@ -81,6 +81,18 @@ export const localeToStorefront = locale => (locale === 'tr' ? 'tr' : 'us')
 
 export const localeToLang = locale => (locale === 'tr' ? 'tr' : 'en-US')
 
+export const localeToStrapi = locale => {
+  if (locale === 'tr') {
+    return 'tr-TR'
+  }
+
+  if (locale === 'en') {
+    return 'en'
+  }
+
+  return 'tr-TR'
+}
+
 const defaultStorefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
 
 export const ampFetch = async (env, path, storefront) => {
