@@ -89,8 +89,9 @@
     align-items: center;
     justify-content: center;
     max-width: var(--mobile);
+    padding-block-start: $spacer * 4;
     padding-inline: $spacer * 4;
-    margin: $spacer * 4 auto 0;
+    margin: 0 auto;
 
     &__playlist {
       display: flex;
@@ -121,12 +122,14 @@
     }
 
     &__name {
+      display: -webkit-box;
       overflow: hidden;
       color: var(--color-text-01);
       font-weight: var(--font-weight-semi-bold);
       font-size: var(--font-size-text-8);
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      line-height: 1.3;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     &__artists {
