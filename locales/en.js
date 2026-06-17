@@ -934,7 +934,7 @@ export default {
     form: {
       searchArtist: {
         label: 'Search artist or playlist',
-        placeholder: 'Search an artist or playlist... e.g. Tarkan, 90s pop',
+        placeholder: 'Search an artist or playlist... e.g. Rihanna, 90s pop',
         noResult: 'No results found',
         noOptions: 'Start typing to search',
         searching: 'Searching…',
