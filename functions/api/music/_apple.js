@@ -3,6 +3,12 @@ const APPLE_MUSIC_HOME = 'https://music.apple.com/us/new'
 const AMP_BASE = 'https://amp-api.music.apple.com/v1/catalog'
 const JWT_REGEX = /eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/
 const KV_KEY = 'amp_token'
+const FETCH_TIMEOUT_MS = 8000
+
+// Workers' fetch has no default timeout — a hanging upstream would hang the whole
+// function and surface as a Cloudflare 502. Abort after FETCH_TIMEOUT_MS so the
+// failure is fast, caught, and observable instead.
+const fetchWithTimeout = (url, options = {}) => fetch(url, { ...options, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
 
 const decodeJwtExp = token => {
   try {
@@ -16,7 +22,7 @@ const decodeJwtExp = token => {
 }
 
 const scrapeToken = async () => {
-  const homeRes = await fetch(APPLE_MUSIC_HOME, { headers: { 'User-Agent': DESKTOP_UA } })
+  const homeRes = await fetchWithTimeout(APPLE_MUSIC_HOME, { headers: { 'User-Agent': DESKTOP_UA } })
 
   if (!homeRes.ok) {
     throw new Error(`Apple Music home fetch failed: ${homeRes.status}`)
@@ -31,7 +37,7 @@ const scrapeToken = async () => {
   }
 
   for (const path of unique) {
-    const res = await fetch(`https://music.apple.com${path}`, { headers: { 'User-Agent': DESKTOP_UA } })
+    const res = await fetchWithTimeout(`https://music.apple.com${path}`, { headers: { 'User-Agent': DESKTOP_UA } })
 
     if (!res.ok) {
       continue
@@ -61,14 +67,20 @@ const putToken = async (env, token) => {
 
 export const getToken = async env => {
   if (env.APPLE_MUSIC_TOKEN) {
+    console.log('[amp] token source: APPLE_MUSIC_TOKEN env var')
+
     return env.APPLE_MUSIC_TOKEN
   }
 
   const cached = env.MUSIC_KV ? await env.MUSIC_KV.get(KV_KEY) : null
 
   if (cached && decodeJwtExp(cached) - 60 > Math.floor(Date.now() / 1000)) {
+    console.log('[amp] token source: KV cache')
+
     return cached
   }
+
+  console.log('[amp] token source: scraping music.apple.com (no env token / cache miss)')
 
   const token = await scrapeToken()
 
@@ -98,7 +110,7 @@ const defaultStorefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
 export const ampFetch = async (env, path, storefront) => {
   const sf = storefront || defaultStorefront(env)
   const doFetch = token =>
-    fetch(`${AMP_BASE}/${sf}${path}`, {
+    fetchWithTimeout(`${AMP_BASE}/${sf}${path}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Origin: 'https://music.apple.com',
@@ -107,7 +119,14 @@ export const ampFetch = async (env, path, storefront) => {
     })
 
   let token = await getToken(env)
-  let res = await doFetch(token)
+  let res
+
+  try {
+    res = await doFetch(token)
+  } catch (err) {
+    console.error('[amp] request errored (timeout/network):', path, String((err && err.message) || err))
+    throw err
+  }
 
   if (res.status === 401 && !env.APPLE_MUSIC_TOKEN) {
     if (env.MUSIC_KV) {
@@ -120,6 +139,7 @@ export const ampFetch = async (env, path, storefront) => {
   }
 
   if (!res.ok) {
+    console.error('[amp] request failed:', res.status, path)
     throw new Error(`AMP request failed: ${res.status} ${path}`)
   }
 
