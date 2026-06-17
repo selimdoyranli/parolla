@@ -23,17 +23,20 @@ export async function onRequestGet(context) {
   try {
     const json = await ampFetch(
       env,
-      `/search?term=${encodeURIComponent(term)}&types=playlists&limit=${limit}&offset=${offset}&l=${lang}`,
-      storefront
+      `/search?term=${encodeURIComponent(term)}&types=playlists&with=serverBubbles&platform=web&limit=${limit}&offset=${offset}&l=${lang}`,
+      storefront,
+      { edge: true }
     )
-    const playlists = json?.results?.playlists
-    const items = playlists?.data ?? []
+    // serverBubbles groups results under `results.playlist` (singular);
+    // fall back to the typed `results.playlists` shape just in case.
+    const group = json?.results?.playlist || json?.results?.playlists
+    const items = group?.data ?? []
     const data = items.map(p => ({
       playlistId: p.id,
       name: p.attributes?.name,
       artworkUrl: formatArtwork(p.attributes?.artwork?.url, 300)
     }))
-    const hasMore = Boolean(playlists?.next) || data.length === limit
+    const hasMore = Boolean(group?.next) || data.length === limit
 
     return jsonResponse({ data, meta: { offset, limit, hasMore } })
   } catch (err) {

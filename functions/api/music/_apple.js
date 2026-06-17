@@ -1,6 +1,10 @@
 const DESKTOP_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
 const APPLE_MUSIC_HOME = 'https://music.apple.com/us/new'
-const AMP_BASE = 'https://amp-api-edge.music.apple.com/v1/catalog'
+// ID lookups (/playlists, /artists) work fine from CF on the default host.
+// /search is rate-limited (429) on the default host from CF IPs but works on
+// the edge host (which the music.apple.com web client uses) — see ampFetch opts.
+const AMP_BASE = 'https://amp-api.music.apple.com/v1/catalog'
+const AMP_EDGE_BASE = 'https://amp-api-edge.music.apple.com/v1/catalog'
 const JWT_REGEX = /eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/
 const KV_KEY = 'amp_token'
 const FETCH_TIMEOUT_MS = 8000
@@ -107,10 +111,11 @@ export const localeToStrapi = locale => {
 
 const defaultStorefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
 
-export const ampFetch = async (env, path, storefront) => {
+export const ampFetch = async (env, path, storefront, { edge = false } = {}) => {
   const sf = storefront || defaultStorefront(env)
+  const base = edge ? AMP_EDGE_BASE : AMP_BASE
   const doFetch = token =>
-    fetchWithTimeout(`${AMP_BASE}/${sf}${path}`, {
+    fetchWithTimeout(`${base}/${sf}${path}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Origin: 'https://music.apple.com',

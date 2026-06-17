@@ -12,8 +12,16 @@ export async function onRequestGet(context) {
   }
 
   try {
-    const json = await ampFetch(env, `/search?term=${encodeURIComponent(term.trim())}&types=playlists&limit=10&l=${lang}`, storefront)
-    const items = json?.results?.playlists?.data ?? []
+    const json = await ampFetch(
+      env,
+      `/search?term=${encodeURIComponent(term.trim())}&types=playlists&with=serverBubbles&platform=web&limit=10&l=${lang}`,
+      storefront,
+      { edge: true }
+    )
+    // serverBubbles groups results under `results.playlist` (singular);
+    // fall back to the typed `results.playlists` shape just in case.
+    const group = json?.results?.playlist || json?.results?.playlists
+    const items = group?.data ?? []
     const data = items.map(p => ({
       playlistId: p.id,
       name: p.attributes?.name,
