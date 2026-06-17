@@ -10,7 +10,7 @@ export async function onRequestGet(context) {
   let ids = []
 
   try {
-    const res = await fetch(`${strapiBase}/modes/music/playlists`)
+    const res = await fetch(`${strapiBase}/modes/music/featured-playlists`)
     const body = await res.json()
 
     ids = (body?.data ?? []).map(entry => entry.playlistId).filter(Boolean)
