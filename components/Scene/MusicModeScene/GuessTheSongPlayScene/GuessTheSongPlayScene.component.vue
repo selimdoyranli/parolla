@@ -18,12 +18,21 @@
         Button(@click="reFetch") {{ $t('error.tryAgain') }}
 
     template(v-else)
-      .guess-the-song-play-scene-rounds
-        .guess-the-song-play-scene-round(
-          v-for="indicator in roundIndicators"
-          :key="indicator.index"
-          :class="getRoundIndicatorClass(indicator.index)"
-        ) {{ indicator.index + 1 }}
+      .guess-the-song-play-scene-context(v-if="playlist || selectedArtists.length")
+        .guess-the-song-play-scene-context__playlist(v-if="playlist")
+          img.guess-the-song-play-scene-context__cover(v-if="playlist.artworkUrl" :src="playlist.artworkUrl" :alt="playlist.name")
+          AppIcon.guess-the-song-play-scene-context__cover-icon(v-else name="tabler:playlist" :width="36" :height="36")
+          span.guess-the-song-play-scene-context__name {{ playlist.name }}
+
+        .guess-the-song-play-scene-context__artists(v-else)
+          .guess-the-song-play-scene-context__artist(v-for="artist in selectedArtists" :key="artist.artistId")
+            img.guess-the-song-play-scene-context__avatar(v-if="artist.artworkUrl100" :src="artist.artworkUrl100" :alt="artist.artistName")
+            AppIcon.guess-the-song-play-scene-context__avatar-icon(v-else name="tabler:music" :width="22" :height="22")
+            span.guess-the-song-play-scene-context__artist-name {{ artist.artistName }}
+
+      .guess-the-song-play-scene-counter(v-if="currentRound")
+        AppIcon.guess-the-song-play-scene-counter__icon(name="tabler:music" :width="16" :height="16")
+        span {{ roundLabel }}
 
       Empty(v-if="!currentRound" :description="$t('gameScene.pendingQuestions')")
 
@@ -371,7 +380,6 @@ export default defineComponent({
     const isLastRound = computed(() => roundIndex.value === rounds.value.length - 1)
     const isAnswerLocked = computed(() => selectedOptionId.value !== null)
     const roundLabel = computed(() => `${Math.min(roundIndex.value + 1, rounds.value.length)}/${rounds.value.length || TOTAL_ROUNDS}`)
-    const roundIndicators = computed(() => Array.from({ length: TOTAL_ROUNDS }, (_, idx) => ({ index: idx })))
     const playLabel = computed(() => i18n.t('musicMode.play'))
     const pauseLabel = computed(() => i18n.t('musicMode.pause'))
     const nextLabel = computed(() => i18n.t('musicMode.nextRound'))
@@ -524,18 +532,6 @@ export default defineComponent({
       return ''
     }
 
-    const getRoundIndicatorClass = idx => {
-      const status = roundResults.value[idx]
-
-      if (status === 'correct') return 'is-correct'
-
-      if (status === 'wrong') return 'is-wrong'
-
-      if (idx === roundIndex.value) return 'is-active'
-
-      return ''
-    }
-
     watch(
       () => currentRound.value?.roundId,
       () => {
@@ -636,12 +632,10 @@ export default defineComponent({
       remainingLabel,
       limitLabel,
       audioToggleIcon,
-      roundIndicators,
       audioEl,
       toggleAudio,
       handleSelectOption,
       getOptionClass,
-      getRoundIndicatorClass,
       handleTimeUpdate,
       handleEnded,
       goNextRound,
