@@ -8,8 +8,8 @@ import {
 } from '@/services/music.service'
 
 export default {
-  async fetchArtists({ commit }, { term }) {
-    const { data, meta, error } = await fetchArtistsFromItunes({ term })
+  async fetchArtists({ commit }, { term, locale }) {
+    const { data, meta, error } = await fetchArtistsFromItunes({ term, locale })
 
     return {
       data: data || [],

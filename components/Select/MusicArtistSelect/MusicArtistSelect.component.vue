@@ -216,7 +216,7 @@ export default defineComponent({
 
       try {
         const [artistsResult, playlistsResult] = await Promise.all([
-          store.dispatch('music/fetchArtists', { term: trimmed }),
+          store.dispatch('music/fetchArtists', { term: trimmed, locale: i18n.locale }),
           store.dispatch('music/searchPlaylists', { term: trimmed, locale: i18n.locale })
         ])
 

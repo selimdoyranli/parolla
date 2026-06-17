@@ -29,6 +29,9 @@ export const fetchPlaylistSongs = (playlistId, locale) =>
 export const searchPlaylists = (term, locale) =>
   fetchJson(`/api/music/search-playlists?term=${encodeURIComponent(term)}&locale=${encodeURIComponent(locale || '')}`)
 
+export const searchArtists = (term, locale) =>
+  fetchJson(`/api/music/search-artists?term=${encodeURIComponent(term)}&locale=${encodeURIComponent(locale || '')}`)
+
 export const searchPlaylistsByTag = ({ term, offset = 0, limit = 21, locale }) =>
   fetchJson(
     `/api/music/search-playlists-by-tag?term=${encodeURIComponent(term)}&offset=${offset}&limit=${limit}&locale=${encodeURIComponent(

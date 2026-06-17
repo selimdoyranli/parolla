@@ -1,4 +1,5 @@
 import { artistTransformer, songTransformer } from '@/transformers/music.transformer'
+import { searchArtists as searchArtistsFromCf } from '@/services/music.service'
 
 const ITUNES_BASE = 'https://itunes.apple.com'
 
@@ -25,17 +26,34 @@ const fetchJson = async url => {
   }
 }
 
-const itunesSearch = params => {
-  if (isMobile()) {
-    return `/api/itunes/search?${params}`
-  }
-
-  return `${ITUNES_BASE}/search?${params}`
-}
+const itunesSearch = params => `${ITUNES_BASE}/search?${params}`
 
 const itunesLookup = params => `${ITUNES_BASE}/lookup?${params}`
 
-export const fetchArtists = async ({ term, limit = 50 }) => {
+// Mobile browsers can't reach itunes.apple.com/search reliably, so on mobile we
+// search artists via the Apple Music AMP worker instead. The AMP catalog artist
+// id equals the iTunes artistId, so fetchSongs' /lookup keeps working unchanged.
+const fetchArtistsFromAmp = async ({ term, locale }) => {
+  const { data, error } = await searchArtistsFromCf(term, locale)
+
+  if (error) {
+    return { data: [], meta: {}, error: error instanceof Error ? error : new Error(String(error)) }
+  }
+
+  const transformedArtists = (data || []).map(artist => ({
+    artistId: artist.artistId,
+    artistName: artist.artistName,
+    artwork: artist.artworkUrl ? { artworkUrl: artist.artworkUrl } : null
+  }))
+
+  return { data: transformedArtists, meta: { total: transformedArtists.length }, error: null }
+}
+
+export const fetchArtists = async ({ term, limit = 50, locale }) => {
+  if (isMobile()) {
+    return fetchArtistsFromAmp({ term, locale })
+  }
+
   const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.min(Math.floor(limit), 200) : 50
   const encodedTerm = encodeURIComponent(term)
 
