@@ -1,5 +1,86 @@
 # Changelog
 
+## v2.52.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.51.1...v2.52.0)
+
+
+### 🚀 Enhancements
+
+  - **music:** Add playlist store actions for strapi endpoints ([e075a3d](https://github.com/selimdoyranli/parolla/commit/e075a3d))
+  - **music:** Add playlist i18n keys (en + tr) ([d753c7c](https://github.com/selimdoyranli/parolla/commit/d753c7c))
+  - **music:** Show playlist context in guess-the-song stats dialog ([4adcddb](https://github.com/selimdoyranli/parolla/commit/4adcddb))
+  - **music:** Add playlists section to music quiz scene ([6578348](https://github.com/selimdoyranli/parolla/commit/6578348))
+  - **music:** Play playlist songs via playlistId query param ([56a04e1](https://github.com/selimdoyranli/parolla/commit/56a04e1))
+  - **music:** Add cloudflare AMP token+fetch util with KV cache ([757b0be](https://github.com/selimdoyranli/parolla/commit/757b0be))
+  - **music:** Add AMP playlist search cloudflare function ([6ee3596](https://github.com/selimdoyranli/parolla/commit/6ee3596))
+  - **music:** Add curated playlists enrich cloudflare function ([0313b3e](https://github.com/selimdoyranli/parolla/commit/0313b3e))
+  - **music:** Add AMP playlist songs cloudflare function ([a627d56](https://github.com/selimdoyranli/parolla/commit/a627d56))
+  - **music:** Route playlist calls to cloudflare via music service ([0e788c7](https://github.com/selimdoyranli/parolla/commit/0e788c7))
+  - **music:** Add unified search + group i18n keys (en + tr) ([173b348](https://github.com/selimdoyranli/parolla/commit/173b348))
+  - **music:** Unified grouped artist+playlist search input ([4090ac2](https://github.com/selimdoyranli/parolla/commit/4090ac2))
+  - **music:** Playlist selection (xor artists) in music quiz scene ([9d459cf](https://github.com/selimdoyranli/parolla/commit/9d459cf))
+  - **music:** Locale-driven apple music storefront (tr/us) in cloudflare functions ([103441c](https://github.com/selimdoyranli/parolla/commit/103441c))
+  - **music:** Pass site locale to music endpoints for storefront selection ([400b9d4](https://github.com/selimdoyranli/parolla/commit/400b9d4))
+  - **music:** Redesign guess-the-song artist/playlist search ([4275d33](https://github.com/selimdoyranli/parolla/commit/4275d33))
+  - **music:** Add CF featured-artists endpoint (AMP-enriched) ([7ef8890](https://github.com/selimdoyranli/parolla/commit/7ef8890))
+  - **music:** Add paginated tag playlist search CF endpoint ([61ae854](https://github.com/selimdoyranli/parolla/commit/61ae854))
+  - **music:** Featured + tag-search service functions ([12c15b2](https://github.com/selimdoyranli/parolla/commit/12c15b2))
+  - **music:** Featured + tag-search store actions ([84ac0a3](https://github.com/selimdoyranli/parolla/commit/84ac0a3))
+  - **music:** Featured headings + tag-results i18n strings ([c1ef985](https://github.com/selimdoyranli/parolla/commit/c1ef985))
+  - **music:** Featured artists from strapi + tag chip cloud with infinite-scroll results ([f707219](https://github.com/selimdoyranli/parolla/commit/f707219))
+  - **music:** Auto-select first tag + autoload, refresh tag set, drop playlists mobile padding ([1601a9a](https://github.com/selimdoyranli/parolla/commit/1601a9a))
+  - **music:** Compact play-scene header — context (playlist/artists) + N/M counter ([04ab3d6](https://github.com/selimdoyranli/parolla/commit/04ab3d6))
+  - **music:** Skeleton loading for featured artists/playlists + tag results ([f05f060](https://github.com/selimdoyranli/parolla/commit/f05f060))
+  - **music:** Fetch featured playlists & artists by current locale ([8c31bc4](https://github.com/selimdoyranli/parolla/commit/8c31bc4))
+  - **music:** Search artists via Apple Music AMP on mobile ([77e3e4a](https://github.com/selimdoyranli/parolla/commit/77e3e4a))
+
+### 🔥 Performance
+
+  - **music:** Cache AMP worker responses on the Cloudflare edge ([b89df31](https://github.com/selimdoyranli/parolla/commit/b89df31))
+
+### 🩹 Fixes
+
+  - **music:** Hide selected-artists unless artists chosen; 12px under title ([18d3ead](https://github.com/selimdoyranli/parolla/commit/18d3ead))
+  - **music:** Dedupe paginated tag results to avoid duplicate keys ([ec0887d](https://github.com/selimdoyranli/parolla/commit/ec0887d))
+  - **music:** Make skeletons visible in light mode (darker gray) ([9582df1](https://github.com/selimdoyranli/parolla/commit/9582df1))
+  - **music:** Add fetch timeout + diagnostics to AMP client ([d5b1395](https://github.com/selimdoyranli/parolla/commit/d5b1395))
+  - **music:** Use amp-api-edge host to avoid /search 429 rate limit ([cd4cf31](https://github.com/selimdoyranli/parolla/commit/cd4cf31))
+  - **music:** Search via amp-api-edge with serverBubbles to beat 429 + return data ([4fe638f](https://github.com/selimdoyranli/parolla/commit/4fe638f))
+
+### 💅 Refactors
+
+  - **music:** Rename CF playlists endpoint to featured-playlists ([5e653ee](https://github.com/selimdoyranli/parolla/commit/5e653ee))
+
+### 📖 Documentation
+
+  - **music:** Add music quiz playlist frontend design spec ([af1577e](https://github.com/selimdoyranli/parolla/commit/af1577e))
+  - **music:** Add music quiz playlist frontend implementation plan ([cf5b67a](https://github.com/selimdoyranli/parolla/commit/cf5b67a))
+  - **music:** Add spec for apple music on cloudflare + unified search ([76dcc28](https://github.com/selimdoyranli/parolla/commit/76dcc28))
+  - **music:** Add implementation plan for apple-on-cloudflare + unified search ([d751152](https://github.com/selimdoyranli/parolla/commit/d751152))
+  - **music:** Add featured content + tag-browse design spec ([f7c319a](https://github.com/selimdoyranli/parolla/commit/f7c319a))
+  - **music:** Add featured content + tag-browse implementation plan ([74a09a0](https://github.com/selimdoyranli/parolla/commit/74a09a0))
+
+### 📦 Build
+
+  - **music:** Add wrangler config, MUSIC_KV binding, dev:cf script ([f3658bb](https://github.com/selimdoyranli/parolla/commit/f3658bb))
+  - **music:** Set MUSIC_KV namespace id in wrangler.toml ([651acb6](https://github.com/selimdoyranli/parolla/commit/651acb6))
+
+### 🏡 Chore
+
+  - Gitignore wrangler local dev artifacts (.wrangler, .dev.vars) ([afc7e5c](https://github.com/selimdoyranli/parolla/commit/afc7e5c))
+  - **music:** Register vue-infinite-loading plugin (client-only) ([e72e5c5](https://github.com/selimdoyranli/parolla/commit/e72e5c5))
+  - **music:** Use Rihanna in English search placeholder example ([9be6111](https://github.com/selimdoyranli/parolla/commit/9be6111))
+  - Update ua for itunes worker ([7085be3](https://github.com/selimdoyranli/parolla/commit/7085be3))
+
+### 🎨 Styles
+
+  - **music:** Clamp play-scene playlist name to 2 lines, adjust context spacing ([d160399](https://github.com/selimdoyranli/parolla/commit/d160399))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.51.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.51.0...v2.51.1)
