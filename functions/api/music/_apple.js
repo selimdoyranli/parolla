@@ -5,9 +5,11 @@ const APPLE_MUSIC_HOME = 'https://music.apple.com/us/new'
 // the edge host (which the music.apple.com web client uses) — see ampFetch opts.
 const AMP_BASE = 'https://amp-api.music.apple.com/v1/catalog'
 const AMP_EDGE_BASE = 'https://amp-api-edge.music.apple.com/v1/catalog'
-const JWT_REGEX = /eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/
 const KV_KEY = 'amp_token'
 const FETCH_TIMEOUT_MS = 8000
+const TOKEN_SKEW_SECONDS = 60
+const MAX_BUNDLES = 6
+const MAX_BUNDLE_BYTES = 8_000_000
 
 // Workers' fetch has no default timeout — a hanging upstream would hang the whole
 // function and surface as a Cloudflare 502. Abort after FETCH_TIMEOUT_MS so the
@@ -25,6 +27,47 @@ const decodeJwtExp = token => {
   }
 }
 
+const tokenValid = token => Boolean(token) && decodeJwtExp(token) - TOKEN_SKEW_SECONDS > Math.floor(Date.now() / 1000)
+
+// Apple's web player JWT, pulled from the JS bundle. Scans maximal base64url+dot
+// runs in a single greedy pass (one char class, no alternation) → O(n). The old
+// /eyJ…\.eyJ…\./ regex backtracked catastrophically (O(n²), seconds of CPU) on
+// bundles full of eyJ-prefixed runs, which could exceed the isolate CPU limit.
+// Each 3-part candidate is confirmed by decoding its header as JSON.
+const findAppleToken = js => {
+  const runs = js.match(/[A-Za-z0-9_.-]{60,}/g)
+
+  if (!runs) {
+    return null
+  }
+
+  for (const run of runs) {
+    if (!run.includes('eyJ')) {
+      continue
+    }
+
+    const parts = run.split('.')
+
+    for (let i = 0; i + 2 < parts.length; i++) {
+      if (!parts[i].startsWith('eyJ')) {
+        continue
+      }
+
+      try {
+        const header = JSON.parse(atob(parts[i].replace(/-/g, '+').replace(/_/g, '/')))
+
+        if (header && (header.alg || header.typ)) {
+          return `${parts[i]}.${parts[i + 1]}.${parts[i + 2]}`
+        }
+      } catch {
+        // not a JWT header — keep scanning
+      }
+    }
+  }
+
+  return null
+}
+
 const scrapeToken = async () => {
   const homeRes = await fetchWithTimeout(APPLE_MUSIC_HOME, { headers: { 'User-Agent': DESKTOP_UA } })
 
@@ -34,7 +77,7 @@ const scrapeToken = async () => {
 
   const html = await homeRes.text()
   const paths = [...html.matchAll(/\/assets\/index[^"' ]*\.js/g)].map(m => m[0])
-  const unique = [...new Set(paths)].filter(p => !p.includes('legacy'))
+  const unique = [...new Set(paths)].filter(p => !p.includes('legacy')).slice(0, MAX_BUNDLES)
 
   if (!unique.length) {
     throw new Error('Apple Music JS bundle not found')
@@ -48,10 +91,15 @@ const scrapeToken = async () => {
     }
 
     const js = await res.text()
-    const match = js.match(JWT_REGEX)
 
-    if (match) {
-      return match[0]
+    if (js.length > MAX_BUNDLE_BYTES) {
+      continue
+    }
+
+    const token = findAppleToken(js)
+
+    if (token) {
+      return token
     }
   }
 
@@ -70,7 +118,10 @@ const putToken = async (env, token) => {
 }
 
 export const getToken = async env => {
-  if (env.APPLE_MUSIC_TOKEN) {
+  // A static APPLE_MUSIC_TOKEN is trusted only while it is still valid. Apple's
+  // web token expires (~monthly), and once past exp it 401s — so fall through to
+  // the KV cache / scrape path instead of serving a dead token on every request.
+  if (tokenValid(env.APPLE_MUSIC_TOKEN)) {
     console.log('[amp] token source: APPLE_MUSIC_TOKEN env var')
 
     return env.APPLE_MUSIC_TOKEN
@@ -78,13 +129,13 @@ export const getToken = async env => {
 
   const cached = env.MUSIC_KV ? await env.MUSIC_KV.get(KV_KEY) : null
 
-  if (cached && decodeJwtExp(cached) - 60 > Math.floor(Date.now() / 1000)) {
+  if (tokenValid(cached)) {
     console.log('[amp] token source: KV cache')
 
     return cached
   }
 
-  console.log('[amp] token source: scraping music.apple.com (no env token / cache miss)')
+  console.log('[amp] token source: scraping music.apple.com (env token expired / cache miss)')
 
   const token = await scrapeToken()
 
@@ -133,7 +184,10 @@ export const ampFetch = async (env, path, storefront, { edge = false } = {}) => 
     throw err
   }
 
-  if (res.status === 401 && !env.APPLE_MUSIC_TOKEN) {
+  // A 401 means the token we used (env var or KV cache) is dead. Force one fresh
+  // scrape + retry — even when APPLE_MUSIC_TOKEN is set — so an expired static
+  // token self-heals instead of 401ing every request until it is redeployed.
+  if (res.status === 401) {
     if (env.MUSIC_KV) {
       await env.MUSIC_KV.delete(KV_KEY)
     }
