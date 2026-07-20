@@ -34,8 +34,16 @@ export default defineComponent({
   setup(props) {
     const context = useContext()
 
+    const { isExpoWebView, postToNative } = useNativeBridge()
+
     const handleGoogleLogin = () => {
       console.log('Google login clicked')
+
+      if (isExpoWebView.value) {
+        postToNative('google-auth-request')
+
+        return
+      }
 
       window.location.href = `${process.env.API_URL}/connect/google`
     }
