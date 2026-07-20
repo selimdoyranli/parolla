@@ -42,33 +42,7 @@ export default defineComponent({
       }
     }
 
-    const handleNativeAuthBounce = () => {
-      const nativeRedirect = window.sessionStorage.getItem('parollaNativeAuthRedirect')
-
-      if (!nativeRedirect) {
-        return false
-      }
-
-      window.sessionStorage.removeItem('parollaNativeAuthRedirect')
-
-      const search = window.location.search.replace(/^\?/, '')
-      const separator = nativeRedirect.includes('?') ? '&' : '?'
-
-      window.location.href = search ? `${nativeRedirect}${separator}${search}` : nativeRedirect
-
-      return true
-    }
-
     onMounted(async () => {
-      // Expo in-app auth overlay: if this callback is running inside the native auth session
-      // (flagged by the native-start helper), hand the OAuth result back to the app via its
-      // custom scheme so the overlay closes. The app then loads this callback into its WebView,
-      // where it is processed normally. Desktop browsers and the legacy Flutter app never set
-      // this flag, so they fall through to the normal flow below unchanged.
-      if (handleNativeAuthBounce()) {
-        return
-      }
-
       await Promise.allSettled([fetchUser(), setUser()])
 
       const redirectPath = context.$cookies.get('authNextRedirect')

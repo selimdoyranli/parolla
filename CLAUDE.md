@@ -148,12 +148,10 @@ Both native shells listen for the same `window.postMessage` events, so any chang
 ### Google login bridge path
 
 In `components/Form/Auth/LoginForm/LoginForm.component.vue`, `handleGoogleLogin` checks `isExpoWebView.value`:
-- Inside the Expo webview: calls `postToNative('google-auth-request')` and returns (no redirect). The native app then runs Google sign-in in an in-app auth overlay (Google blocks OAuth inside embedded WebViews).
+- Inside the Expo webview: calls `postToNative('google-auth-request')` and returns (no redirect). The native app then runs Google sign-in via the **native Google Sign-In SDK** — a native account picker, no browser and no extra layer (Google blocks OAuth inside embedded WebViews).
 - Everywhere else (normal browsers and the Flutter app): falls back to `window.location.href = \`${process.env.API_URL}/connect/google\``.
 
-**Expo auth helper (two web routes).** Because Google can't run in the embedded WebView, the Expo app does OAuth in a system auth overlay that only closes on the app's custom scheme (`parolla://`). Two pages bridge this — both must be deployed to prod (`www.parolla.app`), since Strapi's redirect is hardwired there:
-- `pages/Auth/Google/NativeStart/index.vue` (`/auth/google/native-start`) — opened by the native overlay with `?redirect=<parolla://…>&connect=<strapi>`. It stores `redirect` in `sessionStorage` (`parollaNativeAuthRedirect`) and forwards to Strapi's Google connect.
-- `pages/Auth/Google/Callback/index.vue` — if `sessionStorage.parollaNativeAuthRedirect` is set (i.e. this callback is running inside the native overlay), it **bounces** to `<redirect>?<params>` to close the overlay and hand the result to the app; otherwise it processes the login normally. Desktop browsers and the Flutter app never set the flag, so they are unaffected. The app then reloads this same callback (rehosted onto its `BASE_URL`) inside its WebView, where — with no flag present — it processes normally and sets the authed user.
+**Native auth completion (`plugins/native-auth.js`).** The Expo app does Google sign-in natively and hands back a Google **access token** by calling `window.__parollaMobileAuthComplete(accessToken)` inside the WebView. This plugin registers that global: it exchanges the token with Strapi via the existing `auth/fetchGoogleUser` (`auth/google/callback?access_token=…`) → `auth/setGoogleUser` → `auth/fetchMe` actions and sets the authed user in the Vuex store **in place** — the current page becomes authenticated with no navigation, reload, or extra layer. Registered in `nuxt.config.js` as a client-only plugin (`ssr: false`). Only the native shell ever calls this global; desktop and Flutter are unaffected.
 
 ### Where `postToNative` is used
 
