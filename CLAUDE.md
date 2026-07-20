@@ -153,5 +153,6 @@ In `components/Form/Auth/LoginForm/LoginForm.component.vue`, `handleGoogleLogin`
 
 ### Where `postToNative` is used
 
-- `components/Dialog/MenuDialog/MenuDialog.component.vue` — `openAppSharer` calls `postToNative('sharer', shareText)` alongside the existing clipboard/`navigator.share` fallback.
-- `composables/useGameScene.js` — `endGame()` calls `postToNative('end-game', true)` when a game finishes.
+- `sharer` — sent from `MenuDialog`'s `openAppSharer` and from the per-mode stats/result dialogs (`DailyModeStatsDialog`, `UnlimitedModeStatsDialog`, `CreatorModeStatsDialog`, `CreatorModeCreatedRoomDialog`, `WordblockModeStatsDialog`, `GuessTheSongStatsDialog`), each alongside the existing clipboard/`navigator.share` fallback.
+- `google-auth-request` — sent from `LoginForm.component.vue`'s `handleGoogleLogin`.
+- `end-game` — sent from `composables/useGameScene.js`'s `endGame()` when a game finishes.
