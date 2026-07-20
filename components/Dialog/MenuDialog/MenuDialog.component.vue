@@ -179,6 +179,7 @@ export default defineComponent({
     const { localePath, getRouteBaseName, i18n, $colorMode, $auth } = useContext()
 
     const { activeGameMode } = useGameMode()
+    const { postToNative } = useNativeBridge()
 
     const state = reactive({
       isOpen: props.isOpen
@@ -273,7 +274,7 @@ export default defineComponent({
 
     const openAppSharer = async () => {
       const shareText = i18n.t('sharer.app.description')
-      window.postMessage({ type: 'sharer', data: shareText })
+      postToNative('sharer', shareText)
 
       try {
         await navigator.clipboard.writeText(shareText)

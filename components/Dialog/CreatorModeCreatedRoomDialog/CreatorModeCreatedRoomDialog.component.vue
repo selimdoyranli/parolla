@@ -67,6 +67,7 @@ export default defineComponent({
   },
   setup(props) {
     const { localePath, i18n } = useContext()
+    const { postToNative } = useNativeBridge()
 
     const state = reactive({
       isOpen: props.isOpen
@@ -81,7 +82,7 @@ export default defineComponent({
 
     const copyRoomUrl = async () => {
       const url = `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: props.room.roomId } })}`
-      window.postMessage({ type: 'sharer', data: url })
+      postToNative('sharer', url)
 
       try {
         await navigator.clipboard.writeText(url)

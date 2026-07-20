@@ -95,6 +95,7 @@ export default defineComponent({
   },
   setup(props) {
     const { i18n } = useContext()
+    const { postToNative } = useNativeBridge()
 
     const state = reactive({
       isOpen: props.isOpen
@@ -119,7 +120,7 @@ export default defineComponent({
         url: window.location.href
       })
 
-      window.postMessage({ type: 'sharer', data: shareText })
+      postToNative('sharer', shareText)
 
       try {
         await navigator.clipboard.writeText(shareText)
