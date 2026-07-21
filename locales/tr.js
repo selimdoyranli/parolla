@@ -899,10 +899,12 @@ export default {
       },
       deactivate: {
         title: 'Hesabı Sil',
-        description: 'Hesabını kalıcı olarak silersen tüm verilerin geri getirilemez şekilde kaldırılır.',
+        description:
+          'Hesabını sildiğinde verilerin yasal mevzuat gereği 90 gün boyunca sistemde saklanır. Bu süre içinde tekrar giriş yaparsan hesabın yeniden aktifleşir; giriş yapmazsan 90 günün ardından hesabın ve tüm verilerin kalıcı olarak silinir.',
         button: 'Hesabımı Sil',
         confirmTitle: 'Hesabını silmek istediğine emin misin?',
-        confirmBody: 'Bu işlem geri alınamaz. Hesabın ve tüm verilerin kalıcı olarak silinecek.',
+        confirmBody:
+          'Hesabın yasal mevzuat gereği 90 gün boyunca saklanacak. Bu süre içinde tekrar giriş yaparsan hesabın yeniden aktifleşir; giriş yapmazsan 90 günün ardından kalıcı olarak silinir.',
         confirmCta: 'Evet, Sil'
       }
     }

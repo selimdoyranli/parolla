@@ -879,10 +879,12 @@ export default {
       },
       deactivate: {
         title: 'Delete Account',
-        description: 'If you permanently delete your account, all of your data will be removed and cannot be recovered.',
+        description:
+          'When you delete your account, your data is retained in our system for 90 days as required by law. If you sign in again within this period, your account is reactivated; otherwise your account and all of your data are permanently deleted after 90 days.',
         button: 'Delete My Account',
         confirmTitle: 'Are you sure you want to delete your account?',
-        confirmBody: 'This action cannot be undone. Your account and all of your data will be permanently deleted.',
+        confirmBody:
+          'Your account will be retained for 90 days as required by law. Signing in again within this period reactivates it; if you do not sign in, it will be permanently deleted after 90 days.',
         confirmCta: 'Yes, Delete'
       }
     }
