@@ -10,7 +10,7 @@
       AppIcon.login-form__social-button-icon(name="devicon:google" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithGoogle') }}
 
-    Button.login-form__social-button.login-form__social-button--apple(v-if="showAppleLogin" native-type="button" @click="handleAppleLogin")
+    Button.login-form__social-button.login-form__social-button--apple(native-type="button" @click="handleAppleLogin")
       AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithApple') }}
 </template>
@@ -48,14 +48,15 @@ export default defineComponent({
     const handleAppleLogin = () => {
       if (isExpoWebView.value) {
         postToNative('apple-auth-request')
+
+        return
       }
+
+      // Desktop / normal web: Sign in with Apple (Services ID) web flow. The Strapi
+      // POST /auth/apple/callback endpoint already accepts the Services-ID audience,
+      // so the web flow can hand its identity token to the same backend.
+      window.location.href = `${process.env.API_URL}/connect/apple`
     }
-
-    const showAppleLogin = computed(() => {
-      if (typeof window === 'undefined') return false
-
-      return isExpoWebView.value && /iphone|ipad|ipod/i.test(window.navigator.userAgent || '')
-    })
 
     const loginFormVariantClass = computed(() => {
       return {
@@ -66,7 +67,6 @@ export default defineComponent({
     return {
       handleGoogleLogin,
       handleAppleLogin,
-      showAppleLogin,
       loginFormVariantClass
     }
   }
