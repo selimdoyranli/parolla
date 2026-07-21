@@ -109,12 +109,27 @@ Form.profile-edit-form(@keypress.enter.prevent @failed="handleFailed")
     @click="handleSubmit"
   ) {{ $t('general.save') }}
 
+  .profile-edit-form__dangerZone
+    span.profile-edit-form__dangerZoneTitle {{ $t('form.profileEdit.deactivate.title') }}
+    p.profile-edit-form__dangerZoneDescription {{ $t('form.profileEdit.deactivate.description') }}
+
+    Button.profile-edit-form__deactivateButton(
+      type="danger"
+      icon="delete"
+      plain
+      native-type="button"
+      round
+      :loading="form.isDeactivating"
+      :disabled="form.isBusy || form.isDeactivating"
+      @click="handleDeactivate"
+    ) {{ $t('form.profileEdit.deactivate.button') }}
+
   AvatarEditorDialog(:user="user" @on-confirm="handleAvatarConfirm")
 </template>
 
 <script>
 import { defineComponent, useContext, useStore, reactive, computed } from '@nuxtjs/composition-api'
-import { Form, Button, Field, Notify, Toast, Badge, RadioGroup, Radio } from 'vant'
+import { Form, Button, Field, Notify, Toast, Badge, RadioGroup, Radio, Dialog } from 'vant'
 import { USERNAME_REGEX } from '@/system/constant'
 import parollaConfig from '@/system/parolla.config'
 
@@ -182,6 +197,7 @@ export default defineComponent({
 
     const form = reactive({
       isBusy: false,
+      isDeactivating: false,
       username: user.value.username,
       fullname: user.value.fullname,
       bio: user.value.bio,
@@ -258,6 +274,40 @@ export default defineComponent({
         }
         avatar.file.generateBlob(blob => resolve(blob), 'image/jpeg', 0.9)
       })
+    }
+
+    const handleDeactivate = () => {
+      Dialog.confirm({
+        title: i18n.t('form.profileEdit.deactivate.confirmTitle'),
+        message: i18n.t('form.profileEdit.deactivate.confirmBody'),
+        cancelButtonText: i18n.t('general.cancel'),
+        confirmButtonText: i18n.t('form.profileEdit.deactivate.confirmCta'),
+        confirmButtonColor: 'var(--color-danger-01)'
+      })
+        .then(async () => {
+          form.isDeactivating = true
+
+          const { error } = await store.dispatch('auth/deactivateAccount')
+
+          if (error) {
+            Notify({
+              message: error.message,
+              color: 'var(--color-text-04)',
+              background: 'var(--color-danger-01)',
+              duration: 3000
+            })
+            form.isDeactivating = false
+
+            return
+          }
+
+          await store.dispatch('auth/logout')
+
+          window.location.href = '/'
+        })
+        .catch(() => {
+          // User dismissed the confirm dialog — nothing to do.
+        })
     }
 
     const handleSubmit = async () => {
@@ -418,6 +468,7 @@ export default defineComponent({
       handleInput,
       isUsernameChanged,
       handleFailed,
+      handleDeactivate,
       handleSubmit
     }
   }

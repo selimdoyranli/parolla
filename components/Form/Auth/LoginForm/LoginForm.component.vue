@@ -10,10 +10,9 @@
       AppIcon.login-form__social-button-icon(name="devicon:google" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithGoogle') }}
 
-    // Apple login button
-      Button.login-form__social-button.login-form__social-button--apple(native-type="button" @click="handleAppleLogin")
-        AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
-        span.login-form__social-button-text Apple ile Giriş Yap
+    Button.login-form__social-button.login-form__social-button--apple(v-if="showAppleLogin" native-type="button" @click="handleAppleLogin")
+      AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
+      span.login-form__social-button-text {{ $t('dialog.auth.loginWithApple') }}
 </template>
 
 <script>
@@ -37,8 +36,6 @@ export default defineComponent({
     const { isExpoWebView, postToNative } = useNativeBridge()
 
     const handleGoogleLogin = () => {
-      console.log('Google login clicked')
-
       if (isExpoWebView.value) {
         postToNative('google-auth-request')
 
@@ -49,8 +46,16 @@ export default defineComponent({
     }
 
     const handleAppleLogin = () => {
-      console.log('Apple login clicked')
+      if (isExpoWebView.value) {
+        postToNative('apple-auth-request')
+      }
     }
+
+    const showAppleLogin = computed(() => {
+      if (typeof window === 'undefined') return false
+
+      return isExpoWebView.value && /iphone|ipad|ipod/i.test(window.navigator.userAgent || '')
+    })
 
     const loginFormVariantClass = computed(() => {
       return {
@@ -61,6 +66,7 @@ export default defineComponent({
     return {
       handleGoogleLogin,
       handleAppleLogin,
+      showAppleLogin,
       loginFormVariantClass
     }
   }

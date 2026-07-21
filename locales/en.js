@@ -447,7 +447,8 @@ export default {
       title: 'Login',
       login: 'Login',
       register: 'Register',
-      loginWithGoogle: 'Login with Google'
+      loginWithGoogle: 'Login with Google',
+      loginWithApple: 'Login with Apple'
     },
     player: {
       title: 'Profile',
@@ -875,6 +876,14 @@ export default {
       deletePhotoButton: 'Delete',
       deletePhotoCallback: {
         success: 'Profile photo removed'
+      },
+      deactivate: {
+        title: 'Delete Account',
+        description: 'If you permanently delete your account, all of your data will be removed and cannot be recovered.',
+        button: 'Delete My Account',
+        confirmTitle: 'Are you sure you want to delete your account?',
+        confirmBody: 'This action cannot be undone. Your account and all of your data will be permanently deleted.',
+        confirmCta: 'Yes, Delete'
       }
     }
   },

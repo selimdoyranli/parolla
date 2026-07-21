@@ -28,4 +28,33 @@ export default ({ store }) => {
       console.error('[native-auth] Google sign-in completion failed', error)
     }
   }
+
+  // Called by the native (Expo) shell after a successful NATIVE Apple sign-in.
+  // The shell runs Apple's native "Sign in with Apple" sheet and hands us the
+  // resulting credential as a JSON STRING (must be parsed) shaped like
+  // { identityToken, authorizationCode, nonce, fullName? }. We exchange it with
+  // Strapi via auth/apple/callback for a parolla session and update the store
+  // in place — mirroring the Google flow, so the current WebView page becomes
+  // authenticated with no navigation, reload, or extra layer.
+  window.__parollaMobileAppleAuthComplete = async payloadJson => {
+    if (!payloadJson) return
+
+    try {
+      const parsed = JSON.parse(payloadJson)
+
+      const { data } = await store.dispatch('auth/fetchAppleUser', parsed)
+
+      if (data) {
+        await store.dispatch('auth/setAppleUser', { appleResponse: data })
+      }
+
+      const { data: meData } = await store.dispatch('auth/fetchMe')
+
+      if (meData) {
+        store.commit('auth/SET_USER', meData)
+      }
+    } catch (error) {
+      console.error('[native-auth] Apple sign-in completion failed', error)
+    }
+  }
 }

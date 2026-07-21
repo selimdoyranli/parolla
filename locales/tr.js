@@ -453,7 +453,8 @@ export default {
       title: 'Giriş yap',
       login: 'Giriş yap',
       register: 'Kayıt ol',
-      loginWithGoogle: 'Google ile Giriş Yap'
+      loginWithGoogle: 'Google ile Giriş Yap',
+      loginWithApple: 'Apple ile Giriş Yap'
     },
     player: {
       title: 'Profil',
@@ -895,6 +896,14 @@ export default {
       deletePhotoButton: 'Sil',
       deletePhotoCallback: {
         success: 'Profil fotoğrafı silindi'
+      },
+      deactivate: {
+        title: 'Hesabı Sil',
+        description: 'Hesabını kalıcı olarak silersen tüm verilerin geri getirilemez şekilde kaldırılır.',
+        button: 'Hesabımı Sil',
+        confirmTitle: 'Hesabını silmek istediğine emin misin?',
+        confirmBody: 'Bu işlem geri alınamaz. Hesabın ve tüm verilerin kalıcı olarak silinecek.',
+        confirmCta: 'Evet, Sil'
       }
     }
   },
