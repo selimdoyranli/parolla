@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { defineComponent, useContext, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, computed } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 
 export default defineComponent({
@@ -32,6 +32,7 @@ export default defineComponent({
   },
   setup(props) {
     const context = useContext()
+    const store = useStore()
 
     const { isExpoWebView, postToNative } = useNativeBridge()
 
@@ -45,17 +46,34 @@ export default defineComponent({
       window.location.href = `${process.env.API_URL}/connect/google`
     }
 
-    const handleAppleLogin = () => {
+    const handleAppleLogin = async () => {
       if (isExpoWebView.value) {
         postToNative('apple-auth-request')
 
         return
       }
 
-      // Desktop / normal web: Sign in with Apple (Services ID) web flow. The Strapi
-      // POST /auth/apple/callback endpoint already accepts the Services-ID audience,
-      // so the web flow can hand its identity token to the same backend.
-      window.location.href = `${process.env.API_URL}/connect/apple`
+      // Desktop / normal web: "Sign in with Apple" JS SDK popup (mirrors the Dizge web app).
+      // The popup returns the same payload the native flow does; we hand it to the SAME Strapi
+      // endpoint (auth/apple/callback, which accepts the Services-ID audience) and set the session.
+      const { signIn } = useAppleSignIn()
+
+      const result = await signIn()
+
+      if (!result.ok) return
+
+      const { data } = await store.dispatch('auth/fetchAppleUser', {
+        identityToken: result.identityToken,
+        authorizationCode: result.authorizationCode,
+        nonce: result.nonce,
+        fullName: result.fullName
+      })
+
+      if (data) {
+        await store.dispatch('auth/setAppleUser', { appleResponse: data })
+        await store.dispatch('auth/fetchMe')
+        store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', false)
+      }
     }
 
     const loginFormVariantClass = computed(() => {
