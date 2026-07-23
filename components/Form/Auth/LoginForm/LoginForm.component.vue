@@ -10,7 +10,7 @@
       AppIcon.login-form__social-button-icon(name="devicon:google" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithGoogle') }}
 
-    Button.login-form__social-button.login-form__social-button--apple(native-type="button" @click="handleAppleLogin")
+    Button.login-form__social-button.login-form__social-button--apple(v-if="showAppleLogin" native-type="button" @click="handleAppleLogin")
       AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithApple') }}
 </template>
@@ -34,7 +34,22 @@ export default defineComponent({
     const context = useContext()
     const store = useStore()
 
-    const { isExpoWebView, postToNative } = useNativeBridge()
+    const { isExpoWebView, isFlutterWebView, postToNative } = useNativeBridge()
+
+    // Apple sign-in is unavailable where it can't actually run: the native module
+    // (expo-apple-authentication) is iOS-only, so hide the button inside the Expo webview on
+    // Android; the legacy Flutter webview has no Apple bridge at all. Desktop/mobile browsers
+    // (JS SDK popup) and the Expo iOS webview (native sheet) keep the button. Apple's policy
+    // only mandates Apple sign-in on iOS, so hiding it on Android is compliant.
+    const showAppleLogin = computed(() => {
+      if (typeof window === 'undefined') return false
+
+      if (isFlutterWebView.value) return false
+
+      if (isExpoWebView.value && /android/i.test(window.navigator.userAgent || '')) return false
+
+      return true
+    })
 
     const handleGoogleLogin = () => {
       if (isExpoWebView.value) {
@@ -85,6 +100,7 @@ export default defineComponent({
     return {
       handleGoogleLogin,
       handleAppleLogin,
+      showAppleLogin,
       loginFormVariantClass
     }
   }
