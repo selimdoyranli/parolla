@@ -1,5 +1,44 @@
 # Changelog
 
+## v2.53.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.52.0...v2.53.0)
+
+
+### 🚀 Enhancements
+
+  - **bridge:** Add useNativeBridge composable with isWebView detection ([f4105fb](https://github.com/selimdoyranli/parolla/commit/f4105fb))
+  - **auth:** Route Google login through native bridge in Expo webview ([e380cfa](https://github.com/selimdoyranli/parolla/commit/e380cfa))
+  - **auth:** Add native-start helper + callback bounce for Expo in-app auth overlay ([35f7d63](https://github.com/selimdoyranli/parolla/commit/35f7d63))
+  - **auth:** Native Google token completion via window.__parollaMobileAuthComplete ([e524bd3](https://github.com/selimdoyranli/parolla/commit/e524bd3))
+  - **auth:** Add Apple Sign-In (Expo iOS) + account deactivation UI ([0fb4ffb](https://github.com/selimdoyranli/parolla/commit/0fb4ffb))
+  - **auth:** Show Apple Sign-In button on desktop web too (symmetric with Google) ([7e5cc93](https://github.com/selimdoyranli/parolla/commit/7e5cc93))
+  - **auth:** Web Sign in with Apple popup (AppleID JS SDK), matching Dizge ([3d9800b](https://github.com/selimdoyranli/parolla/commit/3d9800b))
+
+### 🩹 Fixes
+
+  - **music:** Self-heal expired Apple token + de-ReDoS bundle scrape ([10b6a6b](https://github.com/selimdoyranli/parolla/commit/10b6a6b))
+  - **ui:** Smaller delete-account title + accurate 90-day retention copy ([ac39590](https://github.com/selimdoyranli/parolla/commit/ac39590))
+  - **auth:** Hide Apple button where it cannot work (Android Expo webview, Flutter webview) ([9549df8](https://github.com/selimdoyranli/parolla/commit/9549df8))
+
+### 💅 Refactors
+
+  - **bridge:** Route share/end-game postMessage through useNativeBridge ([fde0266](https://github.com/selimdoyranli/parolla/commit/fde0266))
+  - **profile:** Fetch players via /users/:id and /users/by-username ([4ab00fb](https://github.com/selimdoyranli/parolla/commit/4ab00fb))
+
+### 📖 Documentation
+
+  - Document mobile WebView bridge in CLAUDE.md ([bed6351](https://github.com/selimdoyranli/parolla/commit/bed6351))
+  - Correct postToNative call-site list in bridge section ([09113c2](https://github.com/selimdoyranli/parolla/commit/09113c2))
+
+### 🏡 Chore
+
+  - Regenerate auto-imports for useAppleSignIn ([d3def52](https://github.com/selimdoyranli/parolla/commit/d3def52))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.52.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.51.1...v2.52.0)
