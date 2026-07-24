@@ -43,21 +43,16 @@ export default {
   },
 
   async fetchPlayer({ commit }, { id, username }) {
-    const { data, error } = await this.$appFetch({
-      path: `users`,
-      query: {
-        'filters[id][$eq]': id,
-        'filters[username][$eq]': username,
-        populate: 'diceBear,profilePhoto'
-      }
-    })
+    const path = id ? `users/${id}` : `users/by-username/${encodeURIComponent(username)}`
+
+    const { data, error } = await this.$appFetch({ path })
 
     if (data) {
-      commit('SET_PLAYER', data[0])
+      commit('SET_PLAYER', data)
     }
 
     return {
-      data: data[0],
+      data,
       error
     }
   },
