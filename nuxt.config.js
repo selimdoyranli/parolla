@@ -28,7 +28,9 @@ module.exports = {
     API_URL: process.env.API_URL || 'https://strapi.parolla.app/api',
     WS_URL: process.env.WS_URL || 'wss://0.0.0.0:1881',
     GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
-    GOOGLE_AUTH_REDIRECT_URI: process.env.GOOGLE_AUTH_REDIRECT_URI
+    GOOGLE_AUTH_REDIRECT_URI: process.env.GOOGLE_AUTH_REDIRECT_URI,
+    APPLE_SERVICES_ID: process.env.APPLE_SERVICES_ID,
+    APPLE_REDIRECT_URI: process.env.APPLE_REDIRECT_URI
   },
 
   /*
@@ -97,6 +99,7 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/auth-control', ssr: false }, // https://www.npmjs.com/package/vuex-persist
+    { src: '~/plugins/native-auth', ssr: false }, // registers window.__parollaMobileAuthComplete for the Expo native shell
     { src: '~/plugins/rate-limit-handler', ssr: false },
     { src: '~/plugins/app-fetch', ssr: false },
     { src: '~/plugins/vuex-persist', ssr: false }, // https://www.npmjs.com/package/vuex-persist

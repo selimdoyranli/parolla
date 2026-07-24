@@ -15,6 +15,14 @@ module.exports = {
     { rel: 'dns-prefetch', href: '//www.googletagmanager.com' },
     { rel: 'manifest', href: '/manifest.json' }
   ],
+  script: [
+    // Apple JS SDK for web "Sign in with Apple" popup (see composables/useAppleSignIn.js)
+    {
+      src: 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js',
+      defer: true,
+      async: true
+    }
+  ],
   meta: [
     { charset: 'utf-8' },
     {

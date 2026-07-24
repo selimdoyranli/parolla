@@ -19,6 +19,7 @@ export default () => {
 
   const { activeGameMode } = useGameMode()
   const { encodeEnglish } = useFormatter()
+  const { postToNative } = useNativeBridge()
 
   const rootRef = ref(null)
   const setRootRef = element => {
@@ -518,7 +519,7 @@ export default () => {
   const endGame = async () => {
     if (isGameOver.value) return
 
-    window.postMessage({ type: 'end-game', data: true })
+    postToNative('end-game', true)
 
     await nextTick()
 

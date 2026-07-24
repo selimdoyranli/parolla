@@ -447,7 +447,8 @@ export default {
       title: 'Login',
       login: 'Login',
       register: 'Register',
-      loginWithGoogle: 'Login with Google'
+      loginWithGoogle: 'Login with Google',
+      loginWithApple: 'Login with Apple'
     },
     player: {
       title: 'Profile',
@@ -875,6 +876,16 @@ export default {
       deletePhotoButton: 'Delete',
       deletePhotoCallback: {
         success: 'Profile photo removed'
+      },
+      deactivate: {
+        title: 'Delete Account',
+        description:
+          'When you delete your account, your data is retained in our system for 90 days as required by law. If you sign in again within this period, your account is reactivated; otherwise your account and all of your data are permanently deleted after 90 days.',
+        button: 'Delete My Account',
+        confirmTitle: 'Are you sure you want to delete your account?',
+        confirmBody:
+          'Your account will be retained for 90 days as required by law. Signing in again within this period reactivates it; if you do not sign in, it will be permanently deleted after 90 days.',
+        confirmCta: 'Yes, Delete'
       }
     }
   },

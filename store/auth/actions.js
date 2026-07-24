@@ -47,6 +47,35 @@ export default {
     await commit('SET_USER', googleResponse.user)
   },
 
+  async fetchAppleUser(_, payload) {
+    const { data, error } = await this.$appFetch({
+      path: 'auth/apple/callback',
+      method: 'POST',
+      data: payload
+    })
+
+    return {
+      data,
+      error
+    }
+  },
+
+  /**
+   * Set Apple user
+   * @param {SetAppleUserTypes} params
+   */
+  async setAppleUser({ commit, state, dispatch, rootGetters }, params) {
+    const { appleResponse } = params
+
+    // There is no separate @nuxtjs/auth Apple strategy — reuse the existing
+    // 'google' strategy since both exchange a Strapi jwt/user the same way.
+    await this.$auth.setStrategy('google')
+    await this.$auth.setUserToken(appleResponse.jwt)
+    await this.$auth.setUser(appleResponse.user)
+
+    await commit('SET_USER', appleResponse.user)
+  },
+
   async updateUser({ commit, state }, params) {
     const { username, fullname, bio, diceBear, avatarSource } = params
 
@@ -113,6 +142,23 @@ export default {
     if (data) {
       commit('SET_USER', data)
     }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  async deactivateAccount() {
+    const token = this.$auth.strategy.token.get()
+
+    const { data, error } = await this.$appFetch({
+      path: 'users/me',
+      method: 'DELETE',
+      headers: {
+        Authorization: `${token}`
+      }
+    })
 
     return {
       data,

@@ -10,14 +10,13 @@
       AppIcon.login-form__social-button-icon(name="devicon:google" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithGoogle') }}
 
-    // Apple login button
-      Button.login-form__social-button.login-form__social-button--apple(native-type="button" @click="handleAppleLogin")
-        AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
-        span.login-form__social-button-text Apple ile Giriş Yap
+    Button.login-form__social-button.login-form__social-button--apple(v-if="showAppleLogin" native-type="button" @click="handleAppleLogin")
+      AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
+      span.login-form__social-button-text {{ $t('dialog.auth.loginWithApple') }}
 </template>
 
 <script>
-import { defineComponent, useContext, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, computed } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 
 export default defineComponent({
@@ -33,15 +32,63 @@ export default defineComponent({
   },
   setup(props) {
     const context = useContext()
+    const store = useStore()
+
+    const { isExpoWebView, isFlutterWebView, postToNative } = useNativeBridge()
+
+    // Apple sign-in is unavailable where it can't actually run: the native module
+    // (expo-apple-authentication) is iOS-only, so hide the button inside the Expo webview on
+    // Android; the legacy Flutter webview has no Apple bridge at all. Desktop/mobile browsers
+    // (JS SDK popup) and the Expo iOS webview (native sheet) keep the button. Apple's policy
+    // only mandates Apple sign-in on iOS, so hiding it on Android is compliant.
+    const showAppleLogin = computed(() => {
+      if (typeof window === 'undefined') return false
+
+      if (isFlutterWebView.value) return false
+
+      if (isExpoWebView.value && /android/i.test(window.navigator.userAgent || '')) return false
+
+      return true
+    })
 
     const handleGoogleLogin = () => {
-      console.log('Google login clicked')
+      if (isExpoWebView.value) {
+        postToNative('google-auth-request')
+
+        return
+      }
 
       window.location.href = `${process.env.API_URL}/connect/google`
     }
 
-    const handleAppleLogin = () => {
-      console.log('Apple login clicked')
+    const handleAppleLogin = async () => {
+      if (isExpoWebView.value) {
+        postToNative('apple-auth-request')
+
+        return
+      }
+
+      // Desktop / normal web: "Sign in with Apple" JS SDK popup (mirrors the Dizge web app).
+      // The popup returns the same payload the native flow does; we hand it to the SAME Strapi
+      // endpoint (auth/apple/callback, which accepts the Services-ID audience) and set the session.
+      const { signIn } = useAppleSignIn()
+
+      const result = await signIn()
+
+      if (!result.ok) return
+
+      const { data } = await store.dispatch('auth/fetchAppleUser', {
+        identityToken: result.identityToken,
+        authorizationCode: result.authorizationCode,
+        nonce: result.nonce,
+        fullName: result.fullName
+      })
+
+      if (data) {
+        await store.dispatch('auth/setAppleUser', { appleResponse: data })
+        await store.dispatch('auth/fetchMe')
+        store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', false)
+      }
     }
 
     const loginFormVariantClass = computed(() => {
@@ -53,6 +100,7 @@ export default defineComponent({
     return {
       handleGoogleLogin,
       handleAppleLogin,
+      showAppleLogin,
       loginFormVariantClass
     }
   }

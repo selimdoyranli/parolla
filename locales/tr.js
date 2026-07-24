@@ -453,7 +453,8 @@ export default {
       title: 'Giriş yap',
       login: 'Giriş yap',
       register: 'Kayıt ol',
-      loginWithGoogle: 'Google ile Giriş Yap'
+      loginWithGoogle: 'Google ile Giriş Yap',
+      loginWithApple: 'Apple ile Giriş Yap'
     },
     player: {
       title: 'Profil',
@@ -895,6 +896,16 @@ export default {
       deletePhotoButton: 'Sil',
       deletePhotoCallback: {
         success: 'Profil fotoğrafı silindi'
+      },
+      deactivate: {
+        title: 'Hesabı Sil',
+        description:
+          'Hesabını sildiğinde verilerin yasal mevzuat gereği 90 gün boyunca sistemde saklanır. Bu süre içinde tekrar giriş yaparsan hesabın yeniden aktifleşir; giriş yapmazsan 90 günün ardından hesabın ve tüm verilerin kalıcı olarak silinir.',
+        button: 'Hesabımı Sil',
+        confirmTitle: 'Hesabını silmek istediğine emin misin?',
+        confirmBody:
+          'Hesabın yasal mevzuat gereği 90 gün boyunca saklanacak. Bu süre içinde tekrar giriş yaparsan hesabın yeniden aktifleşir; giriş yapmazsan 90 günün ardından kalıcı olarak silinir.',
+        confirmCta: 'Evet, Sil'
       }
     }
   },

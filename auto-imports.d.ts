@@ -8,6 +8,7 @@ export {}
 declare global {
   const getDrawSocket: typeof import('./composables/useDrawSocket.js')['getDrawSocket']
   const isDrawSocketReady: typeof import('./composables/useDrawSocket.js')['isDrawSocketReady']
+  const useAppleSignIn: typeof import('./composables/useAppleSignIn.js')['useAppleSignIn']
   const useAuth: typeof import('./composables/useAuth.js')['default']
   const useAvatar: typeof import('./composables/useAvatar.js')['default']
   const useCensorBadwords: typeof import('./composables/useCensorBadwords.js')['default']
@@ -23,6 +24,7 @@ declare global {
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
   const useGameMode: typeof import('./composables/useGameMode.js')['default']
   const useGameScene: typeof import('./composables/useGameScene.js')['default']
+  const useNativeBridge: typeof import('./composables/useNativeBridge.js')['useNativeBridge']
   const useScroll: typeof import('./composables/useScroll.js')['default']
   const useSfx: typeof import('./composables/useSfx.js')['useSfx']
   const useTime: typeof import('./composables/useTime.js')['default']

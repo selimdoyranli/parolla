@@ -107,3 +107,54 @@ GOOGLE_AUTH_REDIRECT_URI # Google OAuth redirect URI
 ## Deployment
 
 Static site generation deployed to Cloudflare (with redirect preparation via `.cloudflare/scripts/redirects.js`) and Vercel. The `generate` command runs `nuxt generate` followed by Cloudflare redirect setup.
+
+## Mobile WebView Bridge
+
+This web app is embedded inside native WebViews by two mobile shells:
+- **`parolla-mobile`** — the current Expo (React Native) app. See its companion `CLAUDE.md` in the sibling `parolla-mobile` repo for the native side of the bridge.
+- **Legacy Flutter app** — still in production. It listens for the same `window` message events, so it must not be broken by changes here.
+
+### `useNativeBridge` composable
+
+`composables/useNativeBridge.js` is auto-imported like the other composables (used without an `import` statement). It exposes:
+
+```js
+const { isWebView, isExpoWebView, isFlutterWebView, postToNative } = useNativeBridge()
+```
+
+- `isFlutterWebView` (computed) — `true` when `window.flutter_inappwebview` is present.
+- `isExpoWebView` (computed) — `true` when `window.ReactNativeWebView` is present or the user agent matches `/ParollaApp/i`.
+- `isWebView` (computed) — `true` when either of the above is `true`.
+- `postToNative(type, data)` — sends `{ type, data }` to the native shell via `window.postMessage(...)`.
+
+### Message contract (web → native)
+
+| `type`                 | Payload           | Native behavior                                      |
+|------------------------|-------------------|-------------------------------------------------------|
+| `sharer`                | `string` (share text) | Native copies text to clipboard and opens the native Share sheet. |
+| `google-auth-request`   | none              | Native opens the Google sign-in sheet.                |
+| `end-game`              | `true`            | Received natively; currently a no-op on the native side. |
+
+All messages currently flow **web → native** only.
+
+### Critical rule: do not change the transport
+
+`postToNative` calls `window.postMessage({ type, data }, '*')` — this **must remain the transport**. The legacy Flutter app in production listens for these `window` message events. Do **not**:
+- Call `window.ReactNativeWebView.postMessage` (or any Expo-specific API) directly from web code instead of going through `postToNative`.
+- Rename or repurpose the `type` strings (`sharer`, `google-auth-request`, `end-game`) without first retiring the Flutter bridge.
+
+Both native shells listen for the same `window.postMessage` events, so any change to the contract is a breaking change for whichever shell isn't updated in lockstep.
+
+### Google login bridge path
+
+In `components/Form/Auth/LoginForm/LoginForm.component.vue`, `handleGoogleLogin` checks `isExpoWebView.value`:
+- Inside the Expo webview: calls `postToNative('google-auth-request')` and returns (no redirect). The native app then runs Google sign-in via the **native Google Sign-In SDK** — a native account picker, no browser and no extra layer (Google blocks OAuth inside embedded WebViews).
+- Everywhere else (normal browsers and the Flutter app): falls back to `window.location.href = \`${process.env.API_URL}/connect/google\``.
+
+**Native auth completion (`plugins/native-auth.js`).** The Expo app does Google sign-in natively and hands back a Google **access token** by calling `window.__parollaMobileAuthComplete(accessToken)` inside the WebView. This plugin registers that global: it exchanges the token with Strapi via the existing `auth/fetchGoogleUser` (`auth/google/callback?access_token=…`) → `auth/setGoogleUser` → `auth/fetchMe` actions and sets the authed user in the Vuex store **in place** — the current page becomes authenticated with no navigation, reload, or extra layer. Registered in `nuxt.config.js` as a client-only plugin (`ssr: false`). Only the native shell ever calls this global; desktop and Flutter are unaffected.
+
+### Where `postToNative` is used
+
+- `sharer` — sent from `MenuDialog`'s `openAppSharer` and from the per-mode stats/result dialogs (`DailyModeStatsDialog`, `UnlimitedModeStatsDialog`, `CreatorModeStatsDialog`, `CreatorModeCreatedRoomDialog`, `WordblockModeStatsDialog`, `GuessTheSongStatsDialog`), each alongside the existing clipboard/`navigator.share` fallback.
+- `google-auth-request` — sent from `LoginForm.component.vue`'s `handleGoogleLogin`.
+- `end-game` — sent from `composables/useGameScene.js`'s `endGame()` when a game finishes.
