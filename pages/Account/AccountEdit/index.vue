@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useFetch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useFetch } from '@nuxtjs/composition-api'
 import { Loading, Empty, Button } from 'vant'
 
 export default defineComponent({
@@ -26,12 +26,8 @@ export default defineComponent({
   setup() {
     const store = useStore()
 
-    const me = computed(() => store.getters['auth/user'])
-
     const { fetch, fetchState } = useFetch(async () => {
-      if (me.value?.username) {
-        await store.dispatch('profile/fetchPlayer', { username: me.value.username })
-      }
+      await store.dispatch('auth/fetchMe')
     })
 
     const reFetch = async () => {
