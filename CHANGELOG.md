@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.53.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.53.0...v2.53.1)
+
+
+### 🩹 Fixes
+
+  - **game:** Match trivia answers exactly without Turkish-to-ASCII folding ([7d36c6e](https://github.com/selimdoyranli/parolla/commit/7d36c6e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.53.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.52.0...v2.53.0)
