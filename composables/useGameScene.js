@@ -172,6 +172,13 @@ export default () => {
     return encodeEnglish(value.toLocaleLowerCase('tr').trim().replace(/\s+/g, ''))
   }
 
+  // Trivia answers are exact predefined options, so we must NOT fold Turkish chars to their
+  // ASCII variants (which encodeEnglish does). Otherwise a wrong option like "mahsül" would be
+  // accepted for the correct "mahsul". Only case and whitespace are normalized here.
+  const formatTriviaAnswer = value => {
+    return value.toLocaleLowerCase('tr').trim().replace(/\s+/g, '')
+  }
+
   const handleNotStartsWithActiveChar = ({ activeChar }) => {
     Notify({
       message: i18n.t('gameScene.error.notStartsWithActiveChar', { activeChar }),
@@ -226,7 +233,10 @@ export default () => {
     }
 
     const isCorrect = correctAnswers.some(answer => {
-      if (answerField === encodeEnglish(answer.toLocaleLowerCase('tr').trim().replace(/\s+/g, ''))) {
+      const normalizedAnswer = isTrivia ? formatTriviaAnswer(rawAnswer) : answerField
+      const normalizedCorrect = isTrivia ? formatTriviaAnswer(answer) : formatAnswer(answer)
+
+      if (normalizedAnswer === normalizedCorrect) {
         item.isCorrect = true
         soundFx.correct.play()
 
