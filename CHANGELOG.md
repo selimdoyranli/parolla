@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.54.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.53.1...v2.54.0)
+
+
+### 🚀 Enhancements
+
+  - **legal:** Add localized legal pages (privacy, cookie, KVKK, terms) ([b6f9a55](https://github.com/selimdoyranli/parolla/commit/b6f9a55))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.53.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.53.0...v2.53.1)
