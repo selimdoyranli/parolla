@@ -55,6 +55,7 @@ Pages use Nuxt file-based routing in `pages/`. Each game mode has its own direct
 - `WordblockMode/` → `/kelimeblok`, `/wordblock`
 - `MusicMode/` → `/muzik`, `/music`
 - `Tycoon/KnowledgeKingdom/` → `/bilgi-kralligi`, `/knowledge-kingdom`
+- `Page/` → legal pages (`/sayfa/gizlilik-politikasi` | `/page/privacy-policy`, cookie policy, KVKK, terms of use). Content lives in `content/legal/<locale>/*.md`, compiled at build time by `frontmatter-markdown-loader` (see `build.extend`) and rendered by `LegalDocument` — NOT @nuxt/content (its content API doesn't exist on a static SPA deploy). Each page imports both locales' md and picks by `i18n.locale`; links to them sit in `MenuDialog`'s "Legal" group.
 
 Localized route mappings are defined in `nuxt.config.js` under the i18n `pages` option.
 

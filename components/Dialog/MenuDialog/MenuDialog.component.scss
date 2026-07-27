@@ -30,6 +30,7 @@
 
   &__subTitle {
     display: block;
+    margin-block-start: 8px;
     padding: 0 var(--base-p-x);
     padding-block-end: calc(var(--base-p-y) / 2);
     color: var(--color-text-03);

@@ -233,7 +233,12 @@ export default {
       reviewRoom: `Quiz'i değerlendir`,
       shareApp: `parolla'yı paylaş`,
       credits: 'Yapımcılar',
-      contact: 'Bize ulaşın'
+      contact: 'Bize ulaşın',
+      legal: 'Yasal',
+      privacyPolicy: 'Gizlilik Politikası',
+      cookiePolicy: 'Çerez Politikası',
+      kvkk: 'KVKK Aydınlatma Metni',
+      termsOfUse: 'Kullanım Koşulları'
     },
     howToCalculateStats: {
       title: 'Skoru nasıl hesaplıyoruz',
@@ -1209,6 +1214,11 @@ export default {
   },
   account: {
     edit: { title: 'Profili düzenle' }
+  },
+  page: {
+    legal: {
+      updatedAt: 'Son güncelleme: {date}'
+    }
   },
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',

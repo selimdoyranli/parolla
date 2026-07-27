@@ -228,7 +228,12 @@ export default {
       reviewRoom: 'Review quiz',
       shareApp: `Share the parolla`,
       credits: 'Credits',
-      contact: 'Contact'
+      contact: 'Contact',
+      legal: 'Legal',
+      privacyPolicy: 'Privacy Policy',
+      cookiePolicy: 'Cookie Policy',
+      kvkk: 'KVKK Clarification Text',
+      termsOfUse: 'Terms of Use'
     },
     howToCalculateStats: {
       title: 'How we calculate the score',
@@ -1185,6 +1190,11 @@ export default {
   },
   account: {
     edit: { title: 'Edit profile' }
+  },
+  page: {
+    legal: {
+      updatedAt: 'Last updated: {date}'
+    }
   },
   common: {
     invalidUsername: 'Invalid username',
