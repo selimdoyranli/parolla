@@ -142,6 +142,37 @@ Dialog.dialog.menu-dialog(
       :title="$t('dialog.menu.contact')"
       @click.native="$emit('clickedContact')"
     )
+
+  span.menu-dialog__subTitle {{ $t('dialog.menu.legal') }}
+  CellGroup.menu-dialog-nav
+    Cell.menu-dialog-nav__item(
+      icon="shield-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.privacyPolicy')"
+      @click.native="handleClickLegal('Page-PrivacyPolicy')"
+    )
+    Cell.menu-dialog-nav__item(
+      icon="notes-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.cookiePolicy')"
+      @click.native="handleClickLegal('Page-CookiePolicy')"
+    )
+    Cell.menu-dialog-nav__item(
+      icon="description"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.kvkk')"
+      @click.native="handleClickLegal('Page-Kvkk')"
+    )
+    Cell.menu-dialog-nav__item(
+      icon="balance-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.termsOfUse')"
+      @click.native="handleClickLegal('Page-TermsOfUse')"
+    )
 </template>
 
 <script>
@@ -313,6 +344,12 @@ export default defineComponent({
       window.location.href = '/'
     }
 
+    const handleClickLegal = name => {
+      router.push(localePath({ name }))
+
+      state.isOpen = false
+    }
+
     return {
       getRouteBaseName,
       gameModeKeyEnum,
@@ -332,7 +369,8 @@ export default defineComponent({
       handleClickProfileEdit,
       handleClickProfileView,
       handleClickMyQuizzes,
-      handleClickLogout
+      handleClickLogout,
+      handleClickLegal
     }
   }
 })

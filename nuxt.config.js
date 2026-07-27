@@ -375,6 +375,22 @@ module.exports = {
           'Tycoon/KnowledgeKingdom/index': {
             tr: '/bilgi-kralligi',
             en: '/knowledge-kingdom'
+          },
+          'Page/PrivacyPolicy/index': {
+            tr: '/sayfa/gizlilik-politikasi',
+            en: '/page/privacy-policy'
+          },
+          'Page/CookiePolicy/index': {
+            tr: '/sayfa/cerez-politikasi',
+            en: '/page/cookie-policy'
+          },
+          'Page/Kvkk/index': {
+            tr: '/sayfa/kvkk-aydinlatma-metni',
+            en: '/page/kvkk-clarification-text'
+          },
+          'Page/TermsOfUse/index': {
+            tr: '/sayfa/kullanim-kosullari',
+            en: '/page/terms-of-use'
           }
         }
       }
@@ -431,6 +447,13 @@ module.exports = {
         config.output.filename = '[name].[contenthash].js'
         config.output.chunkFilename = '[name].[contenthash].js'
       }
+
+      // Legal pages (content/legal/**.md) are compiled to HTML at build time — @nuxt/content
+      // can't be used here because its content API doesn't exist on a static SPA deploy
+      config.module.rules.push({
+        test: /\.md$/,
+        loader: 'frontmatter-markdown-loader'
+      })
     }
   },
 
