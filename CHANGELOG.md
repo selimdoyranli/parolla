@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.54.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.0...v2.54.1)
+
+
+### 📖 Documentation
+
+  - **specs:** Note tourScore removal from user lookup endpoints ([b43f458](https://github.com/selimdoyranli/parolla/commit/b43f458))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.54.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.53.1...v2.54.0)
