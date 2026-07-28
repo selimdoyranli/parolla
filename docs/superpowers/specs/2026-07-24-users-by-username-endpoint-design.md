@@ -4,6 +4,16 @@
 **Repos affected:** `parolla-strapi` (backend), `parolla` (web frontend)
 **Status:** Approved (Approach A)
 
+> **Update (2026-07-28):** `tourScore` was **removed** from both `GET /api/users/:id`
+> (`findOne`) and `GET /api/users/by-username/:username` responses. The embedded
+> `getTourScoreDetails` call ran four period rank aggregations per request and made both
+> endpoints take 3–4s (see the `tour_scores (created_at, score)` index migration of the
+> same date). Clients fetch tour scores **in parallel** via
+> `GET /api/tour-scores/tour-score-of-user` instead — which both PlayerDialog and
+> `/profil/:username` already did, so no web change was needed. The code samples and
+> acceptance criteria below have been edited to match; the original approved design
+> embedded `tourScore` in both responses.
+
 ## Problem
 
 The Strapi users-permissions plugin's collection `find` action (`GET /api/users`) is
@@ -26,7 +36,7 @@ backend and web can ship together.
 
 | Call site | Args | Correct replacement | Already exists? |
 |---|---|---|---|
-| `components/Dialog/PlayerDialog/PlayerDialog.component.vue:71` | `{ id }` | `GET /api/users/:id` (custom `findOne`) | ✅ yes — public, returns diceBear/profilePhoto/role + tourScore |
+| `components/Dialog/PlayerDialog/PlayerDialog.component.vue:71` | `{ id }` | `GET /api/users/:id` (custom `findOne`) | ✅ yes — public, returns diceBear/profilePhoto/role (tourScore removed 2026-07-28; fetched separately) |
 | `pages/Profile/_username.vue:53` | `{ username }` | `GET /api/users/by-username/:username` (**new**) | ❌ must add |
 | `pages/Account/AccountEdit/index.vue:33` | `{ username: me.username }` | `GET /api/users/me` / `auth/fetchMe` | ✅ yes |
 
@@ -66,13 +76,10 @@ plugin.controllers.user.findByUsername = async (ctx) => {
     return ctx.notFound()
   }
 
-  const tourScoreDetails = await getTourScoreDetails(fetched.id)
-
   // Public endpoint: email is never exposed here (own-profile editing uses /users/me).
-  ctx.body = {
-    ...sanitizeUserForResponse(fetched, { includeEmail: false }),
-    tourScore: tourScoreDetails,
-  }
+  // No tourScore: rank aggregation is expensive; clients fetch it in parallel via
+  // GET /api/tour-scores/tour-score-of-user (removed 2026-07-28, see Update above).
+  ctx.body = sanitizeUserForResponse(fetched, { includeEmail: false })
 }
 ```
 
@@ -173,7 +180,8 @@ No live breakage window (find → 404 not yet deployed):
 
 **Backend** (`pnpm typecheck` + `pnpm lint` pass):
 - `GET /api/users/by-username/<existing-username>` → `200`, single sanitized user object
-  with `diceBear`, `profilePhoto`, `role`, `tourScore`; **no `email`**.
+  with `diceBear`, `profilePhoto`, `role`; **no `email`**, **no `tourScore`** (fetched
+  separately via `tour-scores/tour-score-of-user` — see Update above).
 - `GET /api/users/by-username/<nonexistent>` → `404`.
 - `GET /api/users` → `403` for anonymous callers (the `find` permission is removed, so the
   users-permissions policy denies before the controller) / `404` at the controller if the
