@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.54.2
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.1...v2.54.2)
+
+
+### 🩹 Fixes
+
+  - **quiz-card:** Drop will-change hint that hid media titles in dialogs on WebKit ([053d3d5](https://github.com/selimdoyranli/parolla/commit/053d3d5))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.54.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.0...v2.54.1)
