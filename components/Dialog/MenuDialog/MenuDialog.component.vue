@@ -143,6 +143,30 @@ Dialog.dialog.menu-dialog(
       @click.native="$emit('clickedContact')"
     )
 
+  span.menu-dialog__subTitle {{ $t('dialog.menu.discover') }}
+  CellGroup.menu-dialog-nav
+    Cell.menu-dialog-nav__item(
+      icon="question-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.guide')"
+      @click.native="handleClickStaticPage('how-to-play')"
+    )
+    Cell.menu-dialog-nav__item(
+      icon="chat-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.faq')"
+      @click.native="handleClickStaticPage('faq')"
+    )
+    Cell.menu-dialog-nav__item(
+      icon="info-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.about')"
+      @click.native="handleClickStaticPage('about')"
+    )
+
   span.menu-dialog__subTitle {{ $t('dialog.menu.legal') }}
   CellGroup.menu-dialog-nav
     Cell.menu-dialog-nav__item(
@@ -350,6 +374,17 @@ export default defineComponent({
       state.isOpen = false
     }
 
+    // Static content pages (GEO layer) live outside the Vue router — full page navigation
+    const staticPagePaths = {
+      'how-to-play': { tr: '/nasil-oynanir', en: '/en/how-to-play' },
+      faq: { tr: '/sss', en: '/en/faq' },
+      about: { tr: '/hakkinda', en: '/en/about' }
+    }
+
+    const handleClickStaticPage = key => {
+      window.location.href = staticPagePaths[key][i18n.locale] || staticPagePaths[key].tr
+    }
+
     return {
       getRouteBaseName,
       gameModeKeyEnum,
@@ -370,7 +405,8 @@ export default defineComponent({
       handleClickProfileView,
       handleClickMyQuizzes,
       handleClickLogout,
-      handleClickLegal
+      handleClickLegal,
+      handleClickStaticPage
     }
   }
 })
