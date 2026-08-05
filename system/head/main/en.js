@@ -1,15 +1,16 @@
-export const title = 'parolla - Word game. Daily word game'
+export const title = 'parolla - Turkish Word Game | Daily Word and Trivia Games'
 
 export const meta = [
   {
     hid: 'description',
     name: 'description',
-    content: 'Play daily word game, create your own word game quiz, solve quizzes created by players'
+    content:
+      'parolla is a free Turkish word and trivia game platform: a daily A-to-Z word quiz, the Wordle-style Wordblock puzzle, a music guessing game, quiz creation and a tournament mode.'
   },
   {
     hid: 'keywords',
     name: 'keywords',
-    content: 'word game, play word game, daily word game, play daily word game'
+    content: 'turkish word game, wordle in turkish, daily word game, alphabet quiz game, create your own quiz, music guessing game'
   },
   {
     name: 'mobile-web-app-capable',
@@ -28,7 +29,8 @@ export const meta = [
   {
     hid: 'og:description',
     property: 'og:description',
-    content: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
+    content:
+      'A daily A-to-Z Turkish word quiz, the Wordle-style Wordblock puzzle, music guessing and more. Play free, create quizzes, join the competition.'
   },
   {
     hid: 'og:url',
@@ -53,7 +55,8 @@ export const meta = [
   {
     hid: 'twitter:description',
     property: 'twitter:description',
-    content: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
+    content:
+      'A daily A-to-Z Turkish word quiz, the Wordle-style Wordblock puzzle, music guessing and more. Play free, create quizzes, join the competition.'
   },
   {
     hid: 'twitter:url',
