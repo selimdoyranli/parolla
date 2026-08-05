@@ -1,17 +1,15 @@
-export const title = 'parolla - Kelime Oyunu | Günlük Türkçe Kelime ve Bilgi Oyunları'
+export const title = 'parolla - Kelime oyunu. Günlük kelime oyunu'
 
 export const meta = [
   {
     hid: 'description',
     name: 'description',
-    content:
-      "parolla; her gün yenilenen A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin oyunu, quiz oluşturma ve turnuva modu sunan ücretsiz Türkçe kelime ve bilgi oyunu platformudur."
+    content: 'Günlük kelime oyunu oyna, kendi kelime oyunu quizini oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'keywords',
     name: 'keywords',
-    content:
-      "kelime oyunu, günlük kelime oyunu, türkçe wordle, a'dan z'ye kelime oyunu, passaparola benzeri oyun, online quiz, müzik tahmin oyunu, quiz oluştur"
+    content: 'kelime oyunu, kelime oyunu oyna, günlük kelime oyunu, günlük kelime oyunu oyna'
   },
   {
     name: 'mobile-web-app-capable',
@@ -30,8 +28,7 @@ export const meta = [
   {
     hid: 'og:description',
     property: 'og:description',
-    content:
-      "Her gün yenilenen A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin ve daha fazlası. Ücretsiz oyna, quiz oluştur, rekabete katıl."
+    content: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'og:url',
@@ -56,8 +53,7 @@ export const meta = [
   {
     hid: 'twitter:description',
     property: 'twitter:description',
-    content:
-      "Her gün yenilenen A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin ve daha fazlası. Ücretsiz oyna, quiz oluştur, rekabete katıl."
+    content: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'twitter:url',
