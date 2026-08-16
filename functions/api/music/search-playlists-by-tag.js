@@ -1,4 +1,4 @@
-import { ampFetch, formatArtwork, jsonResponse, withCache, CACHE_TTL, localeToStorefront, localeToLang } from './_apple.js'
+import { ampSearch, formatArtwork, jsonResponse, withCache, CACHE_TTL, localeToStorefront, localeToLang } from './_apple.js'
 
 const DEFAULT_LIMIT = 21
 const MAX_LIMIT = 25
@@ -22,14 +22,7 @@ export async function onRequestGet(context) {
     }
 
     try {
-      const json = await ampFetch(
-        env,
-        `/search?term=${encodeURIComponent(
-          term
-        )}&types=playlists&with=serverBubbles&platform=web&limit=${limit}&offset=${offset}&l=${lang}`,
-        storefront,
-        { edge: true }
-      )
+      const json = await ampSearch(env, { term, types: 'playlists', storefront, lang, limit, offset })
       // serverBubbles groups results under `results.playlist` (singular);
       // fall back to the typed `results.playlists` shape just in case.
       const group = json?.results?.playlist || json?.results?.playlists
