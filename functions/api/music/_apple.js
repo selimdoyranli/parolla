@@ -1,10 +1,13 @@
 const DESKTOP_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
 const APPLE_MUSIC_HOME = 'https://music.apple.com/us/new'
 // ID lookups (/playlists, /artists) work fine from CF on the default host.
-// /search is rate-limited (429) on the default host from CF IPs but works on
-// the edge host (which the music.apple.com web client uses) — see ampFetch opts.
+// /search is rate-limited (429) from CF IPs on BOTH hosts — the edge host (which
+// the music.apple.com web client uses) worked until Apple closed it too, so
+// search now goes through Strapi and keeps the edge host only as a fallback.
+// See ampSearch.
 const AMP_BASE = 'https://amp-api.music.apple.com/v1/catalog'
 const AMP_EDGE_BASE = 'https://amp-api-edge.music.apple.com/v1/catalog'
+const STRAPI_FALLBACK_BASE = 'https://strapi.parolla.app/api'
 const KV_KEY = 'amp_token'
 const FETCH_TIMEOUT_MS = 8000
 const TOKEN_SKEW_SECONDS = 60
@@ -203,6 +206,34 @@ export const ampFetch = async (env, path, storefront, { edge = false } = {}) => 
   }
 
   return res.json()
+}
+
+// Apple answers /search with 429 from Cloudflare's egress IPs — on both the
+// default and the edge AMP host — while ID lookups keep working. Strapi runs on
+// its own (non-Cloudflare) IP, so search is relayed through it and normalised
+// here. The direct edge call stays as a fallback for when Strapi is unreachable.
+export const ampSearch = async (env, { term, types, storefront, lang, limit, offset = 0 }) => {
+  const sf = storefront || defaultStorefront(env)
+  const base = env.STRAPI_API_URL || STRAPI_FALLBACK_BASE
+  const relayQuery = `term=${encodeURIComponent(term)}&types=${types}&storefront=${sf}&l=${lang}&limit=${limit}&offset=${offset}`
+
+  try {
+    const res = await fetchWithTimeout(`${base}/modes/music/search?${relayQuery}`)
+
+    if (res.ok) {
+      return res.json()
+    }
+
+    console.error('[amp] strapi search relay failed:', res.status, types, term)
+  } catch (err) {
+    console.error('[amp] strapi search relay errored:', String((err && err.message) || err))
+  }
+
+  const path = `/search?term=${encodeURIComponent(
+    term
+  )}&types=${types}&with=serverBubbles&platform=web&limit=${limit}&offset=${offset}&l=${lang}`
+
+  return ampFetch(env, path, sf, { edge: true })
 }
 
 export const formatArtwork = (url, size) => {
