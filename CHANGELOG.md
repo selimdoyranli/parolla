@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.54.3
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.2...v2.54.3)
+
+
+### 🩹 Fixes
+
+  - **music:** Route AMP search through strapi to beat cloudflare 429 ([24ea5d1](https://github.com/selimdoyranli/parolla/commit/24ea5d1))
+
+### 🤖 CI
+
+  - Cf deploy ([33d045f](https://github.com/selimdoyranli/parolla/commit/33d045f))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.54.2
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.1...v2.54.2)
