@@ -47,7 +47,8 @@
     position: relative;
     z-index: 2;
     margin-inline: calc(-1 * var(--base-p-x));
-    margin-block: $spacer * 4;
+    margin-block-start: $spacer;
+    margin-block-end: $spacer * 4;
   }
 
   &__footer {
@@ -208,8 +209,6 @@
 
   // Multi destination footer: side by side on desktop, stacked on mobile
   .play-actions {
-    $play-actions: '.play-actions';
-
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: $spacer * 3;
@@ -226,26 +225,11 @@
       width: 100%;
       padding-inline: $spacer * 4;
 
-      &:hover {
-        transform: translateY(-2px);
-      }
-
       &--primary {
         color: var(--color-text-04);
         background-color: var(--color-brand-02);
         // Same hard offset the game scene puts under a selected letter, no blur
         box-shadow: 0 4px 0 #444;
-        transition: transform 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01);
-
-        &:hover {
-          box-shadow: 0 6px 0 #444;
-
-          #{$play-actions} {
-            &__arrow {
-              transform: translateX(3px);
-            }
-          }
-        }
       }
 
       &--secondary {
@@ -256,7 +240,6 @@
 
     &__arrow {
       opacity: 0.7;
-      transition: transform 0.15s var(--motion-01);
     }
   }
 
