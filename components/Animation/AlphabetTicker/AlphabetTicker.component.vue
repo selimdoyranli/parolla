@@ -21,16 +21,18 @@ const OUTCOME_BY_CODE = Object.freeze({
 /**
  * Turkish alphabet paired with one outcome per letter (c: correct, w: wrong, p: passed).
  * Hand authored rather than randomised so the loop keeps the same rhythm on every visit.
+ * "I" and "Ğ" are left out, matching the letters a round can actually land on.
  */
 const SEQUENCE = Object.freeze(
-  'Ac Bc Cw Çc Dc Ec Fp Gc Ğw Hc Ic İc Jp Kc Lc Mw Nc Oc Öc Pc Rw Sc Şp Tc Uc Üc Vc Yw Zc'.split(' ').map(pair => ({
+  'Ac Bc Cw Çc Dc Ec Fp Gc Hc İc Jp Kc Lc Mw Nc Oc Öc Pc Rw Sc Şp Tc Uc Üc Vc Yw Zc'.split(' ').map(pair => ({
     letter: pair[0],
     outcome: OUTCOME_BY_CODE[pair[1]]
   }))
 )
 
-// Holds on "V" while the "Ü · Doğru" badge is still up — the frame the loop is composed around
-const STATIC_ACTIVE_INDEX = 26
+// Holds on "V" while the "Ü · Doğru" badge is still up — the frame the loop is composed around.
+// Derived from the letter so editing SEQUENCE cannot leave this pointing somewhere else.
+const STATIC_ACTIVE_INDEX = SEQUENCE.findIndex(item => item.letter === 'V')
 
 // Time the track spends faded out between the last letter and the restart
 const RESET_DURATION = 320
