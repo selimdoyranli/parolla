@@ -35,6 +35,9 @@
   // scaled down and the tag row dropped — keeps the strip short and cover led.
   .quiz-card {
     --quiz-card-radius: 14px;
+    // The card surface and the block behind it are both --color-ui-02, so the default
+    // --color-border-01 edge disappears — this steps it up just enough to read
+    --quiz-card-border: var(--color-border-02);
 
     &__placeholder-title {
       padding: $spacer * 3;

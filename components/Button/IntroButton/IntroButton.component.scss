@@ -57,6 +57,7 @@
     z-index: 2;
     margin-inline: calc(-1 * var(--base-p-x));
     margin-block-start: $spacer * 2;
+    margin-block-end: $spacer * 2;
   }
 
   &__footer {
