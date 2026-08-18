@@ -1,0 +1,106 @@
+.quiz-carousel {
+  --quiz-carousel-slide-width: 210px;
+  --quiz-carousel-nav-size: 34px;
+
+  position: relative;
+
+  @include media-breakpoint-down(mobile) {
+    --quiz-carousel-slide-width: 165px;
+    --quiz-carousel-nav-size: 30px;
+  }
+
+  &__swiper {
+    // Padding keeps the first and last card in line with the block's text while the
+    // strip itself still runs to both card edges
+    padding-inline: var(--base-p-x);
+  }
+
+  // Titles and type pills wrap to different depths, so slides stretch and the cards fill
+  // them — otherwise the strip's bottom edge steps up and down card to card
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  &__slide {
+    width: var(--quiz-carousel-slide-width);
+    height: auto;
+
+    .quiz-card {
+      height: 100%;
+    }
+  }
+
+  // QuizCard is sized for the browsing grid (280px+), where its 24px overlay title and full
+  // body are proportionate. In this teaser strip the card is much narrower, so the title is
+  // scaled down and the tag row dropped — keeps the strip short and cover led.
+  .quiz-card {
+    --quiz-card-radius: 14px;
+
+    &__placeholder-title {
+      padding: $spacer * 3;
+      font-size: var(--font-size-text-8);
+      -webkit-line-clamp: 2;
+
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-9);
+      }
+    }
+
+    &--hasCoverPhoto &__placeholder-title {
+      padding-block-start: $spacer * 5;
+    }
+
+    &__tags {
+      display: none;
+    }
+
+    &__body {
+      padding: $spacer * 3;
+    }
+  }
+
+  // Edge navigation
+  &__nav {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--quiz-carousel-nav-size);
+    height: var(--quiz-carousel-nav-size);
+    padding: 0;
+    color: var(--color-brand-02);
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 100%;
+    box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.45);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: opacity 0.15s var(--motion-01), transform 0.1s var(--motion-01);
+    inset-block-start: 50%;
+
+    &:hover {
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    &--prev {
+      inset-inline-start: calc(var(--base-p-x) / 4);
+    }
+
+    &--next {
+      inset-inline-end: calc(var(--base-p-x) / 4);
+    }
+
+    // Swiper flags the prev button at the first slide and the next button at the last,
+    // which is what hides the arrow you cannot use
+    &.swiper-button-disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    // Nothing to scroll — watchOverflow locks both arrows
+    &.swiper-button-lock {
+      display: none;
+    }
+  }
+}

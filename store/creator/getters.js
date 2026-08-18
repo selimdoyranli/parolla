@@ -67,6 +67,10 @@ export default {
     return state.todaysQuiz
   },
 
+  randomRooms(state) {
+    return state.randomRooms
+  },
+
   dailyPlayingCount(state) {
     return state.dailyPlayingCount
   },

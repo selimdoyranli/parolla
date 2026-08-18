@@ -72,6 +72,9 @@
             span {{ $t('introScene.modeList.creator.todaysQuizLabel') }}&nbsp;
             NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: todaysQuiz.roomId } })") "{{ todaysQuiz.title }}"
 
+        template(v-if="creatorRandomRooms.length > 0" #media)
+          QuizCarousel(:rooms="creatorRandomRooms")
+
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
         icon="akar-icons:arrow-cycle"
@@ -192,6 +195,7 @@ export default defineComponent({
 
     const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
     const creatorDailyPlayingCount = computed(() => store.getters['creator/dailyPlayingCount'])
+    const creatorRandomRooms = computed(() => store.getters['creator/randomRooms'])
 
     const wordblockDailyPlayingCount = computed(() => store.getters['wordblock/dailyPlayingCount'])
 
@@ -201,6 +205,7 @@ export default defineComponent({
         store.dispatch('tour/fetchLeaderboard', { period: 'daily', limit: 1 }),
         store.dispatch('creator/fetchDailyPlayingCount'),
         store.dispatch('creator/fetchTodaysQuiz'),
+        store.dispatch('creator/fetchRandomRooms', { limit: 10 }),
         store.dispatch('wordblock/fetchDailyPlayingCount')
       ])
     })
@@ -214,6 +219,7 @@ export default defineComponent({
       tourLeaderboard,
       todaysTourBestScorer,
       creatorDailyPlayingCount,
+      creatorRandomRooms,
       todaysQuiz,
       wordblockDailyPlayingCount,
       localeAvailabilityMessage

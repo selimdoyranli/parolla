@@ -23,6 +23,9 @@
     .intro-button-body__content
       slot(name="body")
 
+  .intro-button__media(v-if="$slots.media")
+    slot(name="media")
+
   p.intro-button__description(v-if="description?.length > 0") {{ description }}
 
   .intro-button__footer

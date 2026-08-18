@@ -31,6 +31,9 @@ export default () => ({
     total: null
   },
   todaysQuiz: {},
+  // Cover art showcase on the home block. Kept apart from room.list so it cannot
+  // clobber the rooms listing page's state.
+  randomRooms: [],
   dailyPlayingCount: 0,
   userReviews: {
     list: [],

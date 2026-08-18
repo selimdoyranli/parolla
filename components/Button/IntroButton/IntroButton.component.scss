@@ -51,6 +51,14 @@
     margin-block-end: $spacer * 4;
   }
 
+  // Full bleed slot between the body and the description, for a carousel or strip of cards
+  &__media {
+    position: relative;
+    z-index: 2;
+    margin-inline: calc(-1 * var(--base-p-x));
+    margin-block-start: $spacer * 2;
+  }
+
   &__footer {
     z-index: 2;
     display: flex;

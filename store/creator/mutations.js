@@ -121,6 +121,10 @@ export default {
     state.todaysQuiz = todaysQuiz
   },
 
+  SET_RANDOM_ROOMS(state, rooms) {
+    state.randomRooms = rooms
+  },
+
   SET_DAILY_PLAYING_COUNT(state, count) {
     state.dailyPlayingCount = count
   },

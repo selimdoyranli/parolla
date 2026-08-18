@@ -668,6 +668,48 @@ export default {
     }
   },
 
+  /**
+   * Quizzes for the home block's cover art showcase.
+   *
+   * Strapi cannot sort randomly, so this pulls the newest `poolSize` quizzes that actually
+   * have a cover photo and shuffles them here — one request, a different set every visit.
+   */
+  async fetchRandomRooms({ commit }, { limit = 10, poolSize = 50 } = {}) {
+    const query = {
+      'filters[isVisible][$eq]': true,
+      'filters[isPublic][$eq]': true,
+      'filters[coverPhoto][id][$notNull]': true,
+      'populate[coverPhoto]': true,
+      'populate[roomTags]': true,
+      'populate[user][populate][0]': 'diceBear',
+      'populate[user][populate][1]': 'role',
+      'sort[0]': 'createdAt:desc',
+      'pagination[pageSize]': poolSize,
+      locale: this.$i18n.locale
+    }
+
+    const { data, error } = await this.$appFetch({
+      path: 'rooms',
+      query: query
+    })
+
+    if (data?.data?.length > 0) {
+      const rooms = data.data.map(room => roomTransformer(room))
+
+      for (let i = rooms.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[rooms[i], rooms[j]] = [rooms[j], rooms[i]]
+      }
+
+      commit('SET_RANDOM_ROOMS', rooms.slice(0, limit))
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
   async increaseDailyPlayingCount({ commit }) {
     const { data, error } = await this.$appFetch({
       path: `modes/creator/view-count`,
