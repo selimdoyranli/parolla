@@ -110,7 +110,8 @@ export default {
     modeList: {
       daily: {
         title: 'DAILY',
-        description: `Play today's question set, daily word game`,
+        heading: 'DAILY WORD GAME',
+        description: `Play today's question set and join the competition, or just test your knowledge`,
         playDaily: 'Play Daily',
         playUnlimited: 'Play Unlimited'
       },

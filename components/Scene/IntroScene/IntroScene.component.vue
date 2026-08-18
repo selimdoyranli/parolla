@@ -11,7 +11,7 @@
         :to="localePath({ name: 'DailyMode' })"
       )
         template(#head)
-          h3.daily-heading {{ $t('introScene.modeList.daily.title') }}
+          h3.daily-heading {{ $t('introScene.modeList.daily.heading') }}
           p.daily-heading__description {{ $t('introScene.modeList.daily.description') }}
 
         template(#visual)

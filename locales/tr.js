@@ -110,7 +110,8 @@ export default {
     modeList: {
       daily: {
         title: 'GÜNLÜK',
-        description: 'Bugünün soru setini oyna, günlük kelime oyunu',
+        heading: 'GÜNLÜK KELİME OYUNU',
+        description: 'Bugünün soru setini oyna ve rekabete katıl ya da sadece bilgini sına',
         todaysBestScoreLabel: 'Günün lideri',
         todaysBestScore: '{label} {player}',
         playDaily: 'Günlük Oyna',

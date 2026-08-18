@@ -232,13 +232,13 @@
 
       &--primary {
         color: var(--color-text-04);
-        background-color: var(--color-selected-01);
+        background-color: var(--color-brand-02);
         // Same hard offset the game scene puts under a selected letter, no blur
-        box-shadow: 0 4px 0 var(--color-highlight-01);
+        box-shadow: 0 4px 0 #444;
         transition: transform 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01);
 
         &:hover {
-          box-shadow: 0 6px 0 var(--color-highlight-01);
+          box-shadow: 0 6px 0 #444;
 
           #{$play-actions} {
             &__arrow {
