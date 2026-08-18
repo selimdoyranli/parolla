@@ -64,6 +64,12 @@
       }
 
       &--daily {
+        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
+        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
+        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
+        // no z-index on the bar can lift it back out.
+        --leaderboard-bar-overhang: 31px;
+
         .daily-heading {
           margin: 0;
           color: var(--color-text-01);
@@ -90,11 +96,18 @@
 
         .intro-button-body {
           margin-block-start: 0;
+          margin-block-end: var(--leaderboard-bar-overhang);
 
           // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
           @include media-breakpoint-down(tablet) {
             margin-block-start: $spacer * 5;
+            margin-block-end: var(--leaderboard-bar-overhang);
           }
+        }
+
+        // The body reserves the overhang, so this only has to supply the gap under the bar
+        .intro-button__footer {
+          padding-block-start: $spacer * 4;
         }
 
         // Avatars + leaderboard button share the tab that hangs under the body bar
@@ -104,7 +117,7 @@
           gap: $spacer * 3;
           align-items: center;
           inset-inline-end: 0;
-          inset-block-end: -31px;
+          inset-block-end: calc(-1 * var(--leaderboard-bar-overhang));
 
           .avatar-group {
             padding-block-start: $spacer;
