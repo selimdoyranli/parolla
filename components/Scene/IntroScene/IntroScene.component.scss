@@ -64,6 +64,30 @@
       }
 
       &--daily {
+        .daily-heading {
+          margin: 0;
+          color: var(--color-text-01);
+          font-size: var(--font-size-text-6);
+
+          @include font-weight-bold;
+
+          @include media-breakpoint-down(mobile) {
+            font-size: var(--font-size-text-7);
+          }
+
+          &__description {
+            margin: 0;
+            font-size: var(--font-size-text-8);
+            margin-block-start: $spacer;
+
+            @include font-weight-regular;
+
+            @include media-breakpoint-down(mobile) {
+              font-size: var(--font-size-text-9);
+            }
+          }
+        }
+
         .intro-button-body {
           margin-block-start: 0;
 
@@ -83,7 +107,7 @@
           inset-block-end: -31px;
 
           .avatar-group {
-            padding-block-start: 0;
+            padding-block-start: $spacer;
 
             @include media-breakpoint-down(mobile-l) {
               .player-avatar:nth-child(n + 4) {

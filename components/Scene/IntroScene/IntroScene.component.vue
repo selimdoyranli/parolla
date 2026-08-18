@@ -9,8 +9,11 @@
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--daily(
         v-if="$i18n.locale === $i18n.defaultLocale"
         :to="localePath({ name: 'DailyMode' })"
-        :description="$t('introScene.modeList.daily.description')"
       )
+        template(#head)
+          h3.daily-heading {{ $t('introScene.modeList.daily.title') }}
+          p.daily-heading__description {{ $t('introScene.modeList.daily.description') }}
+
         template(#visual)
           AlphabetTicker
 

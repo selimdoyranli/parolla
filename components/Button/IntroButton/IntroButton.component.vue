@@ -1,5 +1,8 @@
 <template lang="pug">
 .intro-button(role="button" tabindex="1")
+  .intro-button__head(v-if="$slots.head")
+    slot(name="head")
+
   .intro-button__visual(v-if="$slots.visual")
     slot(name="visual")
 
