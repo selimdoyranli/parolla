@@ -1,6 +1,9 @@
 <template lang="pug">
 .intro-button(role="button" tabindex="1")
-  .intro-button__header
+  .intro-button__visual(v-if="$slots.visual")
+    slot(name="visual")
+
+  .intro-button__header(v-if="icon || title || headLabel.title || $slots.icon")
     template(v-if="$slots.icon")
       .intro-button__icon
         slot(name="icon")
@@ -20,11 +23,12 @@
   p.intro-button__description(v-if="description?.length > 0") {{ description }}
 
   .intro-button__footer
-    NuxtLink.play-now-button(role="button" :to="to" :title="title" :aria-label="title")
-      template(v-if="playButtonText")
-        | {{ playButtonText }}
-      template(v-else)
-        | {{ $t('general.play') }}
+    slot(name="actions")
+      NuxtLink.play-now-button(role="button" :to="to" :title="title" :aria-label="title")
+        template(v-if="playButtonText")
+          | {{ playButtonText }}
+        template(v-else)
+          | {{ $t('general.play') }}
 
     .avatar-group(v-if="playerList?.length > 4")
       PlayerAvatar(v-for="player in playerList.slice(0, 4)" :key="player.id" :user="player")

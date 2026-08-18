@@ -63,13 +63,47 @@
         }
       }
 
-      &--unlimited {
-        &::after {
-          display: none;
+      &--daily {
+        .intro-button-body {
+          margin-block-start: 0;
+
+          // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
+          @include media-breakpoint-down(tablet) {
+            margin-block-start: $spacer * 5;
+          }
         }
 
-        .intro-button__description {
-          margin-block-start: $spacer * 6;
+        // Avatars + leaderboard button share the tab that hangs under the body bar
+        .leaderboard-bar {
+          position: absolute;
+          display: flex;
+          gap: $spacer * 3;
+          align-items: center;
+          inset-inline-end: 0;
+          inset-block-end: -31px;
+
+          .avatar-group {
+            padding-block-start: 0;
+
+            @include media-breakpoint-down(mobile-l) {
+              .player-avatar:nth-child(n + 4) {
+                display: none;
+              }
+            }
+
+            &__moreCount {
+              @include media-breakpoint-down(mobile) {
+                display: none;
+              }
+            }
+          }
+
+          .leaderboard-button {
+            position: static;
+            inset-inline-end: auto;
+            inset-block-end: auto;
+            margin-inline-start: 0;
+          }
         }
       }
 

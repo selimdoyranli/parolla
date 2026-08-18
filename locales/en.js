@@ -110,12 +110,12 @@ export default {
     modeList: {
       daily: {
         title: 'DAILY',
-        subtitle: 'COMPETITIVE',
-        description: `Play today's question set, daily word game`
+        description: `Play today's question set, daily word game`,
+        playDaily: 'Play Daily',
+        playUnlimited: 'Play Unlimited'
       },
       unlimited: {
-        title: 'UNLIMITED',
-        description: 'Unlimited question set'
+        title: 'UNLIMITED'
       },
       creator: {
         title: 'CREATOR',

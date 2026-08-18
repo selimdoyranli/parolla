@@ -36,6 +36,15 @@
     inset-block-end: -88px;
   }
 
+  // Full bleed slot above the header, for blocks that lead with a visual instead of an icon + title
+  &__visual {
+    position: relative;
+    z-index: 2;
+    margin-inline: calc(-1 * var(--base-p-x));
+    margin-block-start: calc(-1 * #{$spacer * 5});
+    margin-block-end: $spacer * 4;
+  }
+
   &__footer {
     z-index: 2;
     display: flex;
@@ -189,6 +198,56 @@
 
     &:hover {
       transform: scale(1.08);
+    }
+  }
+
+  // Multi destination footer: side by side on desktop, stacked on mobile
+  .play-actions {
+    $play-actions: '.play-actions';
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacer * 3;
+    width: 100%;
+
+    @include media-breakpoint-down(mobile) {
+      grid-template-columns: 1fr;
+      gap: $spacer * 2;
+    }
+
+    .play-now-button {
+      gap: $spacer * 2;
+      justify-content: center;
+      width: 100%;
+      padding-inline: $spacer * 4;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      &--primary {
+        color: var(--color-text-04);
+        background-color: var(--color-selected-01);
+        box-shadow: 0 2px 14px rgba(255, 120, 120, 0.24);
+
+        &:hover {
+          #{$play-actions} {
+            &__arrow {
+              transform: translateX(3px);
+            }
+          }
+        }
+      }
+
+      &--secondary {
+        color: var(--color-brand-02);
+        background-color: light-dark(#f3f3f3, #444);
+      }
+    }
+
+    &__arrow {
+      opacity: 0.7;
+      transition: transform 0.15s var(--motion-01);
     }
   }
 
