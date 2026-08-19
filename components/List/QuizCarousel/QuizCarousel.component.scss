@@ -55,10 +55,14 @@
     // overflow: hidden clips at the padding box, so bottom padding would leave room for a
     // sliver of a third line. The breathing room under the text is a transparent bottom border
     // instead: that sits outside the clip, and the gradient still paints across it so the band
-    // reaches the cover's edge. Height stays exactly padding-top + two lines + that border.
+    // reaches the cover's edge.
+    //
+    // The box is bottom anchored and the gradient's stops are percentages of it, so growing it
+    // would drag the fade further up the cover. Total height therefore stays what it was and the
+    // border's space comes off the top padding — same band, same fade, gap gained under the text.
     &__placeholder-title {
-      max-height: calc(2 * 1.25em + #{$spacer * 6});
-      padding: $spacer * 3 $spacer * 3 0;
+      max-height: calc(2 * 1.25em + #{$spacer * 5});
+      padding: $spacer * 2 $spacer * 3 0;
       border-block-end: $spacer * 3 solid transparent;
       font-size: var(--font-size-text-8);
       -webkit-line-clamp: 2;
@@ -72,8 +76,8 @@
     // padding-top and matches at the same specificity
     &--hasCoverPhoto {
       #{$quiz-card}__placeholder-title {
-        max-height: calc(2 * 1.25em + #{$spacer * 8});
-        padding-block-start: $spacer * 5;
+        max-height: calc(2 * 1.25em + #{$spacer * 5});
+        padding-block-start: $spacer * 2;
       }
     }
 
