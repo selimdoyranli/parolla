@@ -1,6 +1,8 @@
 .quiz-carousel {
   --quiz-carousel-slide-width: 210px;
   --quiz-carousel-nav-size: 34px;
+  // Footer space held for the absolutely placed quiz type pill
+  --quiz-carousel-pill-zone: 84px;
 
   position: relative;
   padding-block: $spacer * 3;
@@ -8,6 +10,7 @@
   @include media-breakpoint-down(mobile) {
     --quiz-carousel-slide-width: 165px;
     --quiz-carousel-nav-size: 30px;
+    --quiz-carousel-pill-zone: 68px;
   }
 
   &__swiper {
@@ -60,6 +63,55 @@
 
     &__body {
       padding: $spacer * 3;
+    }
+
+    // The type pill leaves the author row and pins to the far right of the footer. The body is
+    // already the positioning context and its padding box bottom is the footer's baseline.
+    // Safe to overlay here because the strip never passes `viewer`, so the owner actions that
+    // would otherwise sit in that corner never render.
+    &__quiz-label {
+      position: absolute;
+      z-index: 2;
+      gap: $spacer;
+      max-width: var(--quiz-carousel-pill-zone);
+      padding: 1px $spacer * 2;
+      font-size: var(--font-size-text-11);
+      inset-inline-end: $spacer * 3;
+      inset-block-end: $spacer * 3;
+    }
+
+    // The pill is out of flow, so the stats reserve its zone and the pill is capped to it.
+    // That makes a collision impossible at any width and for any label length, rather than
+    // relying on the shortest labels happening to fit.
+    &__stats {
+      padding-inline-end: var(--quiz-carousel-pill-zone);
+    }
+
+    &__quiz-label-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &__quiz-label-icon svg {
+      width: 11px !important;
+      height: 11px !important;
+    }
+
+    &__quiz-label-versus {
+      width: 11px !important;
+      height: 11px !important;
+    }
+
+    // Whatever is left of the reserved zone only fits a couple of stats, one on mobile
+    &__stat:nth-child(n + 3) {
+      display: none;
+    }
+
+    @include media-breakpoint-down(mobile) {
+      &__stat:nth-child(n + 2) {
+        display: none;
+      }
     }
   }
 
