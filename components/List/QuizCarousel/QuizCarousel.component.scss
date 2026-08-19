@@ -3,6 +3,7 @@
   --quiz-carousel-nav-size: 34px;
 
   position: relative;
+  padding-block: $spacer * 3;
 
   @include media-breakpoint-down(mobile) {
     --quiz-carousel-slide-width: 165px;
