@@ -96,6 +96,7 @@
 
         // The body reserves the overhang, so this only has to supply the gap under the bar
         .intro-button__footer {
+          margin-top: 16px;
           padding-block-start: $spacer * 4;
         }
 
