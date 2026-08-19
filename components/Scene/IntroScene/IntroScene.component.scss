@@ -154,11 +154,6 @@
       }
 
       &--creator {
-        // The quiz strip above already carries its own vertical padding
-        .intro-button__description {
-          margin-block: 0;
-        }
-
         .intro-button-body {
           height: auto;
           border-top-right-radius: calc(var(--border-radius-01) / 2) !important;
