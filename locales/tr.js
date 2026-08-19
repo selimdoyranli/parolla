@@ -110,16 +110,15 @@ export default {
     modeList: {
       daily: {
         title: 'GÜNLÜK',
-        subtitle: 'REKABETÇİ',
-        description: 'Bugünün soru setini oyna, günlük kelime oyunu',
+        heading: 'GÜNLÜK KELİME OYUNU',
+        description: 'Bugünün soru setini oyna ve rekabete katıl ya da sadece bilgini sına',
         todaysBestScoreLabel: 'Günün lideri',
         todaysBestScore: '{label} {player}',
-        label: 'Bugün {count} kez oynandı'
+        playDaily: 'Günlük Oyna',
+        playUnlimited: 'Limitsiz Oyna'
       },
       unlimited: {
-        title: 'LİMİTSİZ',
-        description: 'Sonraki günü bekleme, rekabeti boşver',
-        label: 'Limitsiz soru seti'
+        title: 'LİMİTSİZ'
       },
       creator: {
         title: 'YARATICI',

@@ -1,0 +1,191 @@
+.quiz-carousel {
+  --quiz-carousel-slide-width: 210px;
+  --quiz-carousel-nav-size: 34px;
+  // Footer space held for the absolutely placed quiz type pill
+  --quiz-carousel-pill-zone: 84px;
+
+  position: relative;
+  padding-block: $spacer * 3;
+
+  @include media-breakpoint-down(mobile) {
+    --quiz-carousel-slide-width: 165px;
+    --quiz-carousel-nav-size: 30px;
+    --quiz-carousel-pill-zone: 68px;
+  }
+
+  &__swiper {
+    // Padding keeps the first and last card in line with the block's text while the
+    // strip itself still runs to both card edges
+    padding-inline: var(--base-p-x);
+  }
+
+  // Titles and type pills wrap to different depths, so slides stretch and the cards fill
+  // them — otherwise the strip's bottom edge steps up and down card to card
+  .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  &__slide {
+    width: var(--quiz-carousel-slide-width);
+    height: auto;
+
+    .quiz-card {
+      height: 100%;
+    }
+  }
+
+  // QuizCard is sized for the browsing grid (280px+), where its 24px overlay title and full
+  // body are proportionate. In this teaser strip the card is much narrower, so the title is
+  // scaled down and the tag row dropped — keeps the strip short and cover led.
+  .quiz-card {
+    // Nested under .quiz-carousel, `&` already carries the ancestor, so using it on both sides
+    // of a descendant pair would repeat .quiz-carousel and match nothing
+    $quiz-card: '.quiz-card';
+
+    --quiz-card-radius: 14px;
+    // The card surface and the block behind it are both --color-ui-02, so the default
+    // --color-border-01 edge disappears — this steps it up just enough to read
+    --quiz-card-border: var(--color-border-02);
+
+    // -webkit-line-clamp cannot be trusted on its own here: Chrome blockifies the rule's
+    // display: -webkit-box and still clamps, but engines that only clamp the legacy box layout
+    // let a third line through, which then reaches the body. Bounding the height as well means
+    // two lines can never become three, whatever the browser does — line-clamp just adds the
+    // ellipsis where it works. 1.25 is the line-height the base rule sets.
+    // overflow: hidden clips at the padding box, so bottom padding would leave room for a
+    // sliver of a third line. The breathing room under the text is a transparent bottom border
+    // instead: that sits outside the clip, and the gradient still paints across it so the band
+    // reaches the cover's edge.
+    //
+    // The box is bottom anchored and the gradient's stops are percentages of it, so growing it
+    // would drag the fade further up the cover. Total height therefore stays what it was and the
+    // border's space comes off the top padding — same band, same fade, gap gained under the text.
+    &__placeholder-title {
+      max-height: calc(2 * 1.25em + #{$spacer * 5});
+      padding: $spacer * 2 $spacer * 3 0;
+      font-size: var(--font-size-text-8);
+      // background-clip already shows the gradient across the border, but background-origin
+      // still defaults to the padding box, so the gradient was sized to exclude the border and
+      // then tiled into it — restarting at its transparent end and leaving a strip of bare
+      // cover under the band. Measuring it against the border box fills the band to the edge.
+      background-origin: border-box;
+      border-block-end: $spacer * 3 solid transparent;
+      -webkit-line-clamp: 2;
+
+      @include media-breakpoint-down(mobile) {
+        font-size: var(--font-size-text-9);
+      }
+    }
+
+    // Needs to outrank QuizCard's own .quiz-card--hasCoverPhoto pairing, which sets a taller
+    // padding-top and matches at the same specificity
+    &--hasCoverPhoto {
+      #{$quiz-card}__placeholder-title {
+        max-height: calc(2 * 1.25em + #{$spacer * 5});
+        padding-block-start: $spacer * 2;
+      }
+    }
+
+    &__tags {
+      display: none;
+    }
+
+    &__body {
+      padding: $spacer * 3;
+    }
+
+    // The type pill leaves the author row and pins to the far right of the footer. The body is
+    // already the positioning context and its padding box bottom is the footer's baseline.
+    // Safe to overlay here because the strip never passes `viewer`, so the owner actions that
+    // would otherwise sit in that corner never render.
+    &__quiz-label {
+      position: absolute;
+      z-index: 2;
+      gap: $spacer;
+      max-width: var(--quiz-carousel-pill-zone);
+      padding: 1px $spacer * 2;
+      font-size: var(--font-size-text-11);
+      inset-inline-end: $spacer * 3;
+      inset-block-end: $spacer * 3;
+    }
+
+    // The pill is out of flow, so the stats reserve its zone and the pill is capped to it.
+    // That makes a collision impossible at any width and for any label length, rather than
+    // relying on the shortest labels happening to fit.
+    &__stats {
+      padding-inline-end: var(--quiz-carousel-pill-zone);
+    }
+
+    &__quiz-label-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &__quiz-label-icon svg {
+      width: 11px !important;
+      height: 11px !important;
+    }
+
+    &__quiz-label-versus {
+      width: 11px !important;
+      height: 11px !important;
+    }
+
+    // Whatever is left of the reserved zone only fits a couple of stats, one on mobile
+    &__stat:nth-child(n + 3) {
+      display: none;
+    }
+
+    @include media-breakpoint-down(mobile) {
+      &__stat:nth-child(n + 2) {
+        display: none;
+      }
+    }
+  }
+
+  // Edge navigation
+  &__nav {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--quiz-carousel-nav-size);
+    height: var(--quiz-carousel-nav-size);
+    padding: 0;
+    color: var(--color-brand-02);
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 100%;
+    box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.45);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: opacity 0.15s var(--motion-01), transform 0.1s var(--motion-01);
+    inset-block-start: 50%;
+
+    &:hover {
+      transform: translateY(-50%) scale(1.04);
+    }
+
+    &--prev {
+      inset-inline-start: calc(var(--base-p-x) / 4);
+    }
+
+    &--next {
+      inset-inline-end: calc(var(--base-p-x) / 4);
+    }
+
+    // Swiper flags the prev button at the first slide and the next button at the last,
+    // which is what hides the arrow you cannot use
+    &.swiper-button-disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    // Nothing to scroll — watchOverflow locks both arrows
+    &.swiper-button-lock {
+      display: none;
+    }
+  }
+}

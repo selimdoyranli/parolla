@@ -8,15 +8,15 @@
     .intro-scene-mode-list
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--daily(
         v-if="$i18n.locale === $i18n.defaultLocale"
-        icon="noto:calendar"
         :to="localePath({ name: 'DailyMode' })"
-        :title="`${$t('introScene.modeList.daily.title')} (${$t('introScene.modeList.daily.subtitle')})`"
-        :description="$t('introScene.modeList.daily.description')"
-        :headLabel="{ title: $t('introScene.modeList.daily.label', { count: dailyPlayingCount }) }"
-        :playerList="dailyLeaderboard.items"
       )
-        template(#avatarsMoreCount)
-          | +{{ dailyLeaderboard?.meta?.pagination?.total - 4 }}
+        template(#head)
+          h3.daily-heading {{ $t('introScene.modeList.daily.heading') }}
+          p.daily-heading__description {{ $t('introScene.modeList.daily.description') }}
+
+        template(#visual)
+          AlphabetTicker
+
         template(#body)
           .top-scorer(v-if="todaysDailyBestScorer")
             AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
@@ -27,22 +27,38 @@
                 span.top-scorer__player
                   AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
                   PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysDailyBestScorer" :size="22")
-            Button.leaderboard-button(
-              size="small"
-              plain
-              :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
-            )
-              AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
-              | {{ $t('leaderboard.title') }}
+            .leaderboard-bar
+              .avatar-group(v-if="dailyLeaderboard.items?.length > 4")
+                PlayerAvatar(v-for="player in dailyLeaderboard.items.slice(0, 4)" :key="player.id" :user="player" :size="24")
+                .avatar-group__moreCount +{{ dailyLeaderboard?.meta?.pagination?.total - 4 }}
+              Button.leaderboard-button(
+                size="small"
+                plain
+                :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+              )
+                AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
+                | {{ $t('leaderboard.title') }}
 
-      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--unlimited(
-        v-if="$i18n.locale === $i18n.defaultLocale"
-        icon="noto:infinity"
-        :to="localePath({ name: 'UnlimitedMode' })"
-        :title="$t('introScene.modeList.unlimited.title')"
-        :headLabel="{ title: $t('introScene.modeList.unlimited.label') }"
-        :description="$t('introScene.modeList.unlimited.description')"
-      )
+        template(#actions)
+          .play-actions
+            NuxtLink.play-now-button.play-now-button--primary(
+              role="button"
+              :to="localePath({ name: 'DailyMode' })"
+              :title="$t('introScene.modeList.daily.playDaily')"
+              :aria-label="$t('introScene.modeList.daily.playDaily')"
+            )
+              AppIcon(name="tabler:calendar-event" :width="18" :height="18")
+              | {{ $t('introScene.modeList.daily.playDaily') }}
+              AppIcon.play-actions__arrow(name="tabler:arrow-right" :width="16" :height="16")
+
+            NuxtLink.play-now-button.play-now-button--secondary(
+              role="button"
+              :to="localePath({ name: 'UnlimitedMode' })"
+              :title="$t('introScene.modeList.daily.playUnlimited')"
+              :aria-label="$t('introScene.modeList.daily.playUnlimited')"
+            )
+              AppIcon(name="tabler:infinity" :width="18" :height="18")
+              | {{ $t('introScene.modeList.daily.playUnlimited') }}
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--creator(
         icon="noto:pencil"
@@ -55,6 +71,9 @@
           .todaysQuiz
             span {{ $t('introScene.modeList.creator.todaysQuizLabel') }}&nbsp;
             NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: todaysQuiz.roomId } })") "{{ todaysQuiz.title }}"
+
+        template(v-if="creatorRandomRooms.length > 0" #media)
+          QuizCarousel(:rooms="creatorRandomRooms")
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
@@ -155,7 +174,6 @@ export default defineComponent({
       }
     }
 
-    const dailyPlayingCount = computed(() => store.getters['daily/dailyPlayingCount'])
     const dailyLeaderboard = computed(() => store.getters['daily/leaderboard'])
     const todaysDailyBestScorer = computed(() => dailyLeaderboard.value.items?.[0])
     const dailyScores = computed(() => store.getters['daily/dailyScores'])
@@ -177,22 +195,22 @@ export default defineComponent({
 
     const todaysQuiz = computed(() => store.getters['creator/todaysQuiz'])
     const creatorDailyPlayingCount = computed(() => store.getters['creator/dailyPlayingCount'])
+    const creatorRandomRooms = computed(() => store.getters['creator/randomRooms'])
 
     const wordblockDailyPlayingCount = computed(() => store.getters['wordblock/dailyPlayingCount'])
 
     onMounted(async () => {
       await Promise.all([
-        store.dispatch('daily/fetchDailyPlayingCount'),
         store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 }),
         store.dispatch('tour/fetchLeaderboard', { period: 'daily', limit: 1 }),
         store.dispatch('creator/fetchDailyPlayingCount'),
         store.dispatch('creator/fetchTodaysQuiz'),
+        store.dispatch('creator/fetchRandomRooms', { limit: 10 }),
         store.dispatch('wordblock/fetchDailyPlayingCount')
       ])
     })
 
     return {
-      dailyPlayingCount,
       dailyLeaderboard,
       todaysDailyBestScorer,
       dailyScores,
@@ -201,6 +219,7 @@ export default defineComponent({
       tourLeaderboard,
       todaysTourBestScorer,
       creatorDailyPlayingCount,
+      creatorRandomRooms,
       todaysQuiz,
       wordblockDailyPlayingCount,
       localeAvailabilityMessage

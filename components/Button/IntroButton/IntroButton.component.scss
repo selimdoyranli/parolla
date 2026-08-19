@@ -36,6 +36,30 @@
     inset-block-end: -88px;
   }
 
+  // Leading slot for blocks that open with their own title + description instead of an icon + title
+  &__head {
+    position: relative;
+    z-index: 2;
+  }
+
+  // Full bleed slot, for blocks that carry a visual instead of an icon + title
+  &__visual {
+    position: relative;
+    z-index: 2;
+    margin-inline: calc(-1 * var(--base-p-x));
+    margin-block-start: $spacer;
+    margin-block-end: $spacer * 4;
+  }
+
+  // Full bleed slot between the body and the description, for a carousel or strip of cards
+  &__media {
+    position: relative;
+    z-index: 2;
+    margin-inline: calc(-1 * var(--base-p-x));
+    margin-block-start: $spacer * 2;
+    margin-block-end: 0;
+  }
+
   &__footer {
     z-index: 2;
     display: flex;
@@ -188,7 +212,43 @@
     @include font-weight-semi-bold;
 
     &:hover {
-      transform: scale(1.08);
+      transform: scale(1.04);
+    }
+  }
+
+  // Multi destination footer: side by side on desktop, stacked on mobile
+  .play-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacer * 3;
+    width: 100%;
+
+    @include media-breakpoint-down(mobile) {
+      grid-template-columns: 1fr;
+      gap: $spacer * 2;
+    }
+
+    .play-now-button {
+      gap: $spacer * 2;
+      justify-content: center;
+      width: 100%;
+      padding-inline: $spacer * 4;
+
+      &--primary {
+        color: var(--color-text-04);
+        background-color: var(--color-brand-02);
+        // Same hard offset the game scene puts under a selected letter, no blur
+        box-shadow: 0 4px 0 #444;
+      }
+
+      &--secondary {
+        color: var(--color-brand-02);
+        background-color: light-dark(#f3f3f3, #444);
+      }
+    }
+
+    &__arrow {
+      opacity: 0.7;
     }
   }
 

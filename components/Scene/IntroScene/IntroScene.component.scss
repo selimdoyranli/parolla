@@ -63,13 +63,73 @@
         }
       }
 
-      &--unlimited {
-        &::after {
-          display: none;
+      &--daily {
+        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
+        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
+        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
+        // no z-index on the bar can lift it back out.
+        --leaderboard-bar-overhang: 31px;
+
+        .daily-heading {
+          margin: 0;
+
+          @include font-weight-bold;
+
+          &__description {
+            margin: 0;
+            margin-block-start: $spacer;
+
+            @include font-weight-regular;
+          }
         }
 
-        .intro-button__description {
-          margin-block-start: $spacer * 6;
+        .intro-button-body {
+          margin-block-start: 0;
+          margin-block-end: var(--leaderboard-bar-overhang);
+
+          // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
+          @include media-breakpoint-down(tablet) {
+            margin-block-start: $spacer * 5;
+            margin-block-end: var(--leaderboard-bar-overhang);
+          }
+        }
+
+        // The body reserves the overhang, so this only has to supply the gap under the bar
+        .intro-button__footer {
+          padding-block-start: $spacer * 4;
+        }
+
+        // Avatars + leaderboard button share the tab that hangs under the body bar
+        .leaderboard-bar {
+          position: absolute;
+          display: flex;
+          gap: $spacer * 3;
+          align-items: center;
+          inset-inline-end: 0;
+          inset-block-end: calc(-1 * var(--leaderboard-bar-overhang));
+
+          .avatar-group {
+            padding-block-start: $spacer;
+
+            @include media-breakpoint-down(mobile-l) {
+              .player-avatar:nth-child(n + 4) {
+                display: none;
+              }
+            }
+
+            &__moreCount {
+              @include media-breakpoint-down(mobile) {
+                display: none;
+              }
+            }
+          }
+
+          .leaderboard-button {
+            position: static;
+            inset-inline-end: auto;
+            inset-block-end: auto;
+            margin-inline-start: 0;
+          }
         }
       }
 
@@ -98,21 +158,13 @@
           height: auto;
           border-top-right-radius: calc(var(--border-radius-01) / 2) !important;
           border-bottom-right-radius: calc(var(--border-radius-01) / 2) !important;
-
-          @include media-breakpoint-down(mobile) {
-            margin-block-end: $spacer * 4;
-          }
+          // Nothing hangs below this block's body, so it reserves no space for an overhang
+          margin-block-end: 0;
         }
 
         .intro-button-body__content {
           height: auto !important;
           min-height: 40px !important;
-        }
-
-        &:has(.todaysQuiz) {
-          .intro-button__description {
-            margin-block-start: $spacer;
-          }
         }
 
         .todaysQuiz {
