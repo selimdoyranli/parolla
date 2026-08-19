@@ -52,12 +52,14 @@
     // let a third line through, which then reaches the body. Bounding the height as well means
     // two lines can never become three, whatever the browser does — line-clamp just adds the
     // ellipsis where it works. 1.25 is the line-height the base rule sets.
-    // overflow: hidden clips at the padding box, not the content box, so any bottom padding
-    // becomes room for a sliver of the next line. Bottom padding is therefore 0 and the height
-    // is exactly padding-top + two lines, which lands the clip on the second line's baseline.
+    // overflow: hidden clips at the padding box, so bottom padding would leave room for a
+    // sliver of a third line. The breathing room under the text is a transparent bottom border
+    // instead: that sits outside the clip, and the gradient still paints across it so the band
+    // reaches the cover's edge. Height stays exactly padding-top + two lines + that border.
     &__placeholder-title {
-      max-height: calc(2 * 1.25em + #{$spacer * 3});
+      max-height: calc(2 * 1.25em + #{$spacer * 6});
       padding: $spacer * 3 $spacer * 3 0;
+      border-block-end: $spacer * 3 solid transparent;
       font-size: var(--font-size-text-8);
       -webkit-line-clamp: 2;
 
@@ -70,7 +72,7 @@
     // padding-top and matches at the same specificity
     &--hasCoverPhoto {
       #{$quiz-card}__placeholder-title {
-        max-height: calc(2 * 1.25em + #{$spacer * 5});
+        max-height: calc(2 * 1.25em + #{$spacer * 8});
         padding-block-start: $spacer * 5;
       }
     }

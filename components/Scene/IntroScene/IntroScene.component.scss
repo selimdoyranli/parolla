@@ -63,15 +63,6 @@
         }
       }
 
-      // These blocks have nothing between the header and the description, so they supply
-      // that gap themselves — the description carries no top margin of its own
-      &--music,
-      &--draw {
-        .intro-button__description {
-          margin-block-start: $spacer * 6;
-        }
-      }
-
       &--daily {
         // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
         // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
