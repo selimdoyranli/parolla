@@ -158,10 +158,8 @@
           height: auto;
           border-top-right-radius: calc(var(--border-radius-01) / 2) !important;
           border-bottom-right-radius: calc(var(--border-radius-01) / 2) !important;
-
-          @include media-breakpoint-down(mobile) {
-            margin-block-end: $spacer * 4;
-          }
+          // Nothing hangs below this block's body, so it reserves no space for an overhang
+          margin-block-end: 0;
         }
 
         .intro-button-body__content {
