@@ -63,8 +63,13 @@
     &__placeholder-title {
       max-height: calc(2 * 1.25em + #{$spacer * 5});
       padding: $spacer * 2 $spacer * 3 0;
-      border-block-end: $spacer * 3 solid transparent;
       font-size: var(--font-size-text-8);
+      // background-clip already shows the gradient across the border, but background-origin
+      // still defaults to the padding box, so the gradient was sized to exclude the border and
+      // then tiled into it — restarting at its transparent end and leaving a strip of bare
+      // cover under the band. Measuring it against the border box fills the band to the edge.
+      background-origin: border-box;
+      border-block-end: $spacer * 3 solid transparent;
       -webkit-line-clamp: 2;
 
       @include media-breakpoint-down(mobile) {
