@@ -69,7 +69,7 @@
     background-color: transparent;
     box-shadow: none;
     transform: unset !important;
-    padding-block-start: $spacer * 6;
+    padding-block-start: $spacer * 4;
     margin-block-end: 0;
     margin-block-start: auto;
   }
@@ -100,7 +100,6 @@
 
     @include media-breakpoint-down(mobile) {
       font-size: var(--font-size-text-9);
-      margin-block-start: $spacer * 4;
     }
   }
 
@@ -173,7 +172,7 @@
     border-bottom-right-radius: 0;
     backdrop-filter: blur(4px);
     margin-block-start: $spacer * 6;
-    margin-block-end: 0 !important;
+    margin-block-end: $spacer * 4 !important;
 
     @include media-breakpoint-down(tablet) {
       overflow: visible;
