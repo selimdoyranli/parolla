@@ -18,7 +18,11 @@ export default () => ({
   nextDrawerName: null,
   nextRoundEndsAt: 0,
   currentWord: null,
+  // Guessers only ever see a mask once the drawer spends a hint — until
+  // then the server sends none, so the word's length stays secret too.
   maskedWord: null,
+  hintsUsed: 0,
+  hintsMax: 2,
   category: null,
   durationMs: 0,
   remainingMs: 0,

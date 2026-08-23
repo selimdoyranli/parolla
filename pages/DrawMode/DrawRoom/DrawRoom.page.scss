@@ -113,11 +113,17 @@
     align-items: center;
     max-width: 60%;
     padding: 3px 10px;
-    color: var(--color-brand-02);
+    color: var(--color-text-01);
     font-size: 12px;
-    background: rgba(255, 120, 120, 0.12);
-    border: 1px solid rgba(255, 120, 120, 0.45);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
     border-radius: 999px;
+
+    &--drawer {
+      color: var(--color-brand-02);
+      background: rgba(255, 120, 120, 0.12);
+      border-color: rgba(255, 120, 120, 0.45);
+    }
   }
 
   &__head-word-icon {
@@ -129,6 +135,38 @@
   &__head-word ::v-deep .draw-masked-word {
     font-size: 14px;
     letter-spacing: 2px;
+  }
+
+  // Drawer-only hint button — sits right next to the word badge, so the
+  // timer keeps its own margin-left: auto and stays pinned right.
+  &__head-hint {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    padding: 0 9px;
+    color: var(--color-warning-01);
+    background: rgba(211, 175, 56, 0.14);
+    border: 1px solid rgba(211, 175, 56, 0.45);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+
+    &:hover {
+      background: rgba(211, 175, 56, 0.24);
+    }
+
+    &:active {
+      transform: scale(0.94);
+    }
+  }
+
+  &__head-hint-count {
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1;
   }
 
   &__head-timer {
