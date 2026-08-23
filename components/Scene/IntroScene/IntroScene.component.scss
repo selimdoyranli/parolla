@@ -97,7 +97,7 @@
         // The body reserves the overhang, so this only has to supply the gap under the bar
         .intro-button__footer {
           margin-top: 32px;
-          padding-block-start: $spacer * 4;
+          padding-block-start: 0;
         }
 
         // Avatars + leaderboard button share the tab that hangs under the body bar
@@ -166,6 +166,10 @@
         .intro-button-body__content {
           height: auto !important;
           min-height: 40px !important;
+        }
+
+        .intro-button__description {
+          margin-block-start: $spacer * 2;
         }
 
         .todaysQuiz {
