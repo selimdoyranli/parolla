@@ -16,5 +16,9 @@
       padding: 0 4px;
       border-bottom: none;
     }
+
+    &.revealed {
+      color: var(--color-brand-02);
+    }
   }
 }
