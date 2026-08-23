@@ -23,10 +23,9 @@
     // keeps a stable height regardless of game state (no layout shift when
     // drawing starts/ends).
     .draw-room__board-head
-      .draw-room__head-word(v-if="wordBadgeVisible" :class="{ 'draw-room__head-word--drawer': iAmDrawer }")
-        AppIcon.draw-room__head-word-icon(:name="iAmDrawer ? 'tabler:eye' : 'tabler:bulb'" :width="12" :height="12")
-        DrawMaskedWord(v-if="iAmDrawer && currentWord" :plain="currentWord")
-        DrawMaskedWord(v-else-if="maskedWord" :mask="maskedWord")
+      .draw-room__head-word(v-if="wordBadgeVisible")
+        AppIcon.draw-room__head-word-icon(name="tabler:eye" :width="12" :height="12")
+        DrawMaskedWord(:plain="currentWord")
       .draw-room__head-spacer(v-else)
       button.draw-room__head-report(
         v-if="canReportDrawer"
@@ -288,7 +287,6 @@ export default defineComponent({
     const roundIndex = computed(() => $store.state.draw.roundIndex)
     const roundCount = computed(() => $store.state.draw.roundCount)
     const currentWord = computed(() => $store.state.draw.currentWord)
-    const maskedWord = computed(() => $store.state.draw.maskedWord)
     const lastRoundResult = computed(() => $store.state.draw.lastRoundResult)
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
@@ -492,11 +490,8 @@ export default defineComponent({
     const startDisabled = computed(() => isLobby.value && players.value.length < 2)
     const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
 
-    const wordBadgeVisible = computed(() => {
-      if (!isDrawing.value) return false
-
-      return (iAmDrawer.value && !!currentWord.value) || !!maskedWord.value
-    })
+    // Only the drawer sees the word badge; guessers get no length/letter hint.
+    const wordBadgeVisible = computed(() => isDrawing.value && iAmDrawer.value && !!currentWord.value)
 
     // Single source of truth for which canvas overlay is showing. Picker
     // outranks the stale round-end card so the drawer never has tur-sonu
@@ -785,7 +780,6 @@ export default defineComponent({
       roundIndex,
       roundCount,
       currentWord,
-      maskedWord,
       lastRoundResult,
       finalScores,
       countdownSeconds,
