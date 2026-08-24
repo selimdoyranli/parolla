@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const countFinalGreenLetters: typeof import('./composables/useWordblock.js')['countFinalGreenLetters']
   const getDrawSocket: typeof import('./composables/useDrawSocket.js')['getDrawSocket']
   const isDrawSocketReady: typeof import('./composables/useDrawSocket.js')['isDrawSocketReady']
   const useAppleSignIn: typeof import('./composables/useAppleSignIn.js')['useAppleSignIn']
@@ -19,6 +20,7 @@ declare global {
   const useDrawGuestIdentity: typeof import('./composables/useDrawGuestIdentity.js')['useDrawGuestIdentity']
   const useDrawSocket: typeof import('./composables/useDrawSocket.js')['useDrawSocket']
   const useDrawSoundFx: typeof import('./composables/useDrawSoundFx.js')['useDrawSoundFx']
+  const useElapsedTime: typeof import('./composables/useElapsedTime.js')['default']
   const useFile: typeof import('./composables/useFile.js')['default']
   const useFlashcards: typeof import('./composables/useFlashcards.js')['default']
   const useFormatter: typeof import('./composables/useFormatter.js')['default']

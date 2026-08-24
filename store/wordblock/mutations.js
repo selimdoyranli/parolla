@@ -1,4 +1,14 @@
+import { userTransformer } from '@/transformers'
 import { resolveGame } from './game'
+
+// Flatten a leaderboard row into the shape PlayerAvatar/Leaderboard expect: the user
+// fields at the top level, with the game results kept alongside.
+const mapScorers = leaderboard =>
+  leaderboard?.map(scorer => ({
+    ...userTransformer(scorer.user),
+    rank: scorer.rank,
+    ...(scorer.results && { results: scorer.results })
+  }))
 
 export default {
   SET_TARGET_WORD(state, { locale, charLength, word }) {
@@ -31,5 +41,19 @@ export default {
 
   SET_IS_ACTIVE_KEYBOARD(state, isActive) {
     state.isActiveKeyboard = isActive
+  },
+
+  SET_LEADERBOARD(state, { leaderboard, meta }) {
+    state.leaderboard.items = mapScorers(leaderboard)
+    state.leaderboard.meta = meta
+  },
+
+  SET_TODAYS_LEADERS(state, { charLength, leaderboard, meta }) {
+    const slot = state.todaysLeaders[charLength]
+
+    if (!slot) return
+
+    slot.items = mapScorers(leaderboard)
+    slot.meta = meta
   }
 }

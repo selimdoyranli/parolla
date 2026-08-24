@@ -1,5 +1,22 @@
 import { useStore, useContext, ref, computed, onMounted, unref } from '@nuxtjs/composition-api'
-import { WORDBLOCK_LOCALES, WORDBLOCK_FALLBACK_LOCALE } from '@/system/constant'
+import { WORDBLOCK_LOCALES, WORDBLOCK_FALLBACK_LOCALE, WORDBLOCK_MAX_ELAPSED_MS } from '@/system/constant'
+
+/**
+ * Letters the player had in the right spot in their final submitted guess.
+ *
+ * On a win that is the whole word; on a loss it is the partial credit the leaderboard
+ * scores a loss by. Kept pure and module-level so it can be tested without a Nuxt context.
+ */
+export const countFinalGreenLetters = guesses => {
+  const submitted = (guesses || []).filter(guess => guess?.word && guess?.states?.length > 0)
+  const finalGuess = submitted[submitted.length - 1]
+
+  if (!finalGuess) {
+    return 0
+  }
+
+  return finalGuess.states.filter(state => state === 'correct').length
+}
 
 /**
  * Game Status Enum
@@ -22,7 +39,7 @@ const gameStatusEnum = Object.freeze({
  */
 export default charLength => {
   const store = useStore()
-  const { i18n } = useContext()
+  const { i18n, $auth } = useContext()
   const charLen = computed(() => unref(charLength))
 
   // The active locale's alphabet drives the keyboard, the input filter and case
@@ -60,6 +77,14 @@ export default charLength => {
     store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: false })
   }
 
+  const getElapsedTimeAsMs = () => {
+    if (!endTime.value || !startTime.value) {
+      return 0
+    }
+
+    return Math.min(WORDBLOCK_MAX_ELAPSED_MS, Math.max(0, endTime.value - startTime.value))
+  }
+
   const endGame = async () => {
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
@@ -75,6 +100,19 @@ export default charLength => {
         elapsedTime: endTime.value && startTime.value ? endTime.value - startTime.value : null
       }
     })
+
+    // Only authenticated players enter the leaderboard, same rule as daily mode
+    if ($auth.loggedIn && $auth.user) {
+      await store.dispatch('wordblock/postStats', {
+        charLength: charLen.value,
+        stats: {
+          status: gameStatus.value,
+          attempts: currentAttempt.value,
+          greenLetters: countFinalGreenLetters(guesses.value),
+          elapsedTimeAsMs: getElapsedTimeAsMs()
+        }
+      })
+    }
 
     await store.dispatch('wordblock/increaseDailyPlayingCount')
   }

@@ -136,7 +136,9 @@ export default {
       wordblock: {
         title: 'WORDBLOCK',
         description: `Guess the today's word, daily word game`,
-        label: 'Played {count} times today'
+        label: 'Played {count} times today',
+        todaysBestScoreLabel: `Today's leader`,
+        todaysBestScore: '{label} {player}'
       },
       music: {
         title: 'MUSIC',

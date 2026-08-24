@@ -33,3 +33,8 @@ export const WORDBLOCK_LOCALES = {
   }
 }
 export const WORDBLOCK_FALLBACK_LOCALE = 'tr'
+// Upper bound the score API accepts for a game's elapsed time (24 hours). A board left
+// open overnight would otherwise be rejected on submit.
+export const WORDBLOCK_MAX_ELAPSED_MS = 86400000
+// Rows shown on a leaderboard page
+export const WORDBLOCK_LEADERBOARD_PAGE_SIZE = 100

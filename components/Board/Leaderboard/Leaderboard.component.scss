@@ -225,7 +225,18 @@
           margin-inline-end: calc(var(--base-m-x) / 4);
         }
 
-        &--results {
+        // The wordblock variant reuses this layout wholesale: same wrapping badge, same
+        // value colours, same time block below it — only the numbers inside differ.
+        &--wordblock {
+          .top-scorer-list-item-score__value {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+          }
+        }
+
+        &--results,
+        &--wordblock {
           position: relative;
           flex-wrap: wrap;
           height: auto;

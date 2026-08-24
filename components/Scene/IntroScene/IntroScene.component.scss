@@ -64,12 +64,6 @@
       }
 
       &--daily {
-        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
-        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
-        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
-        // no z-index on the bar can lift it back out.
-        --leaderboard-bar-overhang: 31px;
-
         .daily-heading {
           margin: 0;
 
@@ -83,15 +77,28 @@
           }
         }
 
+        // The body sits directly under the alphabet ticker here, so it drops its own top gap
         .intro-button-body {
           margin-block-start: 0;
-          margin-block-end: var(--leaderboard-bar-overhang);
 
           // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
           @include media-breakpoint-down(tablet) {
             margin-block-start: $spacer * 5;
-            margin-block-end: var(--leaderboard-bar-overhang);
           }
+        }
+      }
+
+      // Both the daily and the wordblock cards hang a leaderboard bar under their body bar
+      &--daily,
+      &--wordblock {
+        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
+        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
+        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
+        // no z-index on the bar can lift it back out.
+        --leaderboard-bar-overhang: 31px;
+
+        .intro-button-body {
+          margin-block-end: var(--leaderboard-bar-overhang);
         }
 
         // The body reserves the overhang, so this only has to supply the gap under the bar
