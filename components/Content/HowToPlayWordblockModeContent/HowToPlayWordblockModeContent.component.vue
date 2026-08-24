@@ -1,13 +1,13 @@
 <template lang="pug">
 .how-to-play-wordblock-mode-content
   .instructions
-    p Günün Kelimesini Bul
-    p Her tahmin {{ charLength }} harfli doğru bir kelime olmalıdır. Göndermek için enter'a bas.
-    p Her tahminden sonra kutucukların renkleri tahmininin yakınlığına göre değişecektir. {{ MAX_ATTEMPTS }} tahmin hakkın var.
+    p {{ $t('dialog.howToPlay.wordblock.heading') }}
+    p {{ $t('dialog.howToPlay.wordblock.guessRule', { charLength }) }}
+    p {{ $t('dialog.howToPlay.wordblock.attemptsRule', { maxAttempts: MAX_ATTEMPTS }) }}
 
     .examples
       p
-        strong Örnekler
+        strong {{ $t('dialog.howToPlay.wordblock.examplesLabel') }}
 
       .example(v-for="(example, index) in activeExamples" :key="index")
         .row
@@ -18,20 +18,61 @@
           )
             span {{ letter }}
         p
-          strong {{ example.word[example.targetIndex].toLocaleUpperCase('tr-TR') }}
+          strong {{ normalizeWord(example.word[example.targetIndex]) }}
           |
-          | {{ example.description }}
+          | {{ $t(`dialog.howToPlay.wordblock.example.${example.state}`) }}
 
     p
-      strong Her gün yeni bir kelime gelir!
+      strong {{ $t('dialog.howToPlay.wordblock.footer') }}
 </template>
 
 <script>
-import { defineComponent, useRoute, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useRoute, computed } from '@nuxtjs/composition-api'
+import { WORDBLOCK_LOCALES, WORDBLOCK_FALLBACK_LOCALE } from '@/system/constant'
+
+// Example words are per-locale on purpose: they have to be real words of the locale the
+// player is guessing in, spelled with letters its keyboard actually offers.
+const EXAMPLES_CONFIG = {
+  tr: {
+    5: [
+      { word: 'kalem', targetIndex: 0, state: 'correct' },
+      { word: 'insan', targetIndex: 1, state: 'present' },
+      { word: 'çatal', targetIndex: 3, state: 'absent' }
+    ],
+    6: [
+      { word: 'peynir', targetIndex: 0, state: 'correct' },
+      { word: 'zeytin', targetIndex: 1, state: 'present' },
+      { word: 'toprak', targetIndex: 4, state: 'absent' }
+    ],
+    7: [
+      { word: 'makarna', targetIndex: 0, state: 'correct' },
+      { word: 'fasulye', targetIndex: 1, state: 'present' },
+      { word: 'zafiyet', targetIndex: 5, state: 'absent' }
+    ]
+  },
+  en: {
+    5: [
+      { word: 'plant', targetIndex: 0, state: 'correct' },
+      { word: 'brick', targetIndex: 1, state: 'present' },
+      { word: 'sound', targetIndex: 3, state: 'absent' }
+    ],
+    6: [
+      { word: 'silver', targetIndex: 0, state: 'correct' },
+      { word: 'pocket', targetIndex: 1, state: 'present' },
+      { word: 'garden', targetIndex: 4, state: 'absent' }
+    ],
+    7: [
+      { word: 'kitchen', targetIndex: 0, state: 'correct' },
+      { word: 'picture', targetIndex: 1, state: 'present' },
+      { word: 'diamond', targetIndex: 5, state: 'absent' }
+    ]
+  }
+}
 
 export default defineComponent({
   setup() {
     const route = useRoute()
+    const { i18n } = useContext()
 
     const calculatedCharLength = computed(() => {
       const len = parseInt(route.value.params.charLength)
@@ -39,28 +80,16 @@ export default defineComponent({
       return isNaN(len) ? 5 : len
     })
 
-    const { MAX_ATTEMPTS, activeCharLength: charLength } = useWordblock(calculatedCharLength)
+    const { MAX_ATTEMPTS, activeCharLength: charLength, normalizeWord } = useWordblock(calculatedCharLength)
 
-    const EXAMPLES_CONFIG = {
-      5: [
-        { word: 'kalem', targetIndex: 0, state: 'correct', description: 'harfi kelimede var ve doğru yerde.' },
-        { word: 'insan', targetIndex: 1, state: 'present', description: 'harfi kelimede var fakat yanlış yerde.' },
-        { word: 'çatal', targetIndex: 3, state: 'absent', description: 'harfi kelimede yok.' }
-      ],
-      6: [
-        { word: 'peynir', targetIndex: 0, state: 'correct', description: 'harfi kelimede var ve doğru yerde.' },
-        { word: 'zeytin', targetIndex: 1, state: 'present', description: 'harfi kelimede var fakat yanlış yerde.' },
-        { word: 'toprak', targetIndex: 4, state: 'absent', description: 'harfi kelimede yok.' }
-      ],
-      7: [
-        { word: 'makarna', targetIndex: 0, state: 'correct', description: 'harfi kelimede var ve doğru yerde.' },
-        { word: 'fasulye', targetIndex: 1, state: 'present', description: 'harfi kelimede var fakat yanlış yerde.' },
-        { word: 'zafiyet', targetIndex: 5, state: 'absent', description: 'harfi kelimede yok.' }
-      ]
-    }
+    const localeExamples = computed(() => {
+      const locale = WORDBLOCK_LOCALES[i18n.locale] ? i18n.locale : WORDBLOCK_FALLBACK_LOCALE
+
+      return EXAMPLES_CONFIG[locale]
+    })
 
     const activeExamples = computed(() => {
-      return EXAMPLES_CONFIG[charLength.value] || EXAMPLES_CONFIG[5]
+      return localeExamples.value[charLength.value] || localeExamples.value[5]
     })
 
     const getTileClass = (example, letterIndex) => {
@@ -78,6 +107,7 @@ export default defineComponent({
       charLength,
       MAX_ATTEMPTS,
       activeExamples,
+      normalizeWord,
       getTileClass
     }
   }

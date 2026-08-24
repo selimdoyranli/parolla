@@ -104,20 +104,24 @@ export default defineComponent({
     const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
     const { i18n } = useContext()
 
+    // Games are stored per locale + charLength, so this only ever resets the slot the
+    // player is actually looking at
+    const gameKey = computed(() => ({ locale: i18n.locale, charLength: props.charLength }))
+
     // Check if it's a new day and reset game if needed
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
     let storedDay = null
 
     if (process.browser) {
       const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
-      storedDay = persistStore?.wordblock?.games?.[props.charLength]?.currentDate
+      storedDay = persistStore?.wordblock?.games?.[i18n.locale]?.[props.charLength]?.currentDate
 
       if (day !== storedDay) {
         // New day - reset game
-        store.commit('wordblock/SET_IS_GAME_OVER', { charLength: props.charLength, isGameOver: false })
-        store.commit('wordblock/SET_CURRENT_DATE', { charLength: props.charLength, date: day })
+        store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: false })
+        store.commit('wordblock/SET_CURRENT_DATE', { ...gameKey.value, date: day })
         store.commit('wordblock/SET_GAME_RESULT', {
-          charLength: props.charLength,
+          ...gameKey.value,
           result: {
             status: null,
             attempts: 0,
@@ -130,7 +134,14 @@ export default defineComponent({
     }
 
     const { fetch, fetchState } = useFetch(async () => {
-      await store.dispatch('wordblock/fetchWord', { charLength: props.charLength })
+      const { error } = await store.dispatch('wordblock/fetchWord', { charLength: props.charLength })
+
+      // $appFetch resolves with an error tuple instead of throwing, so rethrow it here.
+      // Otherwise fetchState.error stays false and a failed fetch renders an empty board
+      // with no feedback at all — e.g. a locale whose word pool has not been seeded yet.
+      if (error) {
+        throw new Error(error.message)
+      }
     })
 
     const {
@@ -161,15 +172,11 @@ export default defineComponent({
       closeHowToPlayDialog,
       openStatsDialog,
       closeStatsDialog,
-      dialog
+      dialog,
+      keyboardLayout,
+      normalizeWord,
+      isWordblockLetter
     } = useWordblock(computed(() => props.charLength))
-
-    // Turkish keyboard layout
-    const keyboardLayout = [
-      ['e', 'r', 't', 'y', 'u', 'ı', 'o', 'p', 'ğ', 'ü'],
-      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ş', 'i'],
-      ['z', 'c', 'v', 'b', 'n', 'm', 'ö', 'ç']
-    ]
 
     // Scene classes computed
     const sceneClasses = computed(() => ({
@@ -255,7 +262,7 @@ export default defineComponent({
 
     // Get keyboard key state for visual feedback
     const getKeyState = key => {
-      const normalizedKey = key.toLocaleUpperCase('tr-TR')
+      const normalizedKey = normalizeWord(key)
 
       return letterStates.value[normalizedKey] || null
     }
@@ -352,12 +359,10 @@ export default defineComponent({
       } else if (event.key === 'Enter') {
         handleSubmit()
       } else if (event.key.length === 1) {
-        const key = event.key.toLocaleLowerCase('tr-TR')
-
-        // Check if it's a valid Turkish letter
-        if (/^[a-zçğıöşü]$/.test(key)) {
+        // Check it against the active locale's alphabet — the only typeable letters
+        if (isWordblockLetter(event.key)) {
           sfx.play('tick', { volume: 0.4 })
-          addLetter(key)
+          addLetter(event.key)
         }
       }
     }

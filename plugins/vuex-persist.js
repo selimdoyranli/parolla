@@ -1,4 +1,5 @@
 import VuexPersistence from 'vuex-persist'
+import { WORDBLOCK_AVAILABLE_LENGTHS, WORDBLOCK_FALLBACK_LOCALE } from '@/system/constant'
 
 export default ({ store }) => {
   new VuexPersistence({
@@ -54,5 +55,23 @@ export default ({ store }) => {
     store.commit('app/SET_IS_ACTIVE_REACTION_SOUND_FX', sfx.isActive)
     store.commit('app/SET_IS_ACTIVE_GAME_SCENE_SOUND_FX', sfx.isActive)
     delete sfx.isActive
+  }
+
+  // One-shot migration: wordblock games used to be keyed by charLength alone, so a
+  // finished game counted as finished in every locale. The restore deep-merges those
+  // numeric keys in next to the new locale-keyed slots — move them under the locale they
+  // were actually played in (the mode was Turkish-only) and drop them, so future saves
+  // don't carry the old shape.
+  const games = store.state.wordblock?.games
+
+  if (games) {
+    WORDBLOCK_AVAILABLE_LENGTHS.forEach(charLength => {
+      const legacyGame = games[charLength]
+
+      if (legacyGame && games[WORDBLOCK_FALLBACK_LOCALE]) {
+        games[WORDBLOCK_FALLBACK_LOCALE][charLength] = legacyGame
+        delete games[charLength]
+      }
+    })
   }
 }

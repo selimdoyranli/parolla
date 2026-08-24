@@ -11,3 +11,25 @@ export const USERNAME_REGEX = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/
 export const ROOM_TAG_REGEX = /[^\p{L}\p{N}]/gu
 export const WORDBLOCK_AVAILABLE_LENGTHS = [5, 6, 7]
 export const WORDBLOCK_MAX_ATTEMPTS = 6
+// Wordblock is letter-exact, so every locale needs its own alphabet: the on-screen keyboard
+// only offers these keys, and case conversion is locale-specific too (Turkish 'i' uppercases
+// to 'İ', not 'I', which would break every English word containing an i).
+export const WORDBLOCK_LOCALES = {
+  tr: {
+    letters: 'abcçdefgğhıijklmnoöprsştuüvyz',
+    keyboard: [
+      ['e', 'r', 't', 'y', 'u', 'ı', 'o', 'p', 'ğ', 'ü'],
+      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ş', 'i'],
+      ['z', 'c', 'v', 'b', 'n', 'm', 'ö', 'ç']
+    ]
+  },
+  en: {
+    letters: 'abcdefghijklmnopqrstuvwxyz',
+    keyboard: [
+      ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+      ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+    ]
+  }
+}
+export const WORDBLOCK_FALLBACK_LOCALE = 'tr'

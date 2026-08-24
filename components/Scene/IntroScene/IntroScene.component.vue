@@ -107,7 +107,6 @@
               | {{ $t('leaderboard.title') }}
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--wordblock(
-        v-if="$i18n.locale === $i18n.defaultLocale"
         icon="icon-park:view-grid-card"
         :to="localePath({ name: 'WordblockMode' })"
         :title="$t('introScene.modeList.wordblock.title')"
