@@ -1,5 +1,58 @@
 # Changelog
 
+## v2.55.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.3...v2.55.0)
+
+
+### 🚀 Enhancements
+
+  - **home:** Merge daily and unlimited into one block with an alphabet ticker ([5689f4f](https://github.com/selimdoyranli/parolla/commit/5689f4f))
+  - **home:** Set the daily block copy and give the primary action a brand fill ([dccec7f](https://github.com/selimdoyranli/parolla/commit/dccec7f))
+  - **home:** Show a strip of cover art quizzes in the creator block ([fa4df59](https://github.com/selimdoyranli/parolla/commit/fa4df59))
+  - **draw-room:** Drop the masked-word hint for guessers ([22313e2](https://github.com/selimdoyranli/parolla/commit/22313e2))
+  - **draw-room:** Add the drawer's hint button and reveal-driven mask ([7766c94](https://github.com/selimdoyranli/parolla/commit/7766c94))
+  - **wordblock:** Open wordblock mode to the en locale ([4af4827](https://github.com/selimdoyranli/parolla/commit/4af4827))
+  - **wordblock:** Add the kelimeblok leaderboard ([4035d0d](https://github.com/selimdoyranli/parolla/commit/4035d0d))
+
+### 🩹 Fixes
+
+  - **home:** Stop the footer from eating clicks on the leaderboard button ([12f3ecf](https://github.com/selimdoyranli/parolla/commit/12f3ecf))
+  - **alphabet-ticker:** Drop "I" and "Ğ" from the loop ([43ad100](https://github.com/selimdoyranli/parolla/commit/43ad100))
+  - **quiz-carousel:** Stop long card titles spilling over the cover ([689205e](https://github.com/selimdoyranli/parolla/commit/689205e))
+  - **quiz-carousel:** Keep the title gradient put when adding the bottom gap ([efed3ef](https://github.com/selimdoyranli/parolla/commit/efed3ef))
+  - **quiz-carousel:** Fill the title band down to the cover's edge ([7a80265](https://github.com/selimdoyranli/parolla/commit/7a80265))
+  - **wordblock:** Scope saved games to the locale they were played in ([b7132d0](https://github.com/selimdoyranli/parolla/commit/b7132d0))
+  - **wordblock:** Hide the intro card body until someone has scored ([d2e50d9](https://github.com/selimdoyranli/parolla/commit/d2e50d9))
+  - **wordblock:** Show the header back button on the leaderboard ([e812e6a](https://github.com/selimdoyranli/parolla/commit/e812e6a))
+
+### 💅 Refactors
+
+  - **home:** Lead the daily block with a title and description ([ed80485](https://github.com/selimdoyranli/parolla/commit/ed80485))
+  - **home:** Drop the daily block's bespoke type sizes and button hover ([78ef4b7](https://github.com/selimdoyranli/parolla/commit/78ef4b7))
+  - **wordblock:** Suffix the board width in leaderboard routes ([607df89](https://github.com/selimdoyranli/parolla/commit/607df89))
+  - **wordblock:** Hyphenate the leaderboard board suffix ([377b72f](https://github.com/selimdoyranli/parolla/commit/377b72f))
+
+### 🎨 Styles
+
+  - **intro-button:** Soften the play button hover scale ([5fe5fb2](https://github.com/selimdoyranli/parolla/commit/5fe5fb2))
+  - **home:** Match the daily heading colour to the other intro blocks ([3f170bf](https://github.com/selimdoyranli/parolla/commit/3f170bf))
+  - **quiz-carousel:** Give the cards a readable edge and clear the description ([aa9328f](https://github.com/selimdoyranli/parolla/commit/aa9328f))
+  - **home:** Pad the quiz strip and drop the description's top margin ([d2921e1](https://github.com/selimdoyranli/parolla/commit/d2921e1))
+  - **quiz-carousel:** Move the quiz type pill into the footer, far right ([3eb93a6](https://github.com/selimdoyranli/parolla/commit/3eb93a6))
+  - **home:** Breathe under the card titles, restore the description margin ([c796d8d](https://github.com/selimdoyranli/parolla/commit/c796d8d))
+  - **home:** Zero the description margin in the creator block only ([f8dd0f1](https://github.com/selimdoyranli/parolla/commit/f8dd0f1))
+  - **home:** Drop the media slot's bottom margin and the creator override ([d307c46](https://github.com/selimdoyranli/parolla/commit/d307c46))
+  - **home:** Zero the creator block body's bottom margin ([745d1ca](https://github.com/selimdoyranli/parolla/commit/745d1ca))
+  - **home:** Add top margin above the daily block's footer ([a92eef3](https://github.com/selimdoyranli/parolla/commit/a92eef3))
+  - **intro-button:** Zero the body's bottom margin ([88962da](https://github.com/selimdoyranli/parolla/commit/88962da))
+  - **home:** Widen the daily footer's top margin to 32px ([87487ea](https://github.com/selimdoyranli/parolla/commit/87487ea))
+  - **home:** Rebalance intro button spacing and drop the draw mode label ([7db1f5c](https://github.com/selimdoyranli/parolla/commit/7db1f5c))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.54.3
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.2...v2.54.3)
