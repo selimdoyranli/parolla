@@ -364,9 +364,12 @@ module.exports = {
             tr: '/kelimeblok/liderlik',
             en: '/wordblock/leaderboard'
           },
+          // The board width carries its own suffix. path-to-regexp needs the explicit \d+
+          // pattern here: ':charLength-harf' would keep a hyphen, and ':charLengthharf'
+          // would read as one param name.
           'WordblockMode/Leaderboard/_charLength/_period/index': {
-            tr: '/kelimeblok/liderlik/:charLength/:period',
-            en: '/wordblock/leaderboard/:charLength/:period'
+            tr: '/kelimeblok/liderlik/:charLength(\\d+)harf/:period',
+            en: '/wordblock/leaderboard/:charLength(\\d+)letters/:period'
           },
           'MusicMode/index': {
             tr: '/muzik',
