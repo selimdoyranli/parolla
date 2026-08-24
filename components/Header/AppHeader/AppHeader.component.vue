@@ -280,6 +280,7 @@ export default defineComponent({
         route.value.path === localePath({ name: 'TourMode-TourModeGame' }) ||
         route.value.path.startsWith(localePath({ name: 'DailyMode-Leaderboard' })) ||
         route.value.path.startsWith(localePath({ name: 'TourMode-Leaderboard' })) ||
+        route.value.path.startsWith(localePath({ name: 'WordblockMode-Leaderboard' })) ||
         route.value.path === localePath({ name: 'MusicMode-GuessTheSong' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.path === localePath({ name: 'Tycoon-KnowledgeKingdom' }) ||
