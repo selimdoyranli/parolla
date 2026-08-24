@@ -394,7 +394,18 @@ export default {
       },
       cancelButtonText: 'Kapat ve Başla',
       wordblock: {
-        title: 'parolla kelimeblok nasıl oynanır?'
+        title: 'parolla kelimeblok nasıl oynanır?',
+        heading: 'Günün Kelimesini Bul',
+        guessRule: `Her tahmin {charLength} harfli doğru bir kelime olmalıdır. Göndermek için enter'a bas.`,
+        attemptsRule:
+          'Her tahminden sonra kutucukların renkleri tahmininin yakınlığına göre değişecektir. {maxAttempts} tahmin hakkın var.',
+        examplesLabel: 'Örnekler',
+        example: {
+          correct: 'harfi kelimede var ve doğru yerde.',
+          present: 'harfi kelimede var fakat yanlış yerde.',
+          absent: 'harfi kelimede yok.'
+        },
+        footer: 'Her gün yeni bir kelime gelir!'
       }
     },
     stats: {

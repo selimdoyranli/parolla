@@ -1,4 +1,5 @@
-import { useStore, ref, computed, onMounted, unref } from '@nuxtjs/composition-api'
+import { useStore, useContext, ref, computed, onMounted, unref } from '@nuxtjs/composition-api'
+import { WORDBLOCK_LOCALES, WORDBLOCK_FALLBACK_LOCALE } from '@/system/constant'
 
 /**
  * Game Status Enum
@@ -14,13 +15,22 @@ const gameStatusEnum = Object.freeze({
  * Wordblock Game Logic
  *
  * A composable hook that manages the game state and logic for the Wordblock game.
- * Supports Turkish characters and provides clean methods for API integration.
+ * Letter handling is locale-aware (see WORDBLOCK_LOCALES) and it provides clean methods
+ * for API integration.
  *
  * @returns {Object} Game state and methods
  */
 export default charLength => {
   const store = useStore()
+  const { i18n } = useContext()
   const charLen = computed(() => unref(charLength))
+
+  // The active locale's alphabet drives the keyboard, the input filter and case
+  // conversion. Anything outside it is not typeable, so it can never be part of a guess.
+  const alphabet = computed(() => WORDBLOCK_LOCALES[i18n.locale] || WORDBLOCK_LOCALES[WORDBLOCK_FALLBACK_LOCALE])
+  const keyboardLayout = computed(() => alphabet.value.keyboard)
+  const lowercaseLetters = computed(() => new Set(alphabet.value.letters))
+  const uppercaseLetters = computed(() => new Set([...alphabet.value.letters].map(letter => letter.toLocaleUpperCase(i18n.locale))))
 
   const targetWord = computed(() => store.getters['wordblock/targetWord'](charLen.value))
   const WORD_LENGTH = computed(() => targetWord.value.length)
@@ -119,11 +129,18 @@ export default charLength => {
   }
 
   /**
-   * Normalize Turkish characters for comparison
-   * Converts to uppercase Turkish locale
+   * Normalize a word for comparison by uppercasing it in the active locale.
+   * The locale matters: 'i' uppercases to 'İ' in Turkish but to 'I' in English.
    */
-  const normalizeTurkish = text => {
-    return text.toLocaleUpperCase('tr-TR')
+  const normalizeWord = text => {
+    return text.toLocaleUpperCase(i18n.locale)
+  }
+
+  /**
+   * Whether a character is a typeable letter in the active locale, in either case.
+   */
+  const isWordblockLetter = char => {
+    return lowercaseLetters.value.has(char) || uppercaseLetters.value.has(char)
   }
 
   /**
@@ -166,7 +183,7 @@ export default charLength => {
    */
   const evaluateGuess = guess => {
     const states = []
-    const normalizedGuess = normalizeTurkish(guess)
+    const normalizedGuess = normalizeWord(guess)
 
     for (let i = 0; i < normalizedGuess.length; i++) {
       const letter = normalizedGuess[i]
@@ -182,7 +199,7 @@ export default charLength => {
    * Called after cell reveal animations are complete
    */
   const updateKeyboardStates = (guess, states) => {
-    const normalizedGuess = normalizeTurkish(guess)
+    const normalizedGuess = normalizeWord(guess)
     const newStates = { ...letterStates.value }
 
     for (let i = 0; i < normalizedGuess.length; i++) {
@@ -212,7 +229,7 @@ export default charLength => {
       return { success: false, error: 'incomplete', message: 'Kelime tamamlanmamış' }
     }
 
-    const normalizedGuess = normalizeTurkish(currentGuess.value)
+    const normalizedGuess = normalizeWord(currentGuess.value)
     const states = evaluateGuess(normalizedGuess)
 
     guesses.value[currentAttempt.value] = {
@@ -222,7 +239,7 @@ export default charLength => {
     }
 
     // Check if won
-    if (normalizedGuess === normalizeTurkish(targetWord.value)) {
+    if (normalizedGuess === normalizeWord(targetWord.value)) {
       gameStatus.value = gameStatusEnum.WON
       endTime.value = Date.now()
       currentAttempt.value++ // Increment to show the winning row
@@ -271,17 +288,15 @@ export default charLength => {
    */
   const addLetter = letter => {
     if (currentGuess.value.length < WORD_LENGTH.value && gameStatus.value === gameStatusEnum.PLAYING) {
-      currentGuess.value += normalizeTurkish(letter)
+      currentGuess.value += normalizeWord(letter)
     }
   }
 
   /**
-   * Handle input change with Turkish character support
-   * Filters out invalid characters
+   * Handle input change, keeping only letters of the active locale's alphabet
    */
   const handleInputChange = value => {
-    // Allow Turkish characters: A-Z, Ç, Ğ, İ, Ö, Ş, Ü
-    const normalized = normalizeTurkish(value).replace(/[^A-ZÇĞİÖŞÜ]/g, '')
+    const normalized = [...normalizeWord(value)].filter(isWordblockLetter).join('')
 
     if (normalized.length <= WORD_LENGTH.value) {
       currentGuess.value = normalized
@@ -306,7 +321,7 @@ export default charLength => {
    * Automatically resets the game
    */
   const setTargetWord = word => {
-    targetWord.value = normalizeTurkish(word)
+    targetWord.value = normalizeWord(word)
     resetGame()
   }
 
@@ -404,6 +419,7 @@ export default charLength => {
     // Computed
     getCurrentRowDisplay,
     getGameStats,
+    keyboardLayout,
     dialog,
 
     // Methods
@@ -416,7 +432,8 @@ export default charLength => {
     resetGame,
     setTargetWord,
     getGameData,
-    normalizeTurkish,
+    normalizeWord,
+    isWordblockLetter,
     updateKeyboardStates,
     restoreGameState,
     openHowToPlayDialog,

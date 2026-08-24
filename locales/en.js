@@ -135,7 +135,8 @@ export default {
       },
       wordblock: {
         title: 'WORDBLOCK',
-        description: `Guess the today's word, daily word game`
+        description: `Guess the today's word, daily word game`,
+        label: 'Played {count} times today'
       },
       music: {
         title: 'MUSIC',
@@ -390,7 +391,17 @@ export default {
       },
       cancelButtonText: 'Close and Play',
       wordblock: {
-        title: 'How to play parolla wordblock?'
+        title: 'How to play parolla wordblock?',
+        heading: `Find Today's Word`,
+        guessRule: 'Each guess must be a valid {charLength} letter word. Hit enter to submit.',
+        attemptsRule: 'After each guess, the tile colors change to show how close your guess was. You have {maxAttempts} attempts.',
+        examplesLabel: 'Examples',
+        example: {
+          correct: 'is in the word and in the right spot.',
+          present: 'is in the word but in the wrong spot.',
+          absent: 'is not in the word.'
+        },
+        footer: 'A new word arrives every day!'
       }
     },
     stats: {

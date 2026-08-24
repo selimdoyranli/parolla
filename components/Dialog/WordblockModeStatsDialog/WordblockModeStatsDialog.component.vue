@@ -44,7 +44,8 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
           CountDown.countdown__timer(ref="countdownTimerRef" format="HH:mm:ss" :auto-start="true" :time="nextGameDateMs")
         // Result Sharer
         .result-sharer
-          Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults") PAYLAŞ
+          Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
+            | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
       // Other Lengths
       .other-lengths

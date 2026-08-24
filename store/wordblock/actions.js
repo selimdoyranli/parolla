@@ -3,7 +3,8 @@ export default {
     const { data, error } = await this.$appFetch({
       path: `modes/wordblock/daily-word`,
       query: {
-        charLength
+        charLength,
+        locale: this.$i18n.locale
       }
     })
 
@@ -29,7 +30,10 @@ export default {
   async increaseDailyPlayingCount({ commit }) {
     const { data, error } = await this.$appFetch({
       path: `modes/wordblock/view-count`,
-      method: 'POST'
+      method: 'POST',
+      query: {
+        locale: this.$i18n.locale
+      }
     })
 
     return {
@@ -40,7 +44,10 @@ export default {
 
   async fetchDailyPlayingCount({ commit }) {
     const { data, error } = await this.$appFetch({
-      path: `modes/wordblock/view-count`
+      path: `modes/wordblock/view-count`,
+      query: {
+        locale: this.$i18n.locale
+      }
     })
 
     if (data) {
