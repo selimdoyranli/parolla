@@ -64,12 +64,6 @@
       }
 
       &--daily {
-        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
-        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
-        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
-        // no z-index on the bar can lift it back out.
-        --leaderboard-bar-overhang: 31px;
-
         .daily-heading {
           margin: 0;
 
@@ -82,6 +76,16 @@
             @include font-weight-regular;
           }
         }
+      }
+
+      // Both the daily and the wordblock cards hang a leaderboard bar under their body bar
+      &--daily,
+      &--wordblock {
+        // How far the leaderboard bar hangs below the body bar. The body has to reserve exactly
+        // this much, otherwise the footer's box (z-index 2) lands on top of the bar and swallows
+        // its clicks — the body's backdrop-filter traps the bar in its own stacking context, so
+        // no z-index on the bar can lift it back out.
+        --leaderboard-bar-overhang: 31px;
 
         .intro-button-body {
           margin-block-start: 0;

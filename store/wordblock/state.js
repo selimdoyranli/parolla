@@ -35,8 +35,22 @@ const defaultGames = () =>
     return locales
   }, {})
 
+// Leaderboards are per board too, so the intro card's "today's leaders" are kept per
+// character length. Slots are pre-created so Vue 2 tracks them without Vue.set.
+const defaultTodaysLeaders = () =>
+  WORDBLOCK_AVAILABLE_LENGTHS.reduce((lengths, charLength) => {
+    lengths[charLength] = { items: [], meta: {} }
+
+    return lengths
+  }, {})
+
 export default () => ({
   games: defaultGames(),
   dailyPlayingCount: 0,
-  isActiveKeyboard: true
+  isActiveKeyboard: true,
+  leaderboard: {
+    items: [],
+    meta: {}
+  },
+  todaysLeaders: defaultTodaysLeaders()
 })

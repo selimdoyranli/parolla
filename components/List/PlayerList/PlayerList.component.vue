@@ -20,6 +20,22 @@
             | .
             sub {{ item.time.split(':')[2] }}
 
+        .player-list-item-time.player-list-item-time--wordblock(v-if="item.results?.status === 'won'")
+          AppIcon.player-list-item-time__icon(name="tabler:clock" :width="16" :height="16")
+          span.player-list-item-time__value {{ formatElapsedTime(item.results.elapsedTimeAsMs) }}
+
+        // Wordblock: attempts out of the maximum, or the letters found if it was never solved
+        .player-list-item-score.player-list-item-score--wordblock(v-if="item.results?.status")
+          template(v-if="item.results.status === 'won'")
+            span.player-list-item-score__value.player-list-item-score__value--correct
+              strong {{ item.results.attempts }}
+            span.divider &nbsp;/&nbsp;
+            span.player-list-item-score__value {{ maxAttempts }}
+          template(v-else)
+            span.player-list-item-score__value.player-list-item-score__value--wrong
+              AppIcon(name="tabler:x" :width="14" :height="14")
+              strong &nbsp;{{ item.results.greenLetters }}
+
         .player-list-item-time.player-list-item-time--results(v-if="item.results?.remainTime")
           AppIcon.player-list-item-time__icon(name="tabler:clock" :width="16" :height="16")
           span.player-list-item-time__value
@@ -39,7 +55,7 @@
             strong {{ item.globalScore }}
             label &nbsp;puan
 
-        .player-list-item-score.player-list-item-score--results(v-if="item.results")
+        .player-list-item-score.player-list-item-score--results(v-if="item.results?.correctAnswers")
           span.player-list-item-score__value.player-list-item-score__value--correct
             strong {{ item.results.correctAnswers?.length }}
           span.divider /&nbsp;
@@ -57,6 +73,7 @@
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 import { Cell } from 'vant'
+import { WORDBLOCK_MAX_ATTEMPTS } from '@/system/constant'
 
 export default defineComponent({
   name: 'PlayerList',
@@ -79,8 +96,12 @@ export default defineComponent({
       return isCorrect ? 'player-list-item--success' : 'player-list-item--danger'
     }
 
+    const { formatElapsedTime } = useElapsedTime()
+
     return {
-      answerStatusClass
+      answerStatusClass,
+      maxAttempts: WORDBLOCK_MAX_ATTEMPTS,
+      formatElapsedTime
     }
   }
 })

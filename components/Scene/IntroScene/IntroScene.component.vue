@@ -113,6 +113,24 @@
         :headLabel="{ title: $t('introScene.modeList.wordblock.label', { count: wordblockDailyPlayingCount }) }"
         :description="$t('introScene.modeList.wordblock.description')"
       )
+        template(#body)
+          .top-scorer
+            template(v-if="todaysWordblockBestScorer")
+              AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
+              i18n(tag="p" path="introScene.modeList.wordblock.todaysBestScore")
+                template(#label)
+                  label.best-score-label {{ $t('introScene.modeList.wordblock.todaysBestScoreLabel') }}
+                template(#player)
+                  span.top-scorer__player
+                    AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
+                    PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysWordblockBestScorer" :size="22")
+            .leaderboard-bar
+              .avatar-group(v-if="wordblockTodaysLeaders.items?.length > 4")
+                PlayerAvatar(v-for="player in wordblockTodaysLeaders.items.slice(0, 4)" :key="player.id" :user="player" :size="24")
+                .avatar-group__moreCount +{{ wordblockTodaysLeaders?.meta?.pagination?.total - 4 }}
+              Button.leaderboard-button(size="small" plain :to="wordblockLeaderboardLink")
+                AppIcon.leaderboard-button__icon(name="noto:trophy" :width="16" :height="16")
+                | {{ $t('leaderboard.title') }}
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--music(
         icon="emojione:musical-notes"
@@ -152,13 +170,14 @@
 <script>
 import { defineComponent, useContext, useStore, onMounted, computed } from '@nuxtjs/composition-api'
 import { Button, Notify } from 'vant'
+import { WORDBLOCK_AVAILABLE_LENGTHS } from '@/system/constant'
 
 export default defineComponent({
   components: {
     Button
   },
   setup() {
-    const { i18n } = useContext()
+    const { i18n, localePath } = useContext()
     const store = useStore()
 
     const localeAvailabilityMessage = () => {
@@ -197,6 +216,17 @@ export default defineComponent({
 
     const wordblockDailyPlayingCount = computed(() => store.getters['wordblock/dailyPlayingCount'])
 
+    // The card only has room for one board, so it shows the shortest one
+    const wordblockLeaderboardCharLength = WORDBLOCK_AVAILABLE_LENGTHS[0]
+    const wordblockTodaysLeaders = computed(() => store.getters['wordblock/todaysLeaders'](wordblockLeaderboardCharLength))
+    const todaysWordblockBestScorer = computed(() => wordblockTodaysLeaders.value.items?.[0])
+    const wordblockLeaderboardLink = computed(() =>
+      localePath({
+        name: 'WordblockMode-Leaderboard-charLength-period',
+        params: { charLength: wordblockLeaderboardCharLength, period: i18n.t('period.daily.slug') }
+      })
+    )
+
     onMounted(async () => {
       await Promise.all([
         store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 }),
@@ -204,7 +234,8 @@ export default defineComponent({
         store.dispatch('creator/fetchDailyPlayingCount'),
         store.dispatch('creator/fetchTodaysQuiz'),
         store.dispatch('creator/fetchRandomRooms', { limit: 10 }),
-        store.dispatch('wordblock/fetchDailyPlayingCount')
+        store.dispatch('wordblock/fetchDailyPlayingCount'),
+        store.dispatch('wordblock/fetchTodaysLeaders', { charLength: wordblockLeaderboardCharLength, limit: 10 })
       ])
     })
 
@@ -220,6 +251,10 @@ export default defineComponent({
       creatorRandomRooms,
       todaysQuiz,
       wordblockDailyPlayingCount,
+      wordblockTodaysLeaders,
+      todaysWordblockBestScorer,
+      wordblockLeaderboardCharLength,
+      wordblockLeaderboardLink,
       localeAvailabilityMessage
     }
   }

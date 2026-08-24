@@ -360,6 +360,14 @@ module.exports = {
             tr: '/kelimeblok/:charLength-harf',
             en: '/wordblock/:charLength-letters'
           },
+          'WordblockMode/Leaderboard/index': {
+            tr: '/kelimeblok/liderlik',
+            en: '/wordblock/leaderboard'
+          },
+          'WordblockMode/Leaderboard/_charLength/_period/index': {
+            tr: '/kelimeblok/liderlik/:charLength/:period',
+            en: '/wordblock/leaderboard/:charLength/:period'
+          },
           'MusicMode/index': {
             tr: '/muzik',
             en: '/music'

@@ -37,5 +37,13 @@ export default {
 
   isActiveKeyboard(state) {
     return state.isActiveKeyboard
+  },
+
+  leaderboard(state) {
+    return state.leaderboard
+  },
+
+  todaysLeaders: state => charLength => {
+    return state.todaysLeaders[charLength] || { items: [], meta: {} }
   }
 }

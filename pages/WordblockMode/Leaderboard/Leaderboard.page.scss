@@ -1,0 +1,11 @@
+// The leaderboard page layout is shared with daily mode — same markup, same
+// `.leaderboard-page` root — so the base styles are imported rather than duplicated.
+@import '../../DailyMode/Leaderboard/Leaderboard.page.scss';
+
+.wordblock-leaderboard-page {
+  // Wordblock has a second row of tabs (one per board width) above the period tabs
+  .button-group--charLength {
+    margin-block-end: 0;
+    padding-block-end: 0;
+  }
+}

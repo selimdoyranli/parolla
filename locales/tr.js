@@ -138,7 +138,9 @@ export default {
       wordblock: {
         title: 'KELİMEBLOK',
         description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
-        label: 'Bugün {count} kez oynandı'
+        label: 'Bugün {count} kez oynandı',
+        todaysBestScoreLabel: 'Günün lideri',
+        todaysBestScore: '{label} {player}'
       },
       music: {
         title: 'MÜZİK',
