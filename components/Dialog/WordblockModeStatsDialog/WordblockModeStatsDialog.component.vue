@@ -158,8 +158,10 @@ export default defineComponent({
       }
     )
 
-    const isGameOver = computed(() => store.getters['wordblock/isGameOver'](props.charLength))
-    const gameResult = computed(() => store.getters['wordblock/result'](props.charLength))
+    const gameKey = computed(() => ({ locale: i18n.locale, charLength: props.charLength }))
+
+    const isGameOver = computed(() => store.getters['wordblock/isGameOver'](gameKey.value))
+    const gameResult = computed(() => store.getters['wordblock/result'](gameKey.value))
 
     const elapsedTime = computed(() => {
       if (isGameOver.value && gameResult.value.elapsedTime) {

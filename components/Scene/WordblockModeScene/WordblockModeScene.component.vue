@@ -104,20 +104,24 @@ export default defineComponent({
     const isActiveKeyboard = computed(() => store.getters['wordblock/isActiveKeyboard'])
     const { i18n } = useContext()
 
+    // Games are stored per locale + charLength, so this only ever resets the slot the
+    // player is actually looking at
+    const gameKey = computed(() => ({ locale: i18n.locale, charLength: props.charLength }))
+
     // Check if it's a new day and reset game if needed
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
     let storedDay = null
 
     if (process.browser) {
       const persistStore = JSON.parse(window.localStorage.getItem('persistStore'))
-      storedDay = persistStore?.wordblock?.games?.[props.charLength]?.currentDate
+      storedDay = persistStore?.wordblock?.games?.[i18n.locale]?.[props.charLength]?.currentDate
 
       if (day !== storedDay) {
         // New day - reset game
-        store.commit('wordblock/SET_IS_GAME_OVER', { charLength: props.charLength, isGameOver: false })
-        store.commit('wordblock/SET_CURRENT_DATE', { charLength: props.charLength, date: day })
+        store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: false })
+        store.commit('wordblock/SET_CURRENT_DATE', { ...gameKey.value, date: day })
         store.commit('wordblock/SET_GAME_RESULT', {
-          charLength: props.charLength,
+          ...gameKey.value,
           result: {
             status: null,
             attempts: 0,

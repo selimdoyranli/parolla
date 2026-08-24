@@ -18,7 +18,7 @@ export default {
         }
       }
 
-      commit('SET_TARGET_WORD', { charLength, word: transform(data).word })
+      commit('SET_TARGET_WORD', { locale: this.$i18n.locale, charLength, word: transform(data).word })
     }
 
     return {

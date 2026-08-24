@@ -91,7 +91,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const { localePath, getRouteBaseName } = useContext()
+    const { localePath, getRouteBaseName, i18n } = useContext()
     const store = useStore()
 
     const { formatMillions } = useFormatter()
@@ -149,9 +149,10 @@ export default defineComponent({
       }
 
       if (activeGameMode.value === gameModeKeyEnum.WORDBLOCK) {
-        const charLength = parseInt(route.value.params.charLength) || 5
-        const currentDialogState = wordblockDialog.value(charLength).stats.isOpen
-        store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength, isOpen: !currentDialogState })
+        // Wordblock games are stored per locale + charLength
+        const gameKey = { locale: i18n.locale, charLength: parseInt(route.value.params.charLength) || 5 }
+        const currentDialogState = wordblockDialog.value(gameKey).stats.isOpen
+        store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { ...gameKey, isOpen: !currentDialogState })
       }
     }
 

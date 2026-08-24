@@ -32,13 +32,17 @@ export default charLength => {
   const lowercaseLetters = computed(() => new Set(alphabet.value.letters))
   const uppercaseLetters = computed(() => new Set([...alphabet.value.letters].map(letter => letter.toLocaleUpperCase(i18n.locale))))
 
-  const targetWord = computed(() => store.getters['wordblock/targetWord'](charLen.value))
+  // Every store read/write is scoped to locale + charLength: each locale has its own
+  // daily word, so a finished Turkish game must not leak into the English one.
+  const gameKey = computed(() => ({ locale: i18n.locale, charLength: charLen.value }))
+
+  const targetWord = computed(() => store.getters['wordblock/targetWord'](gameKey.value))
   const WORD_LENGTH = computed(() => targetWord.value.length)
   const activeCharLength = computed(() => charLen.value)
   const MAX_ATTEMPTS = 6
 
-  const isGameOver = computed(() => store.getters['wordblock/isGameOver'](charLen.value))
-  const gameResult = computed(() => store.getters['wordblock/result'](charLen.value))
+  const isGameOver = computed(() => store.getters['wordblock/isGameOver'](gameKey.value))
+  const gameResult = computed(() => store.getters['wordblock/result'](gameKey.value))
 
   // Game state
   const currentAttempt = ref(0)
@@ -53,16 +57,16 @@ export default charLength => {
     closeHowToPlayDialog()
     gameStatus.value = gameStatusEnum.PLAYING
     startTime.value = Date.now()
-    store.commit('wordblock/SET_IS_GAME_OVER', { charLength: charLen.value, isGameOver: false })
+    store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: false })
   }
 
   const endGame = async () => {
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
-    store.commit('wordblock/SET_IS_GAME_OVER', { charLength: charLen.value, isGameOver: true })
-    store.commit('wordblock/SET_CURRENT_DATE', { charLength: charLen.value, date: day })
+    store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: true })
+    store.commit('wordblock/SET_CURRENT_DATE', { ...gameKey.value, date: day })
     store.commit('wordblock/SET_GAME_RESULT', {
-      charLength: charLen.value,
+      ...gameKey.value,
       result: {
         status: gameStatus.value,
         attempts: currentAttempt.value,
@@ -374,22 +378,22 @@ export default charLength => {
     }
   }
 
-  const dialog = computed(() => store.getters['wordblock/dialog'](charLen.value))
+  const dialog = computed(() => store.getters['wordblock/dialog'](gameKey.value))
 
   const openHowToPlayDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { charLength: charLen.value, isOpen: true })
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { ...gameKey.value, isOpen: true })
   }
 
   const closeHowToPlayDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { charLength: charLen.value, isOpen: false })
+    store.commit('wordblock/SET_IS_OPEN_HOW_TO_PLAY_DIALOG', { ...gameKey.value, isOpen: false })
   }
 
   const openStatsDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength: charLen.value, isOpen: true })
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { ...gameKey.value, isOpen: true })
   }
 
   const closeStatsDialog = () => {
-    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { charLength: charLen.value, isOpen: false })
+    store.commit('wordblock/SET_IS_OPEN_STATS_DIALOG', { ...gameKey.value, isOpen: false })
   }
 
   onMounted(() => {
