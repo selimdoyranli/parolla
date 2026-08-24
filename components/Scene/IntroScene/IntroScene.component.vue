@@ -113,17 +113,18 @@
         :headLabel="{ title: $t('introScene.modeList.wordblock.label', { count: wordblockDailyPlayingCount }) }"
         :description="$t('introScene.modeList.wordblock.description')"
       )
-        template(#body)
+        // The leader, the avatars and the button all live in this slot, so until someone has
+        // scored today the whole body bar goes — otherwise it renders as an empty strip
+        template(v-if="todaysWordblockBestScorer" #body)
           .top-scorer
-            template(v-if="todaysWordblockBestScorer")
-              AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
-              i18n(tag="p" path="introScene.modeList.wordblock.todaysBestScore")
-                template(#label)
-                  label.best-score-label {{ $t('introScene.modeList.wordblock.todaysBestScoreLabel') }}
-                template(#player)
-                  span.top-scorer__player
-                    AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
-                    PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysWordblockBestScorer" :size="22")
+            AppIcon.top-scorer__icon(name="tabler:trophy" :width="16" :height="16")
+            i18n(tag="p" path="introScene.modeList.wordblock.todaysBestScore")
+              template(#label)
+                label.best-score-label {{ $t('introScene.modeList.wordblock.todaysBestScoreLabel') }}
+              template(#player)
+                span.top-scorer__player
+                  AppIcon.top-scorer__crown(name="tabler:crown" :width="14" :height="14")
+                  PlayerAvatar.top-scorer__avatar(with-username open-player-dialog-on-click :user="todaysWordblockBestScorer" :size="22")
             .leaderboard-bar
               .avatar-group(v-if="wordblockTodaysLeaders.items?.length > 4")
                 PlayerAvatar(v-for="player in wordblockTodaysLeaders.items.slice(0, 4)" :key="player.id" :user="player" :size="24")

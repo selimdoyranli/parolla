@@ -76,6 +76,16 @@
             @include font-weight-regular;
           }
         }
+
+        // The body sits directly under the alphabet ticker here, so it drops its own top gap
+        .intro-button-body {
+          margin-block-start: 0;
+
+          // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
+          @include media-breakpoint-down(tablet) {
+            margin-block-start: $spacer * 5;
+          }
+        }
       }
 
       // Both the daily and the wordblock cards hang a leaderboard bar under their body bar
@@ -88,14 +98,7 @@
         --leaderboard-bar-overhang: 31px;
 
         .intro-button-body {
-          margin-block-start: 0;
           margin-block-end: var(--leaderboard-bar-overhang);
-
-          // Below tablet the leader label detaches into a tab above the bar — keep it off the ticker
-          @include media-breakpoint-down(tablet) {
-            margin-block-start: $spacer * 5;
-            margin-block-end: var(--leaderboard-bar-overhang);
-          }
         }
 
         // The body reserves the overhang, so this only has to supply the gap under the bar
