@@ -43,6 +43,10 @@ export default {
     return state.leaderboard
   },
 
+  userRank(state) {
+    return state.userRank
+  },
+
   todaysLeaders: state => charLength => {
     return state.todaysLeaders[charLength] || { items: [], meta: {} }
   }

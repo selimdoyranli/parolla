@@ -117,5 +117,25 @@ export default {
       data,
       error
     }
+  },
+
+  // The board is capped at the first N players, so a player outside that window has no
+  // way to read their own standing from it. Unlike fetchTourScoreOfUser this resolves a
+  // single period, so the leaderboard page does not pay for the three it is not showing.
+  async fetchUserRank({ commit }, { userId, period = 'season' }) {
+    const { data, error } = await this.$appFetch({
+      path: `tour-scores/rank-of-user`,
+      query: {
+        userId,
+        period
+      }
+    })
+
+    commit('SET_USER_RANK', data?.data ?? null)
+
+    return {
+      data,
+      error
+    }
   }
 }

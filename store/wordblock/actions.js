@@ -144,5 +144,26 @@ export default {
       data,
       error
     }
+  },
+
+  // The board is capped at the first N players, so a player outside that window has no
+  // way to read their own standing from it. This resolves it in one request.
+  async fetchUserRank({ commit }, { userId, period = 'season', charLength = 5 }) {
+    const { data, error } = await this.$appFetch({
+      path: `wordblock-scores/rank-of-user`,
+      query: {
+        userId,
+        period,
+        charLength,
+        locale: this.$i18n.locale
+      }
+    })
+
+    commit('SET_USER_RANK', data?.data ?? null)
+
+    return {
+      data,
+      error
+    }
   }
 }

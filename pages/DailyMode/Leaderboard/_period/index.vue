@@ -30,7 +30,7 @@
 
   template(v-else)
     template(v-if="leaderboard.items.length > 0")
-      Leaderboard(:scorers="leaderboard.items")
+      Leaderboard(:scorers="leaderboard.items" :current-player="currentPlayer")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
 
@@ -53,7 +53,7 @@ export default defineComponent({
   },
   layout: 'Default/Default.layout',
   setup() {
-    const { i18n } = useContext()
+    const { i18n, $auth } = useContext()
     const store = useStore()
     const { seasonYear } = useFormatter()
 
@@ -74,11 +74,39 @@ export default defineComponent({
       return 'daily'
     }
 
+    const fetchUserRank = () => {
+      if (!$auth.loggedIn || !$auth.user || !$auth.user.id) {
+        store.commit('daily/SET_USER_RANK', null)
+
+        return Promise.resolve()
+      }
+
+      return store.dispatch('daily/fetchUserRank', { userId: $auth.user.id, period: mapPeriod(period.value) })
+    }
+
     const { fetch, fetchState } = useFetch(async () => {
-      await store.dispatch('daily/fetchLeaderboard', { period: mapPeriod(period.value), limit: 100 })
+      // The board and the reader's own standing are independent queries, so run them together
+      await Promise.all([store.dispatch('daily/fetchLeaderboard', { period: mapPeriod(period.value), limit: 100 }), fetchUserRank()])
     })
 
     const leaderboard = computed(() => store.getters['daily/leaderboard'])
+
+    // The pinned row carries exactly what the rows below it carry: an answer breakdown on
+    // the daily period, nothing but the rank on the others. A points badge no other row
+    // has would read as a glitch rather than as information.
+    const currentPlayer = computed(() => {
+      const userRank = store.getters['daily/userRank']
+
+      if (!$auth.loggedIn || !userRank || !userRank.rank) {
+        return null
+      }
+
+      return {
+        ...$auth.user,
+        rank: userRank.rank,
+        ...(userRank.results && { results: userRank.results })
+      }
+    })
 
     const pageDescription = computed(() => {
       const currentPeriod = mapPeriod(period.value)
@@ -116,6 +144,7 @@ export default defineComponent({
       fetchState,
       period,
       leaderboard,
+      currentPlayer,
       pageDescription,
       seasonYear
     }

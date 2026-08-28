@@ -76,6 +76,8 @@
       }
     }
 
+    // The pinned "your rank" row (--self) restyles this block; those rules live in
+    // Leaderboard.component.scss, where the rank counter and row background are set.
     &-user {
       position: relative;
       display: grid;

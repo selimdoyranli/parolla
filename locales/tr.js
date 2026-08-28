@@ -1079,6 +1079,11 @@ export default {
       leaderSorting: 'Bu sezonun lider sıralaması'
     },
     pending: 'Sıralama getiriliyor',
+    // The row pinned above the list, showing the reader their own place on the board
+    yourRank: {
+      label: 'Sıralamadaki Yerin',
+      short: 'Sen'
+    },
     error: {
       fetch: {
         description: 'Sıralama getirilemedi',

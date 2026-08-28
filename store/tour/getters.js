@@ -15,6 +15,10 @@ export default {
     return state.leaderboard
   },
 
+  userRank(state) {
+    return state.userRank
+  },
+
   chatMessages(state) {
     return state.chat.messages
   },

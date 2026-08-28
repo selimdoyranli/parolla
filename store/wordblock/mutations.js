@@ -48,6 +48,10 @@ export default {
     state.leaderboard.meta = meta
   },
 
+  SET_USER_RANK(state, userRank) {
+    state.userRank = userRank
+  },
+
   SET_TODAYS_LEADERS(state, { charLength, leaderboard, meta }) {
     const slot = state.todaysLeaders[charLength]
 
