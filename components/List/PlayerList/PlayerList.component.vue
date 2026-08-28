@@ -1,15 +1,17 @@
 <template lang="pug">
 .player-list
-  template(v-if="items?.length > 0")
-    Cell.player-list-item(
-      v-for="(item, index) in items"
-      :key="index"
-      :class="[answerStatusClass(item.isCorrect), { 'player-list-item--results': item.results }]"
-    )
+  template(v-if="rows?.length > 0")
+    Cell.player-list-item(v-for="(item, index) in rows" :key="index" :class="rowClass(item)")
       template(#title)
-        .player-list-item-user
+        .player-list-item-user(:data-rank="item.rank")
           strong.player-list-item-user__username
             PlayerAvatar(with-username open-player-dialog-on-click :size="20" :user="item")
+
+          // The pinned row says why it is out of order: it is the reader's own standing
+          .player-list-item-user__label(v-if="item.isCurrentPlayer")
+            AppIcon.player-list-item-user__label-icon(name="tabler:target" :width="12" :height="12")
+            span.player-list-item-user__label-text {{ $t('leaderboard.yourRank.label') }}
+            span.player-list-item-user__label-text.player-list-item-user__label-text--short {{ $t('leaderboard.yourRank.short') }}
 
         .player-list-item-time(v-if="item.time")
           AppIcon.player-list-item-time__icon(name="tabler:clock" :width="16" :height="16")
@@ -71,7 +73,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 import { Cell } from 'vant'
 import { WORDBLOCK_MAX_ATTEMPTS } from '@/system/constant'
 
@@ -85,9 +87,28 @@ export default defineComponent({
       type: Array,
       required: false,
       default: null
+    },
+    // The reader's own standing, pinned above the list. The board only carries the first
+    // N players, so without it anyone outside that window cannot see where they placed.
+    currentPlayer: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
-  setup() {
+  setup(props) {
+    const rows = computed(() => {
+      if (!props.currentPlayer) {
+        return props.items
+      }
+
+      return [{ ...props.currentPlayer, isCurrentPlayer: true }, ...(props.items || [])]
+    })
+
+    // A player inside the listed window appears twice: pinned on top and in place. Marking
+    // the in-place row keeps the repeat from reading as a glitch.
+    const isSelfInline = item => Boolean(props.currentPlayer) && !item.isCurrentPlayer && item.id === props.currentPlayer.id
+
     const answerStatusClass = isCorrect => {
       if (isCorrect == null || isCorrect == undefined) {
         return null
@@ -96,9 +117,20 @@ export default defineComponent({
       return isCorrect ? 'player-list-item--success' : 'player-list-item--danger'
     }
 
+    const rowClass = item => [
+      answerStatusClass(item.isCorrect),
+      {
+        'player-list-item--results': item.results,
+        'player-list-item--self': item.isCurrentPlayer,
+        'player-list-item--self-inline': isSelfInline(item)
+      }
+    ]
+
     const { formatElapsedTime } = useElapsedTime()
 
     return {
+      rows,
+      rowClass,
       answerStatusClass,
       maxAttempts: WORDBLOCK_MAX_ATTEMPTS,
       formatElapsedTime

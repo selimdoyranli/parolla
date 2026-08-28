@@ -70,6 +70,25 @@
         }
       }
 
+      // The reader's own podium slot. A halo behind the slot rather than a ring on the
+      // avatar, so it never competes with the gold/silver/bronze medal border.
+      &--self {
+        &::before {
+          position: absolute;
+          z-index: -1;
+          background: radial-gradient(circle at 50% 30%, rgb(255 120 120 / 22%), transparent 70%);
+          border-radius: var(--border-radius-01);
+          content: '';
+          inset: -8px -4px;
+        }
+
+        .player-avatar {
+          &__username {
+            color: var(--color-brand-02);
+          }
+        }
+      }
+
       &[data-rank='1'] {
         order: 1;
 
@@ -367,6 +386,124 @@
           content: counter(user-counter);
         }
       }
+
+      // The reader's own standing, sitting at the head of the list. Deliberately loud: on
+      // a hundred-row board this is the one row a player came to find, and their real place
+      // is usually nowhere near the rows around it.
+      //
+      // Not sticky: Leaderboard.page.scss unsets the list's own scrollport on these pages,
+      // so a sticky row would pin to the viewport and collide with the page header, which
+      // already sticks at offset 0.
+      &--self {
+        z-index: 3;
+        background-color: var(--color-ui-02) !important;
+        border-radius: var(--border-radius-01);
+        box-shadow: var(--box-shadow-04);
+        animation: player-list-self-reveal 240ms ease-out both;
+        counter-increment: none;
+
+        // Brand wash across the row, in place of the correct/wrong tint the others use
+        &::before {
+          background: linear-gradient(90deg, rgb(255 120 120 / 18%), rgb(255 120 120 / 4%));
+          opacity: 1;
+        }
+
+        // Accent bar down the leading edge
+        &::after {
+          position: absolute;
+          z-index: 1;
+          width: 4px;
+          background-color: var(--color-brand-02);
+          animation: player-list-self-glow 2.4s ease-in-out infinite;
+          content: '';
+          border-end-start-radius: var(--border-radius-01);
+          border-start-start-radius: var(--border-radius-01);
+          inset-block: 0;
+          inset-inline-start: 0;
+        }
+
+        .player-list-item-user {
+          display: flex;
+          align-items: flex-start;
+
+          // The rank comes from the API rather than the CSS counter, so this row can read
+          // #542 without shifting the numbering of every row below it
+          &::before {
+            flex: none;
+            width: auto;
+            min-width: 36px;
+            color: var(--color-brand-02);
+            content: '#' attr(data-rank);
+            // A four-digit rank is wider than the fixed slot the counter rows use, so the
+            // gap before the avatar has to be spelled out rather than left to that width
+            margin-inline-end: $spacer * 2;
+
+            @include media-breakpoint-down(tablet) {
+              min-width: 32px;
+            }
+          }
+
+          &__label {
+            position: relative;
+            top: 2px;
+            display: inline-flex;
+            flex: none;
+            align-items: center;
+            height: 18px;
+            padding: 0 $spacer * 2;
+            color: var(--color-text-04);
+            font-size: var(--font-size-text-10);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            text-transform: uppercase;
+            background-color: var(--color-brand-02);
+            border-radius: var(--border-radius-01);
+            margin-inline-start: $spacer * 2;
+
+            &-icon {
+              margin-inline-end: calc(var(--base-m-x) / 4);
+            }
+
+            &-text {
+              @include font-weight-extra-bold;
+
+              &--short {
+                display: none;
+              }
+            }
+
+            // The row is already tight on phones; the icon plus the short word carries it
+            @include media-breakpoint-down(tablet) {
+              .player-list-item-user__label-text {
+                display: none;
+
+                &--short {
+                  display: inline;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // The same player again, in their actual place in the list. Quiet on purpose — the
+      // pinned row above is the loud one; this only explains why the name appears twice.
+      &--self-inline {
+        &::before {
+          background-color: var(--color-brand-02);
+          opacity: 0.12;
+        }
+
+        .player-list-item-user {
+          &::before {
+            color: var(--color-brand-02);
+          }
+
+          &__username {
+            color: var(--color-text-01);
+          }
+        }
+      }
     }
   }
 
@@ -395,5 +532,37 @@
 
   50% {
     transform: translateY(-3px) rotate(4deg);
+  }
+}
+
+@keyframes player-list-self-reveal {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes player-list-self-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgb(255 120 120 / 0%);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgb(255 120 120 / 55%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaderboard {
+    .player-list-item--self,
+    .player-list-item--self::after {
+      animation: none !important;
+    }
   }
 }

@@ -45,6 +45,8 @@ export default () => ({
     items: [],
     meta: {}
   },
+  // Where the signed-in player stands, for the row the leaderboard pins above the list
+  userRank: null,
   chat: {
     messages: [],
     isFocused: false

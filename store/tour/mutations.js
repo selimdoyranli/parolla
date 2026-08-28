@@ -53,6 +53,10 @@ export default {
     state.leaderboard.meta = meta
   },
 
+  SET_USER_RANK(state, userRank) {
+    state.userRank = userRank
+  },
+
   SET_CHAT_MESSAGES(state, messages) {
     state.chat.messages = messages
   },

@@ -1057,6 +1057,11 @@ export default {
       leaderSorting: `This season's leaderboard`
     },
     pending: 'Leaderboard is being fetched',
+    // The row pinned above the list, showing the reader their own place on the board
+    yourRank: {
+      label: 'Your Rank',
+      short: 'You'
+    },
     error: {
       fetch: {
         description: 'Leaderboard could not be fetched',

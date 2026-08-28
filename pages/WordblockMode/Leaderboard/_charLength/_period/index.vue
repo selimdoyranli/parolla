@@ -33,7 +33,7 @@
 
   template(v-else)
     template(v-if="leaderboard.items.length > 0")
-      Leaderboard(:scorers="leaderboard.items")
+      Leaderboard(:scorers="leaderboard.items" :current-player="currentPlayer")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
 
@@ -57,7 +57,7 @@ export default defineComponent({
   },
   layout: 'Default/Default.layout',
   setup() {
-    const { i18n, error } = useContext()
+    const { i18n, error, $auth } = useContext()
     const store = useStore()
     const { seasonYear } = useFormatter()
 
@@ -88,12 +88,30 @@ export default defineComponent({
       return match ? match.key : 'daily'
     })
 
-    const { fetch, fetchState } = useFetch(async () => {
-      const { error: fetchError } = await store.dispatch('wordblock/fetchLeaderboard', {
+    const fetchUserRank = () => {
+      if (!$auth.loggedIn || !$auth.user?.id) {
+        store.commit('wordblock/SET_USER_RANK', null)
+
+        return Promise.resolve()
+      }
+
+      return store.dispatch('wordblock/fetchUserRank', {
+        userId: $auth.user.id,
         period: activePeriodKey.value,
-        charLength: charLength.value,
-        limit: WORDBLOCK_LEADERBOARD_PAGE_SIZE
+        charLength: charLength.value
       })
+    }
+
+    const { fetch, fetchState } = useFetch(async () => {
+      // The board and the reader's own standing are independent queries, so run them together
+      const [{ error: fetchError }] = await Promise.all([
+        store.dispatch('wordblock/fetchLeaderboard', {
+          period: activePeriodKey.value,
+          charLength: charLength.value,
+          limit: WORDBLOCK_LEADERBOARD_PAGE_SIZE
+        }),
+        fetchUserRank()
+      ])
 
       // $appFetch resolves an error tuple instead of throwing, so surface it to useFetch
       if (fetchError) {
@@ -102,6 +120,22 @@ export default defineComponent({
     })
 
     const leaderboard = computed(() => store.getters['wordblock/leaderboard'])
+
+    // The pinned row carries what the rows below it carry: the attempts and time behind
+    // the player's best word on this board
+    const currentPlayer = computed(() => {
+      const userRank = store.getters['wordblock/userRank']
+
+      if (!$auth.loggedIn || !userRank?.rank) {
+        return null
+      }
+
+      return {
+        ...$auth.user,
+        rank: userRank.rank,
+        ...(userRank.results && { results: userRank.results })
+      }
+    })
 
     const pageTitle = computed(
       () =>
@@ -141,6 +175,7 @@ export default defineComponent({
       availableCharLengths: WORDBLOCK_AVAILABLE_LENGTHS,
       periodOptions,
       leaderboard,
+      currentPlayer,
       pageDescription,
       seasonYear
     }
