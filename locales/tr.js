@@ -419,7 +419,8 @@ export default {
         }
       },
       empty: {
-        description: 'Oyun bittiğinde <br> istatistik burada görünecek.'
+        description: 'Oyun bittiğinde <br> istatistik burada görünecek.',
+        answerKey: 'Oyun bittiğinde <br> cevap anahtarı burada görünecek.'
       },
       daily: {
         nextGame: 'Sonraki oyun'

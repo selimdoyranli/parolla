@@ -415,7 +415,8 @@ export default {
         }
       },
       empty: {
-        description: 'When the game is over, <br> the statistics will be displayed here'
+        description: 'When the game is over, <br> the statistics will be displayed here',
+        answerKey: 'When the game is over, <br> the answer key will be displayed here'
       },
       daily: {
         nextGame: 'Next game'
