@@ -28,6 +28,9 @@ const GAME_INFO = {
 // `en: null` means the route exists but redirects EN visitors to the home page
 // (pages/DailyMode/index.vue and pages/UnlimitedMode/index.vue guard on the default
 // locale) — listing a redirect in the sitemap only earns a Search Console warning.
+// Routes behind the `auth-control` middleware (/quiz-olustur and its sub-pages,
+// /hesap/duzenle) are left out entirely: they bounce anonymous visitors — every
+// crawler included — back to the home page.
 const APP_ROUTES = [
   { tr: '/', en: '/en' },
   { tr: '/gunluk', en: null },
@@ -35,7 +38,6 @@ const APP_ROUTES = [
   { tr: '/limitsiz', en: null },
   { tr: '/yaratici', en: '/en/creator' },
   { tr: '/quizler', en: '/en/quizzes' },
-  { tr: '/quiz-olustur', en: '/en/create-quiz' },
   { tr: '/tur', en: '/en/tour' },
   { tr: '/tur/liderlik', en: '/en/tour/leaderboard' },
   { tr: '/ciz', en: '/en/draw' },
@@ -94,6 +96,12 @@ const CONTENT_PAGES = [
     jsonld: 'howto',
     tr: { src: 'content/site/tr/nasil-oynanir-muzik.md', url: '/nasil-oynanir/muzik' },
     en: { src: 'content/site/en/how-to-play-music.md', url: '/en/how-to-play/music' }
+  },
+  {
+    key: 'draw',
+    jsonld: 'howto',
+    tr: { src: 'content/site/tr/nasil-oynanir-ciz.md', url: '/nasil-oynanir/ciz' },
+    en: { src: 'content/site/en/how-to-play-draw.md', url: '/en/how-to-play/draw' }
   },
   {
     key: 'knowledge-kingdom',

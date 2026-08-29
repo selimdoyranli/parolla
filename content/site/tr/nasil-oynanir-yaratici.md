@@ -25,7 +25,7 @@ steps:
 
 ## Quiz Oluşturma
 
-1. [Quiz oluştur](https://www.parolla.app/quiz-olustur) sayfasına gir.
+1. Ücretsiz hesabınla giriş yap — quiz oluşturmak için üyelik gerekir — ve [Quiz oluştur](https://www.parolla.app/quiz-olustur) sayfasına gir.
 2. Formatı seç, sorularını ve cevaplarını yaz.
 3. Başlık ve etiket ekleyip yayınla; quizin sana özel bir bağlantı alır.
 

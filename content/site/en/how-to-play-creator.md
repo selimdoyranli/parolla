@@ -25,7 +25,7 @@ steps:
 
 ## Creating a Quiz
 
-1. Go to the [Create Quiz](https://www.parolla.app/en/create-quiz) page.
+1. Sign in with your free account — creating a quiz requires one — and open the [Create Quiz](https://www.parolla.app/en/create-quiz) page.
 2. Pick a format, write your questions and answers.
 3. Add a title and tags, then publish; your quiz gets its own shareable link.
 
