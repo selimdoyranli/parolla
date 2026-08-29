@@ -1,5 +1,24 @@
 # Changelog
 
+## v2.56.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.55.0...v2.56.0)
+
+
+### 🚀 Enhancements
+
+  - **leaderboard:** Pin the player's own rank above the list ([a08d2ca](https://github.com/selimdoyranli/parolla/commit/a08d2ca))
+  - **room-scoreboard:** Pin the player's own rank above the list ([654b2ca](https://github.com/selimdoyranli/parolla/commit/654b2ca))
+  - **room-stats:** Open the stats dialog before the game ends ([7bfdd44](https://github.com/selimdoyranli/parolla/commit/7bfdd44))
+
+### 🩹 Fixes
+
+  - **leaderboard:** Drop the pinned rank row out of its raised stacking layer ([218ae26](https://github.com/selimdoyranli/parolla/commit/218ae26))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.55.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.54.3...v2.55.0)
