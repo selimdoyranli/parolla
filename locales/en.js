@@ -122,7 +122,8 @@ export default {
         title: 'CREATOR',
         description: 'Create your own quiz and solve quizzes created by players',
         label: 'Today {count} quiz solved',
-        todaysQuizLabel: `Today's quiz`
+        todaysQuizLabel: `Today's quiz`,
+        playButtonText: 'All Quizzes: Play'
       },
       tour: {
         title: 'TOUR',

@@ -124,7 +124,8 @@ export default {
         title: 'YARATICI',
         description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
         label: 'Bugün {count} quiz çözüldü',
-        todaysQuizLabel: 'Günün quizi'
+        todaysQuizLabel: 'Günün quizi',
+        playButtonText: 'Tüm Quizler: Oyna'
       },
       tour: {
         title: 'TUR',

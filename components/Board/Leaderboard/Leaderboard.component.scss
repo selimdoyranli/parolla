@@ -395,7 +395,7 @@
       // so a sticky row would pin to the viewport and collide with the page header, which
       // already sticks at offset 0.
       &--self {
-        z-index: 3;
+        z-index: 0;
         background-color: var(--color-ui-02) !important;
         border-radius: var(--border-radius-01);
         box-shadow: var(--box-shadow-04);
