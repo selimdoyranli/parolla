@@ -10,8 +10,8 @@
 const fs = require('fs')
 const path = require('path')
 const { execSync } = require('child_process')
-const { APP_ROUTES, CONTENT_PAGES } = require('./site.config')
-const { ROOT, LOCALES, renderContentPage, buildLlmsOutputs, buildSitemap } = require('./render')
+const { CONTENT_PAGES } = require('./site.config')
+const { ROOT, LOCALES, renderContentPage, buildLlmsOutputs, buildSitemap, sitemapUrlCount } = require('./render')
 
 const argIndex = process.argv.indexOf('--out-dir')
 const OUT_DIR = path.resolve(ROOT, argIndex > -1 ? process.argv[argIndex + 1] : 'dist')
@@ -95,7 +95,7 @@ const run = () => {
   }
 
   const locCount = (fs.readFileSync(path.join(OUT_DIR, 'sitemap.xml'), 'utf8').match(/<loc>/g) || []).length
-  const expectedLocs = APP_ROUTES.length * 2 + expectedPages
+  const expectedLocs = sitemapUrlCount()
 
   if (locCount !== expectedLocs) fail(`sitemap has ${locCount} <loc> entries, expected ${expectedLocs}`)
 

@@ -476,5 +476,14 @@ module.exports = {
     host: '0.0.0.0', // default: localhost,
     timing: false,
     port: 3000
-  }
+  },
+
+  /*
+   ** Server middleware
+   ** The GEO static content pages (/nasil-oynanir, /sss, /llms.txt, /sitemap.xml ...) are real
+   ** files emitted into dist/ by scripts/content-pages/generate.js at build time. `nuxt dev`
+   ** never runs that generator, so without this they would 404 on the dev server.
+   ** See https://nuxtjs.org/docs/configuration-glossary/configuration-servermiddleware
+   */
+  serverMiddleware: [{ path: '/', handler: '~/scripts/content-pages/dev-middleware.js' }]
 }

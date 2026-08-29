@@ -24,12 +24,15 @@ const GAME_INFO = {
   }
 }
 
-// Public, non-parameterized app routes included in sitemap.xml (SPA shells)
+// Public, non-parameterized app routes included in sitemap.xml (SPA shells).
+// `en: null` means the route exists but redirects EN visitors to the home page
+// (pages/DailyMode/index.vue and pages/UnlimitedMode/index.vue guard on the default
+// locale) — listing a redirect in the sitemap only earns a Search Console warning.
 const APP_ROUTES = [
   { tr: '/', en: '/en' },
-  { tr: '/gunluk', en: '/en/daily' },
+  { tr: '/gunluk', en: null },
   { tr: '/gunluk/liderlik', en: '/en/daily/leaderboard' },
-  { tr: '/limitsiz', en: '/en/unlimited' },
+  { tr: '/limitsiz', en: null },
   { tr: '/yaratici', en: '/en/creator' },
   { tr: '/quizler', en: '/en/quizzes' },
   { tr: '/quiz-olustur', en: '/en/create-quiz' },
@@ -37,6 +40,7 @@ const APP_ROUTES = [
   { tr: '/tur/liderlik', en: '/en/tour/leaderboard' },
   { tr: '/ciz', en: '/en/draw' },
   { tr: '/kelimeblok', en: '/en/wordblock' },
+  { tr: '/kelimeblok/liderlik', en: '/en/wordblock/leaderboard' },
   { tr: '/muzik', en: '/en/music' },
   { tr: '/muzik/sarki-tahmin-et', en: '/en/music/guess-the-song' },
   { tr: '/bilgi-kralligi', en: '/en/knowledge-kingdom' },

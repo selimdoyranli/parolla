@@ -213,17 +213,26 @@ const buildLlmsOutputs = rendered => {
   return { llmsTxt, llmsFullTxt: full.join('\n\n---\n\n') + '\n' }
 }
 
+// A route can be single-locale (APP_ROUTES entries with `en: null`) — it then gets one
+// <url> and no alternate for the locale it does not have.
+const localesOf = urls => LOCALES.filter(locale => urls[locale])
+
 const sitemapEntry = (urls, lastmod) => {
+  const locales = localesOf(urls)
   const alternates = [
-    `    <xhtml:link rel="alternate" hreflang="tr" href="${BASE_URL}${urls.tr}"/>`,
-    `    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}${urls.en}"/>`,
+    ...locales.map(locale => `    <xhtml:link rel="alternate" hreflang="${locale}" href="${BASE_URL}${urls[locale]}"/>`),
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}${urls.tr}"/>`
   ].join('\n')
 
-  return LOCALES.map(
-    locale => `  <url>\n    <loc>${BASE_URL}${urls[locale]}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates}\n  </url>`
-  ).join('\n')
+  return locales
+    .map(locale => `  <url>\n    <loc>${BASE_URL}${urls[locale]}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates}\n  </url>`)
+    .join('\n')
 }
+
+/** How many <loc> entries buildSitemap() emits — the generator asserts against this. */
+const sitemapUrlCount = () =>
+  APP_ROUTES.reduce((total, urls) => total + localesOf(urls).length, 0) +
+  CONTENT_PAGES.reduce((total, page) => total + localesOf({ tr: page.tr.url, en: page.en.url }).length, 0)
 
 /**
  * @param {object} options
@@ -245,4 +254,4 @@ const buildSitemap = ({ buildDate, contentLastMod }) => {
   ].join('\n')
 }
 
-module.exports = { ROOT, LOCALES, renderContentPage, buildLlmsOutputs, buildSitemap }
+module.exports = { ROOT, LOCALES, renderContentPage, buildLlmsOutputs, buildSitemap, sitemapUrlCount }

@@ -25,9 +25,21 @@ Spec: `docs/superpowers/specs/2026-08-05-ai-visibility-design.md`
 
 - `site.config.js` — single source of truth: base URL, `sameAs` links, game info,
   app route manifest, content page registry. Also consumed by `nuxt-config/head.js`
-  for the SPA shell JSON-LD.
+  for the SPA shell JSON-LD. An `APP_ROUTES` entry with `en: null` is a route that
+  redirects EN visitors home (Daily, Unlimited) — it is listed TR-only in the sitemap.
 - `template.js` — brand-styled HTML template (light/dark via `prefers-color-scheme`).
+- `render.js` — the rendering core: markdown → HTML, JSON-LD builders, llms.txt and
+  sitemap builders. Pure functions, no writes; shared by the generator and the dev server.
 - `generate.js` — the generator + self-validation. `--out-dir <dir>` to target another dir.
+- `dev-middleware.js` — serves the same pages on `nuxt dev`, where the generator never runs.
+  Registered as `serverMiddleware` in `nuxt.config.js`; renders on every request, so editing
+  a markdown file shows up on refresh. Unmatched paths fall through to the SPA.
+
+## Local preview
+
+```bash
+yarn dev            # then open http://localhost:3000/nasil-oynanir, /sss, /llms.txt ...
+```
 
 ## Adding a page
 
