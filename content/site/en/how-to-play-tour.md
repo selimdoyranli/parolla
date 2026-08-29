@@ -25,8 +25,8 @@ steps:
 
 ## Language
 
-Tour Mode runs on the same Turkish A-to-Z question pool as Daily Mode, so it is a **Turkish**
-mode and is not listed on the English home page. Play it on the Turkish site.
+Tour Mode is served from parolla's Turkish A-to-Z question pool, so it is a **Turkish** mode
+and is not listed on the English home page. Play it on the Turkish site.
 
 ## Where to Play
 
