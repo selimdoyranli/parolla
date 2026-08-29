@@ -1,7 +1,7 @@
 ---
 title: "Hakkında | parolla - Kelime Oyunu"
 description: "parolla'nın hikâyesi: günlük A'dan Z'ye Türkçe kelime oyunu olarak başlayan, bugün birçok oyun moduyla web, iOS ve Android'de oynanan ücretsiz oyun platformu."
-updated: 2026-08-05
+updated: 2026-08-29
 ---
 
 **parolla**, günlük A'dan Z'ye Türkçe kelime oyunu olarak başlayan ve bugün birçok oyun modu barındıran ücretsiz bir kelime ve bilgi oyunu platformudur. Web'de [www.parolla.app](https://www.parolla.app) adresinden, iOS ve Android uygulamalarından oynanır.
@@ -12,7 +12,7 @@ updated: 2026-08-05
 - **Limitsiz Mod:** aynı formatı sınırsız oynama imkânı.
 - **Yaratıcı Mod:** kendi quizini oluştur, paylaş; diğer oyuncuların quizlerini çöz.
 - **Tur Modu:** puan topla, dönemsel liderlik tablolarında yarış.
-- **KelimeBlok:** Türkçe Wordle benzeri kelime bulmaca; 5-7 harf, 6 deneme.
+- **KelimeBlok:** Türkçe Wordle benzeri günlük kelime bulmaca; 5-7 harf, 6 deneme, her tahtaya özel liderlik tablosu.
 - **Müzik Modu:** çalan şarkıyı tahmin et.
 - **Bilgi Krallığı:** tıkla-kazan mantığıyla ilerleyen idle tycoon oyunu.
 - **Çiz:** arkadaşlarınla gerçek zamanlı çiz ve tahmin et.

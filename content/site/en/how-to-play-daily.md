@@ -1,9 +1,9 @@
 ---
 title: "How to Play Daily Mode | Daily Turkish Word Game"
 description: "parolla Daily Mode guide: how the daily A-to-Z Turkish word game works — rules, time limit, passing and tips."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
-  - "Open www.parolla.app/en and choose Daily Mode."
+  - "Open www.parolla.app and choose Daily Mode — the questions are Turkish, so the mode lives on the Turkish site."
   - "Read the question: you are shown which letter the answer starts with."
   - "Type your answer and submit; it is marked correct, wrong or passed."
   - "Press PASS on questions you don't know; passed questions return at the end of the round."
@@ -25,10 +25,18 @@ steps:
 
 - Don't get stuck on a hard question — pass it and save your time for the rest.
 - Watch your spelling; answers are compared to the text you type.
-- Play every day to keep your streak; regular play grows your vocabulary fast.
+- Play every day; regular play grows your vocabulary fast and gets you onto the daily leaderboard.
+
+## Language
+
+Daily Mode is a **Turkish** word game — the questions and answers are in Turkish — so it is
+served from the Turkish site at [www.parolla.app/gunluk](https://www.parolla.app/gunluk).
+The English site (`/en`) does not carry it; if you open `/en/daily` you land back on the
+English home page. Wordblock, Creator Mode and Music Mode are the modes you can play on the
+English site today.
 
 ## Where to Play
 
-Play Daily Mode at [www.parolla.app/en/daily](https://www.parolla.app/en/daily) or in the iOS/Android apps. No account is required; create a free account to save scores and join leaderboards.
+Play Daily Mode at [www.parolla.app/gunluk](https://www.parolla.app/gunluk) or in the iOS/Android apps. No account is required; create a free account to save scores and join leaderboards. The leaderboard lives at [www.parolla.app/gunluk/liderlik](https://www.parolla.app/gunluk/liderlik).
 
 Back to the [How to Play guide](/en/how-to-play).

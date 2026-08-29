@@ -1,10 +1,10 @@
 ---
 title: "How to Play Creator Mode | Create Your Own Quiz"
-description: "parolla Creator Mode guide: create your own quiz, share its link and solve quizzes made by other players. A-to-Z, multiple choice and flashcard formats."
-updated: 2026-08-05
+description: "parolla Creator Mode guide: create your own quiz, share its link and solve quizzes made by other players. Question-Answer, This or That and Flashcards formats."
+updated: 2026-08-29
 steps:
-  - "Open Creator Mode at www.parolla.app/en."
-  - "Click Create Quiz and pick a format: classic A-to-Z, multiple choice or flashcards."
+  - "Open Creator Mode at www.parolla.app/en/quizzes."
+  - "Click Create Quiz and pick a format: Question-Answer (classic), This or That, or Flashcards."
   - "Write your questions and answers; add a title and tags."
   - "Publish your quiz and share its link with friends."
   - "Browse the Quizzes page to solve quizzes created by other players."
@@ -14,9 +14,14 @@ steps:
 
 ## Quiz Formats
 
-- **Classic (A-to-Z):** parolla's signature format; every answer starts with the letter you choose.
-- **Multiple choice:** you provide options for each question and players pick the right one.
-- **Flashcards:** a question-and-answer format that works like flipping cards.
+- **Question-Answer (classic):** parolla's signature format, played against the clock; every
+  answer starts with the letter you choose. Each question takes either a typed answer or a
+  multiple-choice (trivia) answer where players pick from the options you wrote. Questions can
+  carry an image as well as text.
+- **This or That:** a list of choices instead of questions — players pick one of two options
+  each round until a winner comes out. No score, no competition; it maps personal taste.
+  Choices can be text, images or YouTube videos.
+- **Flashcards:** two-sided cards with a front and a back, for studying or for fun.
 
 ## Creating a Quiz
 

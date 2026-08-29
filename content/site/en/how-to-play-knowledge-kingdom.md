@@ -1,7 +1,7 @@
 ---
 title: "How to Play Knowledge Kingdom | Idle Tycoon Game"
 description: "Knowledge Kingdom guide: parolla's idle tycoon game. Tap to earn gold, upgrade your buildings and grow your kingdom."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
   - "Open Knowledge Kingdom at www.parolla.app/en."
   - "Start tapping to earn gold."
@@ -25,6 +25,6 @@ steps:
 
 ## Where to Play
 
-Play Knowledge Kingdom at [www.parolla.app/en/knowledge-kingdom](https://www.parolla.app/en/knowledge-kingdom) or in the iOS/Android apps. It's free.
+Play Knowledge Kingdom at [www.parolla.app/en/knowledge-kingdom](https://www.parolla.app/en/knowledge-kingdom) or in the iOS/Android apps. It's free. The mode is not listed among the modes on the home page — open it from this link directly.
 
 Back to the [How to Play guide](/en/how-to-play).

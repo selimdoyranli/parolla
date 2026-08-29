@@ -1,11 +1,11 @@
 ---
 title: "How to Play Music Mode | Guess the Song Game"
 description: "parolla Music Mode guide: listen to the clip and guess the song. A free online music guessing game on web and mobile."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
-  - "Open Music Mode at www.parolla.app/en."
-  - "Start the Guess the Song game."
-  - "Listen to the short music clip."
+  - "Open Music Mode at www.parolla.app/en/music."
+  - "Search for artists — up to three — or pick a ready-made playlist."
+  - "Start the Guess the Song game and listen to the short music clip."
   - "Pick the right song from the options."
   - "See your score and share it with friends."
 ---
@@ -14,10 +14,12 @@ steps:
 
 ## Guess the Song
 
-- The game plays you a short music clip.
-- Your goal is to guess **which song** is playing.
+- First you build the round: search and pick **up to three artists**, or choose one of the
+  featured **playlists** (genres, decades, moods).
+- The game then plays you a short clip from that selection.
+- Your goal is to guess **which song** is playing, from the options shown.
 - Correct guesses add to your score; you can share your result at the end.
-- Different playlists let you play across genres and eras.
+- Because you choose the artists, the quiz is as easy or as obscure as you make it.
 
 ## Tips
 

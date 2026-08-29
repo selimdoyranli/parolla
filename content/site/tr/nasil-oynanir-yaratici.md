@@ -1,10 +1,10 @@
 ---
 title: "Yaratıcı Mod Nasıl Oynanır? | Kendi Quizini Oluştur"
-description: "parolla Yaratıcı Mod rehberi: kendi kelime oyunu quizini oluştur, bağlantısını paylaş, diğer oyuncuların quizlerini çöz. A'dan Z'ye, çoktan seçmeli ve flashcard formatları."
-updated: 2026-08-05
+description: "parolla Yaratıcı Mod rehberi: kendi kelime oyunu quizini oluştur, bağlantısını paylaş, diğer oyuncuların quizlerini çöz. Soru-Cevap, O mu bu mu? ve Flashcards formatları."
+updated: 2026-08-29
 steps:
-  - "www.parolla.app adresinde Yaratıcı Mod'a gir."
-  - "Quiz Oluştur'a tıkla ve format seç: klasik A'dan Z'ye, çoktan seçmeli veya flashcard."
+  - "www.parolla.app/quizler adresine gir."
+  - "Quiz Oluştur'a tıkla ve format seç: Soru-Cevap (klasik), O mu bu mu? veya Flashcards."
   - "Sorularını ve cevaplarını yaz; quizine başlık ve etiket ekle."
   - "Quizini yayınla ve bağlantısını arkadaşlarınla paylaş."
   - "Quizler sayfasından diğer oyuncuların oluşturduğu quizleri çöz."
@@ -14,9 +14,14 @@ steps:
 
 ## Quiz Formatları
 
-- **Klasik (A'dan Z'ye):** parolla'nın ana formatı; her sorunun cevabı belirlediğin harfle başlar.
-- **Çoktan seçmeli:** her soru için seçenekler sunarsın, oyuncu doğrusunu işaretler.
-- **Flashcard:** kart çevirme mantığıyla çalışan soru-cevap formatı.
+- **Soru-Cevap (Klasik):** parolla'nın ana formatı; zamana karşı oynanır ve her sorunun cevabı
+  belirlediğin harfle başlar. Her soruda cevap tipi olarak **yazı** (oyuncu cevabı yazar) ya da
+  **trivia** (oyuncu hazırladığın seçenekler arasından işaretler) seçebilirsin. Sorulara metnin
+  yanında fotoğraf da ekleyebilirsin.
+- **O mu bu mu?:** soru yerine bir seçim listesi hazırlarsın; oyuncular her turda iki
+  seçenekten birini seçer ve sonunda kazanan seçim çıkar. Puan ve rekabet yoktur, kişisel
+  tercihleri ölçer. Seçimler yazı, fotoğraf veya YouTube videosu olabilir.
+- **Flashcards:** ön ve arka yüzü olan kartlar; çalışmak ya da eğlenmek için.
 
 ## Quiz Oluşturma
 

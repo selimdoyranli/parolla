@@ -1,7 +1,7 @@
 ---
 title: "How to Play parolla — All Game Modes Guide"
 description: "Guide to every parolla game mode: the daily A-to-Z Turkish word game, the Wordle-style Wordblock puzzle, music guessing, quiz creation, tournaments and Knowledge Kingdom."
-updated: 2026-08-05
+updated: 2026-08-29
 ---
 
 **parolla** is a free Turkish word and trivia game platform you can play in the browser and on mobile. It brings together a daily A-to-Z word quiz, a Wordle-style puzzle called Wordblock, a music guessing game, player-created quizzes and more — all at [www.parolla.app/en](https://www.parolla.app/en)
@@ -10,7 +10,7 @@ Below is a short summary of every mode with a link to its detailed guide.
 
 ## Daily Mode
 
-parolla's classic game: an A-to-Z word quiz refreshed every day at midnight, with questions organized by letters of the alphabet. Every answer starts with the question's letter, and the time limit is 5 minutes. Play daily to keep your streak and share your results with friends.
+parolla's classic game: an A-to-Z word quiz refreshed every day at midnight, with questions organized by letters of the alphabet. Every answer starts with the question's letter, and the time limit is 5 minutes. Play every day, race the daily leaderboard and share your results with friends.
 
 [Daily Mode guide →](/en/how-to-play/daily)
 
@@ -22,7 +22,7 @@ For players who don't want to stop at one game a day: solve as many A-to-Z round
 
 ## Creator Mode
 
-Build your own quiz, share its link, and solve quizzes created by other players. Classic A-to-Z, multiple choice and flashcard formats are supported.
+Build your own quiz, share its link, and solve quizzes created by other players. Question-Answer (classic), This or That and Flashcards formats are supported.
 
 [Creator Mode guide →](/en/how-to-play/creator)
 
@@ -34,7 +34,7 @@ Compete tournament-style: solve rounds back to back, collect points and climb th
 
 ## Wordblock
 
-A Wordle-style word puzzle in Turkish: find the hidden 5-, 6- or 7-letter word in at most 6 tries, guided by color feedback after each guess.
+A Wordle-style daily word puzzle, playable in Turkish and in English: find the hidden 5-, 6- or 7-letter word in at most 6 tries, guided by color feedback after each guess. Each board has its own daily, weekly, monthly and season leaderboard.
 
 [Wordblock guide →](/en/how-to-play/wordblock)
 
@@ -46,12 +46,21 @@ Listen to the clip, guess the song. The most fun way to test your music knowledg
 
 ## Knowledge Kingdom
 
-An idle tycoon game: tap to earn gold, buy and upgrade buildings, grow your kingdom.
+An idle tycoon game: tap to earn gold, buy and upgrade buildings, grow your kingdom. It is not listed among the modes on the home page — open it from its direct link.
 
 [Knowledge Kingdom guide →](/en/how-to-play/knowledge-kingdom)
 
 ## More
 
 There is also a Draw mode where you draw and guess with friends in real time. Every mode is free on the web, iOS and Android.
+
+## Which modes are in English?
+
+parolla started as a Turkish game, and the A-to-Z question pool is Turkish. So on the English
+site ([www.parolla.app/en](https://www.parolla.app/en)) you can play **Wordblock** (with an
+English word list), **Creator Mode** and **Music Mode**. Daily, Unlimited, Tour and Draw run
+on Turkish questions and words, and live on the Turkish site at
+[www.parolla.app](https://www.parolla.app) — the guides above explain how each one works and
+where to play it.
 
 See the [FAQ](/en/faq) for common questions or the [About page](/en/about) for parolla's story.

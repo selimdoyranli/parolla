@@ -1,7 +1,7 @@
 ---
 title: "About | parolla - Turkish Word Game"
 description: "The story of parolla: a free game platform that started as a daily A-to-Z Turkish word game and now spans many game modes on web, iOS and Android."
-updated: 2026-08-05
+updated: 2026-08-29
 ---
 
 **parolla** is a free Turkish word and trivia game platform that started as a daily A-to-Z word game and now hosts many game modes. Play it on the web at [www.parolla.app](https://www.parolla.app) or via the iOS and Android apps.
@@ -12,7 +12,7 @@ updated: 2026-08-05
 - **Unlimited Mode:** the same format with unlimited plays.
 - **Creator Mode:** create and share your own quizzes; solve quizzes by other players.
 - **Tour Mode:** collect points and compete on periodic leaderboards.
-- **Wordblock:** a Wordle-style puzzle in Turkish; 5-7 letters, 6 tries.
+- **Wordblock:** a Wordle-style daily puzzle in Turkish and English; 5-7 letters, 6 tries, a leaderboard per board.
 - **Music Mode:** guess the playing song.
 - **Knowledge Kingdom:** an idle tycoon game built on tap-to-earn progression.
 - **Draw:** draw and guess with friends in real time.

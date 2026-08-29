@@ -1,7 +1,7 @@
 ---
 title: "Bilgi Krallığı Nasıl Oynanır? | Idle Tycoon Oyunu"
 description: "Bilgi Krallığı rehberi: parolla'nın idle tycoon oyunu. Tıkla, altın kazan, binalarını seviye atlat, krallığını büyüt."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
   - "www.parolla.app adresinde Bilgi Krallığı'na gir."
   - "Tıklayarak altın kazanmaya başla."
@@ -25,6 +25,6 @@ steps:
 
 ## Nereden Oynanır?
 
-Bilgi Krallığı'na [www.parolla.app/bilgi-kralligi](https://www.parolla.app/bilgi-kralligi) adresinden veya iOS/Android uygulamalarından ulaşabilirsin. Ücretsizdir.
+Bilgi Krallığı'na [www.parolla.app/bilgi-kralligi](https://www.parolla.app/bilgi-kralligi) adresinden veya iOS/Android uygulamalarından ulaşabilirsin. Ücretsizdir. Mod, ana sayfadaki mod listesinde yer almaz; bu bağlantıdan doğrudan açılır.
 
 Diğer modlar için [Nasıl Oynanır rehberine](/nasil-oynanir) dön.

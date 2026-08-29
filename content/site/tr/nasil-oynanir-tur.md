@@ -1,12 +1,12 @@
 ---
 title: "Tur Modu Nasıl Oynanır? | Turnuva Kelime Oyunu"
 description: "parolla Tur Modu rehberi: art arda oyunlar çöz, puan topla, dönemsel liderlik tablolarında yarış."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
   - "www.parolla.app adresinde Tur Modu'na gir."
   - "Turu başlat ve A'dan Z'ye soruları çöz."
   - "Doğru cevaplarla puan topla; tur bittikçe yeni tura geç."
-  - "Liderlik tablosunda günlük, haftalık ve aylık sıralamanı takip et."
+  - "Liderlik tablosunda günlük, haftalık, aylık ve sezonluk sıralamanı takip et."
 ---
 
 **Tur Modu**, parolla'nın rekabet modudur: art arda turlar halinde kelime oyunu çözer, puan toplar ve diğer oyuncularla dönemsel liderlik tablolarında yarışırsın. Sıralama tutkunları için tasarlanmıştır.
@@ -15,7 +15,7 @@ steps:
 
 - Sorular A'dan Z'ye formatındadır; **cevaplar sorunun harfiyle başlar**.
 - Her turda doğru cevapların puana dönüşür; turlar art arda oynanır.
-- Puanların **liderlik tablosuna** işlenir; günlük, haftalık ve aylık dönemlere göre sıralamanı görebilirsin.
+- Puanların **liderlik tablosuna** işlenir; günlük, haftalık, aylık ve sezonluk dönemlere göre sıralamanı görebilirsin.
 - Liderlik tablosuna girmek için ücretsiz bir parolla hesabıyla giriş yapman gerekir.
 
 ## İpuçları

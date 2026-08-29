@@ -1,11 +1,11 @@
 ---
 title: "Müzik Modu Nasıl Oynanır? | Şarkı Tahmin Oyunu"
 description: "parolla Müzik Modu rehberi: çalan şarkıyı dinle, doğru şarkıyı tahmin et. Online müzik tahmin oyunu web'de ve mobilde ücretsiz."
-updated: 2026-08-05
+updated: 2026-08-29
 steps:
-  - "www.parolla.app adresinde Müzik Modu'na gir."
-  - "Şarkı Tahmin Et oyununu başlat."
-  - "Çalan kısa müzik parçasını dinle."
+  - "www.parolla.app/muzik adresine gir."
+  - "En fazla üç sanatçı ara ve seç ya da hazır bir çalma listesi seç."
+  - "Şarkı Tahmin Et oyununu başlat ve çalan kısa müzik parçasını dinle."
   - "Doğru şarkıyı seçenekler arasından tahmin et."
   - "Skorunu gör ve arkadaşlarınla paylaş."
 ---
@@ -14,10 +14,12 @@ steps:
 
 ## Şarkı Tahmin Et
 
-- Oyun sana kısa bir müzik parçası dinletir.
-- Görevin, çalan parçanın **hangi şarkı olduğunu** doğru tahmin etmektir.
+- Önce turu sen kurarsın: arama kutusundan **en fazla üç sanatçı** seçersin ya da öne çıkan
+  **çalma listelerinden** (tür, dönem, ruh hali) birini seçersin.
+- Oyun, seçtiğin listeden kısa bir müzik parçası dinletir.
+- Görevin, çalan parçanın **hangi şarkı olduğunu** seçenekler arasından doğru bulmaktır.
 - Doğru tahminler skoruna eklenir; oyun sonunda sonucunu paylaşabilirsin.
-- Farklı çalma listeleriyle farklı tür ve dönemlerden şarkılarla oynayabilirsin.
+- Sanatçıları sen seçtiğin için quiz'in zorluğu tamamen sana bağlıdır.
 
 ## İpuçları
 
