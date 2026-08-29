@@ -28,7 +28,9 @@ export default () => ({
   scoreboard: {
     list: [],
     pagination: {},
-    total: null
+    total: null,
+    // Where the signed-in player stands in this room, for the row pinned above the list
+    userRank: null
   },
   todaysQuiz: {},
   // Cover art showcase on the home block. Kept apart from room.list so it cannot

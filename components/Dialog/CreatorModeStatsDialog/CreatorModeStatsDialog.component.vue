@@ -94,7 +94,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
           NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
             small(v-html="$t('scoreboard.loginToBeInScoreboard')")
 
-          ScoreboardList(:items="scoreboard.list" @on-infinite-loading="handleInfiniteLoading")
+          ScoreboardList(:items="scoreboard.list" :current-player="currentPlayer" @on-infinite-loading="handleInfiniteLoading")
 
       Tab(name="reviews")
         template(#title)
@@ -151,7 +151,7 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute()
-    const { localePath, i18n } = useContext()
+    const { localePath, i18n, $auth } = useContext()
     const store = useStore()
 
     const { convertMsToTime } = useTime()
@@ -256,6 +256,35 @@ export default defineComponent({
 
     const pendingScoreboard = ref(false)
 
+    const fetchScoreboardUserRank = () => {
+      if (!$auth.loggedIn || !$auth.user?.id) {
+        store.commit('creator/SET_SCOREBOARD_USER_RANK', null)
+
+        return Promise.resolve()
+      }
+
+      return store.dispatch('creator/fetchScoreboardUserRank', {
+        userId: $auth.user.id,
+        roomId: room.value.roomId
+      })
+    }
+
+    // Shown whenever the reader is signed in and has played the room, including when their
+    // row is already loaded further down the list
+    const currentPlayer = computed(() => {
+      const userRank = store.getters['creator/scoreboardUserRank']
+
+      if (!$auth.loggedIn || !userRank?.rank) {
+        return null
+      }
+
+      return {
+        user: $auth.user,
+        rank: userRank.rank,
+        results: userRank.results
+      }
+    })
+
     watch(
       () => activeTab.value,
       async value => {
@@ -263,9 +292,9 @@ export default defineComponent({
           if (value === 'scoreboard') {
             pendingScoreboard.value = true
 
-            await store.dispatch('creator/fetchScoreboard', {
-              roomId: room.value.roomId
-            })
+            // The board and the reader's own standing are independent queries, so run them
+            // together rather than making the tab wait for two round trips
+            await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
 
             pendingScoreboard.value = false
           }
@@ -311,6 +340,7 @@ export default defineComponent({
       answerClasses,
       myAnswer,
       scoreboard,
+      currentPlayer,
       pendingScoreboard,
       handleInfiniteLoading
     }
