@@ -66,6 +66,7 @@
         :title="$t('introScene.modeList.creator.title')"
         :headLabel="{ title: $t('introScene.modeList.creator.label', { count: creatorDailyPlayingCount }) }"
         :description="$t('introScene.modeList.creator.description')"
+        :playButtonText="$t('introScene.modeList.creator.playButtonText')"
       )
         template(v-if="todaysQuiz && Object.keys(todaysQuiz).length > 0" #body)
           .todaysQuiz
