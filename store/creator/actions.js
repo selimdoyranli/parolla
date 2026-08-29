@@ -638,6 +638,26 @@ export default {
     }
   },
 
+  // The scoreboard pages 50 at a time, so a player far down a busy room would have to
+  // scroll the whole thing to find themselves. This resolves their place in one request.
+  async fetchScoreboardUserRank({ commit }, { userId, roomId, locale }) {
+    const { data, error } = await this.$appFetch({
+      path: `room-scores/rank-of-user`,
+      query: {
+        userId,
+        roomId,
+        locale: locale || this.$i18n.locale
+      }
+    })
+
+    commit('SET_SCOREBOARD_USER_RANK', data?.data ?? null)
+
+    return {
+      data,
+      error
+    }
+  },
+
   async fetchTodaysQuiz({ commit, state }, params = {}) {
     // Get today's date range
     const today = new Date()

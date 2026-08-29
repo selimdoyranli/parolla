@@ -63,6 +63,10 @@ export default {
     return state.scoreboard.pagination
   },
 
+  scoreboardUserRank(state) {
+    return state.scoreboard.userRank
+  },
+
   todaysQuiz(state) {
     return state.todaysQuiz
   },
