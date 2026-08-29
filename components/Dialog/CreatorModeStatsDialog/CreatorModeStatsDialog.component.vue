@@ -11,15 +11,15 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
   @cancel="$emit('onCancel')"
   @confirm="$emit('onConfirm')"
 )
-  template(v-if="isGameOver")
-    // Tabs
-    Tabs.stats-dialog__tabs(v-model="activeTab")
-      // Score Tab
-      Tab(name="score")
-        template(#title)
-          .stats-dialog-tab-title
-            AppIcon.stats-dialog-tab-title__icon(name="tabler:chart-bar" :width="20" :height="20")
-            span.stats-dialog-tab-title__value {{ $t('gameScene.scoreStats') }}
+  // Tabs
+  Tabs.stats-dialog__tabs(v-model="activeTab")
+    // Score Tab
+    Tab(name="score")
+      template(#title)
+        .stats-dialog-tab-title
+          AppIcon.stats-dialog-tab-title__icon(name="tabler:chart-bar" :width="20" :height="20")
+          span.stats-dialog-tab-title__value {{ $t('gameScene.scoreStats') }}
+      template(v-if="isGameOver")
         br
         // Scoreboard
         .scoreboard
@@ -47,11 +47,18 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
-      Tab(name="answers")
-        template(#title)
-          .stats-dialog-tab-title
-            AppIcon.stats-dialog-tab-title__icon(name="tabler:list-check" :width="20" :height="20")
-            span.stats-dialog-tab-title__value {{ $t('gameScene.answerKey') }}
+      template(v-else)
+        Empty.stats-dialog-empty
+          p.stats-dialog-empty__title(v-html="$t('dialog.stats.empty.description')")
+
+    Tab(name="answers")
+      template(#title)
+        .stats-dialog-tab-title
+          AppIcon.stats-dialog-tab-title__icon(name="tabler:list-check" :width="20" :height="20")
+          span.stats-dialog-tab-title__value {{ $t('gameScene.answerKey') }}
+      // The answer key stays sealed until the game is over — showing it mid-game would hand
+      // the player every answer they are still being asked for
+      template(v-if="isGameOver")
         // Answers
         .answers
           Collapse.answers__inner(v-model="toggledAnswer" accordion)
@@ -83,35 +90,35 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
           // Ad
           AppAd(:data-ad-slot="9964323575")
 
-      Tab(name="scoreboard")
-        template(#title)
-          .stats-dialog-tab-title
-            AppIcon.stats-dialog-tab-title__icon(name="tabler:trophy" :width="20" :height="20")
-            span.stats-dialog-tab-title__value {{ $t('scoreboard.scoreboard') }}
-        template(v-if="pendingScoreboard")
-          Empty(:description="$t('scoreboard.pendingScoreboard')")
-        template(v-else)
-          NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
-            small(v-html="$t('scoreboard.loginToBeInScoreboard')")
+      template(v-else)
+        Empty.stats-dialog-empty
+          p.stats-dialog-empty__title(v-html="$t('dialog.stats.empty.answerKey')")
 
-          ScoreboardList(:items="scoreboard.list" @on-infinite-loading="handleInfiniteLoading")
+    Tab(name="scoreboard")
+      template(#title)
+        .stats-dialog-tab-title
+          AppIcon.stats-dialog-tab-title__icon(name="tabler:trophy" :width="20" :height="20")
+          span.stats-dialog-tab-title__value {{ $t('scoreboard.scoreboard') }}
+      template(v-if="pendingScoreboard")
+        Empty(:description="$t('scoreboard.pendingScoreboard')")
+      template(v-else)
+        NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
+          small(v-html="$t('scoreboard.loginToBeInScoreboard')")
 
-      Tab(name="reviews")
-        template(#title)
-          .stats-dialog-tab-title
-            AppIcon.stats-dialog-tab-title__icon(name="tabler:message-2" :width="20" :height="20")
-            span.stats-dialog-tab-title__value {{ $t('general.comments') }}
-        RoomReviewView(v-if="activeTab === 'reviews'")
+        ScoreboardList(:items="scoreboard.list" :current-player="currentPlayer" @on-infinite-loading="handleInfiniteLoading")
 
-    // Footer
-    footer.stats-dialog__footer
-      i18n.d-flex(path="app.copyright")
-        template(#logo)
-          FooterBrandLogo
+    Tab(name="reviews")
+      template(#title)
+        .stats-dialog-tab-title
+          AppIcon.stats-dialog-tab-title__icon(name="tabler:message-2" :width="20" :height="20")
+          span.stats-dialog-tab-title__value {{ $t('general.comments') }}
+      RoomReviewView(v-if="activeTab === 'reviews'")
 
-  template(v-else)
-    Empty.stats-dialog-empty
-      p.stats-dialog-empty__title(v-html="$t('dialog.stats.empty.description')")
+  // Footer
+  footer.stats-dialog__footer
+    i18n.d-flex(path="app.copyright")
+      template(#logo)
+        FooterBrandLogo
 </template>
 
 <script>
@@ -151,7 +158,7 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute()
-    const { localePath, i18n } = useContext()
+    const { localePath, i18n, $auth } = useContext()
     const store = useStore()
 
     const { convertMsToTime } = useTime()
@@ -256,6 +263,35 @@ export default defineComponent({
 
     const pendingScoreboard = ref(false)
 
+    const fetchScoreboardUserRank = () => {
+      if (!$auth.loggedIn || !$auth.user?.id) {
+        store.commit('creator/SET_SCOREBOARD_USER_RANK', null)
+
+        return Promise.resolve()
+      }
+
+      return store.dispatch('creator/fetchScoreboardUserRank', {
+        userId: $auth.user.id,
+        roomId: room.value.roomId
+      })
+    }
+
+    // Shown whenever the reader is signed in and has played the room, including when their
+    // row is already loaded further down the list
+    const currentPlayer = computed(() => {
+      const userRank = store.getters['creator/scoreboardUserRank']
+
+      if (!$auth.loggedIn || !userRank?.rank) {
+        return null
+      }
+
+      return {
+        user: $auth.user,
+        rank: userRank.rank,
+        results: userRank.results
+      }
+    })
+
     watch(
       () => activeTab.value,
       async value => {
@@ -263,9 +299,9 @@ export default defineComponent({
           if (value === 'scoreboard') {
             pendingScoreboard.value = true
 
-            await store.dispatch('creator/fetchScoreboard', {
-              roomId: room.value.roomId
-            })
+            // The board and the reader's own standing are independent queries, so run them
+            // together rather than making the tab wait for two round trips
+            await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
 
             pendingScoreboard.value = false
           }
@@ -311,6 +347,7 @@ export default defineComponent({
       answerClasses,
       myAnswer,
       scoreboard,
+      currentPlayer,
       pendingScoreboard,
       handleInfiniteLoading
     }

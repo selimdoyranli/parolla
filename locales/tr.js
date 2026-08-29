@@ -110,22 +110,22 @@ export default {
     modeList: {
       daily: {
         title: 'GÜNLÜK',
-        subtitle: 'REKABETÇİ',
-        description: 'Bugünün soru setini oyna, günlük kelime oyunu',
+        heading: 'GÜNLÜK KELİME OYUNU',
+        description: 'Bugünün soru setini oyna ve rekabete katıl ya da sadece bilgini sına',
         todaysBestScoreLabel: 'Günün lideri',
         todaysBestScore: '{label} {player}',
-        label: 'Bugün {count} kez oynandı'
+        playDaily: 'Günlük Oyna',
+        playUnlimited: 'Limitsiz Oyna'
       },
       unlimited: {
-        title: 'LİMİTSİZ',
-        description: 'Sonraki günü bekleme, rekabeti boşver',
-        label: 'Limitsiz soru seti'
+        title: 'LİMİTSİZ'
       },
       creator: {
         title: 'YARATICI',
         description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
         label: 'Bugün {count} quiz çözüldü',
-        todaysQuizLabel: 'Günün quizi'
+        todaysQuizLabel: 'Günün quizi',
+        playButtonText: 'Tüm Quizler: Oyna'
       },
       tour: {
         title: 'TUR',
@@ -139,7 +139,9 @@ export default {
       wordblock: {
         title: 'KELİMEBLOK',
         description: 'Günün kelimesini tahmin et, günlük kelime oyunu',
-        label: 'Bugün {count} kez oynandı'
+        label: 'Bugün {count} kez oynandı',
+        todaysBestScoreLabel: 'Günün lideri',
+        todaysBestScore: '{label} {player}'
       },
       music: {
         title: 'MÜZİK',
@@ -395,7 +397,18 @@ export default {
       },
       cancelButtonText: 'Kapat ve Başla',
       wordblock: {
-        title: 'parolla kelimeblok nasıl oynanır?'
+        title: 'parolla kelimeblok nasıl oynanır?',
+        heading: 'Günün Kelimesini Bul',
+        guessRule: `Her tahmin {charLength} harfli doğru bir kelime olmalıdır. Göndermek için enter'a bas.`,
+        attemptsRule:
+          'Her tahminden sonra kutucukların renkleri tahmininin yakınlığına göre değişecektir. {maxAttempts} tahmin hakkın var.',
+        examplesLabel: 'Örnekler',
+        example: {
+          correct: 'harfi kelimede var ve doğru yerde.',
+          present: 'harfi kelimede var fakat yanlış yerde.',
+          absent: 'harfi kelimede yok.'
+        },
+        footer: 'Her gün yeni bir kelime gelir!'
       }
     },
     stats: {
@@ -407,7 +420,8 @@ export default {
         }
       },
       empty: {
-        description: 'Oyun bittiğinde <br> istatistik burada görünecek.'
+        description: 'Oyun bittiğinde <br> istatistik burada görünecek.',
+        answerKey: 'Oyun bittiğinde <br> cevap anahtarı burada görünecek.'
       },
       daily: {
         nextGame: 'Sonraki oyun'
@@ -1067,6 +1081,11 @@ export default {
       leaderSorting: 'Bu sezonun lider sıralaması'
     },
     pending: 'Sıralama getiriliyor',
+    // The row pinned above the list, showing the reader their own place on the board
+    yourRank: {
+      label: 'Sıralamadaki Yerin',
+      short: 'Sen'
+    },
     error: {
       fetch: {
         description: 'Sıralama getirilemedi',

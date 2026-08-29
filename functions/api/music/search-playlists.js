@@ -1,4 +1,4 @@
-import { ampFetch, formatArtwork, jsonResponse, withCache, CACHE_TTL, localeToStorefront, localeToLang } from './_apple.js'
+import { ampSearch, formatArtwork, jsonResponse, withCache, CACHE_TTL, localeToStorefront, localeToLang } from './_apple.js'
 
 export async function onRequestGet(context) {
   return withCache(context, async () => {
@@ -13,12 +13,7 @@ export async function onRequestGet(context) {
     }
 
     try {
-      const json = await ampFetch(
-        env,
-        `/search?term=${encodeURIComponent(term.trim())}&types=playlists&with=serverBubbles&platform=web&limit=10&l=${lang}`,
-        storefront,
-        { edge: true }
-      )
+      const json = await ampSearch(env, { term: term.trim(), types: 'playlists', storefront, lang, limit: 10 })
       // serverBubbles groups results under `results.playlist` (singular);
       // fall back to the typed `results.playlists` shape just in case.
       const group = json?.results?.playlist || json?.results?.playlists

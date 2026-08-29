@@ -25,9 +25,18 @@
     .draw-room__board-head
       .draw-room__head-word(v-if="wordBadgeVisible" :class="{ 'draw-room__head-word--drawer': iAmDrawer }")
         AppIcon.draw-room__head-word-icon(:name="iAmDrawer ? 'tabler:eye' : 'tabler:bulb'" :width="12" :height="12")
-        DrawMaskedWord(v-if="iAmDrawer && currentWord" :plain="currentWord")
-        DrawMaskedWord(v-else-if="maskedWord" :mask="maskedWord")
+        DrawMaskedWord(v-if="iAmDrawer" :plain="currentWord")
+        DrawMaskedWord(v-else :mask="maskedWord")
       .draw-room__head-spacer(v-else)
+      button.draw-room__head-hint(
+        v-if="canRequestHint"
+        type="button"
+        aria-label="İpucu ver"
+        title="Rastgele bir harf aç"
+        @click="onRequestHint"
+      )
+        AppIcon(name="tabler:bulb" :width="14" :height="14")
+        span.draw-room__head-hint-count {{ availableHints }}
       button.draw-room__head-report(
         v-if="canReportDrawer"
         type="button"
@@ -289,6 +298,9 @@ export default defineComponent({
     const roundCount = computed(() => $store.state.draw.roundCount)
     const currentWord = computed(() => $store.state.draw.currentWord)
     const maskedWord = computed(() => $store.state.draw.maskedWord)
+    const hintsUsed = computed(() => $store.state.draw.hintsUsed)
+    const hintsMax = computed(() => $store.state.draw.hintsMax)
+    const hintsLeft = computed(() => Math.max(0, hintsMax.value - hintsUsed.value))
     const lastRoundResult = computed(() => $store.state.draw.lastRoundResult)
     const finalScores = computed(() => $store.state.draw.finalScores)
     const nextRoundEndsAt = computed(() => $store.state.draw.nextRoundEndsAt)
@@ -492,11 +504,41 @@ export default defineComponent({
     const startDisabled = computed(() => isLobby.value && players.value.length < 2)
     const startLabel = computed(() => (isGameEnd.value ? 'Yeniden Başlat' : 'Oyunu Başlat'))
 
+    // The drawer always sees their own word. Guessers only get a badge once a
+    // hint has opened a letter — before that the word's length stays secret.
     const wordBadgeVisible = computed(() => {
       if (!isDrawing.value) return false
 
-      return (iAmDrawer.value && !!currentWord.value) || !!maskedWord.value
+      return iAmDrawer.value ? !!currentWord.value : !!maskedWord.value
     })
+
+    // A hint never spells the word out, so the last hidden letter is off
+    // limits — short words ("ay") therefore run out of hints before the budget.
+    const revealableLetters = computed(() => {
+      const letters = (currentWord.value || '').split('').filter(ch => ch !== ' ' && ch !== '-').length
+
+      return Math.max(0, letters - 1 - hintsUsed.value)
+    })
+
+    const availableHints = computed(() => Math.min(hintsLeft.value, revealableLetters.value))
+
+    // Hint button: drawer-only, unlocks at half time, and only while nobody
+    // has cracked the word yet. Mirrors the server-side guards in requestHint.
+    const canRequestHint = computed(() => {
+      if (!isDrawing.value || !iAmDrawer.value || !currentWord.value) return false
+
+      if (availableHints.value <= 0) return false
+
+      if (correctGuesserIds.value.length > 0 || !durationMs.value) return false
+
+      return remainingMs.value <= durationMs.value / 2
+    })
+
+    const onRequestHint = () => {
+      if (!canRequestHint.value) return
+
+      send(wsTypeEnum.DRAW_HINT_REQUEST)
+    }
 
     // Single source of truth for which canvas overlay is showing. Picker
     // outranks the stale round-end card so the drawer never has tur-sonu
@@ -786,6 +828,7 @@ export default defineComponent({
       roundCount,
       currentWord,
       maskedWord,
+      availableHints,
       lastRoundResult,
       finalScores,
       countdownSeconds,
@@ -794,6 +837,8 @@ export default defineComponent({
       startDisabled,
       startLabel,
       wordBadgeVisible,
+      canRequestHint,
+      onRequestHint,
       activeOverlay,
       activeDrawerName,
       activeDrawerDisplay,

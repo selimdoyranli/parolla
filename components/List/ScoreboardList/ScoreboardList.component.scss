@@ -213,3 +213,162 @@
     }
   }
 }
+
+// The same player again, in their actual place in the standings. Quiet on purpose — the
+// pinned row above is the loud one; this only explains why the name appears twice.
+.scoreboard-list-item--self-inline {
+  background-color: rgb(255 120 120 / 8%);
+
+  .scoreboard-list-item-user {
+    &::before {
+      color: var(--color-brand-02);
+    }
+  }
+}
+
+// The reader's own row, sitting above the list. Deliberately loud: in a room with a
+// thousand scores this is the one row a player came to find, and it is the reason the row
+// is a sibling of the list rather than its first child — the list's :nth-child trophy and
+// its row counter both belong to the real standings.
+.scoreboard-list--self {
+  margin-block-end: $spacer * 2;
+
+  .scoreboard-list-item {
+    position: relative;
+    background-color: var(--color-ui-02);
+    border-radius: var(--border-radius-01);
+    box-shadow: var(--box-shadow-04);
+    animation: scoreboard-self-reveal 240ms ease-out both;
+    counter-increment: none;
+
+    // Brand wash across the row
+    &::before {
+      position: absolute;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgb(255 120 120 / 18%), rgb(255 120 120 / 4%));
+      border-radius: var(--border-radius-01);
+      content: '';
+      pointer-events: none;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+    }
+
+    // Accent bar down the leading edge
+    &::after {
+      position: absolute;
+      z-index: 1;
+      width: 4px;
+      background-color: var(--color-brand-02);
+      animation: scoreboard-self-glow 2.4s ease-in-out infinite;
+      content: '';
+      border-end-start-radius: var(--border-radius-01);
+      border-start-start-radius: var(--border-radius-01);
+      inset-block: 0;
+      inset-inline-start: 0;
+    }
+
+    .van-collapse-item__title {
+      position: relative;
+      z-index: 2;
+      background-color: transparent;
+    }
+
+    &-user {
+      cursor: default;
+
+      // The standings lay this out as a two column grid, avatar then name. The pill is a
+      // third child, so it would wrap to a second row and shove the name into column two.
+      &__username {
+        display: flex;
+        align-items: center;
+      }
+
+      &__label {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        height: 18px;
+        padding: 0 $spacer * 2;
+        color: var(--color-text-04);
+        font-size: var(--font-size-text-10);
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        text-transform: uppercase;
+        background-color: var(--color-brand-02);
+        border-radius: var(--border-radius-01);
+        margin-inline-start: $spacer * 2;
+
+        &-icon {
+          margin-inline-end: calc(var(--base-m-x) / 4);
+        }
+
+        &-text {
+          @include font-weight-extra-bold;
+
+          &--short {
+            display: none;
+          }
+        }
+
+        // The row is already tight on phones; the icon plus the short word carries it
+        @include media-breakpoint-down(tablet) {
+          .scoreboard-list-item-user__label-text {
+            display: none;
+
+            &--short {
+              display: inline;
+            }
+          }
+        }
+      }
+    }
+
+    // This list holds exactly one row, so it is also :nth-child(1) — the standings' gold
+    // trophy would land on it. Outrank that rule rather than let the reader's own row look
+    // like it won the room.
+    &:nth-child(1) {
+      .scoreboard-list-item-user {
+        // The rank comes from the API rather than the row counter, so this row can read
+        // #340 without touching the numbering of the standings below it
+        &::before {
+          color: var(--color-brand-02);
+          content: '#' attr(data-rank);
+        }
+      }
+    }
+  }
+}
+
+@keyframes scoreboard-self-reveal {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scoreboard-self-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgb(255 120 120 / 0%);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgb(255 120 120 / 55%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scoreboard-list--self {
+    .scoreboard-list-item,
+    .scoreboard-list-item::after {
+      animation: none !important;
+    }
+  }
+}

@@ -1,23 +1,35 @@
+import { resolveGame } from './game'
+
 export default {
-  targetWord: state => charLength => {
-    return state.games[charLength].targetWord
-  },
+  targetWord:
+    state =>
+    ({ locale, charLength }) => {
+      return resolveGame(state, locale, charLength).targetWord
+    },
 
-  isGameOver: state => charLength => {
-    return state.games[charLength].isGameOver
-  },
+  isGameOver:
+    state =>
+    ({ locale, charLength }) => {
+      return resolveGame(state, locale, charLength).isGameOver
+    },
 
-  currentDate: state => charLength => {
-    return state.games[charLength].currentDate
-  },
+  currentDate:
+    state =>
+    ({ locale, charLength }) => {
+      return resolveGame(state, locale, charLength).currentDate
+    },
 
-  result: state => charLength => {
-    return state.games[charLength].result
-  },
+  result:
+    state =>
+    ({ locale, charLength }) => {
+      return resolveGame(state, locale, charLength).result
+    },
 
-  dialog: state => charLength => {
-    return state.games[charLength].dialog
-  },
+  dialog:
+    state =>
+    ({ locale, charLength }) => {
+      return resolveGame(state, locale, charLength).dialog
+    },
 
   dailyPlayingCount(state) {
     return state.dailyPlayingCount
@@ -25,5 +37,17 @@ export default {
 
   isActiveKeyboard(state) {
     return state.isActiveKeyboard
+  },
+
+  leaderboard(state) {
+    return state.leaderboard
+  },
+
+  userRank(state) {
+    return state.userRank
+  },
+
+  todaysLeaders: state => charLength => {
+    return state.todaysLeaders[charLength] || { items: [], meta: {} }
   }
 }

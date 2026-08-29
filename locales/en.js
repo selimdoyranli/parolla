@@ -110,18 +110,20 @@ export default {
     modeList: {
       daily: {
         title: 'DAILY',
-        subtitle: 'COMPETITIVE',
-        description: `Play today's question set, daily word game`
+        heading: 'DAILY WORD GAME',
+        description: `Play today's question set and join the competition, or just test your knowledge`,
+        playDaily: 'Play Daily',
+        playUnlimited: 'Play Unlimited'
       },
       unlimited: {
-        title: 'UNLIMITED',
-        description: 'Unlimited question set'
+        title: 'UNLIMITED'
       },
       creator: {
         title: 'CREATOR',
         description: 'Create your own quiz and solve quizzes created by players',
         label: 'Today {count} quiz solved',
-        todaysQuizLabel: `Today's quiz`
+        todaysQuizLabel: `Today's quiz`,
+        playButtonText: 'All Quizzes: Play'
       },
       tour: {
         title: 'TOUR',
@@ -134,7 +136,10 @@ export default {
       },
       wordblock: {
         title: 'WORDBLOCK',
-        description: `Guess the today's word, daily word game`
+        description: `Guess the today's word, daily word game`,
+        label: 'Played {count} times today',
+        todaysBestScoreLabel: `Today's leader`,
+        todaysBestScore: '{label} {player}'
       },
       music: {
         title: 'MUSIC',
@@ -389,7 +394,17 @@ export default {
       },
       cancelButtonText: 'Close and Play',
       wordblock: {
-        title: 'How to play parolla wordblock?'
+        title: 'How to play parolla wordblock?',
+        heading: `Find Today's Word`,
+        guessRule: 'Each guess must be a valid {charLength} letter word. Hit enter to submit.',
+        attemptsRule: 'After each guess, the tile colors change to show how close your guess was. You have {maxAttempts} attempts.',
+        examplesLabel: 'Examples',
+        example: {
+          correct: 'is in the word and in the right spot.',
+          present: 'is in the word but in the wrong spot.',
+          absent: 'is not in the word.'
+        },
+        footer: 'A new word arrives every day!'
       }
     },
     stats: {
@@ -401,7 +416,8 @@ export default {
         }
       },
       empty: {
-        description: 'When the game is over, <br> the statistics will be displayed here'
+        description: 'When the game is over, <br> the statistics will be displayed here',
+        answerKey: 'When the game is over, <br> the answer key will be displayed here'
       },
       daily: {
         nextGame: 'Next game'
@@ -1043,6 +1059,11 @@ export default {
       leaderSorting: `This season's leaderboard`
     },
     pending: 'Leaderboard is being fetched',
+    // The row pinned above the list, showing the reader their own place on the board
+    yourRank: {
+      label: 'Your Rank',
+      short: 'You'
+    },
     error: {
       fetch: {
         description: 'Leaderboard could not be fetched',

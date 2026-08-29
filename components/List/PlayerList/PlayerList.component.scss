@@ -76,6 +76,8 @@
       }
     }
 
+    // The pinned "your rank" row (--self) restyles this block; those rules live in
+    // Leaderboard.component.scss, where the rank counter and row background are set.
     &-user {
       position: relative;
       display: grid;
@@ -144,7 +146,9 @@
       width: 120px;
       margin-inline-start: $spacer * 2;
 
-      &--results {
+      // Wordblock rows lay out like the quiz ones: the time sits beside the badge
+      &--results,
+      &--wordblock {
         position: absolute;
         inset-inline-end: 72px;
 
@@ -207,7 +211,18 @@
       margin-inline-start: $spacer * 4;
       font-variant-numeric: tabular-nums;
 
-      &--results {
+      // An unsolved wordblock game shows a cross and the letters that were in the right
+      // spot; they have to stay on one line inside the narrow badge.
+      &--wordblock {
+        .player-list-item-score__value {
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
+        }
+      }
+
+      &--results,
+      &--wordblock {
         position: relative;
         font-size: var(--font-size-text-10);
 

@@ -638,6 +638,26 @@ export default {
     }
   },
 
+  // The scoreboard pages 50 at a time, so a player far down a busy room would have to
+  // scroll the whole thing to find themselves. This resolves their place in one request.
+  async fetchScoreboardUserRank({ commit }, { userId, roomId, locale }) {
+    const { data, error } = await this.$appFetch({
+      path: `room-scores/rank-of-user`,
+      query: {
+        userId,
+        roomId,
+        locale: locale || this.$i18n.locale
+      }
+    })
+
+    commit('SET_SCOREBOARD_USER_RANK', data?.data ?? null)
+
+    return {
+      data,
+      error
+    }
+  },
+
   async fetchTodaysQuiz({ commit, state }, params = {}) {
     // Get today's date range
     const today = new Date()
@@ -660,6 +680,48 @@ export default {
 
     if (data && data.data && data.data.length > 0) {
       commit('SET_TODAYS_QUIZ', roomTransformer(data.data[0]))
+    }
+
+    return {
+      data,
+      error
+    }
+  },
+
+  /**
+   * Quizzes for the home block's cover art showcase.
+   *
+   * Strapi cannot sort randomly, so this pulls the newest `poolSize` quizzes that actually
+   * have a cover photo and shuffles them here — one request, a different set every visit.
+   */
+  async fetchRandomRooms({ commit }, { limit = 10, poolSize = 50 } = {}) {
+    const query = {
+      'filters[isVisible][$eq]': true,
+      'filters[isPublic][$eq]': true,
+      'filters[coverPhoto][id][$notNull]': true,
+      'populate[coverPhoto]': true,
+      'populate[roomTags]': true,
+      'populate[user][populate][0]': 'diceBear',
+      'populate[user][populate][1]': 'role',
+      'sort[0]': 'createdAt:desc',
+      'pagination[pageSize]': poolSize,
+      locale: this.$i18n.locale
+    }
+
+    const { data, error } = await this.$appFetch({
+      path: 'rooms',
+      query: query
+    })
+
+    if (data?.data?.length > 0) {
+      const rooms = data.data.map(room => roomTransformer(room))
+
+      for (let i = rooms.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[rooms[i], rooms[j]] = [rooms[j], rooms[i]]
+      }
+
+      commit('SET_RANDOM_ROOMS', rooms.slice(0, limit))
     }
 
     return {

@@ -34,6 +34,8 @@ export const wsTypeEnum = Object.freeze({
   DRAW_CLEAR: 'draw_clear',
   DRAW_STATE_SNAPSHOT: 'draw_state_snapshot',
   DRAW_GUESS: 'draw_guess',
+  DRAW_HINT_REQUEST: 'draw_hint_request',
+  DRAW_HINT_REVEAL: 'draw_hint_reveal',
   DRAW_CLOSE_GUESS: 'draw_close_guess',
   DRAW_CORRECT_GUESS: 'draw_correct_guess',
   DRAW_PLAYER_GUESSED: 'draw_player_guessed',

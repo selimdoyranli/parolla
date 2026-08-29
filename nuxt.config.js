@@ -360,6 +360,17 @@ module.exports = {
             tr: '/kelimeblok/:charLength-harf',
             en: '/wordblock/:charLength-letters'
           },
+          'WordblockMode/Leaderboard/index': {
+            tr: '/kelimeblok/liderlik',
+            en: '/wordblock/leaderboard'
+          },
+          // The board width carries its own suffix, matching the game page's /5-harf. The
+          // \d+ pattern keeps it strict: without it a segment like '6-7-harf' would match
+          // and parseInt would quietly read it as the 6-letter board.
+          'WordblockMode/Leaderboard/_charLength/_period/index': {
+            tr: '/kelimeblok/liderlik/:charLength(\\d+)-harf/:period',
+            en: '/wordblock/leaderboard/:charLength(\\d+)-letters/:period'
+          },
           'MusicMode/index': {
             tr: '/muzik',
             en: '/music'

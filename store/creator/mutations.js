@@ -108,6 +108,10 @@ export default {
     state.scoreboard.list.push(...scoreboard)
   },
 
+  SET_SCOREBOARD_USER_RANK(state, userRank) {
+    state.scoreboard.userRank = userRank
+  },
+
   SET_SCOREBOARD_PAGINATION(state, { pagination, total }) {
     state.scoreboard.pagination = {
       cursor: pagination.next_page_url?.split('cursor=')[1] || null,
@@ -119,6 +123,10 @@ export default {
 
   SET_TODAYS_QUIZ(state, todaysQuiz) {
     state.todaysQuiz = todaysQuiz
+  },
+
+  SET_RANDOM_ROOMS(state, rooms) {
+    state.randomRooms = rooms
   },
 
   SET_DAILY_PLAYING_COUNT(state, count) {

@@ -35,6 +35,7 @@ export default {
       state.correctGuesserIds = []
       state.currentWord = null
       state.maskedWord = null
+      state.hintsUsed = 0
       state.wordOptions = null
       state.pickTimeoutMs = 0
       state.pickEndsAt = 0
@@ -69,6 +70,7 @@ export default {
     state.remainingMs = payload.durationMs
     state.currentWord = payload.word || null
     state.maskedWord = payload.maskedWord || null
+    state.hintsUsed = 0
     state.category = payload.category || null
     state.iAmDrawer = state.myId === payload.drawerId
     state.iGuessedCorrectly = false
@@ -116,6 +118,8 @@ export default {
 
     if (payload.maskedWord !== undefined) state.maskedWord = payload.maskedWord
 
+    if (payload.hintsUsed !== undefined) state.hintsUsed = payload.hintsUsed
+
     if (payload.category !== undefined) state.category = payload.category
 
     if (payload.durationMs !== undefined) state.durationMs = payload.durationMs
@@ -141,6 +145,14 @@ export default {
       timestamp: Date.now()
     })
   },
+  // Drawer spent a hint: the server opened one more letter and pushed the
+  // whole mask. This is the first time guessers see the word's shape.
+  HINT_REVEAL(state, payload) {
+    state.maskedWord = payload.maskedWord || null
+    state.hintsUsed = payload.hintsUsed || 0
+
+    if (payload.hintsMax) state.hintsMax = payload.hintsMax
+  },
   MARK_PLAYER_GUESSED(state, playerId) {
     if (playerId != null && !state.correctGuesserIds.includes(playerId)) {
       state.correctGuesserIds.push(playerId)
@@ -160,6 +172,7 @@ export default {
     state.lastRoundResult = payload
     state.currentWord = null
     state.maskedWord = null
+    state.hintsUsed = 0
     state.wordOptions = null
     state.nextDrawerId = payload.nextDrawerId || null
     state.nextDrawerName = payload.nextDrawerName || null
@@ -197,6 +210,7 @@ export default {
     state.roundCount = 0
     state.currentWord = null
     state.maskedWord = null
+    state.hintsUsed = 0
     state.category = null
     state.durationMs = 0
     state.remainingMs = 0

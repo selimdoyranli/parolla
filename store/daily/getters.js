@@ -41,5 +41,9 @@ export default {
 
   leaderboard(state) {
     return state.leaderboard
+  },
+
+  userRank(state) {
+    return state.userRank
   }
 }

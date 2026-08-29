@@ -8,11 +8,16 @@
       // scorers exist. Missing slots are invisible but reserve their space so
       // rank-1 stays in the middle, rank-2 on the left, rank-3 on the right.
       template(v-for="index in 3")
-        .top-scorer-list-item(:key="scorers[index - 1].username" v-if="scorers[index - 1]" :data-rank="index")
+        .top-scorer-list-item(
+          :key="scorers[index - 1].username"
+          v-if="scorers[index - 1]"
+          :class="{ 'top-scorer-list-item--self': isCurrentPlayer(scorers[index - 1]) }"
+          :data-rank="index"
+        )
           AppIcon.top-scorer-list-item-crown(v-if="index === 1" name="tabler:crown" :width="28" :height="28")
           PlayerAvatar(with-username open-player-dialog-on-click :size="64" :user="scorers[index - 1]")
 
-          .top-scorer-list-item-score.top-scorer-list-item-score--results(v-if="scorers[index - 1].results")
+          .top-scorer-list-item-score.top-scorer-list-item-score--results(v-if="scorers[index - 1].results?.correctAnswers")
             span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--correct
               strong {{ scorers[index - 1].results.correctAnswers?.length }}
             span.divider &nbsp;/&nbsp;
@@ -30,6 +35,24 @@
                 span {{ scorers[index - 1].results.remainTime.seconds }}
                 | .
                 small {{ scorers[index - 1].results.remainTime.milliseconds }}
+
+          // Wordblock results carry a status instead of answer lists: how many attempts the
+          // word took, or how many letters were in the right spot if it was never solved.
+          .top-scorer-list-item-score.top-scorer-list-item-score--wordblock(v-else-if="scorers[index - 1].results?.status")
+            template(v-if="scorers[index - 1].results.status === 'won'")
+              span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--correct
+                strong {{ scorers[index - 1].results.attempts }}
+              span.divider &nbsp;/&nbsp;
+              span.top-scorer-list-item-score__value {{ maxAttempts }}
+
+              .time
+                AppIcon(name="tabler:clock" :width="16" :height="16")
+                span.time__value {{ formatElapsedTime(scorers[index - 1].results.elapsedTimeAsMs) }}
+
+            template(v-else)
+              span.top-scorer-list-item-score__value.top-scorer-list-item-score__value--wrong
+                AppIcon(name="tabler:x" :width="14" :height="14")
+                strong &nbsp;{{ scorers[index - 1].results.greenLetters }}
 
           .top-scorer-list-item-score(v-if="!scorers[index - 1].results && scorers[index - 1].score")
             span.top-scorer-list-item-score__value
@@ -50,7 +73,7 @@
 
         .top-scorer-list-item.top-scorer-list-item--placeholder(v-else :key="`ph-${index}`" aria-hidden="true" :data-rank="index")
 
-    PlayerList(v-if="scorers.length > 3" :items="scorers.slice(3)")
+    PlayerList(v-if="scorers.length > 3 || currentPlayer" :items="scorers.slice(3)" :current-player="currentPlayer")
 
   template(v-else)
     .leaderboard__empty
@@ -59,6 +82,7 @@
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
+import { WORDBLOCK_MAX_ATTEMPTS } from '@/system/constant'
 
 export default defineComponent({
   name: 'Leaderboard',
@@ -71,6 +95,24 @@ export default defineComponent({
     scorers: {
       type: Array,
       required: true
+    },
+    // The reader's own standing, pinned above the list. The board only carries the first
+    // N players, so without it anyone outside that window cannot see where they placed.
+    currentPlayer: {
+      type: Object,
+      required: false,
+      default: null
+    }
+  },
+  setup(props) {
+    const isCurrentPlayer = scorer => Boolean(props.currentPlayer) && scorer?.id === props.currentPlayer.id
+
+    const { formatElapsedTime } = useElapsedTime()
+
+    return {
+      isCurrentPlayer,
+      maxAttempts: WORDBLOCK_MAX_ATTEMPTS,
+      formatElapsedTime
     }
   }
 })

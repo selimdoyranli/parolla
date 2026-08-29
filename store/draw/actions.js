@@ -46,6 +46,9 @@ export default {
       case wsTypeEnum.DRAW_CLOSE_GUESS:
         commit('PUSH_CLOSE_GUESS', message.guess)
         break
+      case wsTypeEnum.DRAW_HINT_REVEAL:
+        commit('HINT_REVEAL', message)
+        break
       case wsTypeEnum.DRAW_CORRECT_GUESS:
         commit('MARK_GUESSED', message)
         break

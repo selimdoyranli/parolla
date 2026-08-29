@@ -69,5 +69,9 @@ export default {
 
     state.leaderboard.items = mappedLeaderboard(leaderboard)
     state.leaderboard.meta = meta
+  },
+
+  SET_USER_RANK(state, userRank) {
+    state.userRank = userRank
   }
 }
