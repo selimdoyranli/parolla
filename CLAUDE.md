@@ -106,7 +106,7 @@ GOOGLE_AUTH_REDIRECT_URI # Google OAuth redirect URI
 
 ## Deployment
 
-Static site generation deployed to Cloudflare (with redirect preparation via `.cloudflare/scripts/redirects.js`) and Vercel. The `generate` command runs `nuxt generate` followed by Cloudflare redirect setup.
+Static site generation deployed to Cloudflare Pages (`wrangler.toml`, output dir `dist`) and Vercel. The `generate` command runs three steps in order: `nuxt generate`, then `content:generate` (the GEO static content layer — see `scripts/content-pages/README.md`), then Cloudflare redirect setup. **The host's build command must be `yarn generate`**, not `nuxt generate`: the middle step is what emits the content pages, `llms.txt` and `sitemap.xml`, and there is no committed `static/sitemap.xml` fallback any more.
 
 ## Mobile WebView Bridge
 
