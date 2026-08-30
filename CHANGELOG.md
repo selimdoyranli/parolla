@@ -1,5 +1,45 @@
 # Changelog
 
+## v3.0.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v2.56.0...v3.0.0)
+
+
+### 🚀 Enhancements
+
+  - **geo:** Add content-pages site config and deps ([30bbd93](https://github.com/selimdoyranli/parolla/commit/30bbd93))
+  - **geo:** Add TR static content pages (how-to-play, faq, about) ([b2bf791](https://github.com/selimdoyranli/parolla/commit/b2bf791))
+  - **geo:** Add EN static content pages ([2e5a137](https://github.com/selimdoyranli/parolla/commit/2e5a137))
+  - **geo:** Add static content page generator (html, llms.txt, sitemap) ([6156de2](https://github.com/selimdoyranli/parolla/commit/6156de2))
+  - **geo:** Allow AI crawlers explicitly in robots.txt ([50e3911](https://github.com/selimdoyranli/parolla/commit/50e3911))
+  - **geo:** Add WebSite/Organization/VideoGame JSON-LD and enrich meta ([3db374e](https://github.com/selimdoyranli/parolla/commit/3db374e))
+  - **geo:** Link static content pages from menu ([40b4a2c](https://github.com/selimdoyranli/parolla/commit/40b4a2c))
+  - **geo:** Serve static content pages in dev via middleware ([ec7d77f](https://github.com/selimdoyranli/parolla/commit/ec7d77f))
+  - **geo:** Add the draw mode guide and drop the auth-gated compose route ([d3aadcc](https://github.com/selimdoyranli/parolla/commit/d3aadcc))
+  - **tycoon:** ⚠️  Remove the knowledge kingdom mode ([0f69bb3](https://github.com/selimdoyranli/parolla/commit/0f69bb3))
+
+### 🩹 Fixes
+
+  - **geo:** Register the dev middleware and drop redirect-only URLs from the sitemap ([821d5ff](https://github.com/selimdoyranli/parolla/commit/821d5ff))
+  - **geo:** Correct the draw guide's mask and hint rules ([c31f257](https://github.com/selimdoyranli/parolla/commit/c31f257))
+  - Canonicalize every app url on www.parolla.app ([b87e7d7](https://github.com/selimdoyranli/parolla/commit/b87e7d7))
+
+### 📖 Documentation
+
+  - **specs:** Add AI visibility (GEO) improvement design ([7f9aa2f](https://github.com/selimdoyranli/parolla/commit/7f9aa2f))
+  - **plans:** Add AI visibility static content layer implementation plan ([ccdb282](https://github.com/selimdoyranli/parolla/commit/ccdb282))
+  - **geo:** Add content pages generator readme ([d32d431](https://github.com/selimdoyranli/parolla/commit/d32d431))
+  - **geo:** Bring the static content pages back in line with the app ([08e3d6a](https://github.com/selimdoyranli/parolla/commit/08e3d6a))
+  - Describe the three-step generate pipeline and the required build command ([3c7c2cf](https://github.com/selimdoyranli/parolla/commit/3c7c2cf))
+
+#### ⚠️  Breaking Changes
+
+  - **tycoon:** ⚠️  Remove the knowledge kingdom mode ([0f69bb3](https://github.com/selimdoyranli/parolla/commit/0f69bb3))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v2.56.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.55.0...v2.56.0)
