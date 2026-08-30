@@ -1,6 +1,6 @@
 ---
 title: "How to Play parolla — All Game Modes Guide"
-description: "Guide to every parolla game mode: the daily A-to-Z Turkish word game, the Wordle-style Wordblock puzzle, music guessing, quiz creation, tournaments, Draw and Knowledge Kingdom."
+description: "Guide to every parolla game mode: the daily A-to-Z Turkish word game, the Wordle-style Wordblock puzzle, music guessing, quiz creation, tournaments and Draw."
 updated: 2026-08-29
 ---
 
@@ -49,12 +49,6 @@ Listen to the clip, guess the song. The most fun way to test your music knowledg
 A real-time drawing and guessing game: take turns drawing the word you are given while everyone else guesses it in the chat. Join an official category room or host your own — no account needed.
 
 [Draw Mode guide →](/en/how-to-play/draw)
-
-## Knowledge Kingdom
-
-An idle tycoon game: tap to earn gold, buy and upgrade buildings, grow your kingdom. It is not listed among the modes on the home page — open it from its direct link.
-
-[Knowledge Kingdom guide →](/en/how-to-play/knowledge-kingdom)
 
 ## More
 

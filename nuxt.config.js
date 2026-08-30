@@ -383,10 +383,6 @@ module.exports = {
             tr: '/muzik/sarki-tahmin-et/oyna',
             en: '/music/guess-the-song/play'
           },
-          'Tycoon/KnowledgeKingdom/index': {
-            tr: '/bilgi-kralligi',
-            en: '/knowledge-kingdom'
-          },
           'Page/PrivacyPolicy/index': {
             tr: '/sayfa/gizlilik-politikasi',
             en: '/page/privacy-policy'

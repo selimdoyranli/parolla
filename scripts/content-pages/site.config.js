@@ -45,7 +45,6 @@ const APP_ROUTES = [
   { tr: '/kelimeblok/liderlik', en: '/en/wordblock/leaderboard' },
   { tr: '/muzik', en: '/en/music' },
   { tr: '/muzik/sarki-tahmin-et', en: '/en/music/guess-the-song' },
-  { tr: '/bilgi-kralligi', en: '/en/knowledge-kingdom' },
   { tr: '/sayfa/gizlilik-politikasi', en: '/en/page/privacy-policy' },
   { tr: '/sayfa/cerez-politikasi', en: '/en/page/cookie-policy' },
   { tr: '/sayfa/kvkk-aydinlatma-metni', en: '/en/page/kvkk-clarification-text' },
@@ -102,12 +101,6 @@ const CONTENT_PAGES = [
     jsonld: 'howto',
     tr: { src: 'content/site/tr/nasil-oynanir-ciz.md', url: '/nasil-oynanir/ciz' },
     en: { src: 'content/site/en/how-to-play-draw.md', url: '/en/how-to-play/draw' }
-  },
-  {
-    key: 'knowledge-kingdom',
-    jsonld: 'howto',
-    tr: { src: 'content/site/tr/nasil-oynanir-bilgi-kralligi.md', url: '/nasil-oynanir/bilgi-kralligi' },
-    en: { src: 'content/site/en/how-to-play-knowledge-kingdom.md', url: '/en/how-to-play/knowledge-kingdom' }
   },
   {
     key: 'faq',

@@ -14,7 +14,6 @@ updated: 2026-08-29
 - **Tur Modu:** puan topla, dönemsel liderlik tablolarında yarış.
 - **KelimeBlok:** Türkçe Wordle benzeri günlük kelime bulmaca; 5-7 harf, 6 deneme, her tahtaya özel liderlik tablosu.
 - **Müzik Modu:** çalan şarkıyı tahmin et.
-- **Bilgi Krallığı:** tıkla-kazan mantığıyla ilerleyen idle tycoon oyunu.
 - **Çiz:** arkadaşlarınla gerçek zamanlı çiz ve tahmin et.
 
 Ayrıntılar için [Nasıl Oynanır rehberine](/nasil-oynanir) bakabilirsin.

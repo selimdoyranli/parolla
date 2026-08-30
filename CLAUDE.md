@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**parolla** is a Turkish word game web app (parolla.app) built with **Nuxt 2 (Vue 2)**, deployed as a static SPA. It features multiple game modes: daily quizzes, unlimited mode, user-created quizzes, tournaments, word puzzles (Wordblock), music guessing, and a tycoon sim.
+**parolla** is a Turkish word game web app (parolla.app) built with **Nuxt 2 (Vue 2)**, deployed as a static SPA. It features multiple game modes: daily quizzes, unlimited mode, user-created quizzes, tournaments, word puzzles (Wordblock), music guessing, and a real-time draw-and-guess mode.
 
 ## Commands
 
@@ -54,14 +54,13 @@ Pages use Nuxt file-based routing in `pages/`. Each game mode has its own direct
 - `TourMode/` → `/tur`, `/tour`
 - `WordblockMode/` → `/kelimeblok`, `/wordblock`
 - `MusicMode/` → `/muzik`, `/music`
-- `Tycoon/KnowledgeKingdom/` → `/bilgi-kralligi`, `/knowledge-kingdom`
 - `Page/` → legal pages (`/sayfa/gizlilik-politikasi` | `/page/privacy-policy`, cookie policy, KVKK, terms of use). Content lives in `content/legal/<locale>/*.md`, compiled at build time by `frontmatter-markdown-loader` (see `build.extend`) and rendered by `LegalDocument` — NOT @nuxt/content (its content API doesn't exist on a static SPA deploy). Each page imports both locales' md and picks by `i18n.locale`; links to them sit in `MenuDialog`'s "Legal" group.
 
 Localized route mappings are defined in `nuxt.config.js` under the i18n `pages` option.
 
 ### Vuex Store
 
-Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `tycoon/`. Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
+Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `draw/`. Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
 
 ### Composables
 

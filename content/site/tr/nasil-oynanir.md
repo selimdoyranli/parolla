@@ -1,6 +1,6 @@
 ---
 title: "parolla Nasıl Oynanır? Tüm Oyun Modları Rehberi"
-description: "parolla'daki tüm oyun modlarının rehberi: günlük A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin, quiz oluşturma, turnuva, Çiz ve Bilgi Krallığı."
+description: "parolla'daki tüm oyun modlarının rehberi: günlük A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin, quiz oluşturma, turnuva ve Çiz modu."
 updated: 2026-08-29
 ---
 
@@ -49,12 +49,6 @@ Türkçe Wordle benzeri günlük kelime bulmaca: 5, 6 veya 7 harfli günün keli
 Gerçek zamanlı çizim ve tahmin oyunu: sırayla verilen kelimeyi çiz, diğerleri sohbetten tahmin etsin. Resmi kategori odalarına katıl ya da kendi odanı kur; üyelik gerekmez.
 
 [Çiz Modu rehberi →](/nasil-oynanir/ciz)
-
-## Bilgi Krallığı
-
-Bilgiyle büyüyen idle tycoon oyunu: tıkla, altın kazan, krallığını seviye atlat. Bu mod ana sayfadaki mod listesinde yer almaz; doğrudan bağlantısından açılır.
-
-[Bilgi Krallığı rehberi →](/nasil-oynanir/bilgi-kralligi)
 
 ## Diğer
 

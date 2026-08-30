@@ -23,16 +23,6 @@ export default ({ store }) => {
               isActiveKeyboard: state.wordblock.isActiveKeyboard
             }
           : {},
-      tycoon:
-        state.tycoon && state.tycoon['knowledge-kingdom']
-          ? {
-              'knowledge-kingdom': {
-                economyVersion: state.tycoon['knowledge-kingdom'].economyVersion,
-                gold: state.tycoon['knowledge-kingdom'].gold,
-                ownedItems: state.tycoon['knowledge-kingdom'].ownedItems
-              }
-            }
-          : {},
       draw:
         state.draw && state.draw.guest
           ? {

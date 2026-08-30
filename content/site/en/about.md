@@ -14,7 +14,6 @@ updated: 2026-08-29
 - **Tour Mode:** collect points and compete on periodic leaderboards.
 - **Wordblock:** a Wordle-style daily puzzle in Turkish and English; 5-7 letters, 6 tries, a leaderboard per board.
 - **Music Mode:** guess the playing song.
-- **Knowledge Kingdom:** an idle tycoon game built on tap-to-earn progression.
 - **Draw:** draw and guess with friends in real time.
 
 See the [How to Play guide](/en/how-to-play) for details.
