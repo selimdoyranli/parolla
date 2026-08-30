@@ -151,11 +151,6 @@ export default {
         description: 'Draw, guess, win — live drawing game',
         label: 'LIVE',
         newLabel: 'New'
-      },
-      knowledgeKingdom: {
-        title: 'KNOWLEDGE KINGDOM',
-        description: 'Click, earn, rise',
-        label: 'Clicker mini game'
       }
     }
   },
@@ -560,7 +555,7 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://parolla.app`
+      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://www.parolla.app`
     },
     room: {
       description: `parolla - Word game \n\nPlay the "{quizTitle}" quiz! \n \n{url}`
@@ -1143,28 +1138,6 @@ export default {
         description: 'Listen to {artists} songs and guess them in the music quiz',
         keywords: 'music quiz, music quiz play, listen to songs and guess them'
       }
-    },
-    tycoon: {
-      knowledgeKingdom: {
-        title: 'Knowledge Kingdom',
-        description: 'Tap to earn gold, build your knowledge empire',
-        keywords: 'idle tycoon, clicker game, knowledge kingdom'
-      }
-    }
-  },
-  tycoon: {
-    knowledgeKingdom: {
-      title: 'Knowledge Kingdom',
-      gold: 'Gold',
-      perSecond: '/sec',
-      buy: 'Buy',
-      tier: 'Tier',
-      owned: 'Owned',
-      totalIncome: 'Total Income',
-      tap: 'Tap to Earn',
-      items: 'Items',
-      locked: 'Locked',
-      notEnoughGold: 'Not enough gold'
     }
   },
   profile: {

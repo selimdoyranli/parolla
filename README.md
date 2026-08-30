@@ -2,7 +2,7 @@
 [![License][license-src]][license-href]
 
 <p align="center">
-  <a href="https://parolla.app" target="_blank"> 
+  <a href="https://www.parolla.app" target="_blank"> 
     <img src='/static/meta/logo.png' width="96"/>
   </a>
 </p>
@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="https://parolla.app" target="_blank"> 
+  <a href="https://www.parolla.app" target="_blank"> 
     <img src='/static/meta/preview-tr.png' width="256"/>
   </a>
 </p>
@@ -40,7 +40,7 @@
 </p>
 
 <p align="center">
-  <a href="https://parolla.app/en" target="_blank"> 
+  <a href="https://www.parolla.app/en" target="_blank"> 
     <img src='/static/meta/preview-en.png' width="256"/>
   </a>
 </p>
@@ -59,7 +59,7 @@
 </p>
 
 <p align="center">
-  <a href="https://parolla.app" target="_blank">Website</a>
+  <a href="https://www.parolla.app" target="_blank">Website</a>
 </p>
 
 <div align="center">
@@ -70,7 +70,7 @@
 
 ### Play now ⚡️
 
-[WEBSITE](https://parolla.app)
+[WEBSITE](https://www.parolla.app)
 
 <a href="https://play.google.com/store/apps/details?id=app.parolla" target="_blank">
   <img src='/static/meta/play-store-logo.png' width="36" />

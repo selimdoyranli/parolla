@@ -153,11 +153,6 @@ export default {
         description: 'Verilen kelimeyi çiz , çizimi tahmin et',
         label: 'CANLI',
         newLabel: 'Yeni'
-      },
-      knowledgeKingdom: {
-        title: 'BİLGİ KRALLIĞI',
-        description: 'Tıkla, kazan, yüksel',
-        label: 'Clicker mini oyun'
       }
     }
   },
@@ -564,7 +559,7 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://parolla.app`
+      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://www.parolla.app`
     },
     room: {
       description: `parolla - Kelime oyunu \n\n"{roomTitle}" quizini çöz! \n \n{url}`
@@ -1165,28 +1160,6 @@ export default {
         description: 'Müzik quizde {artists} şarkılarını dinle ve tahmin et',
         keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
       }
-    },
-    tycoon: {
-      knowledgeKingdom: {
-        title: 'Bilgi Krallığı',
-        description: 'Her tıklamada krallığını büyüt',
-        keywords: 'idle tycoon, clicker oyunu, bilgi krallığı'
-      }
-    }
-  },
-  tycoon: {
-    knowledgeKingdom: {
-      title: 'Bilgi Krallığı',
-      gold: 'Altın',
-      perSecond: '/sn',
-      buy: 'Satın Al',
-      tier: 'Seviye',
-      owned: 'Sahip',
-      totalIncome: 'Toplam Gelir',
-      tap: 'Tıkla ve Kazan',
-      items: 'Eşyalar',
-      locked: 'Kilitli',
-      notEnoughGold: 'Yetersiz altın'
     }
   },
   profile: {
