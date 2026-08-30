@@ -25,12 +25,11 @@ const GAME_INFO = {
 }
 
 // Public, non-parameterized app routes included in sitemap.xml (SPA shells).
-// `en: null` means the route exists but redirects EN visitors to the home page
-// (pages/DailyMode/index.vue and pages/UnlimitedMode/index.vue guard on the default
-// locale) — listing a redirect in the sitemap only earns a Search Console warning.
-// Routes behind the `auth-control` middleware (/quiz-olustur and its sub-pages,
-// /hesap/duzenle) are left out entirely: they bounce anonymous visitors — every
-// crawler included — back to the home page.
+// `en: null` means the route has no working EN counterpart at all: pages/DailyMode
+// and pages/UnlimitedMode redirect anyone on the en locale back to the home page,
+// so /en/daily and /en/unlimited are dead for every visitor, signed in or not.
+// Auth-gated routes are a different case and stay listed — /quiz-olustur works
+// fine for a signed-in player, which is who goes there.
 const APP_ROUTES = [
   { tr: '/', en: '/en' },
   { tr: '/gunluk', en: null },
@@ -38,6 +37,7 @@ const APP_ROUTES = [
   { tr: '/limitsiz', en: null },
   { tr: '/yaratici', en: '/en/creator' },
   { tr: '/quizler', en: '/en/quizzes' },
+  { tr: '/quiz-olustur', en: '/en/create-quiz' },
   { tr: '/tur', en: '/en/tour' },
   { tr: '/tur/liderlik', en: '/en/tour/leaderboard' },
   { tr: '/ciz', en: '/en/draw' },
