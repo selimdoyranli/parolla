@@ -559,7 +559,7 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://parolla.app`
+      description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://www.parolla.app`
     },
     room: {
       description: `parolla - Kelime oyunu \n\n"{roomTitle}" quizini çöz! \n \n{url}`

@@ -3,7 +3,7 @@
   "short_name": "parolla",
   "description": "Kelime oyunu",
   "lang": "tr-TR",
-  "start_url": "https://parolla.app",
+  "start_url": "https://www.parolla.app",
   "display": "standalone",
   "icons": [
     {

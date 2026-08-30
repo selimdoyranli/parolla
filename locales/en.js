@@ -555,7 +555,7 @@ export default {
   },
   sharer: {
     app: {
-      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://parolla.app`
+      description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://www.parolla.app`
     },
     room: {
       description: `parolla - Word game \n\nPlay the "{quizTitle}" quiz! \n \n{url}`

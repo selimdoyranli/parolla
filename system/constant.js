@@ -1,6 +1,6 @@
 export const APP_NAME = 'parolla'
 export const APP_DOMAIN = 'parolla.app'
-export const APP_URL = 'https://parolla.app'
+export const APP_URL = 'https://www.parolla.app'
 export const PUBLISHER_NAME = 'Selim Doyranlı'
 export const PUBLISHER_DOMAIN = 'selimdoyranli.com'
 export const PUBLISHER_URL = 'https://selimdoyranli.com'

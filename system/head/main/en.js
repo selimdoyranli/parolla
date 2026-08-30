@@ -33,7 +33,7 @@ export const meta = [
   {
     hid: 'og:url',
     property: 'og:url',
-    content: 'https://parolla.app'
+    content: 'https://www.parolla.app'
   },
   {
     hid: 'og:image',
@@ -58,7 +58,7 @@ export const meta = [
   {
     hid: 'twitter:url',
     property: 'twitter:url',
-    content: 'https://parolla.app'
+    content: 'https://www.parolla.app'
   },
   {
     hid: 'twitter:image',
