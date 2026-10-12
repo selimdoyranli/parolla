@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.1.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.0.0...v3.1.0)
+
+
+### 🚀 Enhancements
+
+  - **layout:** Add discball3d banner under side ads ([1f40007](https://github.com/selimdoyranli/parolla/commit/1f40007))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.0.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v2.56.0...v3.0.0)
