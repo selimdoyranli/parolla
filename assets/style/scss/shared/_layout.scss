@@ -8,7 +8,8 @@
   }
 
   &__ad {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     width: 320px;
     height: 100vh;
     color: var(--color-text-03);
@@ -22,12 +23,28 @@
       width: 256px;
     }
 
+    .app-ad {
+      flex: 1;
+      min-height: 0;
+    }
+
     &--left {
       margin-right: auto;
     }
 
     &--right {
       margin-left: auto;
+    }
+  }
+
+  &__ad-banner {
+    display: block;
+    flex-shrink: 0;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
   }
 
