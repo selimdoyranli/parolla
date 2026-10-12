@@ -6,6 +6,8 @@
   .layout__ad.layout__ad--left
     // image_vertical_flex_left
     AppAd(:data-ad-slot="2717771834")
+    a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
+      img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
   // Inner
   .layout__inner
@@ -20,6 +22,8 @@
   .layout__ad.layout__ad--right
     // image_vertical_flex_right
     AppAd(:data-ad-slot="8500032812")
+    a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
+      img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
   // Auth Dialog
   AuthDialog
