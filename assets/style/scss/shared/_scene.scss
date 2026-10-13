@@ -2,7 +2,8 @@
   position: relative;
 
   &__inner {
-    height: calc(100vh - var(--header-height) - 1px);
+    // Same unit as .layout__main (100dvh); 100vh is taller on iOS Safari and made the scene scroll
+    height: calc(var(--layout-height) - var(--header-height) - 1px);
     padding: 0 var(--base-p-x);
   }
 }

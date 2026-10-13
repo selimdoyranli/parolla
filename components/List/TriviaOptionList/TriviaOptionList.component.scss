@@ -36,7 +36,8 @@
     }
 
     @include media-breakpoint-down(mobile) {
-      height: 50px;
+      height: auto;
+      min-height: 50px;
       font-size: var(--font-size-text-10);
     }
 
