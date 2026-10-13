@@ -41,7 +41,7 @@
     name="question"
     :label="$t('form.creatorModeCompose.qa.question.label')"
     :placeholder="$t('form.creatorModeCompose.qa.question.placeholder')"
-    maxlength="120"
+    maxlength="200"
     rows="2"
     autosize
     show-word-limit
