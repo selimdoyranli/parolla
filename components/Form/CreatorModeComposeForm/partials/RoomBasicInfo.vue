@@ -7,7 +7,7 @@
       name="roomTitle"
       :label="$t('form.creatorModeCompose.room.roomTitle.label')"
       :placeholder="$t('form.creatorModeCompose.room.roomTitle.placeholder')"
-      maxlength="64"
+      maxlength="100"
       show-word-limit
       :rules="[{ required: true, message: $t('form.isRequired', { model: $t('form.creatorModeCompose.room.roomTitle.label') }) }]"
     )
@@ -65,7 +65,7 @@
       type="textarea"
       :placeholder="$t('form.creatorModeCompose.room.description.placeholder')"
       autosize
-      maxlength="256"
+      maxlength="320"
       show-word-limit
     )
       template(#label)

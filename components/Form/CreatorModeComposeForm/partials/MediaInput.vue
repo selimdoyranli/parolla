@@ -59,7 +59,7 @@
         name="mediaNote"
         :value="mediaNote"
         :placeholder="computedMediaNotePlaceholder"
-        maxlength="64"
+        maxlength="200"
         show-word-limit
         @input="$emit('update:mediaNote', $event)"
       )
