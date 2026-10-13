@@ -22,7 +22,7 @@
 
       @include center(true, true);
 
-      @at-root html:is(.osk, .compact-media) {
+      @at-root html.creator-compact-header {
         @include media-breakpoint-down(mobile) {
           .app-header .app-logo--title {
             display: none;

@@ -49,10 +49,6 @@
       -webkit-user-drag: none;
 
       @include center(true, true);
-
-      @include media-breakpoint-down(mobile) {
-        object-fit: cover;
-      }
     }
 
     &__note {
@@ -103,14 +99,14 @@
           top: var(--compact-countdown-y, calc(var(--header-height) / 2));
           left: var(--compact-countdown-x, 50%);
           z-index: 1;
-          padding: $spacer $spacer * 3;
+          padding: $spacer $spacer * 2.5;
           white-space: nowrap;
           background-color: var(--color-ui-02);
           border-radius: var(--border-radius-01);
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%) scale(var(--compact-countdown-scale, 1));
 
           @include media-breakpoint-down(mobile-m) {
-            padding-inline: $spacer * 2;
+            padding-inline: $spacer * 1.5;
           }
 
           &__progress {
@@ -118,8 +114,8 @@
             color: var(--color-text-02);
             font-size: var(--font-size-text-9);
             font-variant-numeric: tabular-nums;
-            margin-inline-end: $spacer * 2;
-            padding-inline-end: $spacer * 2;
+            margin-inline-end: $spacer * 1.5;
+            padding-inline-end: $spacer * 1.5;
             border-inline-end: 1px solid var(--color-border-02);
 
             @include font-weight-semi-bold;
@@ -171,7 +167,8 @@
             min-height: 0;
           }
 
-          img {
+          // Skip while pressed so the fullscreen preview (img:active) keeps its centering
+          img:not(:active) {
             position: absolute;
             height: 100%;
             max-height: none !important;

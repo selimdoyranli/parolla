@@ -234,13 +234,16 @@ export default defineComponent({
 
       // Unsupported screen height
       checkUnsupportedHeight()
+
+      // Watchers only fire on change; a quiz opening on a compact question needs a first fit
+      fitMediaQuestion()
     })
 
     onUnmounted(() => {
       window.removeEventListener('resize', questionFitText)
       window.removeEventListener('resize', fitMediaQuestion)
       window.visualViewport?.removeEventListener('resize', fitMediaQuestion)
-      document.documentElement.classList.remove('compact-media')
+      document.documentElement.classList.remove('creator-compact-header')
       window.removeEventListener('beforeunload', handleBeforeUnload)
 
       window.removeEventListener('scroll', scrollTop)
@@ -278,15 +281,29 @@ export default defineComponent({
         if (logo?.width && nav) {
           rootRef.value.style.setProperty('--compact-countdown-x', `${(logo.right + nav.left) / 2 / zoom}px`)
           rootRef.value.style.setProperty('--compact-countdown-y', `${(logo.top + logo.bottom) / 2 / zoom}px`)
+
+          // Shrink the chip when the gap is narrower than it (avatar / review count widen the nav); 8px clearance per side
+          const countdown = rootRef.value.querySelector('.game-scene__countdown')?.getBoundingClientRect()
+          const scale = parseFloat(rootRef.value.style.getPropertyValue('--compact-countdown-scale')) || 1
+
+          if (countdown?.width) {
+            const fitScale = (nav.left - logo.right - 16) / (countdown.width / scale)
+
+            rootRef.value.style.setProperty('--compact-countdown-scale', Math.min(1, fitScale))
+          }
         }
       })
     }
 
-    // Lets the header swap to the icon logo while compact (trivia doesn't open the keyboard, so html.osk isn't set)
-    watch(isCompactMedia, value => document.documentElement.classList.toggle('compact-media', value), { immediate: true })
+    // Header swaps to the icon logo only in this scene (html.osk is set by every game mode); trivia never opens the keyboard
+    const isCompactHeader = computed(
+      () => isCompactMedia.value || (answer.isFocused && getActiveQuestionAnswerType() !== answerTypeEnum.TRIVIA)
+    )
+
+    watch(isCompactHeader, value => document.documentElement.classList.toggle('creator-compact-header', value), { immediate: true })
 
     watch(
-      () => [alphabet.value.activeIndex, answer.isFocused, questions.value, isCompactMedia.value],
+      () => [alphabet.value.activeIndex, answer.isFocused, questions.value, isCompactMedia.value, isGameStarted.value],
       async () => {
         await nextTick()
         fitMediaQuestion()
