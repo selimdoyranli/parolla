@@ -58,107 +58,136 @@
     &__note {
       display: block;
       color: var(--color-text-03);
-      font-size: var(--font-size-text-10);
+      font-size: var(--font-size-text-8);
       margin-block-start: $spacer * 2;
 
       @include media-breakpoint-up(mobile) {
         margin-block-start: $spacer * 4;
-        font-size: var(--font-size-text-8);
+      }
+
+      @include media-breakpoint-up(desktop) {
+        font-size: var(--font-size-text-6);
       }
     }
   }
 
+  .countdown__progress {
+    display: none;
+  }
+
   &.game-scene {
-    &--osk {
-      &.game-scene--activeQuestionTypeMedia {
-        .questions {
-          @include media-breakpoint-down(tablet) {
-            padding-inline: 0 !important;
-            padding-block: $spacer * 10 !important;
-          }
+    &--compactMedia {
+      .questions {
+        @include media-breakpoint-down(tablet) {
+          padding-block: $spacer * 2 !important;
+          padding-inline: 0 !important;
         }
+      }
 
-        .alphabet {
-          @include media-breakpoint-down(mobile) {
-            position: absolute !important;
-            opacity: 1;
-            inset-block-start: -8px;
-          }
-
-          .swiper-slide {
-            @include media-breakpoint-down(mobile) {
-              width: 24px !important;
-              height: 24px !important;
-            }
-          }
-
-          .alphabet__item {
-            @include media-breakpoint-down(mobile) {
-              font-size: 10px !important;
-              border-width: 1px !important;
-            }
-
-            &--selected {
-              @include media-breakpoint-down(mobile) {
-                box-shadow: 0 2px var(--color-highlight-01) !important;
-              }
-            }
-          }
+      // Alphabet stays mounted (swiper) but gives its space to the image; countdown chip shows progress instead
+      .alphabet {
+        @include media-breakpoint-down(mobile) {
+          position: absolute !important;
+          height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden;
+          visibility: hidden;
         }
+      }
 
-        .countdown {
-          @include media-breakpoint-down(mobile) {
-            position: fixed !important;
-            z-index: 1;
-            padding: 2px 6px;
-            background-color: var(--color-ui-02);
-            border-radius: var(--border-radius-01);
-            inset-block-start: 0;
-            border-top-left-radius: 0 !important;
-            border-top-right-radius: 0 !important;
+      .countdown {
+        @include media-breakpoint-down(mobile) {
+          // Header center is free while the icon logo is shown; x/y come from fitMediaQuestion
+          position: fixed !important;
+          top: var(--compact-countdown-y, calc(var(--header-height) / 2));
+          left: var(--compact-countdown-x, 50%);
+          z-index: 1;
+          padding: $spacer $spacer * 3;
+          white-space: nowrap;
+          background-color: var(--color-ui-02);
+          border-radius: var(--border-radius-01);
+          transform: translate(-50%, -50%);
 
-            &__icon {
-              margin-inline-end: $spacer !important;
+          @include media-breakpoint-down(mobile-m) {
+            padding-inline: $spacer * 2;
+          }
 
-              svg {
+          &__progress {
+            display: inline-block;
+            color: var(--color-text-02);
+            font-size: var(--font-size-text-9);
+            font-variant-numeric: tabular-nums;
+            margin-inline-end: $spacer * 2;
+            padding-inline-end: $spacer * 2;
+            border-inline-end: 1px solid var(--color-border-02);
+
+            @include font-weight-semi-bold;
+
+            @include media-breakpoint-down(mobile-m) {
+              font-size: var(--font-size-text-10);
+            }
+          }
+
+          &__icon {
+            margin-inline-end: $spacer !important;
+
+            svg {
+              width: 16px !important;
+              height: 16px !important;
+
+              @include media-breakpoint-down(mobile-m) {
                 width: 14px !important;
                 height: 14px !important;
               }
             }
+          }
 
-            &__timer {
-              font-size: var(--font-size-text-11) !important;
-            }
+          &__timer {
+            font-size: var(--font-size-text-8) !important;
 
-            @include media-breakpoint-down(mobile) {
-              @include center(true, false);
+            @include media-breakpoint-down(mobile-m) {
+              font-size: var(--font-size-text-9) !important;
             }
           }
         }
       }
 
       .question {
-        img {
-          @include media-breakpoint-down(mobile) {
-            aspect-ratio: 16/9 !important;
-          }
+        @include media-breakpoint-down(tablet) {
+          height: var(--media-question-height, 40vh) !important;
         }
       }
 
       .question-media {
-        &__note {
-          @include media-breakpoint-down(mobile) {
-            position: absolute;
-            width: calc(100% - $spacer * 12);
-            padding: $spacer;
-            color: #fff;
-            font-size: var(--font-size-text-10);
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.9);
-            border-radius: calc(var(--border-radius-01) / 2);
-            margin-block-start: -60px;
+        @include media-breakpoint-down(tablet) {
+          display: flex;
+          flex-direction: column;
+          gap: $spacer * 2;
+          height: 100%;
 
-            @include center(true, false);
+          &-image {
+            flex: 1 1 0;
+            min-height: 0;
+          }
+
+          img {
+            position: absolute;
+            height: 100%;
+            max-height: none !important;
+            padding: $spacer;
+            aspect-ratio: unset !important;
+            inset: 0;
+          }
+
+          &__note {
+            flex: 0 1 auto;
+            // Image shrinks first; note only scrolls past this share
+            max-height: 60%;
+            overflow-y: auto;
+            margin-block-start: 0;
+            line-height: 1.35;
+            overscroll-behavior: contain;
           }
         }
       }
@@ -267,6 +296,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    }
+
+    &--compactMedia.game-scene--activeAnswerTypeTrivia {
+      .answer-field__button--pass {
+        @include media-breakpoint-down(tablet) {
+          position: relative !important;
+          display: flex;
+          width: 96px !important;
+          height: 30px;
+          margin: 0 0 $spacer * 2 auto;
+          transform: none !important;
+          opacity: 1 !important;
+          inset: auto !important;
+        }
+      }
+
+      .trivia-option-list {
+        @include media-breakpoint-down(mobile) {
+          gap: $spacer * 2;
+        }
+
+        &-item {
+          @include media-breakpoint-down(mobile) {
+            min-height: 40px;
+            padding: $spacer $spacer * 2;
+            box-shadow: none;
           }
         }
       }

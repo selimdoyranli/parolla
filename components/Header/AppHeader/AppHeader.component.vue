@@ -12,6 +12,8 @@
         AppIcon(name="tabler:arrow-left")
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
+  // Icon-only logo swapped in while the on-screen keyboard is open on mobile
+  AppLogo.app-logo--osk(:class="[logoClasses]" :width="32" :height="32" @click.native.prevent.capture="handleClickAppLogo")
 
   menu.app-header-nav
     li.app-header-nav__item.app-header-nav__item--tourModeOnline.me-3(

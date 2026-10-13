@@ -10,6 +10,8 @@
 
     // Countdown
     .countdown.game-scene__countdown(:class="{ 'd-none': !questions }")
+      // Compact mode replaces the hidden alphabet with a progress chip
+      span.countdown__progress {{ alphabet.activeIndex + 1 }}/{{ alphabet.items.length }}
       AppIcon.countdown__icon(name="tabler:clock" color="var(--color-icon-01)")
       CountDown.countdown__timer(
         ref="countdownTimerRef"
@@ -105,7 +107,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch, nextTick } from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown } from 'vant'
@@ -220,6 +222,8 @@ export default defineComponent({
       window.addEventListener('keyup', event => handleAnswerFieldAutoFocus(event))
 
       window.addEventListener('resize', questionFitText)
+      window.addEventListener('resize', fitMediaQuestion)
+      window.visualViewport?.addEventListener('resize', fitMediaQuestion)
       window.addEventListener('beforeunload', event => handleBeforeUnload(event))
 
       window.addEventListener('scroll', scrollTop)
@@ -234,6 +238,9 @@ export default defineComponent({
 
     onUnmounted(() => {
       window.removeEventListener('resize', questionFitText)
+      window.removeEventListener('resize', fitMediaQuestion)
+      window.visualViewport?.removeEventListener('resize', fitMediaQuestion)
+      document.documentElement.classList.remove('compact-media')
       window.removeEventListener('beforeunload', handleBeforeUnload)
 
       window.removeEventListener('scroll', scrollTop)
@@ -243,8 +250,52 @@ export default defineComponent({
       }
     })
 
+    const isActiveQuestionMedia = computed(() => questions.value?.[alphabet.value.activeIndex]?.questionType === questionTypeEnum.MEDIA)
+
+    // Media question + (keyboard open or trivia options) leaves little room; hide alphabet and fit image + note to what's left
+    const isCompactMedia = computed(
+      () => isActiveQuestionMedia.value && (answer.isFocused || getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA)
+    )
+
+    // Sizes the active media question to the gap between its top and the fixed field section, so image + note always fit
+    const fitMediaQuestion = () => {
+      requestAnimationFrame(() => {
+        const question = rootRef.value?.querySelector('.question--active')
+        const fieldSection = rootRef.value?.querySelector('.game-scene__fieldSection')
+
+        if (!question || !fieldSection) return
+
+        // .game-scene gets `zoom` on short screens; rects are zoomed, the vars we set are not
+        const zoom = parseFloat(getComputedStyle(rootRef.value).zoom) || 1
+        const height = (fieldSection.getBoundingClientRect().top - question.getBoundingClientRect().top) / zoom - 8
+
+        rootRef.value.style.setProperty('--media-question-height', `${Math.max(height, 0)}px`)
+
+        // Center the countdown chip in the free header gap between the icon logo and the right nav
+        const logo = document.querySelector('.app-header .app-logo--osk img')?.getBoundingClientRect()
+        const nav = document.querySelector('.app-header menu:last-of-type')?.getBoundingClientRect()
+
+        if (logo?.width && nav) {
+          rootRef.value.style.setProperty('--compact-countdown-x', `${(logo.right + nav.left) / 2 / zoom}px`)
+          rootRef.value.style.setProperty('--compact-countdown-y', `${(logo.top + logo.bottom) / 2 / zoom}px`)
+        }
+      })
+    }
+
+    // Lets the header swap to the icon logo while compact (trivia doesn't open the keyboard, so html.osk isn't set)
+    watch(isCompactMedia, value => document.documentElement.classList.toggle('compact-media', value), { immediate: true })
+
+    watch(
+      () => [alphabet.value.activeIndex, answer.isFocused, questions.value, isCompactMedia.value],
+      async () => {
+        await nextTick()
+        fitMediaQuestion()
+      }
+    )
+
     const gameSceneClasses = computed(() => {
       return {
+        'game-scene--compactMedia': isCompactMedia.value,
         'game-scene--isMobileDevice': $ua.isFromMobilephone(),
         'game-scene--gameOver': isGameOver.value,
         'game-scene--osk': answer.isFocused && getActiveQuestionAnswerType() !== answerTypeEnum.TRIVIA,
