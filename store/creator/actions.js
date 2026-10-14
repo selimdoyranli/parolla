@@ -228,6 +228,9 @@ export default {
     const { data, error } = await this.$appFetch({
       path: `rooms/${documentId}/cover-photo`,
       method: 'POST',
+      query: {
+        locale: this.$i18n.locale
+      },
       data: formData,
       headers: {
         Authorization: `${token}`,
@@ -243,6 +246,9 @@ export default {
     const { data, error } = await this.$appFetch({
       path: `rooms/${documentId}/cover-photo`,
       method: 'DELETE',
+      query: {
+        locale: this.$i18n.locale
+      },
       headers: {
         Authorization: `${token}`
       }
