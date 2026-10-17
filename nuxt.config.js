@@ -410,6 +410,18 @@ module.exports = {
           'GmPanel/Daily/index': {
             tr: '/gm/gunluk',
             en: '/gm/daily'
+          },
+          'GmPanel/Ai/index': {
+            tr: '/gm/ai',
+            en: '/gm/ai'
+          },
+          'GmPanel/Ai/TaggedRooms/index': {
+            tr: '/gm/ai/etiketlenen-odalar',
+            en: '/gm/ai/tagged-rooms'
+          },
+          'GmPanel/Ai/ModeratedRooms/index': {
+            tr: '/gm/ai/modere-edilen-odalar',
+            en: '/gm/ai/moderated-rooms'
           }
         }
       }

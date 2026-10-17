@@ -67,6 +67,9 @@ NuxtLink.quiz-card(
         span.quiz-card__tag.quiz-card__tag--more(v-if="room.tags.length > 3")
           | +{{ room.tags.length - 3 }}
 
+    // Extra info a parent list wants under the tags (e.g. the GM panel's AI notes)
+    slot(name="extra")
+
     .quiz-card__footer
       .quiz-card__stats
         span.quiz-card__stat.quiz-card__stat--accent(v-if="room.viewCount && room.viewCount > 0")

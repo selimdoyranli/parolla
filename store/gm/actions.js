@@ -16,6 +16,32 @@ export default {
     })
   },
 
+  fetchAiSettings() {
+    return this.$appFetch({
+      path: 'moderation/ai-settings',
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  // Only `apiKeys` the GM edited are sent; the server keeps the others as they are
+  updateAiSettings(_, data) {
+    return this.$appFetch({
+      path: 'moderation/ai-settings',
+      method: 'PUT',
+      data,
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  // kind: 'tagged' | 'moderated'
+  fetchAiRooms(_, { kind, page }) {
+    return this.$appFetch({
+      path: `moderation/ai-${kind}-rooms`,
+      query: { page },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
   // action: 'block-user' | 'delete-daily-score' | 'delete-wordblock-scores'
   runAction(_, { action, data }) {
     return this.$appFetch({

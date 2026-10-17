@@ -948,6 +948,39 @@ export default {
       description: 'Players who are first on all of the 5, 6 and 7 letter boards on the same day.',
       anomaly: 'First on 5, 6 and 7 letters'
     },
+    ai: {
+      title: 'AI Services',
+      roomCount: '{count} rooms',
+      emptyRooms: 'No rooms yet',
+      settings: {
+        title: 'Settings',
+        description:
+          'Reviews rooms that go public with AI and generates 5 tags for rooms without tags. API keys are write-only: a saved key is never shown again, use the pencil icon to enter a new one.',
+        provider: 'Provider',
+        model: 'Model',
+        modelPlaceholder: 'e.g. openai/gpt-oss-20b',
+        apiKeys: 'API keys',
+        keyNotSet: 'Not set',
+        newKey: 'Paste the new key',
+        features: 'Features',
+        tagGeneration: 'Tag generation',
+        tagGenerationHint: 'Adds 5 tags to public rooms that have none',
+        roomModeration: 'Room moderation',
+        roomModerationHint: 'Removes rooms with profanity, NSFW or private/low-quality content from the list',
+        tagPrompt: 'Tag system prompt',
+        moderationPrompt: 'Moderation system prompt'
+      },
+      taggedRooms: {
+        title: 'Tagged',
+        description: 'Rooms the AI added tags to. Owners can still change their tags.',
+        aiTags: 'AI tags'
+      },
+      moderatedRooms: {
+        title: 'Moderated',
+        description: 'Rooms the AI removed from the public list, with the moderation notes.',
+        note: 'Moderation note'
+      }
+    },
     daily: {
       title: 'Daily',
       description: 'Players who finished the daily mode in more than 4 minutes with 25 or more correct answers.',

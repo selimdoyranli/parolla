@@ -966,6 +966,39 @@ export default {
       description: 'Aynı gün 5, 6 ve 7 harfli tabloların üçünde de birinci olan oyuncular.',
       anomaly: '5, 6 ve 7 harfte birinci'
     },
+    ai: {
+      title: 'AI Servisleri',
+      roomCount: '{count} oda',
+      emptyRooms: 'Henüz oda yok',
+      settings: {
+        title: 'Ayarlar',
+        description:
+          "Public olan odaları AI ile denetler ve etiketi olmayan odalara 5 etiket üretir. API key'ler sadece yazılabilir: kayıtlı key geri gösterilmez, kalem ikonuyla yenisini girebilirsin.",
+        provider: 'Sağlayıcı',
+        model: 'Model',
+        modelPlaceholder: 'örn. openai/gpt-oss-20b',
+        apiKeys: "API key'ler",
+        keyNotSet: 'Ayarlanmadı',
+        newKey: "Yeni key'i yapıştır",
+        features: 'Özellikler',
+        tagGeneration: 'Etiket üretimi',
+        tagGenerationHint: 'Public olan ve etiketi olmayan odalara 5 etiket ekler',
+        roomModeration: 'Oda moderasyonu',
+        roomModerationHint: 'Küfür, NSFW ve özel/kalitesiz içerikli odaları listeden kaldırır',
+        tagPrompt: 'Etiket sistem promptu',
+        moderationPrompt: 'Moderasyon sistem promptu'
+      },
+      taggedRooms: {
+        title: 'Etiketlenenler',
+        description: "AI'ın etiket eklediği odalar. Oda sahibi etiketleri sonradan değiştirebilir.",
+        aiTags: 'AI etiketleri'
+      },
+      moderatedRooms: {
+        title: 'Modere edilenler',
+        description: "AI'ın public listeden kaldırdığı odalar ve moderasyon açıklamaları.",
+        note: 'Moderasyon açıklaması'
+      }
+    },
     daily: {
       title: 'Günlük',
       description: 'Günlük modu 4 dakikadan uzun sürede 25 veya daha fazla doğruyla bitiren oyuncular.',

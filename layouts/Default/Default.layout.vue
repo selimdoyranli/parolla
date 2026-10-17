@@ -5,7 +5,7 @@
 
   .layout__ad.layout__ad--left
     // image_vertical_flex_left
-    AppAd(:data-ad-slot="2717771834")
+    AppAd(v-if="!isGmPage" :data-ad-slot="2717771834")
     a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
       img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
@@ -21,7 +21,7 @@
 
   .layout__ad.layout__ad--right
     // image_vertical_flex_right
-    AppAd(:data-ad-slot="8500032812")
+    AppAd(v-if="!isGmPage" :data-ad-slot="8500032812")
     a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
       img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
@@ -36,10 +36,16 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onBeforeUnmount, reactive } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, onBeforeUnmount, reactive, computed, useContext, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
+    const { getRouteBaseName } = useContext()
+    const route = useRoute()
+
+    // No ad slots on the GM panel: it shows moderation data and AI settings
+    const isGmPage = computed(() => getRouteBaseName(route.value)?.startsWith('GmPanel'))
+
     const visualViewport = reactive({
       initialize: {
         height: 0
@@ -82,7 +88,8 @@ export default defineComponent({
     })
 
     return {
-      visualViewport
+      visualViewport,
+      isGmPage
     }
   }
 })
