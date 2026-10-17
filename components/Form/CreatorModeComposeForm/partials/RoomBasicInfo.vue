@@ -115,12 +115,13 @@
         )
           | +
 
-    Cell.creator-mode-compose-form-tags(v-if="form.tags && form.tags.length > 0")
-      .creator-mode-compose-form-tags__tags
+    // The hint takes the tag cloud's place until a tag is added
+    Cell.creator-mode-compose-form-tags
+      .creator-mode-compose-form-tags__tags(v-if="form.tags && form.tags.length > 0")
         template(v-for="tag in form.tags")
           Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="onRemoveTag(tag)") {{ tag }}
-    p.creator-mode-compose-form__infoHint.creator-mode-compose-form__infoHint--padded(v-else)
-      | {{ $t('form.creatorModeCompose.room.tag.hint') }}
+      p.creator-mode-compose-form__infoHint.creator-mode-compose-form__infoHint--flush(v-else)
+        | {{ $t('form.creatorModeCompose.room.tag.hint') }}
 
     Cell.creator-mode-compose-form__gameTimeLimit(v-if="form.quizType === quizTypeEnum.QA")
       template(#title)
@@ -370,11 +371,12 @@ export default defineComponent({
   padding: 8px 12px;
   color: var(--color-info-01);
   font-size: 13px;
+  text-align: left;
   background-color: color-mix(in sRGB, var(--color-info-01) 10%, transparent);
   border-radius: calc(var(--border-radius-01) / 2);
 
-  &--padded {
-    margin: 0 16px 8px;
+  &--flush {
+    margin: 0;
   }
 }
 

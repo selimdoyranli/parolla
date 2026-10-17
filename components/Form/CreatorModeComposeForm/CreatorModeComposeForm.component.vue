@@ -11,6 +11,23 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
       template(v-else-if="form.quizType === quizTypeEnum.FLASHCARDS") {{ $t('form.creatorModeCompose.flashcardsTitle') }}
       template(v-else) {{ $t('form.creatorModeCompose.title') }}
 
+  // The room was taken off the public list by moderation; the owner may still list it again
+  NoticeBar.creator-mode-compose-form__moderationNotice(
+    v-if="form.isSystemRemovedFromPublic"
+    left-icon="warning-o"
+    wrapable
+    :scrollable="false"
+  )
+    .creator-mode-compose-form__moderationNoticeBody
+      span {{ $t('form.creatorModeCompose.room.isListed.systemRemoved') }}
+      span(v-if="form.moderationNote")
+        strong {{ $t('form.creatorModeCompose.room.moderation.note') }}:
+        |
+        | {{ form.moderationNote }}
+      small(v-if="form.moderationSource")
+        | {{ $t('form.creatorModeCompose.room.moderation.source') }}:
+        | {{ $t(`form.creatorModeCompose.room.moderation.sources.${form.moderationSource}`) }}
+
   RoomBasicInfo(
     ref="roomBasicInfoRef"
     :form="form"
@@ -108,7 +125,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
 
 <script>
 import { defineComponent, useRouter, useContext, ref, computed } from '@nuxtjs/composition-api'
-import { Form, Tag } from 'vant'
+import { Form, Tag, NoticeBar } from 'vant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import ChoiceList from './partials/ChoiceList.vue'
 import QuestionList from './partials/QuestionList.vue'
@@ -118,6 +135,7 @@ export default defineComponent({
   components: {
     Form,
     Tag,
+    NoticeBar,
     ChoiceList,
     QuestionList,
     FlashcardList
