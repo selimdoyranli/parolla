@@ -1,0 +1,106 @@
+.room-comment-item {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-ui-03);
+  transition: background-color 0.6s;
+
+  &--reply {
+    padding: 10px 0 0;
+    border-bottom: 0;
+  }
+
+  &--highlighted {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 12%, transparent);
+    border-radius: 12px;
+  }
+
+  &__avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    background: var(--color-ui-03);
+    border-radius: 50%;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  &__username {
+    color: var(--color-brand-02);
+    font-weight: 700;
+  }
+
+  &__owner {
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+  }
+
+  &__time {
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__content {
+    margin: 4px 0 6px;
+    color: var(--color-text-01);
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  &__mention {
+    color: var(--color-brand-02);
+    font-weight: 600;
+  }
+
+  &__deleted {
+    margin: 6px 0;
+    color: var(--color-text-03);
+    font-style: italic;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__action {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0;
+    color: var(--color-text-03);
+    font-size: 13px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &.is-active {
+      color: var(--color-brand-02);
+    }
+  }
+
+  &__toggle {
+    padding: 6px 0;
+    color: var(--color-brand-02);
+    font-weight: 600;
+    font-size: 13px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__replies {
+    margin-top: 4px;
+    padding-left: 4px;
+    border-left: 2px solid var(--color-ui-03);
+  }
+}

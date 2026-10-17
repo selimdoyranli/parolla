@@ -1,0 +1,22 @@
+.room-comment-composer {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-ui-03);
+
+  &__field {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--color-ui-01);
+    border-radius: 12px;
+  }
+
+  &__send {
+    min-width: 40px;
+    height: 40px;
+    color: var(--color-brand-02);
+    border-color: var(--color-brand-02);
+    border-radius: 12px;
+  }
+}
