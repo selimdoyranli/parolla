@@ -73,6 +73,7 @@ export default {
     loadMore: 'Daha fazla'
   },
   auth: {
+    accountBlocked: 'Hesabın sistem tarafından kapatıldı',
     google: {
       callback: {
         redirecting: 'Yönlendiriliyorsun, lütfen bekle...',
@@ -244,8 +245,7 @@ export default {
     },
     credits: {
       title: 'Yapımcılar',
-      description:
-        'parolla açık kaynak bir projedir. <a href="https://github.com/selimdoyranli/parolla" rel="nofollow,noopener" target="_blank">GitHub</a> bağlantısından ulaşabilirsin. Yapımcılar: <label><a href="https://twitter.com/selimdoyranli" target="_blank">@selimdoyranli</a></label> <label><a href="https://twitter.com/apo_bozdag" target="_blank">@apo_bozdag</a></label> <label><a href="https://twitter.com/muratozakcill" target="_blank">@muratozakcill</a></label>'
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
     },
     contact: {
       title: 'Bize ulaşın',
@@ -697,6 +697,7 @@ export default {
           label: 'Kapak fotoğrafı',
           uploaderTitle: 'Kapak fotoğrafı ekle',
           uploaderDescription: 'Tıkla ve görsel seç, 16:9 oranında kırpılır',
+          hint: 'Kapak fotoğrafı olan quizler daha çok dikkat çekiyor, eklemende fayda var.',
           error: {
             mimeTypeNotAllowed: 'İzin verilen formatlar: JPG, PNG, GIF, WEBP',
             sizeLimitExceeded: 'Maksimum dosya boyutu: 5 MB',
@@ -709,14 +710,16 @@ export default {
           placeholder: 'Quiz hakkında kısa bir açıklama...'
         },
         isListed: {
-          label: 'Quizler listesinde görünsün mü?'
+          label: 'Quizler listesinde görünsün mü?',
+          systemRemoved: 'Sistem tarafından odanız denetlendi: Listede göstermek için uygun değil!'
         },
         isAnon: {
           label: 'Adın gizlensin mi?'
         },
         tag: {
           label: 'Etiketler',
-          placeholder: 'Etiket yaz'
+          placeholder: 'Etiket yaz',
+          hint: 'Etiket eklemek quizini öne çıkarır aramalarda daha kolay bulunur.'
         },
         gameTimeLimit: {
           label: 'Oyun süresi',
@@ -943,11 +946,80 @@ export default {
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
     loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
   },
+  gmPanel: {
+    title: 'GM Paneli',
+    menu: 'GM Paneli',
+    date: 'Tarih',
+    copy: 'Kopyala',
+    empty: 'Bu tarihte anomali yok',
+    blocked: 'Engelli',
+    blockUser: 'Oyuncuyu engelle',
+    deleteScores: 'Skorlarını sil',
+    deleteScore: 'Skorunu sil',
+    confirmBlockUser: '{username} engellensin mi? Hesabı kapatılır.',
+    confirmDeleteScores: '{username} oyuncusunun skoru silinsin mi?',
+    anomalyCount: '{count} anomali tespit edildi',
+    notifyTitle: 'Oyuncuya bildirim metni',
+    actionDone: 'İşlem tamamlandı',
+    wordblock: {
+      title: 'Kelimeblok',
+      description: 'Aynı gün 5, 6 ve 7 harfli tabloların üçünde de birinci olan oyuncular.',
+      anomaly: '5, 6 ve 7 harfte birinci'
+    },
+    ai: {
+      title: 'AI Servisleri',
+      roomCount: '{count} oda',
+      emptyRooms: 'Henüz oda yok',
+      queue: {
+        title: 'Kuyruk ({count})',
+        empty: 'Kuyrukta oda yok',
+        steps: {
+          waiting: 'Bekliyor',
+          moderation: 'Modere ediliyor',
+          tagging: 'Etiketleniyor'
+        }
+      },
+      settings: {
+        title: 'Ayarlar',
+        description:
+          "Public olan odaları AI ile denetler ve etiketi olmayan odalara 5 etiket üretir. API key'ler sadece yazılabilir: kayıtlı key geri gösterilmez, kalem ikonuyla yenisini girebilirsin.",
+        provider: 'Sağlayıcı',
+        model: 'Model',
+        modelPlaceholder: 'örn. openai/gpt-oss-20b',
+        apiKeys: "API key'ler",
+        keyNotSet: 'Ayarlanmadı',
+        newKey: "Yeni key'i yapıştır",
+        features: 'Özellikler',
+        tagGeneration: 'Etiket üretimi',
+        tagGenerationHint: 'Public olan ve etiketi olmayan odalara 5 etiket ekler',
+        roomModeration: 'Oda moderasyonu',
+        roomModerationHint: 'Küfür, NSFW ve özel/kalitesiz içerikli odaları listeden kaldırır',
+        tagPrompt: 'Etiket sistem promptu',
+        moderationPrompt: 'Moderasyon sistem promptu'
+      },
+      taggedRooms: {
+        title: 'Etiketlenenler',
+        description: "AI'ın etiket eklediği odalar. Oda sahibi etiketleri sonradan değiştirebilir.",
+        aiTags: 'AI etiketleri'
+      },
+      moderatedRooms: {
+        title: 'Modere edilenler',
+        description: "AI'ın public listeden kaldırdığı odalar ve moderasyon açıklamaları.",
+        note: 'Moderasyon açıklaması'
+      }
+    },
+    daily: {
+      title: 'Günlük',
+      description: 'Günlük modu 4 dakikadan uzun sürede 25 veya daha fazla doğruyla bitiren oyuncular.',
+      anomaly: '{correct} doğru · {time} sürede bitirdi'
+    }
+  },
   socketStatus: {
     restarting: 'Sunucu güncelleniyor, birazdan yeniden bağlanacaksın...',
     reconnecting: 'Bağlantı koptu, yeniden bağlanılıyor...',
     idle: 'Uzun süre hareketsiz kaldığın için odadan çıkarıldın.',
     kicked: 'Oylama sonucu odadan atıldın.',
+    gmKicked: 'GM tarafından odadan atıldın.',
     reconnect: 'Tekrar katıl'
   },
   chat: {

@@ -9,7 +9,7 @@
 <script>
 import { defineComponent, useContext, useMeta, useStore, onMounted, onBeforeUnmount, ref } from '@nuxtjs/composition-api'
 import { wsTypeEnum } from '@/enums/wsType.enum'
-import { reconnectDelay, WS_CLOSE_SERVICE_RESTART, WS_CLOSE_IDLE, WS_CLOSE_VOTE_KICKED } from '@/helpers/ws-reconnect'
+import { reconnectDelay, WS_CLOSE_SERVICE_RESTART, WS_CLOSE_IDLE, WS_CLOSE_VOTE_KICKED, WS_CLOSE_GM_KICKED } from '@/helpers/ws-reconnect'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
@@ -19,7 +19,7 @@ export default defineComponent({
     // TODO: Implement this after tour mode socket channel is implemented
     const store = useStore()
 
-    // null | 'restarting' | 'reconnecting' | 'idle' | 'kicked' — see SocketStatusBanner
+    // null | 'restarting' | 'reconnecting' | 'idle' | 'kicked' | 'gmKicked' — see SocketStatusBanner
     const socketStatus = ref(null)
     let reconnectAttempt = 0
     let reconnectTimer = null
@@ -42,8 +42,10 @@ export default defineComponent({
       if (isDestroyed) return
 
       // Dropped on purpose by the server: wait for the player to rejoin
-      if (event.code === WS_CLOSE_IDLE || event.code === WS_CLOSE_VOTE_KICKED) {
-        socketStatus.value = event.code === WS_CLOSE_IDLE ? 'idle' : 'kicked'
+      const manualCloseStatus = { [WS_CLOSE_IDLE]: 'idle', [WS_CLOSE_VOTE_KICKED]: 'kicked', [WS_CLOSE_GM_KICKED]: 'gmKicked' }[event.code]
+
+      if (manualCloseStatus) {
+        socketStatus.value = manualCloseStatus
 
         return
       }

@@ -1,3 +1,11 @@
+import { Dialog } from 'vant'
+
+// Strapi (and our Apple/merge callbacks) reject a blocked account with 'Your account has been blocked by an administrator'
+const alertIfBlocked = (app, error) => {
+  if (error?.code === 403 && /blocked/i.test(error.message))
+    Dialog.alert({ message: app.i18n.t('auth.accountBlocked'), confirmButtonText: app.i18n.t('general.ok') })
+}
+
 export default {
   async fetchMe({ commit, state }) {
     const token = this.$auth.strategy.token.get()
@@ -27,6 +35,8 @@ export default {
       }
     })
 
+    alertIfBlocked(this.app, error)
+
     return {
       data,
       error
@@ -53,6 +63,8 @@ export default {
       method: 'POST',
       data: payload
     })
+
+    alertIfBlocked(this.app, error)
 
     return {
       data,

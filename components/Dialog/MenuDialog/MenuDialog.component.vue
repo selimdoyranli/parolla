@@ -36,6 +36,14 @@ Dialog.dialog.menu-dialog(
         :title="$t('dialog.menu.myQuizzes')"
         @click.native="handleClickMyQuizzes"
       )
+      Cell.menu-dialog-nav__item(
+        v-if="isGmUser($auth.user)"
+        icon="shield-o"
+        size="large"
+        is-link
+        :title="$t('gmPanel.menu')"
+        @click.native="navigateAndClose('GmPanel-Wordblock')"
+      )
 
   Button.menu-dialog__logoutButton(v-if="$auth.loggedIn && $auth.user" @click="handleClickLogout") Çıkış Yap
   LoginForm(v-else)
@@ -150,28 +158,28 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.privacyPolicy')"
-      @click.native="handleClickLegal('Page-PrivacyPolicy')"
+      @click.native="navigateAndClose('Page-PrivacyPolicy')"
     )
     Cell.menu-dialog-nav__item(
       icon="notes-o"
       size="large"
       is-link
       :title="$t('dialog.menu.cookiePolicy')"
-      @click.native="handleClickLegal('Page-CookiePolicy')"
+      @click.native="navigateAndClose('Page-CookiePolicy')"
     )
     Cell.menu-dialog-nav__item(
       icon="description"
       size="large"
       is-link
       :title="$t('dialog.menu.kvkk')"
-      @click.native="handleClickLegal('Page-Kvkk')"
+      @click.native="navigateAndClose('Page-Kvkk')"
     )
     Cell.menu-dialog-nav__item(
       icon="balance-o"
       size="large"
       is-link
       :title="$t('dialog.menu.termsOfUse')"
-      @click.native="handleClickLegal('Page-TermsOfUse')"
+      @click.native="navigateAndClose('Page-TermsOfUse')"
     )
 </template>
 
@@ -182,6 +190,7 @@ import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { Dialog, CellGroup, Cell, Switch, Button } from 'vant'
 import { useSfx } from '@/composables/useSfx'
 import { showToast } from '@/helpers/toast'
+import { isGmUser } from '@/helpers/chat-command'
 
 export default defineComponent({
   components: {
@@ -344,7 +353,7 @@ export default defineComponent({
       window.location.href = '/'
     }
 
-    const handleClickLegal = name => {
+    const navigateAndClose = name => {
       router.push(localePath({ name }))
 
       state.isOpen = false
@@ -370,7 +379,8 @@ export default defineComponent({
       handleClickProfileView,
       handleClickMyQuizzes,
       handleClickLogout,
-      handleClickLegal
+      navigateAndClose,
+      isGmUser
     }
   }
 })

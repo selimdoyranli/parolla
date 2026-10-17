@@ -398,6 +398,30 @@ module.exports = {
           'Page/TermsOfUse/index': {
             tr: '/sayfa/kullanim-kosullari',
             en: '/page/terms-of-use'
+          },
+          'GmPanel/index': {
+            tr: '/gm',
+            en: '/gm'
+          },
+          'GmPanel/Wordblock/index': {
+            tr: '/gm/kelimeblok',
+            en: '/gm/wordblock'
+          },
+          'GmPanel/Daily/index': {
+            tr: '/gm/gunluk',
+            en: '/gm/daily'
+          },
+          'GmPanel/Ai/index': {
+            tr: '/gm/ai',
+            en: '/gm/ai'
+          },
+          'GmPanel/Ai/TaggedRooms/index': {
+            tr: '/gm/ai/etiketlenen-odalar',
+            en: '/gm/ai/tagged-rooms'
+          },
+          'GmPanel/Ai/ModeratedRooms/index': {
+            tr: '/gm/ai/modere-edilen-odalar',
+            en: '/gm/ai/moderated-rooms'
           }
         }
       }

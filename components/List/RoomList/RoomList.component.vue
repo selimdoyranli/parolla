@@ -31,9 +31,11 @@
           @edit="handleEditRoom"
           @delete="handleDeleteRoom"
         )
+          template(v-if="$scopedSlots['card-extra']" #extra)
+            slot(name="card-extra" :room="room")
 
         // Ad
-        template(v-if="(index + 1) % 4 === 0")
+        template(v-if="showAds && (index + 1) % 4 === 0")
           .room-list__ad(:key="`ad-${index}`")
             small.room-list__ad-label {{ $t('general.ad') }}
             AppAd(:data-ad-slot="6048083070")
@@ -81,6 +83,11 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    showAds: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   setup(props, { emit }) {

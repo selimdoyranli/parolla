@@ -10,7 +10,7 @@
 import { defineComponent, computed } from '@nuxtjs/composition-api'
 import { Button, Loading } from 'vant'
 
-// status: null | 'restarting' | 'reconnecting' (auto-retrying) | 'idle' | 'kicked' (waits for the user)
+// status: null | 'restarting' | 'reconnecting' (auto-retrying) | 'idle' | 'kicked' | 'gmKicked' (waits for the user)
 export default defineComponent({
   components: {
     Button,

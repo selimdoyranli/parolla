@@ -38,6 +38,7 @@ export default model => {
     title: model.title,
     isVisible: model.isVisible,
     isListed: model.isPublic,
+    isSystemRemovedFromPublic: model.isSystemRemovedFromPublic,
     isAnon: model.isAnon,
     questionCount: model.questionCount,
     quizType: model.quizType,
