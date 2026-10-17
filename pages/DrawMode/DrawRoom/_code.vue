@@ -228,6 +228,7 @@ import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
+import { parseChatCommand } from '@/helpers/chat-command'
 
 export default defineComponent({
   components: { Button, Loading, CreateGuestDrawerDialog, EnterPasswordDialog },
@@ -803,6 +804,14 @@ export default defineComponent({
     const onPick = word => send(wsTypeEnum.DRAW_WORD_CHOOSE, { word })
 
     const onSend = text => {
+      const parsedCommand = parseChatCommand(text, vm.$auth.user)
+
+      if (parsedCommand) {
+        send(wsTypeEnum.DRAW_CHAT_COMMAND, parsedCommand)
+
+        return
+      }
+
       if ($store.getters['draw/isDrawing']) send(wsTypeEnum.DRAW_GUESS, { guess: text })
       else send(wsTypeEnum.DRAW_CHAT, { message: text })
     }

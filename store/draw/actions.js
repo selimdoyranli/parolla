@@ -104,6 +104,9 @@ export default {
           nextRoundInMs: message.nextRoundInMs
         })
         break
+      case wsTypeEnum.DRAW_CLEAR_CHAT:
+        commit('CLEAR_CHAT')
+        break
       case wsTypeEnum.DRAW_ROOM_CLOSED:
         commit('SET_ROOM_CLOSED', message.reason || 'closed')
         break

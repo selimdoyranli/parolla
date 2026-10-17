@@ -126,6 +126,9 @@ export default {
 
     if (payload.remainingMs !== undefined) state.remainingMs = payload.remainingMs
   },
+  CLEAR_CHAT(state) {
+    state.chat = []
+  },
   PUSH_CHAT(state, m) {
     state.chat.push(m)
 

@@ -52,6 +52,7 @@ import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch
 import { Field, Button, Empty } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { parseChatCommand } from '@/helpers/chat-command'
 import { useSfx } from '@/composables/useSfx'
 
 const longpressDirective = {
@@ -217,28 +218,11 @@ export default defineComponent({
       }
     }
 
-    const isGm = computed(() => $auth.user?.role?.name === 'GM')
-
-    // GM-only slash commands. Server enforces the role check authoritatively;
-    // this just routes the message so non-GMs typing `/foo` still get it sent
-    // as a normal chat (and harmlessly ignored by the server).
-    const tryParseCommand = raw => {
-      if (!isGm.value) return null
-      const trimmed = raw.trim()
-
-      if (!trimmed.startsWith('/')) return null
-      const [name, ...args] = trimmed.slice(1).split(/\s+/)
-
-      if (!name) return null
-
-      return { command: name.toLowerCase(), args }
-    }
-
     const sendMessage = () => {
       // While reconnecting keep the draft so it can be sent once the socket is back
       if (!messageText.value.trim() || ws.value?.readyState !== 1) return
 
-      const parsed = tryParseCommand(messageText.value)
+      const parsed = parseChatCommand(messageText.value, $auth.user)
 
       if (parsed) {
         ws.value.send(
