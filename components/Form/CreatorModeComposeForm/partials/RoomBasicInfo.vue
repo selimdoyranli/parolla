@@ -59,6 +59,9 @@
             | Max: {{ convertSize(parollaConfig.upload.maxFileSize, { unit: 'mb' }) }} ·
             | {{ parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(', ') }}
 
+      p.creator-mode-compose-form__infoHint(v-if="!coverPhotoState.hasImage")
+        | {{ $t('form.creatorModeCompose.room.coverPhoto.hint') }}
+
     Field.creator-mode-compose-form__description(
       v-model="form.description"
       name="description"
@@ -116,6 +119,8 @@
       .creator-mode-compose-form-tags__tags
         template(v-for="tag in form.tags")
           Tag.creator-mode-compose-form-tags__tag(type="primary" closeable @close="onRemoveTag(tag)") {{ tag }}
+    p.creator-mode-compose-form__infoHint.creator-mode-compose-form__infoHint--padded(v-else)
+      | {{ $t('form.creatorModeCompose.room.tag.hint') }}
 
     Cell.creator-mode-compose-form__gameTimeLimit(v-if="form.quizType === quizTypeEnum.QA")
       template(#title)
@@ -358,6 +363,19 @@ export default defineComponent({
 .creator-mode-compose-form__coverPhotoLabel {
   color: var(--color-text-02);
   font-size: 14px;
+}
+
+.creator-mode-compose-form__infoHint {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  color: var(--color-info-01);
+  font-size: 13px;
+  background-color: color-mix(in sRGB, var(--color-info-01) 10%, transparent);
+  border-radius: calc(var(--border-radius-01) / 2);
+
+  &--padded {
+    margin: 0 16px 8px;
+  }
 }
 
 .creator-mode-compose-form__optionalHint {

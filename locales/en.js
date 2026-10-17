@@ -73,6 +73,7 @@ export default {
     loadMore: 'Load more'
   },
   auth: {
+    accountBlocked: 'Your account has been closed by the system',
     google: {
       callback: {
         redirecting: 'Redirecting, please wait...',
@@ -242,8 +243,7 @@ export default {
     },
     credits: {
       title: 'Credits',
-      description:
-        'parolla is an open source project. Check the <a href="https://github.com/selimdoyranli/parolla" rel="nofollow,noopener" target="_blank">GitHub</a> link. Creators: <label><a href="https://twitter.com/selimdoyranli" target="_blank">@selimdoyranli</a></label> <label><a href="https://twitter.com/apo_bozdag" target="_blank">@apo_bozdag</a></label> <label><a href="https://twitter.com/muratozakcill" target="_blank">@muratozakcill</a></label>'
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
     },
     contact: {
       title: 'Contact',
@@ -693,6 +693,7 @@ export default {
           label: 'Cover photo',
           uploaderTitle: 'Add a cover photo',
           uploaderDescription: 'Click to pick an image, auto-cropped to 16:9',
+          hint: 'Quizzes with a cover photo get more attention, it is worth adding one.',
           error: {
             mimeTypeNotAllowed: 'Allowed formats: JPG, PNG, GIF, WEBP',
             sizeLimitExceeded: 'Max file size: 5 MB',
@@ -705,14 +706,16 @@ export default {
           placeholder: 'Short description about the quiz...'
         },
         isListed: {
-          label: 'Wanna you listing on public quizzes?'
+          label: 'Wanna you listing on public quizzes?',
+          systemRemoved: 'Your room was reviewed by the system: not suitable for the public list!'
         },
         isAnon: {
           label: 'Hide creator player name?'
         },
         tag: {
           label: 'Tags',
-          placeholder: 'Type a tag'
+          placeholder: 'Type a tag',
+          hint: 'Adding tags makes your quiz stand out and easier to find in search.'
         },
         gameTimeLimit: {
           label: 'Game time',
@@ -925,11 +928,38 @@ export default {
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
   },
+  gmPanel: {
+    title: 'GM Panel',
+    menu: 'GM Panel',
+    date: 'Date',
+    copy: 'Copy',
+    empty: 'No anomalies on this date',
+    blocked: 'Blocked',
+    blockUser: 'Block player',
+    deleteScores: 'Delete scores',
+    deleteScore: 'Delete score',
+    confirmBlockUser: 'Block {username}? The account will be closed.',
+    confirmDeleteScores: "Delete {username}'s score?",
+    anomalyCount: '{count} anomalies detected',
+    notifyTitle: 'Notice text for the player',
+    actionDone: 'Done',
+    wordblock: {
+      title: 'Wordblock',
+      description: 'Players who are first on all of the 5, 6 and 7 letter boards on the same day.',
+      anomaly: 'First on 5, 6 and 7 letters'
+    },
+    daily: {
+      title: 'Daily',
+      description: 'Players who finished the daily mode in more than 4 minutes with 25 or more correct answers.',
+      anomaly: '{correct} correct · finished in {time}'
+    }
+  },
   socketStatus: {
     restarting: 'The server is updating, you will reconnect shortly...',
     reconnecting: 'Connection lost, reconnecting...',
     idle: 'You were removed from the room for being inactive for a long time.',
     kicked: 'You were voted out of the room.',
+    gmKicked: 'A GM removed you from the room.',
     reconnect: 'Rejoin'
   },
   chat: {

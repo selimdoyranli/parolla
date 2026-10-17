@@ -398,6 +398,18 @@ module.exports = {
           'Page/TermsOfUse/index': {
             tr: '/sayfa/kullanim-kosullari',
             en: '/page/terms-of-use'
+          },
+          'GmPanel/index': {
+            tr: '/gm',
+            en: '/gm'
+          },
+          'GmPanel/Wordblock/index': {
+            tr: '/gm/kelimeblok',
+            en: '/gm/wordblock'
+          },
+          'GmPanel/Daily/index': {
+            tr: '/gm/gunluk',
+            en: '/gm/daily'
           }
         }
       }

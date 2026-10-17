@@ -1,0 +1,67 @@
+.gm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block-end: 25vh;
+
+  &__description {
+    margin: 0 16px;
+  }
+
+  &__group {
+    &.van-cell-group--inset {
+      margin: 0 16px;
+    }
+  }
+
+  &__notifyText {
+    white-space: pre-wrap;
+  }
+
+  &__itemsTitle {
+    margin: 8px 16px 0;
+    color: var(--color-text-03);
+    font-size: 13px;
+  }
+
+  &__meta {
+    color: var(--color-text-03) !important;
+    font-size: 12px;
+  }
+
+  &__tags {
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 10px 16px 12px;
+  }
+
+  // vant's default plain button keeps dark text, unreadable on the dark theme
+  .van-button--default.van-button--plain {
+    color: var(--color-text-02);
+    border-color: var(--color-border-02);
+  }
+
+  input[type='date'] {
+    color-scheme: light dark;
+  }
+
+  .van-pagination {
+    margin: 0 16px;
+
+    &__item,
+    &__page-desc {
+      color: var(--color-text-02);
+      background-color: var(--color-ui-02);
+    }
+
+    &__item--disabled {
+      opacity: 0.4;
+    }
+  }
+}

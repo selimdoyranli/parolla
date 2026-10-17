@@ -81,7 +81,7 @@ export default {
       return {
         user: this.$auth.user?.id,
         isVisible: form.isVisible,
-        isPublic: form.isListed,
+        isPublic: form.isListed && !form.isSystemRemovedFromPublic,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         title: form.roomTitle,
         description: form.description?.trim() || null,

@@ -26,6 +26,7 @@ declare global {
   const useFormatter: typeof import('./composables/useFormatter.js')['default']
   const useGameMode: typeof import('./composables/useGameMode.js')['default']
   const useGameScene: typeof import('./composables/useGameScene.js')['default']
+  const useGmActions: typeof import('./composables/useGmActions.js')['default']
   const useNativeBridge: typeof import('./composables/useNativeBridge.js')['useNativeBridge']
   const useScroll: typeof import('./composables/useScroll.js')['default']
   const useSfx: typeof import('./composables/useSfx.js')['useSfx']
