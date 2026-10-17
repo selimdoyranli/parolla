@@ -7,11 +7,11 @@
     li.draw-scoreboard__row(
       v-for="(p, i) in sortedPlayers"
       :key="p.id"
-      :role="p.isGuest ? null : 'button'"
-      :tabindex="p.isGuest ? null : 0"
+      :role="isClickable(p) ? 'button' : null"
+      :tabindex="isClickable(p) ? 0 : null"
       :class="[rowClasses(p), { 'draw-scoreboard__row--guest': p.isGuest }]"
-      @click="!p.isGuest && openPlayerDialog(p)"
-      @keyup.enter="!p.isGuest && openPlayerDialog(p)"
+      @click="isClickable(p) && $emit('player-click', p)"
+      @keyup.enter="isClickable(p) && $emit('player-click', p)"
     )
       span.draw-scoreboard__rank {{ i + 1 }}
       PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="22")
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, useStore, getCurrentInstance } from '@nuxtjs/composition-api'
+import { defineComponent, computed, getCurrentInstance } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -38,7 +38,6 @@ export default defineComponent({
     correctGuesserIds: { type: Array, default: () => [] }
   },
   setup(props) {
-    const store = useStore()
     const vm = getCurrentInstance().proxy
     const displayName = p => (p.isGuest ? `${p.name} ${vm.$t('common.guestLabel')}` : p.name)
 
@@ -66,16 +65,11 @@ export default defineComponent({
       role: p.role
     })
 
-    // Mirrors PlayerAvatar's openPlayerDialogOnClick behaviour so the whole
-    // row is a click target — easier to hit than the 22px avatar alone.
-    const openPlayerDialog = p => {
-      if (p == null || p.id == null) return
-      store.commit('profile/SET_PLAYER_ID', p.id)
-      store.commit('profile/SET_PLAYER_USERNAME', p.name)
-      store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
-    }
+    // The whole row opens the player's actions menu (profile / report / vote kick) —
+    // easier to hit than the 22px avatar. A guest's own row has nothing to offer.
+    const isClickable = p => p != null && p.id != null && !(p.isGuest && isMe(p.id))
 
-    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, openPlayerDialog, displayName }
+    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, isClickable, displayName }
   }
 })
 </script>

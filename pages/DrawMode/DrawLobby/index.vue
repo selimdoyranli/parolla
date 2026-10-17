@@ -24,6 +24,7 @@
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="showGuestDialog = false")
   EnterPasswordDialog(v-if="passwordPrompt.code" :error-key="passwordPrompt.errorKey" @close="onPasswordCancel" @submit="onPasswordSubmit")
+  SocketStatusBanner(:status="reconnectStatus")
 </template>
 
 <script>
@@ -56,7 +57,7 @@ export default defineComponent({
   // official and community room lists as viewers. Join/create actions
   // remain auth-gated via the `auth-control` directive on their buttons.
   setup() {
-    const { send } = useDrawSocket()
+    const { send, reconnectStatus } = useDrawSocket()
     const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
     const store = vm.$store
@@ -88,7 +89,16 @@ export default defineComponent({
       diceBear: { seed: identity.value.avatarSeed }
     }))
 
-    const systemRooms = computed(() => sortDrawCategories(store.state.draw.systemRooms || []))
+    // Busiest category first (summed over its sub-rooms); the default category
+    // order breaks ties since Array#sort is stable.
+    const systemRooms = computed(() => {
+      const rooms = sortDrawCategories(store.state.draw.systemRooms || [])
+      const playersBySlug = {}
+
+      for (const r of rooms) playersBySlug[r.slug] = (playersBySlug[r.slug] || 0) + (r.playerCount || 0)
+
+      return rooms.sort((a, b) => playersBySlug[b.slug] - playersBySlug[a.slug])
+    })
     const communityRooms = computed(() =>
       store.state.draw.communityRooms.length ? store.state.draw.communityRooms : store.state.draw.publicRooms
     )
@@ -194,6 +204,7 @@ export default defineComponent({
     )
 
     return {
+      reconnectStatus,
       activeTab,
       systemRooms,
       communityRooms,

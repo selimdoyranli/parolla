@@ -80,14 +80,17 @@ const FALLBACK_EMOJI = '🎨'
 
 const LIVE_STATES = new Set(['picking', 'drawing', 'roundEnd'])
 
+// Older WS builds don't ship roundCount in the lobby DTO; system rooms run 35 rounds
+const SYSTEM_ROOM_ROUND_COUNT = 35
+
 function stateLabelFor(r) {
   if (r.state === 'waiting') return 'Oyuncular bekleniyor'
 
   if (r.state === 'finalScoreboard') return 'Final • Yeni döngü hazırlanıyor'
 
-  if (r.state === 'roundEnd') return `Tur ${(r.currentRoundIndex || 0) + 1}/50 • Ara`
+  const progress = `Tur ${(r.currentRoundIndex || 0) + 1}/${r.roundCount || SYSTEM_ROOM_ROUND_COUNT}`
 
-  return `Tur ${(r.currentRoundIndex || 0) + 1}/50`
+  return r.state === 'roundEnd' ? `${progress} • Ara` : progress
 }
 
 export default defineComponent({

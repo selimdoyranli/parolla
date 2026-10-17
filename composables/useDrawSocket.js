@@ -1,5 +1,6 @@
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
 import { fetchClientIp } from '@/helpers/client-ip'
+import { reconnectDelay, WS_CLOSE_SERVICE_RESTART } from '@/helpers/ws-reconnect'
 
 // Module-singleton so lobby + room pages share one WS connection across navigation.
 let sharedSocket = null
@@ -24,6 +25,13 @@ let serverReady = false
 // briefly drop consumers to 0 and tear the socket down between pages.
 // If a new consumer mounts within this window the pending close is cancelled.
 const CLOSE_DEFER_MS = 500
+
+// null | 'restarting' | 'reconnecting' — drives SocketStatusBanner on draw pages
+const reconnectStatus = ref(null)
+let reconnectAttempt = 0
+let reconnectTimer = null
+// Set by close(): an intentional teardown must not trigger auto-reconnect
+let closingOnPurpose = false
 
 export const useDrawSocket = () => {
   const vm = getCurrentInstance().proxy
@@ -59,6 +67,7 @@ export const useDrawSocket = () => {
     const url = `${wsBase}?${urlParams.toString()}`
 
     sharedStatus.value = 'connecting'
+    closingOnPurpose = false
     const sock = new WebSocket(url)
     sharedSocket = sock
 
@@ -67,11 +76,24 @@ export const useDrawSocket = () => {
       // listener isn't attached yet — wait for CONNECTED in onmessage before
       // flushing pendingMessages and exposing 'connected' status.
     }
-    sock.onclose = () => {
+    sock.onclose = event => {
       sharedStatus.value = 'disconnected'
       sharedSocket = null
       serverReady = false
       $store.commit('draw/SET_STATUS', 'disconnected')
+      // Frames queued for the dead socket (strokes, guesses) are stale once we rejoin
+      pendingMessages.length = 0
+
+      if (closingOnPurpose || consumers === 0) return
+
+      if (event.code === WS_CLOSE_SERVICE_RESTART) {
+        reconnectStatus.value = 'restarting'
+      } else if (reconnectStatus.value !== 'restarting') {
+        reconnectStatus.value = 'reconnecting'
+      }
+
+      clearTimeout(reconnectTimer)
+      reconnectTimer = setTimeout(open, reconnectDelay(reconnectAttempt++))
     }
     sock.onerror = e => {
       // eslint-disable-next-line no-console
@@ -87,8 +109,14 @@ export const useDrawSocket = () => {
 
       if (!data) return
 
+      if (data.type === 'server_restarting') {
+        reconnectStatus.value = 'restarting'
+      }
+
       if (data.type === 'connected') {
         if (data.playerId) $store.commit('draw/SET_MY_ID', data.playerId)
+        reconnectStatus.value = null
+        reconnectAttempt = 0
 
         if (!serverReady) {
           serverReady = true
@@ -132,6 +160,10 @@ export const useDrawSocket = () => {
   }
 
   const close = () => {
+    closingOnPurpose = true
+    clearTimeout(reconnectTimer)
+    reconnectStatus.value = null
+
     if (sharedSocket) {
       try {
         sharedSocket.close()
@@ -174,6 +206,7 @@ export const useDrawSocket = () => {
       }
     },
     status: sharedStatus,
+    reconnectStatus,
     open,
     close,
     send

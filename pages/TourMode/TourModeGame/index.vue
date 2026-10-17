@@ -2,10 +2,14 @@
 .page.tour-mode-game-page
   // Game Scene
   TourModeGameScene
+
+  SocketStatusBanner(:status="socketStatus" @reconnect="reconnectNow")
 </template>
 
 <script>
-import { defineComponent, useContext, useMeta, useStore, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useMeta, useStore, onMounted, onBeforeUnmount, ref } from '@nuxtjs/composition-api'
+import { wsTypeEnum } from '@/enums/wsType.enum'
+import { reconnectDelay, WS_CLOSE_SERVICE_RESTART, WS_CLOSE_IDLE, WS_CLOSE_VOTE_KICKED } from '@/helpers/ws-reconnect'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
@@ -15,12 +19,62 @@ export default defineComponent({
     // TODO: Implement this after tour mode socket channel is implemented
     const store = useStore()
 
+    // null | 'restarting' | 'reconnecting' | 'idle' | 'kicked' — see SocketStatusBanner
+    const socketStatus = ref(null)
+    let reconnectAttempt = 0
+    let reconnectTimer = null
+    let isDestroyed = false
+
+    const handleSocketMessage = event => {
+      const { type } = JSON.parse(event.data)
+
+      if (type === wsTypeEnum.SERVER_RESTARTING) {
+        socketStatus.value = 'restarting'
+      }
+
+      if (type === wsTypeEnum.CONNECTED) {
+        socketStatus.value = null
+        reconnectAttempt = 0
+      }
+    }
+
+    const handleSocketClose = event => {
+      if (isDestroyed) return
+
+      // Dropped on purpose by the server: wait for the player to rejoin
+      if (event.code === WS_CLOSE_IDLE || event.code === WS_CLOSE_VOTE_KICKED) {
+        socketStatus.value = event.code === WS_CLOSE_IDLE ? 'idle' : 'kicked'
+
+        return
+      }
+
+      if (event.code === WS_CLOSE_SERVICE_RESTART) {
+        socketStatus.value = 'restarting'
+      } else if (socketStatus.value !== 'restarting') {
+        socketStatus.value = 'reconnecting'
+      }
+
+      clearTimeout(reconnectTimer)
+      reconnectTimer = setTimeout(setupWs, reconnectDelay(reconnectAttempt++))
+    }
+
     const setupWs = async () => {
-      await store.dispatch('app/initWs')
-      await store.dispatch('tour/listenWs', { ws: store.getters['app/ws'] })
+      const ws = await store.dispatch('app/initWs')
+
+      ws.addEventListener('message', handleSocketMessage)
+      ws.addEventListener('close', handleSocketClose)
+      await store.dispatch('tour/listenWs', { ws })
+    }
+
+    const reconnectNow = () => {
+      reconnectAttempt = 0
+      socketStatus.value = 'reconnecting'
+      setupWs()
     }
 
     const destroyWs = async () => {
+      isDestroyed = true
+      clearTimeout(reconnectTimer)
       await store.dispatch('app/closeWs')
     }
 
@@ -57,6 +111,11 @@ export default defineComponent({
         }
       ]
     }))
+
+    return {
+      socketStatus,
+      reconnectNow
+    }
   },
   head: {}
 })

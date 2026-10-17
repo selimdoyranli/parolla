@@ -321,6 +321,9 @@ export default defineComponent({
     }
 
     const handleAnswer = () => {
+      // Reconnecting: keep the typed answer instead of dropping it into a dead socket
+      if (ws.value?.readyState !== 1) return false
+
       const answerField = formatAnswer(answer.field)
 
       resetAnswerField()

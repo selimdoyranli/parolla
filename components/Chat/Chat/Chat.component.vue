@@ -235,7 +235,8 @@ export default defineComponent({
     }
 
     const sendMessage = () => {
-      if (!messageText.value.trim()) return
+      // While reconnecting keep the draft so it can be sent once the socket is back
+      if (!messageText.value.trim() || ws.value?.readyState !== 1) return
 
       const parsed = tryParseCommand(messageText.value)
 

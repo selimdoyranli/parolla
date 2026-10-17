@@ -456,6 +456,12 @@ export default {
         }
       }
     },
+    playerActions: {
+      title: 'More ({username})',
+      showProfile: 'Show Profile',
+      report: 'Report',
+      voteKick: 'Vote to kick from room'
+    },
     tourModeOnline: {
       title: 'Tour'
     },
@@ -918,6 +924,13 @@ export default {
     pendingScoreboard: 'Fetching scores',
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
+  },
+  socketStatus: {
+    restarting: 'The server is updating, you will reconnect shortly...',
+    reconnecting: 'Connection lost, reconnecting...',
+    idle: 'You were removed from the room for being inactive for a long time.',
+    kicked: 'You were voted out of the room.',
+    reconnect: 'Rejoin'
   },
   chat: {
     chat: 'Chat',

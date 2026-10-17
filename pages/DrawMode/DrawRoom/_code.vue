@@ -185,6 +185,7 @@
       :nextDrawerId="nextDrawerId"
       :myId="myId"
       :correctGuesserIds="correctGuesserIds"
+      @player-click="openPlayerActions"
     )
     DrawChat.draw-room__chat(
       :chat="chat"
@@ -204,6 +205,15 @@
     @close="onPasswordCancel"
     @submit="onPasswordSubmit"
   )
+  PlayerActionsDialog(
+    can-vote-kick
+    :is-open="!!actionsPlayer"
+    :player="actionsPlayer"
+    :my-id="myId"
+    @vote-kick="onVoteKick"
+    @closed="actionsPlayer = null"
+  )
+  SocketStatusBanner(:status="reconnectStatus")
 </template>
 
 <script>
@@ -232,7 +242,7 @@ export default defineComponent({
   components: { Button, Loading, CreateGuestDrawerDialog, EnterPasswordDialog },
   layout: 'Default/Default.layout',
   setup() {
-    const { send } = useDrawSocket()
+    const { send, reconnectStatus } = useDrawSocket()
     const { playStart, playCorrect, playTickTock } = useDrawSoundFx()
     const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
@@ -440,12 +450,32 @@ export default defineComponent({
           return
         }
 
-        if (!lobbyRedirectCodes.includes(err.code)) return
+        // `kicked` = host kick or vote kick; rejoining from the lobby is allowed
+        if (![...lobbyRedirectCodes, 'kicked'].includes(err.code)) return
         $store.commit('draw/LEAVE_ROOM')
         $store.commit('draw/SET_ERROR', null)
         vm.$router.push(vm.localePath({ name: 'DrawMode-DrawLobby' }))
       }
     )
+
+    // After a reconnect (deploy or network drop) the server no longer has us
+    // in the room, so join again; `room_not_found` bounces to the lobby above.
+    watch(reconnectStatus, (status, prevStatus) => {
+      const codeParam = vm.$route.params.code
+
+      if (!status && prevStatus && codeParam) send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
+    })
+
+    const actionsPlayer = ref(null)
+
+    const openPlayerActions = p => {
+      actionsPlayer.value = { id: p.id, username: p.name, diceBear: p.diceBear, isGuest: p.isGuest }
+    }
+
+    const onVoteKick = p => {
+      send(wsTypeEnum.DRAW_VOTE_KICK, { targetId: p.id })
+      actionsPlayer.value = null
+    }
 
     watch(
       () => $store.state.draw.room,
@@ -800,6 +830,10 @@ export default defineComponent({
     const startGame = () => send(wsTypeEnum.DRAW_GAME_START)
 
     return {
+      reconnectStatus,
+      actionsPlayer,
+      openPlayerActions,
+      onVoteKick,
       tool,
       color,
       size,
