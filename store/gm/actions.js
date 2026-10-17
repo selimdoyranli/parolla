@@ -33,6 +33,13 @@ export default {
     })
   },
 
+  fetchAiQueue() {
+    return this.$appFetch({
+      path: 'moderation/ai-queue',
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
   // kind: 'tagged' | 'moderated'
   fetchAiRooms(_, { kind, page }) {
     return this.$appFetch({

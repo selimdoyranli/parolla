@@ -952,6 +952,15 @@ export default {
       title: 'AI Services',
       roomCount: '{count} rooms',
       emptyRooms: 'No rooms yet',
+      queue: {
+        title: 'Queue ({count})',
+        empty: 'No rooms in the queue',
+        steps: {
+          waiting: 'Waiting',
+          moderation: 'Moderating',
+          tagging: 'Tagging'
+        }
+      },
       settings: {
         title: 'Settings',
         description:

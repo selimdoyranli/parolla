@@ -46,6 +46,8 @@
     :scrollable="false"
   ) {{ description }}
 
+  GmAiQueue(v-if="activeTab === 'GmPanel-Ai'")
+
   // Date filter + notice text belong to the anomaly pages only
   CellGroup.gm-panel__group(v-if="date" inset)
     Field(

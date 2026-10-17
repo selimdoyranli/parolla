@@ -970,6 +970,15 @@ export default {
       title: 'AI Servisleri',
       roomCount: '{count} oda',
       emptyRooms: 'Henüz oda yok',
+      queue: {
+        title: 'Kuyruk ({count})',
+        empty: 'Kuyrukta oda yok',
+        steps: {
+          waiting: 'Bekliyor',
+          moderation: 'Modere ediliyor',
+          tagging: 'Etiketleniyor'
+        }
+      },
       settings: {
         title: 'Ayarlar',
         description:
