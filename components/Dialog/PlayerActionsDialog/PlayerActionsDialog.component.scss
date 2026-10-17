@@ -1,0 +1,27 @@
+.player-actions-dialog {
+  $van-dialog: '.van-dialog';
+  $van-cell: '.van-cell';
+
+  width: 90%;
+  max-width: var(--mobile);
+
+  #{$van-dialog} {
+    &__content {
+      padding: var(--base-p-y) calc(var(--base-p-x) * 1.8);
+    }
+  }
+
+  &__item {
+    #{$van-cell} {
+      &__title {
+        display: flex;
+        gap: calc(var(--base-m-x) / 2);
+        align-items: center;
+      }
+    }
+
+    &--danger {
+      color: var(--color-danger-01);
+    }
+  }
+}

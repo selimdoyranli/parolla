@@ -37,7 +37,7 @@ Dialog.stats-dialog.dialog.tour-mode-online-dialog(
 
       .tour-mode-online-dialog__onlineTab
         small {{ userList.totalPlayers }} {{ $t('tourMode.player') }}, {{ userList.totalViewers }} {{ $t('tourMode.viewer') }}
-        PlayerList(:items="userList.players")
+        PlayerList(:items="userList.players" player-actions-context="tour")
 
     // Last answers Tab
     Tab(name="last-answers")
@@ -48,7 +48,7 @@ Dialog.stats-dialog.dialog.tour-mode-online-dialog(
 
       .tour-mode-online-dialog__lastAnswersTab
         small {{ $t('tourMode.lastAnswers.title') }}
-        PlayerList(:items="tour.recentAnswers")
+        PlayerList(:items="tour.recentAnswers" player-actions-context="tour")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")
 </template>

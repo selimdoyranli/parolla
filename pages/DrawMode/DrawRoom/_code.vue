@@ -204,6 +204,7 @@
     @close="onPasswordCancel"
     @submit="onPasswordSubmit"
   )
+  SocketStatusBanner(:status="reconnectStatus")
 </template>
 
 <script>
@@ -227,12 +228,13 @@ import { useDrawGuestIdentity } from '@/composables/useDrawGuestIdentity'
 import CreateGuestDrawerDialog from '@/components/Draw/CreateGuestDrawerDialog/CreateGuestDrawerDialog.component.vue'
 import EnterPasswordDialog from '@/components/Draw/EnterPasswordDialog/EnterPasswordDialog.component.vue'
 import { drawRoomKindEnum } from '@/enums/drawRoomKind.enum'
+import { parseChatCommand } from '@/helpers/chat-command'
 
 export default defineComponent({
   components: { Button, Loading, CreateGuestDrawerDialog, EnterPasswordDialog },
   layout: 'Default/Default.layout',
   setup() {
-    const { send } = useDrawSocket()
+    const { send, reconnectStatus } = useDrawSocket()
     const { playStart, playCorrect, playTickTock } = useDrawSoundFx()
     const { i18n } = useContext()
     const vm = getCurrentInstance().proxy
@@ -440,12 +442,21 @@ export default defineComponent({
           return
         }
 
-        if (!lobbyRedirectCodes.includes(err.code)) return
+        // `kicked` = host kick or vote kick; rejoining from the lobby is allowed
+        if (![...lobbyRedirectCodes, 'kicked'].includes(err.code)) return
         $store.commit('draw/LEAVE_ROOM')
         $store.commit('draw/SET_ERROR', null)
         vm.$router.push(vm.localePath({ name: 'DrawMode-DrawLobby' }))
       }
     )
+
+    // After a reconnect (deploy or network drop) the server no longer has us
+    // in the room, so join again; `room_not_found` bounces to the lobby above.
+    watch(reconnectStatus, (status, prevStatus) => {
+      const codeParam = vm.$route.params.code
+
+      if (!status && prevStatus && codeParam) send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
+    })
 
     watch(
       () => $store.state.draw.room,
@@ -793,6 +804,14 @@ export default defineComponent({
     const onPick = word => send(wsTypeEnum.DRAW_WORD_CHOOSE, { word })
 
     const onSend = text => {
+      const parsedCommand = parseChatCommand(text, vm.$auth.user)
+
+      if (parsedCommand) {
+        send(wsTypeEnum.DRAW_CHAT_COMMAND, parsedCommand)
+
+        return
+      }
+
       if ($store.getters['draw/isDrawing']) send(wsTypeEnum.DRAW_GUESS, { guess: text })
       else send(wsTypeEnum.DRAW_CHAT, { message: text })
     }
@@ -800,6 +819,7 @@ export default defineComponent({
     const startGame = () => send(wsTypeEnum.DRAW_GAME_START)
 
     return {
+      reconnectStatus,
       tool,
       color,
       size,

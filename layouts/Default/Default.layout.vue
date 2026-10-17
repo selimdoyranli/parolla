@@ -30,6 +30,9 @@
 
   // Player Dialog
   PlayerDialog
+
+  // Player Actions ("more") Dialog — opened from live room avatars (tour / draw)
+  PlayerActionsDialog
 </template>
 
 <script>

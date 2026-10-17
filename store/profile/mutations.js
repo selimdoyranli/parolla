@@ -29,5 +29,9 @@ export default {
 
   SET_AVATAR_EDITOR_DIALOG_IS_OPEN(state, isOpen) {
     state.dialog.avatarEditor.isOpen = isOpen
+  },
+
+  SET_PLAYER_ACTIONS_DIALOG(state, { isOpen, player = null, context = null }) {
+    state.dialog.playerActions = isOpen ? { isOpen, player, context } : { ...state.dialog.playerActions, isOpen: false }
   }
 }

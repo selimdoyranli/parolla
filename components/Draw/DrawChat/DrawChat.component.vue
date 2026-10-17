@@ -13,7 +13,7 @@
 
         // ── Player rows: inline avatar+username, then ": text", no bubble ──
         template(v-else)
-          PlayerAvatar.draw-chat__avatar(with-username :open-player-dialog-on-click="!m.isGuest" :user="buildAvatarUser(m)" :size="22")
+          PlayerAvatar.draw-chat__avatar(with-username player-actions-context="draw" :user="buildAvatarUser(m)" :size="22")
           span.draw-chat__sep &nbsp;:&nbsp;
           span.draw-chat__text(v-longpress="() => openReport(m)") {{ m.message }}
           span.draw-chat__report(v-if="canReport(m)" @click="openReport(m)")
@@ -34,7 +34,7 @@
       :placeholder="placeholder"
       spellcheck="false"
       autocomplete="off"
-      :maxlength="64"
+      :maxlength="maxLength"
       :disabled="disabled"
       @input="onInput"
       @keypress.enter="send"
@@ -54,6 +54,7 @@
 import { defineComponent, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { isGmUser } from '@/helpers/chat-command'
 
 const longpressDirective = {
   bind(el, binding) {
@@ -160,6 +161,9 @@ export default defineComponent({
       }
     }
 
+    // Guesses are capped at 64; a GM needs room for `/system_message <up to 500 chars>`
+    const maxLength = computed(() => (isGmUser(vm.$auth.user) ? 520 : 64))
+
     const placeholder = computed(() => {
       if (props.iGuessedCorrectly) return 'Doğru bildin, kazananlarla sohbet et'
 
@@ -265,6 +269,7 @@ export default defineComponent({
 
     return {
       text,
+      maxLength,
       log,
       rootRef,
       disabled,

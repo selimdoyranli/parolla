@@ -460,6 +460,12 @@ export default {
         }
       }
     },
+    playerActions: {
+      title: 'Daha fazla ({username})',
+      showProfile: 'Profili Göster',
+      report: 'Raporla',
+      voteKick: 'Odadan atmak için oyla'
+    },
     tourModeOnline: {
       title: 'Tur'
     },
@@ -936,6 +942,13 @@ export default {
     pendingScoreboard: 'Skorlar getiriliyor',
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
     loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
+  },
+  socketStatus: {
+    restarting: 'Sunucu güncelleniyor, birazdan yeniden bağlanacaksın...',
+    reconnecting: 'Bağlantı koptu, yeniden bağlanılıyor...',
+    idle: 'Uzun süre hareketsiz kaldığın için odadan çıkarıldın.',
+    kicked: 'Oylama sonucu odadan atıldın.',
+    reconnect: 'Tekrar katıl'
   },
   chat: {
     chat: 'Sohbet',

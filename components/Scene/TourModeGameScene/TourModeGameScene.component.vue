@@ -79,7 +79,7 @@
     template(#content-prepend)
       .section-title {{ $t('tourMode.lastAnswers.title') }}
       .last-answers
-        PlayerList(:items="tour.recentAnswers")
+        PlayerList(:items="tour.recentAnswers" player-actions-context="tour")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")
       .section-title {{ $t('chat.chat') }}
@@ -321,6 +321,9 @@ export default defineComponent({
     }
 
     const handleAnswer = () => {
+      // Reconnecting: keep the typed answer instead of dropping it into a dead socket
+      if (ws.value?.readyState !== 1) return false
+
       const answerField = formatAnswer(answer.field)
 
       resetAnswerField()
