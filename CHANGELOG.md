@@ -1,5 +1,30 @@
 # Changelog
 
+## v3.2.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.1.0...v3.2.0)
+
+
+### 🚀 Enhancements
+
+  - **creator:** Raise quiz title, description, question and media note limits ([aa28277](https://github.com/selimdoyranli/parolla/commit/aa28277))
+  - **creator:** Compact media question layout on mobile ([558c944](https://github.com/selimdoyranli/parolla/commit/558c944))
+  - **socket:** Auto-reconnect, player actions dialog, draw lobby fixes ([e37a0bb](https://github.com/selimdoyranli/parolla/commit/e37a0bb))
+  - **socket:** Open player actions from live-room avatars ([cc7d21b](https://github.com/selimdoyranli/parolla/commit/cc7d21b))
+  - **draw:** Slash commands for GMs in draw chat ([dce6850](https://github.com/selimdoyranli/parolla/commit/dce6850))
+  - **gm:** Moderation panel, quiz form hints and moderated room warning ([30a34e7](https://github.com/selimdoyranli/parolla/commit/30a34e7))
+  - **gm:** Add the AI services page to the GM panel ([d360d2c](https://github.com/selimdoyranli/parolla/commit/d360d2c))
+  - **gm:** Show the AI review queue on the AI pages ([7c47318](https://github.com/selimdoyranli/parolla/commit/7c47318))
+
+### 🩹 Fixes
+
+  - **creator:** Fullscreen preview, header chip fit and scene overflow ([7f58979](https://github.com/selimdoyranli/parolla/commit/7f58979))
+  - **creator:** Send locale with cover-photo upload/delete requests ([e695324](https://github.com/selimdoyranli/parolla/commit/e695324))
+
+### ❤️  Contributors
+
+- Selimdoyranli <selimdoyranli@gmail.com>
+
 ## v3.1.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.0.0...v3.1.0)
