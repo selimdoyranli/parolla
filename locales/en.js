@@ -707,7 +707,7 @@ export default {
         },
         isListed: {
           label: 'Wanna you listing on public quizzes?',
-          systemRemoved: 'Your room was reviewed by the system: not suitable for the public list!'
+          systemRemoved: 'This quiz was reviewed: it is not suitable for the quiz list and was removed from it.'
         },
         isAnon: {
           label: 'Hide creator player name?'

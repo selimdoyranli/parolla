@@ -16,6 +16,10 @@
     @include font-weight-bold;
   }
 
+  &__moderationNotice {
+    margin-block-end: var(--base-m-y);
+  }
+
   &__draftTag {
     padding: $spacer $spacer * 2;
     color: var(--color-warning-01);

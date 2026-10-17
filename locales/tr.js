@@ -711,7 +711,7 @@ export default {
         },
         isListed: {
           label: 'Quizler listesinde görünsün mü?',
-          systemRemoved: 'Sistem tarafından odanız denetlendi: Listede göstermek için uygun değil!'
+          systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'
         },
         isAnon: {
           label: 'Adın gizlensin mi?'

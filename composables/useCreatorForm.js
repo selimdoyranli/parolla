@@ -1,8 +1,8 @@
-import { reactive, computed, ref, nextTick, watch, useContext, useStore, onMounted, onUnmounted, useRoute } from '@nuxtjs/composition-api'
+import { reactive, computed, ref, nextTick, useContext, useStore, onMounted, onUnmounted, useRoute } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum, questionTypeEnum, answerTypeEnum, choiceTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
-import { Notify, Dialog } from 'vant'
+import { Notify } from 'vant'
 import useDeviceInfo from './useDeviceInfo'
 
 export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
@@ -64,17 +64,6 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     coverPhotoFile: null,
     coverPhotoRemoved: false
   })
-
-  // A room moderated out of the public list can't be listed again; the API enforces it too
-  watch(
-    () => form.isListed,
-    isListed => {
-      if (!isListed || !form.isSystemRemovedFromPublic) return
-
-      form.isListed = false
-      Dialog.alert({ message: i18n.t('form.creatorModeCompose.room.isListed.systemRemoved'), confirmButtonText: i18n.t('general.ok') })
-    }
-  )
 
   // Helper to transform flat list of choices
   function transformChoices(choices) {
