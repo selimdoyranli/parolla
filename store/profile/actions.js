@@ -25,13 +25,13 @@ export default {
     const [roomsRes, scoresRes, reviewsRes] = await Promise.all([
       this.$appFetch({ path: 'rooms', query: roomsQuery }),
       this.$appFetch({ path: 'room-scores', query: simpleQuery }),
-      this.$appFetch({ path: 'room-reviews', query: simpleQuery })
+      this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { pageSize: 1 } })
     ])
 
     const stats = {
       rooms: roomsRes.data?.meta?.pagination?.total ?? 0,
       scores: scoresRes.data?.meta?.pagination?.total ?? 0,
-      reviews: reviewsRes.data?.meta?.pagination?.total ?? 0
+      reviews: reviewsRes.data?.meta?.total ?? 0
     }
 
     commit('SET_PLAYER_STATS', stats)

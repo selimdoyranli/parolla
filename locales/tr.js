@@ -940,6 +940,59 @@ export default {
       }
     }
   },
+  comments: {
+    title: 'Yorumlar',
+    filter: { comments: 'Yorumlar', ratings: 'Puanlar' },
+    placeholder: 'Bir yorum yaz...',
+    loginPlaceholder: 'Yorum yapmak için giriş yap',
+    send: 'Gönder',
+    reply: 'Yanıtla',
+    viewReplies: '{count} yanıtı gör',
+    hideReplies: 'Yanıtları gizle',
+    loadMoreReplies: 'Daha fazla yanıt',
+    deleted: 'Bu yorum silindi',
+    quizOwner: 'Quiz sahibi',
+    report: 'Raporla',
+    delete: 'Sil',
+    deleteConfirm: 'Bu yorumu silmek istediğine emin misin?',
+    empty: 'Henüz yorum yok. İlk yorumu sen yap!',
+    ratingsEmpty: 'Henüz puan verilmedi',
+    yourRating: 'Puanın: {rating}',
+    rateThisQuiz: 'Bu quizi puanla',
+    ratingCount: '{count} puan',
+    rated: 'Puanın kaydedildi',
+    alreadyRated: 'Bu quizi zaten puanladın',
+    error: 'Bir şeyler ters gitti, tekrar dene'
+  },
+  notifications: {
+    title: 'Bildirimler',
+    tabs: { all: 'Tümü', quizzes: 'Quizlerim', interactions: 'Etkileşimler' },
+    empty: 'Henüz bildirim yok',
+    andOthers: '{name} ve {count} kişi',
+    types: {
+      room_rated: '{actor} quizine {rating} puan verdi',
+      room_commented: '{actor} quizine yorum yaptı',
+      comment_replied: '{actor} yorumuna yanıt verdi',
+      reply_replied: '{actor} yanıtına yanıt verdi',
+      comment_liked: '{actor} yorumunu beğendi',
+      reply_liked: '{actor} yanıtını beğendi'
+    }
+  },
+  ownerStats: {
+    title: 'Quiz İstatistikleri',
+    open: 'İstatistikler',
+    views: 'Görüntülenme',
+    players: 'Oynayan',
+    rating: 'Ortalama puan',
+    comments: 'Yorum',
+    avgCorrect: 'Ort. doğru',
+    avgWrong: 'Ort. yanlış',
+    avgPassed: 'Ort. pas',
+    avgRemain: 'Ort. kalan süre',
+    playersTitle: 'Oynayanlar',
+    sort: { recent: 'En yeni', score: 'Skor' },
+    playersEmpty: 'Henüz oynayan yok'
+  },
   roomReviewList: {
     ratingTitle: 'Quiz puanı',
     reviewsTitle: 'Yorumlar',

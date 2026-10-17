@@ -922,6 +922,59 @@ export default {
       }
     }
   },
+  comments: {
+    title: 'Comments',
+    filter: { comments: 'Comments', ratings: 'Ratings' },
+    placeholder: 'Write a comment...',
+    loginPlaceholder: 'Log in to comment',
+    send: 'Send',
+    reply: 'Reply',
+    viewReplies: 'View {count} replies',
+    hideReplies: 'Hide replies',
+    loadMoreReplies: 'More replies',
+    deleted: 'This comment was deleted',
+    quizOwner: 'Quiz owner',
+    report: 'Report',
+    delete: 'Delete',
+    deleteConfirm: 'Delete this comment?',
+    empty: 'No comments yet. Be the first!',
+    ratingsEmpty: 'No ratings yet',
+    yourRating: 'Your rating: {rating}',
+    rateThisQuiz: 'Rate this quiz',
+    ratingCount: '{count} ratings',
+    rated: 'Rating saved',
+    alreadyRated: 'You already rated this quiz',
+    error: 'Something went wrong, try again'
+  },
+  notifications: {
+    title: 'Notifications',
+    tabs: { all: 'All', quizzes: 'My quizzes', interactions: 'Interactions' },
+    empty: 'No notifications yet',
+    andOthers: '{name} and {count} others',
+    types: {
+      room_rated: '{actor} rated your quiz {rating}',
+      room_commented: '{actor} commented on your quiz',
+      comment_replied: '{actor} replied to your comment',
+      reply_replied: '{actor} replied to your reply',
+      comment_liked: '{actor} liked your comment',
+      reply_liked: '{actor} liked your reply'
+    }
+  },
+  ownerStats: {
+    title: 'Quiz stats',
+    open: 'Stats',
+    views: 'Views',
+    players: 'Players',
+    rating: 'Avg rating',
+    comments: 'Comments',
+    avgCorrect: 'Avg correct',
+    avgWrong: 'Avg wrong',
+    avgPassed: 'Avg passed',
+    avgRemain: 'Avg time left',
+    playersTitle: 'Players',
+    sort: { recent: 'Newest', score: 'Score' },
+    playersEmpty: 'No players yet'
+  },
   roomReviewList: {
     ratingTitle: 'Quiz rating',
     reviewsTitle: 'Comments',
