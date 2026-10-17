@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.3.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.2.0...v3.3.0)
+
+
+### 🚀 Enhancements
+
+  - **creator:** Warn instead of blocking on moderated rooms ([3a6adfe](https://github.com/selimdoyranli/parolla/commit/3a6adfe))
+  - **creator:** Show the moderation note and source in the edit form ([d7b8e09](https://github.com/selimdoyranli/parolla/commit/d7b8e09))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.2.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.1.0...v3.2.0)
