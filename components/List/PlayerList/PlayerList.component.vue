@@ -4,8 +4,8 @@
     Cell.player-list-item(v-for="(item, index) in rows" :key="index" :class="rowClass(item)")
       template(#title)
         .player-list-item-user(:data-rank="item.rank")
-          strong.player-list-item-user__username(:role="actionable ? 'button' : null" @click="actionable && $emit('player-click', item)")
-            PlayerAvatar(with-username :open-player-dialog-on-click="!actionable" :size="20" :user="item")
+          strong.player-list-item-user__username
+            PlayerAvatar(with-username open-player-dialog-on-click :player-actions-context="playerActionsContext" :size="20" :user="item")
 
           // The pinned row says why it is out of order: it is the reader's own standing
           .player-list-item-user__label(v-if="item.isCurrentPlayer")
@@ -95,11 +95,11 @@ export default defineComponent({
       required: false,
       default: null
     },
-    // Live room list: clicking a player emits `player-click` (actions menu) instead of opening the profile
-    actionable: {
-      type: Boolean,
+    // Live room lists ('tour' | 'draw'): clicking a player opens the "more" menu instead of the profile
+    playerActionsContext: {
+      type: String,
       required: false,
-      default: false
+      default: null
     }
   },
   setup(props) {

@@ -37,7 +37,7 @@ Dialog.stats-dialog.dialog.tour-mode-online-dialog(
 
       .tour-mode-online-dialog__onlineTab
         small {{ userList.totalPlayers }} {{ $t('tourMode.player') }}, {{ userList.totalViewers }} {{ $t('tourMode.viewer') }}
-        PlayerList(:items="userList.players" actionable @player-click="actionsPlayer = $event")
+        PlayerList(:items="userList.players" player-actions-context="tour")
 
     // Last answers Tab
     Tab(name="last-answers")
@@ -48,24 +48,14 @@ Dialog.stats-dialog.dialog.tour-mode-online-dialog(
 
       .tour-mode-online-dialog__lastAnswersTab
         small {{ $t('tourMode.lastAnswers.title') }}
-        PlayerList(:items="tour.recentAnswers")
+        PlayerList(:items="tour.recentAnswers" player-actions-context="tour")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")
-
-  PlayerActionsDialog(
-    :is-open="!!actionsPlayer"
-    :player="actionsPlayer"
-    :my-id="user && user.id"
-    :can-vote-kick="$auth.loggedIn"
-    @vote-kick="voteKick"
-    @closed="actionsPlayer = null"
-  )
 </template>
 
 <script>
 import { defineComponent, reactive, ref, watch, useContext, useStore, nextTick, computed } from '@nuxtjs/composition-api'
 import { Dialog, Tabs, Tab, Cell, Empty } from 'vant'
-import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
   components: {
@@ -128,19 +118,6 @@ export default defineComponent({
 
     const activeTab = ref('chat')
 
-    const actionsPlayer = ref(null)
-
-    // Result (system chat line or "already voted" error toast) comes back over the socket
-    const voteKick = player => {
-      const ws = store.getters['app/ws']
-
-      if (ws?.readyState === 1) {
-        ws.send(JSON.stringify({ type: wsTypeEnum.VOTE_KICK, targetId: player.id }))
-      }
-
-      actionsPlayer.value = null
-    }
-
     const onConnectedWs = () => {
       chatRef.value.scrollToBottom()
     }
@@ -172,8 +149,6 @@ export default defineComponent({
       state,
       chatRef,
       activeTab,
-      actionsPlayer,
-      voteKick,
       onConnectedWs,
       onChatMessageWs,
       userList,

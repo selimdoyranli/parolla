@@ -1,12 +1,12 @@
 <template lang="pug">
 Dialog.dialog.player-actions-dialog(
-  v-model="state.isOpen"
+  :value="dialog.isOpen"
   :title="$t('dialog.playerActions.title', { username: player ? player.username : '' })"
   :cancel-button-text="$t('general.close')"
   :show-cancel-button="true"
   :show-confirm-button="false"
   :close-on-click-overlay="true"
-  @closed="$emit('closed')"
+  @input="handleDialogInput"
 )
   CellGroup(v-if="player")
     Cell.player-actions-dialog__item(v-if="!player.isGuest" clickable @click="showProfile")
@@ -19,11 +19,7 @@ Dialog.dialog.player-actions-dialog(
         AppIcon(name="tabler:flag" :width="20" :height="20")
         span {{ $t('dialog.playerActions.report') }}
 
-    Cell.player-actions-dialog__item.player-actions-dialog__item--danger(
-      v-if="canVoteKick && !isSelf"
-      clickable
-      @click="$emit('vote-kick', player)"
-    )
+    Cell.player-actions-dialog__item.player-actions-dialog__item--danger(v-if="canVoteKick && !isSelf" clickable @click="voteKick")
       template(#title)
         AppIcon(name="tabler:user-x" :width="20" :height="20")
         span {{ $t('dialog.playerActions.voteKick') }}
@@ -38,84 +34,89 @@ Dialog.dialog.player-actions-dialog(
 </template>
 
 <script>
-import { defineComponent, useStore, reactive, ref, computed, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useContext, ref, computed } from '@nuxtjs/composition-api'
 import { Dialog, CellGroup, Cell } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { wsTypeEnum } from '@/enums/wsType.enum'
+import { getDrawSocket, isDrawSocketReady } from '@/composables/useDrawSocket'
 
-// Shared "more" menu for a player in a live room (tour online list, draw scoreboard).
-// The vote itself goes over the owner's socket, so it's emitted instead of sent here.
+// Global "more" menu (mounted once in the default layout) for a player in a live room.
+// Opened via profile/SET_PLAYER_ACTIONS_DIALOG from tour chat / online / last answers
+// and draw chat / scoreboard; `context` decides which socket carries the vote kick.
 export default defineComponent({
   components: {
     Dialog: Dialog.Component,
     CellGroup,
     Cell
   },
-  props: {
-    isOpen: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    // { id, username, diceBear, isGuest }
-    player: {
-      type: Object,
-      required: false,
-      default: null
-    },
-    myId: {
-      type: [String, Number],
-      required: false,
-      default: null
-    },
-    canVoteKick: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  setup(props) {
+  setup() {
     const store = useStore()
+    const { $auth } = useContext()
 
-    const state = reactive({
-      isOpen: props.isOpen
-    })
+    const dialog = computed(() => store.getters['profile/playerActionsDialog'])
+    const player = computed(() => dialog.value.player)
+    const isDraw = computed(() => dialog.value.context === 'draw')
 
-    watch(
-      () => props.isOpen,
-      value => {
-        state.isOpen = value
-      }
-    )
+    const myId = computed(() => (isDraw.value ? store.state.draw.myId : store.getters['auth/user']?.id))
+    const isSelf = computed(() => myId.value != null && player.value && String(player.value.id) === String(myId.value))
+
+    // Tour viewers (logged out) can't vote; draw guests can, but only from inside a room
+    const canVoteKick = computed(() => (isDraw.value ? Boolean(store.state.draw.room) : $auth.loggedIn))
 
     const isOpenReportDialog = ref(false)
 
-    const isSelf = computed(() => props.myId != null && props.player && String(props.player.id) === String(props.myId))
-
     const reportAdditional = computed(() => {
-      if (!props.player) return null
+      if (!player.value) return null
 
       return JSON.stringify({
         reportedUser: {
-          id: props.player.id,
-          username: props.player.username,
-          diceBear: props.player.diceBear
+          id: player.value.id,
+          username: player.value.username,
+          diceBear: player.value.diceBear
         }
       })
     })
 
+    const close = () => {
+      store.commit('profile/SET_PLAYER_ACTIONS_DIALOG', { isOpen: false })
+    }
+
+    const handleDialogInput = isOpen => {
+      if (!isOpen) close()
+    }
+
     const showProfile = () => {
-      store.commit('profile/SET_PLAYER_ID', props.player.id)
-      store.commit('profile/SET_PLAYER_USERNAME', props.player.username)
+      store.commit('profile/SET_PLAYER_ID', player.value.id)
+      store.commit('profile/SET_PLAYER_USERNAME', player.value.username)
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
     }
 
+    // The result (system chat line or "already voted" toast) comes back over the socket
+    const voteKick = () => {
+      const targetId = player.value.id
+
+      if (isDraw.value) {
+        if (isDrawSocketReady()) getDrawSocket().send(JSON.stringify({ type: wsTypeEnum.DRAW_VOTE_KICK, targetId }))
+      } else {
+        const ws = store.getters['app/ws']
+
+        if (ws?.readyState === 1) ws.send(JSON.stringify({ type: wsTypeEnum.VOTE_KICK, targetId }))
+      }
+
+      close()
+    }
+
     return {
-      state,
+      dialog,
+      player,
       isSelf,
+      canVoteKick,
       isOpenReportDialog,
       reportAdditional,
       reportTypeEnum,
-      showProfile
+      handleDialogInput,
+      showProfile,
+      voteKick
     }
   }
 })

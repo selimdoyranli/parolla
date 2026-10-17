@@ -10,8 +10,8 @@
       :role="isClickable(p) ? 'button' : null"
       :tabindex="isClickable(p) ? 0 : null"
       :class="[rowClasses(p), { 'draw-scoreboard__row--guest': p.isGuest }]"
-      @click="isClickable(p) && $emit('player-click', p)"
-      @keyup.enter="isClickable(p) && $emit('player-click', p)"
+      @click="isClickable(p) && openPlayerActions(p)"
+      @keyup.enter="isClickable(p) && openPlayerActions(p)"
     )
       span.draw-scoreboard__rank {{ i + 1 }}
       PlayerAvatar.draw-scoreboard__avatar(:user="toUser(p)" :size="22")
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, getCurrentInstance } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore, getCurrentInstance } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -38,6 +38,7 @@ export default defineComponent({
     correctGuesserIds: { type: Array, default: () => [] }
   },
   setup(props) {
+    const store = useStore()
     const vm = getCurrentInstance().proxy
     const displayName = p => (p.isGuest ? `${p.name} ${vm.$t('common.guestLabel')}` : p.name)
 
@@ -69,7 +70,15 @@ export default defineComponent({
     // easier to hit than the 22px avatar. A guest's own row has nothing to offer.
     const isClickable = p => p != null && p.id != null && !(p.isGuest && isMe(p.id))
 
-    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, isClickable, displayName }
+    const openPlayerActions = p => {
+      store.commit('profile/SET_PLAYER_ACTIONS_DIALOG', {
+        isOpen: true,
+        player: { id: p.id, username: displayName(p), diceBear: p.diceBear, isGuest: !!p.isGuest },
+        context: 'draw'
+      })
+    }
+
+    return { sortedPlayers, isDrawer, isNext, isMe, hasGuessed, rowClasses, toUser, isClickable, openPlayerActions, displayName }
   }
 })
 </script>

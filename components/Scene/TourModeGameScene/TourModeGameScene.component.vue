@@ -79,7 +79,7 @@
     template(#content-prepend)
       .section-title {{ $t('tourMode.lastAnswers.title') }}
       .last-answers
-        PlayerList(:items="tour.recentAnswers")
+        PlayerList(:items="tour.recentAnswers" player-actions-context="tour")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")
       .section-title {{ $t('chat.chat') }}

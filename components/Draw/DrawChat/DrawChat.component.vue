@@ -13,7 +13,7 @@
 
         // ── Player rows: inline avatar+username, then ": text", no bubble ──
         template(v-else)
-          PlayerAvatar.draw-chat__avatar(with-username :open-player-dialog-on-click="!m.isGuest" :user="buildAvatarUser(m)" :size="22")
+          PlayerAvatar.draw-chat__avatar(with-username player-actions-context="draw" :user="buildAvatarUser(m)" :size="22")
           span.draw-chat__sep &nbsp;:&nbsp;
           span.draw-chat__text(v-longpress="() => openReport(m)") {{ m.message }}
           span.draw-chat__report(v-if="canReport(m)" @click="openReport(m)")

@@ -1,5 +1,5 @@
 <template lang="pug">
-.player-avatar(:class="{ 'player-avatar--clickable': openPlayerDialogOnClick }" @click="handleClickPlayerAvatar")
+.player-avatar(:class="{ 'player-avatar--clickable': openPlayerDialogOnClick || playerActionsContext }" @click="handleClickPlayerAvatar")
   slot(name="prepend")
 
   .player-avatar__avatarWrapper(:style="{ width: `${size}px`, height: `${size}px` }")
@@ -68,6 +68,13 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    // Live room avatars ('tour' | 'draw') open the "more" menu instead of the profile;
+    // everywhere else this stays null and openPlayerDialogOnClick applies.
+    playerActionsContext: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   setup(props) {
@@ -80,7 +87,29 @@ export default defineComponent({
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
     }
 
+    const openPlayerActions = () => {
+      const { id, username, diceBear, isGuest } = props.user
+      // A guest's own avatar has nothing to offer (no profile, can't report or vote self)
+      const isSelfGuest = isGuest && props.playerActionsContext === 'draw' && String(id) === String(store.state.draw.myId)
+
+      if (isSelfGuest) return
+
+      store.commit('profile/SET_PLAYER_ACTIONS_DIALOG', {
+        isOpen: true,
+        player: { id, username, diceBear, isGuest: Boolean(isGuest) },
+        context: props.playerActionsContext
+      })
+    }
+
     const handleClickPlayerAvatar = async event => {
+      if (props.playerActionsContext && props.user) {
+        event?.stopPropagation()
+        event?.preventDefault()
+        openPlayerActions()
+
+        return
+      }
+
       if (props.openPlayerDialogOnClick) {
         event?.stopPropagation()
         event?.preventDefault()

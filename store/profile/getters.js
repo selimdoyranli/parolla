@@ -16,5 +16,8 @@ export default {
   },
   isOpenAvatarEditorDialog(state) {
     return state.dialog.avatarEditor.isOpen
+  },
+  playerActionsDialog(state) {
+    return state.dialog.playerActions
   }
 }

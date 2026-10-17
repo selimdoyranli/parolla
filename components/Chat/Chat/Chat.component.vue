@@ -3,7 +3,7 @@
   .chat__messages(ref="messagesRef")
     template(v-if="chatMessages?.length > 0")
       .chat__message(v-for="message in chatMessages" :key="message.timestamp" :class="{ 'chat__message--system': message.isSystem }")
-        PlayerAvatar(v-if="!message.isSystem" with-username open-player-dialog-on-click :user="buildAvatarUser(message)" :size="24")
+        PlayerAvatar(v-if="!message.isSystem" with-username player-actions-context="tour" :user="buildAvatarUser(message)" :size="24")
           template(#append)
             .chat__message-time {{ isoToHumanDate(message.timestamp) }}
         .chat__message-content

@@ -185,7 +185,6 @@
       :nextDrawerId="nextDrawerId"
       :myId="myId"
       :correctGuesserIds="correctGuesserIds"
-      @player-click="openPlayerActions"
     )
     DrawChat.draw-room__chat(
       :chat="chat"
@@ -204,14 +203,6 @@
     :error-key="passwordPrompt.errorKey"
     @close="onPasswordCancel"
     @submit="onPasswordSubmit"
-  )
-  PlayerActionsDialog(
-    can-vote-kick
-    :is-open="!!actionsPlayer"
-    :player="actionsPlayer"
-    :my-id="myId"
-    @vote-kick="onVoteKick"
-    @closed="actionsPlayer = null"
   )
   SocketStatusBanner(:status="reconnectStatus")
 </template>
@@ -465,17 +456,6 @@ export default defineComponent({
 
       if (!status && prevStatus && codeParam) send(wsTypeEnum.DRAW_ROOM_JOIN, { code: codeParam })
     })
-
-    const actionsPlayer = ref(null)
-
-    const openPlayerActions = p => {
-      actionsPlayer.value = { id: p.id, username: p.name, diceBear: p.diceBear, isGuest: p.isGuest }
-    }
-
-    const onVoteKick = p => {
-      send(wsTypeEnum.DRAW_VOTE_KICK, { targetId: p.id })
-      actionsPlayer.value = null
-    }
 
     watch(
       () => $store.state.draw.room,
@@ -831,9 +811,6 @@ export default defineComponent({
 
     return {
       reconnectStatus,
-      actionsPlayer,
-      openPlayerActions,
-      onVoteKick,
       tool,
       color,
       size,
