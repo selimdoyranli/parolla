@@ -20,6 +20,12 @@
     margin-block-end: var(--base-m-y);
   }
 
+  &__moderationNoticeBody {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
   &__draftTag {
     padding: $spacer $spacer * 2;
     color: var(--color-warning-01);

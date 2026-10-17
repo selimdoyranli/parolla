@@ -709,6 +709,14 @@ export default {
           label: 'Açıklama',
           placeholder: 'Quiz hakkında kısa bir açıklama...'
         },
+        moderation: {
+          note: 'Moderasyon notu',
+          source: 'Kaynak',
+          sources: {
+            admin: 'Moderatör',
+            ai: 'Yapay zeka'
+          }
+        },
         isListed: {
           label: 'Quizler listesinde görünsün mü?',
           systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'

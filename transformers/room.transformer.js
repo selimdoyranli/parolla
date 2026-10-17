@@ -39,6 +39,9 @@ export default model => {
     isVisible: model.isVisible,
     isListed: model.isPublic,
     isSystemRemovedFromPublic: model.isSystemRemovedFromPublic,
+    // Only returned to the room's owner
+    moderationNote: model.moderationNote,
+    moderationSource: model.moderationSource,
     isAnon: model.isAnon,
     questionCount: model.questionCount,
     quizType: model.quizType,

@@ -18,7 +18,15 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     wrapable
     :scrollable="false"
   )
-    | {{ $t('form.creatorModeCompose.room.isListed.systemRemoved') }}
+    .creator-mode-compose-form__moderationNoticeBody
+      span {{ $t('form.creatorModeCompose.room.isListed.systemRemoved') }}
+      span(v-if="form.moderationNote")
+        strong {{ $t('form.creatorModeCompose.room.moderation.note') }}:
+        |
+        | {{ form.moderationNote }}
+      small(v-if="form.moderationSource")
+        | {{ $t('form.creatorModeCompose.room.moderation.source') }}:
+        | {{ $t(`form.creatorModeCompose.room.moderation.sources.${form.moderationSource}`) }}
 
   RoomBasicInfo(
     ref="roomBasicInfoRef"

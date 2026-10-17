@@ -36,6 +36,8 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     roomTitle: props.room?.title || '',
     isListed: props.room?.isListed || false,
     isSystemRemovedFromPublic: props.room?.isSystemRemovedFromPublic || false,
+    moderationNote: props.room?.moderationNote || null,
+    moderationSource: props.room?.moderationSource || null,
     isAnon: props.room?.isAnon || false,
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
