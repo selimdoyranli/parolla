@@ -11,7 +11,7 @@ Dialog.dialog.dialog--scene.play-intro(
 )
   QuizCover.play-intro__cover(
     :label="coverLabel"
-    :class="{ 'play-intro__cover--photo': isCreator && room.coverPhoto?.url }"
+    :class="{ 'play-intro__cover--photo': isCreator && room.coverPhoto?.url, 'play-intro__cover--compact': !isCreator }"
     :room="isCreator ? room : null"
     :seed="mode"
     :sublabel="coverSublabel"
@@ -127,7 +127,8 @@ export default defineComponent({
     const { shareRoom } = useRoomShare()
 
     const state = reactive({ isOpen: props.isOpen })
-    const rulesOpen = ref([])
+    // desktop has room for the rules, so they start expanded there
+    const rulesOpen = ref(window.matchMedia('(min-width: 992px)').matches ? ['rules'] : [])
     const reviewDialog = reactive({ isOpen: false })
     const reviewsKey = ref(0)
 

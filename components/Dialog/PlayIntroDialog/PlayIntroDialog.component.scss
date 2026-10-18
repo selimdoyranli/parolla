@@ -12,6 +12,12 @@
     max-height: min(40vh, 280px);
   }
 
+  // daily / unlimited only carry the mode label, so a short banner instead of a 16:9 hero
+  & &__cover--compact {
+    aspect-ratio: auto;
+    height: 120px;
+  }
+
   &__body {
     padding: var(--base-p-y) var(--base-p-x);
   }
