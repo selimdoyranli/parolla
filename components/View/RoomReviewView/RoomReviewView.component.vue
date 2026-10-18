@@ -257,8 +257,11 @@ export default defineComponent({
 
     const startReply = target => {
       replyTarget.value = target
-      flash(target.parent)
-      nextTick(() => composerRef.value?.focus())
+      // focus first, then scroll: a focus after the smooth scroll starts would cancel it
+      nextTick(() => {
+        composerRef.value?.focus()
+        setTimeout(() => flash(target.parent), 50)
+      })
     }
 
     const cancelReply = () => {

@@ -61,7 +61,8 @@ export default defineComponent({
       nextTick(() => {
         const el = fieldRef.value?.$el.querySelector('textarea')
 
-        el?.focus()
+        // preventScroll: focusing must not cancel the caller's scroll to the reply target
+        el?.focus({ preventScroll: true })
         el?.setSelectionRange(el.value.length, el.value.length)
       })
 
