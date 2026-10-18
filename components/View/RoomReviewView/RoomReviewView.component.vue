@@ -100,7 +100,11 @@ export default defineComponent({
     const visibleComments = computed(() => comments.items.filter(c => c.documentId !== pinned.item?.documentId))
 
     const loadComments = async () => {
-      if (!room.value?.id) return
+      if (!room.value?.id) {
+        comments.loading = false
+
+        return
+      }
 
       const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: comments.page + 1 })
       comments.loading = false
@@ -111,7 +115,9 @@ export default defineComponent({
         return
       }
 
-      comments.items.push(...data.items)
+      const known = new Set(comments.items.map(c => c.documentId))
+
+      comments.items.push(...data.items.filter(c => !known.has(c.documentId)))
       comments.page += 1
       comments.finished = !data.hasMore
     }
@@ -123,7 +129,11 @@ export default defineComponent({
     }
 
     const loadRatings = async () => {
-      if (!room.value?.id) return
+      if (!room.value?.id) {
+        ratingList.loading = false
+
+        return
+      }
 
       const { data, error } = await store.dispatch('comment/fetchRatings', { roomId: room.value.id, page: ratingList.page + 1 })
       ratingList.loading = false
@@ -199,6 +209,19 @@ export default defineComponent({
     }
 
     watch(() => props.targetCommentId, loadPinned)
+
+    // room may arrive after mount: load the summary and let the lists retry
+    watch(
+      () => room.value?.id,
+      id => {
+        if (!id) return
+
+        loadRatingSummary()
+        loadPinned()
+        Object.assign(comments, { items: [], page: 0, finished: false, error: false })
+        Object.assign(ratingList, { items: [], page: 0, finished: false, error: false })
+      }
+    )
 
     onMounted(() => {
       loadRatingSummary()
