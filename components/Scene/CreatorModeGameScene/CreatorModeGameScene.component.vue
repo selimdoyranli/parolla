@@ -70,7 +70,11 @@
               @click.stop="pass"
             ) {{ $t('gameScene.answerField.pass') }}
 
-        .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA")
+        //- trivia options stay out of sight until the countdown is over, like the question
+        .answer-field(
+          v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA"
+          :class="{ 'answer-field--pending': isQuestionHidden }"
+        )
           Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
             color="var(--color-warning-01)"
             icon="arrow"
@@ -92,6 +96,9 @@
             AppIcon(name="tabler:player-skip-forward" color="var(--color-warning-01)" :width="14" :height="14")
             strong {{ alphabet.items.filter(i => i.isPassed).length }}
             span {{ $t('gameScene.pass') }}
+
+  transition(name="quiz-intro-splash-fade")
+    QuizIntroSplash(v-if="isIntroSplash" :room="room")
 
   // How To Play Dialog
   PlayIntroDialog(v-if="!isGameOver" mode="creator" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
@@ -131,6 +138,7 @@ export default defineComponent({
       isGameStarted,
       startCountdown,
       isQuestionHidden,
+      isIntroSplash,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -154,7 +162,7 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene({ inlineCountdown: true })
+    } = useGameScene({ inlineCountdown: true, introSplash: true })
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
@@ -342,6 +350,8 @@ export default defineComponent({
       isGameStarted,
       startCountdown,
       isQuestionHidden,
+      isIntroSplash,
+      room,
       isGameOver,
       alphabet,
       questions,

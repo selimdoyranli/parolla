@@ -14,7 +14,8 @@ import { Notify, Toast } from 'vant'
 import { showToast } from '@/helpers/toast'
 
 // inlineCountdown: the scene shows a 3-2-1-GO card over its question area instead of the blocking start toast
-export default ({ inlineCountdown = false } = {}) => {
+// introSplash: before that countdown, a title / creator splash plays with its sound (creator quizzes)
+export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   const { i18n, $ua, $auth } = useContext()
   const store = useStore()
 
@@ -30,10 +31,13 @@ export default ({ inlineCountdown = false } = {}) => {
   const isGameStarted = ref(false)
   // 3 | 2 | 1 | 'GO' while the inline start countdown runs, null otherwise
   const startCountdown = ref(null)
+  const isIntroSplash = ref(false)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])
   // inline-countdown scenes keep the question out of sight until the countdown has run
-  const isQuestionHidden = computed(() => inlineCountdown && (startCountdown.value !== null || (!isGameStarted.value && !isGameOver.value)))
+  const isQuestionHidden = computed(
+    () => inlineCountdown && (isIntroSplash.value || startCountdown.value !== null || (!isGameStarted.value && !isGameOver.value))
+  )
 
   watch(isGameOver, async value => {
     if (value) {
@@ -419,6 +423,7 @@ export default ({ inlineCountdown = false } = {}) => {
         halfTimeSoundFx.mute(false)
         hurryUpSoundFx.mute(false)
         countdownFinishSoundFx.mute(false)
+        quizIntroSoundFx.mute(false)
       } else {
         startSoundFx.mute(true)
         correctSoundFx.mute(true)
@@ -427,6 +432,7 @@ export default ({ inlineCountdown = false } = {}) => {
         halfTimeSoundFx.mute(true)
         hurryUpSoundFx.mute(true)
         countdownFinishSoundFx.mute(true)
+        quizIntroSoundFx.mute(true)
       }
     }
   )
@@ -438,7 +444,8 @@ export default ({ inlineCountdown = false } = {}) => {
     pass: null,
     halfTime: null,
     hurryUp: null,
-    countdownFinish: null
+    countdownFinish: null,
+    quizIntro: null
   })
 
   const startSoundFx = new Howl({
@@ -485,6 +492,13 @@ export default ({ inlineCountdown = false } = {}) => {
   soundFx.hurryUp = hurryUpSoundFx
   soundFx.countdownFinish = countdownFinishSoundFx
 
+  const quizIntroSoundFx = new Howl({
+    src: [`/sound/fx/quiz-intro.wav`],
+    mute: isActiveGameSceneSoundFx.value ? false : true
+  })
+
+  soundFx.quizIntro = quizIntroSoundFx
+
   const startGame = async () => {
     await nextTick()
 
@@ -521,21 +535,38 @@ export default ({ inlineCountdown = false } = {}) => {
     }
 
     if (inlineCountdown) {
-      const steps = [3, 2, 1, 'GO']
+      const runCountdown = () => {
+        const steps = [3, 2, 1, 'GO']
 
-      startCountdown.value = steps.shift()
+        startCountdown.value = steps.shift()
 
-      const timer = setInterval(() => {
-        if (steps.length) {
-          startCountdown.value = steps.shift()
+        const timer = setInterval(() => {
+          if (steps.length) {
+            startCountdown.value = steps.shift()
 
-          return
-        }
+            return
+          }
 
-        clearInterval(timer)
-        startCountdown.value = null
-        beginGame()
-      }, 1000)
+          clearInterval(timer)
+          startCountdown.value = null
+          beginGame()
+        }, 1000)
+      }
+
+      if (!introSplash) {
+        runCountdown()
+
+        return
+      }
+
+      // the sound is 2s; the splash holds a little longer so the title can be read
+      isIntroSplash.value = true
+      quizIntroSoundFx.play()
+
+      setTimeout(() => {
+        isIntroSplash.value = false
+        runCountdown()
+      }, 2800)
 
       return
     }
@@ -827,6 +858,7 @@ export default ({ inlineCountdown = false } = {}) => {
     isGameStarted,
     startCountdown,
     isQuestionHidden,
+    isIntroSplash,
     isGameOver,
     alphabet,
     alphabetItemClasses,

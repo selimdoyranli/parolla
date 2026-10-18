@@ -314,6 +314,11 @@
     opacity: 0;
   }
 
+  .answer-field--pending {
+    visibility: hidden;
+    opacity: 0;
+  }
+
   &__fieldSection {
     position: fixed !important;
     top: calc(var(--vh) - var(--answer-field-height) - var(--base-p-y));
