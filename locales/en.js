@@ -1296,6 +1296,25 @@ export default {
       updatedAt: 'Last updated: {date}'
     }
   },
+  playIntro: {
+    play: 'PLAY',
+    share: 'Share',
+    rate: 'Rate',
+    howToPlay: 'How to play?',
+    creator: 'Created by',
+    anon: 'Anonymous',
+    daily: 'DAILY',
+    unlimited: 'UNLIMITED',
+    rating: '{rating} /5',
+    raters: '({count})',
+    views: '{count} views',
+    questions: '{count} questions',
+    choices: '{count} choices',
+    flashcards: '{count} cards',
+    comments: '{count} comments',
+    timeLimit: '{minutes} min',
+    letters: '{count} letters'
+  },
   common: {
     invalidUsername: 'Invalid username',
     guestLabel: '(guest)'

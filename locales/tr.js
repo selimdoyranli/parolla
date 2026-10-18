@@ -1318,6 +1318,25 @@ export default {
       updatedAt: 'Son güncelleme: {date}'
     }
   },
+  playIntro: {
+    play: 'OYNA',
+    share: 'Paylaş',
+    rate: 'Puan Ver',
+    howToPlay: 'Nasıl oynanır?',
+    creator: 'Oluşturan',
+    anon: 'Anonim',
+    daily: 'GÜNLÜK',
+    unlimited: 'LİMİTSİZ',
+    rating: '{rating} /5',
+    raters: '({count})',
+    views: '{count} görüntülenme',
+    questions: '{count} soru',
+    choices: '{count} seçenek',
+    flashcards: '{count} kart',
+    comments: '{count} yorum',
+    timeLimit: '{minutes} dk',
+    letters: '{count} harf'
+  },
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',
     guestLabel: '(misafir)'

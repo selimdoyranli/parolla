@@ -1,0 +1,112 @@
+.play-intro {
+  width: 90%;
+  max-width: var(--tablet);
+
+  .van-dialog__content {
+    padding: 0;
+  }
+
+  &__cover {
+    width: 100%;
+  }
+
+  &__body {
+    padding: var(--base-p-y) var(--base-p-x);
+  }
+
+  &__title {
+    margin: 4px 0 6px;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-5);
+  }
+
+  &__description {
+    margin: 0 0 10px;
+    color: var(--color-text-02);
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 8px 0 14px;
+    padding: 0;
+    color: var(--color-text-02);
+    font-size: 13px;
+    list-style: none;
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__play.van-button {
+    height: 52px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    background: linear-gradient(90deg, var(--color-brand-02), #e8434f);
+    border: 0;
+    box-shadow: 0 8px 24px color-mix(in sRGB, var(--color-brand-02) 35%, transparent);
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0 4px;
+  }
+
+  &__action.van-button {
+    color: var(--color-text-01);
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+  }
+
+  &__rules {
+    margin: 12px 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__creator {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 16px 0;
+
+    small {
+      color: var(--color-text-03);
+    }
+  }
+
+  &__ad {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100px;
+    background-color: var(--color-ui-04);
+  }
+
+  &__footer {
+    margin: var(--base-m-y) var(--base-m-x);
+    padding: var(--base-p-y) var(--base-p-x);
+    background-color: var(--color-ui-01);
+    border-radius: var(--border-radius-01);
+  }
+}
