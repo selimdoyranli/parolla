@@ -75,13 +75,13 @@ Dialog.dialog.dialog--scene.play-intro(
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
 
+    DialogAd.play-intro__ad(v-if="isCreator")
+
     //- same comments UI as the reviews dialog (likes, replies, composer), without the rating block
     section.play-intro__comments(v-if="isCreator && room.id")
       RoomReviewView(:key="reviewsKey" comments-only)
 
-    .play-intro__ad
-      AppAd(v-if="isDesktop" :data-ad-slot="9964323575")
-      AppAd(v-else :data-ad-slot="5200543400")
+    DialogAd.play-intro__ad
 
   footer.play-intro__footer
     i18n.d-flex(path="app.copyright")
@@ -94,7 +94,6 @@ Dialog.dialog.dialog--scene.play-intro(
 <script>
 import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
 import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
-import { useMediaQuery } from '@vueuse/core'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
@@ -126,7 +125,6 @@ export default defineComponent({
     const { i18n, localePath } = useContext()
     const { isoToHumanDate, formatMillions } = useFormatter()
     const { shareRoom } = useRoomShare()
-    const isDesktop = useMediaQuery('(min-width: 992px)')
 
     const state = reactive({ isOpen: props.isOpen })
     const rulesOpen = ref([])
@@ -285,7 +283,6 @@ export default defineComponent({
       room,
       isCreator,
       isQa,
-      isDesktop,
       coverLabel,
       coverSublabel,
       stats,

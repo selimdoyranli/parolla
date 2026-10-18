@@ -47,6 +47,9 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
+        // Ad
+        DialogAd
+
       template(v-else)
         Empty.stats-dialog-empty
           p.stats-dialog-empty__title(v-html="$t('dialog.stats.empty.description')")
@@ -88,7 +91,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
                   | &nbsp;{{ myAnswer({ questionIndex: index }).field.toLocaleUpperCase('tr') }}
                 span(v-else) &nbsp;-
           // Ad
-          AppAd(:data-ad-slot="9964323575")
+          DialogAd
 
       template(v-else)
         Empty.stats-dialog-empty
