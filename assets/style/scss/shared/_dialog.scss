@@ -3,7 +3,7 @@
 
   // Opens over the game scene instead of floating as a modal: fills the layout column below the
   // header (which stays usable), square corners, no backdrop (pair with :overlay="false").
-  // .dialog.dialog--scene.van-dialog: outranks `.game-scene .stats-dialog` (width: 90% !important)
+  // .dialog.dialog--scene.van-dialog: higher specificity than the dialogs' own width/max-height rules
   &.dialog--scene.van-dialog {
     top: var(--header-height);
     bottom: 0;
@@ -17,8 +17,7 @@
     border-radius: 0;
     transform: translateX(-50%);
 
-    // The content fills the scene height as a column: the copyright footer always sits at the
-    // bottom, and tab panes stretch so views inside (e.g. comments with their composer) can too.
+    // The content fills the scene height as a column so the copyright footer sits at the bottom
     .van-dialog__content {
       display: flex;
       flex: 1;
@@ -33,33 +32,6 @@
 
       > footer {
         margin-top: auto;
-      }
-
-      // footer nested one level down (e.g. inside a results wrapper)
-      > :has(> footer) {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-
-        > footer {
-          margin-top: auto;
-        }
-      }
-
-      > .van-tabs {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-
-        > .van-tabs__content {
-          display: flex;
-          flex: 1;
-          flex-direction: column;
-
-          > .van-tab__pane {
-            flex: 1;
-          }
-        }
       }
     }
 
