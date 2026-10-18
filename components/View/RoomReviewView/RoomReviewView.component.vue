@@ -220,6 +220,15 @@ export default defineComponent({
         loadPinned()
         Object.assign(comments, { items: [], page: 0, finished: false, error: false })
         Object.assign(ratingList, { items: [], page: 0, finished: false, error: false })
+
+        // van-list only re-checks on loading/finished changes, so load the visible list directly
+        if (filter.value === 'comments') {
+          comments.loading = true
+          loadComments()
+        } else {
+          ratingList.loading = true
+          loadRatings()
+        }
       }
     )
 
