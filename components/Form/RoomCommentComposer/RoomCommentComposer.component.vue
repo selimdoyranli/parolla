@@ -2,6 +2,7 @@
 .room-comment-composer
   PlayerAvatar.room-comment-composer__avatar(v-if="$auth.loggedIn" :user="$auth.user" :size="32")
   Field.room-comment-composer__field(
+    ref="fieldRef"
     v-model="form.content"
     type="textarea"
     :placeholder="$auth.loggedIn ? $t('comments.placeholder') : $t('comments.loginPlaceholder')"
@@ -10,7 +11,6 @@
     auth-control
     :maxlength="512"
     :readonly="!$auth.loggedIn"
-    :autofocus="autofocus"
   )
   Button.room-comment-composer__send(
     type="primary"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, useStore, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, onMounted, nextTick, useStore, useContext } from '@nuxtjs/composition-api'
 import { Field, Button, Toast } from 'vant'
 
 export default defineComponent({
@@ -45,6 +45,20 @@ export default defineComponent({
     const form = reactive({
       content: props.mention ? `@${props.mention} ` : '',
       pending: false
+    })
+
+    // Vant Field ignores the native autofocus attribute on dynamically inserted fields
+    const fieldRef = ref(null)
+
+    onMounted(() => {
+      if (!props.autofocus) return
+
+      nextTick(() => {
+        const el = fieldRef.value?.$el.querySelector('textarea')
+
+        el?.focus()
+        el?.setSelectionRange(el.value.length, el.value.length)
+      })
     })
 
     const submit = async () => {
@@ -70,7 +84,7 @@ export default defineComponent({
       emit('posted', data.item)
     }
 
-    return { form, submit }
+    return { form, fieldRef, submit }
   }
 })
 </script>

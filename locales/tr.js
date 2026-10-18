@@ -449,16 +449,7 @@ export default {
       description: 'Yaptığın şeyleri tekrar yapmak zorunda kalabilirsin'
     },
     roomReview: {
-      title: 'Quiz değerlendirmeleri',
-      review: 'Değerlendir',
-      loginToReview: 'Değerlendirmek için <u>giriş yapın</u>',
-      pendingReviews: 'Yorumlar getiriliyor',
-      error: {
-        fetchReviews: {
-          description: 'Yorumlar getirilemedi',
-          action: 'Tekrar dene'
-        }
-      }
+      title: 'Quiz değerlendirmeleri'
     },
     playerActions: {
       title: 'Daha fazla ({username})',
@@ -872,23 +863,6 @@ export default {
       flashcardsTitle: 'FLASHCARDS QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
-    roomReview: {
-      back: 'Geri dön',
-      comment: {
-        placeholder: 'Yorumunu yaz'
-      },
-      submit: 'Gönder',
-      empty: {
-        rating: {
-          description: 'Yorum yazmadan önce puan vermelisin'
-        }
-      },
-      error: {
-        emptyRating: 'Puan vermelisin',
-        required: 'Bir şeyler yazmalısın',
-        maxLength: 'Çok uzun yazmamalısın'
-      }
-    },
     usernameEdit: {
       usernameField: {
         placeholder: 'Oyuncu adını yaz'
@@ -992,14 +966,6 @@ export default {
     playersTitle: 'Oynayanlar',
     sort: { recent: 'En yeni', score: 'Skor' },
     playersEmpty: 'Henüz oynayan yok'
-  },
-  roomReviewList: {
-    ratingTitle: 'Quiz puanı',
-    reviewsTitle: 'Yorumlar',
-    empty: {
-      description: 'Henüz kimse değerlendirme yapmadı',
-      action: 'Yorum ekle'
-    }
   },
   scoreboard: {
     scoreboard: 'Skor tablosu',

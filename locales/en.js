@@ -445,16 +445,7 @@ export default {
       description: 'You may have to do the things you did again'
     },
     roomReview: {
-      title: 'Quiz reviews',
-      review: 'Review',
-      loginToReview: '<u>Login</u> to review',
-      pendingReviews: 'Fetching reviews',
-      error: {
-        fetchReviews: {
-          description: 'Fetching reviews error',
-          action: 'Try again'
-        }
-      }
+      title: 'Quiz reviews'
     },
     playerActions: {
       title: 'More ({username})',
@@ -854,23 +845,6 @@ export default {
       flashcardsTitle: 'EDIT FLASHCARDS QUIZ',
       submit: 'Update and publish'
     },
-    roomReview: {
-      back: 'Back',
-      comment: {
-        placeholder: 'Type a comment'
-      },
-      submit: 'Submit',
-      empty: {
-        rating: {
-          description: 'You must rate before posting a comment'
-        }
-      },
-      error: {
-        emptyRating: 'You must rate',
-        required: 'Type something',
-        maxLength: 'You must do not type too long'
-      }
-    },
     usernameEdit: {
       usernameField: {
         placeholder: 'Type a player name'
@@ -974,14 +948,6 @@ export default {
     playersTitle: 'Players',
     sort: { recent: 'Newest', score: 'Score' },
     playersEmpty: 'No players yet'
-  },
-  roomReviewList: {
-    ratingTitle: 'Quiz rating',
-    reviewsTitle: 'Comments',
-    empty: {
-      description: 'No review yet',
-      action: 'Add comment'
-    }
   },
   scoreboard: {
     scoreboard: 'Scoreboard',
