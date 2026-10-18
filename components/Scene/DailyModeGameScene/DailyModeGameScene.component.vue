@@ -148,6 +148,7 @@ export default defineComponent({
       listenCountdown,
       handleCountdownFinish,
       questionFitText,
+      refitQuestionOnViewportResize,
       handleBeforeUnload,
       scrollTop,
       isTouchEnabled,
@@ -207,6 +208,7 @@ export default defineComponent({
       window.addEventListener('keyup', event => handleAnswerFieldAutoFocus(event))
 
       window.addEventListener('resize', questionFitText)
+      window.visualViewport?.addEventListener('resize', refitQuestionOnViewportResize)
       window.addEventListener('beforeunload', event => handleBeforeUnload(event))
 
       window.addEventListener('scroll', scrollTop)
@@ -221,6 +223,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       window.removeEventListener('resize', questionFitText)
+      window.visualViewport?.removeEventListener('resize', refitQuestionOnViewportResize)
       window.removeEventListener('beforeunload', handleBeforeUnload)
 
       window.removeEventListener('scroll', scrollTop)

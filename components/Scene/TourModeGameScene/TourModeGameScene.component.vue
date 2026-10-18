@@ -128,7 +128,8 @@ export default defineComponent({
       focusToAnswerFieldInput,
       resetAnswerField,
       soundFx,
-      questionFitText
+      questionFitText,
+      refitQuestionOnViewportResize
     } = useGameScene()
 
     const ws = computed(() => store.getters['app/ws'])
@@ -437,6 +438,7 @@ export default defineComponent({
 
       window.addEventListener('keyup', handleKeyUp)
       window.addEventListener('resize', questionFitText)
+      window.visualViewport?.addEventListener('resize', refitQuestionOnViewportResize)
       window.addEventListener('beforeunload', event => handleBeforeUnload(event))
       window.addEventListener('scroll', scrollTop)
 
@@ -458,6 +460,7 @@ export default defineComponent({
 
       window.removeEventListener('keyup', handleKeyUp)
       window.removeEventListener('resize', questionFitText)
+      window.visualViewport?.removeEventListener('resize', refitQuestionOnViewportResize)
       window.removeEventListener('beforeunload', handleBeforeUnload)
       window.removeEventListener('scroll', scrollTop)
 
