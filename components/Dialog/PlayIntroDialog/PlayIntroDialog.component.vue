@@ -58,7 +58,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
     section.play-intro__creator(v-if="isCreator")
       small {{ $t('playIntro.creator') }}
-      PlayerAvatar(v-if="room.user" with-username open-player-dialog-on-click :size="36" :user="room.user")
+      PlayerAvatar(v-if="creatorUser" with-username open-player-dialog-on-click :size="36" :user="creatorUser")
       strong(v-else) {{ $t('playIntro.anon') }}
 
     section.play-intro__comments(v-if="isCreator")
@@ -83,7 +83,7 @@ Dialog.dialog.dialog--scene.play-intro(
       template(#logo)
         FooterBrandLogo
 
-  LazyRoomReviewDialog(v-if="isCreator" :isOpen="reviewDialog.isOpen" @closed="reviewDialog.isOpen = false")
+  LazyRoomReviewDialog(v-if="isCreator" :isOpen="reviewDialog.isOpen" @closed="onReviewClosed")
 </template>
 
 <script>
@@ -144,6 +144,8 @@ export default defineComponent({
     onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
 
     const room = computed(() => store.getters['creator/room'] || {})
+    // owners always receive room.user, anonymous rooms included
+    const creatorUser = computed(() => (room.value.isAnon ? null : room.value.user))
     const isCreator = computed(() => props.mode === 'creator')
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
     const minutes = computed(() =>
@@ -164,9 +166,7 @@ export default defineComponent({
       if (props.mode === 'daily') {
         const letters = store.getters['daily/alphabet']?.items?.length || 0
 
-        return [letters && { key: 'letters', icon: 'tabler:abc', text: i18n.t('playIntro.letters', { count: letters }) }, time].filter(
-          Boolean
-        )
+        return [letters && { key: 'letters', icon: 'tabler:abc', text: i18n.tc('playIntro.letters', letters) }, time].filter(Boolean)
       }
 
       if (props.mode === 'unlimited') return [time]
@@ -174,22 +174,26 @@ export default defineComponent({
       const r = room.value
       const countByType =
         r.quizType === quizTypeEnum.CHOICES
-          ? i18n.t('playIntro.choices', { count: r.choices?.length || 0 })
+          ? i18n.tc('playIntro.choices', r.choices?.length || 0)
           : r.quizType === quizTypeEnum.FLASHCARDS
-          ? i18n.t('playIntro.flashcards', { count: r.flashcardCount || 0 })
-          : i18n.t('playIntro.questions', { count: r.questionCount || 0 })
+          ? i18n.tc('playIntro.flashcards', r.flashcardCount || 0)
+          : i18n.tc('playIntro.questions', r.questionCount || 0)
 
       return [
-        {
+        Number(r.rating) > 0 && {
           key: 'rating',
           icon: 'tabler:star',
           text: `${i18n.t('playIntro.rating', { rating: Number(r.rating || 0).toFixed(1) })} ${i18n.t('playIntro.raters', {
             count: r.ratingCount || 0
           })}`
         },
-        { key: 'views', icon: 'tabler:eye', text: i18n.t('playIntro.views', { count: formatMillions(r.viewCount || 0) }) },
+        {
+          key: 'views',
+          icon: 'tabler:eye',
+          text: i18n.tc('playIntro.views', Number(r.viewCount) || 0, { count: formatMillions(r.viewCount || 0) })
+        },
         { key: 'count', icon: 'tabler:list-numbers', text: countByType },
-        { key: 'comments', icon: 'tabler:message-2', text: i18n.t('playIntro.comments', { count: r.reviewCount || 0 }) },
+        { key: 'comments', icon: 'tabler:message-2', text: i18n.tc('playIntro.comments', r.reviewCount || 0) },
         time,
         r.createdAt && { key: 'date', icon: 'tabler:calendar', text: isoToHumanDate(r.createdAt, { ...DATE_OPTIONS, showYear: true }) }
       ].filter(Boolean)
@@ -198,6 +202,11 @@ export default defineComponent({
     // closing is what starts the game (scenes bind @closed="startGame")
     const play = () => {
       state.isOpen = false
+    }
+
+    const onReviewClosed = () => {
+      reviewDialog.isOpen = false
+      loadComments()
     }
 
     const openReviews = () => {
@@ -287,6 +296,8 @@ export default defineComponent({
       stats,
       play,
       openReviews,
+      onReviewClosed,
+      creatorUser,
       leaderboard,
       comments,
       openFullScoreboard,

@@ -170,26 +170,6 @@ export default defineComponent({
       isOpen: props.isOpen
     })
 
-    watch(
-      () => props.isOpen,
-      value => {
-        state.isOpen = value
-        setAnswers()
-
-        const tab = store.getters['creator/dialog'].stats.tab
-
-        if (value && tab) {
-          if (activeTab.value !== tab) {
-            activeTab.value = tab
-          } else if (tab === 'scoreboard') {
-            loadScoreboard()
-          }
-
-          store.commit('creator/SET_STATS_DIALOG_TAB', null)
-        }
-      }
-    )
-
     const activeTab = ref('score')
     const toggledAnswer = ref([0])
 
@@ -317,6 +297,38 @@ export default defineComponent({
 
       pendingScoreboard.value = false
     }
+
+    // immediate: a lazily mounted, already-open dialog still has to apply the pending tab
+    watch(
+      () => props.isOpen,
+      value => {
+        state.isOpen = value
+
+        if (!value) {
+          // the intro's scoreboard shortcut must not leave the game-over dialog on a stale tab
+          activeTab.value = 'score'
+
+          return
+        }
+
+        setAnswers()
+
+        const tab = store.getters['creator/dialog'].stats.tab
+
+        if (tab) {
+          if (activeTab.value !== tab) {
+            activeTab.value = tab
+          } else if (tab === 'scoreboard') {
+            loadScoreboard()
+          }
+
+          store.commit('creator/SET_STATS_DIALOG_TAB', null)
+        } else if (activeTab.value === 'scoreboard') {
+          loadScoreboard()
+        }
+      },
+      { immediate: true }
+    )
 
     watch(
       () => activeTab.value,

@@ -35,7 +35,7 @@
     margin: 8px 0 14px;
     padding: 0;
     color: var(--color-text-02);
-    font-size: 13px;
+    font-size: var(--font-size-text-9);
     list-style: none;
   }
 
@@ -51,7 +51,7 @@
     font-weight: 800;
     font-size: 18px;
     letter-spacing: 0.06em;
-    background: linear-gradient(90deg, var(--color-brand-02), #e8434f);
+    background: linear-gradient(90deg, var(--color-brand-02), color-mix(in sRGB, var(--color-brand-02) 80%, #000));
     border: 0;
     box-shadow: 0 8px 24px color-mix(in sRGB, var(--color-brand-02) 35%, transparent);
 
@@ -165,7 +165,7 @@
   &__empty {
     margin: 4px 0;
     color: var(--color-text-03);
-    font-size: 13px;
+    font-size: var(--font-size-text-9);
   }
 
   &__ad {
