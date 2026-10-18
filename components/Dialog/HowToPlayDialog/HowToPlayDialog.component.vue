@@ -11,13 +11,7 @@ Dialog.dialog.dialog--scene.how-to-play-dialog(
   @closed="$emit('closed')"
 )
   .how-to-play-dialog__explain
-    HowToPlayDailyModeContent(v-if="activeGameMode === gameModeKeyEnum.DAILY")
-    HowToPlayUnlimitedModeContent(v-if="activeGameMode === gameModeKeyEnum.UNLIMITED")
-    HowToPlayCreatorModeContent(v-if="activeGameMode === gameModeKeyEnum.CREATOR && (room.quizType === quizTypeEnum.QA || !room.quizType)")
-    HowToPlayThisOrThatContent(v-if="room && room.quizType === quizTypeEnum.CHOICES")
-    HowToPlayFlashcardsContent(v-if="room && room.quizType === quizTypeEnum.FLASHCARDS")
-    HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
-    HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
+    HowToPlayContent
     .how-to-play-dialog__ad
       template(v-if="isDesktop")
         AppAd(:data-ad-slot="9964323575")
@@ -115,13 +109,9 @@ export default defineComponent({
     })
 
     return {
-      gameModeKeyEnum,
-      quizTypeEnum,
       isDesktop,
-      activeGameMode,
       state,
-      dialogTitle,
-      room
+      dialogTitle
     }
   }
 })
