@@ -1,5 +1,8 @@
 <template lang="pug">
-.notification-item(:class="{ 'notification-item--unread': !item.isRead }" @click="$emit('select', item)")
+.notification-item(
+  :class="{ 'notification-item--unread': !item.isRead, 'notification-item--clickable': !isAnnouncement }"
+  @click="$emit('select', item)"
+)
   //- announcements come from parolla itself: app logo + name, full text instead of an excerpt
   template(v-if="isAnnouncement")
     img.notification-item__avatar.notification-item__avatar--app(src="/img/core/logo.webp" :alt="APP_NAME" width="40" height="40")
