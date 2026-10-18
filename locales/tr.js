@@ -929,6 +929,7 @@ export default {
     report: 'Raporla',
     delete: 'Sil',
     deleteConfirm: 'Bu yorumu silmek istediğine emin misin?',
+    reportTitle: 'Bu yorumu raporla',
     empty: 'Henüz yorum yok. İlk yorumu sen yap!',
     ratingsEmpty: 'Henüz puan verilmedi',
     yourRating: 'Puanın: {rating}',

@@ -55,7 +55,22 @@
         button.room-comment-item__toggle(v-if="replies.hasMore" @click="loadReplies") {{ $t('comments.loadMoreReplies') }}
         button.room-comment-item__toggle(v-else @click="replies.isOpen = false") {{ $t('comments.hideReplies') }}
 
-  ActionSheet(v-model="isOpenActions" :actions="actionSheetItems" :cancel-text="$t('general.cancel')" @select="handleAction")
+  // Actions dialog shows the comment itself so it's clear which one is being deleted/reported
+  VanDialog.dialog.room-comment-actions-dialog(
+    v-model="isOpenActions"
+    get-container="body"
+    :title="isOwn ? $t('comments.deleteConfirm') : $t('comments.reportTitle')"
+    :show-cancel-button="true"
+    :cancel-button-text="$t('general.cancel')"
+    :confirm-button-text="isOwn ? $t('comments.delete') : $t('comments.report')"
+    :class="{ 'room-comment-actions-dialog--danger': isOwn }"
+    @confirm="handleAction"
+  )
+    .room-comment-actions-dialog__preview
+      PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
+      .room-comment-actions-dialog__preview-body
+        strong.room-comment-actions-dialog__preview-username {{ comment.user && comment.user.username }}
+        p.room-comment-actions-dialog__preview-content {{ comment.content }}
   LazyReportDialog(
     v-if="isOpenReportDialog"
     :is-open="isOpenReportDialog"
@@ -67,12 +82,12 @@
 
 <script>
 import { defineComponent, ref, reactive, computed, onMounted, useStore, useContext } from '@nuxtjs/composition-api'
-import { Tag, ActionSheet, Dialog, Toast } from 'vant'
+import { Tag, Dialog, Toast } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
 export default defineComponent({
   name: 'RoomCommentItem',
-  components: { Tag, ActionSheet },
+  components: { Tag, VanDialog: Dialog.Component },
   props: {
     comment: { type: Object, required: true },
     roomId: { type: Number, required: true },
@@ -104,11 +119,6 @@ export default defineComponent({
     )
 
     const isOwn = computed(() => $auth.loggedIn && props.comment.user && props.comment.user.id === $auth.user?.id)
-    const actionSheetItems = computed(() =>
-      isOwn.value
-        ? [{ name: i18n.t('comments.delete'), key: 'delete', color: 'var(--color-danger-01)' }]
-        : [{ name: i18n.t('comments.report'), key: 'report' }]
-    )
     const reportAdditional = computed(() =>
       JSON.stringify({ commentDocumentId: props.comment.documentId, roomId: props.roomId, content: props.comment.content })
     )
@@ -174,32 +184,22 @@ export default defineComponent({
       state.replyCount = Math.max(0, state.replyCount - 1)
     }
 
-    const handleAction = async action => {
-      isOpenActions.value = false
-
-      if (action.key === 'report') {
+    const handleAction = async () => {
+      if (!isOwn.value) {
         isOpenReportDialog.value = true
 
         return
       }
 
-      if (action.key === 'delete') {
-        try {
-          await Dialog.confirm({ message: i18n.t('comments.deleteConfirm') })
-        } catch {
-          return
-        }
+      const { error } = await store.dispatch('comment/deleteComment', { documentId: props.comment.documentId })
 
-        const { error } = await store.dispatch('comment/deleteComment', { documentId: props.comment.documentId })
+      if (error) {
+        Toast(i18n.t('comments.error'))
 
-        if (error) {
-          Toast(i18n.t('comments.error'))
-
-          return
-        }
-
-        emit('deleted', props.comment.documentId, state.replyCount)
+        return
       }
+
+      emit('deleted', props.comment.documentId, state.replyCount)
     }
 
     onMounted(async () => {
@@ -229,7 +229,7 @@ export default defineComponent({
       replies,
       mention,
       contentWithoutMention,
-      actionSheetItems,
+      isOwn,
       reportAdditional,
       profilePath,
       toggleLike,

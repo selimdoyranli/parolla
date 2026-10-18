@@ -100,7 +100,45 @@
 
   &__replies {
     margin-top: 4px;
-    padding-left: 4px;
-    border-left: 2px solid var(--color-ui-03);
+  }
+}
+
+// Teleported to body, so it can't be nested under .room-comment-item
+.room-comment-actions-dialog {
+  .van-dialog__confirm {
+    color: var(--color-brand-02) !important;
+  }
+
+  &--danger .van-dialog__confirm {
+    color: var(--color-danger-01) !important;
+  }
+
+  &__preview {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 4px 16px 16px;
+    padding: 12px;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__preview-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__preview-username {
+    color: var(--color-brand-02);
+  }
+
+  &__preview-content {
+    display: -webkit-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+    color: var(--color-text-01);
+    word-break: break-word;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
   }
 }

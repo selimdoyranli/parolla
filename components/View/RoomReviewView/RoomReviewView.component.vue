@@ -22,8 +22,13 @@
           @change="submitRating"
         )
 
-  DropdownMenu.room-review-view__filter(:active-color="'var(--color-brand-02)'")
-    DropdownItem(v-model="filter" :options="filterOptions")
+  .room-review-view__filter
+    FilterDropdown(
+      direction="center"
+      :options="filterOptions"
+      :selected="filterOptions.find(o => o.value === filter)"
+      @on-select-option="option => (filter = option.value)"
+    )
 
   template(v-if="filter === 'comments'")
     RoomCommentComposer(v-if="room.id" :room-id="room.id" @posted="handleRootPosted")
@@ -73,10 +78,10 @@
 
 <script>
 import { defineComponent, useStore, useContext, ref, reactive, computed, watch, onMounted } from '@nuxtjs/composition-api'
-import { Rate, DropdownMenu, DropdownItem, List, Empty, Toast } from 'vant'
+import { Rate, List, Empty, Toast } from 'vant'
 
 export default defineComponent({
-  components: { Rate, DropdownMenu, DropdownItem, List, Empty },
+  components: { Rate, List, Empty },
   props: {
     targetCommentId: { type: String, default: null }
   },
@@ -88,8 +93,8 @@ export default defineComponent({
 
     const filter = ref('comments')
     const filterOptions = computed(() => [
-      { text: i18n.t('comments.filter.comments'), value: 'comments' },
-      { text: i18n.t('comments.filter.ratings'), value: 'ratings' }
+      { label: i18n.t('comments.filter.comments'), value: 'comments', icon: 'tabler:message-2' },
+      { label: i18n.t('comments.filter.ratings'), value: 'ratings', icon: 'tabler:star' }
     ])
 
     const comments = reactive({ items: [], page: 0, loading: false, finished: false, error: false })

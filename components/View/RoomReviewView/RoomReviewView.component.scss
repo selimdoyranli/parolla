@@ -20,16 +20,9 @@
   }
 
   &__filter {
-    margin: 8px 0;
-
-    .van-dropdown-menu__bar {
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .van-dropdown-menu__title {
-      color: var(--color-text-01);
-    }
+    display: flex;
+    justify-content: center;
+    margin: 12px 0 8px;
   }
 
   &__rating-row {
