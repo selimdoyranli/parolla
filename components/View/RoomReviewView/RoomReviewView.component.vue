@@ -1,6 +1,6 @@
 <template lang="pug">
-.room-review-view
-  .room-review-view__rating
+.room-review-view(:class="{ 'room-review-view--comments-only': commentsOnly }")
+  .room-review-view__rating(v-if="!commentsOnly")
     .room-review-view__rating-summary
       strong {{ ratings.average.toFixed(1) }}
       Rate(:value="ratings.average" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="16")
@@ -27,6 +27,7 @@
       | {{ filter === 'comments' ? $t('comments.filter.comments') : $t('comments.filter.ratings') }}
       span.room-review-view__filter-count ({{ filter === 'comments' ? room.reviewCount || 0 : ratings.count }})
     FilterDropdown(
+      v-if="!commentsOnly"
       :options="filterOptions"
       :selected="filterOptions.find(o => o.value === filter)"
       @on-select-option="option => (filter = option.value)"
@@ -113,7 +114,9 @@ export default defineComponent({
   components: { Rate, List, Empty },
   props: {
     targetCommentId: { type: String, default: null },
-    targetRatingUserId: { type: [String, Number], default: null }
+    targetRatingUserId: { type: [String, Number], default: null },
+    // comments list + composer only (play intro): no rating block, no comments/ratings filter
+    commentsOnly: { type: Boolean, default: false }
   },
   setup(props) {
     const store = useStore()
@@ -363,7 +366,7 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      loadRatingSummary()
+      if (!props.commentsOnly) loadRatingSummary()
       loadPinned()
       focusRating()
     })

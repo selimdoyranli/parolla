@@ -1,0 +1,135 @@
+.quiz-intro-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+
+  &__bg.quiz-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+
+    // spotlight in the middle, darker edges, like a title card
+    &::after {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.6) 100%);
+      content: '';
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    max-width: 640px;
+    padding: 0 var(--base-p-x);
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 800;
+    font-size: clamp(26px, 6vw, 44px);
+    line-height: 1.15;
+    text-wrap: balance;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+    animation: quiz-intro-splash-drop 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+  }
+
+  &__description {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--font-size-text-8);
+    line-height: 1.45;
+    animation: quiz-intro-splash-drop 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  &__creator {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+    text-align: start;
+    animation: quiz-intro-splash-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.45s both;
+  }
+
+  &__creator-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+
+    small {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: var(--font-size-text-10);
+    }
+
+    strong {
+      font-size: var(--font-size-text-8);
+    }
+  }
+
+  // doubled class: the global .app-logo rules (relative, full height) would otherwise win
+  & &__brand {
+    position: absolute;
+    bottom: 24px;
+    z-index: 3;
+    height: auto;
+    color: #fff;
+    animation: quiz-intro-splash-rise 0.6s ease 0.7s both;
+    pointer-events: none;
+  }
+}
+
+@keyframes quiz-intro-splash-drop {
+  from {
+    transform: translateY(-32px);
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes quiz-intro-splash-rise {
+  from {
+    transform: translateY(32px);
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+// whole splash fades out into the countdown
+.quiz-intro-splash-fade-leave-active {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.quiz-intro-splash-fade-leave-to {
+  visibility: hidden;
+  opacity: 0;
+}

@@ -47,6 +47,9 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
+        // Ad
+        DialogAd
+
       template(v-else)
         Empty.stats-dialog-empty
           p.stats-dialog-empty__title(v-html="$t('dialog.stats.empty.description')")
@@ -88,7 +91,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
                   | &nbsp;{{ myAnswer({ questionIndex: index }).field.toLocaleUpperCase('tr') }}
                 span(v-else) &nbsp;-
           // Ad
-          AppAd(:data-ad-slot="9964323575")
+          DialogAd
 
       template(v-else)
         Empty.stats-dialog-empty
@@ -169,14 +172,6 @@ export default defineComponent({
     const state = reactive({
       isOpen: props.isOpen
     })
-
-    watch(
-      () => props.isOpen,
-      value => {
-        state.isOpen = value
-        setAnswers()
-      }
-    )
 
     const activeTab = ref('score')
     const toggledAnswer = ref([0])
@@ -296,19 +291,53 @@ export default defineComponent({
       }
     })
 
+    const loadScoreboard = async () => {
+      pendingScoreboard.value = true
+
+      // The board and the reader's own standing are independent queries, so run them
+      // together rather than making the tab wait for two round trips
+      await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
+
+      pendingScoreboard.value = false
+    }
+
+    // immediate: a lazily mounted, already-open dialog still has to apply the pending tab
+    watch(
+      () => props.isOpen,
+      value => {
+        state.isOpen = value
+
+        if (!value) {
+          // the intro's scoreboard shortcut must not leave the game-over dialog on a stale tab
+          activeTab.value = 'score'
+
+          return
+        }
+
+        setAnswers()
+
+        const tab = store.getters['creator/dialog'].stats.tab
+
+        if (tab) {
+          if (activeTab.value !== tab) {
+            activeTab.value = tab
+          } else if (tab === 'scoreboard') {
+            loadScoreboard()
+          }
+
+          store.commit('creator/SET_STATS_DIALOG_TAB', null)
+        } else if (activeTab.value === 'scoreboard') {
+          loadScoreboard()
+        }
+      },
+      { immediate: true }
+    )
+
     watch(
       () => activeTab.value,
-      async value => {
-        if (value) {
-          if (value === 'scoreboard') {
-            pendingScoreboard.value = true
-
-            // The board and the reader's own standing are independent queries, so run them
-            // together rather than making the tab wait for two round trips
-            await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
-
-            pendingScoreboard.value = false
-          }
+      value => {
+        if (value === 'scoreboard') {
+          loadScoreboard()
         }
       }
     )

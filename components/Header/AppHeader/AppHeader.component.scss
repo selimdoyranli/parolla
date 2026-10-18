@@ -47,6 +47,22 @@
     &--title {
       @include center(true, true);
     }
+
+    // small phones: a centred logo collides with 3-4 action buttons on the right, so it sits at the start
+    &--title,
+    &--osk {
+      @include media-breakpoint-down(mobile-l) {
+        inset-inline-start: var(--base-p-x) !important;
+        inset-block-start: 1px !important;
+        transform: none !important;
+      }
+    }
+
+    &--hasBack {
+      @include media-breakpoint-down(mobile-l) {
+        inset-inline-start: 60px !important;
+      }
+    }
   }
 
   &-nav {

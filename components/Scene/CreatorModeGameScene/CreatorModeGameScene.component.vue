@@ -24,7 +24,8 @@
 
     template
       // Questions
-      .questions
+      .questions(:class="{ 'questions--hidden': isQuestionHidden }")
+        StartCountdown(:value="startCountdown")
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
           strong.question__title(v-if="question.question?.length > 0 && question.questionType !== questionTypeEnum.MEDIA") {{ question.question }}
 
@@ -69,7 +70,11 @@
               @click.stop="pass"
             ) {{ $t('gameScene.answerField.pass') }}
 
-        .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA")
+        //- trivia options stay out of sight until the countdown is over, like the question
+        .answer-field(
+          v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA"
+          :class="{ 'answer-field--pending': isQuestionHidden }"
+        )
           Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
             color="var(--color-warning-01)"
             icon="arrow"
@@ -92,8 +97,11 @@
             strong {{ alphabet.items.filter(i => i.isPassed).length }}
             span {{ $t('gameScene.pass') }}
 
+  transition(name="quiz-intro-splash-fade")
+    QuizIntroSplash(v-if="isIntroSplashVisible && room" :room="room" :playing="isIntroSplash")
+
   // How To Play Dialog
-  HowToPlayDialog(v-if="!isGameOver" intro :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  PlayIntroDialog(v-if="!isGameOver" mode="creator" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
   LazyCreatorModeStatsDialog(
     :cancelButtonText="$t('general.close')"
@@ -128,6 +136,10 @@ export default defineComponent({
     const {
       setRootRef,
       isGameStarted,
+      startCountdown,
+      isQuestionHidden,
+      isIntroSplash,
+      isIntroSplashVisible,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -151,7 +163,7 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene()
+    } = useGameScene({ inlineCountdown: true, introSplash: true })
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
@@ -337,6 +349,11 @@ export default defineComponent({
       rootRef,
       ANSWER_CHAR_LENGTH,
       isGameStarted,
+      startCountdown,
+      isQuestionHidden,
+      isIntroSplash,
+      isIntroSplashVisible,
+      room,
       isGameOver,
       alphabet,
       questions,

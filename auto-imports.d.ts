@@ -28,6 +28,7 @@ declare global {
   const useGameScene: typeof import('./composables/useGameScene.js')['default']
   const useGmActions: typeof import('./composables/useGmActions.js')['default']
   const useNativeBridge: typeof import('./composables/useNativeBridge.js')['useNativeBridge']
+  const useRoomShare: typeof import('./composables/useRoomShare.js')['useRoomShare']
   const useScroll: typeof import('./composables/useScroll.js')['default']
   const useSfx: typeof import('./composables/useSfx.js')['useSfx']
   const useTime: typeof import('./composables/useTime.js')['default']

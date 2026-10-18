@@ -1,0 +1,74 @@
+.start-countdown {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  // one grid cell for every card, so the outgoing and incoming cards stack on the same spot
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+
+  &__card {
+    display: flex;
+    grid-area: 1 / 1;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+    color: #111;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 1;
+    border-radius: 28px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+
+    @include media-breakpoint-up(tablet) {
+      width: 200px;
+      height: 200px;
+      font-size: 104px;
+      border-radius: 36px;
+    }
+
+    &--3 {
+      background: #98dbf5;
+    }
+
+    &--2 {
+      background: #ffd36b;
+    }
+
+    &--1 {
+      background: #ff9f9f;
+    }
+
+    &--go {
+      font-size: 52px;
+      background: #7fe0a4;
+
+      @include media-breakpoint-up(tablet) {
+        font-size: 74px;
+      }
+    }
+  }
+}
+
+// in place: the next card turns in clockwise from -45deg while the current one turns on clockwise and fades over it
+.start-countdown-turn-enter-active {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.start-countdown-turn-leave-active {
+  z-index: 1;
+  transition: transform 0.35s ease-in, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.start-countdown-turn-enter {
+  transform: rotate(-45deg) scale(0.92);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.start-countdown-turn-leave-to {
+  transform: rotate(45deg) scale(0.92);
+  visibility: hidden;
+  opacity: 0;
+}
