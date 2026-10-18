@@ -28,20 +28,16 @@
           :count="state.likeCount"
           @click="toggleLike"
         )
-        ActionButton(
-          v-if="!isReply"
-          :label="$t('comments.replies')"
+        //- one button opens the replies and the focused reply input together; on a reply it only opens the input
+        ActionButton.room-comment-item__action--reply(
+          :label="$t(isReply ? 'comments.reply' : 'comments.replies')"
           icon="tabler:message"
           tone="info"
-          :count="state.replyCount"
-          @click="toggleReplies"
+          :auth-control="isReply"
+          :active="isReplying || (!isReply && replies.isOpen)"
+          :count="isReply ? null : state.replyCount"
+          @click="toggleThread"
         )
-        ActionButton.room-comment-item__action--reply(
-          icon="tabler:arrow-back-up"
-          auth-control
-          tone="info"
-          @click="isReplying = !isReplying"
-        ) {{ $t('comments.reply') }}
         ActionButton(:label="$t('comments.moreTitle')" icon="tabler:dots" @click="isOpenMore = true")
 
     RoomCommentComposer(
@@ -211,6 +207,19 @@ export default defineComponent({
       if (replies.isOpen && replies.page === 0) await loadReplies()
     }
 
+    // guests only get the replies; the input needs an account
+    const toggleThread = async () => {
+      const open = !(isReplying.value || (!isReply.value && replies.isOpen))
+
+      isReplying.value = open && $auth.loggedIn
+
+      if (isReply.value) return
+
+      replies.isOpen = open
+
+      if (open && replies.page === 0) await loadReplies()
+    }
+
     const handleReplyPosted = reply => {
       isReplying.value = false
 
@@ -291,6 +300,7 @@ export default defineComponent({
       profilePath,
       toggleLike,
       toggleReplies,
+      toggleThread,
       loadReplies,
       handleReplyPosted,
       removeReply,
