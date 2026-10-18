@@ -99,9 +99,23 @@
     font-weight: 800;
     font-size: 18px;
     letter-spacing: 0.06em;
-    background: linear-gradient(90deg, var(--color-brand-02), color-mix(in sRGB, var(--color-brand-02) 80%, #000));
+    // brand coral into a saturated red, so the CTA stands out without a glow
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-02) 0%,
+      color-mix(in sRGB, var(--color-brand-02) 45%, #e60023) 55%,
+      color-mix(in sRGB, var(--color-brand-02) 15%, #c4001d) 100%
+    );
     border: 0;
-    box-shadow: 0 8px 24px color-mix(in sRGB, var(--color-brand-02) 35%, transparent);
+    transition: filter 0.15s ease, transform 0.1s ease;
+
+    &:hover {
+      filter: brightness(1.06) saturate(1.1);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
 
     .van-button__text {
       display: inline-flex;
