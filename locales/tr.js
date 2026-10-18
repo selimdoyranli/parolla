@@ -952,8 +952,6 @@ export default {
     }
   },
   ownerStats: {
-    title: 'Quiz İstatistikleri',
-    open: 'İstatistikler',
     views: 'Görüntülenme',
     players: 'Oynayan',
     rating: 'Ortalama puan',
@@ -961,9 +959,7 @@ export default {
     avgCorrect: 'Ort. doğru',
     avgWrong: 'Ort. yanlış',
     avgPassed: 'Ort. pas',
-    avgRemain: 'Ort. kalan süre',
-    playersTitle: 'Oynayanlar',
-    playersEmpty: 'Henüz oynayan yok'
+    avgRemain: 'Ort. kalan süre'
   },
   scoreboard: {
     scoreboard: 'Skor tablosu',

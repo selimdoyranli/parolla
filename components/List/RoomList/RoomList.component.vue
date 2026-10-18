@@ -27,11 +27,9 @@
           :room="room"
           :viewer="user"
           :userScoped="userScoped"
-          :show-owner-stats="showOwnerStats"
           :index="index"
           @edit="handleEditRoom"
           @delete="handleDeleteRoom"
-          @owner-stats="$emit('owner-stats', $event)"
         )
           template(v-if="$scopedSlots['card-extra']" #extra)
             slot(name="card-extra" :room="room")
@@ -82,11 +80,6 @@ export default defineComponent({
       default: true
     },
     userScoped: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    showOwnerStats: {
       type: Boolean,
       required: false,
       default: false

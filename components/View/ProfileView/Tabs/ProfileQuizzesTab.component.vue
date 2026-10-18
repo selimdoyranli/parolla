@@ -12,22 +12,7 @@
     Empty(:description="$t('profile.quizzesTab.empty')")
 
   template(v-else)
-    RoomList(
-      :items="rooms"
-      user-scoped
-      :user="player"
-      :isActiveInfiniteLoading="true"
-      :show-owner-stats="isOwnProfile"
-      @owner-stats="({ room }) => (selectedRoom = room)"
-    )
-
-  LazyRoomOwnerStatsDialog(
-    v-if="isOwnProfile"
-    :isOpen="!!selectedRoom"
-    :room-id="selectedRoom && selectedRoom.id"
-    :title="selectedRoom && selectedRoom.title"
-    @closed="selectedRoom = null"
-  )
+    RoomList(:items="rooms" user-scoped :user="player" :isActiveInfiniteLoading="true")
 </template>
 
 <script>
@@ -51,7 +36,6 @@ export default defineComponent({
     const rooms = computed(() => store.getters['creator/userRooms'] || [])
     const loading = ref(false)
     const error = ref(null)
-    const selectedRoom = ref(null)
 
     const player = computed(() => shell?.player?.value || null)
     const playerId = computed(() => player.value?.id || null)
@@ -95,9 +79,7 @@ export default defineComponent({
       loading,
       error,
       reload,
-      player,
-      isOwnProfile,
-      selectedRoom
+      player
     }
   }
 })

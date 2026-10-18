@@ -37,13 +37,6 @@
         :class="{ 'me-2': room.reviewCount > 0 }"
       )
 
-    li.app-header-nav__item.app-header-nav__item--ownerStats(
-      v-if="isRoomOwner"
-      :title="$t('ownerStats.open')"
-      @click="dialog.ownerStats.isOpen = true"
-    )
-      ActionButton(icon="tabler:chart-histogram" :icon-size="24")
-
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
       ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
@@ -64,14 +57,12 @@
   // Menu Dialog
   LazyMenuDialog(
     :isOpen="dialog.menu.isOpen"
-    :show-owner-stats="isRoomOwner"
     @clickedHowToPlay="toggleHowToPlayDialog"
     @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
     @clickedCredits="toggleCreditsDialog"
     @clickedContact="toggleContactDialog"
     @clickedSwitchLocale="toggleLocaleSwitchDialog"
     @clickedReviewRoom="toggleRoomReviewDialog"
-    @clickedOwnerStats="dialog.ownerStats.isOpen = true"
     @closed="dialog.menu.isOpen = false"
   )
 
@@ -89,14 +80,6 @@
   )
   // Notifications Dialog
   LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
-  // Owner Stats Dialog
-  LazyRoomOwnerStatsDialog(
-    v-if="isRoomOwner"
-    :isOpen="dialog.ownerStats.isOpen"
-    :room-id="room.id"
-    :title="room.title"
-    @closed="dialog.ownerStats.isOpen = false"
-  )
   // Room Review Dialog
   LazyRoomReviewDialog(
     :isOpen="dialog.roomReview.isOpen"
@@ -125,14 +108,6 @@ export default defineComponent({
 
     const user = computed(() => store.getters['auth/user'])
     const room = computed(() => store.getters['creator/room'])
-    // owners always receive room.user, even for anonymous quizzes
-    const isRoomOwner = computed(
-      () =>
-        getRouteBaseName(route.value) === 'CreatorMode-CreatorModeRoom-slug' &&
-        $auth.loggedIn &&
-        !!room.value?.id &&
-        room.value.user?.id === $auth.user?.id
-    )
     const tourUserList = computed(() => store.getters['tour/userList'])
 
     const dialog = reactive({
@@ -159,15 +134,7 @@ export default defineComponent({
       },
       notifications: {
         isOpen: false
-      },
-      ownerStats: {
-        isOpen: false
       }
-    })
-
-    // the dialog is unmounted with the room page, so its `closed` may never fire
-    watch(isRoomOwner, value => {
-      if (!value) dialog.ownerStats.isOpen = false
     })
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
@@ -377,7 +344,6 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
-      isRoomOwner,
       unreadCount,
       toggleNotificationsDialog,
       targetCommentId,

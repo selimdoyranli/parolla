@@ -493,16 +493,6 @@ export default {
     return { data: data?.data ?? null, error }
   },
 
-  async fetchOwnerPlayers(_, { roomId, sort = 'recent', page = 1 }) {
-    const { data, error } = await this.$appFetch({
-      path: `room-owner/${roomId}/players`,
-      query: { sort, page, pageSize: 20 },
-      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
-    })
-
-    return { data: data ? { items: data.data, hasMore: data.meta.hasMore, total: data.meta.total } : null, error }
-  },
-
   async postStats({ commit, state }, params) {
     if (!this.$auth.loggedIn && !this.$auth.user) {
       return

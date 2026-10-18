@@ -934,8 +934,6 @@ export default {
     }
   },
   ownerStats: {
-    title: 'Quiz stats',
-    open: 'Stats',
     views: 'Views',
     players: 'Players',
     rating: 'Avg rating',
@@ -943,9 +941,7 @@ export default {
     avgCorrect: 'Avg correct',
     avgWrong: 'Avg wrong',
     avgPassed: 'Avg passed',
-    avgRemain: 'Avg time left',
-    playersTitle: 'Players',
-    playersEmpty: 'No players yet'
+    avgRemain: 'Avg time left'
   },
   scoreboard: {
     scoreboard: 'Scoreboard',

@@ -99,6 +99,8 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
         .stats-dialog-tab-title
           AppIcon.stats-dialog-tab-title__icon(name="tabler:trophy" :width="20" :height="20")
           span.stats-dialog-tab-title__value {{ $t('scoreboard.scoreboard') }}
+      //- quiz owner only: summary stats above the board
+      RoomOwnerStatsCard(v-if="isRoomOwner" :room-id="room.id")
       template(v-if="pendingScoreboard")
         Empty(:description="$t('scoreboard.pendingScoreboard')")
       template(v-else)
@@ -180,6 +182,8 @@ export default defineComponent({
     const toggledAnswer = ref([0])
 
     const room = computed(() => store.getters['creator/room'])
+    // owners always receive room.user, anonymous quizzes included
+    const isRoomOwner = computed(() => $auth.loggedIn && Boolean(room.value?.id) && room.value?.user?.id === $auth.user?.id)
 
     const isGameOver = computed(() => store.getters['creator/isGameOver'])
 
@@ -347,6 +351,8 @@ export default defineComponent({
       answerClasses,
       myAnswer,
       scoreboard,
+      room,
+      isRoomOwner,
       currentPlayer,
       pendingScoreboard,
       handleInfiniteLoading
