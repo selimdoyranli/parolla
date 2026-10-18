@@ -34,7 +34,8 @@
 
     template(v-else)
       // Questions
-      .questions
+      .questions(:class="{ 'questions--hidden': isQuestionHidden }")
+        StartCountdown(:value="startCountdown")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
@@ -93,7 +94,7 @@
             span {{ $t('gameScene.pass') }}
 
   // How To Play Dialog
-  HowToPlayDialog(v-if="!isGameOver" intro :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  PlayIntroDialog(v-if="!isGameOver" mode="daily" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
   DailyModeStatsDialog(
     :cancelButtonText="$t('general.close')"
@@ -126,6 +127,8 @@ export default defineComponent({
     const {
       setRootRef,
       isGameStarted,
+      startCountdown,
+      isQuestionHidden,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -150,7 +153,7 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene()
+    } = useGameScene({ inlineCountdown: true })
 
     const dailyDialog = computed(() => store.getters['daily/dialog'])
 
@@ -234,6 +237,8 @@ export default defineComponent({
       fetchState,
       reFetch,
       isGameStarted,
+      startCountdown,
+      isQuestionHidden,
       isGameOver,
       alphabet,
       questions,

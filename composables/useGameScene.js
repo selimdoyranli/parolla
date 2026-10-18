@@ -13,13 +13,16 @@ import textfit from 'textfit'
 import { Notify, Toast } from 'vant'
 import { showToast } from '@/helpers/toast'
 
-export default () => {
+// inlineCountdown: the scene shows a 3-2-1-GO card over its question area instead of the blocking start toast
+// introSplash: before that countdown, a title / creator splash plays with its sound (creator quizzes)
+export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   const { i18n, $ua, $auth } = useContext()
   const store = useStore()
 
   const { activeGameMode } = useGameMode()
   const { encodeEnglish } = useFormatter()
   const { postToNative } = useNativeBridge()
+  const sfx = useSfx()
 
   const rootRef = ref(null)
   const setRootRef = element => {
@@ -27,8 +30,20 @@ export default () => {
   }
 
   const isGameStarted = ref(false)
+  // 3 | 2 | 1 | 'GO' while the inline start countdown runs, null otherwise
+  const startCountdown = ref(null)
+  // isIntroSplash: the splash text + sound are playing; the splash backdrop already covers the scene before that
+  const isIntroSplash = ref(false)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])
+  // inline-countdown scenes keep the question out of sight until the countdown has run
+  // the splash backdrop covers the scene from the start (behind the intro dialog too), so the scene never flashes before it
+  const isIntroSplashVisible = computed(
+    () => introSplash && (isIntroSplash.value || (!isGameStarted.value && startCountdown.value === null && !isGameOver.value))
+  )
+  const isQuestionHidden = computed(
+    () => inlineCountdown && (isIntroSplash.value || startCountdown.value !== null || (!isGameStarted.value && !isGameOver.value))
+  )
 
   watch(isGameOver, async value => {
     if (value) {
@@ -414,6 +429,7 @@ export default () => {
         halfTimeSoundFx.mute(false)
         hurryUpSoundFx.mute(false)
         countdownFinishSoundFx.mute(false)
+        quizIntroSoundFx.mute(false)
       } else {
         startSoundFx.mute(true)
         correctSoundFx.mute(true)
@@ -422,6 +438,7 @@ export default () => {
         halfTimeSoundFx.mute(true)
         hurryUpSoundFx.mute(true)
         countdownFinishSoundFx.mute(true)
+        quizIntroSoundFx.mute(true)
       }
     }
   )
@@ -433,7 +450,8 @@ export default () => {
     pass: null,
     halfTime: null,
     hurryUp: null,
-    countdownFinish: null
+    countdownFinish: null,
+    quizIntro: null
   })
 
   const startSoundFx = new Howl({
@@ -480,6 +498,13 @@ export default () => {
   soundFx.hurryUp = hurryUpSoundFx
   soundFx.countdownFinish = countdownFinishSoundFx
 
+  const quizIntroSoundFx = new Howl({
+    src: [`/sound/fx/quiz-intro.wav`],
+    mute: isActiveGameSceneSoundFx.value ? false : true
+  })
+
+  soundFx.quizIntro = quizIntroSoundFx
+
   const startGame = async () => {
     await nextTick()
 
@@ -499,6 +524,66 @@ export default () => {
     setTimeout(() => {
       questionFitText()
     }, 0) // DOM Bypass
+
+    const beginGame = () => {
+      countdownTimerRef.value.start()
+      isGameStarted.value = true
+      startSoundFx.play()
+
+      if ($ua.isFromAndroidOs()) {
+        focusToAnswerFieldInput()
+      }
+
+      window.localStorage.setItem(`${activeGameMode.value}CorrectAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}WrongAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}PassedAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify([]))
+    }
+
+    if (inlineCountdown) {
+      const runCountdown = () => {
+        const steps = [3, 2, 1, 'GO']
+        // one ping per number, a brighter success on GO!
+        const showStep = step => {
+          startCountdown.value = step
+          sfx.play(step === 'GO' ? 'success' : 'ping')
+        }
+
+        showStep(steps.shift())
+
+        const timer = setInterval(() => {
+          if (steps.length) {
+            showStep(steps.shift())
+
+            return
+          }
+
+          clearInterval(timer)
+          startCountdown.value = null
+          beginGame()
+        }, 1000)
+      }
+
+      if (!introSplash) {
+        runCountdown()
+
+        return
+      }
+
+      // backdrop is already up (isIntroSplashVisible); text and sound start 200ms in.
+      // The sound is 2s; the text holds a little longer so the title can be read
+      setTimeout(() => {
+        isIntroSplash.value = true
+        quizIntroSoundFx.play()
+
+        setTimeout(() => {
+          isIntroSplash.value = false
+          runCountdown()
+        }, 2800)
+      }, 200)
+
+      return
+    }
 
     const startGameToastMessage = `
         <img class='start-game-toast__spinner' src="/img/core/loader.svg" />
@@ -529,20 +614,7 @@ export default () => {
       }
     }, 1000)
 
-    setTimeout(() => {
-      countdownTimerRef.value.start()
-      isGameStarted.value = true
-      startSoundFx.play()
-
-      if ($ua.isFromAndroidOs()) {
-        focusToAnswerFieldInput()
-      }
-
-      window.localStorage.setItem(`${activeGameMode.value}CorrectAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}WrongAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}PassedAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify([]))
-    }, second * 1000 + 1000)
+    setTimeout(beginGame, second * 1000 + 1000)
   }
 
   const endGame = async () => {
@@ -703,7 +775,8 @@ export default () => {
         titleElement.innerHTML = originalContent
       }
 
-      titleElement.innerHTML = breakLongWords(titleElement.innerText)
+      // textContent, not innerText: innerText is empty while the question is hidden behind the start countdown
+      titleElement.innerHTML = breakLongWords(titleElement.textContent)
 
       textfit(activeQuestion, {
         minFontSize: 16,
@@ -797,6 +870,10 @@ export default () => {
   return {
     setRootRef,
     isGameStarted,
+    startCountdown,
+    isQuestionHidden,
+    isIntroSplash,
+    isIntroSplashVisible,
     isGameOver,
     alphabet,
     alphabetItemClasses,

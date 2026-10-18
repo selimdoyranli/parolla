@@ -11,18 +11,8 @@ Dialog.dialog.dialog--scene.how-to-play-dialog(
   @closed="$emit('closed')"
 )
   .how-to-play-dialog__explain
-    HowToPlayDailyModeContent(v-if="activeGameMode === gameModeKeyEnum.DAILY")
-    HowToPlayUnlimitedModeContent(v-if="activeGameMode === gameModeKeyEnum.UNLIMITED")
-    HowToPlayCreatorModeContent(v-if="activeGameMode === gameModeKeyEnum.CREATOR && (room.quizType === quizTypeEnum.QA || !room.quizType)")
-    HowToPlayThisOrThatContent(v-if="room && room.quizType === quizTypeEnum.CHOICES")
-    HowToPlayFlashcardsContent(v-if="room && room.quizType === quizTypeEnum.FLASHCARDS")
-    HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
-    HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
-    .how-to-play-dialog__ad
-      template(v-if="isDesktop")
-        AppAd(:data-ad-slot="9964323575")
-      template(v-else)
-        AppAd(:data-ad-slot="5200543400")
+    HowToPlayContent
+    DialogAd.how-to-play-dialog__ad
 
   // Footer
   footer.how-to-play-dialog__footer
@@ -36,7 +26,6 @@ import { defineComponent, useContext, useStore, reactive, watch, computed, onBef
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import { Dialog } from 'vant'
-import { useMediaQuery } from '@vueuse/core'
 
 export default defineComponent({
   components: {
@@ -64,8 +53,6 @@ export default defineComponent({
   setup(props) {
     const { i18n } = useContext()
     const store = useStore()
-
-    const isDesktop = useMediaQuery('(min-width: 992px)')
 
     const { activeGameMode } = useGameMode()
 
@@ -115,13 +102,8 @@ export default defineComponent({
     })
 
     return {
-      gameModeKeyEnum,
-      quizTypeEnum,
-      isDesktop,
-      activeGameMode,
       state,
-      dialogTitle,
-      room
+      dialogTitle
     }
   }
 })

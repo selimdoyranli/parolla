@@ -1,0 +1,254 @@
+.play-intro {
+  width: 90%;
+  max-width: var(--tablet);
+
+  .van-dialog__content {
+    padding: 0;
+  }
+
+  &__cover {
+    width: 100%;
+    // wide screens would otherwise give a ~430px 16:9 hero; the photo crops via object-fit
+    max-height: min(40vh, 280px);
+  }
+
+  // daily / unlimited only carry the mode label, so a short banner instead of a 16:9 hero
+  & &__cover--compact {
+    aspect-ratio: auto;
+    height: 120px;
+  }
+
+  &__body {
+    padding: var(--base-p-y) var(--base-p-x);
+  }
+
+  // same overlay as QuizCard's title: bottom of the cover on a dark gradient
+  &__title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    display: -webkit-box;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 32px 16px 16px;
+    overflow: hidden;
+    color: light-dark(#fff, #ccc);
+    font-weight: 800;
+    font-size: var(--font-size-text-4);
+    line-height: 1.25;
+    text-wrap: balance;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.45);
+    word-break: break-word;
+    background: linear-gradient(0deg, #000, transparent);
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  // quiz-type pill in the cover's top-right corner, on a solid surface so it reads over any cover
+  & &__type {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    background-color: var(--color-ui-01);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  // only the top 10 are listed, so the board's own scroll box and bottom fade aren't needed
+  &__leaderboard .player-list {
+    max-height: none;
+    overflow-y: visible;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &__divider {
+    margin: 4px 0 12px;
+    border: 0;
+    border-top: 1px solid var(--color-border-02);
+    opacity: 1;
+  }
+
+  &__cover--photo &__title {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
+  }
+
+  &__description {
+    margin: 0 0 10px;
+    color: var(--color-text-02);
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 8px 0 14px;
+    padding: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    list-style: none;
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__stats--cover {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    z-index: 3;
+    gap: 6px;
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 600;
+  }
+
+  &__stats--cover &__stat {
+    padding: 3px 8px;
+    background-color: var(--color-ui-01);
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &__play.van-button {
+    height: 52px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    // brand coral into a saturated red, so the CTA stands out without a glow
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-02) 0%,
+      color-mix(in sRGB, var(--color-brand-02) 45%, #e60023) 55%,
+      color-mix(in sRGB, var(--color-brand-02) 15%, #c4001d) 100%
+    );
+    border: 0;
+    transition: filter 0.15s ease, transform 0.1s ease;
+
+    &:hover {
+      filter: brightness(1.06) saturate(1.1);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0 4px;
+  }
+
+  &__action.van-button {
+    color: var(--color-text-01);
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+  }
+
+  &__rules {
+    margin: 12px 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+
+    .van-collapse-item__content {
+      padding: var(--base-p-y) calc(var(--base-p-x) * 1.2);
+      color: var(--color-text-02);
+    }
+
+    p {
+      font-size: var(--font-size-text-7);
+      line-height: calc(var(--font-size-text-7) * 1.5);
+
+      @include media-breakpoint-down(tablet) {
+        font-size: var(--font-size-text-8);
+        line-height: calc(var(--font-size-text-8) * 1.5);
+      }
+    }
+  }
+
+  &__creator {
+    margin: 16px 0;
+  }
+
+  &__creator-meta {
+    display: flex;
+    flex-direction: column;
+    margin-inline-start: 12px;
+    line-height: 1.25;
+
+    small {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+    }
+
+    strong {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-8);
+    }
+  }
+
+  &__section-title {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 18px 0 10px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: var(--font-size-text-8);
+  }
+
+  &__more.van-button,
+  &__more-link {
+    display: flex;
+    width: fit-content;
+    margin: 8px auto 0;
+    color: var(--color-brand-02);
+    background: transparent;
+    border: 1px solid var(--color-brand-02);
+  }
+
+  &__more-link {
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  &__empty {
+    padding: 8px 0;
+  }
+
+  &__ad {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100px;
+    background-color: var(--color-ui-04);
+  }
+
+  &__footer {
+    margin: var(--base-m-y) var(--base-m-x);
+    padding: var(--base-p-y) var(--base-p-x);
+    background-color: var(--color-ui-01);
+    border-radius: var(--border-radius-01);
+  }
+}

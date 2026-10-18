@@ -1318,6 +1318,29 @@ export default {
       updatedAt: 'Son güncelleme: {date}'
     }
   },
+  playIntro: {
+    play: 'OYUNA BAŞLA',
+    share: 'Paylaş',
+    rate: 'Puan Ver',
+    howToPlay: 'Nasıl oynanır?',
+    creator: 'Oluşturan',
+    anon: 'Anonim',
+    daily: 'GÜNLÜK',
+    unlimited: 'LİMİTSİZ',
+    rating: '{rating} /5',
+    raters: '({count})',
+    views: '{count} görüntülenme',
+    questions: '{count} soru',
+    choices: '{count} seçenek',
+    flashcards: '{count} kart',
+    comments: '{count} yorum',
+    timeLimit: '{minutes} dk',
+    letters: '{count} harf',
+    leaderboard: 'Puan Tablosu',
+    fullScoreboard: 'Tüm skor tablosu',
+    dailyLeaderboard: 'Tüm Sıralamayı Gör',
+    noScores: 'Henüz kimse oynamadı. İlk sen ol!'
+  },
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',
     guestLabel: '(misafir)'

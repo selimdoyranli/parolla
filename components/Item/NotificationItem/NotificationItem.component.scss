@@ -1,7 +1,8 @@
 .notification-item {
   display: flex;
   gap: 12px;
-  align-items: center;
+  // avatar and unread dot stay on the first line however many lines the text wraps to
+  align-items: flex-start;
   margin-block-end: 4px;
   padding: 12px;
   // rounded rows instead of divider lines, so unread/hover backgrounds read as cards
@@ -57,6 +58,7 @@
 
   &__dot {
     flex-shrink: 0;
+    margin-block-start: 6px;
     width: 8px;
     height: 8px;
     background-color: var(--color-danger-01, #f00);
@@ -76,4 +78,17 @@
   color: var(--color-text-01);
   white-space: pre-line;
   word-break: break-word;
+}
+
+// phones: a step smaller so rows don't wrap into tall blocks
+@include media-breakpoint-down(mobile) {
+  .notification-item__text,
+  .notification-item__announcement {
+    font-size: var(--font-size-text-9);
+  }
+
+  .notification-item__excerpt,
+  .notification-item__meta {
+    font-size: var(--font-size-text-10);
+  }
 }

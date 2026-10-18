@@ -22,7 +22,8 @@ export default () => ({
   },
   dialog: {
     stats: {
-      isOpen: false
+      isOpen: false,
+      tab: null
     }
   },
   scoreboard: {

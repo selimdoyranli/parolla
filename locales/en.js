@@ -1296,6 +1296,29 @@ export default {
       updatedAt: 'Last updated: {date}'
     }
   },
+  playIntro: {
+    play: 'START GAME',
+    share: 'Share',
+    rate: 'Rate',
+    howToPlay: 'How to play?',
+    creator: 'Created by',
+    anon: 'Anonymous',
+    daily: 'DAILY',
+    unlimited: 'UNLIMITED',
+    rating: '{rating} /5',
+    raters: '({count})',
+    views: '{count} view | {count} views',
+    questions: '{count} question | {count} questions',
+    choices: '{count} choice | {count} choices',
+    flashcards: '{count} card | {count} cards',
+    comments: '{count} comment | {count} comments',
+    timeLimit: '{minutes} min',
+    letters: '{count} letter | {count} letters',
+    leaderboard: 'Leaderboard',
+    fullScoreboard: 'Full scoreboard',
+    dailyLeaderboard: 'See full ranking',
+    noScores: 'Nobody has played yet. Be the first!'
+  },
   common: {
     invalidUsername: 'Invalid username',
     guestLabel: '(guest)'

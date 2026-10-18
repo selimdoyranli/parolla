@@ -43,6 +43,9 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
+        // Ad
+        DialogAd
+
       Tab(name="answers" :title="$t('gameScene.answerKey')")
         // Answers
         .answers
@@ -68,7 +71,7 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
                 span(v-else) &nbsp;-
 
           // Ad
-          AppAd(:data-ad-slot="9964323575")
+          DialogAd
 
     // Footer
     footer.stats-dialog__footer
