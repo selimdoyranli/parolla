@@ -1313,7 +1313,14 @@ export default {
     flashcards: '{count} cards',
     comments: '{count} comments',
     timeLimit: '{minutes} min',
-    letters: '{count} letters'
+    letters: '{count} letters',
+    leaderboard: 'Leaderboard',
+    fullScoreboard: 'Full scoreboard',
+    dailyLeaderboard: 'Daily ranking',
+    noScores: 'Nobody has played yet. Be the first!',
+    commentsTitle: 'Comments',
+    allComments: 'All comments ({count})',
+    noComments: 'No comments yet. Be the first!'
   },
   common: {
     invalidUsername: 'Invalid username',

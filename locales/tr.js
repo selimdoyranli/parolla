@@ -1335,7 +1335,14 @@ export default {
     flashcards: '{count} kart',
     comments: '{count} yorum',
     timeLimit: '{minutes} dk',
-    letters: '{count} harf'
+    letters: '{count} harf',
+    leaderboard: 'Puan Tablosu',
+    fullScoreboard: 'Tüm skor tablosu',
+    dailyLeaderboard: 'Günlük sıralama',
+    noScores: 'Henüz kimse oynamadı. İlk sen ol!',
+    commentsTitle: 'Yorumlar',
+    allComments: 'Tüm yorumlar ({count})',
+    noComments: 'Henüz yorum yok. İlk yorumu sen yap!'
   },
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',

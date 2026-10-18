@@ -37,10 +37,37 @@ Dialog.dialog.dialog--scene.play-intro(
       CollapseItem(name="rules" icon="question-o" :title="$t('playIntro.howToPlay')")
         HowToPlayContent
 
+    section.play-intro__leaderboard(v-if="isQa || mode === 'daily'")
+      h3.play-intro__section-title
+        AppIcon(name="tabler:crown" :width="18" :height="18")
+        span {{ $t('playIntro.leaderboard') }}
+      Loading(v-if="leaderboard.pending" color="var(--color-brand-02)" size="20")
+      template(v-else-if="leaderboard.items.length")
+        Leaderboard(:scorers="leaderboard.items")
+        Button.play-intro__more(v-if="isQa" round size="small" @click="openFullScoreboard") {{ $t('playIntro.fullScoreboard') }}
+        NuxtLink.play-intro__more-link(
+          v-else
+          :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+        ) {{ $t('playIntro.dailyLeaderboard') }}
+      p.play-intro__empty(v-else) {{ $t('playIntro.noScores') }}
+
     section.play-intro__creator(v-if="isCreator")
       small {{ $t('playIntro.creator') }}
       PlayerAvatar(v-if="room.user" with-username open-player-dialog-on-click :size="36" :user="room.user")
       strong(v-else) {{ $t('playIntro.anon') }}
+
+    section.play-intro__comments(v-if="isCreator")
+      h3.play-intro__section-title
+        AppIcon(name="tabler:message-2" :width="18" :height="18")
+        span {{ $t('playIntro.commentsTitle') }}
+      template(v-if="comments.items.length")
+        .play-intro__comment(v-for="comment in comments.items" :key="comment.documentId")
+          PlayerAvatar(:user="comment.user" :size="28")
+          .play-intro__comment-body
+            strong {{ comment.user.username }}
+            p {{ comment.content }}
+      p.play-intro__empty(v-else-if="!comments.pending") {{ $t('playIntro.noComments') }}
+      Button.play-intro__more(round size="small" @click="openReviews") {{ $t('playIntro.allComments', { count: room.reviewCount || 0 }) }}
 
     .play-intro__ad
       AppAd(v-if="isDesktop" :data-ad-slot="9964323575")
@@ -56,7 +83,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Button, Collapse, CollapseItem } from 'vant'
+import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
 import { useMediaQuery } from '@vueuse/core'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
@@ -68,7 +95,8 @@ export default defineComponent({
     Dialog: Dialog.Component,
     Button,
     Collapse,
-    CollapseItem
+    CollapseItem,
+    Loading
   },
   props: {
     isOpen: {
@@ -85,7 +113,7 @@ export default defineComponent({
   emits: ['closed'],
   setup(props) {
     const store = useStore()
-    const { i18n } = useContext()
+    const { i18n, localePath } = useContext()
     const { isoToHumanDate, formatMillions } = useFormatter()
     const { shareRoom } = useRoomShare()
     const isDesktop = useMediaQuery('(min-width: 992px)')
@@ -171,6 +199,56 @@ export default defineComponent({
       reviewDialog.isOpen = true
     }
 
+    const leaderboard = reactive({ items: [], pending: false })
+    const comments = reactive({ items: [], pending: false })
+
+    const loadLeaderboard = async () => {
+      leaderboard.pending = true
+
+      if (isQa.value && room.value.roomId) {
+        const { error } = await store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId, limit: 10 })
+        // room-scores with a room filter come back ranked; Leaderboard wants flat users carrying their results
+        leaderboard.items = error
+          ? []
+          : (store.getters['creator/scoreboard'].list || [])
+              .filter(item => item.user)
+              .slice(0, 10)
+              .map(item => ({ ...item.user, results: item.results }))
+      } else if (props.mode === 'daily') {
+        const { error } = await store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 })
+        leaderboard.items = error ? [] : (store.getters['daily/leaderboard']?.items || []).slice(0, 10)
+      }
+
+      leaderboard.pending = false
+    }
+
+    const loadComments = async () => {
+      if (!room.value.id) return
+
+      comments.pending = true
+      const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: 1 })
+      comments.items = error ? [] : (data?.items || []).filter(c => !c.isDeleted && c.user).slice(0, 3)
+      comments.pending = false
+    }
+
+    // the stats dialog lands on the tab set here; it opens above the intro, so the game starts only when the intro closes
+    const openFullScoreboard = () => {
+      store.commit('creator/SET_STATS_DIALOG_TAB', 'scoreboard')
+      store.commit('creator/SET_IS_OPEN_STATS_DIALOG', true)
+    }
+
+    watch(
+      () => [state.isOpen, room.value.id],
+      ([isOpen]) => {
+        if (!isOpen) return
+
+        loadLeaderboard()
+
+        if (isCreator.value) loadComments()
+      },
+      { immediate: true }
+    )
+
     return {
       state,
       rulesOpen,
@@ -184,6 +262,10 @@ export default defineComponent({
       stats,
       play,
       openReviews,
+      leaderboard,
+      comments,
+      openFullScoreboard,
+      localePath,
       shareRoom
     }
   }
