@@ -98,7 +98,7 @@
             span {{ $t('gameScene.pass') }}
 
   transition(name="quiz-intro-splash-fade")
-    QuizIntroSplash(v-if="isIntroSplash" :room="room")
+    QuizIntroSplash(v-if="isIntroSplashVisible && room" :room="room" :playing="isIntroSplash")
 
   // How To Play Dialog
   PlayIntroDialog(v-if="!isGameOver" mode="creator" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
@@ -139,6 +139,7 @@ export default defineComponent({
       startCountdown,
       isQuestionHidden,
       isIntroSplash,
+      isIntroSplashVisible,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -351,6 +352,7 @@ export default defineComponent({
       startCountdown,
       isQuestionHidden,
       isIntroSplash,
+      isIntroSplashVisible,
       room,
       isGameOver,
       alphabet,

@@ -3,7 +3,8 @@
 .quiz-intro-splash
   QuizCover.quiz-intro-splash__bg(:room="room")
 
-  .quiz-intro-splash__content
+  //- text animates in once `playing` turns on; the backdrop is up before that
+  .quiz-intro-splash__content(v-if="playing")
     h1.quiz-intro-splash__title {{ room.title }}
     p.quiz-intro-splash__description(v-if="room.description") {{ room.description }}
 
@@ -13,7 +14,7 @@
         small {{ $t('playIntro.creator') }}
         strong {{ creatorUser ? creatorUser.username : $t('playIntro.anon') }}
 
-  AppLogo.quiz-intro-splash__brand(type="title")
+  AppLogo.quiz-intro-splash__brand(v-if="playing" type="title")
 </template>
 
 <script>
@@ -24,6 +25,11 @@ export default defineComponent({
     room: {
       type: Object,
       required: true
+    },
+    playing: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props) {

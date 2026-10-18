@@ -31,10 +31,15 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   const isGameStarted = ref(false)
   // 3 | 2 | 1 | 'GO' while the inline start countdown runs, null otherwise
   const startCountdown = ref(null)
+  // isIntroSplash: the splash text + sound are playing; the splash backdrop already covers the scene before that
   const isIntroSplash = ref(false)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])
   // inline-countdown scenes keep the question out of sight until the countdown has run
+  // the splash backdrop covers the scene from the start (behind the intro dialog too), so the scene never flashes before it
+  const isIntroSplashVisible = computed(
+    () => introSplash && (isIntroSplash.value || (!isGameStarted.value && startCountdown.value === null && !isGameOver.value))
+  )
   const isQuestionHidden = computed(
     () => inlineCountdown && (isIntroSplash.value || startCountdown.value !== null || (!isGameStarted.value && !isGameOver.value))
   )
@@ -559,14 +564,17 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
         return
       }
 
-      // the sound is 2s; the splash holds a little longer so the title can be read
-      isIntroSplash.value = true
-      quizIntroSoundFx.play()
-
+      // backdrop is already up (isIntroSplashVisible); text and sound start half a second in.
+      // The sound is 2s; the text holds a little longer so the title can be read
       setTimeout(() => {
-        isIntroSplash.value = false
-        runCountdown()
-      }, 2800)
+        isIntroSplash.value = true
+        quizIntroSoundFx.play()
+
+        setTimeout(() => {
+          isIntroSplash.value = false
+          runCountdown()
+        }, 2800)
+      }, 500)
 
       return
     }
@@ -859,6 +867,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     startCountdown,
     isQuestionHidden,
     isIntroSplash,
+    isIntroSplashVisible,
     isGameOver,
     alphabet,
     alphabetItemClasses,
