@@ -280,10 +280,6 @@ export default {
         error: 'Failed to submit report'
       }
     },
-    announcements: {
-      title: 'Announcements',
-      description: 'Announcements'
-    },
     createQuizSelection: {
       title: 'Create quiz',
       quizType: {

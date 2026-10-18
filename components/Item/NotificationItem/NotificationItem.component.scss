@@ -46,3 +46,17 @@
     border-radius: 50%;
   }
 }
+
+.notification-item__avatar--app {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.notification-item__announcement {
+  margin: 2px 0 4px;
+  color: var(--color-text-01);
+  white-space: pre-line;
+  word-break: break-word;
+}

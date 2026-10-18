@@ -282,10 +282,6 @@ export default {
         error: 'Şikayet gönderilemedi'
       }
     },
-    announcements: {
-      title: 'Duyurular',
-      description: 'Duyurular'
-    },
     createQuizSelection: {
       title: 'Quiz oluştur',
       quizType: {

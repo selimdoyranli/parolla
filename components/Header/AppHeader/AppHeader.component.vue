@@ -1,12 +1,6 @@
 <template lang="pug">
 .app-header
   menu.app-header-nav
-    template(v-if="isVisibleLocaleSwitchButton")
-      li.app-header-nav__item(@click="toggleLocaleSwitchDialog")
-        ActionButton(icon="tabler:world-cog" :icon-size="24")
-    template(v-if="isVisibleAnnouncementsButton")
-      li.app-header-nav__item(@click="toggleAnnouncementsDialog")
-        ActionButton(icon="tabler:speakerphone" :icon-size="24" :badge="announcementsCount")
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
@@ -91,13 +85,6 @@
     :isOpen="dialog.localeSwitch.isOpen"
     @closed="dialog.localeSwitch.isOpen = false"
   )
-  // Announcements Dialog
-  LazyAnnouncementsDialog(
-    v-if="$route.path === localePath({ name: 'Main' })"
-    :isOpen="dialog.announcements.isOpen"
-    @closed="dialog.announcements.isOpen = false"
-    @on-fetch-success="handleFetchAnnouncementsSuccess"
-  )
   // Notifications Dialog
   LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
   // Owner Stats Dialog
@@ -163,9 +150,6 @@ export default defineComponent({
         isOpen: false
       },
       localeSwitch: {
-        isOpen: false
-      },
-      announcements: {
         isOpen: false
       },
       roomReview: {
@@ -283,16 +267,6 @@ export default defineComponent({
       dialog.localeSwitch.isOpen = !dialog.localeSwitch.isOpen
     }
 
-    const announcementsCount = ref(0)
-
-    const toggleAnnouncementsDialog = () => {
-      dialog.announcements.isOpen = !dialog.announcements.isOpen
-    }
-
-    const handleFetchAnnouncementsSuccess = count => {
-      announcementsCount.value = count
-    }
-
     const toggleRoomReviewDialog = () => {
       dialog.roomReview.isOpen = !dialog.roomReview.isOpen
     }
@@ -343,18 +317,6 @@ export default defineComponent({
     const logoClasses = computed(() => {
       return {
         'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))
-      }
-    })
-
-    const isVisibleLocaleSwitchButton = computed(() => {
-      if (route.value.path === localePath({ name: 'Main' })) {
-        return true
-      }
-    })
-
-    const isVisibleAnnouncementsButton = computed(() => {
-      if (route.value.path === localePath({ name: 'Main' })) {
-        return true
       }
     })
 
@@ -419,15 +381,10 @@ export default defineComponent({
       targetCommentId,
       targetRatingUserId,
       handleRoomReviewClosed,
-      announcementsCount,
-      toggleAnnouncementsDialog,
-      handleFetchAnnouncementsSuccess,
       openTourModeOnlineDialog,
       handleClickBackButton,
       handleClickAppLogo,
       logoClasses,
-      isVisibleLocaleSwitchButton,
-      isVisibleAnnouncementsButton,
       isVisibleBackButton,
       user,
       room,

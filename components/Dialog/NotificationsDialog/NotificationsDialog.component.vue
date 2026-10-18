@@ -97,9 +97,10 @@ export default defineComponent({
     }
 
     const handleSelect = item => {
-      state.isOpen = false
-
+      // announcements are read in place; nothing to open
       if (!item.room) return
+
+      state.isOpen = false
 
       router.push(
         localePath({
