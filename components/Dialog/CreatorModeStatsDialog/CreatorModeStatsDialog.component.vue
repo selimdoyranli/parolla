@@ -175,6 +175,18 @@ export default defineComponent({
       value => {
         state.isOpen = value
         setAnswers()
+
+        const tab = store.getters['creator/dialog'].stats.tab
+
+        if (value && tab) {
+          if (activeTab.value !== tab) {
+            activeTab.value = tab
+          } else if (tab === 'scoreboard') {
+            loadScoreboard()
+          }
+
+          store.commit('creator/SET_STATS_DIALOG_TAB', null)
+        }
       }
     )
 
@@ -296,19 +308,21 @@ export default defineComponent({
       }
     })
 
+    const loadScoreboard = async () => {
+      pendingScoreboard.value = true
+
+      // The board and the reader's own standing are independent queries, so run them
+      // together rather than making the tab wait for two round trips
+      await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
+
+      pendingScoreboard.value = false
+    }
+
     watch(
       () => activeTab.value,
-      async value => {
-        if (value) {
-          if (value === 'scoreboard') {
-            pendingScoreboard.value = true
-
-            // The board and the reader's own standing are independent queries, so run them
-            // together rather than making the tab wait for two round trips
-            await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
-
-            pendingScoreboard.value = false
-          }
+      value => {
+        if (value === 'scoreboard') {
+          loadScoreboard()
         }
       }
     )

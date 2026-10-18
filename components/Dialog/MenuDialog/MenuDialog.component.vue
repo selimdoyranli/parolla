@@ -292,25 +292,9 @@ export default defineComponent({
     const room = computed(() => store.getters['creator/room'])
     const questions = computed(() => store.getters['creator/questions'])
 
-    const openRoomSharer = async () => {
-      const shareText = i18n.t('sharer.room.description', {
-        roomTitle: room.value.title,
-        questionCount: questions.value.length,
-        url: `${APP_URL}${localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: route.value.params.slug } })}`
-      })
+    const { shareRoom } = useRoomShare()
 
-      try {
-        await navigator.clipboard.writeText(shareText)
-        await showToast.default(i18n.t('clipboard.callback.success'))
-        await navigator.share({
-          title: 'parolla',
-          text: shareText
-        })
-      } catch {
-        await navigator.clipboard.writeText(shareText)
-        await showToast.default(i18n.t('clipboard.callback.success'))
-      }
-    }
+    const openRoomSharer = () => shareRoom({ ...room.value, roomId: route.value.params.slug, questionCount: questions.value.length })
 
     const openAppSharer = async () => {
       const shareText = i18n.t('sharer.app.description')

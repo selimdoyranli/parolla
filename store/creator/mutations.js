@@ -96,6 +96,11 @@ export default {
     })
   },
 
+  // tab to show when the stats dialog opens next (e.g. 'scoreboard' from the play intro)
+  SET_STATS_DIALOG_TAB(state, tab) {
+    state.dialog.stats.tab = tab
+  },
+
   SET_IS_OPEN_STATS_DIALOG(state, isOpen) {
     state.dialog.stats.isOpen = isOpen
   },
