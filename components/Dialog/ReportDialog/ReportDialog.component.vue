@@ -7,6 +7,7 @@ Dialog.dialog.report-dialog(
   :cancel-button-text="$t('general.close')"
   :close-on-click-overlay="false"
   :close-on-popstate="!mediaUploading.isUploading"
+  :get-container="getContainer"
   @closed="handleClose"
   @opened="$emit('opened')"
 )
@@ -106,6 +107,12 @@ export default defineComponent({
     Uploader
   },
   props: {
+    // e.g. 'body' when opened from another teleported dialog, so it stacks on top
+    getContainer: {
+      type: String,
+      required: false,
+      default: undefined
+    },
     isOpen: {
       type: Boolean,
       required: false,

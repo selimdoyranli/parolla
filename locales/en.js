@@ -911,7 +911,7 @@ export default {
     report: 'Report',
     delete: 'Delete',
     deleteConfirm: 'Delete this comment?',
-    reportTitle: 'Report this comment',
+    moreTitle: 'Comment options',
     empty: 'No comments yet. Be the first!',
     ratingsEmpty: 'No ratings yet',
     yourRating: 'Your rating: {rating}',

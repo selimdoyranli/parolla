@@ -27,7 +27,7 @@
         button.room-comment-item__action(auth-control @click="isReplying = !isReplying")
           AppIcon(name="tabler:arrow-back-up")
           span {{ $t('comments.reply') }}
-        button.room-comment-item__action(@click="isOpenActions = true")
+        button.room-comment-item__action(@click="isOpenMore = true")
           AppIcon(name="tabler:dots")
 
     RoomCommentComposer(
@@ -55,24 +55,48 @@
         button.room-comment-item__toggle(v-if="replies.hasMore" @click="loadReplies") {{ $t('comments.loadMoreReplies') }}
         button.room-comment-item__toggle(v-else @click="replies.isOpen = false") {{ $t('comments.hideReplies') }}
 
-  // Actions dialog shows the comment itself so it's clear which one is being deleted/reported
-  VanDialog.dialog.room-comment-actions-dialog(
-    v-model="isOpenActions"
+  // More dialog: comment preview + options; each option opens its own dialog on top
+  VanDialog.dialog.room-comment-more-dialog(
+    v-model="isOpenMore"
     get-container="body"
-    :title="isOwn ? $t('comments.deleteConfirm') : $t('comments.reportTitle')"
+    :title="$t('comments.moreTitle')"
+    :show-confirm-button="false"
+    :show-cancel-button="true"
+    :cancel-button-text="$t('general.close')"
+  )
+    .room-comment-dialog-preview
+      PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
+      .room-comment-dialog-preview__body
+        strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+        p.room-comment-dialog-preview__content {{ comment.content }}
+    nav.room-comment-more-dialog__options
+      button.room-comment-more-dialog__option.room-comment-more-dialog__option--danger(v-if="isOwn" @click="isOpenDelete = true")
+        AppIcon(name="tabler:trash")
+        span {{ $t('comments.delete') }}
+      button.room-comment-more-dialog__option(v-if="!isOwn" auth-control @click="openReport")
+        AppIcon(name="tabler:flag")
+        span {{ $t('comments.report') }}
+
+  // Delete confirmation, opened over the more dialog
+  VanDialog.dialog.room-comment-delete-dialog(
+    v-model="isOpenDelete"
+    get-container="body"
+    :title="$t('comments.deleteConfirm')"
     :show-cancel-button="true"
     :cancel-button-text="$t('general.cancel')"
-    :confirm-button-text="isOwn ? $t('comments.delete') : $t('comments.report')"
-    :class="{ 'room-comment-actions-dialog--danger': isOwn }"
-    @confirm="handleAction"
+    :confirm-button-text="$t('comments.delete')"
+    :before-close="handleDeleteBeforeClose"
   )
-    .room-comment-actions-dialog__preview
+    .room-comment-dialog-preview
       PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
-      .room-comment-actions-dialog__preview-body
-        strong.room-comment-actions-dialog__preview-username {{ comment.user && comment.user.username }}
-        p.room-comment-actions-dialog__preview-content {{ comment.content }}
+      .room-comment-dialog-preview__body
+        strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+        p.room-comment-dialog-preview__content {{ comment.content }}
+
+  // teleported like the more dialog so it opens on top of it
   LazyReportDialog(
     v-if="isOpenReportDialog"
+    get-container="body"
     :is-open="isOpenReportDialog"
     :scope="reportTypeEnum.COMMENT"
     :additional="reportAdditional"
@@ -109,7 +133,8 @@ export default defineComponent({
 
     const isReply = computed(() => Boolean(props.comment.parentDocumentId))
     const isReplying = ref(false)
-    const isOpenActions = ref(false)
+    const isOpenMore = ref(false)
+    const isOpenDelete = ref(false)
     const isOpenReportDialog = ref(false)
     const replies = reactive({ isOpen: false, items: [], page: 0, hasMore: true, pending: false })
 
@@ -184,9 +209,16 @@ export default defineComponent({
       state.replyCount = Math.max(0, state.replyCount - 1)
     }
 
-    const handleAction = async () => {
-      if (!isOwn.value) {
-        isOpenReportDialog.value = true
+    const openReport = () => {
+      if (!$auth.loggedIn) return
+
+      isOpenReportDialog.value = true
+    }
+
+    // keeps the delete dialog open (with a loading button) until the request finishes
+    const handleDeleteBeforeClose = async (action, done) => {
+      if (action !== 'confirm') {
+        done()
 
         return
       }
@@ -195,10 +227,13 @@ export default defineComponent({
 
       if (error) {
         Toast(i18n.t('comments.error'))
+        done(false)
 
         return
       }
 
+      done()
+      isOpenMore.value = false
       emit('deleted', props.comment.documentId, state.replyCount)
     }
 
@@ -224,7 +259,8 @@ export default defineComponent({
       state,
       isReply,
       isReplying,
-      isOpenActions,
+      isOpenMore,
+      isOpenDelete,
       isOpenReportDialog,
       replies,
       mention,
@@ -237,7 +273,8 @@ export default defineComponent({
       loadReplies,
       handleReplyPosted,
       removeReply,
-      handleAction
+      openReport,
+      handleDeleteBeforeClose
     }
   }
 })
