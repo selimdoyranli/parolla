@@ -76,6 +76,12 @@ input:on-input, textarea:on-input { sound: keystroke; }
 .guess-the-song-scene-tag { sound-on-click: tick; }
 .guess-the-song-scene-selected-artist-remove { sound-on-click: thunk; }
 
+/* Quiz comments — like rises on like, falls on unlike (class reflects state before the click); reply ticks. */
+.room-comment-item__action--like { sound-on-click: pop; pitch: +2st; }
+.room-comment-item__action--like.is-active { sound-on-click: pop; pitch: -2st; volume: 0.6; }
+.room-comment-item__action--reply { sound-on-click: tick; }
+.room-comment-more-dialog__option { sound-on-click: tick; }
+
 /* === Remove / destructive actions — thunk (decisive removal) ===
    Compound selectors are used to beat .van-button.van-button--danger
    specificity (0,2,0) on remove buttons that are vant Buttons. */

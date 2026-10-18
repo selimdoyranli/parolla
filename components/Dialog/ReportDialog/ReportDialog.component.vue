@@ -11,6 +11,8 @@ Dialog.dialog.report-dialog(
   @closed="handleClose"
   @opened="$emit('opened')"
 )
+  // optional context shown above the form, e.g. the quoted comment being reported
+  slot(name="prepend")
   .report-dialog-form
     Field.report-dialog-form__scope(
       v-model="form.scope"

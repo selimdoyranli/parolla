@@ -18,13 +18,17 @@
         NuxtLink.room-comment-item__mention(v-if="mention" :to="profilePath(comment.replyToUser)") @{{ comment.replyToUser.username }}
         | {{ ' ' + contentWithoutMention }}
       .room-comment-item__actions
-        button.room-comment-item__action(auth-control :class="{ 'is-active': state.likedByMe }" @click="toggleLike")
+        button.room-comment-item__action.room-comment-item__action--like(
+          auth-control
+          :class="{ 'is-active': state.likedByMe }"
+          @click="toggleLike"
+        )
           AppIcon(:name="state.likedByMe ? 'tabler:thumb-up-filled' : 'tabler:thumb-up'")
           span {{ state.likeCount }}
         button.room-comment-item__action(v-if="!isReply" @click="toggleReplies")
           AppIcon(name="tabler:message")
           span {{ state.replyCount }}
-        button.room-comment-item__action(auth-control @click="isReplying = !isReplying")
+        button.room-comment-item__action.room-comment-item__action--reply(auth-control @click="isReplying = !isReplying")
           AppIcon(name="tabler:arrow-back-up")
           span {{ $t('comments.reply') }}
         button.room-comment-item__action(@click="isOpenMore = true")
@@ -63,6 +67,7 @@
     :show-confirm-button="false"
     :show-cancel-button="true"
     :cancel-button-text="$t('general.close')"
+    width="min(92vw, 440px)"
   )
     .room-comment-dialog-preview
       PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
@@ -102,6 +107,12 @@
     :additional="reportAdditional"
     @closed="isOpenReportDialog = false"
   )
+    template(#prepend)
+      blockquote.room-comment-dialog-preview.room-comment-dialog-preview--quote
+        PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
+        .room-comment-dialog-preview__body
+          strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+          p.room-comment-dialog-preview__content {{ comment.content }}
 </template>
 
 <script>

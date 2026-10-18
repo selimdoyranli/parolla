@@ -108,10 +108,16 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  margin: 4px 16px 16px;
+  margin: 16px 16px 16px;
   padding: 12px;
   border: 1px solid var(--color-border-02);
   border-radius: calc(var(--border-radius-01) / 2);
+
+  // inside ReportDialog: quote style, aligned with the report form
+  &--quote {
+    margin: 16px var(--base-p-x, 16px) 0;
+    border-left: 3px solid var(--color-brand-02);
+  }
 
   &__body {
     flex: 1;
