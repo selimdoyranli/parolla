@@ -113,9 +113,11 @@ export default {
   },
 
   SET_SCOREBOARD_PAGINATION(state, { pagination, total }) {
+    // Strapi page pagination ({ page, pageSize, pageCount, total })
     state.scoreboard.pagination = {
-      cursor: pagination.next_page_url?.split('cursor=')[1] || null,
-      limit: Number(pagination.per_page)
+      page: Number(pagination.page) || 1,
+      pageSize: Number(pagination.pageSize) || 0,
+      pageCount: Number(pagination.pageCount) || 0
     }
 
     state.scoreboard.total = Number(total)

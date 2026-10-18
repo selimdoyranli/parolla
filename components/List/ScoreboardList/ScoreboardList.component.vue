@@ -84,12 +84,17 @@
       template(v-else)
         p {{ $t('general.noData') }}
 
-    // InfiniteLoading(@infinite="handleInfiniteLoading")
+  //- next pages load as the board scrolls; only when the parent handles on-infinite-loading
+  InfiniteLoading(v-if="$listeners['on-infinite-loading']" @infinite="handleInfiniteLoading")
+    template(#spinner)
+      Loading(color="var(--color-brand-02)" size="20")
+    template(#no-more) {{ '' }}
+    template(#no-results) {{ '' }}
 </template>
 
 <script>
 import { defineComponent, useStore, ref, computed } from '@nuxtjs/composition-api'
-import { Collapse, CollapseItem, Empty, Button } from 'vant'
+import { Collapse, CollapseItem, Empty, Button, Loading } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default defineComponent({
@@ -98,6 +103,7 @@ export default defineComponent({
     CollapseItem,
     Empty,
     Button,
+    Loading,
     InfiniteLoading
   },
   props: {

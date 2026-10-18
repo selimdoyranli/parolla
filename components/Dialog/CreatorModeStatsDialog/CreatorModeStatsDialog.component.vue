@@ -316,25 +316,30 @@ export default defineComponent({
     const pagination = computed(() => store.getters['creator/scoreboardPagination'])
 
     const handleInfiniteLoading = async $state => {
-      const { data, error } = await store.dispatch('creator/fetchScoreboard', {
-        isLoadMore: true,
-        page: pagination.value.page + 1,
-        roomId: room.value.roomId
-      })
+      const { page = 1, pageCount = 0 } = pagination.value || {}
 
-      $state.loaded()
-
-      if (data?.data.length === 0) {
+      // everything is already loaded
+      if (page >= pageCount) {
         $state.complete()
 
         return false
       }
+
+      const { data, error } = await store.dispatch('creator/fetchScoreboard', {
+        isLoadMore: true,
+        page: page + 1,
+        roomId: room.value.roomId
+      })
 
       if (error) {
         $state.error()
 
         return false
       }
+
+      $state.loaded()
+
+      if (!data?.data.length || page + 1 >= pageCount) $state.complete()
     }
 
     return {
