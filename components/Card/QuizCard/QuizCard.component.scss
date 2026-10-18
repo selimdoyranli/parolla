@@ -1,17 +1,9 @@
 .quiz-card {
-  --quiz-card-from: #ff7878;
-  --quiz-card-to: #c83a5a;
-  --quiz-card-tint: rgba(255, 220, 220, 0.18);
   --quiz-card-radius: 20px;
   --quiz-card-surface: var(--color-ui-02);
   --quiz-card-surface-hover: var(--color-hover-02);
   --quiz-card-border: var(--color-border-01);
   --quiz-card-border-hover: rgba(255, 120, 120, 0.45);
-
-  /* light mode lifts the placeholder gradient via a saturation + brightness filter
-     so colors stay vivid (not pastel) while reading lighter against the white card surface;
-     dark mode disables the filter via the override at the bottom of the file */
-  --quiz-card-placeholder-filter: saturate(1.22) brightness(1.06);
 
   position: relative;
   display: flex;
@@ -88,78 +80,23 @@
   /* Media zone                                                            */
 
   /* --------------------------------------------------------------------- */
-  &__media {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: var(--color-ui-03);
-    aspect-ratio: 16 / 9;
-  }
-
-  &__photo {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.1s var(--motion-01);
-    inset: 0;
-  }
-
-  /* Procedural placeholder — gradient layer rendered when no cover photo is set */
-  &__placeholder {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(120% 90% at 18% 14%, var(--quiz-card-tint), transparent 55%),
-      linear-gradient(135deg, var(--quiz-card-from), var(--quiz-card-to));
-    filter: var(--quiz-card-placeholder-filter);
-    transition: transform 0.1s var(--motion-01);
-    inset: 0;
-  }
-
-  &__placeholder-grid {
-    position: absolute;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-position: -1px -1px;
-    background-size: 28px 28px;
-    opacity: 0.55;
-    pointer-events: none;
-    inset: 0;
-    mask-image: radial-gradient(120% 80% at 50% 60%, #000 30%, transparent 80%);
-  }
-
-  &__placeholder-glow {
-    position: absolute;
-    width: 110%;
-    height: 80%;
-    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.28), transparent 70%);
-    transform: translateX(-50%);
-    opacity: 0.7;
-    transition: opacity 0.4s var(--motion-01);
-    pointer-events: none;
-    inset-block-end: -40%;
-    inset-inline-start: 50%;
-  }
-
-  &:focus-visible &__photo,
-  &:focus-visible &__placeholder {
+  &:focus-visible .quiz-cover__photo,
+  &:focus-visible .quiz-cover__placeholder {
     transform: scale(1.04);
   }
 
-  &:focus-visible &__placeholder-glow {
+  &:focus-visible .quiz-cover__placeholder-glow {
     opacity: 0.95;
   }
 
   /* mouse-only zoom + glow on hover, paired with the border tint above */
   @media (pointer: fine) {
-    &:hover &__photo,
-    &:hover &__placeholder {
+    &:hover .quiz-cover__photo,
+    &:hover .quiz-cover__placeholder {
       transform: scale(1.04);
     }
 
-    &:hover &__placeholder-glow {
+    &:hover .quiz-cover__placeholder-glow {
       opacity: 0.95;
     }
   }
@@ -654,12 +591,6 @@
   }
 }
 
-/* dark mode keeps the placeholder gradient at its original saturated colors —
-   the saturate/brightness lift is only applied for the lighter light-mode aesthetic */
-.dark-mode .quiz-card {
-  --quiz-card-placeholder-filter: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .quiz-card {
     transition: none !important;
@@ -670,8 +601,8 @@
       transform: none;
     }
 
-    .quiz-card__photo,
-    .quiz-card__placeholder {
+    .quiz-cover__photo,
+    .quiz-cover__placeholder {
       transition: none !important;
     }
   }
