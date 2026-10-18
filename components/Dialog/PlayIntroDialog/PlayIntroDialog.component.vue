@@ -33,6 +33,16 @@ Dialog.dialog.dialog--scene.play-intro(
         AppIcon(name="tabler:star" :width="16" :height="16")
         span {{ $t('playIntro.rate') }}
 
+    //- label over username, both right of the avatar; anonymous rooms get the anon avatar and no player dialog
+    section.play-intro__creator(v-if="isCreator")
+      PlayerAvatar(:user="creatorUser" :size="44" :open-player-dialog-on-click="Boolean(creatorUser)")
+        template(#append)
+          .play-intro__creator-meta
+            small {{ $t('playIntro.creator') }}
+            strong(v-if="creatorUser") {{ creatorUser.username }}
+              span.gm-username-extra(v-if="creatorUser.role?.name === 'GM'") &nbsp;(GM)
+            strong(v-else) {{ $t('playIntro.anon') }}
+
     Collapse.play-intro__rules(v-model="rulesOpen" :border="false")
       CollapseItem(name="rules" icon="question-o" :title="$t('playIntro.howToPlay')")
         HowToPlayContent
@@ -55,11 +65,6 @@ Dialog.dialog.dialog--scene.play-intro(
         v-if="mode === 'daily'"
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
-
-    section.play-intro__creator(v-if="isCreator")
-      small {{ $t('playIntro.creator') }}
-      PlayerAvatar(v-if="creatorUser" with-username open-player-dialog-on-click :size="36" :user="creatorUser")
-      strong(v-else) {{ $t('playIntro.anon') }}
 
     section.play-intro__comments(v-if="isCreator")
       h3.play-intro__section-title

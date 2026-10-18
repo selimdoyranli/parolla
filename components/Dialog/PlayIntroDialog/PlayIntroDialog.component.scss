@@ -103,13 +103,23 @@
   }
 
   &__creator {
-    display: flex;
-    gap: 10px;
-    align-items: center;
     margin: 16px 0;
+  }
+
+  &__creator-meta {
+    display: flex;
+    flex-direction: column;
+    margin-inline-start: 12px;
+    line-height: 1.25;
 
     small {
       color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+    }
+
+    strong {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-8);
     }
   }
 
