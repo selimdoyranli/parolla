@@ -75,20 +75,9 @@ Dialog.dialog.dialog--scene.play-intro(
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
 
-    section.play-intro__comments(v-if="isCreator")
-      h3.play-intro__section-title
-        AppIcon(name="tabler:message-2" :width="18" :height="18")
-        span {{ $t('playIntro.commentsTitle') }}
-      template(v-if="comments.items.length")
-        .play-intro__comment(v-for="comment in comments.items" :key="comment.documentId")
-          PlayerAvatar(:user="comment.user" :size="28")
-          .play-intro__comment-body
-            strong {{ comment.user.username }}
-            p {{ comment.content }}
-      Empty.play-intro__comments-empty(v-else-if="!comments.pending && !comments.failed" :description="$t('playIntro.noComments')")
-        Button.play-intro__more(round size="small" @click="openReviews") {{ $t('playIntro.writeComment') }}
-      Button.play-intro__more(v-if="comments.items.length || comments.failed" round size="small" @click="openReviews")
-        | {{ $t('playIntro.allComments', { count: room.reviewCount || 0 }) }}
+    //- same comments UI as the reviews dialog (likes, replies, composer), without the rating block
+    section.play-intro__comments(v-if="isCreator && room.id")
+      RoomReviewView(:key="reviewsKey" comments-only)
 
     .play-intro__ad
       AppAd(v-if="isDesktop" :data-ad-slot="9964323575")
@@ -104,7 +93,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Button, Collapse, CollapseItem, Loading, Empty } from 'vant'
+import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
 import { useMediaQuery } from '@vueuse/core'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
@@ -117,8 +106,7 @@ export default defineComponent({
     Button,
     Collapse,
     CollapseItem,
-    Loading,
-    Empty
+    Loading
   },
   props: {
     isOpen: {
@@ -143,6 +131,7 @@ export default defineComponent({
     const state = reactive({ isOpen: props.isOpen })
     const rulesOpen = ref([])
     const reviewDialog = reactive({ isOpen: false })
+    const reviewsKey = ref(0)
 
     watch(
       () => props.isOpen,
@@ -227,7 +216,8 @@ export default defineComponent({
 
     const onReviewClosed = () => {
       reviewDialog.isOpen = false
-      loadComments()
+      // the embedded comments list may be stale after posting in the dialog
+      reviewsKey.value++
     }
 
     const openReviews = () => {
@@ -235,10 +225,8 @@ export default defineComponent({
     }
 
     const leaderboard = reactive({ items: [], total: 0, pending: false, failed: false })
-    const comments = reactive({ items: [], pending: false, failed: false })
     // the load watch re-runs on reopen / when room.id arrives; only the latest response may write
     let leaderboardRequest = 0
-    let commentsRequest = 0
 
     const loadLeaderboard = async () => {
       const request = ++leaderboardRequest
@@ -274,21 +262,6 @@ export default defineComponent({
       leaderboard.pending = false
     }
 
-    const loadComments = async () => {
-      if (!room.value.id) return
-
-      const request = ++commentsRequest
-
-      comments.pending = true
-      const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: 1 })
-
-      if (request !== commentsRequest) return
-
-      comments.failed = Boolean(error)
-      comments.items = error ? [] : (data?.items || []).filter(c => !c.isDeleted && c.user).slice(0, 3)
-      comments.pending = false
-    }
-
     // the stats dialog lands on the tab set here; it opens above the intro, so the game starts only when the intro closes
     const openFullScoreboard = () => {
       store.commit('creator/SET_STATS_DIALOG_TAB', 'scoreboard')
@@ -301,8 +274,6 @@ export default defineComponent({
         if (!isOpen) return
 
         loadLeaderboard()
-
-        if (isCreator.value) loadComments()
       },
       { immediate: true }
     )
@@ -323,7 +294,7 @@ export default defineComponent({
       onReviewClosed,
       creatorUser,
       leaderboard,
-      comments,
+      reviewsKey,
       openFullScoreboard,
       localePath,
       shareRoom
