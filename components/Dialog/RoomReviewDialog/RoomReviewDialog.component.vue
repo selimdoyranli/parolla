@@ -9,7 +9,7 @@ Dialog.dialog.room-review-dialog(
   @closed="$emit('closed')"
   @opened="$emit('opened')"
 )
-  RoomReviewView(ref="roomReviewViewRef")
+  RoomReviewView(:key="viewKey" :target-comment-id="targetCommentId" :target-rating-user-id="targetRatingUserId")
 </template>
 
 <script>
@@ -25,6 +25,17 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: false
+    },
+    targetCommentId: {
+      type: String,
+      required: false,
+      default: null
+    },
+    // user id from ?rating=; the view switches to Puanlar and flashes that player's row
+    targetRatingUserId: {
+      type: [String, Number],
+      required: false,
+      default: null
     },
     cancelButtonText: {
       type: String,
@@ -44,20 +55,19 @@ export default defineComponent({
       }
     )
 
-    const roomReviewViewRef = ref(null)
+    // remount the view on every open so it reloads
+    const viewKey = ref(0)
 
     watch(
       () => state.isOpen,
       value => {
-        if (value) {
-          roomReviewViewRef.value?.$fetch()
-        }
+        if (value) viewKey.value += 1
       }
     )
 
     return {
       state,
-      roomReviewViewRef
+      viewKey
     }
   }
 })

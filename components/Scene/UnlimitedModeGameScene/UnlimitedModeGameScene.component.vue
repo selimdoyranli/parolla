@@ -93,7 +93,7 @@
             span {{ $t('gameScene.pass') }}
 
   // How To Play Dialog
-  HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  HowToPlayDialog(v-if="!isGameOver" intro :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
   UnlimitedModeStatsDialog(
     :cancelButtonText="$t('general.close')"

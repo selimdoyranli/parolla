@@ -113,9 +113,11 @@ export default {
   },
 
   SET_SCOREBOARD_PAGINATION(state, { pagination, total }) {
+    // Strapi page pagination ({ page, pageSize, pageCount, total })
     state.scoreboard.pagination = {
-      cursor: pagination.next_page_url?.split('cursor=')[1] || null,
-      limit: Number(pagination.per_page)
+      page: Number(pagination.page) || 1,
+      pageSize: Number(pagination.pageSize) || 0,
+      pageCount: Number(pagination.pageCount) || 0
     }
 
     state.scoreboard.total = Number(total)
@@ -131,18 +133,6 @@ export default {
 
   SET_DAILY_PLAYING_COUNT(state, count) {
     state.dailyPlayingCount = count
-  },
-
-  SET_USER_REVIEWS(state, list) {
-    state.userReviews.list = list
-  },
-
-  PUSH_USER_REVIEWS(state, list) {
-    state.userReviews.list = [...state.userReviews.list, ...list]
-  },
-
-  SET_USER_REVIEWS_PAGINATION(state, pagination) {
-    state.userReviews.pagination = pagination
   },
 
   SET_USER_ROOM_SCORES(state, list) {

@@ -43,7 +43,7 @@
       WinnerChoiceList(v-if="room.winnerChoices?.length > 0" :items="room.winnerChoices")
 
   // How To Play Dialog
-  HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  HowToPlayDialog(intro :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Interstitial Ad Dialog
   InterstitialAdDialog(:cancelButtonText="$t('gameScene.skipAdShowScore')" :isOpen="dialog.interstitialAd.isOpen")
 </template>

@@ -1,0 +1,185 @@
+.room-comment-item {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-ui-03);
+  transition: background-color 0.6s;
+
+  &--reply {
+    padding: 10px 0 0;
+    border-bottom: 0;
+  }
+
+  // tapped as a reply target: blink grey twice
+  &--flash {
+    border-radius: 12px;
+    animation: room-comment-flash 0.8s ease-in-out 2;
+  }
+
+  &--highlighted {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 12%, transparent);
+    border-radius: 12px;
+  }
+
+  &__avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    background: var(--color-ui-03);
+    border-radius: 50%;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  // buttons that open the PlayerDialog
+  &__username,
+  &__mention {
+    padding: 0;
+    color: var(--color-brand-02);
+    font: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__username {
+    font-weight: 700;
+  }
+
+  &__owner {
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+  }
+
+  &__time {
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__content {
+    margin: 4px 0 6px;
+    color: var(--color-text-01);
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  &__mention {
+    font-weight: 600;
+  }
+
+  &__deleted {
+    margin: 6px 0;
+    color: var(--color-text-03);
+    font-style: italic;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-block-start: 2px;
+  }
+
+  &__toggle {
+    padding: 6px 0;
+    color: var(--color-brand-02);
+    font-weight: 600;
+    font-size: 13px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__replies {
+    margin-top: 4px;
+  }
+}
+
+@keyframes room-comment-flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: var(--color-ui-03);
+  }
+}
+
+// Dialogs are teleported to body, so they can't be nested under .room-comment-item
+.room-comment-dialog-preview {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 16px 16px 16px;
+  padding: 12px;
+  border: 1px solid var(--color-border-02);
+  border-radius: calc(var(--border-radius-01) / 2);
+
+  // inside ReportDialog: quote style, aligned with the report form
+  &--quote {
+    margin: 16px var(--base-p-x, 16px) 0;
+    border-left: 3px solid var(--color-brand-02);
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__username {
+    color: var(--color-brand-02);
+  }
+
+  &__content {
+    display: -webkit-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+    color: var(--color-text-01);
+    word-break: break-word;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.room-comment-more-dialog {
+  &__options {
+    display: flex;
+    flex-direction: column;
+    margin: 0 16px 12px;
+  }
+
+  &__option {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    color: var(--color-text-01);
+    font-size: 15px;
+    background: none;
+    border: 0;
+    border-radius: calc(var(--border-radius-01) / 2);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-ui-01);
+    }
+
+    &--danger {
+      color: var(--color-danger-01);
+    }
+  }
+}
+
+.room-comment-delete-dialog .van-dialog__confirm {
+  color: var(--color-danger-01) !important;
+}

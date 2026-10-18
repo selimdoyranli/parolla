@@ -460,29 +460,6 @@ export default {
     }
   },
 
-  async fetchReviews({ commit }, { roomId }) {
-    // populate[user][populate][...] — without nested populate the user
-    // relation comes back with no diceBear/profilePhoto and PlayerAvatar
-    // falls back to a generated, unrelated avatar.
-    const params = new URLSearchParams({
-      'filters[room][roomId][$eq]': roomId,
-      'populate[user][populate][0]': 'diceBear',
-      'populate[user][populate][1]': 'profilePhoto',
-      'populate[user][populate][2]': 'role',
-      sort: 'createdAt:desc'
-    })
-
-    const { data, error } = await this.$appFetch({
-      path: `room-reviews?${params.toString()}`,
-      method: 'GET'
-    })
-
-    return {
-      data,
-      error
-    }
-  },
-
   async fetchRoomScoresByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
     const { data, error } = await this.$appFetch({
       path: 'room-scores',
@@ -507,57 +484,13 @@ export default {
     return { data, error }
   },
 
-  async fetchReviewsByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
+  async fetchOwnerStats(_, { roomId }) {
     const { data, error } = await this.$appFetch({
-      path: 'room-reviews',
-      query: {
-        'filters[user][id][$eq]': userId,
-        'pagination[page]': page,
-        'pagination[pageSize]': limit,
-        populate: 'room',
-        sort: 'createdAt:desc'
-      }
+      path: `room-owner/${roomId}/stats`,
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
     })
 
-    if (data) {
-      const list = data.data || []
-
-      if (isLoadMore) commit('PUSH_USER_REVIEWS', list)
-      else commit('SET_USER_REVIEWS', list)
-
-      if (data.meta?.pagination) commit('SET_USER_REVIEWS_PAGINATION', data.meta.pagination)
-    }
-
-    return { data, error }
-  },
-
-  async postReview({ commit, state }, { roomDocumentId, form }) {
-    const token = this.$auth.strategy.token.get()
-
-    const transform = form => {
-      return {
-        room: roomDocumentId,
-        rating: form.rating,
-        content: form.comment,
-        user: this.$auth.user?.id
-      }
-    }
-
-    const { data, error } = await this.$appFetch({
-      path: `room-reviews`,
-      method: 'POST',
-      data: {
-        data: transform(form)
-      },
-      headers: {
-        Authorization: `${token}`
-      }
-    })
-
-    return {
-      data,
-      error
-    }
+    return { data: data?.data ?? null, error }
   },
 
   async postStats({ commit, state }, params) {

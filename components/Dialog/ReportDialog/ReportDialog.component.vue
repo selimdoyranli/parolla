@@ -7,9 +7,12 @@ Dialog.dialog.report-dialog(
   :cancel-button-text="$t('general.close')"
   :close-on-click-overlay="false"
   :close-on-popstate="!mediaUploading.isUploading"
+  :get-container="getContainer"
   @closed="handleClose"
   @opened="$emit('opened')"
 )
+  // optional context shown above the form, e.g. the quoted comment being reported
+  slot(name="prepend")
   .report-dialog-form
     Field.report-dialog-form__scope(
       v-model="form.scope"
@@ -106,6 +109,12 @@ export default defineComponent({
     Uploader
   },
   props: {
+    // e.g. 'body' when opened from another teleported dialog, so it stacks on top
+    getContainer: {
+      type: String,
+      required: false,
+      default: undefined
+    },
     isOpen: {
       type: Boolean,
       required: false,

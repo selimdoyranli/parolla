@@ -1,15 +1,9 @@
 <template lang="pug">
 .app-header
   menu.app-header-nav
-    template(v-if="isVisibleLocaleSwitchButton")
-      li.app-header-nav__item(@click="toggleLocaleSwitchDialog")
-        AppIcon(name="tabler:world-cog")
-    template(v-if="isVisibleAnnouncementsButton")
-      li.app-header-nav__item(@click="toggleAnnouncementsDialog")
-        AppIcon(name="tabler:speakerphone" :label="announcementsCount")
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
-        AppIcon(name="tabler:arrow-left")
+        ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
   // Icon-only logo swapped in while the on-screen keyboard is open on mobile
@@ -20,20 +14,31 @@
       v-if="activeGameMode === gameModeKeyEnum.TOUR"
       @click="openTourModeOnlineDialog"
     )
-      AppIcon(name="tabler:users-group" :label="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)")
+      ActionButton(
+        icon="tabler:users-group"
+        :icon-size="24"
+        :badge="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)"
+      )
 
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
-      AppIcon(name="tabler:info-circle")
+      ActionButton(icon="tabler:info-circle" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--stats(v-if="isVisibleStatsButton" @click="toggleStatsDialog")
-      AppIcon(name="tabler:chart-bar")
+      ActionButton(icon="tabler:chart-bar" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--roomReviews(
       v-if="activeGameMode === gameModeKeyEnum.CREATOR"
       @click="toggleRoomReviewDialog"
     )
-      AppIcon.me-2(v-if="room.reviewCount > 0" name="tabler:message-2" :label="room.reviewCount")
-      AppIcon(v-else name="tabler:message-2")
+      ActionButton(
+        icon="tabler:message-2"
+        :icon-size="24"
+        :badge="room.reviewCount > 0 ? room.reviewCount : null"
+        :class="{ 'me-2': room.reviewCount > 0 }"
+      )
+
+    li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
+      ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")
@@ -73,19 +78,19 @@
     :isOpen="dialog.localeSwitch.isOpen"
     @closed="dialog.localeSwitch.isOpen = false"
   )
-  // Announcements Dialog
-  LazyAnnouncementsDialog(
-    v-if="$route.path === localePath({ name: 'Main' })"
-    :isOpen="dialog.announcements.isOpen"
-    @closed="dialog.announcements.isOpen = false"
-    @on-fetch-success="handleFetchAnnouncementsSuccess"
-  )
+  // Notifications Dialog
+  LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
   // Room Review Dialog
-  LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" @closed="dialog.roomReview.isOpen = false")
+  LazyRoomReviewDialog(
+    :isOpen="dialog.roomReview.isOpen"
+    :target-comment-id="targetCommentId"
+    :target-rating-user-id="targetRatingUserId"
+    @closed="handleRoomReviewClosed"
+  )
 </template>
 
 <script>
-import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
@@ -93,7 +98,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const { localePath, getRouteBaseName, i18n } = useContext()
+    const { localePath, getRouteBaseName, i18n, $auth } = useContext()
     const store = useStore()
 
     const { formatMillions } = useFormatter()
@@ -124,13 +129,52 @@ export default defineComponent({
       localeSwitch: {
         isOpen: false
       },
-      announcements: {
+      roomReview: {
         isOpen: false
       },
-      roomReview: {
+      notifications: {
         isOpen: false
       }
     })
+
+    const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    const toggleNotificationsDialog = () => {
+      dialog.notifications.isOpen = !dialog.notifications.isOpen
+    }
+
+    watch(
+      () => $auth.loggedIn,
+      loggedIn => store.dispatch(loggedIn ? 'notification/startPolling' : 'notification/stopPolling'),
+      { immediate: true }
+    )
+
+    // deep link from notifications / profile: ?comment=<documentId> opens the reviews dialog pinned to it
+    const targetCommentId = ref(null)
+    const targetRatingUserId = ref(null)
+
+    // ?comment=<documentId> pins a comment; ?rating=<userId> jumps to that player's rating row
+    watch(
+      () => [route.value.query.comment, route.value.query.rating, room.value?.id],
+      ([comment, rating, roomId]) => {
+        if ((comment || rating) && roomId && activeGameMode.value === gameModeKeyEnum.CREATOR) {
+          targetCommentId.value = comment || null
+          targetRatingUserId.value = rating || null
+          dialog.roomReview.isOpen = true
+        }
+      },
+      { immediate: true }
+    )
+
+    const handleRoomReviewClosed = () => {
+      dialog.roomReview.isOpen = false
+
+      if (targetCommentId.value || targetRatingUserId.value) {
+        targetCommentId.value = null
+        targetRatingUserId.value = null
+        router.replace({ query: { ...route.value.query, comment: undefined, rating: undefined } })
+      }
+    }
 
     const dailyDialog = computed(() => store.getters['daily/dialog'])
     const unlimitedDialog = computed(() => store.getters['unlimited/dialog'])
@@ -169,6 +213,9 @@ export default defineComponent({
     })
 
     const toggleHowToPlayDialog = () => {
+      // the scene's intro how-to-play is already on screen; don't stack the header's copy on it
+      if (store.state.app.isOpenIntroHowToPlay) return
+
       dialog.howToPlay.isOpen = !dialog.howToPlay.isOpen
     }
 
@@ -190,16 +237,6 @@ export default defineComponent({
 
     const toggleLocaleSwitchDialog = () => {
       dialog.localeSwitch.isOpen = !dialog.localeSwitch.isOpen
-    }
-
-    const announcementsCount = ref(0)
-
-    const toggleAnnouncementsDialog = () => {
-      dialog.announcements.isOpen = !dialog.announcements.isOpen
-    }
-
-    const handleFetchAnnouncementsSuccess = count => {
-      announcementsCount.value = count
     }
 
     const toggleRoomReviewDialog = () => {
@@ -252,18 +289,6 @@ export default defineComponent({
     const logoClasses = computed(() => {
       return {
         'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))
-      }
-    })
-
-    const isVisibleLocaleSwitchButton = computed(() => {
-      if (route.value.path === localePath({ name: 'Main' })) {
-        return true
-      }
-    })
-
-    const isVisibleAnnouncementsButton = computed(() => {
-      if (route.value.path === localePath({ name: 'Main' })) {
-        return true
       }
     })
 
@@ -322,15 +347,15 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
-      announcementsCount,
-      toggleAnnouncementsDialog,
-      handleFetchAnnouncementsSuccess,
+      unreadCount,
+      toggleNotificationsDialog,
+      targetCommentId,
+      targetRatingUserId,
+      handleRoomReviewClosed,
       openTourModeOnlineDialog,
       handleClickBackButton,
       handleClickAppLogo,
       logoClasses,
-      isVisibleLocaleSwitchButton,
-      isVisibleAnnouncementsButton,
       isVisibleBackButton,
       user,
       room,

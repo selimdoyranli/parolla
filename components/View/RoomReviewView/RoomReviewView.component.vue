@@ -1,108 +1,390 @@
 <template lang="pug">
 .room-review-view
-  LazyRoomReviewForm(v-if="isOpenRoomReviewForm" @onClickBackButton="closeRoomReviewForm" @onSuccess="handleSuccessRoomReviewForm")
+  .room-review-view__rating
+    .room-review-view__rating-summary
+      strong {{ ratings.average.toFixed(1) }}
+      Rate(:value="ratings.average" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="16")
+      small {{ $t('comments.ratingCount', { count: ratings.count }) }}
+    .room-review-view__rating-mine
+      template(v-if="ratings.mine !== null")
+        small {{ $t('comments.yourRating', { rating: ratings.mine }) }}
+        Rate(:value="ratings.mine" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="18")
+      template(v-else)
+        small {{ $t('comments.rateThisQuiz') }}
+        Rate(
+          v-model="ratings.draft"
+          color="var(--color-brand-02)"
+          allow-half
+          void-color="var(--color-text-03)"
+          auth-control
+          :size="22"
+          :disabled="ratings.pending"
+          @change="submitRating"
+        )
+
+  .room-review-view__filter
+    h4.room-review-view__filter-title
+      | {{ filter === 'comments' ? $t('comments.filter.comments') : $t('comments.filter.ratings') }}
+      span.room-review-view__filter-count ({{ filter === 'comments' ? room.reviewCount || 0 : ratings.count }})
+    FilterDropdown(
+      :options="filterOptions"
+      :selected="filterOptions.find(o => o.value === filter)"
+      @on-select-option="option => (filter = option.value)"
+    )
+
+  template(v-if="filter === 'comments'")
+    RoomCommentItem(
+      :key="`pinned-${pinned.item.documentId}`"
+      v-if="pinned.item"
+      auto-expand-replies
+      :comment="pinned.item"
+      :room-id="room.id"
+      :highlighted="pinned.targetDocumentId === pinned.item.documentId"
+      :target-document-id="pinned.targetDocumentId"
+      @deleted="pinned.item = null"
+    )
+
+    List(
+      v-model="comments.loading"
+      :finished="comments.finished"
+      :error.sync="comments.error"
+      :error-text="$t('comments.error')"
+      @load="loadComments"
+    )
+      RoomCommentItem(
+        v-for="comment in visibleComments"
+        :key="comment.documentId"
+        :comment="comment"
+        :room-id="room.id"
+        @deleted="handleRootDeleted"
+      )
+      Empty(v-if="comments.finished && !visibleComments.length && !pinned.item" :description="$t('comments.empty')")
+
+    //- single composer pinned to the bottom; a reply target turns it into a reply input
+    .room-review-view__composer
+      RoomCommentComposer(
+        :key="replyTarget ? replyTarget.parent : 'root'"
+        v-if="room.id"
+        ref="composerRef"
+        :room-id="room.id"
+        :parent="replyTarget && replyTarget.parent"
+        :reply-to="replyTarget && replyTarget.username"
+        :autofocus="Boolean(replyTarget)"
+        @posted="handlePosted"
+        @cancel="cancelReply"
+      )
 
   template(v-else)
-    template(v-if="fetchState.pending")
-      Empty(:description="$t('dialog.roomReview.pendingReviews')")
-
-    template(v-else-if="fetchState.error")
-      Empty(image="error" :description="$t('dialog.roomReview.error.fetchReviews.description')")
-        Button(@click="fetch") {{ $t('dialog.roomReview.error.fetchReviews.action') }}
-
-    template(v-else)
-      NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
-        small(v-html="$t('dialog.roomReview.loginToReview')")
-
-      RoomReviewList.room-review-view__list(
-        :items="review.list"
-        :rating="String(room.rating)"
-        @onClickOpenRoomReviewForm="openRoomReviewForm"
+    List(
+      v-model="ratingList.loading"
+      :finished="ratingList.finished"
+      :error.sync="ratingList.error"
+      :error-text="$t('comments.error')"
+      @load="loadRatings"
+    )
+      .room-review-view__rating-row(
+        v-for="item in ratingList.items"
+        :key="item.documentId"
+        :id="item.user ? `rating-${item.user.id}` : null"
       )
-        template(#openFormButton)
-          Button.room-review-view__openFormButton.room-review-view__openFormButton--desktop(
-            v-if="!isOpenRoomReviewForm && review.list && review.list.length > 0"
-            icon="smile-comment-o"
-            auth-control
-            @click="openRoomReviewForm"
-          ) {{ $t('dialog.roomReview.review') }}
-
-          Button.room-review-view__openFormButton.room-review-view__openFormButton--mobile(
-            v-if="!isOpenRoomReviewForm && review.list && review.list.length > 0"
-            icon="plus"
-            size="small"
-            auth-control
-            @click="openRoomReviewForm"
-          )
+        PlayerAvatar(v-if="item.user" :size="32" :user="item.user")
+        span.room-review-view__rating-user {{ item.user && item.user.username }}
+        Timeago.room-review-view__rating-time(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
+        Rate(:value="item.rating" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="14")
+      Empty(v-if="ratingList.finished && !ratingList.items.length" :description="$t('comments.ratingsEmpty')")
 </template>
 
 <script>
-import { defineComponent, useStore, useFetch, ref, reactive, watch, computed } from '@nuxtjs/composition-api'
-import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
-import { roomReviewTransformer } from '@/transformers'
-import { Button, Empty, NoticeBar } from 'vant'
+import {
+  defineComponent,
+  useStore,
+  useContext,
+  ref,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  provide,
+  nextTick
+} from '@nuxtjs/composition-api'
+import { Rate, List, Empty, Toast } from 'vant'
 
 export default defineComponent({
-  components: {
-    Button,
-    Empty,
-    NoticeBar
+  components: { Rate, List, Empty },
+  props: {
+    targetCommentId: { type: String, default: null },
+    targetRatingUserId: { type: [String, Number], default: null }
   },
-  setup() {
+  setup(props) {
     const store = useStore()
-
-    const { activeGameMode } = useGameMode()
+    const { $auth, i18n } = useContext()
 
     const room = computed(() => store.getters['creator/room'])
 
-    const isOpenRoomReviewForm = ref(false)
+    const filter = ref('comments')
+    const filterOptions = computed(() => [
+      { label: i18n.t('comments.filter.comments'), value: 'comments', icon: 'tabler:message-2' },
+      { label: i18n.t('comments.filter.ratings'), value: 'ratings', icon: 'tabler:star' }
+    ])
 
-    const review = reactive({
-      rating: null,
-      list: []
-    })
+    const comments = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
+    const ratingList = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
+    const ratings = reactive({ average: 0, count: 0, mine: null, draft: 0, pending: false })
+    const pinned = reactive({ item: null, targetDocumentId: null })
 
-    const fetchReviews = async () => {
-      if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
-        const { data, error } = await store.dispatch('creator/fetchReviews', {
-          roomId: room.value.roomId
-        })
+    // the pinned thread is rendered above the list; don't render it twice
+    const visibleComments = computed(() => comments.items.filter(c => c.documentId !== pinned.item?.documentId))
 
-        if (data) {
-          const reviews = data.data
+    const loadComments = async () => {
+      if (!room.value?.id) {
+        comments.loading = false
 
-          review.rating = reviews.rating
-          review.list = reviews.map(review => roomReviewTransformer(review))
+        return
+      }
+
+      const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: comments.page + 1 })
+      comments.loading = false
+
+      if (error) {
+        comments.error = true
+
+        return
+      }
+
+      const known = new Set(comments.items.map(c => c.documentId))
+
+      comments.items.push(...data.items.filter(c => !known.has(c.documentId)))
+      comments.page += 1
+      comments.finished = !data.hasMore
+    }
+
+    const applyRatingMeta = data => {
+      ratings.average = Number(data.average) || 0
+      ratings.count = data.count || 0
+      ratings.mine = data.mine
+    }
+
+    const loadRatings = async () => {
+      if (!room.value?.id) {
+        ratingList.loading = false
+
+        return
+      }
+
+      const { data, error } = await store.dispatch('comment/fetchRatings', { roomId: room.value.id, page: ratingList.page + 1 })
+      ratingList.loading = false
+
+      if (error) {
+        ratingList.error = true
+
+        return
+      }
+
+      applyRatingMeta(data)
+      ratingList.items.push(...data.items)
+      ratingList.page += 1
+      ratingList.finished = !data.hasMore
+    }
+
+    const loadRatingSummary = async () => {
+      if (!room.value?.id) return
+
+      const { data } = await store.dispatch('comment/fetchRatings', { roomId: room.value.id, page: 1 })
+
+      if (data) applyRatingMeta(data)
+    }
+
+    const submitRating = async value => {
+      if (!$auth.loggedIn || !value) return
+
+      ratings.pending = true
+      const { error } = await store.dispatch('comment/postRating', { roomId: room.value.id, rating: value })
+      ratings.pending = false
+
+      if (error) {
+        Toast(error.code === 409 ? i18n.t('comments.alreadyRated') : i18n.t('comments.error'))
+
+        if (error.code !== 409) {
+          ratings.draft = 0
+
+          return
         }
+      } else {
+        Toast(i18n.t('comments.rated'))
+      }
+
+      await loadRatingSummary()
+      ratingList.items = []
+      ratingList.page = 0
+      ratingList.finished = false
+    }
+
+    const loadPinned = async () => {
+      if (!props.targetCommentId) return
+
+      const { data } = await store.dispatch('comment/fetchThread', { documentId: props.targetCommentId })
+
+      // a stale ?comment from another quiz must not render here
+      if (data && data.roomId === room.value?.id) {
+        pinned.item = data.item
+        pinned.targetDocumentId = data.targetDocumentId
+        setTimeout(
+          () => document.getElementById(`comment-${data.targetDocumentId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+          300
+        )
+        setTimeout(() => (pinned.targetDocumentId = null), 2500)
       }
     }
 
-    const { fetch, fetchState } = useFetch(async () => {
-      await fetchReviews()
+    const handleRootPosted = comment => {
+      comments.items.unshift(comment)
+      store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')
+    }
+
+    // Reply flow shared with every RoomCommentItem: the item asks to reply, the bottom composer posts,
+    // and the root item of the thread picks the new reply up from lastReply.
+    const replyTarget = ref(null)
+    const lastReply = ref(null)
+    const composerRef = ref(null)
+
+    const flashElement = (elementId, className) =>
+      nextTick(() => {
+        const el = document.getElementById(elementId)
+
+        if (!el) return
+
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        el.classList.remove(className)
+        // restart the animation when the same element is targeted again
+        void el.offsetWidth
+        el.classList.add(className)
+        setTimeout(() => el.classList.remove(className), 1600)
+      })
+
+    const flash = documentId => flashElement(`comment-${documentId}`, 'room-comment-item--flash')
+
+    // rating notification: open Puanlar and page until the rater's row is loaded (max 5 pages)
+    const focusRating = async () => {
+      const userId = props.targetRatingUserId
+
+      if (!userId || !room.value?.id) return
+
+      // loading first so the filter watcher doesn't start a parallel first page
+      Object.assign(ratingList, { items: [], page: 0, finished: false, error: false, loading: true })
+      filter.value = 'ratings'
+
+      for (let i = 0; i < 5; i++) {
+        await loadRatings()
+
+        const found = ratingList.items.some(r => String(r.user?.id) === String(userId))
+
+        if (found || ratingList.finished || ratingList.error) break
+
+        ratingList.loading = true
+      }
+
+      setTimeout(() => flashElement(`rating-${userId}`, 'room-review-view__rating-row--flash'), 150)
+    }
+
+    const startReply = target => {
+      replyTarget.value = target
+      // focus first, then scroll: a focus after the smooth scroll starts would cancel it
+      nextTick(() => {
+        composerRef.value?.focus()
+        setTimeout(() => flash(target.parent), 50)
+      })
+    }
+
+    const cancelReply = () => {
+      replyTarget.value = null
+    }
+
+    const handlePosted = comment => {
+      if (!comment.parentDocumentId) {
+        handleRootPosted(comment)
+        setTimeout(() => flash(comment.documentId), 100)
+
+        return
+      }
+
+      lastReply.value = comment
+      cancelReply()
+      setTimeout(() => flash(comment.documentId), 100)
+    }
+
+    provide('commentThread', { replyTarget, lastReply, startReply, cancelReply })
+
+    const handleRootDeleted = (documentId, replyCount) => {
+      // a root with live replies stays as a placeholder, like the server list
+      comments.items = comments.items.flatMap(c => {
+        if (c.documentId !== documentId) return [c]
+
+        return replyCount > 0 ? [{ ...c, isDeleted: true, content: null, user: null }] : []
+      })
+    }
+
+    watch(() => props.targetCommentId, loadPinned)
+    watch(() => props.targetRatingUserId, focusRating)
+
+    // van-list mounted by the filter switch does not check itself, so kick the first ratings page
+    watch(filter, value => {
+      if (value === 'ratings' && room.value?.id && !ratingList.items.length && !ratingList.finished && !ratingList.loading) {
+        ratingList.loading = true
+        loadRatings()
+      }
     })
 
-    const openRoomReviewForm = () => {
-      isOpenRoomReviewForm.value = true
-    }
+    // room may arrive after mount: load the summary and let the lists retry
+    watch(
+      () => room.value?.id,
+      id => {
+        if (!id) return
 
-    const closeRoomReviewForm = () => {
-      isOpenRoomReviewForm.value = false
-    }
+        loadRatingSummary()
+        loadPinned()
+        Object.assign(comments, { items: [], page: 0, finished: false, error: false })
+        Object.assign(ratingList, { items: [], page: 0, finished: false, error: false })
 
-    const handleSuccessRoomReviewForm = () => {
-      fetch()
-      closeRoomReviewForm()
-    }
+        if (props.targetRatingUserId) {
+          focusRating()
+
+          return
+        }
+
+        // van-list only re-checks on loading/finished changes, so load the visible list directly
+        if (filter.value === 'comments') {
+          comments.loading = true
+          loadComments()
+        } else {
+          ratingList.loading = true
+          loadRatings()
+        }
+      }
+    )
+
+    onMounted(() => {
+      loadRatingSummary()
+      loadPinned()
+      focusRating()
+    })
 
     return {
-      fetch,
-      fetchState,
       room,
-      isOpenRoomReviewForm,
-      review,
-      openRoomReviewForm,
-      closeRoomReviewForm,
-      handleSuccessRoomReviewForm
+      filter,
+      filterOptions,
+      comments,
+      visibleComments,
+      ratingList,
+      ratings,
+      pinned,
+      loadComments,
+      loadRatings,
+      submitRating,
+      handleRootDeleted,
+      replyTarget,
+      composerRef,
+      handlePosted,
+      cancelReply
     }
   }
 })

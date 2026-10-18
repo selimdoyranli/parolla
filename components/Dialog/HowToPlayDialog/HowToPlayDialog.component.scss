@@ -17,6 +17,12 @@
     padding: var(--base-p-y) calc(var(--base-p-x) * 1.8);
     overflow: auto;
 
+    // over the scene the whole dialog content scrolls; no nested 50vh scroll box
+    .dialog--scene & {
+      max-height: none;
+      overflow: visible;
+    }
+
     p {
       font-size: var(--font-size-text-7);
       line-height: calc(var(--font-size-text-7) * 1.5);
@@ -34,6 +40,7 @@
     padding: var(--base-p-y) var(--base-p-x);
     background-color: var(--color-ui-01);
     border-radius: var(--border-radius-01);
+
   }
 
   &__ad {

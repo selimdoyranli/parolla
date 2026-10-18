@@ -1,0 +1,41 @@
+.room-owner-stats-card {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px 4px;
+  margin: 8px 0 12px;
+  padding: 10px 8px;
+  background: var(--color-ui-01);
+  border-radius: 12px;
+
+  &--pending {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+  }
+
+  &__value {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--color-text-01);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  &__label {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--color-text-03);
+    font-size: 11px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

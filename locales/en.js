@@ -280,10 +280,6 @@ export default {
         error: 'Failed to submit report'
       }
     },
-    announcements: {
-      title: 'Announcements',
-      description: 'Announcements'
-    },
     createQuizSelection: {
       title: 'Create quiz',
       quizType: {
@@ -445,16 +441,7 @@ export default {
       description: 'You may have to do the things you did again'
     },
     roomReview: {
-      title: 'Quiz reviews',
-      review: 'Review',
-      loginToReview: '<u>Login</u> to review',
-      pendingReviews: 'Fetching reviews',
-      error: {
-        fetchReviews: {
-          description: 'Fetching reviews error',
-          action: 'Try again'
-        }
-      }
+      title: 'Quiz reviews'
     },
     playerActions: {
       title: 'More ({username})',
@@ -854,23 +841,6 @@ export default {
       flashcardsTitle: 'EDIT FLASHCARDS QUIZ',
       submit: 'Update and publish'
     },
-    roomReview: {
-      back: 'Back',
-      comment: {
-        placeholder: 'Type a comment'
-      },
-      submit: 'Submit',
-      empty: {
-        rating: {
-          description: 'You must rate before posting a comment'
-        }
-      },
-      error: {
-        emptyRating: 'You must rate',
-        required: 'Type something',
-        maxLength: 'You must do not type too long'
-      }
-    },
     usernameEdit: {
       usernameField: {
         placeholder: 'Type a player name'
@@ -922,13 +892,56 @@ export default {
       }
     }
   },
-  roomReviewList: {
-    ratingTitle: 'Quiz rating',
-    reviewsTitle: 'Comments',
-    empty: {
-      description: 'No review yet',
-      action: 'Add comment'
+  comments: {
+    title: 'Comments',
+    filter: { comments: 'Comments', ratings: 'Ratings' },
+    placeholder: 'Write a comment...',
+    loginPlaceholder: 'Log in to comment',
+    send: 'Send',
+    reply: 'Reply',
+    loadMoreReplies: 'Load more replies',
+    deleted: 'This comment was deleted',
+    quizOwner: 'Quiz owner',
+    report: 'Report',
+    delete: 'Delete',
+    deleteConfirm: 'Delete this comment?',
+    like: 'Like',
+    replies: 'Replies',
+    replyingTo: 'Replying to {username}',
+    rateLimited: 'You are commenting too fast. Try again in 5 minutes.',
+    moreTitle: 'Comment options',
+    empty: 'No comments yet. Be the first!',
+    ratingsEmpty: 'No ratings yet',
+    yourRating: 'Your rating: {rating}',
+    rateThisQuiz: 'Rate this quiz',
+    ratingCount: '({count} players rated)',
+    rated: 'Rating saved',
+    alreadyRated: 'You already rated this quiz',
+    error: 'Something went wrong, try again'
+  },
+  notifications: {
+    title: 'Notifications',
+    tabs: { all: 'All', quizzes: 'My quizzes', interactions: 'Interactions' },
+    empty: 'No notifications yet',
+    andOthers: '{name} and {count} others',
+    types: {
+      room_rated: '{actor} rated your quiz {rating}',
+      room_commented: '{actor} commented on your quiz',
+      comment_replied: '{actor} replied to your comment',
+      reply_replied: '{actor} replied to your reply',
+      comment_liked: '{actor} liked your comment',
+      reply_liked: '{actor} liked your reply'
     }
+  },
+  ownerStats: {
+    views: 'Views',
+    players: 'Players',
+    rating: 'Avg rating',
+    comments: 'Comments',
+    avgCorrect: 'Avg correct',
+    avgWrong: 'Avg wrong',
+    avgPassed: 'Avg passed',
+    avgRemain: 'Avg time left'
   },
   scoreboard: {
     scoreboard: 'Scoreboard',
@@ -1262,8 +1275,8 @@ export default {
       error: 'Could not load quizzes.'
     },
     reviewsTab: {
-      empty: 'No reviews written yet.',
-      error: 'Could not load reviews.'
+      empty: 'No comments written yet.',
+      error: 'Could not load comments.'
     },
     scoresTab: {
       tour: { title: 'Tour mode scores' },

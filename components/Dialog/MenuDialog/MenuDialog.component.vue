@@ -87,7 +87,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.switchLocale')"
-      @click.native="$emit('clickedSwitchLocale')"
+      @click.native="openDialog('clickedSwitchLocale')"
     )
     Cell.menu-dialog-nav__item(
       v-if="activeGameMode && activeGameMode.length > 0"
@@ -95,7 +95,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.howToPLay')"
-      @click.native="$emit('clickedHowToPlay')"
+      @click.native="openDialog('clickedHowToPlay')"
     )
     Cell.menu-dialog-nav__item(
       v-if="activeGameMode === gameModeKeyEnum.DAILY || activeGameMode === gameModeKeyEnum.UNLIMITED || activeGameMode === gameModeKeyEnum.CREATOR"
@@ -103,7 +103,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.howToCalculateStats')"
-      @click.native="$emit('clickedHowToCalculateStats')"
+      @click.native="openDialog('clickedHowToCalculateStats')"
     )
     Cell.menu-dialog-nav__item(
       v-if="$route.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))"
@@ -119,7 +119,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.reviewRoom')"
-      @click.native="$emit('clickedReviewRoom')"
+      @click.native="openDialog('clickedReviewRoom')"
     )
     Cell.menu-dialog-nav__item(
       icon="smile-comment-o"
@@ -133,7 +133,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.credits')"
-      @click.native="$emit('clickedCredits')"
+      @click.native="openDialog('clickedCredits')"
     )
     Cell.menu-dialog-nav__item(
       v-if="$i18n.locale === $i18n.defaultLocale"
@@ -148,7 +148,7 @@ Dialog.dialog.menu-dialog(
       size="large"
       is-link
       :title="$t('dialog.menu.contact')"
-      @click.native="$emit('clickedContact')"
+      @click.native="openDialog('clickedContact')"
     )
 
   span.menu-dialog__subTitle {{ $t('dialog.menu.legal') }}
@@ -212,7 +212,7 @@ export default defineComponent({
       default: null
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
@@ -329,6 +329,12 @@ export default defineComponent({
       }
     }
 
+    // close the menu first so the requested dialog replaces it in one tap
+    const openDialog = event => {
+      state.isOpen = false
+      emit(event)
+    }
+
     const handleClickProfileEdit = () => {
       router.push(localePath({ name: 'Account-AccountEdit' }))
 
@@ -375,6 +381,7 @@ export default defineComponent({
       openSuggestQuestion,
       openRoomSharer,
       openAppSharer,
+      openDialog,
       handleClickProfileEdit,
       handleClickProfileView,
       handleClickMyQuizzes,

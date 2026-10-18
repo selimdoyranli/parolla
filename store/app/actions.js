@@ -48,21 +48,6 @@ export default {
     commit('SET_WS', null)
   },
 
-  async fetchAnnouncements({ commit }) {
-    const { data, error } = await this.$appFetch({
-      path: 'announcements',
-      query: {
-        locale: this.$i18n.locale,
-        sort: 'createdAt:desc'
-      }
-    })
-
-    return {
-      data,
-      error
-    }
-  },
-
   async report({ commit, state }, params) {
     const { scope, detail, additional } = params
 

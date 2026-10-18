@@ -1,0 +1,79 @@
+.notification-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-block-end: 4px;
+  padding: 12px;
+  // rounded rows instead of divider lines, so unread/hover backgrounds read as cards
+  border-radius: 12px;
+  transition: background-color 0.15s ease;
+
+  &--unread {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 8%, transparent);
+  }
+
+  // everything but announcements opens something
+  &--clickable {
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: color-mix(in sRGB, var(--color-text-01) 6%, transparent);
+      }
+
+      &.notification-item--unread:hover {
+        background-color: color-mix(in sRGB, var(--color-brand-02) 14%, transparent);
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--color-text-02);
+  }
+
+  &__owner {
+    margin-inline-start: 6px;
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+  }
+
+  &__excerpt {
+    margin: 2px 0 0;
+    overflow: hidden;
+    color: var(--color-text-03);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    color: var(--color-text-03);
+  }
+
+  &__dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-danger-01, #f00);
+    border-radius: 50%;
+  }
+}
+
+.notification-item__avatar--app {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.notification-item__announcement {
+  margin: 2px 0 4px;
+  color: var(--color-text-01);
+  white-space: pre-line;
+  word-break: break-word;
+}

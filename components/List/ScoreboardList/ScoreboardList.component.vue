@@ -4,7 +4,9 @@
   // hands its first three rows a trophy and medals through :nth-child, and numbers every
   // row from a CSS counter, so prepending would steal the trophy and shift every number.
   Collapse.list.scoreboard-list.scoreboard-list--self(v-if="currentPlayer" v-model="toggledSelfItem" accordion)
-    CollapseItem.scoreboard-list-item.scoreboard-list-item--self(:disabled="!currentPlayer.results?.gamersAnswers")
+    CollapseItem.scoreboard-list-item.scoreboard-list-item--self(
+      :disabled="!currentPlayer.results?.gamersAnswers || !boardQuestions.length"
+    )
       template(#title)
         .scoreboard-list-item-user(:data-rank="currentPlayer.rank")
           strong.scoreboard-list-item-user__username
@@ -25,7 +27,7 @@
 
       ul.scoreboard-list-gamerAnswers(v-if="currentPlayer.results?.gamersAnswers")
         li.scoreboard-list-gamerAnswers-item(
-          v-for="(question, questionIndex) in questions"
+          v-for="(question, questionIndex) in boardQuestions"
           :key="questionIndex"
           :class="[getGamerAnswerClasses(getGamerAnswer({ item: currentPlayer, question, questionIndex }))]"
         )
@@ -42,7 +44,7 @@
       v-for="(item, index) in items"
       :key="index"
       :class="{ 'scoreboard-list-item--self-inline': isSelfInline(item) }"
-      :disabled="!item.results.gamersAnswers"
+      :disabled="!item.results.gamersAnswers || !boardQuestions.length"
     )
       template(#title)
         .scoreboard-list-item-user(
@@ -67,7 +69,7 @@
       // Gamer answers
       ul.scoreboard-list-gamerAnswers(v-if="item.results.gamersAnswers")
         li.scoreboard-list-gamerAnswers-item(
-          v-for="(question, questionIndex) in questions"
+          v-for="(question, questionIndex) in boardQuestions"
           :key="questionIndex"
           :class="[getGamerAnswerClasses(getGamerAnswer({ item, question, questionIndex }))]"
         )
@@ -82,12 +84,17 @@
       template(v-else)
         p {{ $t('general.noData') }}
 
-    // InfiniteLoading(@infinite="handleInfiniteLoading")
+  //- next pages load as the board scrolls; only when the parent handles on-infinite-loading
+  InfiniteLoading(v-if="$listeners['on-infinite-loading']" @infinite="handleInfiniteLoading")
+    template(#spinner)
+      Loading(color="var(--color-brand-02)" size="20")
+    template(#no-more) {{ '' }}
+    template(#no-results) {{ '' }}
 </template>
 
 <script>
 import { defineComponent, useStore, ref, computed } from '@nuxtjs/composition-api'
-import { Collapse, CollapseItem, Empty, Button } from 'vant'
+import { Collapse, CollapseItem, Empty, Button, Loading } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default defineComponent({
@@ -96,6 +103,7 @@ export default defineComponent({
     CollapseItem,
     Empty,
     Button,
+    Loading,
     InfiniteLoading
   },
   props: {
@@ -110,12 +118,19 @@ export default defineComponent({
       type: Object,
       required: false,
       default: null
+    },
+    // the room's questions for the per-player answer breakdown; defaults to the open creator room.
+    // An empty array (e.g. the room isn't loaded) turns the breakdown off.
+    questions: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   setup(props, { emit }) {
     const store = useStore()
 
-    const questions = computed(() => store.getters['creator/questions'])
+    const boardQuestions = computed(() => props.questions ?? store.getters['creator/questions'] ?? [])
 
     const toggledScoreItem = ref([0])
     const toggledSelfItem = ref([])
@@ -166,7 +181,7 @@ export default defineComponent({
     }
 
     return {
-      questions,
+      boardQuestions,
       toggledScoreItem,
       toggledSelfItem,
       isSelfInline,

@@ -73,7 +73,7 @@
         button.wordblock-mode-scene__key.wordblock-mode-scene__key--wide(data-key="backspace" @click="handleBackspace")
           AppIcon(name="tabler:backspace")
 
-  HowToPlayDialog(v-if="!isGameOver" :isOpen="dialog.howToPlay.isOpen" @closed="handleHowToPlayDialogClose")
+  HowToPlayDialog(v-if="!isGameOver" intro :isOpen="dialog.howToPlay.isOpen" @closed="handleHowToPlayDialogClose")
   WordblockModeStatsDialog(:charLength="charLength" :isOpen="dialog.stats.isOpen" @closed="handleStatsDialogClose")
 </template>
 

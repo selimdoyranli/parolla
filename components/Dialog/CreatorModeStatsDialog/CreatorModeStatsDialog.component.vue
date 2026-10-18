@@ -99,6 +99,8 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
         .stats-dialog-tab-title
           AppIcon.stats-dialog-tab-title__icon(name="tabler:trophy" :width="20" :height="20")
           span.stats-dialog-tab-title__value {{ $t('scoreboard.scoreboard') }}
+      //- quiz owner only: summary stats above the board
+      RoomOwnerStatsCard(v-if="isRoomOwner" :room-id="room.id")
       template(v-if="pendingScoreboard")
         Empty(:description="$t('scoreboard.pendingScoreboard')")
       template(v-else)
@@ -180,6 +182,8 @@ export default defineComponent({
     const toggledAnswer = ref([0])
 
     const room = computed(() => store.getters['creator/room'])
+    // owners always receive room.user, anonymous quizzes included
+    const isRoomOwner = computed(() => $auth.loggedIn && Boolean(room.value?.id) && room.value?.user?.id === $auth.user?.id)
 
     const isGameOver = computed(() => store.getters['creator/isGameOver'])
 
@@ -312,25 +316,30 @@ export default defineComponent({
     const pagination = computed(() => store.getters['creator/scoreboardPagination'])
 
     const handleInfiniteLoading = async $state => {
-      const { data, error } = await store.dispatch('creator/fetchScoreboard', {
-        isLoadMore: true,
-        page: pagination.value.page + 1,
-        roomId: room.value.roomId
-      })
+      const { page = 1, pageCount = 0 } = pagination.value || {}
 
-      $state.loaded()
-
-      if (data?.data.length === 0) {
+      // everything is already loaded
+      if (page >= pageCount) {
         $state.complete()
 
         return false
       }
+
+      const { data, error } = await store.dispatch('creator/fetchScoreboard', {
+        isLoadMore: true,
+        page: page + 1,
+        roomId: room.value.roomId
+      })
 
       if (error) {
         $state.error()
 
         return false
       }
+
+      $state.loaded()
+
+      if (!data?.data.length || page + 1 >= pageCount) $state.complete()
     }
 
     return {
@@ -347,6 +356,8 @@ export default defineComponent({
       answerClasses,
       myAnswer,
       scoreboard,
+      room,
+      isRoomOwner,
       currentPlayer,
       pendingScoreboard,
       handleInfiniteLoading

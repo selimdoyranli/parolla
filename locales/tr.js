@@ -282,10 +282,6 @@ export default {
         error: 'Şikayet gönderilemedi'
       }
     },
-    announcements: {
-      title: 'Duyurular',
-      description: 'Duyurular'
-    },
     createQuizSelection: {
       title: 'Quiz oluştur',
       quizType: {
@@ -449,16 +445,7 @@ export default {
       description: 'Yaptığın şeyleri tekrar yapmak zorunda kalabilirsin'
     },
     roomReview: {
-      title: 'Quiz değerlendirmeleri',
-      review: 'Değerlendir',
-      loginToReview: 'Değerlendirmek için <u>giriş yapın</u>',
-      pendingReviews: 'Yorumlar getiriliyor',
-      error: {
-        fetchReviews: {
-          description: 'Yorumlar getirilemedi',
-          action: 'Tekrar dene'
-        }
-      }
+      title: 'Quiz değerlendirmeleri'
     },
     playerActions: {
       title: 'Daha fazla ({username})',
@@ -872,23 +859,6 @@ export default {
       flashcardsTitle: 'FLASHCARDS QUIZ DÜZENLE',
       submit: 'Güncelle ve yayınla'
     },
-    roomReview: {
-      back: 'Geri dön',
-      comment: {
-        placeholder: 'Yorumunu yaz'
-      },
-      submit: 'Gönder',
-      empty: {
-        rating: {
-          description: 'Yorum yazmadan önce puan vermelisin'
-        }
-      },
-      error: {
-        emptyRating: 'Puan vermelisin',
-        required: 'Bir şeyler yazmalısın',
-        maxLength: 'Çok uzun yazmamalısın'
-      }
-    },
     usernameEdit: {
       usernameField: {
         placeholder: 'Oyuncu adını yaz'
@@ -940,13 +910,56 @@ export default {
       }
     }
   },
-  roomReviewList: {
-    ratingTitle: 'Quiz puanı',
-    reviewsTitle: 'Yorumlar',
-    empty: {
-      description: 'Henüz kimse değerlendirme yapmadı',
-      action: 'Yorum ekle'
+  comments: {
+    title: 'Yorumlar',
+    filter: { comments: 'Yorumlar', ratings: 'Puanlar' },
+    placeholder: 'Bir yorum yaz...',
+    loginPlaceholder: 'Yorum yapmak için giriş yap',
+    send: 'Gönder',
+    reply: 'Yanıtla',
+    loadMoreReplies: 'Daha fazla yanıt yükle',
+    deleted: 'Bu yorum silindi',
+    quizOwner: 'Quiz sahibi',
+    report: 'Raporla',
+    delete: 'Sil',
+    deleteConfirm: 'Bu yorumu silmek istediğine emin misin?',
+    like: 'Beğen',
+    replies: 'Yanıtlar',
+    replyingTo: '{username} adlı kişiye yanıt veriliyor',
+    rateLimited: 'Çok hızlı yorum yapıyorsun. 5 dakika sonra tekrar dene.',
+    moreTitle: 'Yorum seçenekleri',
+    empty: 'Henüz yorum yok. İlk yorumu sen yap!',
+    ratingsEmpty: 'Henüz puan verilmedi',
+    yourRating: 'Puanın: {rating}',
+    rateThisQuiz: 'Bu quizi puanla',
+    ratingCount: '({count} oyuncu puan verdi)',
+    rated: 'Puanın kaydedildi',
+    alreadyRated: 'Bu quizi zaten puanladın',
+    error: 'Bir şeyler ters gitti, tekrar dene'
+  },
+  notifications: {
+    title: 'Bildirimler',
+    tabs: { all: 'Tümü', quizzes: 'Quizlerim', interactions: 'Etkileşimler' },
+    empty: 'Henüz bildirim yok',
+    andOthers: '{name} ve {count} kişi',
+    types: {
+      room_rated: '{actor} quizine {rating} puan verdi',
+      room_commented: '{actor} quizine yorum yaptı',
+      comment_replied: '{actor} yorumuna yanıt verdi',
+      reply_replied: '{actor} yanıtına yanıt verdi',
+      comment_liked: '{actor} yorumunu beğendi',
+      reply_liked: '{actor} yanıtını beğendi'
     }
+  },
+  ownerStats: {
+    views: 'Görüntülenme',
+    players: 'Oynayan',
+    rating: 'Ortalama puan',
+    comments: 'Yorum',
+    avgCorrect: 'Ort. doğru',
+    avgWrong: 'Ort. yanlış',
+    avgPassed: 'Ort. pas',
+    avgRemain: 'Ort. kalan süre'
   },
   scoreboard: {
     scoreboard: 'Skor tablosu',
@@ -1284,8 +1297,8 @@ export default {
       error: 'Quizler yüklenemedi.'
     },
     reviewsTab: {
-      empty: 'Henüz değerlendirme yapmamış.',
-      error: 'Değerlendirmeler yüklenemedi.'
+      empty: 'Henüz yorum yapmamış.',
+      error: 'Yorumlar yüklenemedi.'
     },
     scoresTab: {
       tour: { title: 'Tur modu skorları' },

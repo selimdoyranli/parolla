@@ -5,6 +5,8 @@ export const PUBLISHER_NAME = 'Selim Doyranlı'
 export const PUBLISHER_DOMAIN = 'selimdoyranli.com'
 export const PUBLISHER_URL = 'https://selimdoyranli.com'
 export const ANSWER_CHAR_LENGTH = 64
+// mirrors room-comment content maxLength in parolla-strapi
+export const COMMENT_CHAR_LENGTH = 512
 export const GAME_TIME_LIMIT = 60 * 5 * 1000 // 5min
 export const UNSUPPORTED_HEIGHT = 520
 export const USERNAME_REGEX = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/
