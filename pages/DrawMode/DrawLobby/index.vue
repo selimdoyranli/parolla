@@ -12,6 +12,8 @@
   Tabs.draw-lobby__tabs(v-model="activeTab" :swipeable="false" :line-width="40")
     Tab(name="official" title="Resmi Odalar")
       SystemRoomList(:system-rooms="systemRooms" :loading="isSocketConnecting" @join="onJoinSystem")
+      //- draw_lobby_official
+      AppAd.draw-lobby__ad(:data-ad-slot="5407941518")
     Tab(name="community" title="Topluluk Odaları")
       CommunityRoomList(
         :community-rooms="communityRooms"
@@ -20,6 +22,8 @@
         @create="onCreate"
         @join="onJoinCommunity"
       )
+      //- draw_lobby_community
+      AppAd.draw-lobby__ad(:data-ad-slot="6721023185")
 
   DrawRoomCreateDialog(v-if="showCreate" @close="showCreate = false" @submit="submitCreate")
   CreateGuestDrawerDialog(v-if="showGuestDialog" @close="showGuestDialog = false")

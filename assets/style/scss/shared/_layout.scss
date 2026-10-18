@@ -28,6 +28,13 @@
       min-height: 0;
     }
 
+    // the two units share the space above the banner; short screens only have room for one
+    .layout__ad-second {
+      @media (max-height: 999px) {
+        display: none;
+      }
+    }
+
     &--left {
       margin-right: auto;
     }

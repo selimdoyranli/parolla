@@ -39,6 +39,14 @@
     font-size: 0.95rem;
   }
 
+  &__ad {
+    width: 100%;
+    max-width: var(--mobile);
+    min-height: 90px;
+    margin: var(--base-m-y) auto;
+    background-color: var(--color-ui-04);
+  }
+
   &-form {
     max-width: var(--mobile);
     margin: 0 auto;
