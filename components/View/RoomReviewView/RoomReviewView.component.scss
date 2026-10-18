@@ -1,6 +1,14 @@
 .room-review-view {
   position: relative;
 
+  // over the scene the view fills its dialog/tab so the composer rests at the bottom (and stays sticky)
+  .dialog--scene & {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
   &__rating {
     display: flex;
     flex-wrap: wrap;
@@ -40,6 +48,10 @@
   }
 
   &__composer {
+    .dialog--scene & {
+      margin-top: auto;
+    }
+
     // sticks to the bottom of the dialog's scroll area (cancels the dialog content padding)
     position: sticky;
     inset-block-end: calc(var(--base-p-y) * -1);

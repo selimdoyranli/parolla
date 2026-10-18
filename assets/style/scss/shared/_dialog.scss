@@ -17,11 +17,50 @@
     border-radius: 0;
     transform: translateX(-50%);
 
+    // The content fills the scene height as a column: the copyright footer always sits at the
+    // bottom, and tab panes stretch so views inside (e.g. comments with their composer) can too.
     .van-dialog__content {
+      display: flex;
       flex: 1;
+      flex-direction: column;
       min-height: 0;
       max-height: none;
       overflow: auto;
+
+      > * {
+        flex-shrink: 0;
+      }
+
+      > footer {
+        margin-top: auto;
+      }
+
+      // footer nested one level down (e.g. inside a results wrapper)
+      > :has(> footer) {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        > footer {
+          margin-top: auto;
+        }
+      }
+
+      > .van-tabs {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        > .van-tabs__content {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          > .van-tab__pane {
+            flex: 1;
+          }
+        }
+      }
     }
 
     // transition="dialog-scene-bounce": Vant's dialog scale in/out, keeping the horizontal centering
