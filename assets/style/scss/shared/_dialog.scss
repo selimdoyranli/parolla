@@ -1,3 +1,27 @@
 .dialog {
   // Dialog shared styles
+
+  // Opens over the game scene instead of floating as a modal: fills the layout column below the
+  // header (which stays usable), square corners, no backdrop (pair with :overlay="false").
+  // .dialog.dialog--scene.van-dialog: outranks `.game-scene .stats-dialog` (width: 90% !important)
+  &.dialog--scene.van-dialog {
+    top: var(--header-height);
+    bottom: 0;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    width: min(100vw, var(--layout-max-width)) !important;
+    max-width: none !important;
+    height: auto;
+    max-height: none;
+    border-radius: 0;
+    transform: translateX(-50%);
+
+    .van-dialog__content {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      overflow: auto;
+    }
+  }
 }

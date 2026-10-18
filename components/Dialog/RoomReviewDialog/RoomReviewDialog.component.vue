@@ -1,6 +1,8 @@
 <template lang="pug">
-Dialog.dialog.room-review-dialog(
+Dialog.dialog.dialog--scene.room-review-dialog(
   v-model="state.isOpen"
+  transition="van-fade"
+  :overlay="false"
   :title="$t('dialog.roomReview.title')"
   :cancel-button-text="cancelButtonText || $t('general.close')"
   :show-confirm-button="false"

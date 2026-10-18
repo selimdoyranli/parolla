@@ -1,6 +1,8 @@
 <template lang="pug">
-Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
+Dialog.dialog.dialog--scene.stats-dialog.unlimited-mode-stats-dialog(
   v-model="state.isOpen"
+  transition="van-fade"
+  :overlay="false"
   :title="$t('general.stats')"
   :cancel-button-text="cancelButtonText || $t('general.close')"
   :confirm-button-text="confirmButtonText || $t('general.ok')"

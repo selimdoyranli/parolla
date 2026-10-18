@@ -1,6 +1,8 @@
 <template lang="pug">
-Dialog.dialog.how-to-play-dialog(
+Dialog.dialog.dialog--scene.how-to-play-dialog(
   v-model="state.isOpen"
+  transition="van-fade"
+  :overlay="false"
   :title="dialogTitle"
   :cancel-button-text="cancelButtonText || $t('dialog.howToPlay.cancelButtonText')"
   :show-confirm-button="false"
