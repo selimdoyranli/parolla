@@ -3,7 +3,7 @@ Dialog.dialog.dialog--scene.how-to-play-dialog(
   v-model="state.isOpen"
   transition="dialog-scene-bounce"
   :overlay="false"
-  :title="dialogTitle"
+  :title="intro ? undefined : dialogTitle"
   :cancel-button-text="cancelButtonText || $t('dialog.howToPlay.cancelButtonText')"
   :show-confirm-button="false"
   :show-cancel-button="true"
@@ -32,7 +32,7 @@ Dialog.dialog.dialog--scene.how-to-play-dialog(
 </template>
 
 <script>
-import { defineComponent, useContext, useStore, reactive, watch, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useStore, reactive, watch, computed, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import { Dialog } from 'vant'
@@ -52,6 +52,13 @@ export default defineComponent({
       type: String,
       required: false,
       default: null
+    },
+    // the scene's own dialog shown before the game starts: no title, and while it is open the
+    // header's how-to-play button doesn't stack a second copy on top
+    intro: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props) {
@@ -72,6 +79,16 @@ export default defineComponent({
         state.isOpen = value
       }
     )
+
+    if (props.intro) {
+      watch(
+        () => state.isOpen,
+        value => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', value),
+        { immediate: true }
+      )
+
+      onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
+    }
 
     const room = computed(() => store.getters['creator/room'])
 

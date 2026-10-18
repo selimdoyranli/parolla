@@ -213,6 +213,9 @@ export default defineComponent({
     })
 
     const toggleHowToPlayDialog = () => {
+      // the scene's intro how-to-play is already on screen; don't stack the header's copy on it
+      if (store.state.app.isOpenIntroHowToPlay) return
+
       dialog.howToPlay.isOpen = !dialog.howToPlay.isOpen
     }
 

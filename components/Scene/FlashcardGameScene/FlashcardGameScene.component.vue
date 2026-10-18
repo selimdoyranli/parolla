@@ -94,7 +94,7 @@
         span {{ $t('flashcardScene.more.title') }}
 
   // How To Play Dialog
-  HowToPlayDialog(:isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  HowToPlayDialog(intro :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
 
   // More Options ActionSheet
   ActionSheet(v-model="isMoreSheetOpen" :overlay="false" :title="$t('flashcardScene.more.title')")
