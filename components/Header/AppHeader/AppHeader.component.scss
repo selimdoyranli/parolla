@@ -74,6 +74,13 @@
         }
       }
 
+      // mobile reaches owner stats from the menu instead
+      &--ownerStats {
+        @include media-breakpoint-down(tablet) {
+          display: none;
+        }
+      }
+
       &--roomReviews {
         @include media-breakpoint-down(mobile-s) {
           display: none;

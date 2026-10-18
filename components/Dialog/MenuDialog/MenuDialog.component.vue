@@ -121,6 +121,15 @@ Dialog.dialog.menu-dialog(
       :title="$t('dialog.menu.reviewRoom')"
       @click.native="$emit('clickedReviewRoom')"
     )
+    //- quiz owners only; the header shortcut for it is hidden on mobile
+    Cell.menu-dialog-nav__item(
+      v-if="showOwnerStats"
+      icon="bar-chart-o"
+      size="large"
+      is-link
+      :title="$t('ownerStats.title')"
+      @click.native="$emit('clickedOwnerStats')"
+    )
     Cell.menu-dialog-nav__item(
       icon="smile-comment-o"
       size="large"
@@ -202,6 +211,11 @@ export default defineComponent({
   },
   props: {
     isOpen: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    showOwnerStats: {
       type: Boolean,
       required: false,
       default: false

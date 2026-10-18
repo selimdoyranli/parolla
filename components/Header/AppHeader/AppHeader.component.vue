@@ -64,12 +64,14 @@
   // Menu Dialog
   LazyMenuDialog(
     :isOpen="dialog.menu.isOpen"
+    :show-owner-stats="isRoomOwner"
     @clickedHowToPlay="toggleHowToPlayDialog"
     @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
     @clickedCredits="toggleCreditsDialog"
     @clickedContact="toggleContactDialog"
     @clickedSwitchLocale="toggleLocaleSwitchDialog"
     @clickedReviewRoom="toggleRoomReviewDialog"
+    @clickedOwnerStats="dialog.ownerStats.isOpen = true"
     @closed="dialog.menu.isOpen = false"
   )
 
