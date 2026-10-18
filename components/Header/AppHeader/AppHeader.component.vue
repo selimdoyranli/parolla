@@ -288,7 +288,8 @@ export default defineComponent({
 
     const logoClasses = computed(() => {
       return {
-        'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' }))
+        'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' })),
+        'app-logo--hasBack': isVisibleBackButton.value
       }
     })
 
