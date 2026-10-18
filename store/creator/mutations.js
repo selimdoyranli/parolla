@@ -133,18 +133,6 @@ export default {
     state.dailyPlayingCount = count
   },
 
-  SET_USER_REVIEWS(state, list) {
-    state.userReviews.list = list
-  },
-
-  PUSH_USER_REVIEWS(state, list) {
-    state.userReviews.list = [...state.userReviews.list, ...list]
-  },
-
-  SET_USER_REVIEWS_PAGINATION(state, pagination) {
-    state.userReviews.pagination = pagination
-  },
-
   SET_USER_ROOM_SCORES(state, list) {
     state.userRoomScores.list = list
   },

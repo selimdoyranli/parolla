@@ -36,13 +36,9 @@
 
   &__head {
     display: flex;
+    gap: 8px;
     align-items: center;
     justify-content: space-between;
-  }
-
-  &__rating {
-    display: inline-flex;
-    gap: 2px;
   }
 
   &__date {
@@ -58,11 +54,16 @@
     white-space: pre-wrap;
   }
 
+  &__mention {
+    color: var(--color-brand-02);
+    font-weight: 600;
+  }
+
   &__room-row {
     display: inline-flex;
     gap: 6px;
     align-items: center;
-    align-self: flex-start;
+    min-width: 0;
     padding: 6px 10px;
     background: var(--color-ui-03);
     border-radius: 999px;

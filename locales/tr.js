@@ -1303,8 +1303,8 @@ export default {
       error: 'Quizler yüklenemedi.'
     },
     reviewsTab: {
-      empty: 'Henüz değerlendirme yapmamış.',
-      error: 'Değerlendirmeler yüklenemedi.'
+      empty: 'Henüz yorum yapmamış.',
+      error: 'Yorumlar yüklenemedi.'
     },
     scoresTab: {
       tour: { title: 'Tur modu skorları' },

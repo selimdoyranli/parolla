@@ -1281,8 +1281,8 @@ export default {
       error: 'Could not load quizzes.'
     },
     reviewsTab: {
-      empty: 'No reviews written yet.',
-      error: 'Could not load reviews.'
+      empty: 'No comments written yet.',
+      error: 'Could not load comments.'
     },
     scoresTab: {
       tour: { title: 'Tour mode scores' },

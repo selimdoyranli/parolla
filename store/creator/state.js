@@ -37,10 +37,6 @@ export default () => ({
   // clobber the rooms listing page's state.
   randomRooms: [],
   dailyPlayingCount: 0,
-  userReviews: {
-    list: [],
-    pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }
-  },
   userRoomScores: {
     list: [],
     pagination: { page: 1, pageCount: 1, pageSize: 10, total: 0 }

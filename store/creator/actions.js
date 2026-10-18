@@ -484,30 +484,6 @@ export default {
     return { data, error }
   },
 
-  async fetchReviewsByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
-    const { data, error } = await this.$appFetch({
-      path: 'room-reviews',
-      query: {
-        'filters[user][id][$eq]': userId,
-        'pagination[page]': page,
-        'pagination[pageSize]': limit,
-        populate: 'room',
-        sort: 'createdAt:desc'
-      }
-    })
-
-    if (data) {
-      const list = data.data || []
-
-      if (isLoadMore) commit('PUSH_USER_REVIEWS', list)
-      else commit('SET_USER_REVIEWS', list)
-
-      if (data.meta?.pagination) commit('SET_USER_REVIEWS_PAGINATION', data.meta.pagination)
-    }
-
-    return { data, error }
-  },
-
   async fetchOwnerStats(_, { roomId }) {
     const { data, error } = await this.$appFetch({
       path: `room-owner/${roomId}/stats`,

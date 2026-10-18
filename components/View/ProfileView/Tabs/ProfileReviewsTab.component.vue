@@ -8,35 +8,25 @@
     Empty(image="error" :description="$t('profile.reviewsTab.error')")
       Button(@click="reload") {{ $t('error.tryAgain') }}
 
-  template(v-else-if="reviews.length === 0")
+  template(v-else-if="items.length === 0")
     Empty(:description="$t('profile.reviewsTab.empty')")
 
   template(v-else)
     .profile-reviews-tab__list
-      .profile-reviews-tab__item(v-for="review in reviews" :key="review.id")
-        NuxtLink.profile-reviews-tab__item-link(
-          v-if="review.room"
-          :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: review.room.roomId } })"
-        )
+      .profile-reviews-tab__item(v-for="item in items" :key="item.documentId")
+        component.profile-reviews-tab__item-link(:to="item.room ? roomLocation(item) : undefined" :is="item.room ? 'NuxtLink' : 'div'")
           .profile-reviews-tab__head
-            .profile-reviews-tab__rating
-              template(v-for="n in 5")
-                AppIcon(
-                  :key="n"
-                  color="var(--color-warning-01)"
-                  :name="n <= (review.rating || 0) ? 'tabler:star-filled' : 'tabler:star'"
-                  :width="14"
-                  :height="14"
-                )
-            Timeago.profile-reviews-tab__date(:datetime="review.createdAt" :auto-update="60" :locale="$i18n.locale")
+            .profile-reviews-tab__room-row(v-if="item.room")
+              AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
+              span.profile-reviews-tab__room-title {{ item.room.title }}
+            Timeago.profile-reviews-tab__date(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
 
-          p.profile-reviews-tab__text(v-if="review.content") {{ review.content }}
+          p.profile-reviews-tab__text
+            strong.profile-reviews-tab__mention(v-if="needsMention(item)") @{{ item.replyToUser.username }}
+            |
+            | {{ item.content }}
 
-          .profile-reviews-tab__room-row
-            AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
-            span.profile-reviews-tab__room-title {{ review.room.title }}
-
-    InfiniteLoading(v-if="reviews.length >= PAGE_SIZE && pagination.page < pagination.pageCount" @infinite="handleInfinite")
+    InfiniteLoading(:key="playerId" v-if="hasMore" @infinite="handleInfinite")
       template(#spinner)
         Loading(color="var(--color-brand-02)" size="20")
       template(#no-more) {{ '' }}
@@ -47,8 +37,6 @@
 import { defineComponent, inject, ref, computed, watch, useStore, useContext } from '@nuxtjs/composition-api'
 import { Loading, Empty, Button } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
-
-const PAGE_SIZE = 10
 
 export default defineComponent({
   components: {
@@ -62,50 +50,61 @@ export default defineComponent({
     const store = useStore()
     const { localePath } = useContext()
 
-    const reviews = ref([])
-    const pagination = ref({ page: 1, pageCount: 1, pageSize: PAGE_SIZE, total: 0 })
+    const items = ref([])
+    const page = ref(0)
+    const hasMore = ref(false)
     const loading = ref(false)
     const error = ref(null)
 
     const playerId = computed(() => shell?.player?.value?.id || null)
 
-    const load = async (page = 1, isLoadMore = false) => {
+    const roomLocation = item =>
+      localePath({
+        name: 'CreatorMode-CreatorModeRoom-slug',
+        params: { slug: item.room.roomId },
+        query: { comment: item.parentDocumentId || item.documentId }
+      })
+
+    // Replies posted with the composer may already carry the "@name " text in their content
+    const needsMention = item => item.replyToUser && !item.content.startsWith(`@${item.replyToUser.username}`)
+
+    const load = async (isLoadMore = false) => {
       if (!playerId.value) return null
 
-      if (!isLoadMore) loading.value = true
+      if (!isLoadMore) {
+        loading.value = true
+        page.value = 0
+      }
+
       error.value = null
 
-      const { data, error: err } = await store.dispatch('creator/fetchReviewsByUser', {
-        userId: playerId.value,
-        page,
-        limit: PAGE_SIZE,
-        isLoadMore
-      })
+      const { data, error: err } = await store.dispatch('comment/fetchByUser', { userId: playerId.value, page: page.value + 1 })
 
       if (err) {
         error.value = err
-      } else if (data) {
-        reviews.value = isLoadMore ? [...reviews.value, ...(data.data || [])] : data.data || []
-        pagination.value = data.meta?.pagination || pagination.value
+      } else {
+        items.value = isLoadMore ? [...items.value, ...data.items] : data.items
+        page.value += 1
+        hasMore.value = data.hasMore
       }
 
       loading.value = false
 
-      return { data, error: err }
+      return { error: err }
     }
 
     watch(
       playerId,
       (id, prev) => {
-        if (id && id !== prev) load(1, false)
+        if (id && id !== prev) load()
       },
       { immediate: true }
     )
 
-    const reload = () => load(1, false)
+    const reload = () => load()
 
     const handleInfinite = async $state => {
-      const result = await load(pagination.value.page + 1, true)
+      const result = await load(true)
 
       if (result?.error) {
         $state.error()
@@ -115,20 +114,19 @@ export default defineComponent({
 
       $state.loaded()
 
-      if (pagination.value.page >= pagination.value.pageCount) {
-        $state.complete()
-      }
+      if (!hasMore.value) $state.complete()
     }
 
     return {
-      PAGE_SIZE,
-      reviews,
-      pagination,
+      items,
+      hasMore,
+      playerId,
       loading,
       error,
       reload,
       handleInfinite,
-      localePath
+      roomLocation,
+      needsMention
     }
   }
 })
