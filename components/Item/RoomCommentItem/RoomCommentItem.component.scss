@@ -40,8 +40,18 @@
     align-items: center;
   }
 
-  &__username {
+  // buttons that open the PlayerDialog
+  &__username,
+  &__mention {
+    padding: 0;
     color: var(--color-brand-02);
+    font: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__username {
     font-weight: 700;
   }
 
@@ -63,7 +73,6 @@
   }
 
   &__mention {
-    color: var(--color-brand-02);
     font-weight: 600;
   }
 

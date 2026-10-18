@@ -1,6 +1,6 @@
 import { userTransformer } from '@/transformers'
 
-export default model => {
+const roomCommentTransformer = model => {
   return {
     documentId: model.documentId,
     content: model.content,
@@ -13,6 +13,10 @@ export default model => {
     replyCount: model.replyCount || 0,
     likedByMe: model.likedByMe,
     parentDocumentId: model.parentDocumentId,
-    room: model.room || null
+    room: model.room || null,
+    // first replies of a root, shipped inline by the list endpoint
+    previewReplies: (model.previewReplies || []).map(roomCommentTransformer)
   }
 }
+
+export default roomCommentTransformer

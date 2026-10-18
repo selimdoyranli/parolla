@@ -4,18 +4,18 @@
   :class="{ 'room-comment-item--highlighted': highlighted, 'room-comment-item--reply': isReply }"
 )
   .room-comment-item__avatar
-    PlayerAvatar(v-if="comment.user" :user="comment.user" :size="36")
+    PlayerAvatar(v-if="comment.user" open-player-dialog-on-click :user="comment.user" :size="36")
     .room-comment-item__avatar-placeholder(v-else)
   .room-comment-item__body
     template(v-if="comment.isDeleted")
       p.room-comment-item__deleted {{ $t('comments.deleted') }}
     template(v-else)
       .room-comment-item__meta
-        NuxtLink.room-comment-item__username(:to="profilePath(comment.user)") {{ comment.user && comment.user.username }}
+        button.room-comment-item__username(type="button" @click="openPlayer(comment.user)") {{ comment.user && comment.user.username }}
         Tag.room-comment-item__owner(v-if="comment.isQuizOwner" round) {{ $t('comments.quizOwner') }}
         Timeago.room-comment-item__time(:datetime="comment.createdAt" :auto-update="60" :locale="$i18n.locale")
       p.room-comment-item__content
-        NuxtLink.room-comment-item__mention(v-if="mention" :to="profilePath(comment.replyToUser)") @{{ comment.replyToUser.username }}
+        button.room-comment-item__mention(v-if="mention" type="button" @click="openPlayer(comment.replyToUser)") @{{ comment.replyToUser.username }}
         | {{ ' ' + contentWithoutMention }}
       .room-comment-item__actions
         ActionButton.room-comment-item__action--like(
@@ -28,22 +28,20 @@
           :count="state.likeCount"
           @click="toggleLike"
         )
-        //- opens the replies and targets the bottom composer at this comment; on a reply it only targets the composer
+        //- targets the bottom composer at this comment
         ActionButton.room-comment-item__action--reply(
           :label="$t(isReply ? 'comments.reply' : 'comments.replies')"
           icon="tabler:message"
           tone="info"
-          :auth-control="isReply"
-          :active="isReply ? isReplyTarget : replies.isOpen"
+          auth-control
           :count="isReply ? null : state.replyCount"
           @click="toggleThread"
         )
         ActionButton(:label="$t('comments.moreTitle')" icon="tabler:dots" @click="isOpenMore = true")
 
+    //- the list ships the first replies of every thread; the rest load on demand
     template(v-if="!isReply")
-      button.room-comment-item__toggle(v-if="state.replyCount > 0 && !replies.isOpen" @click="toggleReplies")
-        | {{ $t('comments.viewReplies', { count: state.replyCount }) }}
-      .room-comment-item__replies(v-if="replies.isOpen")
+      .room-comment-item__replies(v-if="replies.items.length")
         RoomCommentItem(
           v-for="reply in replies.items"
           :key="reply.documentId"
@@ -52,8 +50,8 @@
           :highlighted="reply.documentId === targetDocumentId"
           @deleted="removeReply"
         )
-        button.room-comment-item__toggle(v-if="replies.hasMore" @click="loadReplies") {{ $t('comments.loadMoreReplies') }}
-        button.room-comment-item__toggle(v-else @click="replies.isOpen = false") {{ $t('comments.hideReplies') }}
+      button.room-comment-item__toggle(v-if="replies.items.length < state.replyCount" :disabled="replies.pending" @click="loadReplies")
+        | {{ $t('comments.loadMoreReplies') }}
 
   // More dialog: comment preview + options; each option opens its own dialog on top
   VanDialog.dialog.room-comment-more-dialog(
@@ -129,7 +127,7 @@ export default defineComponent({
   emits: ['deleted'],
   setup(props, { emit }) {
     const store = useStore()
-    const { $auth, i18n, localePath } = useContext()
+    const { $auth, i18n } = useContext()
 
     // local copy of the mutable counters so the prop object is never mutated
     const state = reactive({
@@ -145,7 +143,7 @@ export default defineComponent({
     const isOpenMore = ref(false)
     const isOpenDelete = ref(false)
     const isOpenReportDialog = ref(false)
-    const replies = reactive({ isOpen: false, items: [], page: 0, hasMore: true, pending: false })
+    const replies = reactive({ items: [...(props.comment.previewReplies || [])], page: 0, hasMore: true, pending: false })
 
     const mention = computed(() => props.comment.replyToUser && props.comment.content?.startsWith(`@${props.comment.replyToUser.username}`))
     const contentWithoutMention = computed(() =>
@@ -157,7 +155,13 @@ export default defineComponent({
       JSON.stringify({ commentDocumentId: props.comment.documentId, roomId: props.roomId, content: props.comment.content })
     )
 
-    const profilePath = user => (user ? localePath({ name: 'Profile-username', params: { username: user.username } }) : '')
+    const openPlayer = user => {
+      if (!user) return
+
+      store.commit('profile/SET_PLAYER_ID', user.id)
+      store.commit('profile/SET_PLAYER_USERNAME', user.username)
+      store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
+    }
 
     const toggleLike = async () => {
       if (!$auth.loggedIn) return
@@ -193,12 +197,6 @@ export default defineComponent({
       return Boolean(data)
     }
 
-    const toggleReplies = async () => {
-      replies.isOpen = !replies.isOpen
-
-      if (replies.isOpen && replies.page === 0) await loadReplies()
-    }
-
     // guests only get the replies; the input needs an account
     const replyTargetOf = () => ({
       parent: props.comment.documentId,
@@ -207,37 +205,17 @@ export default defineComponent({
       mention: isReply.value ? props.comment.user?.username : null
     })
 
-    // guests only get the replies; replying needs an account
-    const toggleThread = async () => {
-      if (isReply.value) {
-        if (!$auth.loggedIn || !thread) return
+    // replying needs an account (auth-control prompts guests to log in)
+    const toggleThread = () => {
+      if (!$auth.loggedIn || !thread) return
 
-        isReplyTarget.value ? thread.cancelReply() : thread.startReply(replyTargetOf())
-
-        return
-      }
-
-      if (replies.isOpen && (isReplyTarget.value || !$auth.loggedIn)) {
-        replies.isOpen = false
-
-        if (isReplyTarget.value) thread.cancelReply()
-
-        return
-      }
-
-      replies.isOpen = true
-
-      if ($auth.loggedIn && thread) thread.startReply(replyTargetOf())
-
-      if (replies.page === 0) await loadReplies()
+      isReplyTarget.value ? thread.cancelReply() : thread.startReply(replyTargetOf())
     }
 
     // the bottom composer posted a reply into this thread (server re-parents replies to the root)
     if (thread) {
       watch(thread.lastReply, reply => {
         if (isReply.value || !reply || reply.parentDocumentId !== props.comment.documentId) return
-
-        replies.isOpen = true
 
         if (!replies.items.some(r => r.documentId === reply.documentId)) {
           replies.items.push(reply)
@@ -282,7 +260,6 @@ export default defineComponent({
     onMounted(async () => {
       // deep link: open the thread and page replies until the target reply is loaded (max 5 pages)
       if (props.autoExpandReplies && state.replyCount > 0) {
-        replies.isOpen = true
         await loadReplies()
         while (
           props.targetDocumentId &&
@@ -309,9 +286,8 @@ export default defineComponent({
       contentWithoutMention,
       isOwn,
       reportAdditional,
-      profilePath,
+      openPlayer,
       toggleLike,
-      toggleReplies,
       toggleThread,
       loadReplies,
       removeReply,
