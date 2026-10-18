@@ -47,6 +47,7 @@ export default model => {
     quizType: model.quizType,
     viewCount: model.viewCount,
     reviewCount: model.reviewsCount,
+    ratingCount: model.ratingCount,
     rating: model.rating,
     user: model.user,
     alphabet: model.alphabet,

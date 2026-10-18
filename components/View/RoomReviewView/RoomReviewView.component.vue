@@ -66,6 +66,7 @@
       .room-review-view__rating-row(v-for="item in ratingList.items" :key="item.documentId")
         PlayerAvatar(v-if="item.user" :size="32" :user="item.user")
         span.room-review-view__rating-user {{ item.user && item.user.username }}
+        Timeago.room-review-view__rating-time(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
         Rate(:value="item.rating" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="14")
       Empty(v-if="ratingList.finished && !ratingList.items.length" :description="$t('comments.ratingsEmpty')")
 </template>
@@ -188,7 +189,8 @@ export default defineComponent({
 
       const { data } = await store.dispatch('comment/fetchThread', { documentId: props.targetCommentId })
 
-      if (data) {
+      // a stale ?comment from another quiz must not render here
+      if (data && data.roomId === room.value?.id) {
         pinned.item = data.item
         pinned.targetDocumentId = data.targetDocumentId
         setTimeout(
@@ -204,11 +206,24 @@ export default defineComponent({
       store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')
     }
 
-    const handleRootDeleted = documentId => {
-      comments.items = comments.items.filter(c => c.documentId !== documentId)
+    const handleRootDeleted = (documentId, replyCount) => {
+      // a root with live replies stays as a placeholder, like the server list
+      comments.items = comments.items.flatMap(c => {
+        if (c.documentId !== documentId) return [c]
+
+        return replyCount > 0 ? [{ ...c, isDeleted: true, content: null, user: null }] : []
+      })
     }
 
     watch(() => props.targetCommentId, loadPinned)
+
+    // van-list mounted by the filter switch does not check itself, so kick the first ratings page
+    watch(filter, value => {
+      if (value === 'ratings' && room.value?.id && !ratingList.items.length && !ratingList.finished && !ratingList.loading) {
+        ratingList.loading = true
+        loadRatings()
+      }
+    })
 
     // room may arrive after mount: load the summary and let the lists retry
     watch(

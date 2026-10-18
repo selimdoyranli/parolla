@@ -34,7 +34,7 @@ NuxtLink.quiz-card(
         span.quiz-card__rating(v-if="hasRating")
           AppIcon.quiz-card__rating-star(name="tabler:star-filled" :width="11" :height="11")
           span.quiz-card__rating-value {{ formatRating(room.rating) }}
-          span.quiz-card__rating-count(v-if="room.reviewsCount") ({{ room.reviewsCount }})
+          span.quiz-card__rating-count(v-if="room.ratingCount") ({{ room.ratingCount }})
 
         span.quiz-card__crown(v-if="room.isFeatured" :title="$t('general.editorsChoice')")
           AppIcon(name="tabler:crown" :width="12" :height="12")

@@ -198,7 +198,7 @@ export default defineComponent({
           return
         }
 
-        emit('deleted', props.comment.documentId)
+        emit('deleted', props.comment.documentId, state.replyCount)
       }
     }
 

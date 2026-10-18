@@ -62,7 +62,7 @@ export default defineComponent({
       localePath({
         name: 'CreatorMode-CreatorModeRoom-slug',
         params: { slug: item.room.roomId },
-        query: { comment: item.parentDocumentId || item.documentId }
+        query: { comment: item.documentId }
       })
 
     // Replies posted with the composer may already carry the "@name " text in their content

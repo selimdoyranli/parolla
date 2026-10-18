@@ -14,15 +14,6 @@ const appFetch = async ({ $axios, app }, params) => {
     ...(query?.locale ? { locale: transformLocale(query.locale) } : {})
   }
 
-  $axios.onRequest(config => {
-    config.headers = config.headers || {}
-    config.headers.common = config.headers.common || {}
-
-    if (config.headers.common['Content-Type']) {
-      config.headers.common['Content-Type'] = 'application/json'
-    }
-  })
-
   try {
     const promise = await $axios({
       method,
@@ -75,6 +66,15 @@ const appFetch = async ({ $axios, app }, params) => {
 }
 
 export default ({ $axios, app }, inject) => {
+  $axios.onRequest(config => {
+    config.headers = config.headers || {}
+    config.headers.common = config.headers.common || {}
+
+    if (config.headers.common['Content-Type']) {
+      config.headers.common['Content-Type'] = 'application/json'
+    }
+  })
+
   inject('appFetch', params => {
     return appFetch({ $axios, app }, params)
   })

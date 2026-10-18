@@ -26,7 +26,12 @@ export default {
   async fetchThread(_, { documentId }) {
     const { data, error } = await this.$appFetch({ path: `room-comments/${documentId}`, headers: authHeaders(this) })
 
-    return { data: data ? { item: roomCommentTransformer(data.data), targetDocumentId: data.meta.targetDocumentId } : null, error }
+    return {
+      data: data
+        ? { item: roomCommentTransformer(data.data), targetDocumentId: data.meta.targetDocumentId, roomId: data.meta.roomId }
+        : null,
+      error
+    }
   },
 
   async fetchByUser(_, { userId, page = 1 }) {
