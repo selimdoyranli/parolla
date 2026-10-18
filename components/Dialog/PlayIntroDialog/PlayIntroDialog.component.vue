@@ -18,11 +18,16 @@ Dialog.dialog.dialog--scene.play-intro(
   )
     h2.play-intro__title(v-if="isCreator") {{ room.title }}
     QuizTypeLabel.play-intro__type(v-if="isCreator" :room="room")
+    //- daily / unlimited stats ride on the banner as pills
+    ul.play-intro__stats.play-intro__stats--cover(v-else)
+      li.play-intro__stat(v-for="stat in stats" :key="stat.key")
+        AppIcon(:name="stat.icon" :width="14" :height="14")
+        span {{ stat.text }}
 
   .play-intro__body
     p.play-intro__description(v-if="isCreator && room.description") {{ room.description }}
 
-    ul.play-intro__stats
+    ul.play-intro__stats(v-if="isCreator")
       li.play-intro__stat(v-for="stat in stats" :key="stat.key")
         AppIcon(:name="stat.icon" :width="16" :height="16")
         span {{ stat.text }}
@@ -97,8 +102,6 @@ import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
-const DATE_OPTIONS = { showHour: false, showMinute: false, showDay: true, showMonth: true }
-
 export default defineComponent({
   components: {
     Dialog: Dialog.Component,
@@ -123,7 +126,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     const { i18n, localePath } = useContext()
-    const { isoToHumanDate, formatMillions } = useFormatter()
+    const { formatMillions } = useFormatter()
     const { shareRoom } = useRoomShare()
 
     const state = reactive({ isOpen: props.isOpen })
@@ -163,7 +166,9 @@ export default defineComponent({
       return props.mode === 'unlimited' ? i18n.t('playIntro.unlimited') : null
     })
 
-    const coverSublabel = computed(() => (props.mode === 'daily' ? isoToHumanDate(new Date().toISOString(), DATE_OPTIONS) : null))
+    const coverSublabel = computed(() =>
+      props.mode === 'daily' ? new Date().toLocaleDateString(i18n.locale, { day: 'numeric', month: 'long', year: 'numeric' }) : null
+    )
 
     const stats = computed(() => {
       const time = { key: 'time', icon: 'tabler:clock', text: i18n.t('playIntro.timeLimit', { minutes: minutes.value }) }

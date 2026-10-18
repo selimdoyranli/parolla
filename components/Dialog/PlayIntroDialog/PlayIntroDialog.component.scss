@@ -99,6 +99,25 @@
     align-items: center;
   }
 
+  &__stats--cover {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    gap: 6px;
+    justify-content: flex-end;
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 600;
+  }
+
+  &__stats--cover &__stat {
+    padding: 3px 8px;
+    background-color: var(--color-ui-01);
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
   &__play.van-button {
     height: 52px;
     color: #fff;
