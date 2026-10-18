@@ -233,6 +233,13 @@
     }
   }
 
+  &__ad {
+    min-height: 100px;
+    margin-block-start: 16px;
+    background-color: var(--color-ui-04);
+    border-radius: var(--border-radius-01);
+  }
+
   @include media-breakpoint-down(mobile) {
     padding: 16px 10px calc(28px + env(safe-area-inset-bottom));
 
