@@ -9,12 +9,17 @@ Dialog.dialog.dialog--scene.play-intro(
   :close-on-popstate="false"
   @closed="$emit('closed')"
 )
-  QuizCover.play-intro__cover(:label="coverLabel" :room="isCreator ? room : null" :seed="mode" :sublabel="coverSublabel")
+  QuizCover.play-intro__cover(
+    :label="coverLabel"
+    :class="{ 'play-intro__cover--photo': isCreator && room.coverPhoto?.url }"
+    :room="isCreator ? room : null"
+    :seed="mode"
+    :sublabel="coverSublabel"
+  )
+    h2.play-intro__title(v-if="isCreator") {{ room.title }}
 
   .play-intro__body
-    template(v-if="isCreator")
-      h2.play-intro__title {{ room.title }}
-      p.play-intro__description(v-if="room.description") {{ room.description }}
+    p.play-intro__description(v-if="isCreator && room.description") {{ room.description }}
 
     ul.play-intro__stats
       li.play-intro__stat(v-for="stat in stats" :key="stat.key")
@@ -56,7 +61,7 @@ Dialog.dialog.dialog--scene.play-intro(
         Leaderboard(v-if="leaderboard.items.length" :scorers="leaderboard.items")
         p.play-intro__empty(v-else) {{ $t('playIntro.noScores') }}
       Button.play-intro__more(
-        v-if="isQa && !leaderboard.pending && (leaderboard.failed || leaderboard.items.length)"
+        v-if="isQa && !leaderboard.pending && leaderboard.total > leaderboard.items.length"
         round
         size="small"
         @click="openFullScoreboard"
@@ -200,7 +205,11 @@ export default defineComponent({
         { key: 'count', icon: 'tabler:list-numbers', text: countByType },
         { key: 'comments', icon: 'tabler:message-2', text: i18n.tc('playIntro.comments', r.reviewCount || 0) },
         time,
-        r.createdAt && { key: 'date', icon: 'tabler:calendar', text: isoToHumanDate(r.createdAt, { ...DATE_OPTIONS, showYear: true }) }
+        r.createdAt && {
+          key: 'date',
+          icon: 'tabler:calendar',
+          text: new Date(r.createdAt).toLocaleDateString(i18n.locale, { day: 'numeric', month: 'long', year: 'numeric' })
+        }
       ].filter(Boolean)
     })
 
@@ -218,7 +227,7 @@ export default defineComponent({
       reviewDialog.isOpen = true
     }
 
-    const leaderboard = reactive({ items: [], pending: false, failed: false })
+    const leaderboard = reactive({ items: [], total: 0, pending: false, failed: false })
     const comments = reactive({ items: [], pending: false, failed: false })
     // the load watch re-runs on reopen / when room.id arrives; only the latest response may write
     let leaderboardRequest = 0
@@ -227,6 +236,7 @@ export default defineComponent({
     const loadLeaderboard = async () => {
       const request = ++leaderboardRequest
       let items = []
+      let total = 0
       let failed = false
 
       leaderboard.pending = true
@@ -242,6 +252,7 @@ export default defineComponent({
               .filter(item => item.user)
               .slice(0, 10)
               .map(item => ({ ...item.user, results: item.results }))
+        total = failed ? 0 : store.getters['creator/scoreboard'].total || 0
       } else if (props.mode === 'daily') {
         const { error } = await store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 })
         failed = Boolean(error)
@@ -251,6 +262,7 @@ export default defineComponent({
       if (request !== leaderboardRequest) return
 
       leaderboard.items = items
+      leaderboard.total = total
       leaderboard.failed = failed
       leaderboard.pending = false
     }

@@ -16,11 +16,32 @@
     padding: var(--base-p-y) var(--base-p-x);
   }
 
+  // same overlay as QuizCard's title: bottom of the cover on a dark gradient
   &__title {
-    margin: 4px 0 6px;
-    color: var(--color-text-01);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    display: -webkit-box;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 32px 16px 16px;
+    overflow: hidden;
+    color: light-dark(#fff, #ccc);
     font-weight: 800;
-    font-size: var(--font-size-text-5);
+    font-size: var(--font-size-text-4);
+    line-height: 1.25;
+    text-wrap: balance;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.45);
+    word-break: break-word;
+    background: linear-gradient(0deg, #000, transparent);
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  &__cover--photo &__title {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
   }
 
   &__description {
@@ -135,8 +156,9 @@
 
   &__more.van-button,
   &__more-link {
-    display: inline-flex;
-    margin-top: 8px;
+    display: flex;
+    width: fit-content;
+    margin: 8px auto 0;
     color: var(--color-brand-02);
     background: transparent;
     border: 1px solid var(--color-brand-02);
