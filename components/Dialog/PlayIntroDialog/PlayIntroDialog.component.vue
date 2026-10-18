@@ -42,14 +42,19 @@ Dialog.dialog.dialog--scene.play-intro(
         AppIcon(name="tabler:crown" :width="18" :height="18")
         span {{ $t('playIntro.leaderboard') }}
       Loading(v-if="leaderboard.pending" color="var(--color-brand-02)" size="20")
-      template(v-else-if="leaderboard.items.length")
-        Leaderboard(:scorers="leaderboard.items")
-        Button.play-intro__more(v-if="isQa" round size="small" @click="openFullScoreboard") {{ $t('playIntro.fullScoreboard') }}
-        NuxtLink.play-intro__more-link(
-          v-else
-          :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
-        ) {{ $t('playIntro.dailyLeaderboard') }}
-      p.play-intro__empty(v-else) {{ $t('playIntro.noScores') }}
+      template(v-else-if="!leaderboard.failed")
+        Leaderboard(v-if="leaderboard.items.length" :scorers="leaderboard.items")
+        p.play-intro__empty(v-else) {{ $t('playIntro.noScores') }}
+      Button.play-intro__more(
+        v-if="isQa && !leaderboard.pending && (leaderboard.failed || leaderboard.items.length)"
+        round
+        size="small"
+        @click="openFullScoreboard"
+      ) {{ $t('playIntro.fullScoreboard') }}
+      NuxtLink.play-intro__more-link(
+        v-if="mode === 'daily'"
+        :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
+      ) {{ $t('playIntro.dailyLeaderboard') }}
 
     section.play-intro__creator(v-if="isCreator")
       small {{ $t('playIntro.creator') }}
@@ -66,7 +71,7 @@ Dialog.dialog.dialog--scene.play-intro(
           .play-intro__comment-body
             strong {{ comment.user.username }}
             p {{ comment.content }}
-      p.play-intro__empty(v-else-if="!comments.pending") {{ $t('playIntro.noComments') }}
+      p.play-intro__empty(v-else-if="!comments.pending && !comments.failed") {{ $t('playIntro.noComments') }}
       Button.play-intro__more(round size="small" @click="openReviews") {{ $t('playIntro.allComments', { count: room.reviewCount || 0 }) }}
 
     .play-intro__ad
@@ -199,16 +204,25 @@ export default defineComponent({
       reviewDialog.isOpen = true
     }
 
-    const leaderboard = reactive({ items: [], pending: false })
-    const comments = reactive({ items: [], pending: false })
+    const leaderboard = reactive({ items: [], pending: false, failed: false })
+    const comments = reactive({ items: [], pending: false, failed: false })
+    // the load watch re-runs on reopen / when room.id arrives; only the latest response may write
+    let leaderboardRequest = 0
+    let commentsRequest = 0
 
     const loadLeaderboard = async () => {
+      const request = ++leaderboardRequest
+      let items = []
+      let failed = false
+
       leaderboard.pending = true
 
       if (isQa.value && room.value.roomId) {
         const { error } = await store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId, limit: 10 })
-        // room-scores with a room filter come back ranked; Leaderboard wants flat users carrying their results
-        leaderboard.items = error
+        failed = Boolean(error)
+        // the action returns the raw payload, so read the transformed list from the store; room-scores come back ranked and
+        // Leaderboard wants flat users carrying their results
+        items = failed
           ? []
           : (store.getters['creator/scoreboard'].list || [])
               .filter(item => item.user)
@@ -216,17 +230,28 @@ export default defineComponent({
               .map(item => ({ ...item.user, results: item.results }))
       } else if (props.mode === 'daily') {
         const { error } = await store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 })
-        leaderboard.items = error ? [] : (store.getters['daily/leaderboard']?.items || []).slice(0, 10)
+        failed = Boolean(error)
+        items = failed ? [] : (store.getters['daily/leaderboard']?.items || []).slice(0, 10)
       }
 
+      if (request !== leaderboardRequest) return
+
+      leaderboard.items = items
+      leaderboard.failed = failed
       leaderboard.pending = false
     }
 
     const loadComments = async () => {
       if (!room.value.id) return
 
+      const request = ++commentsRequest
+
       comments.pending = true
       const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: 1 })
+
+      if (request !== commentsRequest) return
+
+      comments.failed = Boolean(error)
       comments.items = error ? [] : (data?.items || []).filter(c => !c.isDeleted && c.user).slice(0, 3)
       comments.pending = false
     }
