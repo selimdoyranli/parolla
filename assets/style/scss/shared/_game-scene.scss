@@ -304,9 +304,14 @@
   }
 
   // Field Section
-  // keeps the question laid out (textFit measures it) while the start countdown covers it
-  .questions--counting .question {
+  // fades the question in once the start countdown is done; stays laid out meanwhile so textFit can measure it
+  .questions .question {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .questions--hidden .question {
     visibility: hidden;
+    opacity: 0;
   }
 
   &__fieldSection {

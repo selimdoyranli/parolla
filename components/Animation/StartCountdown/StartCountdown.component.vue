@@ -1,7 +1,7 @@
 <template lang="pug">
-//- pre-game 3-2-1-GO: each step is a coloured card that flips in around its vertical axis
+//- pre-game 3-2-1-GO: each step is a coloured card that rolls in clockwise like a square wheel
 .start-countdown(role="status" aria-live="assertive")
-  transition(name="start-countdown-flip" mode="out-in")
+  transition(name="start-countdown-flip" mode="out-in" appear)
     .start-countdown__card(:key="value" :class="`start-countdown__card--${String(value).toLowerCase()}`")
       | {{ value === 'GO' ? 'GO!' : value }}
 </template>

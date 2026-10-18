@@ -34,7 +34,7 @@
 
     template(v-else)
       // Questions
-      .questions(:class="{ 'questions--counting': startCountdown }")
+      .questions(:class="{ 'questions--hidden': isQuestionHidden }")
         StartCountdown(v-if="startCountdown" :value="startCountdown")
         .question(
           v-for="(question, index) in questions"
@@ -128,6 +128,7 @@ export default defineComponent({
       setRootRef,
       isGameStarted,
       startCountdown,
+      isQuestionHidden,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -237,6 +238,7 @@ export default defineComponent({
       reFetch,
       isGameStarted,
       startCountdown,
+      isQuestionHidden,
       isGameOver,
       alphabet,
       questions,

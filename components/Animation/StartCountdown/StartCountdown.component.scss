@@ -5,7 +5,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 800px;
   pointer-events: none;
 
   &__card {
@@ -40,18 +39,20 @@
   }
 }
 
-// each card turns in edge-on and turns out the other way, so the steps read as one card flipping
+// a square wheel rolling left to right: each card rolls in clockwise and rolls on out the same way
 .start-countdown-flip-enter-active,
 .start-countdown-flip-leave-active {
-  transition: transform 0.22s ease, opacity 0.22s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .start-countdown-flip-enter {
-  transform: rotateY(-90deg) scale(0.9);
+  transform: translateX(-60%) rotate(-90deg);
+  visibility: hidden;
   opacity: 0;
 }
 
 .start-countdown-flip-leave-to {
-  transform: rotateY(90deg) scale(0.9);
+  transform: translateX(60%) rotate(90deg);
+  visibility: hidden;
   opacity: 0;
 }

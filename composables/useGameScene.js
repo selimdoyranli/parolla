@@ -32,6 +32,8 @@ export default ({ inlineCountdown = false } = {}) => {
   const startCountdown = ref(null)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])
+  // inline-countdown scenes keep the question out of sight until the countdown has run
+  const isQuestionHidden = computed(() => inlineCountdown && (startCountdown.value !== null || (!isGameStarted.value && !isGameOver.value)))
 
   watch(isGameOver, async value => {
     if (value) {
@@ -728,7 +730,8 @@ export default ({ inlineCountdown = false } = {}) => {
         titleElement.innerHTML = originalContent
       }
 
-      titleElement.innerHTML = breakLongWords(titleElement.innerText)
+      // textContent, not innerText: innerText is empty while the question is hidden behind the start countdown
+      titleElement.innerHTML = breakLongWords(titleElement.textContent)
 
       textfit(activeQuestion, {
         minFontSize: 16,
@@ -823,6 +826,7 @@ export default ({ inlineCountdown = false } = {}) => {
     setRootRef,
     isGameStarted,
     startCountdown,
+    isQuestionHidden,
     isGameOver,
     alphabet,
     alphabetItemClasses,
