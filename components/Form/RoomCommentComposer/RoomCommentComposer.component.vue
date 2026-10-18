@@ -1,27 +1,32 @@
 <template lang="pug">
 .room-comment-composer
-  PlayerAvatar.room-comment-composer__avatar(v-if="$auth.loggedIn" :user="$auth.user" :size="32")
-  Field.room-comment-composer__field(
-    ref="fieldRef"
-    v-model="form.content"
-    type="textarea"
-    :placeholder="$auth.loggedIn ? $t('comments.placeholder') : $t('comments.loginPlaceholder')"
-    rows="1"
-    autosize
-    auth-control
-    :maxlength="512"
-    :readonly="!$auth.loggedIn"
-  )
-  Button.room-comment-composer__send(
-    type="primary"
-    size="small"
-    plain
-    auth-control
-    :loading="form.pending"
-    :disabled="$auth.loggedIn && !form.content.trim()"
-    @click="submit"
-  )
-    AppIcon(:name="$auth.loggedIn ? 'tabler:send' : 'tabler:login-2'")
+  .room-comment-composer__reply-bar(v-if="replyTo")
+    span.room-comment-composer__reply-text {{ $t('comments.replyingTo', { username: replyTo }) }}
+    button.room-comment-composer__reply-cancel(type="button" :aria-label="$t('general.cancel')" @click="$emit('cancel')")
+      AppIcon(name="tabler:x" :width="16" :height="16")
+  .room-comment-composer__row
+    PlayerAvatar.room-comment-composer__avatar(v-if="$auth.loggedIn" :user="$auth.user" :size="32")
+    Field.room-comment-composer__field(
+      ref="fieldRef"
+      v-model="form.content"
+      type="textarea"
+      :placeholder="$auth.loggedIn ? $t('comments.placeholder') : $t('comments.loginPlaceholder')"
+      rows="1"
+      autosize
+      auth-control
+      :maxlength="512"
+      :readonly="!$auth.loggedIn"
+    )
+    Button.room-comment-composer__send(
+      type="primary"
+      size="small"
+      plain
+      auth-control
+      :loading="form.pending"
+      :disabled="$auth.loggedIn && !form.content.trim()"
+      @click="submit"
+    )
+      AppIcon(:name="$auth.loggedIn ? 'tabler:send' : 'tabler:login-2'")
 </template>
 
 <script>
@@ -34,6 +39,8 @@ export default defineComponent({
     roomId: { type: Number, required: true },
     parent: { type: String, default: null },
     mention: { type: String, default: null },
+    // username shown in the "replying to" bar; null for a root comment
+    replyTo: { type: String, default: null },
     autofocus: { type: Boolean, default: false }
   },
   emits: ['posted', 'cancel'],
@@ -50,15 +57,16 @@ export default defineComponent({
     // Vant Field ignores the native autofocus attribute on dynamically inserted fields
     const fieldRef = ref(null)
 
-    onMounted(() => {
-      if (!props.autofocus) return
-
+    const focus = () =>
       nextTick(() => {
         const el = fieldRef.value?.$el.querySelector('textarea')
 
         el?.focus()
         el?.setSelectionRange(el.value.length, el.value.length)
       })
+
+    onMounted(() => {
+      if (props.autofocus) focus()
     })
 
     const submit = async () => {
@@ -84,7 +92,7 @@ export default defineComponent({
       emit('posted', data.item)
     }
 
-    return { form, fieldRef, submit }
+    return { form, fieldRef, focus, submit }
   }
 })
 </script>

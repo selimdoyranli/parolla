@@ -1,9 +1,39 @@
 .room-comment-composer {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  padding: 10px 12px;
-  margin-block-end: 8px;
+  padding: 8px 12px;
+
+  &__reply-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: 6px;
+    padding: 6px 10px;
+    color: var(--color-text-03);
+    font-size: 13px;
+    background: var(--color-ui-01);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__reply-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__reply-cancel {
+    display: inline-flex;
+    padding: 2px;
+    color: var(--color-text-03);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
 
   &__field {
     flex: 1;

@@ -10,6 +10,12 @@
     border-bottom: 0;
   }
 
+  // tapped as a reply target: blink grey twice
+  &--flash {
+    border-radius: 12px;
+    animation: room-comment-flash 0.8s ease-in-out 2;
+  }
+
   &--highlighted {
     background-color: color-mix(in sRGB, var(--color-brand-02) 12%, transparent);
     border-radius: 12px;
@@ -86,6 +92,17 @@
 
   &__replies {
     margin-top: 4px;
+  }
+}
+
+@keyframes room-comment-flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: var(--color-ui-03);
   }
 }
 

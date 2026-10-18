@@ -28,26 +28,17 @@
           :count="state.likeCount"
           @click="toggleLike"
         )
-        //- one button opens the replies and the focused reply input together; on a reply it only opens the input
+        //- opens the replies and targets the bottom composer at this comment; on a reply it only targets the composer
         ActionButton.room-comment-item__action--reply(
           :label="$t(isReply ? 'comments.reply' : 'comments.replies')"
           icon="tabler:message"
           tone="info"
           :auth-control="isReply"
-          :active="isReplying || (!isReply && replies.isOpen)"
+          :active="isReply ? isReplyTarget : replies.isOpen"
           :count="isReply ? null : state.replyCount"
           @click="toggleThread"
         )
         ActionButton(:label="$t('comments.moreTitle')" icon="tabler:dots" @click="isOpenMore = true")
-
-    RoomCommentComposer(
-      v-if="isReplying"
-      autofocus
-      :room-id="roomId"
-      :parent="comment.documentId"
-      :mention="isReply ? comment.user && comment.user.username : null"
-      @posted="handleReplyPosted"
-    )
 
     template(v-if="!isReply")
       button.room-comment-item__toggle(v-if="state.replyCount > 0 && !replies.isOpen" @click="toggleReplies")
@@ -60,7 +51,6 @@
           :room-id="roomId"
           :highlighted="reply.documentId === targetDocumentId"
           @deleted="removeReply"
-          @replied="handleReplyPosted"
         )
         button.room-comment-item__toggle(v-if="replies.hasMore" @click="loadReplies") {{ $t('comments.loadMoreReplies') }}
         button.room-comment-item__toggle(v-else @click="replies.isOpen = false") {{ $t('comments.hideReplies') }}
@@ -122,7 +112,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, computed, onMounted, useStore, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, reactive, computed, watch, onMounted, inject, useStore, useContext } from '@nuxtjs/composition-api'
 import { Tag, Dialog, Toast } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 
@@ -136,7 +126,7 @@ export default defineComponent({
     autoExpandReplies: { type: Boolean, default: false },
     targetDocumentId: { type: String, default: null }
   },
-  emits: ['deleted', 'replied'],
+  emits: ['deleted'],
   setup(props, { emit }) {
     const store = useStore()
     const { $auth, i18n, localePath } = useContext()
@@ -149,7 +139,9 @@ export default defineComponent({
     })
 
     const isReply = computed(() => Boolean(props.comment.parentDocumentId))
-    const isReplying = ref(false)
+    // reply state lives in RoomReviewView, which owns the single bottom composer
+    const thread = inject('commentThread', null)
+    const isReplyTarget = computed(() => thread?.replyTarget.value?.parent === props.comment.documentId)
     const isOpenMore = ref(false)
     const isOpenDelete = ref(false)
     const isOpenReportDialog = ref(false)
@@ -208,30 +200,50 @@ export default defineComponent({
     }
 
     // guests only get the replies; the input needs an account
+    const replyTargetOf = () => ({
+      parent: props.comment.documentId,
+      username: props.comment.user?.username,
+      // replies to a reply start with its author's @mention, like the server's replyToUser
+      mention: isReply.value ? props.comment.user?.username : null
+    })
+
+    // guests only get the replies; replying needs an account
     const toggleThread = async () => {
-      const open = !(isReplying.value || (!isReply.value && replies.isOpen))
-
-      isReplying.value = open && $auth.loggedIn
-
-      if (isReply.value) return
-
-      replies.isOpen = open
-
-      if (open && replies.page === 0) await loadReplies()
-    }
-
-    const handleReplyPosted = reply => {
-      isReplying.value = false
-
       if (isReply.value) {
-        emit('replied', reply)
+        if (!$auth.loggedIn || !thread) return
+
+        isReplyTarget.value ? thread.cancelReply() : thread.startReply(replyTargetOf())
+
+        return
+      }
+
+      if (replies.isOpen && (isReplyTarget.value || !$auth.loggedIn)) {
+        replies.isOpen = false
+
+        if (isReplyTarget.value) thread.cancelReply()
 
         return
       }
 
       replies.isOpen = true
-      replies.items.push(reply)
-      state.replyCount += 1
+
+      if ($auth.loggedIn && thread) thread.startReply(replyTargetOf())
+
+      if (replies.page === 0) await loadReplies()
+    }
+
+    // the bottom composer posted a reply into this thread (server re-parents replies to the root)
+    if (thread) {
+      watch(thread.lastReply, reply => {
+        if (isReply.value || !reply || reply.parentDocumentId !== props.comment.documentId) return
+
+        replies.isOpen = true
+
+        if (!replies.items.some(r => r.documentId === reply.documentId)) {
+          replies.items.push(reply)
+          state.replyCount += 1
+        }
+      })
     }
 
     const removeReply = documentId => {
@@ -288,7 +300,7 @@ export default defineComponent({
       reportTypeEnum,
       state,
       isReply,
-      isReplying,
+      isReplyTarget,
       isOpenMore,
       isOpenDelete,
       isOpenReportDialog,
@@ -302,7 +314,6 @@ export default defineComponent({
       toggleReplies,
       toggleThread,
       loadReplies,
-      handleReplyPosted,
       removeReply,
       openReport,
       handleDeleteBeforeClose

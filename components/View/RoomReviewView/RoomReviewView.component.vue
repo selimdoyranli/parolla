@@ -31,8 +31,6 @@
     )
 
   template(v-if="filter === 'comments'")
-    RoomCommentComposer(v-if="room.id" :room-id="room.id" @posted="handleRootPosted")
-
     RoomCommentItem(
       :key="`pinned-${pinned.item.documentId}`"
       v-if="pinned.item"
@@ -60,6 +58,21 @@
       )
       Empty(v-if="comments.finished && !visibleComments.length && !pinned.item" :description="$t('comments.empty')")
 
+    //- single composer pinned to the bottom; a reply target turns it into a reply input
+    .room-review-view__composer
+      RoomCommentComposer(
+        :key="replyTarget ? replyTarget.parent : 'root'"
+        v-if="room.id"
+        ref="composerRef"
+        :room-id="room.id"
+        :parent="replyTarget && replyTarget.parent"
+        :mention="replyTarget && replyTarget.mention"
+        :reply-to="replyTarget && replyTarget.username"
+        :autofocus="Boolean(replyTarget)"
+        @posted="handlePosted"
+        @cancel="cancelReply"
+      )
+
   template(v-else)
     List(
       v-model="ratingList.loading"
@@ -77,7 +90,18 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useContext, ref, reactive, computed, watch, onMounted } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useStore,
+  useContext,
+  ref,
+  reactive,
+  computed,
+  watch,
+  onMounted,
+  provide,
+  nextTick
+} from '@nuxtjs/composition-api'
 import { Rate, List, Empty, Toast } from 'vant'
 
 export default defineComponent({
@@ -211,6 +235,50 @@ export default defineComponent({
       store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')
     }
 
+    // Reply flow shared with every RoomCommentItem: the item asks to reply, the bottom composer posts,
+    // and the root item of the thread picks the new reply up from lastReply.
+    const replyTarget = ref(null)
+    const lastReply = ref(null)
+    const composerRef = ref(null)
+
+    const flash = documentId =>
+      nextTick(() => {
+        const el = document.getElementById(`comment-${documentId}`)
+
+        if (!el) return
+
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        el.classList.remove('room-comment-item--flash')
+        // restart the animation when the same comment is tapped again
+        void el.offsetWidth
+        el.classList.add('room-comment-item--flash')
+        setTimeout(() => el.classList.remove('room-comment-item--flash'), 1600)
+      })
+
+    const startReply = target => {
+      replyTarget.value = target
+      flash(target.parent)
+      nextTick(() => composerRef.value?.focus())
+    }
+
+    const cancelReply = () => {
+      replyTarget.value = null
+    }
+
+    const handlePosted = comment => {
+      if (!comment.parentDocumentId) {
+        handleRootPosted(comment)
+
+        return
+      }
+
+      lastReply.value = comment
+      cancelReply()
+      setTimeout(() => flash(comment.documentId), 100)
+    }
+
+    provide('commentThread', { replyTarget, lastReply, startReply, cancelReply })
+
     const handleRootDeleted = (documentId, replyCount) => {
       // a root with live replies stays as a placeholder, like the server list
       comments.items = comments.items.flatMap(c => {
@@ -269,8 +337,11 @@ export default defineComponent({
       loadComments,
       loadRatings,
       submitRating,
-      handleRootPosted,
-      handleRootDeleted
+      handleRootDeleted,
+      replyTarget,
+      composerRef,
+      handlePosted,
+      cancelReply
     }
   }
 })

@@ -25,6 +25,17 @@
     margin: 12px 0 8px;
   }
 
+  &__composer {
+    // sticks to the bottom of the dialog's scroll area (cancels the dialog content padding)
+    position: sticky;
+    inset-block-end: calc(var(--base-p-y) * -1);
+    z-index: 2;
+    margin: 0 calc(var(--base-p-x) * -1);
+    padding-block-end: 4px;
+    background: var(--color-ui-02);
+    border-top: 1px solid var(--color-ui-03);
+  }
+
   &__rating-row {
     display: flex;
     gap: 10px;

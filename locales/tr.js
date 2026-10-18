@@ -931,6 +931,7 @@ export default {
     deleteConfirm: 'Bu yorumu silmek istediğine emin misin?',
     like: 'Beğen',
     replies: 'Yanıtlar',
+    replyingTo: '{username} adlı kişiye yanıt veriliyor',
     moreTitle: 'Yorum seçenekleri',
     empty: 'Henüz yorum yok. İlk yorumu sen yap!',
     ratingsEmpty: 'Henüz puan verilmedi',

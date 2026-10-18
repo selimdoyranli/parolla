@@ -913,6 +913,7 @@ export default {
     deleteConfirm: 'Delete this comment?',
     like: 'Like',
     replies: 'Replies',
+    replyingTo: 'Replying to {username}',
     moreTitle: 'Comment options',
     empty: 'No comments yet. Be the first!',
     ratingsEmpty: 'No ratings yet',
