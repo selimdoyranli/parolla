@@ -185,7 +185,6 @@ Dialog.dialog.menu-dialog(
 
 <script>
 import { defineComponent, useRoute, useRouter, useStore, useContext, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
-import { APP_URL } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { Dialog, CellGroup, Cell, Switch, Button } from 'vant'
 import { useSfx } from '@/composables/useSfx'
