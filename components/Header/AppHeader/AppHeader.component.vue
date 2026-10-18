@@ -35,6 +35,13 @@
       AppIcon.me-2(v-if="room.reviewCount > 0" name="tabler:message-2" :label="room.reviewCount")
       AppIcon(v-else name="tabler:message-2")
 
+    li.app-header-nav__item.app-header-nav__item--ownerStats(
+      v-if="isRoomOwner"
+      :title="$t('ownerStats.open')"
+      @click="dialog.ownerStats.isOpen = true"
+    )
+      AppIcon(name="tabler:chart-histogram")
+
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
       AppIcon(name="tabler:bell" :label="unreadCount" max99-number)
 
@@ -85,6 +92,14 @@
   )
   // Notifications Dialog
   LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
+  // Owner Stats Dialog
+  LazyRoomOwnerStatsDialog(
+    v-if="isRoomOwner"
+    :isOpen="dialog.ownerStats.isOpen"
+    :room-id="room.id"
+    :title="room.title"
+    @closed="dialog.ownerStats.isOpen = false"
+  )
   // Room Review Dialog
   LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" :target-comment-id="targetCommentId" @closed="handleRoomReviewClosed")
 </template>
@@ -108,6 +123,14 @@ export default defineComponent({
 
     const user = computed(() => store.getters['auth/user'])
     const room = computed(() => store.getters['creator/room'])
+    // owners always receive room.user, even for anonymous quizzes
+    const isRoomOwner = computed(
+      () =>
+        getRouteBaseName(route.value) === 'CreatorMode-CreatorModeRoom-slug' &&
+        $auth.loggedIn &&
+        !!room.value?.id &&
+        room.value.user?.id === $auth.user?.id
+    )
     const tourUserList = computed(() => store.getters['tour/userList'])
 
     const dialog = reactive({
@@ -136,6 +159,9 @@ export default defineComponent({
         isOpen: false
       },
       notifications: {
+        isOpen: false
+      },
+      ownerStats: {
         isOpen: false
       }
     })
@@ -365,6 +391,7 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
+      isRoomOwner,
       unreadCount,
       toggleNotificationsDialog,
       targetCommentId,

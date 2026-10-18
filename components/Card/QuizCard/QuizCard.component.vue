@@ -89,6 +89,14 @@ NuxtLink.quiz-card(
           span.quiz-card__stat-value {{ room.flashcardCount }}
 
       .quiz-card__owner-actions(v-if="viewer && isOwner({ user: room.user })")
+        button.quiz-card__owner-action.quiz-card__owner-action--stats(
+          v-if="showOwnerStats"
+          type="button"
+          :title="$t('ownerStats.open')"
+          :aria-label="$t('ownerStats.open')"
+          @click.prevent.stop="onOwnerStats"
+        )
+          AppIcon(name="tabler:chart-bar" :width="14" :height="14")
         button.quiz-card__owner-action.quiz-card__owner-action--edit(
           type="button"
           :title="$t('general.edit')"
@@ -146,13 +154,18 @@ export default defineComponent({
       required: false,
       default: false
     },
+    showOwnerStats: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     index: {
       type: Number,
       required: false,
       default: 0
     }
   },
-  emits: ['edit', 'delete'],
+  emits: ['edit', 'delete', 'owner-stats'],
   setup(props, { emit }) {
     const { i18n } = useContext()
     const { isOwner } = useAuth()
@@ -219,6 +232,7 @@ export default defineComponent({
     })
 
     const onEdit = () => emit('edit', { room: props.room })
+    const onOwnerStats = () => emit('owner-stats', { room: props.room })
     const onDelete = () => emit('delete', { room: props.room })
 
     return {
@@ -230,7 +244,8 @@ export default defineComponent({
       cardStyle,
       quizTypePill,
       onEdit,
-      onDelete
+      onDelete,
+      onOwnerStats
     }
   }
 })

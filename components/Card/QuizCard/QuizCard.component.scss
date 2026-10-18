@@ -628,6 +628,12 @@
       transform: scale(1.06);
     }
 
+    &--stats:hover {
+      color: var(--color-brand-02);
+      background: color-mix(in sRGB, var(--color-brand-02) 10%, transparent);
+      border-color: var(--color-brand-02);
+    }
+
     &--edit:hover {
       color: var(--color-info-01);
       background: rgba(77, 132, 250, 0.1);
