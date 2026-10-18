@@ -272,6 +272,7 @@ export default defineComponent({
     const handlePosted = comment => {
       if (!comment.parentDocumentId) {
         handleRootPosted(comment)
+        setTimeout(() => flash(comment.documentId), 100)
 
         return
       }

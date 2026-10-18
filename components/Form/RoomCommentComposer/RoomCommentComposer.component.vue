@@ -85,7 +85,8 @@ export default defineComponent({
       form.pending = false
 
       if (error) {
-        Toast(error.message || i18n.t('comments.error'))
+        // 429: comment rate limit (10 per 5 minutes, then a 5 minute wait)
+        Toast(error.code === 429 ? i18n.t('comments.rateLimited') : error.message || i18n.t('comments.error'))
 
         return
       }

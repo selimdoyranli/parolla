@@ -930,6 +930,7 @@ export default {
     like: 'Beğen',
     replies: 'Yanıtlar',
     replyingTo: '{username} adlı kişiye yanıt veriliyor',
+    rateLimited: 'Çok hızlı yorum yapıyorsun. 5 dakika sonra tekrar dene.',
     moreTitle: 'Yorum seçenekleri',
     empty: 'Henüz yorum yok. İlk yorumu sen yap!',
     ratingsEmpty: 'Henüz puan verilmedi',

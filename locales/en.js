@@ -912,6 +912,7 @@ export default {
     like: 'Like',
     replies: 'Replies',
     replyingTo: 'Replying to {username}',
+    rateLimited: 'You are commenting too fast. Try again in 5 minutes.',
     moreTitle: 'Comment options',
     empty: 'No comments yet. Be the first!',
     ratingsEmpty: 'No ratings yet',
