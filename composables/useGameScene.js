@@ -1,4 +1,4 @@
-import { useContext, useStore, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
+import { useContext, useStore, useRoute, ref, reactive, computed, watch, nextTick } from '@nuxtjs/composition-api'
 import { UNSUPPORTED_HEIGHT } from '@/system/constant'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { answerTypeEnum } from '@/enums/quiz.enum'
@@ -367,9 +367,28 @@ export default () => {
     carousels.alphabet = alphabetCarousel
   }
 
+  // Arriving from a notification (?comment=…) opens the reviews dialog first. Hold the how-to-play
+  // dialog — and so the game start, which waits for it to close — until that deep link is cleared
+  // (the reviews dialog removes ?comment when it closes). Scenes keep writing dialog.howToPlay.isOpen.
+  const route = useRoute()
+  const howToPlayWanted = ref(true)
+  const isHowToPlayHeld = ref(Boolean(route.value?.query?.comment))
+
+  watch(
+    () => route.value?.query?.comment,
+    comment => {
+      if (!comment) isHowToPlayHeld.value = false
+    }
+  )
+
   const dialog = reactive({
     howToPlay: {
-      isOpen: true
+      get isOpen() {
+        return howToPlayWanted.value && !isHowToPlayHeld.value
+      },
+      set isOpen(value) {
+        howToPlayWanted.value = value
+      }
     },
     stats: {
       isOpen: false
