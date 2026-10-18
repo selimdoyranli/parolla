@@ -68,7 +68,8 @@ Dialog.dialog.dialog--scene.play-intro(
       Loading(v-if="leaderboard.pending" color="var(--color-brand-02)" size="20")
       template(v-else-if="!leaderboard.failed")
         Leaderboard(v-if="leaderboard.items.length" :scorers="leaderboard.items")
-        p.play-intro__empty(v-else) {{ $t('playIntro.noScores') }}
+        Empty.play-intro__empty(v-else :description="$t('playIntro.noScores')")
+      //- the intro already lists the top 10; the full board is only worth a link when there's more
       Button.play-intro__more(
         v-if="isQa && !leaderboard.pending && leaderboard.total > leaderboard.items.length"
         round
@@ -76,7 +77,7 @@ Dialog.dialog.dialog--scene.play-intro(
         @click="openFullScoreboard"
       ) {{ $t('playIntro.fullScoreboard') }}
       NuxtLink.play-intro__more-link(
-        v-if="mode === 'daily'"
+        v-if="mode === 'daily' && !leaderboard.pending && leaderboard.total > leaderboard.items.length"
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
 
@@ -98,7 +99,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
+import { Dialog, Button, Collapse, CollapseItem, Loading, Empty } from 'vant'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
@@ -108,7 +109,8 @@ export default defineComponent({
     Button,
     Collapse,
     CollapseItem,
-    Loading
+    Loading,
+    Empty
   },
   props: {
     isOpen: {
@@ -256,6 +258,7 @@ export default defineComponent({
         const { error } = await store.dispatch('daily/fetchLeaderboard', { period: 'daily', limit: 10 })
         failed = Boolean(error)
         items = failed ? [] : (store.getters['daily/leaderboard']?.items || []).slice(0, 10)
+        total = failed ? 0 : store.getters['daily/leaderboard']?.meta?.pagination?.total || 0
       }
 
       if (request !== leaderboardRequest) return

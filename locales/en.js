@@ -1316,7 +1316,7 @@ export default {
     letters: '{count} letter | {count} letters',
     leaderboard: 'Leaderboard',
     fullScoreboard: 'Full scoreboard',
-    dailyLeaderboard: 'Daily ranking',
+    dailyLeaderboard: 'See full ranking',
     noScores: 'Nobody has played yet. Be the first!'
   },
   common: {

@@ -101,11 +101,10 @@
 
   &__stats--cover {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    bottom: 8px;
+    left: 8px;
     z-index: 3;
     gap: 6px;
-    justify-content: flex-end;
     margin: 0;
     color: var(--color-text-01);
     font-weight: 600;
@@ -236,9 +235,7 @@
   }
 
   &__empty {
-    margin: 4px 0;
-    color: var(--color-text-03);
-    font-size: var(--font-size-text-9);
+    padding: 8px 0;
   }
 
   &__ad {

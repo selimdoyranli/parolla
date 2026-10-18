@@ -1338,7 +1338,7 @@ export default {
     letters: '{count} harf',
     leaderboard: 'Puan Tablosu',
     fullScoreboard: 'Tüm skor tablosu',
-    dailyLeaderboard: 'Günlük sıralama',
+    dailyLeaderboard: 'Tüm Sıralamayı Gör',
     noScores: 'Henüz kimse oynamadı. İlk sen ol!'
   },
   common: {
