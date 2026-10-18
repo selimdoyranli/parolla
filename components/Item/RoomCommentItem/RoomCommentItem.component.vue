@@ -145,6 +145,8 @@ export default defineComponent({
         replies.page += 1
         replies.hasMore = data.hasMore
       }
+
+      return Boolean(data)
     }
 
     const toggleReplies = async () => {
@@ -211,7 +213,8 @@ export default defineComponent({
           replies.page < 5 &&
           !replies.items.some(r => r.documentId === props.targetDocumentId)
         ) {
-          await loadReplies()
+          // stop when a fetch fails, otherwise page/hasMore never change and the loop would spin
+          if (!(await loadReplies())) break
         }
       }
     })
