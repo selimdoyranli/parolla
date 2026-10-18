@@ -78,10 +78,15 @@ export default defineComponent({
 
       error.value = null
 
-      const { data, error: err } = await store.dispatch('comment/fetchByUser', { userId: playerId.value, page: page.value + 1 })
+      const userId = playerId.value
+      const { data, error: err } = await store.dispatch('comment/fetchByUser', { userId, page: page.value + 1 })
 
+      // The profile changed while loading: drop this response
+      if (userId !== playerId.value) return { stale: true }
+
+      // Load-more failures stay with the infinite loader so the loaded items remain
       if (err) {
-        error.value = err
+        if (!isLoadMore) error.value = err
       } else {
         items.value = isLoadMore ? [...items.value, ...data.items] : data.items
         page.value += 1
@@ -105,6 +110,8 @@ export default defineComponent({
 
     const handleInfinite = async $state => {
       const result = await load(true)
+
+      if (result?.stale) return
 
       if (result?.error) {
         $state.error()
