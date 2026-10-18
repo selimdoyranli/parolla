@@ -3,13 +3,13 @@
   menu.app-header-nav
     template(v-if="isVisibleLocaleSwitchButton")
       li.app-header-nav__item(@click="toggleLocaleSwitchDialog")
-        AppIcon(name="tabler:world-cog")
+        ActionButton(icon="tabler:world-cog" :icon-size="24")
     template(v-if="isVisibleAnnouncementsButton")
       li.app-header-nav__item(@click="toggleAnnouncementsDialog")
-        AppIcon(name="tabler:speakerphone" :label="announcementsCount")
+        ActionButton(icon="tabler:speakerphone" :icon-size="24" :badge="announcementsCount")
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
-        AppIcon(name="tabler:arrow-left")
+        ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
   // Icon-only logo swapped in while the on-screen keyboard is open on mobile
@@ -20,30 +20,38 @@
       v-if="activeGameMode === gameModeKeyEnum.TOUR"
       @click="openTourModeOnlineDialog"
     )
-      AppIcon(name="tabler:users-group" :label="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)")
+      ActionButton(
+        icon="tabler:users-group"
+        :icon-size="24"
+        :badge="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)"
+      )
 
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
-      AppIcon(name="tabler:info-circle")
+      ActionButton(icon="tabler:info-circle" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--stats(v-if="isVisibleStatsButton" @click="toggleStatsDialog")
-      AppIcon(name="tabler:chart-bar")
+      ActionButton(icon="tabler:chart-bar" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--roomReviews(
       v-if="activeGameMode === gameModeKeyEnum.CREATOR"
       @click="toggleRoomReviewDialog"
     )
-      AppIcon.me-2(v-if="room.reviewCount > 0" name="tabler:message-2" :label="room.reviewCount")
-      AppIcon(v-else name="tabler:message-2")
+      ActionButton(
+        icon="tabler:message-2"
+        :icon-size="24"
+        :badge="room.reviewCount > 0 ? room.reviewCount : null"
+        :class="{ 'me-2': room.reviewCount > 0 }"
+      )
 
     li.app-header-nav__item.app-header-nav__item--ownerStats(
       v-if="isRoomOwner"
       :title="$t('ownerStats.open')"
       @click="dialog.ownerStats.isOpen = true"
     )
-      AppIcon(name="tabler:chart-histogram")
+      ActionButton(icon="tabler:chart-histogram" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
-      AppIcon(name="tabler:bell" :label="unreadCount" max99-number)
+      ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")

@@ -1,0 +1,93 @@
+.action-button {
+  --action-tone: var(--color-text-01);
+  // neutral grey that reads on both light and dark surfaces
+  --action-tone-bg: color-mix(in sRGB, var(--color-text-01) 10%, transparent);
+
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  padding: 0;
+  color: var(--color-icon-01);
+  font-size: 13px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &--brand {
+    --action-tone: var(--color-brand-02);
+    --action-tone-bg: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+  }
+
+  &--info {
+    --action-tone: var(--color-info-01);
+    --action-tone-bg: color-mix(in sRGB, var(--color-info-01) 15%, transparent);
+  }
+
+  &--success {
+    --action-tone: var(--color-success-01);
+    --action-tone-bg: color-mix(in sRGB, var(--color-success-01) 15%, transparent);
+  }
+
+  &--danger {
+    --action-tone: var(--color-danger-01);
+    --action-tone-bg: color-mix(in sRGB, var(--color-danger-01) 15%, transparent);
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    // the circle bleeds into the surrounding space so layout matches a bare icon
+    margin: -6px;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  &__count {
+    min-width: 2ch;
+    text-align: start;
+    margin-inline-start: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &.is-active {
+    color: var(--action-tone);
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    .action-button__icon {
+      box-shadow: 0 0 0 2px var(--action-tone);
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--action-tone);
+
+      .action-button__icon {
+        background-color: var(--action-tone-bg);
+      }
+    }
+
+    &.has-label:hover::after {
+      position: absolute;
+      z-index: 10;
+      padding: 2px 6px;
+      color: var(--color-text-04, #fff);
+      font-size: 11px;
+      white-space: nowrap;
+      background: var(--color-icon-01);
+      border-radius: 4px;
+      transform: translateX(-50%);
+      content: attr(data-label);
+      pointer-events: none;
+      inset-block-start: calc(100% + 8px);
+      inset-inline-start: 50%;
+    }
+  }
+}

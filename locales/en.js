@@ -911,6 +911,8 @@ export default {
     report: 'Report',
     delete: 'Delete',
     deleteConfirm: 'Delete this comment?',
+    like: 'Like',
+    replies: 'Replies',
     moreTitle: 'Comment options',
     empty: 'No comments yet. Be the first!',
     ratingsEmpty: 'No ratings yet',

@@ -69,23 +69,9 @@
 
   &__actions {
     display: flex;
-    gap: 16px;
-  }
-
-  &__action {
-    display: inline-flex;
-    gap: 4px;
+    gap: 20px;
     align-items: center;
-    padding: 0;
-    color: var(--color-text-03);
-    font-size: 13px;
-    background: none;
-    border: 0;
-    cursor: pointer;
-
-    &.is-active {
-      color: var(--color-brand-02);
-    }
+    margin-block-start: 2px;
   }
 
   &__toggle {

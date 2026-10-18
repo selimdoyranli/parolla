@@ -18,21 +18,31 @@
         NuxtLink.room-comment-item__mention(v-if="mention" :to="profilePath(comment.replyToUser)") @{{ comment.replyToUser.username }}
         | {{ ' ' + contentWithoutMention }}
       .room-comment-item__actions
-        button.room-comment-item__action.room-comment-item__action--like(
+        ActionButton.room-comment-item__action--like(
+          :label="$t('comments.like')"
+          icon="tabler:thumb-up"
           auth-control
-          :class="{ 'is-active': state.likedByMe }"
+          tone="brand"
+          active-icon="tabler:thumb-up-filled"
+          :active="state.likedByMe"
+          :count="state.likeCount"
           @click="toggleLike"
         )
-          AppIcon(:name="state.likedByMe ? 'tabler:thumb-up-filled' : 'tabler:thumb-up'")
-          span {{ state.likeCount }}
-        button.room-comment-item__action(v-if="!isReply" @click="toggleReplies")
-          AppIcon(name="tabler:message")
-          span {{ state.replyCount }}
-        button.room-comment-item__action.room-comment-item__action--reply(auth-control @click="isReplying = !isReplying")
-          AppIcon(name="tabler:arrow-back-up")
-          span {{ $t('comments.reply') }}
-        button.room-comment-item__action(@click="isOpenMore = true")
-          AppIcon(name="tabler:dots")
+        ActionButton(
+          v-if="!isReply"
+          :label="$t('comments.replies')"
+          icon="tabler:message"
+          tone="info"
+          :count="state.replyCount"
+          @click="toggleReplies"
+        )
+        ActionButton.room-comment-item__action--reply(
+          icon="tabler:arrow-back-up"
+          auth-control
+          tone="info"
+          @click="isReplying = !isReplying"
+        ) {{ $t('comments.reply') }}
+        ActionButton(:label="$t('comments.moreTitle')" icon="tabler:dots" @click="isOpenMore = true")
 
     RoomCommentComposer(
       v-if="isReplying"
