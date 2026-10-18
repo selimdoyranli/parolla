@@ -1342,7 +1342,8 @@ export default {
     noScores: 'Henüz kimse oynamadı. İlk sen ol!',
     commentsTitle: 'Yorumlar',
     allComments: 'Tüm yorumlar ({count})',
-    noComments: 'Henüz yorum yok. İlk yorumu sen yap!'
+    noComments: 'Henüz yorum yok. İlk yorumu sen yap!',
+    writeComment: 'Yorum yap'
   },
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',

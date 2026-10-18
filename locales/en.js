@@ -1320,7 +1320,8 @@ export default {
     noScores: 'Nobody has played yet. Be the first!',
     commentsTitle: 'Comments',
     allComments: 'All comments ({count})',
-    noComments: 'No comments yet. Be the first!'
+    noComments: 'No comments yet. Be the first!',
+    writeComment: 'Write a comment'
   },
   common: {
     invalidUsername: 'Invalid username',

@@ -31,7 +31,7 @@ NuxtLink.quiz-card(
           AppIcon(name="tabler:crown" :width="12" :height="12")
 
   .quiz-card__body
-    .quiz-card__title-slot.quiz-card__title-slot--inline(v-if="quizTypePill")
+    .quiz-card__title-slot.quiz-card__title-slot--inline
       PlayerAvatar.quiz-card__author.quiz-card__author--inline(
         with-username
         :size="24"
@@ -39,17 +39,7 @@ NuxtLink.quiz-card(
         :open-player-dialog-on-click="!room.isAnon && !!room.user"
       )
 
-      span.quiz-card__quiz-label(:class="`quiz-card__quiz-label--${quizTypePill.key}`")
-        img.quiz-card__quiz-label-versus(
-          v-if="quizTypePill.key === 'choices'"
-          src="/img/elements/versus.webp"
-          alt
-          draggable="false"
-          width="18"
-          height="18"
-        )
-        AppIcon.quiz-card__quiz-label-icon(v-else :name="quizTypePill.icon" :width="16" :height="16")
-        span.quiz-card__quiz-label-text {{ quizTypePill.label }}
+      QuizTypeLabel.quiz-card__quiz-label(:room="room")
 
     .quiz-card__tags
       template(v-if="room.tags && room.tags.length > 0")
@@ -97,8 +87,7 @@ NuxtLink.quiz-card(
 </template>
 
 <script>
-import { defineComponent, useContext, computed } from '@nuxtjs/composition-api'
-import { quizTypeEnum, questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'QuizCard',
@@ -125,7 +114,6 @@ export default defineComponent({
   },
   emits: ['edit', 'delete'],
   setup(props, { emit }) {
-    const { i18n } = useContext()
     const { isOwner } = useAuth()
 
     const hasCoverPhoto = computed(() => Boolean(props.room?.coverPhoto?.url))
@@ -154,30 +142,6 @@ export default defineComponent({
       return String(n)
     }
 
-    const quizTypePill = computed(() => {
-      const room = props.room
-
-      if (!room) return { key: 'qa', icon: 'tabler:message-question', label: i18n.t('general.quiz') }
-
-      if (room.quizType === quizTypeEnum.CHOICES) {
-        return { key: 'choices', icon: null, label: i18n.t('general.thisOrThatQuiz') }
-      }
-
-      if (room.quizType === quizTypeEnum.FLASHCARDS) {
-        return { key: 'flashcards', icon: 'streamline-color:cards-flat', label: i18n.t('general.flashcardsQuiz') }
-      }
-
-      if (room.questionTypeDominance === questionTypeEnum.MEDIA) {
-        return { key: 'media', icon: 'streamline-flex-color:gallery-flat', label: i18n.t('general.photoQuiz') }
-      }
-
-      if (room.answerTypeDominance === answerTypeEnum.TRIVIA) {
-        return { key: 'trivia', icon: 'streamline-flex-color:table-flat', label: i18n.t('general.triviaQuiz') }
-      }
-
-      return { key: 'qa', icon: 'tabler:message-question', label: i18n.t('general.quiz') }
-    })
-
     const onEdit = () => emit('edit', { room: props.room })
     const onDelete = () => emit('delete', { room: props.room })
 
@@ -187,7 +151,6 @@ export default defineComponent({
       hasRating,
       formatRating,
       formatCount,
-      quizTypePill,
       onEdit,
       onDelete
     }

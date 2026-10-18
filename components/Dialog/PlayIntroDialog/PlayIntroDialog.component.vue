@@ -17,6 +17,7 @@ Dialog.dialog.dialog--scene.play-intro(
     :sublabel="coverSublabel"
   )
     h2.play-intro__title(v-if="isCreator") {{ room.title }}
+    QuizTypeLabel.play-intro__type(v-if="isCreator" :room="room")
 
   .play-intro__body
     p.play-intro__description(v-if="isCreator && room.description") {{ room.description }}
@@ -48,7 +49,10 @@ Dialog.dialog.dialog--scene.play-intro(
               span.gm-username-extra(v-if="creatorUser.role?.name === 'GM'") &nbsp;(GM)
             strong(v-else) {{ $t('playIntro.anon') }}
 
-    Collapse.play-intro__rules(v-model="rulesOpen" :border="false")
+    hr.play-intro__divider(v-if="isCreator")
+
+    //- creator rooms skip the rules; daily / unlimited keep them
+    Collapse.play-intro__rules(v-if="!isCreator" v-model="rulesOpen" :border="false")
       CollapseItem(name="rules" icon="question-o" :title="$t('playIntro.howToPlay')")
         HowToPlayContent
 
@@ -81,8 +85,10 @@ Dialog.dialog.dialog--scene.play-intro(
           .play-intro__comment-body
             strong {{ comment.user.username }}
             p {{ comment.content }}
-      p.play-intro__empty(v-else-if="!comments.pending && !comments.failed") {{ $t('playIntro.noComments') }}
-      Button.play-intro__more(round size="small" @click="openReviews") {{ $t('playIntro.allComments', { count: room.reviewCount || 0 }) }}
+      Empty.play-intro__comments-empty(v-else-if="!comments.pending && !comments.failed" :description="$t('playIntro.noComments')")
+        Button.play-intro__more(round size="small" @click="openReviews") {{ $t('playIntro.writeComment') }}
+      Button.play-intro__more(v-if="comments.items.length || comments.failed" round size="small" @click="openReviews")
+        | {{ $t('playIntro.allComments', { count: room.reviewCount || 0 }) }}
 
     .play-intro__ad
       AppAd(v-if="isDesktop" :data-ad-slot="9964323575")
@@ -98,7 +104,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
 <script>
 import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, Button, Collapse, CollapseItem, Loading } from 'vant'
+import { Dialog, Button, Collapse, CollapseItem, Loading, Empty } from 'vant'
 import { useMediaQuery } from '@vueuse/core'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
@@ -111,7 +117,8 @@ export default defineComponent({
     Button,
     Collapse,
     CollapseItem,
-    Loading
+    Loading,
+    Empty
   },
   props: {
     isOpen: {

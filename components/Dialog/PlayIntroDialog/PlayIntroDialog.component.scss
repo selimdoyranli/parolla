@@ -40,6 +40,27 @@
     -webkit-box-orient: vertical;
   }
 
+  // quiz-type pill in the cover's top-right corner, on a solid surface so it reads over any cover
+  & &__type {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    background-color: var(--color-ui-01);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &__divider {
+    margin: 4px 0 12px;
+    border: 0;
+    border-top: 1px solid var(--color-border-02);
+    opacity: 1;
+  }
+
+  &__comments-empty {
+    padding: 8px 0;
+  }
+
   &__cover--photo &__title {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
   }
