@@ -116,18 +116,16 @@
       padding-inline-end: var(--quiz-carousel-pill-zone);
     }
 
-    &__quiz-label-text {
+    // the pill's inner parts belong to QuizTypeLabel, so they're reached through its own classes
+    &__quiz-label .quiz-type-label__text {
+      min-width: 0;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
     }
 
-    &__quiz-label-icon svg {
-      width: 11px !important;
-      height: 11px !important;
-    }
-
-    &__quiz-label-versus {
+    &__quiz-label .quiz-type-label__icon svg,
+    &__quiz-label .quiz-type-label__versus {
       width: 11px !important;
       height: 11px !important;
     }

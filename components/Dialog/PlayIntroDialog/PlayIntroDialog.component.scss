@@ -73,6 +73,11 @@
     opacity: 1;
   }
 
+  // show the whole photo instead of cropping it to the banner
+  &__cover--photo .quiz-cover__photo {
+    object-fit: contain;
+  }
+
   &__cover--photo &__title {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
   }
