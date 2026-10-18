@@ -22,9 +22,9 @@
             Timeago.profile-reviews-tab__date(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
 
           p.profile-reviews-tab__text
-            strong.profile-reviews-tab__mention(v-if="needsMention(item)") @{{ item.replyToUser.username }}
+            strong.profile-reviews-tab__mention(v-if="item.replyToUser") @{{ item.replyToUser.username }}
             |
-            | {{ item.content }}
+            | {{ contentWithoutMention(item) }}
 
     InfiniteLoading(:key="playerId" v-if="hasMore" @infinite="handleInfinite")
       template(#spinner)
@@ -65,8 +65,12 @@ export default defineComponent({
         query: { comment: item.documentId }
       })
 
-    // Replies posted with the composer may already carry the "@name " text in their content
-    const needsMention = item => item.replyToUser && !item.content.startsWith(`@${item.replyToUser.username}`)
+    // mention comes from replyToUser; older replies also carry an "@username " prefix in the text
+    const contentWithoutMention = item => {
+      const prefix = item.replyToUser && `@${item.replyToUser.username}`
+
+      return prefix && item.content.startsWith(prefix) ? item.content.slice(prefix.length).trimStart() : item.content
+    }
 
     const load = async (isLoadMore = false) => {
       if (!playerId.value) return null
@@ -133,7 +137,7 @@ export default defineComponent({
       reload,
       handleInfinite,
       roomLocation,
-      needsMention
+      contentWithoutMention
     }
   }
 })

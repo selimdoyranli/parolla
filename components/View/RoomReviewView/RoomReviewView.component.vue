@@ -68,7 +68,6 @@
         ref="composerRef"
         :room-id="room.id"
         :parent="replyTarget && replyTarget.parent"
-        :mention="replyTarget && replyTarget.mention"
         :reply-to="replyTarget && replyTarget.username"
         :autofocus="Boolean(replyTarget)"
         @posted="handlePosted"

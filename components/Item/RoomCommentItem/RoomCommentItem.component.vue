@@ -145,10 +145,16 @@ export default defineComponent({
     const isOpenReportDialog = ref(false)
     const replies = reactive({ items: [...(props.comment.previewReplies || [])], page: 0, hasMore: true, pending: false })
 
-    const mention = computed(() => props.comment.replyToUser && props.comment.content?.startsWith(`@${props.comment.replyToUser.username}`))
-    const contentWithoutMention = computed(() =>
-      mention.value ? props.comment.content.slice(props.comment.replyToUser.username.length + 1).trimStart() : props.comment.content
-    )
+    // the @mention comes from replyToUser (who actually gets notified), never from the typed text
+    const mention = computed(() => Boolean(props.comment.replyToUser))
+    // older replies were saved with an "@username " prefix in the text; strip it so it isn't shown twice
+    const contentWithoutMention = computed(() => {
+      const prefix = props.comment.replyToUser && `@${props.comment.replyToUser.username}`
+
+      return prefix && props.comment.content?.startsWith(prefix)
+        ? props.comment.content.slice(prefix.length).trimStart()
+        : props.comment.content
+    })
 
     const isOwn = computed(() => $auth.loggedIn && props.comment.user && props.comment.user.id === $auth.user?.id)
     const reportAdditional = computed(() =>
@@ -200,9 +206,7 @@ export default defineComponent({
     // guests only get the replies; the input needs an account
     const replyTargetOf = () => ({
       parent: props.comment.documentId,
-      username: props.comment.user?.username,
-      // replies to a reply start with its author's @mention, like the server's replyToUser
-      mention: isReply.value ? props.comment.user?.username : null
+      username: props.comment.user?.username
     })
 
     // replying needs an account (auth-control prompts guests to log in)

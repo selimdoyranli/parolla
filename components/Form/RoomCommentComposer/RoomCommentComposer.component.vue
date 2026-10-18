@@ -40,7 +40,6 @@ export default defineComponent({
   props: {
     roomId: { type: Number, required: true },
     parent: { type: String, default: null },
-    mention: { type: String, default: null },
     // username shown in the "replying to" bar; null for a root comment
     replyTo: { type: String, default: null },
     autofocus: { type: Boolean, default: false }
@@ -52,7 +51,7 @@ export default defineComponent({
     const { censorBadwords } = useCensorBadwords()
 
     const form = reactive({
-      content: props.mention ? `@${props.mention} ` : '',
+      content: '',
       pending: false
     })
 
