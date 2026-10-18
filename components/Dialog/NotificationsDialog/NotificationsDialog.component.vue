@@ -105,7 +105,12 @@ export default defineComponent({
         localePath({
           name: 'CreatorMode-CreatorModeRoom-slug',
           params: { slug: item.room.roomId },
-          query: item.comment ? { comment: item.comment.documentId } : {}
+          // a rating notification points at the rater's row in the Puanlar list
+          query: item.comment
+            ? { comment: item.comment.documentId }
+            : item.type === 'room_rated' && item.actor
+            ? { rating: item.actor.id }
+            : {}
         })
       )
     }

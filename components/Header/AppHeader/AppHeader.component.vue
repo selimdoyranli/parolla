@@ -109,7 +109,12 @@
     @closed="dialog.ownerStats.isOpen = false"
   )
   // Room Review Dialog
-  LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" :target-comment-id="targetCommentId" @closed="handleRoomReviewClosed")
+  LazyRoomReviewDialog(
+    :isOpen="dialog.roomReview.isOpen"
+    :target-comment-id="targetCommentId"
+    :target-rating-user-id="targetRatingUserId"
+    @closed="handleRoomReviewClosed"
+  )
 </template>
 
 <script>
@@ -193,12 +198,15 @@ export default defineComponent({
 
     // deep link from notifications / profile: ?comment=<documentId> opens the reviews dialog pinned to it
     const targetCommentId = ref(null)
+    const targetRatingUserId = ref(null)
 
+    // ?comment=<documentId> pins a comment; ?rating=<userId> jumps to that player's rating row
     watch(
-      () => [route.value.query.comment, room.value?.id],
-      ([comment, roomId]) => {
-        if (comment && roomId && activeGameMode.value === gameModeKeyEnum.CREATOR) {
-          targetCommentId.value = comment
+      () => [route.value.query.comment, route.value.query.rating, room.value?.id],
+      ([comment, rating, roomId]) => {
+        if ((comment || rating) && roomId && activeGameMode.value === gameModeKeyEnum.CREATOR) {
+          targetCommentId.value = comment || null
+          targetRatingUserId.value = rating || null
           dialog.roomReview.isOpen = true
         }
       },
@@ -208,9 +216,10 @@ export default defineComponent({
     const handleRoomReviewClosed = () => {
       dialog.roomReview.isOpen = false
 
-      if (targetCommentId.value) {
+      if (targetCommentId.value || targetRatingUserId.value) {
         targetCommentId.value = null
-        router.replace({ query: { ...route.value.query, comment: undefined } })
+        targetRatingUserId.value = null
+        router.replace({ query: { ...route.value.query, comment: undefined, rating: undefined } })
       }
     }
 
@@ -408,6 +417,7 @@ export default defineComponent({
       unreadCount,
       toggleNotificationsDialog,
       targetCommentId,
+      targetRatingUserId,
       handleRoomReviewClosed,
       announcementsCount,
       toggleAnnouncementsDialog,

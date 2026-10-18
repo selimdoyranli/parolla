@@ -82,7 +82,11 @@
       :error-text="$t('comments.error')"
       @load="loadRatings"
     )
-      .room-review-view__rating-row(v-for="item in ratingList.items" :key="item.documentId")
+      .room-review-view__rating-row(
+        v-for="item in ratingList.items"
+        :key="item.documentId"
+        :id="item.user ? `rating-${item.user.id}` : null"
+      )
         PlayerAvatar(v-if="item.user" :size="32" :user="item.user")
         span.room-review-view__rating-user {{ item.user && item.user.username }}
         Timeago.room-review-view__rating-time(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
@@ -108,7 +112,8 @@ import { Rate, List, Empty, Toast } from 'vant'
 export default defineComponent({
   components: { Rate, List, Empty },
   props: {
-    targetCommentId: { type: String, default: null }
+    targetCommentId: { type: String, default: null },
+    targetRatingUserId: { type: [String, Number], default: null }
   },
   setup(props) {
     const store = useStore()
@@ -242,19 +247,44 @@ export default defineComponent({
     const lastReply = ref(null)
     const composerRef = ref(null)
 
-    const flash = documentId =>
+    const flashElement = (elementId, className) =>
       nextTick(() => {
-        const el = document.getElementById(`comment-${documentId}`)
+        const el = document.getElementById(elementId)
 
         if (!el) return
 
         el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        el.classList.remove('room-comment-item--flash')
-        // restart the animation when the same comment is tapped again
+        el.classList.remove(className)
+        // restart the animation when the same element is targeted again
         void el.offsetWidth
-        el.classList.add('room-comment-item--flash')
-        setTimeout(() => el.classList.remove('room-comment-item--flash'), 1600)
+        el.classList.add(className)
+        setTimeout(() => el.classList.remove(className), 1600)
       })
+
+    const flash = documentId => flashElement(`comment-${documentId}`, 'room-comment-item--flash')
+
+    // rating notification: open Puanlar and page until the rater's row is loaded (max 5 pages)
+    const focusRating = async () => {
+      const userId = props.targetRatingUserId
+
+      if (!userId || !room.value?.id) return
+
+      // loading first so the filter watcher doesn't start a parallel first page
+      Object.assign(ratingList, { items: [], page: 0, finished: false, error: false, loading: true })
+      filter.value = 'ratings'
+
+      for (let i = 0; i < 5; i++) {
+        await loadRatings()
+
+        const found = ratingList.items.some(r => String(r.user?.id) === String(userId))
+
+        if (found || ratingList.finished || ratingList.error) break
+
+        ratingList.loading = true
+      }
+
+      setTimeout(() => flashElement(`rating-${userId}`, 'room-review-view__rating-row--flash'), 150)
+    }
 
     const startReply = target => {
       replyTarget.value = target
@@ -294,6 +324,7 @@ export default defineComponent({
     }
 
     watch(() => props.targetCommentId, loadPinned)
+    watch(() => props.targetRatingUserId, focusRating)
 
     // van-list mounted by the filter switch does not check itself, so kick the first ratings page
     watch(filter, value => {
@@ -314,6 +345,12 @@ export default defineComponent({
         Object.assign(comments, { items: [], page: 0, finished: false, error: false })
         Object.assign(ratingList, { items: [], page: 0, finished: false, error: false })
 
+        if (props.targetRatingUserId) {
+          focusRating()
+
+          return
+        }
+
         // van-list only re-checks on loading/finished changes, so load the visible list directly
         if (filter.value === 'comments') {
           comments.loading = true
@@ -328,6 +365,7 @@ export default defineComponent({
     onMounted(() => {
       loadRatingSummary()
       loadPinned()
+      focusRating()
     })
 
     return {

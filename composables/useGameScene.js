@@ -367,17 +367,17 @@ export default () => {
     carousels.alphabet = alphabetCarousel
   }
 
-  // Arriving from a notification (?comment=…) opens the reviews dialog first. Hold the how-to-play
+  // Arriving from a notification (?comment=… or ?rating=…) opens the reviews dialog first. Hold the how-to-play
   // dialog — and so the game start, which waits for it to close — until that deep link is cleared
   // (the reviews dialog removes ?comment when it closes). Scenes keep writing dialog.howToPlay.isOpen.
   const route = useRoute()
   const howToPlayWanted = ref(true)
-  const isHowToPlayHeld = ref(Boolean(route.value?.query?.comment))
+  const isHowToPlayHeld = ref(Boolean(route.value?.query?.comment || route.value?.query?.rating))
 
   watch(
-    () => route.value?.query?.comment,
-    comment => {
-      if (!comment) isHowToPlayHeld.value = false
+    () => route.value?.query?.comment || route.value?.query?.rating,
+    target => {
+      if (!target) isHowToPlayHeld.value = false
     }
   )
 

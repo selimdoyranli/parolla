@@ -61,6 +61,12 @@
     border-bottom: 1px solid var(--color-ui-03);
   }
 
+  // rating notification target: blink grey twice
+  &__rating-row--flash {
+    border-radius: 12px;
+    animation: room-review-rating-flash 0.8s ease-in-out 2;
+  }
+
   &__rating-time {
     color: var(--color-text-03);
     font-size: 12px;
@@ -70,5 +76,16 @@
     flex: 1;
     color: var(--color-brand-02);
     font-weight: bold;
+  }
+}
+
+@keyframes room-review-rating-flash {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: var(--color-ui-03);
   }
 }

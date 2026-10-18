@@ -9,7 +9,7 @@ Dialog.dialog.room-review-dialog(
   @closed="$emit('closed')"
   @opened="$emit('opened')"
 )
-  RoomReviewView(:key="viewKey" :target-comment-id="targetCommentId")
+  RoomReviewView(:key="viewKey" :target-comment-id="targetCommentId" :target-rating-user-id="targetRatingUserId")
 </template>
 
 <script>
@@ -28,6 +28,12 @@ export default defineComponent({
     },
     targetCommentId: {
       type: String,
+      required: false,
+      default: null
+    },
+    // user id from ?rating=; the view switches to Puanlar and flashes that player's row
+    targetRatingUserId: {
+      type: [String, Number],
       required: false,
       default: null
     },
