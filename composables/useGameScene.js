@@ -778,8 +778,25 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
       // textContent, not innerText: innerText is empty while the question is hidden behind the start countdown
       titleElement.innerHTML = breakLongWords(titleElement.textContent)
 
+      // The question's CSS height is a guess off --vh; with a tall keyboard (Samsung's number row +
+      // Chrome's autofill bar) the box reaches under the fixed answer field. Cap it to the real gap.
+      activeQuestion.style.height = ''
+      const fieldSection = rootRef.value.querySelector('.game-scene__fieldSection')
+
+      if (fieldSection) {
+        // .game-scene gets `zoom` on short screens; rects are zoomed, the height we set is not
+        const zoom = parseFloat(getComputedStyle(rootRef.value).zoom) || 1
+        const questionRect = activeQuestion.getBoundingClientRect()
+        const available = (fieldSection.getBoundingClientRect().top - questionRect.top) / zoom - 8
+
+        if (available < questionRect.height / zoom) {
+          activeQuestion.style.height = `${Math.max(available, 40)}px`
+        }
+      }
+
       textfit(activeQuestion, {
-        minFontSize: 16,
+        // low floor so long questions still fit the short box left above the keyboard
+        minFontSize: 12,
         maxFontSize: 30
       })
     }
