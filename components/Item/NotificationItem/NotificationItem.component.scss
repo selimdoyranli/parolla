@@ -1,0 +1,48 @@
+.notification-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--color-ui-03);
+  cursor: pointer;
+
+  &--unread {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 8%, transparent);
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--color-text-02);
+  }
+
+  &__owner {
+    margin-inline-start: 6px;
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+  }
+
+  &__excerpt {
+    margin: 2px 0 0;
+    overflow: hidden;
+    color: var(--color-text-03);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    color: var(--color-text-03);
+  }
+
+  &__dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-danger-01, #f00);
+    border-radius: 50%;
+  }
+}

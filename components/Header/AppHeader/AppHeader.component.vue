@@ -35,6 +35,9 @@
       AppIcon.me-2(v-if="room.reviewCount > 0" name="tabler:message-2" :label="room.reviewCount")
       AppIcon(v-else name="tabler:message-2")
 
+    li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
+      AppIcon(name="tabler:bell" :label="unreadCount" max99-number)
+
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")
         PlayerAvatar(:user="user" :is-visitor="!$auth.loggedIn")
@@ -80,12 +83,14 @@
     @closed="dialog.announcements.isOpen = false"
     @on-fetch-success="handleFetchAnnouncementsSuccess"
   )
+  // Notifications Dialog
+  LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
   // Room Review Dialog
-  LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" @closed="dialog.roomReview.isOpen = false")
+  LazyRoomReviewDialog(:isOpen="dialog.roomReview.isOpen" :target-comment-id="targetCommentId" @closed="handleRoomReviewClosed")
 </template>
 
 <script>
-import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
@@ -93,7 +98,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const { localePath, getRouteBaseName, i18n } = useContext()
+    const { localePath, getRouteBaseName, i18n, $auth } = useContext()
     const store = useStore()
 
     const { formatMillions } = useFormatter()
@@ -129,8 +134,46 @@ export default defineComponent({
       },
       roomReview: {
         isOpen: false
+      },
+      notifications: {
+        isOpen: false
       }
     })
+
+    const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    const toggleNotificationsDialog = () => {
+      dialog.notifications.isOpen = !dialog.notifications.isOpen
+    }
+
+    watch(
+      () => $auth.loggedIn,
+      loggedIn => store.dispatch(loggedIn ? 'notification/startPolling' : 'notification/stopPolling'),
+      { immediate: true }
+    )
+
+    // deep link from notifications / profile: ?comment=<documentId> opens the reviews dialog pinned to it
+    const targetCommentId = ref(null)
+
+    watch(
+      () => [route.value.query.comment, room.value?.id],
+      ([comment, roomId]) => {
+        if (comment && roomId && activeGameMode.value === gameModeKeyEnum.CREATOR) {
+          targetCommentId.value = comment
+          dialog.roomReview.isOpen = true
+        }
+      },
+      { immediate: true }
+    )
+
+    const handleRoomReviewClosed = () => {
+      dialog.roomReview.isOpen = false
+
+      if (targetCommentId.value) {
+        targetCommentId.value = null
+        router.replace({ query: { ...route.value.query, comment: undefined } })
+      }
+    }
 
     const dailyDialog = computed(() => store.getters['daily/dialog'])
     const unlimitedDialog = computed(() => store.getters['unlimited/dialog'])
@@ -322,6 +365,10 @@ export default defineComponent({
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,
+      unreadCount,
+      toggleNotificationsDialog,
+      targetCommentId,
+      handleRoomReviewClosed,
       announcementsCount,
       toggleAnnouncementsDialog,
       handleFetchAnnouncementsSuccess,
