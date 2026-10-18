@@ -9,6 +9,9 @@
 
       p.guess-the-song-scene__subtitle {{ $t('musicMode.guessTheSong.subtitle') }}
 
+    //- music_guess_horizontal
+    AppAd.guess-the-song-scene__ad(format="horizontal" :data-ad-slot="2530321728")
+
     form.guess-the-song-scene-form
       MusicArtistSelect(
         ref="musicArtistSelectRef"
