@@ -24,7 +24,8 @@
 
     template
       // Questions
-      .questions
+      .questions(:class="{ 'questions--counting': startCountdown }")
+        StartCountdown(v-if="startCountdown" :value="startCountdown")
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
           strong.question__title(v-if="question.question?.length > 0 && question.questionType !== questionTypeEnum.MEDIA") {{ question.question }}
 
@@ -128,6 +129,7 @@ export default defineComponent({
     const {
       setRootRef,
       isGameStarted,
+      startCountdown,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -151,7 +153,7 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene()
+    } = useGameScene({ inlineCountdown: true })
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
@@ -337,6 +339,7 @@ export default defineComponent({
       rootRef,
       ANSWER_CHAR_LENGTH,
       isGameStarted,
+      startCountdown,
       isGameOver,
       alphabet,
       questions,

@@ -1319,7 +1319,7 @@ export default {
     }
   },
   playIntro: {
-    play: 'OYNA',
+    play: 'OYUNA BAŞLA',
     share: 'Paylaş',
     rate: 'Puan Ver',
     howToPlay: 'Nasıl oynanır?',

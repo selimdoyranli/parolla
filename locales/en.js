@@ -1297,7 +1297,7 @@ export default {
     }
   },
   playIntro: {
-    play: 'PLAY',
+    play: 'START GAME',
     share: 'Share',
     rate: 'Rate',
     howToPlay: 'How to play?',

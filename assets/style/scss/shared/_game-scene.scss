@@ -304,6 +304,11 @@
   }
 
   // Field Section
+  // keeps the question laid out (textFit measures it) while the start countdown covers it
+  .questions--counting .question {
+    visibility: hidden;
+  }
+
   &__fieldSection {
     position: fixed !important;
     top: calc(var(--vh) - var(--answer-field-height) - var(--base-p-y));

@@ -34,7 +34,8 @@
 
     template(v-else)
       // Questions
-      .questions
+      .questions(:class="{ 'questions--counting': startCountdown }")
+        StartCountdown(v-if="startCountdown" :value="startCountdown")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
@@ -126,6 +127,7 @@ export default defineComponent({
     const {
       setRootRef,
       isGameStarted,
+      startCountdown,
       isGameOver,
       alphabet,
       alphabetItemClasses,
@@ -149,7 +151,7 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene()
+    } = useGameScene({ inlineCountdown: true })
 
     const unlimitedDialog = computed(() => store.getters['unlimited/dialog'])
 
@@ -227,6 +229,7 @@ export default defineComponent({
       fetchState,
       reFetch,
       isGameStarted,
+      startCountdown,
       isGameOver,
       alphabet,
       questions,

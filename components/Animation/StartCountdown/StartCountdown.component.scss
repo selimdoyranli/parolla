@@ -1,0 +1,57 @@
+.start-countdown {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  pointer-events: none;
+
+  &__card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+    color: #111;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 1;
+    border-radius: 28px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+
+    &--3 {
+      background: #98dbf5;
+    }
+
+    &--2 {
+      background: #ffd36b;
+    }
+
+    &--1 {
+      background: #ff9f9f;
+    }
+
+    &--go {
+      font-size: 52px;
+      background: #7fe0a4;
+    }
+  }
+}
+
+// each card turns in edge-on and turns out the other way, so the steps read as one card flipping
+.start-countdown-flip-enter-active,
+.start-countdown-flip-leave-active {
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.start-countdown-flip-enter {
+  transform: rotateY(-90deg) scale(0.9);
+  opacity: 0;
+}
+
+.start-countdown-flip-leave-to {
+  transform: rotateY(90deg) scale(0.9);
+  opacity: 0;
+}

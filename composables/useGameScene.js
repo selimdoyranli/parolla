@@ -13,7 +13,8 @@ import textfit from 'textfit'
 import { Notify, Toast } from 'vant'
 import { showToast } from '@/helpers/toast'
 
-export default () => {
+// inlineCountdown: the scene shows a 3-2-1-GO card over its question area instead of the blocking start toast
+export default ({ inlineCountdown = false } = {}) => {
   const { i18n, $ua, $auth } = useContext()
   const store = useStore()
 
@@ -27,6 +28,8 @@ export default () => {
   }
 
   const isGameStarted = ref(false)
+  // 3 | 2 | 1 | 'GO' while the inline start countdown runs, null otherwise
+  const startCountdown = ref(null)
 
   const isGameOver = computed(() => store.getters[`${activeGameMode.value}/isGameOver`])
 
@@ -500,6 +503,41 @@ export default () => {
       questionFitText()
     }, 0) // DOM Bypass
 
+    const beginGame = () => {
+      countdownTimerRef.value.start()
+      isGameStarted.value = true
+      startSoundFx.play()
+
+      if ($ua.isFromAndroidOs()) {
+        focusToAnswerFieldInput()
+      }
+
+      window.localStorage.setItem(`${activeGameMode.value}CorrectAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}WrongAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}PassedAnswers`, JSON.stringify([]))
+      window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify([]))
+    }
+
+    if (inlineCountdown) {
+      const steps = [3, 2, 1, 'GO']
+
+      startCountdown.value = steps.shift()
+
+      const timer = setInterval(() => {
+        if (steps.length) {
+          startCountdown.value = steps.shift()
+
+          return
+        }
+
+        clearInterval(timer)
+        startCountdown.value = null
+        beginGame()
+      }, 1000)
+
+      return
+    }
+
     const startGameToastMessage = `
         <img class='start-game-toast__spinner' src="/img/core/loader.svg" />
         <div class="start-game-toast-info">
@@ -529,20 +567,7 @@ export default () => {
       }
     }, 1000)
 
-    setTimeout(() => {
-      countdownTimerRef.value.start()
-      isGameStarted.value = true
-      startSoundFx.play()
-
-      if ($ua.isFromAndroidOs()) {
-        focusToAnswerFieldInput()
-      }
-
-      window.localStorage.setItem(`${activeGameMode.value}CorrectAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}WrongAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}PassedAnswers`, JSON.stringify([]))
-      window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify([]))
-    }, second * 1000 + 1000)
+    setTimeout(beginGame, second * 1000 + 1000)
   }
 
   const endGame = async () => {
@@ -797,6 +822,7 @@ export default () => {
   return {
     setRootRef,
     isGameStarted,
+    startCountdown,
     isGameOver,
     alphabet,
     alphabetItemClasses,
