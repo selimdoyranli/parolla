@@ -935,7 +935,7 @@ export default {
     ratingsEmpty: 'Henüz puan verilmedi',
     yourRating: 'Puanın: {rating}',
     rateThisQuiz: 'Bu quizi puanla',
-    ratingCount: '{count} puan',
+    ratingCount: '({count} oyuncu puan verdi)',
     rated: 'Puanın kaydedildi',
     alreadyRated: 'Bu quizi zaten puanladın',
     error: 'Bir şeyler ters gitti, tekrar dene'

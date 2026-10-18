@@ -917,7 +917,7 @@ export default {
     ratingsEmpty: 'No ratings yet',
     yourRating: 'Your rating: {rating}',
     rateThisQuiz: 'Rate this quiz',
-    ratingCount: '{count} ratings',
+    ratingCount: '({count} players rated)',
     rated: 'Rating saved',
     alreadyRated: 'You already rated this quiz',
     error: 'Something went wrong, try again'
