@@ -23,8 +23,10 @@
         )
 
   .room-review-view__filter
+    h4.room-review-view__filter-title
+      | {{ filter === 'comments' ? $t('comments.filter.comments') : $t('comments.filter.ratings') }}
+      span.room-review-view__filter-count ({{ filter === 'comments' ? room.reviewCount || 0 : ratings.count }})
     FilterDropdown(
-      direction="center"
       :options="filterOptions"
       :selected="filterOptions.find(o => o.value === filter)"
       @on-select-option="option => (filter = option.value)"

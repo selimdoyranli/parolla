@@ -21,8 +21,22 @@
 
   &__filter {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
     margin: 12px 0 8px;
+  }
+
+  &__filter-title {
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: var(--font-size-text-8);
+  }
+
+  &__filter-count {
+    margin-inline-start: 4px;
+    color: var(--color-text-03);
+    font-weight: 500;
   }
 
   &__composer {

@@ -14,7 +14,8 @@
       rows="1"
       autosize
       auth-control
-      :maxlength="512"
+      show-word-limit
+      :maxlength="COMMENT_CHAR_LENGTH"
       :readonly="!$auth.loggedIn"
     )
     Button.room-comment-composer__send(
@@ -32,6 +33,7 @@
 <script>
 import { defineComponent, reactive, ref, onMounted, nextTick, useStore, useContext } from '@nuxtjs/composition-api'
 import { Field, Button, Toast } from 'vant'
+import { COMMENT_CHAR_LENGTH } from '@/system/constant'
 
 export default defineComponent({
   components: { Field, Button },
@@ -93,7 +95,7 @@ export default defineComponent({
       emit('posted', data.item)
     }
 
-    return { form, fieldRef, focus, submit }
+    return { COMMENT_CHAR_LENGTH, form, fieldRef, focus, submit }
   }
 })
 </script>
