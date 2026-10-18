@@ -166,6 +166,11 @@ export default defineComponent({
       }
     })
 
+    // the dialog is unmounted with the room page, so its `closed` may never fire
+    watch(isRoomOwner, value => {
+      if (!value) dialog.ownerStats.isOpen = false
+    })
+
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
 
     const toggleNotificationsDialog = () => {

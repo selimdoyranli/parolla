@@ -29,7 +29,12 @@ Dialog.dialog.room-owner-stats-dialog(
       :error-text="$t('comments.error')"
       @load="loadPlayers"
     )
-      NuxtLink.room-owner-stats-dialog__player(v-for="p in players.items" :key="p.user.id" :to="profilePath(p.user)")
+      NuxtLink.room-owner-stats-dialog__player(
+        v-for="p in players.items"
+        :key="p.user.id"
+        :to="profilePath(p.user)"
+        @click.native="state.isOpen = false"
+      )
         PlayerAvatar(:user="p.user" :size="32")
         span.room-owner-stats-dialog__player-name {{ p.user.username }}
         span.room-owner-stats-dialog__player-detail ✓{{ p.correct }} ✗{{ p.wrong }} ↷{{ p.passed }}
@@ -109,30 +114,39 @@ export default defineComponent({
 
     const profilePath = user => localePath({ name: 'Profile-username', params: { username: user.username } })
 
+    // request tokens: bumped on every open/reset so late responses from a previous state are dropped
+    let statsToken = 0
+    let playersToken = 0
+
     const loadStats = async () => {
+      const token = ++statsToken
       stats.value = null
       statsPending.value = true
       const { data } = await store.dispatch('creator/fetchOwnerStats', { roomId: props.roomId })
+
+      if (token !== statsToken) return
+
       statsPending.value = false
       stats.value = data || null
     }
 
     const resetPlayers = () => {
+      playersToken += 1
       Object.assign(players, { items: [], page: 0, loading: false, finished: false, error: false })
       // van-list only re-checks on loading/finished changes, so nudge it after a reset
       nextTick(() => listRef.value?.check())
     }
 
     const loadPlayers = async () => {
-      const requestSort = sort.value
+      const token = playersToken
       const { data, error } = await store.dispatch('creator/fetchOwnerPlayers', {
         roomId: props.roomId,
-        sort: requestSort,
+        sort: sort.value,
         page: players.page + 1
       })
 
       // sort switched or dialog reset while the request was in flight
-      if (requestSort !== sort.value) return
+      if (token !== playersToken) return
 
       players.loading = false
 
@@ -147,6 +161,7 @@ export default defineComponent({
       players.finished = !data.hasMore
     }
 
+    // immediate: the header can mount this with isOpen already true
     watch(
       () => props.isOpen,
       value => {
@@ -157,7 +172,8 @@ export default defineComponent({
           loadStats()
           resetPlayers()
         }
-      }
+      },
+      { immediate: true }
     )
 
     return { state, stats, statsPending, sort, sortOptions, listRef, players, cards, profilePath, resetPlayers, loadPlayers }
