@@ -564,7 +564,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
         return
       }
 
-      // backdrop is already up (isIntroSplashVisible); text and sound start half a second in.
+      // backdrop is already up (isIntroSplashVisible); text and sound start 200ms in.
       // The sound is 2s; the text holds a little longer so the title can be read
       setTimeout(() => {
         isIntroSplash.value = true
@@ -574,7 +574,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
           isIntroSplash.value = false
           runCountdown()
         }, 2800)
-      }, 500)
+      }, 200)
 
       return
     }
