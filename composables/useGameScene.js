@@ -789,6 +789,10 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     }
   }
 
+  // Android Chrome resizes only the visual viewport when the keyboard opens, so window 'resize' never fires.
+  // rAF lets the layout's --vh update land first, then the question is refit to its shrunken box.
+  const refitQuestionOnViewportResize = () => requestAnimationFrame(() => questionFitText())
+
   const handleBeforeUnload = event => {
     if (activeGameMode.value && activeGameMode.value.length > 0) {
       if (isGameStarted.value && !isGameOver.value) {
@@ -904,6 +908,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     listenCountdown,
     handleCountdownFinish,
     questionFitText,
+    refitQuestionOnViewportResize,
     handleBeforeUnload,
     scrollTop,
     isTouchEnabled,

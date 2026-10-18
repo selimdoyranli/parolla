@@ -16,6 +16,33 @@
   & &__cover--compact {
     aspect-ratio: auto;
     height: 120px;
+
+    @include media-breakpoint-down(mobile) {
+      height: 100px;
+
+      .quiz-cover__label {
+        font-size: var(--font-size-text-4);
+      }
+
+      .quiz-cover__sublabel {
+        margin-top: 2px;
+        font-size: var(--font-size-text-10);
+      }
+
+      .play-intro__stats--cover {
+        gap: 4px;
+        font-size: var(--font-size-text-10);
+      }
+
+      .play-intro__stat {
+        padding: 2px 6px;
+
+        svg {
+          width: 12px !important;
+          height: 12px !important;
+        }
+      }
+    }
   }
 
   &__body {
@@ -56,8 +83,10 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 
-  // only the top 10 are listed, so the board's own scroll box and bottom fade aren't needed
-  &__leaderboard .player-list {
+  // only the top 10 are listed, so the board's own scroll box and bottom fade aren't needed.
+  // .leaderboard is in the chain to outrank Leaderboard's own `.leaderboard .player-list` 30vh cap,
+  // which otherwise wins on load order and lets the rows spill over the link and the ad below
+  &__leaderboard .leaderboard .player-list {
     max-height: none;
     overflow-y: visible;
 
@@ -71,6 +100,11 @@
     border: 0;
     border-top: 1px solid var(--color-border-02);
     opacity: 1;
+  }
+
+  // show the whole photo instead of cropping it to the banner
+  &__cover--photo .quiz-cover__photo {
+    object-fit: contain;
   }
 
   &__cover--photo &__title {

@@ -158,6 +158,7 @@ export default defineComponent({
       listenCountdown,
       handleCountdownFinish,
       questionFitText,
+      refitQuestionOnViewportResize,
       handleBeforeUnload,
       scrollTop,
       isTouchEnabled,
@@ -234,6 +235,7 @@ export default defineComponent({
       window.addEventListener('keyup', event => handleAnswerFieldAutoFocus(event))
 
       window.addEventListener('resize', questionFitText)
+      window.visualViewport?.addEventListener('resize', refitQuestionOnViewportResize)
       window.addEventListener('resize', fitMediaQuestion)
       window.visualViewport?.addEventListener('resize', fitMediaQuestion)
       window.addEventListener('beforeunload', event => handleBeforeUnload(event))
@@ -253,6 +255,7 @@ export default defineComponent({
 
     onUnmounted(() => {
       window.removeEventListener('resize', questionFitText)
+      window.visualViewport?.removeEventListener('resize', refitQuestionOnViewportResize)
       window.removeEventListener('resize', fitMediaQuestion)
       window.visualViewport?.removeEventListener('resize', fitMediaQuestion)
       document.documentElement.classList.remove('creator-compact-header')
