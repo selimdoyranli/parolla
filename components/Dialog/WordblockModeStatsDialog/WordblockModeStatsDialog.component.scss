@@ -5,6 +5,12 @@
     overflow: auto;
   }
 
+  // over the scene the whole dialog content scrolls; no nested 40vh scroll box
+  &.dialog--scene .results {
+    max-height: none;
+    overflow: visible;
+  }
+
   .status-card {
     position: relative;
 
