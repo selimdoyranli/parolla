@@ -22,6 +22,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   const { activeGameMode } = useGameMode()
   const { encodeEnglish } = useFormatter()
   const { postToNative } = useNativeBridge()
+  const sfx = useSfx()
 
   const rootRef = ref(null)
   const setRootRef = element => {
@@ -542,12 +543,17 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     if (inlineCountdown) {
       const runCountdown = () => {
         const steps = [3, 2, 1, 'GO']
+        // one ping per number, a brighter success on GO!
+        const showStep = step => {
+          startCountdown.value = step
+          sfx.play(step === 'GO' ? 'success' : 'ping')
+        }
 
-        startCountdown.value = steps.shift()
+        showStep(steps.shift())
 
         const timer = setInterval(() => {
           if (steps.length) {
-            startCountdown.value = steps.shift()
+            showStep(steps.shift())
 
             return
           }
