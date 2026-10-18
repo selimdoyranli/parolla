@@ -60,7 +60,7 @@ Localized route mappings are defined in `nuxt.config.js` under the i18n `pages` 
 
 ### Vuex Store
 
-Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `draw/`. Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
+Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `draw/`, `comment/` (ratings, comments, replies, likes, thread), `notification/` (list, unread count, 60 s polling). Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
 
 ### Composables
 
@@ -71,7 +71,7 @@ Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`
 - **API client:** `$appFetch` plugin (`plugins/app-fetch.js`) wraps Axios with locale transformation, returning `{ data, error }` tuples
 - **Backend:** Strapi API at `API_URL` env var (default: `https://strapi.parolla.app/api`)
 - **WebSocket:** Real-time features via `isomorphic-ws` at `WS_URL` env var
-- **Transformers:** `transformers/` directory for normalizing API data (room, user, roomReview, scoreboard)
+- **Transformers:** `transformers/` directory for normalizing API data (room, user, roomComment, notification, scoreboard)
 
 ### Enums
 
