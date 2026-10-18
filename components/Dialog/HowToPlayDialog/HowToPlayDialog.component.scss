@@ -35,11 +35,21 @@
   }
 
   // Footer
+  // over the scene the content is a column so the footer sits at the bottom
+  &.dialog--scene #{$van-dialog}__content {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__footer {
     margin: var(--base-m-y) var(--base-m-x);
     padding: var(--base-p-y) var(--base-p-x);
     background-color: var(--color-ui-01);
     border-radius: var(--border-radius-01);
+
+    .dialog--scene & {
+      margin-top: auto;
+    }
   }
 
   &__ad {

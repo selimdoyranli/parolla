@@ -1,7 +1,7 @@
 <template lang="pug">
 Dialog.dialog.dialog--scene.stats-dialog.creator-mode-stats-dialog(
   v-model="state.isOpen"
-  transition="van-fade"
+  transition="dialog-scene-bounce"
   :overlay="false"
   :title="$t('general.stats')"
   :cancel-button-text="cancelButtonText || $t('general.close')"

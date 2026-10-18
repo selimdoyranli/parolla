@@ -23,5 +23,16 @@
       max-height: none;
       overflow: auto;
     }
+
+    // transition="dialog-scene-bounce": Vant's dialog scale in/out, keeping the horizontal centering
+    &.dialog-scene-bounce-enter {
+      transform: translateX(-50%) scale(0.7);
+      opacity: 0;
+    }
+
+    &.dialog-scene-bounce-leave-active {
+      transform: translateX(-50%) scale(0.9);
+      opacity: 0;
+    }
   }
 }
