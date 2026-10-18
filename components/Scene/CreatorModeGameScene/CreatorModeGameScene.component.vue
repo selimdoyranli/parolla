@@ -25,7 +25,7 @@
     template
       // Questions
       .questions(:class="{ 'questions--hidden': isQuestionHidden }")
-        StartCountdown(v-if="startCountdown" :value="startCountdown")
+        StartCountdown(:value="startCountdown")
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
           strong.question__title(v-if="question.question?.length > 0 && question.questionType !== questionTypeEnum.MEDIA") {{ question.question }}
 

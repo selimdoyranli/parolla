@@ -1,8 +1,8 @@
 <template lang="pug">
-//- pre-game 3-2-1-GO: each step is a coloured card that rolls in clockwise like a square wheel
+//- pre-game 3-2-1-GO: the cards share one spot; the outgoing one turns clockwise and fades while the next turns in
 .start-countdown(role="status" aria-live="assertive")
-  transition(name="start-countdown-flip" mode="out-in" appear)
-    .start-countdown__card(:key="value" :class="`start-countdown__card--${String(value).toLowerCase()}`")
+  transition(name="start-countdown-turn")
+    .start-countdown__card(:key="value" v-if="value" :class="`start-countdown__card--${String(value).toLowerCase()}`")
       | {{ value === 'GO' ? 'GO!' : value }}
 </template>
 
@@ -11,10 +11,11 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
-    // 3 | 2 | 1 | 'GO'
+    // 3 | 2 | 1 | 'GO', or null once the countdown is over (the last card then turns out)
     value: {
       type: [Number, String],
-      required: true
+      required: false,
+      default: null
     }
   }
 })

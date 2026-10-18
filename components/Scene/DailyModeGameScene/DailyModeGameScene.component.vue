@@ -35,7 +35,7 @@
     template(v-else)
       // Questions
       .questions(:class="{ 'questions--hidden': isQuestionHidden }")
-        StartCountdown(v-if="startCountdown" :value="startCountdown")
+        StartCountdown(:value="startCountdown")
         .question(
           v-for="(question, index) in questions"
           v-show="index === alphabet.activeIndex"
