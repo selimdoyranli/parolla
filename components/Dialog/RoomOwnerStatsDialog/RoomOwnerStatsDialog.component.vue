@@ -19,8 +19,7 @@ Dialog.dialog.room-owner-stats-dialog(
 
     .room-owner-stats-dialog__players-header
       h4 {{ $t('ownerStats.playersTitle') }}
-      DropdownMenu(:active-color="'var(--color-brand-02)'")
-        DropdownItem(v-model="sort" :options="sortOptions" @change="resetPlayers")
+    //- same rows as the in-game scoreboard (best result per player, ranked)
     List(
       ref="listRef"
       v-model="players.loading"
@@ -29,23 +28,14 @@ Dialog.dialog.room-owner-stats-dialog(
       :error-text="$t('comments.error')"
       @load="loadPlayers"
     )
-      NuxtLink.room-owner-stats-dialog__player(
-        v-for="p in players.items"
-        :key="p.user.id"
-        :to="profilePath(p.user)"
-        @click.native="state.isOpen = false"
-      )
-        PlayerAvatar(:user="p.user" :size="32")
-        span.room-owner-stats-dialog__player-name {{ p.user.username }}
-        span.room-owner-stats-dialog__player-detail ✓{{ p.correct }} ✗{{ p.wrong }} ↷{{ p.passed }}
-        strong.room-owner-stats-dialog__player-score {{ p.score }}
-        Timeago.room-owner-stats-dialog__player-time(:datetime="p.createdAt" :auto-update="60" :locale="$i18n.locale")
+      ScoreboardList(v-if="players.items.length" :items="players.items" :questions="questions")
       Empty(v-if="players.finished && !players.items.length" :description="$t('ownerStats.playersEmpty')")
 </template>
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, nextTick, useContext, useStore } from '@nuxtjs/composition-api'
-import { Dialog, DropdownMenu, DropdownItem, List, Empty, Loading } from 'vant'
+import { Dialog, List, Empty, Loading } from 'vant'
+import { scoreboardTransformer } from '@/transformers'
 
 const formatMs = ms => {
   const s = Math.round((ms || 0) / 1000)
@@ -56,8 +46,6 @@ const formatMs = ms => {
 export default defineComponent({
   components: {
     Dialog: Dialog.Component,
-    DropdownMenu,
-    DropdownItem,
     List,
     Empty,
     Loading
@@ -82,15 +70,15 @@ export default defineComponent({
   emits: ['closed'],
   setup(props) {
     const store = useStore()
-    const { i18n, localePath } = useContext()
+    const { i18n } = useContext()
 
     const state = reactive({ isOpen: props.isOpen })
     const stats = ref(null)
     const statsPending = ref(false)
-    const sort = ref('recent')
     const listRef = ref(null)
     const players = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
-    const sortOptions = computed(() => ['recent', 'score'].map(value => ({ value, text: i18n.t(`ownerStats.sort.${value}`) })))
+    // the answer breakdown needs the room's questions, which are only loaded when this is the open quiz
+    const questions = computed(() => (store.getters['creator/room']?.id === props.roomId ? store.getters['creator/questions'] || [] : []))
 
     const cards = computed(() => {
       const s = stats.value
@@ -111,8 +99,6 @@ export default defineComponent({
         { key: 'remain', icon: 'tabler:clock', value: formatMs(s.avgRemainMs), label: i18n.t('ownerStats.avgRemain') }
       ]
     })
-
-    const profilePath = user => localePath({ name: 'Profile-username', params: { username: user.username } })
 
     // request tokens: bumped on every open/reset so late responses from a previous state are dropped
     let statsToken = 0
@@ -141,7 +127,7 @@ export default defineComponent({
       const token = playersToken
       const { data, error } = await store.dispatch('creator/fetchOwnerPlayers', {
         roomId: props.roomId,
-        sort: sort.value,
+        sort: 'score',
         page: players.page + 1
       })
 
@@ -156,7 +142,7 @@ export default defineComponent({
         return
       }
 
-      players.items.push(...data.items)
+      players.items.push(...scoreboardTransformer(data.items))
       players.page += 1
       players.finished = !data.hasMore
     }
@@ -168,7 +154,6 @@ export default defineComponent({
         state.isOpen = value
 
         if (value) {
-          sort.value = 'recent'
           loadStats()
           resetPlayers()
         }
@@ -176,7 +161,7 @@ export default defineComponent({
       { immediate: true }
     )
 
-    return { state, stats, statsPending, sort, sortOptions, listRef, players, cards, profilePath, resetPlayers, loadPlayers }
+    return { state, stats, statsPending, questions, listRef, players, cards, resetPlayers, loadPlayers }
   }
 })
 </script>

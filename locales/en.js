@@ -945,7 +945,6 @@ export default {
     avgPassed: 'Avg passed',
     avgRemain: 'Avg time left',
     playersTitle: 'Players',
-    sort: { recent: 'Newest', score: 'Score' },
     playersEmpty: 'No players yet'
   },
   scoreboard: {

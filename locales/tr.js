@@ -963,7 +963,6 @@ export default {
     avgPassed: 'Ort. pas',
     avgRemain: 'Ort. kalan süre',
     playersTitle: 'Oynayanlar',
-    sort: { recent: 'En yeni', score: 'Skor' },
     playersEmpty: 'Henüz oynayan yok'
   },
   scoreboard: {

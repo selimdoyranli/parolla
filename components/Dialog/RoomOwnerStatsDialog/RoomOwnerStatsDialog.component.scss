@@ -47,59 +47,11 @@
   }
 
   &__players-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
+    margin: 16px 0 8px;
 
     h4 {
       margin: 0;
       color: var(--color-text-02);
     }
-
-    .van-dropdown-menu__bar {
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .van-dropdown-menu__title {
-      color: var(--color-text-01);
-    }
-  }
-
-  &__player {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    padding: 10px 4px;
-    color: var(--color-text-02);
-    border-bottom: 1px solid var(--color-ui-03);
-  }
-
-  &__player-name {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    font-weight: 700;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  &__player-detail,
-  &__player-time {
-    color: var(--color-text-03);
-    font-size: 12px;
-  }
-
-  &__player-time {
-    display: none;
-
-    @include media-breakpoint-up(mobile) {
-      display: inline;
-    }
-  }
-
-  &__player-score {
-    color: var(--color-brand-02);
   }
 }
