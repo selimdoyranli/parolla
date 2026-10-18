@@ -43,7 +43,7 @@
     width: 100%;
     max-width: var(--mobile);
     min-height: 90px;
-    margin: 0 auto var(--base-m-y);
+    margin: var(--base-m-y) auto;
     background-color: var(--color-ui-04);
   }
 
