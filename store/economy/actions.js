@@ -98,9 +98,10 @@ export default {
 
     if (data.economy) commit('SET_LAST_ECONOMY', { mode, ...data.economy })
 
-    await dispatch('fetchWallet')
+    // the score POST's economy summary is enough for the end dialog: refresh in the background
+    dispatch('fetchWallet')
 
-    if (data.economy && data.economy.questsCompleted.length) await dispatch('fetchQuests')
+    if (data.economy && data.economy.questsCompleted.length) dispatch('fetchQuests')
   },
 
   async fetchWallet({ commit }) {
