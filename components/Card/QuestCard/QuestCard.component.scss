@@ -1,0 +1,46 @@
+.quest-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  color: var(--color-text-01);
+  border-bottom: 1px solid var(--color-border-01);
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: var(--font-size-text-6);
+  }
+
+  &__bar {
+    height: 6px;
+    margin: 6px 0 4px;
+    overflow: hidden;
+    background: var(--color-border-01);
+    border-radius: 3px;
+  }
+
+  &__fill {
+    height: 100%;
+    background: var(--color-brand-02);
+    transition: width 0.3s;
+  }
+
+  &__meta {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  &__done {
+    color: var(--color-success-01);
+  }
+
+  &--claimed {
+    opacity: 0.6;
+  }
+}

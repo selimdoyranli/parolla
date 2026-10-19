@@ -37,6 +37,9 @@
         :class="{ 'me-2': room.reviewCount > 0 }"
       )
 
+    li.app-header-nav__item.app-header-nav__item--jeton(v-if="$auth.loggedIn" @click="openQuestsDialog")
+      JetonBadge
+
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
       ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
@@ -80,6 +83,8 @@
   )
   // Notifications Dialog
   LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
+  // Quests Dialog
+  LazyQuestsDialog(v-if="$auth.loggedIn" :isOpen="questsDialog.isOpen" @closed="closeQuestsDialog")
   // Room Review Dialog
   LazyRoomReviewDialog(
     :isOpen="dialog.roomReview.isOpen"
@@ -138,6 +143,10 @@ export default defineComponent({
     })
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    const questsDialog = computed(() => store.state.economy.dialog.quests)
+    const openQuestsDialog = () => store.commit('economy/SET_IS_OPEN_QUESTS_DIALOG', true)
+    const closeQuestsDialog = () => store.commit('economy/SET_IS_OPEN_QUESTS_DIALOG', false)
 
     const toggleNotificationsDialog = () => {
       dialog.notifications.isOpen = !dialog.notifications.isOpen
@@ -350,6 +359,9 @@ export default defineComponent({
       toggleRoomReviewDialog,
       unreadCount,
       toggleNotificationsDialog,
+      questsDialog,
+      openQuestsDialog,
+      closeQuestsDialog,
       targetCommentId,
       targetRatingUserId,
       handleRoomReviewClosed,

@@ -28,6 +28,26 @@ export default {
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
   economy: {
+    quests: {
+      title: 'Görevler',
+      daily: 'Günlük görevler',
+      weekly: 'Haftalık görevler',
+      reward: '{amount} jeton',
+      claim: 'Al',
+      reroll: 'Yenile · {cost}',
+      chest: 'Haftalık sandık: {done}/{total}',
+      openChest: 'Sandığı aç · {amount}',
+      claimed: '+{amount} jeton kazandın',
+      rerolled: 'Görev yenilendi',
+      chestClaimed: 'Sandıktan +{amount} jeton'
+    },
+    errors: {
+      'insufficient-jeton': 'Yeterli jetonun yok',
+      'already-claimed': 'Bu ödül zaten alındı',
+      'reroll-used': 'Bugünkü yenileme hakkını kullandın',
+      'limit-reached': 'Limite ulaşıldı',
+      generic: 'Bir şeyler ters gitti, tekrar dene'
+    },
     achievements: {
       reward: 'Ödül: {amount} jeton',
       completed: 'Tamamlandı'

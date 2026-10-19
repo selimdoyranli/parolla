@@ -28,6 +28,26 @@ export default {
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
   economy: {
+    quests: {
+      title: 'Quests',
+      daily: 'Daily quests',
+      weekly: 'Weekly quests',
+      reward: '{amount} tokens',
+      claim: 'Claim',
+      reroll: 'Reroll · {cost}',
+      chest: 'Weekly chest: {done}/{total}',
+      openChest: 'Open chest · {amount}',
+      claimed: 'You earned +{amount} tokens',
+      rerolled: 'Quest rerolled',
+      chestClaimed: '+{amount} tokens from the chest'
+    },
+    errors: {
+      'insufficient-jeton': 'Not enough tokens',
+      'already-claimed': 'Already claimed',
+      'reroll-used': "You already used today's reroll",
+      'limit-reached': 'Limit reached',
+      generic: 'Something went wrong, try again'
+    },
     achievements: {
       reward: 'Reward: {amount} tokens',
       completed: 'Completed'

@@ -22,6 +22,8 @@ export default ({ app, store }) => {
           })
         }
       }
+    } catch (e) {
+      // a failed notification/claim must not surface as an unhandled rejection
     } finally {
       running = false
     }
@@ -32,6 +34,6 @@ export default ({ app, store }) => {
   // login happens later without a reload (Google/Apple callback)
   store.watch(
     () => app.$auth.loggedIn,
-    loggedIn => loggedIn && dailyLogin()
+    loggedIn => (loggedIn ? dailyLogin() : store.commit('economy/RESET'))
   )
 }

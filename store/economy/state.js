@@ -3,5 +3,6 @@ export default () => ({
   catalog: { version: null, items: [] },
   quests: null,
   inventory: null,
-  achievements: null
+  achievements: null,
+  dialog: { quests: { isOpen: false } }
 })
