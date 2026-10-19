@@ -404,6 +404,10 @@ module.exports = {
             tr: '/sayfa/kullanim-kosullari',
             en: '/page/terms-of-use'
           },
+          'Shop/index': {
+            tr: '/magaza',
+            en: '/shop'
+          },
           'GmPanel/index': {
             tr: '/gm',
             en: '/gm'

@@ -1,0 +1,57 @@
+.purchase-dialog {
+  $van-dialog: '.van-dialog';
+
+  width: 90%;
+  max-width: 380px;
+
+  #{$van-dialog} {
+    &__content {
+      display: block;
+      max-height: 75vh;
+      padding: var(--base-p-y) calc(var(--base-p-x) * 1.8);
+      overflow: auto;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--color-text-01);
+  }
+
+  &__set {
+    margin: 0;
+    text-align: center;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+
+    s {
+      margin-right: 6px;
+      opacity: 0.6;
+    }
+  }
+
+  &__negative {
+    color: var(--color-danger-01);
+  }
+
+  &__message {
+    margin: 0;
+    color: var(--color-danger-01);
+    text-align: center;
+
+    &--ok {
+      color: var(--color-success-01);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

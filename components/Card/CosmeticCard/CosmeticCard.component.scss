@@ -1,0 +1,157 @@
+.cosmetic-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--color-text-01);
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 12px;
+
+  &__stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 150px;
+    overflow: hidden;
+    background: rgb(127 127 127 / 12%);
+  }
+
+  .player-avatar {
+    flex-direction: column;
+    gap: 6px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  &__plate {
+    display: flex;
+    align-items: center;
+    width: 88%;
+    height: 40px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 75%);
+    background-position: left center;
+    background-size: cover;
+    border-radius: 7px;
+    padding-inline: 10px;
+  }
+
+  &__cover {
+    width: 92%;
+    aspect-ratio: 3 / 1;
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px;
+  }
+
+  &__mini {
+    position: relative;
+    width: 76px;
+    height: 130px;
+    overflow: hidden;
+    background: #141a30;
+    border-radius: 8px;
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__mini-dot {
+    position: absolute;
+    top: 16px;
+    left: 23px;
+    width: 30px;
+    height: 30px;
+    background: #f4a261;
+    border-radius: 50%;
+  }
+
+  &__name-sample {
+    font-weight: 800;
+    font-size: 1.2rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+  }
+
+  &__rarity {
+    font-weight: 600;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    &--siradan {
+      color: #8a8f98;
+    }
+
+    &--nadir {
+      color: #2f80ed;
+    }
+
+    &--epik {
+      color: #9b51e0;
+    }
+
+    &--efsanevi {
+      color: #e69500;
+    }
+  }
+
+  &__dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  &__dot {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 2px solid var(--color-ui-02);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--color-border-01);
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      box-shadow: 0 0 0 2px var(--color-text-01);
+    }
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+
+  &__price {
+    color: #c98a00;
+    font-weight: 700;
+
+    s {
+      margin-right: 6px;
+      color: var(--color-text-02);
+      font-weight: 500;
+    }
+  }
+
+  &__owned {
+    color: var(--color-success-01);
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+}

@@ -121,6 +121,7 @@ Dialog.dialog.menu-dialog(
       :title="$t('dialog.menu.reviewRoom')"
       @click.native="openDialog('clickedReviewRoom')"
     )
+    Cell.menu-dialog-nav__item(icon="shop-o" size="large" is-link :title="$t('dialog.menu.shop')" @click.native="navigateAndClose('Shop')")
     Cell.menu-dialog-nav__item(
       icon="smile-comment-o"
       size="large"

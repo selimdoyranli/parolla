@@ -46,13 +46,55 @@ export default {
       'already-claimed': 'Already claimed',
       'reroll-used': "You already used today's reroll",
       'limit-reached': 'Limit reached',
+      'already-owned': 'You already own this item',
+      'not-for-sale': 'This item is not for sale',
+      'nothing-to-buy': 'Nothing left to buy in this set',
       generic: 'Something went wrong, try again'
     },
     achievements: {
       reward: 'Reward: {amount} tokens',
       completed: 'Completed'
     },
-    dailyReward: 'Daily reward: +{amount} tokens (streak {streak})'
+    dailyReward: 'Daily reward: +{amount} tokens (streak {streak})',
+    shop: {
+      title: 'Shop',
+      vitrin: "Today's showcase",
+      buy: 'Buy',
+      buySet: 'Buy set · {price}',
+      loginToBuy: 'Log in to buy',
+      owned: 'Owned',
+      original: 'Original',
+      more: 'Show more series',
+      price: 'Price',
+      balance: 'Your balance',
+      balanceAfter: 'After purchase',
+      confirm: 'Confirm',
+      equip: 'Equip',
+      equipped: 'Equipped',
+      purchased: 'Purchased',
+      setContent: 'Buys all {count} items in the set you do not own yet.',
+      insufficient: 'Not enough tokens. Balance: {balance}, missing: {missing} tokens.',
+      rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary' },
+      categories: {
+        all: 'All',
+        avatar_frame: 'Avatar frame',
+        avatar_decoration: 'Decoration',
+        nameplate: 'Nameplate',
+        profile_effect: 'Profile effect',
+        profile_frame: 'Profile frame',
+        profile_cover: 'Profile cover',
+        name_color: 'Name color',
+        title: 'Title'
+      },
+      freeze: {
+        title: 'Streak freeze',
+        desc: 'Keeps your daily streak if you miss a day.',
+        owned: 'Owned: {count}/{max}',
+        buy: 'Buy · {price}',
+        confirm: 'Streak freeze costs {price} tokens. Buy it?',
+        bought: 'Streak freeze purchased'
+      }
+    }
   },
   success: {
     success: 'Success'
@@ -236,6 +278,7 @@ export default {
     },
     menu: {
       title: 'More',
+      shop: 'Shop',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       profileEdit: 'Edit profile',

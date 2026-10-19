@@ -19,12 +19,13 @@
       :style="{ width: `inherit`, height: `inherit` }"
     )
 
-    img.player-avatar__frame(v-if="frameSrc" :src="frameSrc" alt aria-hidden="true")
+    img.player-avatar__frame(v-if="frameSrc" :src="frameSrc" alt aria-hidden="true" loading="lazy")
     img.player-avatar__decoration(
       v-if="decorationSrc"
       :src="decorationSrc"
       alt
       aria-hidden="true"
+      loading="lazy"
       :class="{ 'player-avatar__decoration--animated': decorationAnimated }"
     )
 

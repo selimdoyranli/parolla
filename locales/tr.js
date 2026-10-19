@@ -46,13 +46,55 @@ export default {
       'already-claimed': 'Bu ödül zaten alındı',
       'reroll-used': 'Bugünkü yenileme hakkını kullandın',
       'limit-reached': 'Limite ulaşıldı',
+      'already-owned': 'Bu ürüne zaten sahipsin',
+      'not-for-sale': 'Bu ürün satışta değil',
+      'nothing-to-buy': 'Bu sette alınacak ürün kalmadı',
       generic: 'Bir şeyler ters gitti, tekrar dene'
     },
     achievements: {
       reward: 'Ödül: {amount} jeton',
       completed: 'Tamamlandı'
     },
-    dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})'
+    dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})',
+    shop: {
+      title: 'Mağaza',
+      vitrin: 'Günün vitrini',
+      buy: 'Satın al',
+      buySet: 'Seti al · {price}',
+      loginToBuy: 'Satın almak için giriş yap',
+      owned: 'Sahipsin',
+      original: 'Orijinal',
+      more: 'Daha fazla seri göster',
+      price: 'Fiyat',
+      balance: 'Bakiyen',
+      balanceAfter: 'Satın alma sonrası',
+      confirm: 'Onayla',
+      equip: 'Kuşan',
+      equipped: 'Kuşandın',
+      purchased: 'Satın alındı',
+      setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
+      insufficient: 'Yeterli jetonun yok. Bakiyen: {balance}, eksik: {missing} jeton.',
+      rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi' },
+      categories: {
+        all: 'Tümü',
+        avatar_frame: 'Avatar çerçevesi',
+        avatar_decoration: 'Dekorasyon',
+        nameplate: 'İsim plakası',
+        profile_effect: 'Profil efekti',
+        profile_frame: 'Profil çerçevesi',
+        profile_cover: 'Profil arkaplanı',
+        name_color: 'İsim rengi',
+        title: 'Ünvan'
+      },
+      freeze: {
+        title: 'Seri dondurucu',
+        desc: 'Bir gün kaçırırsan günlük serin bozulmaz.',
+        owned: 'Sahip olduğun: {count}/{max}',
+        buy: 'Satın al · {price}',
+        confirm: 'Seri dondurucu {price} jeton. Alınsın mı?',
+        bought: 'Seri dondurucu alındı'
+      }
+    }
   },
   success: {
     success: 'Başarılı'
@@ -238,6 +280,7 @@ export default {
     },
     menu: {
       title: 'Daha fazla',
+      shop: 'Mağaza',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       profileEdit: 'Profili düzenle',
