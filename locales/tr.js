@@ -71,6 +71,7 @@ export default {
       confirm: 'Onayla',
       equip: 'Kuşan',
       equipped: 'Kuşandın',
+      equipFailed: 'Satın alındı ama kuşanılamadı, tekrar dene.',
       purchased: 'Satın alındı',
       setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
       insufficient: 'Yeterli jetonun yok. Bakiyen: {balance}, eksik: {missing} jeton.',

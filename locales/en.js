@@ -71,6 +71,7 @@ export default {
       confirm: 'Confirm',
       equip: 'Equip',
       equipped: 'Equipped',
+      equipFailed: 'Purchased, but equipping failed. Try again.',
       purchased: 'Purchased',
       setContent: 'Buys all {count} items in the set you do not own yet.',
       insufficient: 'Not enough tokens. Balance: {balance}, missing: {missing} tokens.',

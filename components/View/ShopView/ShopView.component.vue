@@ -19,7 +19,7 @@
         :key="`v-${c.item.key}`"
         :variants="[c.item]"
         :vitrin-price="c.price"
-        :owned="ownedSet.has(c.item.key)"
+        :owned-keys="ownedSet"
         :viewer="viewer"
         :logged-in="loggedIn"
         @buy="openItem"
@@ -38,7 +38,7 @@
         v-for="e in g.entries"
         :key="e[0].key"
         :variants="e"
-        :owned="ownedSet.has(e[0].key)"
+        :owned-keys="ownedSet"
         :viewer="viewer"
         :logged-in="loggedIn"
         @buy="openItem"
@@ -52,6 +52,7 @@
 <script>
 import { defineComponent, computed, reactive, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
 import { Button, Tabs, Tab, Dialog, Notify } from 'vant'
+import { newIdempotencyKey } from '@/store/economy/actions'
 
 const TABS = [
   'all',
@@ -86,6 +87,7 @@ export default defineComponent({
     const vitrin = ref(null)
     const dialog = reactive({ isOpen: false, target: null })
     const freezeBusy = ref(false)
+    let freezeKey = null
 
     // season and achievement items (price null) are never listed
     const forSale = computed(() => store.state.economy.catalog.items.filter(i => i.price != null && i.rarity !== 'sezon'))
@@ -192,7 +194,12 @@ export default defineComponent({
       }
 
       try {
-        const { error } = await store.dispatch('economy/buyStreakFreeze')
+        freezeKey = freezeKey || newIdempotencyKey()
+
+        const { error } = await store.dispatch('economy/buyStreakFreeze', freezeKey)
+
+        if (!error || error.code) freezeKey = null
+
         const code = error && error.details && error.details.code
         const key = `economy.errors.${code}`
 

@@ -52,7 +52,7 @@ export default defineComponent({
   props: {
     // base item first, then its variants
     variants: { type: Array, required: true },
-    owned: { type: Boolean, default: false },
+    ownedKeys: { type: Object, default: () => new Set() },
     // viewer's own user (logged in) or null; sample avatar/name come from it
     viewer: { type: Object, default: null },
     loggedIn: { type: Boolean, default: false },
@@ -67,6 +67,8 @@ export default defineComponent({
     const index = ref(0)
     const current = computed(() => props.variants[index.value] || props.variants[0])
     const category = computed(() => current.value.category)
+    // ownership follows the selected variant
+    const owned = computed(() => props.ownedKeys.has(current.value.key))
 
     const username = computed(() => (props.viewer && props.viewer.username) || 'selim.d')
     const previewUser = computed(() => {
@@ -94,7 +96,7 @@ export default defineComponent({
 
     const buyText = computed(() => (props.loggedIn ? i18n.t('economy.shop.buy') : i18n.t('economy.shop.loginToBuy')))
 
-    return { index, current, category, username, previewUser, plateStyleValue, nameColorStyle, original, price, dotColor, buyText }
+    return { index, owned, current, category, username, previewUser, plateStyleValue, nameColorStyle, original, price, dotColor, buyText }
   }
 })
 </script>

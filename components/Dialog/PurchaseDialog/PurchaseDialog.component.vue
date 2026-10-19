@@ -26,6 +26,7 @@ Dialog.dialog.purchase-dialog(
     p.purchase-dialog__message(v-if="isShort") {{ $t('economy.shop.insufficient', { balance, missing }) }}
     p.purchase-dialog__message(v-else-if="phase === 'error'") {{ errorText }}
     p.purchase-dialog__message.purchase-dialog__message--ok(v-else-if="phase === 'success'") {{ $t('economy.shop.purchased') }}
+    p.purchase-dialog__message(v-if="phase === 'success' && equipError") {{ $t('economy.shop.equipFailed') }}
 
     .purchase-dialog__actions
       template(v-if="phase === 'success'")
@@ -39,6 +40,7 @@ Dialog.dialog.purchase-dialog(
 <script>
 import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
 import { Dialog, Button, Notify } from 'vant'
+import { newIdempotencyKey } from '@/store/economy/actions'
 
 const SLOT = {
   avatar_frame: 'frame',
@@ -66,6 +68,8 @@ export default defineComponent({
     const busy = ref(false)
     const phase = ref('confirm') // confirm | insufficient | error | success
     const errorText = ref('')
+    const equipError = ref(false)
+    let attemptKey = null // reused across retries of an ambiguous failure, reset after a definitive response
 
     const balance = computed(() => store.state.economy.wallet.jeton)
     const missing = computed(() => (props.target ? Math.max(0, props.target.price - balance.value) : 0))
@@ -81,6 +85,8 @@ export default defineComponent({
         if (value) {
           phase.value = 'confirm'
           errorText.value = ''
+          equipError.value = false
+          attemptKey = null
         }
       }
     )
@@ -90,9 +96,12 @@ export default defineComponent({
 
       if (code === 'insufficient-jeton' || error.code === 402) {
         phase.value = 'insufficient'
+        store.dispatch('economy/fetchWallet')
 
         return
       }
+
+      if (code === 'already-owned' || code === 'nothing-to-buy') store.dispatch('economy/fetchInventory')
 
       const key = `economy.errors.${code}`
 
@@ -106,9 +115,19 @@ export default defineComponent({
 
       try {
         const { target } = props
+
+        attemptKey = attemptKey || newIdempotencyKey()
+
         const { error } = target.item
-          ? await store.dispatch('economy/purchase', { itemKey: target.item.key, fromVitrin: Boolean(target.fromVitrin) })
-          : await store.dispatch('economy/purchaseSet', target.series)
+          ? await store.dispatch('economy/purchase', {
+              itemKey: target.item.key,
+              fromVitrin: Boolean(target.fromVitrin),
+              idempotencyKey: attemptKey
+            })
+          : await store.dispatch('economy/purchaseSet', { series: target.series, idempotencyKey: attemptKey })
+
+        // an error with an HTTP status is a definitive answer; without one (network) the next try reuses the key
+        if (!error || error.code) attemptKey = null
 
         if (error) return fail(error)
 
@@ -125,8 +144,17 @@ export default defineComponent({
       if (busy.value) return
       busy.value = true
 
+      equipError.value = false
+
       try {
-        await store.dispatch('economy/fetchInventory')
+        const inv = await store.dispatch('economy/fetchInventory')
+
+        // never PUT without the real current loadout: it replaces the whole thing
+        if (inv.error) {
+          equipError.value = true
+
+          return
+        }
 
         const current = (store.state.economy.inventory && store.state.economy.inventory.loadout) || {}
         const { data, error } = await store.dispatch('economy/saveLoadout', {
@@ -134,7 +162,11 @@ export default defineComponent({
           [SLOT[props.target.item.category]]: props.target.item.key
         })
 
-        if (error) return fail(error)
+        if (error) {
+          equipError.value = true
+
+          return
+        }
 
         store.commit('auth/SET_USER', { ...$auth.user, loadout: data.loadout })
         Notify({
@@ -149,7 +181,7 @@ export default defineComponent({
       }
     }
 
-    return { state, busy, phase, errorText, balance, missing, isShort, viewer, title, confirm, equip }
+    return { state, busy, phase, errorText, equipError, balance, missing, isShort, viewer, title, confirm, equip }
   }
 })
 </script>

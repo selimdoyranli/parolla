@@ -5,7 +5,7 @@ const CACHE_TTL_MS = 60 * 60 * 1000
 
 const authHeaders = ctx => ({ Authorization: `${ctx.$auth.strategy.token.get()}` })
 
-const idempotencyKey = () => {
+export const newIdempotencyKey = () => {
   const uuid =
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID()
@@ -113,27 +113,28 @@ export default {
     return { data, error }
   },
 
-  purchase(_, { itemKey, fromVitrin }) {
+  // callers may pass an idempotencyKey so a retry after an ambiguous network failure reuses it
+  purchase(_, { itemKey, fromVitrin, idempotencyKey }) {
     return authed(this, {
       path: 'economy/shop/purchase',
       method: 'POST',
-      data: { itemKey, fromVitrin, idempotencyKey: idempotencyKey() }
+      data: { itemKey, fromVitrin, idempotencyKey: idempotencyKey || newIdempotencyKey() }
     })
   },
 
-  purchaseSet(_, series) {
+  purchaseSet(_, { series, idempotencyKey }) {
     return authed(this, {
       path: 'economy/shop/purchase-set',
       method: 'POST',
-      data: { series, idempotencyKey: idempotencyKey() }
+      data: { series, idempotencyKey: idempotencyKey || newIdempotencyKey() }
     })
   },
 
-  async buyStreakFreeze({ commit }) {
+  async buyStreakFreeze({ commit }, idempotencyKey) {
     const result = await authed(this, {
       path: 'economy/shop/streak-freeze',
       method: 'POST',
-      data: { idempotencyKey: idempotencyKey() }
+      data: { idempotencyKey: idempotencyKey || newIdempotencyKey() }
     })
 
     if (result.data) commit('SET_WALLET', { streakFreezes: result.data.freezes })
