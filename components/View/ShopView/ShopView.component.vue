@@ -1,52 +1,83 @@
 <template lang="pug">
 .shop-view
-  // Streak freeze
-  .shop-view__freeze
-    .shop-view__freeze-body
-      b {{ $t('economy.shop.freeze.title') }}
-      span {{ $t('economy.shop.freeze.desc') }}
-      span(v-if="loggedIn") {{ $t('economy.shop.freeze.owned', { count: freezes, max: MAX_FREEZES }) }}
-    Button(type="primary" size="small" :loading="freezeBusy" :disabled="loggedIn && freezes >= MAX_FREEZES" @click="buyFreeze")
-      | {{ freezeText }}
-      GoldAmount.ms-1(v-if="loggedIn" size="sm" :amount="FREEZE_PRICE")
-
   // Vitrin
-  template(v-if="vitrinCards.length")
-    h2.shop-view__heading {{ $t('economy.shop.vitrin') }}
-    .shop-view__grid
-      CosmeticCard(
+  section.shop-view__section(v-if="vitrinCards.length")
+    h3.shop-view__heading {{ $t('economy.shop.vitrin') }}
+    .shop-view__strip
+      CosmeticCard.shop-view__strip-card(
         v-for="c in vitrinCards"
         :key="`v-${c.item.key}`"
         :variants="[c.item]"
         :vitrin-price="c.price"
         :owned-keys="ownedSet"
+        :equipped-keys="equippedSet"
+        :balance="balance"
         :viewer="viewer"
         :logged-in="loggedIn"
         @buy="openItem"
       )
 
-  Tabs.shop-view__tabs(v-model="tabIndex" line-width="24px" :ellipsis="false" :swipeable="false")
-    Tab(v-for="t in TABS" :key="t" :title="$t(`economy.shop.categories.${t}`)")
+  // Streak freeze: one compact row, not a banner
+  .shop-view__freeze
+    AppIcon.shop-view__freeze-icon(name="emojione:snowflake" :width="22" :height="22")
+    .shop-view__freeze-body
+      b {{ $t('economy.shop.freeze.title') }}
+      span {{ $t('economy.shop.freeze.desc') }}
+    span.shop-view__freeze-count(v-if="loggedIn") {{ freezes }}/{{ MAX_FREEZES }}
+    button.shop-buy(v-if="!loggedIn" type="button" @click="buyFreeze") {{ $t('economy.shop.login') }}
+    button.shop-buy.shop-buy--owned(v-else-if="freezes >= MAX_FREEZES" type="button" disabled)
+      AppIcon(name="tabler:check" :width="14" :height="14")
+      span {{ $t('economy.shop.freeze.full') }}
+    button.shop-buy(v-else type="button" :class="{ 'shop-buy--short': balance < FREEZE_PRICE }" :disabled="freezeBusy" @click="buyFreeze")
+      GoldAmount(size="sm" :amount="FREEZE_PRICE")
 
-  // Only the first few series are rendered; "more" reveals the rest (445+ cards at once is heavy on mobile)
-  section.shop-view__series(v-for="g in visibleGroups" :key="`${tab}-${g.series}`")
-    header.shop-view__series-head
-      h3 {{ g.name }}
-      Button(v-if="setPrices[g.series]" type="primary" size="small" plain @click="openSet(g)")
-        | {{ $t('economy.shop.buySet') }}
-        GoldAmount.ms-1(size="sm" :amount="setPrices[g.series].price")
-    .shop-view__grid
-      CosmeticCard(
-        v-for="e in g.entries"
-        :key="e[0].key"
-        :variants="e"
-        :owned-keys="ownedSet"
-        :viewer="viewer"
-        :logged-in="loggedIn"
-        @buy="openItem"
-      )
+  Tabs.shop-view__tabs(v-model="tab" line-width="20px" line-height="2px" :ellipsis="false" :swipe-threshold="3" :swipeable="false")
+    Tab(v-for="t in TABS" :key="t.key" :name="t.key")
+      template(#title)
+        span.shop-view__tab
+          AppIcon(:name="t.icon" :width="15" :height="15")
+          span {{ $t(`economy.shop.categories.${t.key}`) }}
 
-  Button.shop-view__more(v-if="groups.length > visibleCount" block plain @click="visibleCount += 4") {{ $t('economy.shop.more') }}
+  // Only the active category is rendered (one tab is ~35 cards; all 450 at once is too heavy on mobile)
+  .shop-view__grid(v-if="tab !== 'sets'")
+    CosmeticCard(
+      v-for="e in entries"
+      :key="e[0].key"
+      :variants="e"
+      :owned-keys="ownedSet"
+      :equipped-keys="equippedSet"
+      :balance="balance"
+      :viewer="viewer"
+      :logged-in="loggedIn"
+      @buy="openItem"
+    )
+
+  // Sets: one compact row per series, tap to expand its items
+  .shop-view__sets(v-else)
+    section.shop-view__set(v-for="s in seriesList" :key="s.series" :class="{ 'is-open': openSeries === s.series }")
+      .shop-view__set-row
+        button.shop-view__set-toggle(type="button" :aria-expanded="String(openSeries === s.series)" @click="toggleSeries(s.series)")
+          AppIcon(:name="openSeries === s.series ? 'tabler:chevron-down' : 'tabler:chevron-right'" :width="16" :height="16")
+          span.shop-view__set-name {{ s.name }}
+          span.shop-view__set-count {{ s.owned }}/{{ s.total }}
+        button.shop-buy(v-if="setPrices[s.series]" type="button" @click="openSet(s)")
+          span {{ $t(loggedIn ? 'economy.shop.buySet' : 'economy.shop.login') }}
+          GoldAmount(v-if="loggedIn" size="sm" :amount="setPrices[s.series].price")
+        button.shop-buy.shop-buy--owned(v-else type="button" disabled)
+          AppIcon(name="tabler:check" :width="14" :height="14")
+          span {{ $t('economy.shop.owned') }}
+      .shop-view__grid(v-if="openSeries === s.series")
+        CosmeticCard(
+          v-for="e in s.entries"
+          :key="e[0].key"
+          :variants="e"
+          :owned-keys="ownedSet"
+          :equipped-keys="equippedSet"
+          :balance="balance"
+          :viewer="viewer"
+          :logged-in="loggedIn"
+          @buy="openItem"
+        )
 
   LazyPurchaseDialog(
     :is-open="dialog.isOpen"
@@ -59,25 +90,25 @@
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
-import { Button, Tabs, Tab, Dialog, Notify } from 'vant'
+import { Tabs, Tab, Dialog, Notify } from 'vant'
 import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
 
 const TABS = [
-  'all',
-  'avatar_frame',
-  'avatar_decoration',
-  'nameplate',
-  'profile_effect',
-  'profile_frame',
-  'profile_cover',
-  'name_color',
-  'title'
+  { key: 'avatar_frame', icon: 'tabler:circle-dashed' },
+  { key: 'avatar_decoration', icon: 'tabler:crown' },
+  { key: 'nameplate', icon: 'tabler:id-badge-2' },
+  { key: 'profile_effect', icon: 'tabler:sparkles' },
+  { key: 'profile_frame', icon: 'tabler:frame' },
+  { key: 'profile_cover', icon: 'tabler:photo' },
+  { key: 'name_color', icon: 'tabler:palette' },
+  { key: 'title', icon: 'tabler:award' },
+  { key: 'sets', icon: 'tabler:packages' }
 ]
 const MAX_FREEZES = 2
 const FREEZE_PRICE = 200
 
 export default defineComponent({
-  components: { Button, Tabs, Tab },
+  components: { Tabs, Tab },
   setup() {
     const store = useStore()
     const { i18n, $auth } = useContext()
@@ -85,12 +116,10 @@ export default defineComponent({
     const loggedIn = computed(() => $auth.loggedIn)
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
     const freezes = computed(() => store.state.economy.wallet.streakFreezes)
+    const balance = computed(() => store.state.economy.wallet.gold)
 
-    const tabIndex = ref(0)
-    const tab = computed(() => TABS[tabIndex.value])
-    const visibleCount = ref(3)
-
-    watch(tabIndex, () => (visibleCount.value = 3))
+    const tab = ref(TABS[0].key)
+    const openSeries = ref(null)
 
     const vitrin = ref(null)
     const dialog = reactive({ isOpen: false, target: null })
@@ -100,7 +129,9 @@ export default defineComponent({
     // season and achievement items (price null) are never listed
     const forSale = computed(() => store.state.economy.catalog.items.filter(i => i.price != null && i.rarity !== 'sezon'))
     const catalogMap = computed(() => store.getters['economy/catalogMap'])
-    const ownedSet = computed(() => new Set(((store.state.economy.inventory || {}).owned || []).map(o => o.itemKey)))
+    const inventory = computed(() => store.state.economy.inventory || {})
+    const ownedSet = computed(() => new Set((inventory.value.owned || []).map(o => o.itemKey)))
+    const equippedSet = computed(() => new Set(Object.values(inventory.value.loadout || {})))
 
     const variantsOf = computed(() => {
       const map = {}
@@ -110,13 +141,16 @@ export default defineComponent({
       return map
     })
 
-    const bases = computed(() => forSale.value.filter(i => !i.variantOf))
+    // [base, ...variants] per base item, in catalog order
+    const allEntries = computed(() => forSale.value.filter(i => !i.variantOf).map(i => [i, ...(variantsOf.value[i.key] || [])]))
+
+    const entries = computed(() => allEntries.value.filter(e => e[0].category === tab.value))
 
     // set price: 75% of the not-owned base items, rounded to 100 (server is authoritative)
     const setPrices = computed(() => {
       const sums = {}
 
-      for (const i of bases.value) {
+      for (const [i] of allEntries.value) {
         if (ownedSet.value.has(i.key)) continue
 
         const s = (sums[i.series] = sums[i.series] || { full: 0, count: 0 })
@@ -130,21 +164,26 @@ export default defineComponent({
       )
     })
 
-    const groups = computed(() => {
+    const seriesList = computed(() => {
       const bySeries = new Map()
 
-      for (const i of bases.value) {
-        if (tab.value !== 'all' && i.category !== tab.value) continue
+      for (const e of allEntries.value) {
+        const [i] = e
 
-        if (!bySeries.has(i.series)) bySeries.set(i.series, { series: i.series, name: i.seriesName, entries: [] })
+        if (!bySeries.has(i.series)) bySeries.set(i.series, { series: i.series, name: i.seriesName, entries: [], owned: 0, total: 0 })
 
-        bySeries.get(i.series).entries.push([i, ...(variantsOf.value[i.key] || [])])
+        const s = bySeries.get(i.series)
+
+        s.entries.push(e)
+        s.total++
+
+        if (ownedSet.value.has(i.key)) s.owned++
       }
 
       return [...bySeries.values()]
     })
 
-    const visibleGroups = computed(() => groups.value.slice(0, visibleCount.value))
+    const toggleSeries = series => (openSeries.value = openSeries.value === series ? null : series)
 
     const vitrinCards = computed(() =>
       ((vitrin.value && vitrin.value.items) || []).map(v => ({ item: catalogMap.value[v.key], price: v.price })).filter(c => c.item)
@@ -173,14 +212,12 @@ export default defineComponent({
       dialog.isOpen = true
     }
 
-    const openSet = g => {
+    const openSet = s => {
       if (requireLogin()) return
 
-      dialog.target = { series: g.series, name: g.name, count: setPrices.value[g.series].count, price: setPrices.value[g.series].price }
+      dialog.target = { series: s.series, name: s.name, count: setPrices.value[s.series].count, price: setPrices.value[s.series].price }
       dialog.isOpen = true
     }
-
-    const freezeText = computed(() => i18n.t(loggedIn.value ? 'economy.shop.freeze.buy' : 'economy.shop.loginToBuy'))
 
     const buyFreeze = async () => {
       if (requireLogin() || freezeBusy.value) return
@@ -239,24 +276,25 @@ export default defineComponent({
     return {
       TABS,
       MAX_FREEZES,
+      FREEZE_PRICE,
       loggedIn,
       viewer,
       freezes,
-      tabIndex,
+      balance,
       tab,
-      visibleCount,
+      openSeries,
       dialog,
       freezeBusy,
-      freezeText,
       ownedSet,
+      equippedSet,
       setPrices,
-      groups,
-      visibleGroups,
+      entries,
+      seriesList,
       vitrinCards,
+      toggleSeries,
       loadVitrin,
       openItem,
       openSet,
-      FREEZE_PRICE,
       buyFreeze,
       loadOwned
     }

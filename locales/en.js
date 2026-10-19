@@ -133,12 +133,11 @@ export default {
     shop: {
       title: 'Shop',
       vitrin: "Today's showcase",
-      buy: 'Buy',
+      login: 'Log in',
+      equippedState: 'Equipped',
       buySet: 'Buy set',
-      loginToBuy: 'Log in to buy',
       owned: 'Owned',
       original: 'Original',
-      more: 'Show more series',
       price: 'Price',
       balance: 'Your balance',
       balanceAfter: 'After purchase',
@@ -159,14 +158,14 @@ export default {
         profile_frame: 'Profile frame',
         profile_cover: 'Profile cover',
         name_color: 'Name color',
-        title: 'Title'
+        title: 'Title',
+        sets: 'Sets'
       },
       freeze: {
         title: 'Streak freeze',
         desc: 'Keeps your daily streak if you miss a day.',
-        owned: 'Owned: {count}/{max}',
-        buy: 'Buy',
         confirm: 'Streak freeze costs {price} gold. Buy it?',
+        full: 'Full',
         bought: 'Streak freeze purchased'
       }
     }

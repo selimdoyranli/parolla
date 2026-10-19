@@ -133,12 +133,11 @@ export default {
     shop: {
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
-      buy: 'Satın al',
+      login: 'Giriş yap',
+      equippedState: 'Kuşanılı',
       buySet: 'Seti al',
-      loginToBuy: 'Satın almak için giriş yap',
       owned: 'Sahipsin',
       original: 'Orijinal',
-      more: 'Daha fazla seri göster',
       price: 'Fiyat',
       balance: 'Bakiyen',
       balanceAfter: 'Satın alma sonrası',
@@ -159,14 +158,14 @@ export default {
         profile_frame: 'Profil çerçevesi',
         profile_cover: 'Profil arkaplanı',
         name_color: 'İsim rengi',
-        title: 'Ünvan'
+        title: 'Ünvan',
+        sets: 'Setler'
       },
       freeze: {
         title: 'Seri dondurucu',
         desc: 'Bir gün kaçırırsan günlük serin bozulmaz.',
-        owned: 'Sahip olduğun: {count}/{max}',
-        buy: 'Satın al',
         confirm: 'Seri dondurucu {price} altın. Alınsın mı?',
+        full: 'Dolu',
         bought: 'Seri dondurucu alındı'
       }
     }

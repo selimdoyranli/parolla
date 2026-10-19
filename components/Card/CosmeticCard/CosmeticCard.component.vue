@@ -1,18 +1,21 @@
 <template lang="pug">
 .cosmetic-card(:class="{ 'cosmetic-card--owned': owned }")
   .cosmetic-card__stage
-    PlayerAvatar(v-if="category === 'avatar_frame' || category === 'avatar_decoration'" :user="previewUser" :size="72")
+    span.cosmetic-card__discount(v-if="discount") -{{ discount }}%
+    PlayerAvatar(v-if="category === 'avatar_frame' || category === 'avatar_decoration'" :user="previewUser" :size="64")
     .cosmetic-card__plate(v-else-if="category === 'nameplate'" :style="plateStyleValue") {{ username }}
     .cosmetic-card__cover(v-else-if="category === 'profile_cover'" :style="{ backgroundImage: `url(${current.asset})` }")
     .cosmetic-card__mini(v-else-if="category === 'profile_frame' || category === 'profile_effect'")
       span.cosmetic-card__mini-dot
       img(:src="current.asset" alt loading="lazy")
     span.cosmetic-card__name-sample(v-else-if="category === 'name_color'" :style="nameColorStyle") {{ username }}
-    PlayerAvatar(v-else with-username :user="previewUser" :size="40")
+    PlayerAvatar(v-else with-username :user="previewUser" :size="36")
 
   .cosmetic-card__meta(v-if="!previewOnly")
-    span.cosmetic-card__rarity(:class="`cosmetic-card__rarity--${current.rarity}`") {{ $t(`economy.shop.rarity.${current.rarity}`) }}
     b.cosmetic-card__title {{ current.name }}
+    .cosmetic-card__tags
+      Tag.cosmetic-card__rarity(round :class="`cosmetic-card__rarity--${current.rarity}`") {{ $t(`economy.shop.rarity.${current.rarity}`) }}
+      GoldAmount(v-if="original" size="sm" strike muted :amount="original")
     .cosmetic-card__dots(v-if="variants.length > 1")
       button.cosmetic-card__dot(
         v-for="(v, i) in variants"
@@ -24,17 +27,22 @@
         :style="{ background: dotColor(v) }"
         @click="index = i"
       )
-    .cosmetic-card__foot
-      span.cosmetic-card__price
-        GoldAmount.me-1(v-if="original" size="sm" strike muted :amount="original")
-        GoldAmount(:amount="price")
-      span.cosmetic-card__owned(v-if="owned") {{ $t('economy.shop.owned') }}
-      Button(v-else type="primary" size="mini" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })") {{ buyText }}
+    button.shop-buy.shop-buy--block.shop-buy--owned(v-if="owned" type="button" disabled)
+      AppIcon(name="tabler:check" :width="14" :height="14")
+      span {{ $t(equipped ? 'economy.shop.equippedState' : 'economy.shop.owned') }}
+    button.shop-buy.shop-buy--block(
+      v-else
+      type="button"
+      :class="{ 'shop-buy--short': loggedIn && balance < price }"
+      @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })"
+    )
+      span(v-if="!loggedIn") {{ $t('economy.shop.login') }}
+      GoldAmount(v-else size="sm" :amount="price")
 </template>
 
 <script>
-import { defineComponent, computed, ref, useContext } from '@nuxtjs/composition-api'
-import { Button } from 'vant'
+import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
+import { Tag } from 'vant'
 
 const SLOT = {
   avatar_frame: 'frame',
@@ -48,11 +56,13 @@ const SLOT = {
 }
 
 export default defineComponent({
-  components: { Button },
+  components: { Tag },
   props: {
     // base item first, then its variants
     variants: { type: Array, required: true },
-    ownedKeys: { type: Object, default: () => new Set() },
+    ownedKeys: { type: Set, default: () => new Set() },
+    equippedKeys: { type: Set, default: () => new Set() },
+    balance: { type: Number, default: 0 },
     // viewer's own user (logged in) or null; sample avatar/name come from it
     viewer: { type: Object, default: null },
     loggedIn: { type: Boolean, default: false },
@@ -61,7 +71,6 @@ export default defineComponent({
     previewOnly: { type: Boolean, default: false }
   },
   setup(props) {
-    const { i18n } = useContext()
     const { nameStyle, plateStyle } = useCosmetics()
 
     const index = ref(0)
@@ -69,6 +78,7 @@ export default defineComponent({
     const category = computed(() => current.value.category)
     // ownership follows the selected variant
     const owned = computed(() => props.ownedKeys.has(current.value.key))
+    const equipped = computed(() => props.equippedKeys.has(current.value.key))
 
     const username = computed(() => (props.viewer && props.viewer.username) || 'selim.d')
     const previewUser = computed(() => {
@@ -82,6 +92,7 @@ export default defineComponent({
 
     const original = computed(() => (props.vitrinPrice && index.value === 0 ? current.value.price : null))
     const price = computed(() => (original.value ? props.vitrinPrice : current.value.price))
+    const discount = computed(() => (original.value ? Math.round((1 - price.value / original.value) * 100) : 0))
 
     // catalog swatch; hashed hue only for items without one, neutral for the original
     const dotColor = v => {
@@ -96,9 +107,21 @@ export default defineComponent({
       return `hsl(${h} 65% 55%)`
     }
 
-    const buyText = computed(() => (props.loggedIn ? i18n.t('economy.shop.buy') : i18n.t('economy.shop.loginToBuy')))
-
-    return { index, owned, current, category, username, previewUser, plateStyleValue, nameColorStyle, original, price, dotColor, buyText }
+    return {
+      index,
+      owned,
+      equipped,
+      current,
+      category,
+      username,
+      previewUser,
+      plateStyleValue,
+      nameColorStyle,
+      original,
+      price,
+      discount,
+      dotColor
+    }
   }
 })
 </script>

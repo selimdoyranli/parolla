@@ -1,27 +1,35 @@
 <template lang="pug">
 Dialog.dialog.purchase-dialog(
   v-model="state.isOpen"
-  :title="title"
   :show-confirm-button="false"
   :show-cancel-button="false"
   :close-on-click-overlay="!busy"
   @closed="$emit('closed')"
 )
   .purchase-dialog__body(v-if="target")
-    CosmeticCard(v-if="target.item" preview-only :variants="[target.item]" :viewer="viewer")
-    p.purchase-dialog__set(v-else) {{ $t('economy.shop.setContent', { count: target.count }) }}
+    .purchase-dialog__preview(v-if="target.item")
+      CosmeticCard(preview-only :variants="[target.item]" :viewer="viewer")
+    .purchase-dialog__set-icon(v-else)
+      AppIcon(name="tabler:packages" :width="40" :height="40")
 
-    .purchase-dialog__row
-      span {{ $t('economy.shop.price') }}
-      b
-        GoldAmount.me-1(v-if="target.original" size="sm" strike muted :amount="target.original")
-        GoldAmount(:amount="target.price")
-    .purchase-dialog__row
-      span {{ $t('economy.shop.balance') }}
-      GoldAmount(:amount="balance")
-    .purchase-dialog__row(v-if="phase !== 'success'")
-      span {{ $t('economy.shop.balanceAfter') }}
-      GoldAmount(:class="{ 'purchase-dialog__negative': missing > 0 }" :amount="balance - target.price")
+    .purchase-dialog__head
+      b.purchase-dialog__name {{ title }}
+      Tag.cosmetic-card__rarity(v-if="target.item" round :class="`cosmetic-card__rarity--${target.item.rarity}`")
+        | {{ $t(`economy.shop.rarity.${target.item.rarity}`) }}
+      p.purchase-dialog__set(v-else) {{ $t('economy.shop.setContent', { count: target.count }) }}
+
+    .purchase-dialog__rows
+      .purchase-dialog__row
+        span {{ $t('economy.shop.price') }}
+        span.purchase-dialog__price
+          GoldAmount(v-if="target.original" size="sm" strike muted :amount="target.original")
+          GoldAmount(:amount="target.price")
+      .purchase-dialog__row
+        span {{ $t('economy.shop.balance') }}
+        GoldAmount(:amount="balance")
+      .purchase-dialog__row(v-if="phase !== 'success'")
+        span {{ $t('economy.shop.balanceAfter') }}
+        GoldAmount(:class="{ 'purchase-dialog__negative': missing > 0 }" :amount="balance - target.price")
 
     i18n.purchase-dialog__message(v-if="isShort" tag="p" path="economy.shop.insufficient")
       template(#balance)
@@ -29,21 +37,29 @@ Dialog.dialog.purchase-dialog(
       template(#missing)
         GoldAmount(size="sm" :amount="missing")
     p.purchase-dialog__message(v-else-if="phase === 'error'") {{ errorText }}
-    p.purchase-dialog__message.purchase-dialog__message--ok(v-else-if="phase === 'success'") {{ $t('economy.shop.purchased') }}
+    p.purchase-dialog__message.purchase-dialog__message--ok(v-else-if="phase === 'success'")
+      AppIcon(name="tabler:circle-check" :width="18" :height="18")
+      span {{ $t('economy.shop.purchased') }}
     p.purchase-dialog__message(v-if="phase === 'success' && equipError") {{ $t('economy.shop.equipFailed') }}
 
     .purchase-dialog__actions
       template(v-if="phase === 'success'")
-        Button(v-if="target.item" type="primary" block round :loading="busy" @click="equip") {{ $t('economy.shop.equip') }}
-        Button(block round @click="state.isOpen = false") {{ $t('general.close') }}
+        button.shop-buy.shop-buy--solid.shop-buy--block(v-if="target.item" type="button" :disabled="busy" @click="equip")
+          Loading(v-if="busy" color="currentColor" size="16")
+          span(v-else) {{ $t('economy.shop.equip') }}
+        button.shop-buy.shop-buy--ghost.shop-buy--block(type="button" @click="state.isOpen = false") {{ $t('general.close') }}
       template(v-else)
-        Button(type="primary" block round :loading="busy" :disabled="missing > 0" @click="confirm") {{ $t('economy.shop.confirm') }}
-        Button(block round :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
+        button.shop-buy.shop-buy--solid.shop-buy--block(type="button" :disabled="busy || missing > 0" @click="confirm")
+          Loading(v-if="busy" color="currentColor" size="16")
+          template(v-else)
+            span {{ $t('economy.shop.confirm') }}
+            GoldAmount(size="sm" :amount="target.price")
+        button.shop-buy.shop-buy--ghost.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
 </template>
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
-import { Dialog, Button, Notify } from 'vant'
+import { Dialog, Tag, Loading, Notify } from 'vant'
 import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
 
 const SLOT = {
@@ -58,7 +74,7 @@ const SLOT = {
 }
 
 export default defineComponent({
-  components: { Dialog: Dialog.Component, Button },
+  components: { Dialog: Dialog.Component, Tag, Loading },
   props: {
     isOpen: { type: Boolean, default: false },
     // { item, price, original, fromVitrin } or { series, name, count, price }
