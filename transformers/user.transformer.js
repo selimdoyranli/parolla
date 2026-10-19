@@ -11,6 +11,7 @@ export default model => {
     updatedAt: model.updatedAt,
     username: model.username,
     role: model.role,
+    ...(model.loadout && { loadout: model.loadout }),
     ...(model.diceBear && {
       diceBear: {
         dataImage: model.diceBear.dataImage,

@@ -294,3 +294,18 @@
     }
   }
 }
+
+.player-list-item--plated {
+  background-repeat: no-repeat;
+
+  .van-cell__title,
+  .van-cell__value,
+  .player-list-item-user__username,
+  .player-list-item-user::before,
+  .player-list-item-time__value,
+  .player-list-item-time__value sub,
+  .player-list-item-score {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+}

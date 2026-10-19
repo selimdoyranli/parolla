@@ -566,3 +566,18 @@
     }
   }
 }
+
+/* stylelint-disable no-descending-specificity */
+.top-scorer-list-item--plated {
+  padding: calc(var(--base-p-y) / 2);
+  background-repeat: no-repeat;
+  border-radius: var(--border-radius-01);
+
+  .player-avatar__username,
+  .top-scorer-list-item-score,
+  .top-scorer-list-item-time {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+}
+/* stylelint-enable no-descending-specificity */

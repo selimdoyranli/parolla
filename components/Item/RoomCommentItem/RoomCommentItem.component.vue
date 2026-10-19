@@ -11,7 +11,12 @@
       p.room-comment-item__deleted {{ $t('comments.deleted') }}
     template(v-else)
       .room-comment-item__meta
-        button.room-comment-item__username(type="button" @click="openPlayer(comment.user)") {{ comment.user && comment.user.username }}
+        button.room-comment-item__username(
+          type="button"
+          :style="nameStyle(comment.user && comment.user.loadout && comment.user.loadout.nameColor)"
+          @click="openPlayer(comment.user)"
+        ) {{ comment.user && comment.user.username }}
+        span.room-comment-item__title(v-if="commentTitle") {{ commentTitle }}
         Tag.room-comment-item__owner(v-if="comment.isQuizOwner" round) {{ $t('comments.quizOwner') }}
         Timeago.room-comment-item__time(:datetime="comment.createdAt" :auto-update="60" :locale="$i18n.locale")
       p.room-comment-item__content
@@ -277,7 +282,12 @@ export default defineComponent({
       }
     })
 
+    const { nameStyle, titleText } = useCosmetics()
+    const commentTitle = computed(() => titleText(props.comment.user && props.comment.user.loadout && props.comment.user.loadout.title))
+
     return {
+      nameStyle,
+      commentTitle,
       reportTypeEnum,
       state,
       isReply,

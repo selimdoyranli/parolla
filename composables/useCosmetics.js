@@ -24,5 +24,12 @@ export default () => {
 
   const titleText = key => ((item(key) || {}).value || {}).text || ''
 
-  return { item, asset, nameStyle, titleText, isAnimated }
+  // nameplate row background for a user object ({} when none equipped)
+  const plateStyle = user => {
+    const src = asset(user && user.loadout && user.loadout.nameplate)
+
+    return src ? { backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'left center' } : {}
+  }
+
+  return { item, asset, nameStyle, titleText, isAnimated, plateStyle }
 }

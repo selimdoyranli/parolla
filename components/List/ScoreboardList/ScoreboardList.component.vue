@@ -43,7 +43,8 @@
     CollapseItem.scoreboard-list-item(
       v-for="(item, index) in items"
       :key="index"
-      :class="{ 'scoreboard-list-item--self-inline': isSelfInline(item) }"
+      :class="{ 'scoreboard-list-item--self-inline': isSelfInline(item), 'scoreboard-list-item--plated': hasPlate(item.user) }"
+      :style="plateStyle(item.user)"
       :disabled="!item.results.gamersAnswers || !boardQuestions.length"
     )
       template(#title)
@@ -132,6 +133,9 @@ export default defineComponent({
 
     const boardQuestions = computed(() => props.questions ?? store.getters['creator/questions'] ?? [])
 
+    const { plateStyle } = useCosmetics()
+    const hasPlate = user => Boolean(plateStyle(user).backgroundImage)
+
     const toggledScoreItem = ref([0])
     const toggledSelfItem = ref([])
 
@@ -182,6 +186,8 @@ export default defineComponent({
 
     return {
       boardQuestions,
+      plateStyle,
+      hasPlate,
       toggledScoreItem,
       toggledSelfItem,
       isSelfInline,

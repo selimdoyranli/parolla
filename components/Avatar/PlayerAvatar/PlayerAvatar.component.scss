@@ -52,6 +52,45 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
+  }
+
+  // Cosmetic SVGs are 288x288 with the avatar circle centred, so they overlay at 120%
+  &__frame,
+  &__decoration {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    max-width: none;
+    height: 120%;
+    filter: drop-shadow(0 0 1.5px rgba(20, 25, 45, 0.5));
+    pointer-events: none;
+  }
+
+  &__frame {
+    z-index: 1;
+  }
+
+  &__decoration {
+    z-index: 2;
+
+    @media (prefers-reduced-motion: reduce) {
+      &--animated {
+        display: none;
+      }
+    }
+  }
+
+  &__title {
+    margin-inline-start: $spacer * 2;
+    padding: 0 6px;
+    color: var(--color-text-03);
+    font-size: 0.75em;
+    line-height: 1.6;
+    white-space: nowrap;
+    background-color: var(--color-ui-02);
+    border-radius: var(--border-radius-01);
   }
 
   &__avatar {

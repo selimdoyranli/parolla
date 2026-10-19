@@ -1,7 +1,7 @@
 <template lang="pug">
 .player-list
   template(v-if="rows?.length > 0")
-    Cell.player-list-item(v-for="(item, index) in rows" :key="index" :class="rowClass(item)")
+    Cell.player-list-item(v-for="(item, index) in rows" :key="index" :class="rowClass(item)" :style="plateStyle(item)")
       template(#title)
         .player-list-item-user(:data-rank="item.rank")
           strong.player-list-item-user__username
@@ -128,14 +128,18 @@ export default defineComponent({
       {
         'player-list-item--results': item.results,
         'player-list-item--self': item.isCurrentPlayer,
-        'player-list-item--self-inline': isSelfInline(item)
+        'player-list-item--self-inline': isSelfInline(item),
+        'player-list-item--plated': hasPlate(item)
       }
     ]
 
     const { formatElapsedTime } = useElapsedTime()
+    const { plateStyle } = useCosmetics()
+    const hasPlate = item => Boolean(plateStyle(item).backgroundImage)
 
     return {
       rows,
+      plateStyle,
       rowClass,
       answerStatusClass,
       maxAttempts: WORDBLOCK_MAX_ATTEMPTS,

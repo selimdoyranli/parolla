@@ -372,3 +372,23 @@
     }
   }
 }
+
+/* stylelint-disable no-descending-specificity */
+// Equipped nameplate: the image is the row background, so the text must carry its own contrast
+.scoreboard-list-item--plated {
+  background-repeat: no-repeat;
+
+  .van-cell,
+  .van-collapse-item__title {
+    background: transparent;
+  }
+
+  .scoreboard-list-item-user__username,
+  .scoreboard-list-item-user__name,
+  .scoreboard-list-item-result__item,
+  .player-avatar__username {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+}
+/* stylelint-enable no-descending-specificity */
