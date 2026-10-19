@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.4.1
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.4.0...v3.4.1)
+
+
+### 🩹 Fixes
+
+  - **stats-dialog:** Cap dialog content height so the ad can't push it off screen ([f7caaee](https://github.com/selimdoyranli/parolla/commit/f7caaee))
+  - **dialog-ad:** Fixed 300x250 on phones, full dialog width, out of nested scroll boxes ([3d2671f](https://github.com/selimdoyranli/parolla/commit/3d2671f))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.4.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.3.0...v3.4.0)
