@@ -1,17 +1,56 @@
 .quests-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   color: var(--color-text-01);
 
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   &__heading {
-    margin: 12px 0 0;
-    font-size: var(--font-size-text-5);
+    margin: 0;
+    font-weight: 700;
+    font-size: 15px;
   }
 
   &__chest {
     display: flex;
+    gap: 10px;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
+    padding: 10px 12px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 10px;
+
+    &--done {
+      opacity: 0.6;
+    }
+  }
+
+  &__chest-icon {
+    flex: none;
+  }
+
+  &__chest-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__chest-title {
     font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__chest-hint {
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__chest-check {
+    color: var(--color-success-01);
   }
 
   &__loading,

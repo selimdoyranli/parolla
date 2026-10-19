@@ -4,23 +4,33 @@
     p {{ $t('economy.quests.loginPrompt') }}
     Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
   template(v-else-if="quests")
-    h4.quests-view__heading {{ $t('economy.quests.daily') }}
-    QuestCard(
-      v-for="q in quests.daily"
-      :key="q.key"
-      :quest="q"
-      :can-reroll="quests.rerollAvailable && !q.completed"
-      :busy="busy"
-      @claim="claim"
-      @reroll="reroll"
-    )
-    h4.quests-view__heading {{ $t('economy.quests.weekly') }}
-    QuestCard(v-for="q in quests.weekly" :key="q.key" :quest="q" :busy="busy" @claim="claim")
-    .quests-view__chest
-      span {{ $t('economy.quests.chest', { done: claimedCount, total: quests.weekly.length }) }}
-      Button(type="primary" size="small" :disabled="busy || !chestReady" @click="claimChest")
-        | {{ $t('economy.quests.openChest') }}
-        GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
+    section.quests-view__section
+      h4.quests-view__heading {{ $t('economy.quests.daily') }}
+      QuestCard(
+        v-for="q in quests.daily"
+        :key="q.key"
+        :quest="q"
+        :can-reroll="quests.rerollAvailable && !q.completed"
+        :busy="busy"
+        @claim="claim"
+        @reroll="reroll"
+      )
+    section.quests-view__section
+      h4.quests-view__heading {{ $t('economy.quests.weekly') }}
+      QuestCard(v-for="q in quests.weekly" :key="q.key" :quest="q" :busy="busy" @claim="claim")
+      .quests-view__chest(:class="{ 'quests-view__chest--done': quests.chest.claimed }")
+        AppIcon.quests-view__chest-icon(name="noto:coin" :width="24" :height="24")
+        .quests-view__chest-body
+          .quests-view__chest-title {{ $t('economy.quests.chestTitle') }}
+          .quests-view__chest-hint {{ $t('economy.quests.chestHint') }} · {{ claimedCount }} / {{ quests.weekly.length }}
+        AppIcon.quests-view__chest-check(v-if="quests.chest.claimed" name="tabler:check" :width="20" :height="20")
+        Button(v-else-if="chestReady" type="primary" size="small" :disabled="busy" @click="claimChest")
+          | {{ $t('economy.quests.claim') }}
+          GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
+        GoldAmount(v-else size="sm" :amount="quests.chest.reward")
+    section.quests-view__section(v-if="achievements.length")
+      h4.quests-view__heading {{ $t('economy.achievements.title') }}
+      AchievementList(:items="achievements")
   .quests-view__error(v-else-if="failed")
     p {{ $t('economy.errors.generic') }}
     Button(size="small" @click="load") {{ $t('economy.retry') }}
@@ -41,11 +51,17 @@ export default defineComponent({
     const busy = ref(false)
     const failed = ref(false)
     const quests = computed(() => store.state.economy.quests)
+    const achievements = computed(() => store.state.economy.achievements || [])
     const claimedCount = computed(() => (quests.value ? quests.value.weekly.filter(q => q.claimed).length : 0))
 
     const chestReady = computed(() => quests.value.chest.ready && !quests.value.chest.claimed)
 
-    const refresh = () => Promise.all([store.dispatch('economy/fetchWallet'), store.dispatch('economy/fetchQuests')])
+    const refresh = () =>
+      Promise.all([
+        store.dispatch('economy/fetchWallet'),
+        store.dispatch('economy/fetchQuests'),
+        store.dispatch('economy/fetchAchievements')
+      ])
 
     const toast = (message, ok) =>
       Notify({
@@ -59,7 +75,7 @@ export default defineComponent({
       failed.value = false
 
       try {
-        const { error } = await store.dispatch('economy/fetchQuests')
+        const [{ error }] = await Promise.all([store.dispatch('economy/fetchQuests'), store.dispatch('economy/fetchAchievements')])
 
         failed.value = Boolean(error)
       } catch (e) {
@@ -96,7 +112,7 @@ export default defineComponent({
     watch(loggedIn, value => value && load())
     onMounted(() => loggedIn.value && load())
 
-    return { loggedIn, openLogin, quests, busy, failed, load, claimedCount, chestReady, claim, reroll, claimChest }
+    return { loggedIn, openLogin, quests, busy, failed, load, claimedCount, achievements, chestReady, claim, reroll, claimChest }
   }
 })
 </script>

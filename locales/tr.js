@@ -49,6 +49,8 @@ export default {
       reroll: 'Yenile',
       chest: 'Haftalık sandık: {done}/{total}',
       openChest: 'Sandığı aç',
+      chestTitle: 'Haftalık altın hediyesi',
+      chestHint: 'Tüm haftalık görevleri al',
       claimed: '+{amount} altın kazandın',
       rerolled: 'Görev yenilendi',
       chestClaimed: 'Sandıktan +{amount} altın'
@@ -74,6 +76,8 @@ export default {
       generic: 'Bir şeyler ters gitti, tekrar dene'
     },
     achievements: {
+      title: 'Başarımlar',
+      titleReward: 'Unvan ödülü: {name}',
       reward: 'Ödül:',
       completed: 'Tamamlandı'
     },

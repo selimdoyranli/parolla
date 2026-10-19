@@ -49,6 +49,8 @@ export default {
       reroll: 'Reroll',
       chest: 'Weekly chest: {done}/{total}',
       openChest: 'Open chest',
+      chestTitle: 'Weekly gold gift',
+      chestHint: 'Claim every weekly quest',
       claimed: 'You earned +{amount} gold',
       rerolled: 'Quest rerolled',
       chestClaimed: '+{amount} gold from the chest'
@@ -74,6 +76,8 @@ export default {
       generic: 'Something went wrong, try again'
     },
     achievements: {
+      title: 'Achievements',
+      titleReward: 'Title reward: {name}',
       reward: 'Reward:',
       completed: 'Completed'
     },

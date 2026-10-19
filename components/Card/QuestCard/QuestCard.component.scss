@@ -1,39 +1,79 @@
 .quest-card {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 12px;
   color: var(--color-text-01);
-  border-bottom: 1px solid var(--color-border-01);
+  background: var(--color-ui-01);
+  border: 1px solid var(--color-border-02);
+  border-radius: 10px;
 
   &__body {
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    gap: 8px;
     min-width: 0;
   }
 
+  &__head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
   &__title {
+    min-width: 0;
     font-weight: 600;
-    font-size: var(--font-size-text-6);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  &__count {
+    flex: none;
+    color: var(--color-text-03);
+    font-size: 12px;
   }
 
   &__bar {
     height: 6px;
-    margin: 6px 0 4px;
     overflow: hidden;
-    background: var(--color-border-01);
+    // neutral track that stays visible on both light and dark card surfaces
+    background: rgba(128, 128, 128, 0.3);
     border-radius: 3px;
   }
 
   &__fill {
     height: 100%;
     background: var(--color-brand-02);
+    border-radius: 3px;
     transition: width 0.3s;
+
+    &--done {
+      background: var(--color-success-01);
+    }
   }
 
-  &__meta {
-    font-size: 12px;
-    opacity: 0.7;
+  &__side {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  &__claim {
+    font-weight: 700;
+  }
+
+  &__reroll {
+    color: var(--color-text-01);
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--color-ui-03);
+    border-color: var(--color-border-02);
   }
 
   &__done {
