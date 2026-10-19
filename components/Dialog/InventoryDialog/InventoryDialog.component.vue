@@ -1,35 +1,42 @@
 <template lang="pug">
-Popup.inventory-dialog(
+Dialog.dialog.inventory-dialog(
   v-model="state.isOpen"
-  get-container="body"
+  :cancel-button-text="$t('general.close')"
+  :show-confirm-button="false"
+  :show-cancel-button="true"
   :close-on-click-overlay="false"
-  :lock-scroll="true"
   @closed="handleClosed"
 )
-  header.inventory-dialog__header
-    AppIcon.inventory-dialog__icon(name="tabler:backpack" :width="22" :height="22")
-    h2.inventory-dialog__title {{ $t('economy.inventory.title') }}
-    button.inventory-dialog__balance(v-if="loggedIn" type="button" @click="openHistory")
-      GoldAmount(size="sm" :amount="gold")
-    button.inventory-dialog__close(type="button" :aria-label="$t('general.close')" @click="close")
-      AppIcon(name="tabler:x" :width="22" :height="22")
+  template(#title)
+    .inventory-dialog__header
+      AppIcon.inventory-dialog__icon(name="tabler:backpack" :width="22" :height="22")
+      span.inventory-dialog__title {{ $t('economy.inventory.title') }}
+      button.inventory-dialog__balance(v-if="loggedIn" type="button" @click="openHistory")
+        GoldAmount(size="sm" :amount="gold")
 
-  nav.inventory-dialog__tabs
-    button.inventory-dialog__tab(v-for="t in TABS" :key="t.key" type="button" :class="{ 'is-active': tab === t.key }" @click="tab = t.key")
-      AppIcon(:name="t.icon" :width="16" :height="16")
-      span.inventory-dialog__tab-label {{ $t(`economy.inventory.tabs.${t.key}`) }}
+  .inventory-dialog__content
+    nav.inventory-dialog__tabs
+      button.inventory-dialog__tab(
+        v-for="t in TABS"
+        :key="t.key"
+        type="button"
+        :class="{ 'is-active': tab === t.key }"
+        @click="tab = t.key"
+      )
+        AppIcon(:name="t.icon" :width="16" :height="16")
+        span.inventory-dialog__tab-label {{ $t(`economy.inventory.tabs.${t.key}`) }}
 
-  .inventory-dialog__body
-    template(v-if="state.alive")
-      // a tab mounts on first visit and then stays, so an unsaved loadout draft survives a tab switch
-      CollectionView(v-if="seen.inventory" v-show="tab === 'inventory'")
-      ShopView(v-if="seen.shop" v-show="tab === 'shop'")
-      QuestsView(v-if="seen.quests" v-show="tab === 'quests'")
+    .inventory-dialog__body
+      template(v-if="state.alive")
+        // a tab mounts on first visit and then stays, so an unsaved loadout draft survives a tab switch
+        CollectionView(v-if="seen.inventory" v-show="tab === 'inventory'")
+        ShopView(v-if="seen.shop" v-show="tab === 'shop'")
+        QuestsView(v-if="seen.quests" v-show="tab === 'quests'")
 </template>
 
 <script>
 import { defineComponent, computed, reactive, watch, useContext, useRouter, useStore } from '@nuxtjs/composition-api'
-import { Popup } from 'vant'
+import { Dialog } from 'vant'
 
 const TABS = [
   { key: 'inventory', icon: 'tabler:backpack' },
@@ -38,7 +45,7 @@ const TABS = [
 ]
 
 export default defineComponent({
-  components: { Popup },
+  components: { Dialog: Dialog.Component },
   props: {
     isOpen: { type: Boolean, required: false, default: false }
   },

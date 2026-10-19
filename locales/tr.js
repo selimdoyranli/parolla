@@ -75,7 +75,6 @@ export default {
     },
     achievements: {
       title: 'Başarımlar',
-      titleReward: 'Unvan ödülü: {name}',
       goal: {
         'alfabe-ustasi': 'Günlük modu {n} kez bitir',
         kusursuz: 'Günlük modu {n} kez hatasız ve passız bitir',
@@ -158,7 +157,6 @@ export default {
         profile_frame: 'Profil çerçevesi',
         profile_cover: 'Profil arkaplanı',
         name_color: 'İsim rengi',
-        title: 'Ünvan',
         sets: 'Setler'
       },
       freeze: {

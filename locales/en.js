@@ -75,7 +75,6 @@ export default {
     },
     achievements: {
       title: 'Achievements',
-      titleReward: 'Title reward: {name}',
       goal: {
         'alfabe-ustasi': 'Finish the daily mode {n} times',
         kusursuz: 'Finish the daily mode {n} times with no wrong or passed answers',
@@ -158,7 +157,6 @@ export default {
         profile_frame: 'Profile frame',
         profile_cover: 'Profile cover',
         name_color: 'Name color',
-        title: 'Title',
         sets: 'Sets'
       },
       freeze: {

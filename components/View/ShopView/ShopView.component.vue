@@ -107,7 +107,6 @@ const TABS = [
   { key: 'profile_frame', icon: 'tabler:frame' },
   { key: 'profile_cover', icon: 'tabler:photo' },
   { key: 'name_color', icon: 'tabler:palette' },
-  { key: 'title', icon: 'tabler:award' },
   { key: 'sets', icon: 'tabler:packages' }
 ]
 const MAX_FREEZES = 2

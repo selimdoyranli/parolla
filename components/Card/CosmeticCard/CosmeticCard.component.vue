@@ -54,7 +54,6 @@ const SLOT = {
   avatar_decoration: 'decoration',
   nameplate: 'nameplate',
   name_color: 'nameColor',
-  title: 'title',
   profile_cover: 'profileCover',
   profile_frame: 'profileFrame',
   profile_effect: 'profileEffect'

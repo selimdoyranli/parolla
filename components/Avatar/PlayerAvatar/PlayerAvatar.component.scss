@@ -82,17 +82,6 @@
     }
   }
 
-  &__title {
-    margin-inline-start: $spacer * 2;
-    padding: 0 6px;
-    color: var(--color-text-03);
-    font-size: 0.75em;
-    line-height: 1.6;
-    white-space: nowrap;
-    background-color: var(--color-ui-02);
-    border-radius: var(--border-radius-01);
-  }
-
   &__avatar {
     position: relative;
     border-radius: 100%;

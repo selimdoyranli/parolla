@@ -326,7 +326,8 @@ export default defineComponent({
         route.value.path === localePath({ name: 'MusicMode-GuessTheSong' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'GoldHistory' }))
       ) {
         return true
       }

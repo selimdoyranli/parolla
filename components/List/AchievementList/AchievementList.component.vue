@@ -8,14 +8,13 @@
         .achievement-list__title
           span {{ goalText(t) }}
           span.achievement-list__chip {{ roman(t.tier) }}
-        .achievement-list__hint(v-if="titleName(t)") {{ $t('economy.achievements.titleReward', { name: titleName(t) }) }}
       .achievement-list__side
         span.achievement-list__progress {{ t.current.toLocaleString(lang) }} / {{ t.goal.toLocaleString(lang) }}
         GoldAmount(size="sm" :amount="t.reward")
 </template>
 
 <script>
-import { defineComponent, computed, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 
@@ -28,9 +27,7 @@ export default defineComponent({
   },
   setup(props) {
     const { i18n } = useContext()
-    const store = useStore()
     const lang = computed(() => (i18n.locale === 'en' ? 'en' : 'tr'))
-    const catalogMap = computed(() => store.getters['economy/catalogMap'])
 
     // One section per family, tiers in order
     const families = computed(() => {
@@ -58,15 +55,7 @@ export default defineComponent({
       return i18n.te(key) ? i18n.t(key, { n: t.goal.toLocaleString(lang.value) }) : baseName(t)
     }
 
-    const titleName = t => {
-      const item = t.titleItem && catalogMap.value[t.titleItem]
-
-      return item ? item.name : ''
-    }
-
-    onMounted(() => store.dispatch('economy/fetchCatalog'))
-
-    return { families, titleName, baseName, goalText, lang, roman: n => ROMAN[n] || String(n) }
+    return { families, baseName, goalText, lang, roman: n => ROMAN[n] || String(n) }
   }
 })
 </script>

@@ -55,14 +55,6 @@
     font-weight: 700;
   }
 
-  &__title {
-    padding: 0 6px;
-    color: var(--color-text-03);
-    font-size: 11px;
-    background-color: var(--color-ui-02);
-    border-radius: var(--border-radius-01);
-  }
-
   &__owner {
     color: var(--color-brand-02);
     background: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);

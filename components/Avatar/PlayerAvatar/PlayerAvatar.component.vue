@@ -34,7 +34,6 @@
       template(v-if="user") {{ user.username }}
       template(v-else) {{ $t('general.anon') }}
     span.gm-username-extra(v-if="isGm") &nbsp;(GM)
-    span.player-avatar__title(v-if="titleLabel") {{ titleLabel }}
 
   slot(name="append")
 </template>
@@ -162,7 +161,7 @@ export default defineComponent({
       return generateAvatarDataImage()
     })
 
-    const { asset, nameStyle, titleText, isAnimated } = useCosmetics()
+    const { asset, nameStyle, isAnimated } = useCosmetics()
 
     // Users without a loadout (guests, old payloads) resolve everything to empty
     const loadout = computed(() => (props.user && props.user.loadout) || {})
@@ -170,9 +169,8 @@ export default defineComponent({
     const decorationSrc = computed(() => asset(loadout.value.decoration))
     const decorationAnimated = computed(() => isAnimated(loadout.value.decoration))
     const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
-    const titleLabel = computed(() => titleText(loadout.value.title))
 
-    return { handleClickPlayerAvatar, isGm, avatarSrc, frameSrc, decorationSrc, decorationAnimated, nameColorStyle, titleLabel }
+    return { handleClickPlayerAvatar, isGm, avatarSrc, frameSrc, decorationSrc, decorationAnimated, nameColorStyle }
   }
 })
 </script>

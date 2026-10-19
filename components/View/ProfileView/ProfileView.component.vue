@@ -69,7 +69,6 @@
       )
         span.profile-view-identity__username(:style="plateImage ? null : nameColorStyle") {{ player.username }}
         span.profile-view-identity__gm-label(v-if="isGm") (GM)
-        span.profile-view-identity__title(v-if="titleLabel") {{ titleLabel }}
       span.profile-view-identity__handle(v-if="player.fullname") {{ player.fullname }}
 
       p.profile-view-identity__bio(v-if="player.bio") {{ player.bio }}
@@ -150,14 +149,13 @@ export default defineComponent({
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => props.player?.role?.name === 'GM')
 
-    const { asset, nameStyle, titleText, plateStyle } = useCosmetics()
+    const { asset, nameStyle, plateStyle } = useCosmetics()
     const loadout = computed(() => (props.player && props.player.loadout) || {})
     const coverSrc = computed(() => asset(loadout.value.profileCover))
     const frameSrc = computed(() => asset(loadout.value.profileFrame))
     const effectSrc = computed(() => asset(loadout.value.profileEffect))
     const plateImage = computed(() => asset(loadout.value.nameplate))
     const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
-    const titleLabel = computed(() => titleText(loadout.value.title))
 
     const bannerStyle = computed(() => {
       const base = buildBannerStyle(props.player?.diceBear?.config)
@@ -234,7 +232,6 @@ export default defineComponent({
       plateImage,
       plateStyle,
       nameColorStyle,
-      titleLabel,
       canPreviewPhoto,
       previewImages,
       handleAvatarClick,

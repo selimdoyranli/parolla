@@ -137,25 +137,12 @@
       line-height: 1.2;
     }
 
-    &__title {
-      margin-inline-start: 8px;
-      padding: 0 6px;
-      color: var(--color-text-03);
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 1.6;
-      vertical-align: middle;
-      background-color: var(--color-ui-02);
-      border-radius: var(--border-radius-01);
-    }
-
     &__name--plated {
       display: inline-block;
       padding: 2px 12px;
       border-radius: var(--border-radius-01);
 
-      .profile-view-identity__username,
-      .profile-view-identity__title {
+      .profile-view-identity__username {
         color: #fff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         background: none;

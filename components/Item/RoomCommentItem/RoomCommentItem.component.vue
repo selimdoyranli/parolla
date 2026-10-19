@@ -13,7 +13,6 @@
       .room-comment-item__meta
         button.room-comment-item__username(type="button" :style="usernameStyle" @click="openPlayer(comment.user)")
           | {{ comment.user && comment.user.username }}
-        span.room-comment-item__title(v-if="commentTitle") {{ commentTitle }}
         Tag.room-comment-item__owner(v-if="comment.isQuizOwner" round) {{ $t('comments.quizOwner') }}
         Timeago.room-comment-item__time(:datetime="comment.createdAt" :auto-update="60" :locale="$i18n.locale")
       p.room-comment-item__content
@@ -279,14 +278,12 @@ export default defineComponent({
       }
     })
 
-    const { nameStyle, titleText } = useCosmetics()
+    const { nameStyle } = useCosmetics()
     const loadout = computed(() => (props.comment.user && props.comment.user.loadout) || {})
     const usernameStyle = computed(() => nameStyle(loadout.value.nameColor))
-    const commentTitle = computed(() => titleText(loadout.value.title))
 
     return {
       usernameStyle,
-      commentTitle,
       reportTypeEnum,
       state,
       isReply,
