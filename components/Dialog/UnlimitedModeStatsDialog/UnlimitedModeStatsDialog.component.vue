@@ -70,8 +70,8 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
                 span(v-if="myAnswer(question) && myAnswer(question).field.length > 0") &nbsp;{{ myAnswer(question).field.toLocaleUpperCase('tr') }}
                 span(v-else) &nbsp;-
 
-          // Ad
-          DialogAd
+        // Ad
+        DialogAd
 
     // Footer
     footer.stats-dialog__footer

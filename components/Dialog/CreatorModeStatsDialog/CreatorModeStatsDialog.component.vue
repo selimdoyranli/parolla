@@ -90,8 +90,8 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
                 span(v-if="myAnswer({ questionIndex: index }) && myAnswer({ questionIndex: index }).field.length > 0")
                   | &nbsp;{{ myAnswer({ questionIndex: index }).field.toLocaleUpperCase('tr') }}
                 span(v-else) &nbsp;-
-          // Ad
-          DialogAd
+        // Ad
+        DialogAd
 
       template(v-else)
         Empty.stats-dialog-empty

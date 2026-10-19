@@ -37,8 +37,8 @@ Dialog.dialog.stats-dialog.guess-the-song-stats-dialog(
         Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
           | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
-      // Ad
-      AppAd(:data-ad-slot="9964323575")
+    // Ad
+    DialogAd
 
     // Footer
     footer.stats-dialog__footer

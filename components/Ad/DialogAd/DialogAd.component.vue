@@ -2,7 +2,8 @@
 //- the dialog ad pair (desktop / mobile slots) first used by the how-to-play dialog
 .dialog-ad
   AppAd(v-if="isDesktop" :data-ad-slot="9964323575")
-  AppAd(v-else :data-ad-slot="5200543400")
+  //- a fixed 300x250 on phones: the responsive unit came back taller than the dialog and wider than its padding
+  AppAd(v-else :format="null" :data-ad-slot="5200543400")
 </template>
 
 <script>
