@@ -1,4 +1,6 @@
 import { walletTransformer } from '@/transformers'
+import { wsTypeEnum } from '@/enums/wsType.enum'
+import { getDrawSocket, isDrawSocketReady } from '@/composables/useDrawSocket'
 
 const CACHE_KEY = 'parolla.cosmetics.v1'
 const CACHE_TTL_MS = 60 * 60 * 1000
@@ -7,6 +9,15 @@ const authHeaders = ctx => ({ Authorization: `${ctx.$auth.strategy.token.get()}`
 
 // only a response carrying a numeric HTTP status is definitive; axios network codes ('ERR_NETWORK') are strings
 export const isDefinitiveResponse = error => !error || typeof error.code === 'number'
+
+// ws re-fetches our own profile from Strapi and broadcasts it to the tour/draw room we are in
+const notifyLiveRooms = tourWs => {
+  const msg = JSON.stringify({ type: wsTypeEnum.PROFILE_REFRESH })
+
+  if (tourWs && tourWs.readyState === 1) tourWs.send(msg)
+
+  if (isDrawSocketReady()) getDrawSocket().send(msg)
+}
 
 export const newIdempotencyKey = () => {
   const uuid =
@@ -155,6 +166,7 @@ export default {
       commit('SET_INVENTORY', { ...state.inventory, loadout: data.loadout })
       // header avatar and profile read the loadout from the auth user
       this.commit('auth/SET_USER', { ...this.$auth.user, loadout: data.loadout })
+      notifyLiveRooms(this.state.app.ws)
     }
 
     return { data, error }

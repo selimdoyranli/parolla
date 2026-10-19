@@ -29,6 +29,10 @@ export default {
         commit('SET_USER_LIST', { players, totalCount, totalViewers: viewerCount })
       }
 
+      if (type === wsTypeEnum.PLAYER_UPDATED && parsedData.player) {
+        commit('APPLY_PLAYER_UPDATE', parsedData.player)
+      }
+
       if (type === wsTypeEnum.ERROR && message) {
         const now = Date.now()
         const sameAsLast = message === lastWsErrorMessage

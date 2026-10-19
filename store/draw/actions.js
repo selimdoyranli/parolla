@@ -107,6 +107,9 @@ export default {
       case wsTypeEnum.DRAW_CLEAR_CHAT:
         commit('CLEAR_CHAT')
         break
+      case wsTypeEnum.PLAYER_UPDATED:
+        if (message.player) commit('APPLY_PLAYER_UPDATE', message.player)
+        break
       case wsTypeEnum.DRAW_ROOM_CLOSED:
         commit('SET_ROOM_CLOSED', message.reason || 'closed')
         break

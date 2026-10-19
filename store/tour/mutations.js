@@ -42,6 +42,29 @@ export default {
     state.userList.totalViewers = userList.totalViewers
   },
 
+  // Live profile change (e.g. loadout) of a player in the room: patch every list showing them
+  APPLY_PLAYER_UPDATE(state, player) {
+    const fields = {
+      diceBear: player.diceBear,
+      profilePhoto: player.profilePhoto,
+      avatarSource: player.avatarSource,
+      loadout: player.loadout,
+      role: player.role
+    }
+    const isSame = id => String(id) === String(player.id)
+    const patch = item => (isSame(item.id) ? { ...item, ...fields, username: player.name } : item)
+
+    state.userList.players = state.userList.players.map(patch)
+    state.tour = {
+      ...state.tour,
+      recentAnswers: (state.tour.recentAnswers || []).map(patch),
+      roundScores: (state.tour.roundScores || []).map(patch)
+    }
+    state.chat.messages = (state.chat.messages || []).map(message =>
+      !message.isSystem && isSame(message.playerId) ? { ...message, ...fields, playerName: player.name } : message
+    )
+  },
+
   SET_LEADERBOARD(state, { leaderboard, meta }) {
     const mappedLeaderboard = leaderboard => {
       return leaderboard?.map(scorer => ({

@@ -18,6 +18,8 @@ export const wsTypeEnum = Object.freeze({
   CLEAR_CHAT: 'clear_chat',
   SERVER_RESTARTING: 'server_restarting',
   VOTE_KICK: 'vote_kick',
+  PROFILE_REFRESH: 'profile_refresh',
+  PLAYER_UPDATED: 'player_updated',
   DRAW_VOTE_KICK: 'draw_vote_kick',
   DRAW_CHAT_COMMAND: 'draw_chat_command',
   DRAW_CLEAR_CHAT: 'draw_clear_chat',
