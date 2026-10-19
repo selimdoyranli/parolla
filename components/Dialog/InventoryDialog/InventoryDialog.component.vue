@@ -10,13 +10,13 @@ Popup.inventory-dialog(
     AppIcon.inventory-dialog__icon(name="tabler:backpack" :width="22" :height="22")
     h2.inventory-dialog__title {{ $t('economy.inventory.title') }}
     button.inventory-dialog__balance(v-if="loggedIn" type="button" @click="openHistory")
-      GoldAmount(:amount="gold")
+      GoldAmount(size="sm" :amount="gold")
     button.inventory-dialog__close(type="button" :aria-label="$t('general.close')" @click="close")
       AppIcon(name="tabler:x" :width="22" :height="22")
 
   nav.inventory-dialog__tabs
     button.inventory-dialog__tab(v-for="t in TABS" :key="t.key" type="button" :class="{ 'is-active': tab === t.key }" @click="tab = t.key")
-      AppIcon(:name="t.icon" :width="18" :height="18")
+      AppIcon(:name="t.icon" :width="16" :height="16")
       span {{ $t(`economy.inventory.tabs.${t.key}`) }}
 
   .inventory-dialog__body

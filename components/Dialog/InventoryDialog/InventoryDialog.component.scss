@@ -27,7 +27,7 @@
 
   &__title {
     margin: 0;
-    font-size: var(--font-size-text-4);
+    font-size: 16px;
   }
 
   &__balance {
@@ -61,18 +61,25 @@
 
   &__tab {
     display: flex;
-    flex: 1;
-    gap: 6px;
+    flex: 1 1 0;
+    gap: 4px;
     align-items: center;
     justify-content: center;
-    padding: 8px 4px;
+    min-width: 0;
+    padding: 7px 2px;
     color: var(--color-text-03);
     font-weight: 600;
-    font-size: var(--font-size-text-6);
+    font-size: 13px;
     background: none;
     border: 0;
     border-radius: 9px;
     cursor: pointer;
+
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     &.is-active {
       color: var(--color-text-01);

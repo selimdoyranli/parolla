@@ -6,7 +6,7 @@
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
-      ActionButton(icon="streamline-ultimate-color:shop-sale-1" :icon-size="20")
+      ActionButton(icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" :amount="gold")
 
