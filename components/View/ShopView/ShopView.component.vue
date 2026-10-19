@@ -52,7 +52,7 @@
 <script>
 import { defineComponent, computed, reactive, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
 import { Button, Tabs, Tab, Dialog, Notify } from 'vant'
-import { newIdempotencyKey } from '@/store/economy/actions'
+import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
 
 const TABS = [
   'all',
@@ -198,7 +198,7 @@ export default defineComponent({
 
         const { error } = await store.dispatch('economy/buyStreakFreeze', freezeKey)
 
-        if (!error || error.code) freezeKey = null
+        if (isDefinitiveResponse(error)) freezeKey = null
 
         const code = error && error.details && error.details.code
         const key = `economy.errors.${code}`

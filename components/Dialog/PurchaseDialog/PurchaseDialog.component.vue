@@ -40,7 +40,7 @@ Dialog.dialog.purchase-dialog(
 <script>
 import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
 import { Dialog, Button, Notify } from 'vant'
-import { newIdempotencyKey } from '@/store/economy/actions'
+import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
 
 const SLOT = {
   avatar_frame: 'frame',
@@ -127,7 +127,7 @@ export default defineComponent({
           : await store.dispatch('economy/purchaseSet', { series: target.series, idempotencyKey: attemptKey })
 
         // an error with an HTTP status is a definitive answer; without one (network) the next try reuses the key
-        if (!error || error.code) attemptKey = null
+        if (isDefinitiveResponse(error)) attemptKey = null
 
         if (error) return fail(error)
 

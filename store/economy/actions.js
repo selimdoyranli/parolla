@@ -5,6 +5,9 @@ const CACHE_TTL_MS = 60 * 60 * 1000
 
 const authHeaders = ctx => ({ Authorization: `${ctx.$auth.strategy.token.get()}` })
 
+// only a response carrying a numeric HTTP status is definitive; axios network codes ('ERR_NETWORK') are strings
+export const isDefinitiveResponse = error => !error || typeof error.code === 'number'
+
 export const newIdempotencyKey = () => {
   const uuid =
     typeof crypto !== 'undefined' && crypto.randomUUID
