@@ -60,8 +60,8 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
             size="normal"
             :to="localePath({ name: len === 5 ? 'WordblockMode' : 'WordblockMode-charLength', params: { charLength: len } })"
           ) {{ len }} {{ $t('wordblockMode.letter') }}
-      // Ad
-      AppAd(:data-ad-slot="9964323575")
+    // Ad
+    DialogAd
 
     // Footer
     footer.stats-dialog__footer
