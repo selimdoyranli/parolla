@@ -36,7 +36,12 @@ export default {
       guestTeaser: 'Giriş yapsaydın {amount} kazanacaktın',
       login: 'Giriş yap'
     },
+    inventory: {
+      title: 'Envanter',
+      tabs: { inventory: 'Envanter', shop: 'Mağaza', quests: 'Görevler' }
+    },
     quests: {
+      loginPrompt: 'Görevleri görmek için giriş yap.',
       title: 'Görevler',
       daily: 'Günlük görevler',
       weekly: 'Haftalık görevler',
@@ -74,7 +79,7 @@ export default {
     },
     dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
     collection: {
-      title: 'Koleksiyonum',
+      title: 'Envanter',
       preview: 'Önizleme',
       equip: 'Kuşan',
       unequip: 'Çıkar',
@@ -84,7 +89,7 @@ export default {
       unsaved: 'Kaydedilmemiş değişiklikler var',
       empty: 'Henüz hiç ürünün yok.',
       goShop: 'Mağazaya git',
-      loginPrompt: 'Koleksiyonunu görmek için giriş yap.',
+      loginPrompt: 'Envanterini görmek için giriş yap.',
       login: 'Giriş yap'
     },
     history: {
@@ -339,8 +344,6 @@ export default {
     },
     menu: {
       title: 'Daha fazla',
-      shop: 'Mağaza',
-      collection: 'Koleksiyonum',
       goldHistory: 'Altın geçmişi',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',

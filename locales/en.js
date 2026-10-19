@@ -36,7 +36,12 @@ export default {
       guestTeaser: 'You would have earned {amount} if you had logged in',
       login: 'Log in'
     },
+    inventory: {
+      title: 'Inventory',
+      tabs: { inventory: 'Inventory', shop: 'Shop', quests: 'Quests' }
+    },
     quests: {
+      loginPrompt: 'Log in to see your quests.',
       title: 'Quests',
       daily: 'Daily quests',
       weekly: 'Weekly quests',
@@ -74,7 +79,7 @@ export default {
     },
     dailyReward: 'Daily reward: +{amount} gold (streak {streak})',
     collection: {
-      title: 'My collection',
+      title: 'Inventory',
       preview: 'Preview',
       equip: 'Equip',
       unequip: 'Remove',
@@ -84,7 +89,7 @@ export default {
       unsaved: 'You have unsaved changes',
       empty: "You don't own any items yet.",
       goShop: 'Go to the shop',
-      loginPrompt: 'Log in to see your collection.',
+      loginPrompt: 'Log in to see your inventory.',
       login: 'Log in'
     },
     history: {
@@ -337,8 +342,6 @@ export default {
     },
     menu: {
       title: 'More',
-      shop: 'Shop',
-      collection: 'My collection',
       goldHistory: 'Gold history',
       usernameEdit: 'Change the player name',
       menu: 'Menu',

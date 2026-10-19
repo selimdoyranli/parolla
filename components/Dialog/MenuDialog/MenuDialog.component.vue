@@ -37,13 +37,6 @@ Dialog.dialog.menu-dialog(
         @click.native="handleClickMyQuizzes"
       )
       Cell.menu-dialog-nav__item(
-        icon="gift-o"
-        size="large"
-        is-link
-        :title="$t('dialog.menu.collection')"
-        @click.native="navigateAndClose('Collection')"
-      )
-      Cell.menu-dialog-nav__item(
         icon="balance-list-o"
         size="large"
         is-link
@@ -135,7 +128,6 @@ Dialog.dialog.menu-dialog(
       :title="$t('dialog.menu.reviewRoom')"
       @click.native="openDialog('clickedReviewRoom')"
     )
-    Cell.menu-dialog-nav__item(icon="shop-o" size="large" is-link :title="$t('dialog.menu.shop')" @click.native="navigateAndClose('Shop')")
     Cell.menu-dialog-nav__item(
       icon="smile-comment-o"
       size="large"

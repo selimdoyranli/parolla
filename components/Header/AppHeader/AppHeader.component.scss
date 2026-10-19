@@ -63,6 +63,13 @@
         inset-inline-start: 60px !important;
       }
     }
+
+    // the homepage shop button + gold pill sits at the start
+    &--hasShop {
+      @include media-breakpoint-down(mobile-l) {
+        inset-inline-start: 100px !important;
+      }
+    }
   }
 
   &-nav {
@@ -93,6 +100,21 @@
       &--roomReviews {
         @include media-breakpoint-down(mobile-s) {
           display: none;
+        }
+      }
+
+      &--shop {
+        flex-direction: column;
+        justify-content: center;
+
+        .app-header-nav__gold-badge {
+          margin-top: -6px;
+          padding: 0 6px;
+          color: var(--color-text-01);
+          line-height: 1.3;
+          background: var(--color-ui-02);
+          border: 1px solid var(--color-border-02);
+          border-radius: 999px;
         }
       }
 

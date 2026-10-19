@@ -1,7 +1,5 @@
 <template lang="pug">
 .collection-view
-  h1.collection-view__title {{ $t('economy.collection.title') }}
-
   .collection-view__login(v-if="!loggedIn")
     p {{ $t('economy.collection.loginPrompt') }}
     Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
@@ -23,7 +21,7 @@
 
     .collection-view__empty(v-if="loaded && !groups.length")
       p {{ $t('economy.collection.empty') }}
-      Button(type="primary" round @click="$router.push(localePath({ name: 'Shop' }))") {{ $t('economy.collection.goShop') }}
+      Button(type="primary" round @click="$store.commit('economy/SET_INVENTORY_DIALOG_TAB', 'shop')") {{ $t('economy.collection.goShop') }}
 
     section.collection-view__group(v-for="g in groups" :key="g.category")
       h2.collection-view__heading {{ $t(`economy.shop.categories.${g.category}`) }}

@@ -25,8 +25,15 @@ export default {
   SET_PENDING_MODE(state, pendingMode) {
     state.pendingMode = pendingMode
   },
-  SET_IS_OPEN_QUESTS_DIALOG(state, isOpen) {
-    state.dialog.quests.isOpen = isOpen
+  SET_IS_OPEN_INVENTORY_DIALOG(state, isOpen) {
+    state.dialog.inventory.isOpen = isOpen
+  },
+  // opens the dialog on one of: inventory | shop | quests
+  OPEN_INVENTORY_DIALOG(state, tab) {
+    state.dialog.inventory = { isOpen: true, tab }
+  },
+  SET_INVENTORY_DIALOG_TAB(state, tab) {
+    state.dialog.inventory.tab = tab
   },
   RESET(state) {
     const fresh = defaultState()
@@ -38,6 +45,6 @@ export default {
     state.lastEconomy = null
     state.guestPreview = null
     state.pendingMode = null
-    state.dialog.quests.isOpen = false
+    state.dialog.inventory.isOpen = false
   }
 }

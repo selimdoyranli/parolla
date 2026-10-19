@@ -1,7 +1,5 @@
 <template lang="pug">
 .shop-view
-  h1.shop-view__title {{ $t('economy.shop.title') }}
-
   // Streak freeze
   .shop-view__freeze
     .shop-view__freeze-body

@@ -56,7 +56,7 @@ export default defineComponent({
       })
     })
 
-    const openQuests = () => store.commit('economy/SET_IS_OPEN_QUESTS_DIALOG', true)
+    const openQuests = () => store.commit('economy/OPEN_INVENTORY_DIALOG', 'quests')
     const openLogin = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
     return { pending, earned, capped, guestGold, completed, openQuests, openLogin }

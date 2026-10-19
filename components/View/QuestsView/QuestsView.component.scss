@@ -1,0 +1,30 @@
+.quests-view {
+  color: var(--color-text-01);
+
+  &__heading {
+    margin: 12px 0 0;
+    font-size: var(--font-size-text-5);
+  }
+
+  &__chest {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-weight: 600;
+  }
+
+  &__loading,
+  &__error,
+  &__login {
+    text-align: center;
+  }
+
+  &__login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    padding: 32px 0;
+  }
+}

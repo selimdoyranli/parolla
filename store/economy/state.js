@@ -7,5 +7,5 @@ export default () => ({
   lastEconomy: null,
   guestPreview: null,
   pendingMode: null,
-  dialog: { quests: { isOpen: false } }
+  dialog: { inventory: { isOpen: false, tab: 'shop' } }
 })

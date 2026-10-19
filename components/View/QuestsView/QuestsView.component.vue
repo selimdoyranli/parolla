@@ -1,15 +1,10 @@
 <template lang="pug">
-Dialog.dialog.quests-dialog(
-  v-model="state.isOpen"
-  :title="$t('economy.quests.title')"
-  :cancel-button-text="$t('general.close')"
-  :show-confirm-button="false"
-  :show-cancel-button="true"
-  :close-on-click-overlay="false"
-  @closed="$emit('closed')"
-)
-  template(v-if="quests")
-    h4.quests-dialog__heading {{ $t('economy.quests.daily') }}
+.quests-view
+  .quests-view__login(v-if="!loggedIn")
+    p {{ $t('economy.quests.loginPrompt') }}
+    Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
+  template(v-else-if="quests")
+    h4.quests-view__heading {{ $t('economy.quests.daily') }}
     QuestCard(
       v-for="q in quests.daily"
       :key="q.key"
@@ -19,33 +14,30 @@ Dialog.dialog.quests-dialog(
       @claim="claim"
       @reroll="reroll"
     )
-    h4.quests-dialog__heading {{ $t('economy.quests.weekly') }}
+    h4.quests-view__heading {{ $t('economy.quests.weekly') }}
     QuestCard(v-for="q in quests.weekly" :key="q.key" :quest="q" :busy="busy" @claim="claim")
-    .quests-dialog__chest
+    .quests-view__chest
       span {{ $t('economy.quests.chest', { done: claimedCount, total: quests.weekly.length }) }}
       Button(type="primary" size="small" :disabled="busy || !chestReady" @click="claimChest")
         | {{ $t('economy.quests.openChest') }}
         GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
-  .quests-dialog__error(v-else-if="failed")
+  .quests-view__error(v-else-if="failed")
     p {{ $t('economy.errors.generic') }}
     Button(size="small" @click="load") {{ $t('economy.retry') }}
-  Loading.quests-dialog__loading(v-else)
+  Loading.quests-view__loading(v-else)
 </template>
 
 <script>
-import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
-import { Dialog, Button, Loading, Notify } from 'vant'
+import { defineComponent, computed, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
+import { Button, Loading, Notify } from 'vant'
 
 export default defineComponent({
-  components: { Dialog: Dialog.Component, Button, Loading },
-  props: {
-    isOpen: { type: Boolean, required: false, default: false }
-  },
-  setup(props) {
+  components: { Button, Loading },
+  setup() {
     const store = useStore()
-    const { i18n } = useContext()
+    const { i18n, $auth } = useContext()
 
-    const state = reactive({ isOpen: props.isOpen })
+    const loggedIn = computed(() => $auth.loggedIn)
     const busy = ref(false)
     const failed = ref(false)
     const quests = computed(() => store.state.economy.quests)
@@ -99,19 +91,14 @@ export default defineComponent({
     const reroll = q => run('economy/rerollQuest', q.key, () => i18n.t('economy.quests.rerolled'))
     const claimChest = () => run('economy/claimChest', undefined, d => i18n.t('economy.quests.chestClaimed', { amount: d.reward }))
 
-    watch(
-      () => props.isOpen,
-      value => {
-        state.isOpen = value
+    const openLogin = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
-        if (value) load()
-      },
-      { immediate: true }
-    )
+    watch(loggedIn, value => value && load())
+    onMounted(() => loggedIn.value && load())
 
-    return { state, quests, busy, failed, load, claimedCount, chestReady, claim, reroll, claimChest }
+    return { loggedIn, openLogin, quests, busy, failed, load, claimedCount, chestReady, claim, reroll, claimChest }
   }
 })
 </script>
 
-<style lang="scss" src="./QuestsDialog.component.scss"></style>
+<style lang="scss" src="./QuestsView.component.scss"></style>

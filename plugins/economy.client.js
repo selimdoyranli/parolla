@@ -2,9 +2,11 @@ import { Notify } from 'vant'
 
 export default ({ app, store }) => {
   let running = false
+  // the nuxtAuth vuex module is registered after plugins start, so it can be absent on the first read
+  const isLoggedIn = () => Boolean(store.state.nuxtAuth && store.state.nuxtAuth.loggedIn)
 
   const dailyLogin = async () => {
-    if (running || !app.$auth.loggedIn) return
+    if (running || !isLoggedIn()) return
     running = true
 
     try {
@@ -33,7 +35,7 @@ export default ({ app, store }) => {
   dailyLogin()
   // login happens later without a reload (Google/Apple callback)
   store.watch(
-    () => app.$auth.loggedIn,
+    () => isLoggedIn(),
     loggedIn => (loggedIn ? dailyLogin() : store.commit('economy/RESET'))
   )
 }
