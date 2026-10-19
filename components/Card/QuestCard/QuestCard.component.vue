@@ -14,6 +14,7 @@
 <script>
 import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
+import { REROLL_COST } from '@/store/economy/constants'
 
 export default defineComponent({
   components: { Button },
@@ -29,7 +30,7 @@ export default defineComponent({
     const percent = computed(() => Math.min(100, Math.round((props.quest.progress / props.quest.goal) * 100)) || 0)
 
     const isClaimable = computed(() => props.quest.completed && !props.quest.claimed)
-    const rerollText = computed(() => i18n.t('economy.quests.reroll', { cost: 30 }))
+    const rerollText = computed(() => i18n.t('economy.quests.reroll', { cost: REROLL_COST }))
 
     return { title, percent, isClaimable, rerollText }
   }

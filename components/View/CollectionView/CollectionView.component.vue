@@ -12,10 +12,14 @@
       .collection-view__preview-top
         PlayerAvatar(with-username :user="previewUser" :size="64")
         .collection-view__plate(:style="plateStyle(previewUser)") {{ previewUser.username }}
-      ProfileView.collection-view__profile(:player="previewUser")
+      ProfileView.collection-view__profile(preview :player="previewUser")
       .collection-view__save
         span(v-if="dirty") {{ $t('economy.collection.unsaved') }}
         Button(type="primary" round :loading="saving" :disabled="!dirty" @click="save") {{ $t('economy.collection.save') }}
+
+    .collection-view__error(v-if="failed")
+      p {{ $t('economy.errors.generic') }}
+      Button(round :loading="retrying" @click="load") {{ $t('economy.retry') }}
 
     .collection-view__empty(v-if="loaded && !groups.length")
       p {{ $t('economy.collection.empty') }}
@@ -61,6 +65,8 @@ export default defineComponent({
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
     const loaded = ref(false)
     const saving = ref(false)
+    const failed = ref(false)
+    const retrying = ref(false)
     const draft = ref({})
 
     const catalogMap = computed(() => store.getters['economy/catalogMap'])
@@ -82,9 +88,23 @@ export default defineComponent({
     const load = async () => {
       if (!loggedIn.value) return
 
-      await store.dispatch('economy/fetchInventory')
-      draft.value = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
-      loaded.value = true
+      retrying.value = true
+
+      try {
+        const { error } = await store.dispatch('economy/fetchInventory')
+
+        failed.value = Boolean(error)
+
+        if (error) return
+
+        // drop removed catalog items so Save never sends a dead key
+        const loadout = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
+
+        draft.value = Object.fromEntries(Object.entries(loadout).filter(([, key]) => catalogMap.value[key]))
+        loaded.value = true
+      } finally {
+        retrying.value = false
+      }
     }
 
     const toast = (message, ok) =>
@@ -121,7 +141,23 @@ export default defineComponent({
     watch(loggedIn, load)
     onMounted(load)
 
-    return { loggedIn, viewer, loaded, saving, dirty, previewUser, groups, plateStyle, isOn, toggle, save, openLogin }
+    return {
+      loggedIn,
+      viewer,
+      loaded,
+      failed,
+      retrying,
+      load,
+      saving,
+      dirty,
+      previewUser,
+      groups,
+      plateStyle,
+      isOn,
+      toggle,
+      save,
+      openLogin
+    }
   }
 })
 </script>

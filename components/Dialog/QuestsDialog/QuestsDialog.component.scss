@@ -31,7 +31,8 @@
     font-weight: 600;
   }
 
-  &__loading {
+  &__loading,
+  &__error {
     text-align: center;
   }
 }

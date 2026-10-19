@@ -28,6 +28,7 @@ export default {
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
   economy: {
+    retry: 'Retry',
     earned: {
       amount: '+{amount} tokens',
       capped: 'You hit the daily cap',
@@ -57,6 +58,15 @@ export default {
       'already-owned': 'You already own this item',
       'not-for-sale': 'This item is not for sale',
       'nothing-to-buy': 'Nothing left to buy in this set',
+      'not-completed': 'This quest is not completed yet',
+      'key-reused': 'This request was already used, try again',
+      'bad-key': 'Invalid request',
+      'not-assigned': 'This quest is not assigned to you',
+      'no-replacement': 'No replacement quest available',
+      completed: 'This quest is already completed',
+      'not-ready': 'Not ready yet',
+      'unknown-item': 'Item not found',
+      'invalid-slot': 'Invalid loadout slot',
       generic: 'Something went wrong, try again'
     },
     achievements: {
@@ -124,7 +134,7 @@ export default {
       purchased: 'Purchased',
       setContent: 'Buys all {count} items in the set you do not own yet.',
       insufficient: 'Not enough tokens. Balance: {balance}, missing: {missing} tokens.',
-      rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary' },
+      rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary', sezon: 'Season' },
       categories: {
         all: 'All',
         avatar_frame: 'Avatar frame',

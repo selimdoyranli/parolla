@@ -83,8 +83,10 @@ export default defineComponent({
     const original = computed(() => (props.vitrinPrice && index.value === 0 ? current.value.price : null))
     const price = computed(() => (original.value ? props.vitrinPrice : current.value.price))
 
-    // catalog carries no swatch: stable hue per variant name, neutral for the original
+    // catalog swatch; hashed hue only for items without one, neutral for the original
     const dotColor = v => {
+      if (v.value && v.value.swatch) return v.value.swatch
+
       if (!v.variantName) return '#9aa0a6'
 
       let h = 0

@@ -28,6 +28,7 @@ export default {
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
   economy: {
+    retry: 'Tekrar dene',
     earned: {
       amount: '+{amount} jeton',
       capped: 'Günlük tavana ulaştın',
@@ -57,6 +58,15 @@ export default {
       'already-owned': 'Bu ürüne zaten sahipsin',
       'not-for-sale': 'Bu ürün satışta değil',
       'nothing-to-buy': 'Bu sette alınacak ürün kalmadı',
+      'not-completed': 'Görev henüz tamamlanmadı',
+      'key-reused': 'Bu istek zaten kullanıldı, tekrar dene',
+      'bad-key': 'Geçersiz istek',
+      'not-assigned': 'Bu görev sana atanmamış',
+      'no-replacement': 'Bu görev için yenisi bulunamadı',
+      completed: 'Bu görev zaten tamamlandı',
+      'not-ready': 'Henüz hazır değil',
+      'unknown-item': 'Ürün bulunamadı',
+      'invalid-slot': 'Geçersiz kuşanma yuvası',
       generic: 'Bir şeyler ters gitti, tekrar dene'
     },
     achievements: {
@@ -124,7 +134,7 @@ export default {
       purchased: 'Satın alındı',
       setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
       insufficient: 'Yeterli jetonun yok. Bakiyen: {balance}, eksik: {missing} jeton.',
-      rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi' },
+      rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi', sezon: 'Sezon' },
       categories: {
         all: 'Tümü',
         avatar_frame: 'Avatar çerçevesi',

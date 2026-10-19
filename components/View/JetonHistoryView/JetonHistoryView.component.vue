@@ -9,7 +9,11 @@
   template(v-else)
     p.jeton-history-view__balance {{ $t('economy.history.balance') }}: #[b {{ balance }}]
 
-    p.jeton-history-view__empty(v-if="loaded && !items.length") {{ $t('economy.history.empty') }}
+    .jeton-history-view__error(v-if="failed && !items.length")
+      p {{ $t('economy.errors.generic') }}
+      Button(round :loading="loading" @click="loadMore") {{ $t('economy.retry') }}
+
+    p.jeton-history-view__empty(v-else-if="loaded && !items.length") {{ $t('economy.history.empty') }}
 
     ul.jeton-history-view__list(v-else)
       li.jeton-history-view__row(v-for="(row, i) in items" :key="i")
@@ -40,6 +44,7 @@ export default defineComponent({
     const hasMore = ref(false)
     const loading = ref(false)
     const loaded = ref(false)
+    const failed = ref(false)
 
     const reasonLabel = reason => (i18n.te(`economy.history.reasons.${reason}`) ? i18n.t(`economy.history.reasons.${reason}`) : reason)
     const formatDate = iso =>
@@ -52,6 +57,8 @@ export default defineComponent({
 
       try {
         const { data } = await store.dispatch('economy/fetchHistory', page.value + 1)
+
+        failed.value = !data
 
         if (!data) return
 
@@ -76,7 +83,7 @@ export default defineComponent({
     watch(loggedIn, start)
     onMounted(start)
 
-    return { loggedIn, balance, items, hasMore, loading, loaded, reasonLabel, formatDate, loadMore, openLogin }
+    return { loggedIn, balance, items, hasMore, loading, loaded, failed, reasonLabel, formatDate, loadMore, openLogin }
   }
 })
 </script>

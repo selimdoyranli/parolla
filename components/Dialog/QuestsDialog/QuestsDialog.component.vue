@@ -24,6 +24,9 @@ Dialog.dialog.quests-dialog(
     .quests-dialog__chest
       span {{ $t('economy.quests.chest', { done: claimedCount, total: quests.weekly.length }) }}
       Button(type="primary" size="small" :disabled="busy || !chestReady" @click="claimChest") {{ chestText }}
+  .quests-dialog__error(v-else-if="failed")
+    p {{ $t('economy.errors.generic') }}
+    Button(size="small" @click="load") {{ $t('economy.retry') }}
   Loading.quests-dialog__loading(v-else)
 </template>
 
@@ -42,6 +45,7 @@ export default defineComponent({
 
     const state = reactive({ isOpen: props.isOpen })
     const busy = ref(false)
+    const failed = ref(false)
     const quests = computed(() => store.state.economy.quests)
     const claimedCount = computed(() => (quests.value ? quests.value.weekly.filter(q => q.claimed).length : 0))
 
@@ -59,6 +63,18 @@ export default defineComponent({
         duration: 3000
       })
 
+    const load = async () => {
+      failed.value = false
+
+      try {
+        const { error } = await store.dispatch('economy/fetchQuests')
+
+        failed.value = Boolean(error)
+      } catch (e) {
+        failed.value = true
+      }
+    }
+
     const run = async (action, arg, success) => {
       if (busy.value) return
       busy.value = true
@@ -72,6 +88,8 @@ export default defineComponent({
         else toast(success(data), true)
 
         await refresh()
+      } catch (e) {
+        toast(i18n.t('economy.errors.generic'), false)
       } finally {
         busy.value = false
       }
@@ -86,12 +104,12 @@ export default defineComponent({
       value => {
         state.isOpen = value
 
-        if (value) store.dispatch('economy/fetchQuests')
+        if (value) load()
       },
       { immediate: true }
     )
 
-    return { state, quests, busy, claimedCount, chestReady, chestText, claim, reroll, claimChest }
+    return { state, quests, busy, failed, load, claimedCount, chestReady, chestText, claim, reroll, claimChest }
   }
 })
 </script>

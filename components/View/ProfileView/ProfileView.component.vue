@@ -59,7 +59,7 @@
           @click.native="handleAvatarClick"
         )
 
-      .profile-view-header__action(v-if="isSelf")
+      .profile-view-header__action(v-if="isSelf && !preview")
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
@@ -115,6 +115,12 @@ export default defineComponent({
       type: Object,
       required: false,
       default: null
+    },
+    // collection preview: no edit/report actions
+    preview: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     playerLoading: {
       type: Boolean,
