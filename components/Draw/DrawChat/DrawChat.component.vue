@@ -229,6 +229,7 @@ export default defineComponent({
         avatarSource: enriched?.avatarSource,
         profilePhoto: typeof enriched?.profilePhoto === 'string' ? { url: enriched.profilePhoto } : enriched?.profilePhoto,
         diceBear: enriched?.diceBear,
+        loadout: enriched?.loadout,
         role: enriched?.role,
         isGuest
       }

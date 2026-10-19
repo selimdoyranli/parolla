@@ -63,6 +63,7 @@ export default defineComponent({
       avatarSource: p.avatarSource,
       profilePhoto: typeof p.profilePhoto === 'string' ? { url: p.profilePhoto } : p.profilePhoto,
       diceBear: p.diceBear,
+      loadout: p.loadout,
       role: p.role
     })
 

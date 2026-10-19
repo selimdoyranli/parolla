@@ -32,6 +32,7 @@ export default {
       diceBear: player.diceBear,
       profilePhoto: player.profilePhoto,
       avatarSource: player.avatarSource,
+      loadout: player.loadout,
       avatarUrl: player.avatarUrl,
       lives: player.lives
     }))

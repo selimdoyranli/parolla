@@ -349,6 +349,7 @@ export default defineComponent({
         diceBear: answer.diceBear,
         profilePhoto: answer.profilePhoto,
         avatarSource: answer.avatarSource,
+        loadout: answer.loadout,
         role: answer.role,
         isCorrect: answer.isCorrect
       }))
@@ -375,6 +376,7 @@ export default defineComponent({
         diceBear: scorer.diceBear,
         profilePhoto: scorer.profilePhoto,
         avatarSource: scorer.avatarSource,
+        loadout: scorer.loadout,
         role: scorer.role,
         score: `+${scorer.baseScore}`,
         time: formatTimestamp(scorer.responseTime),
