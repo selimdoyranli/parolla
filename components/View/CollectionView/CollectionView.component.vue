@@ -98,13 +98,8 @@ export default defineComponent({
 
         if (error) return
 
-        // drop removed catalog items so Save never sends a dead key
-        const loadout = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
-
-        // an empty catalog (fetch failed) must not wipe the loadout: keep keys as is
-        const known = Object.keys(catalogMap.value).length > 0
-
-        draft.value = Object.fromEntries(Object.entries(loadout).filter(([, key]) => !known || catalogMap.value[key]))
+        // server resolveLoadout already drops dead keys
+        draft.value = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
         loaded.value = true
       } finally {
         retrying.value = false
