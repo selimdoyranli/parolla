@@ -103,6 +103,8 @@ export default defineComponent({
 
       if (code === 'already-owned' || code === 'nothing-to-buy') store.dispatch('economy/fetchInventory')
 
+      if (code === 'vitrin-expired') emit('vitrin-expired')
+
       const key = `economy.errors.${code}`
 
       errorText.value = i18n.te(key) ? i18n.t(key) : i18n.t('economy.errors.generic')

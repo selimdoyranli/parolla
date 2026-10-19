@@ -57,6 +57,7 @@ export default {
       'limit-reached': 'Limite ulaşıldı',
       'already-owned': 'Bu ürüne zaten sahipsin',
       'not-for-sale': 'Bu ürün satışta değil',
+      'vitrin-expired': 'Bu ürünün vitrin indirimi sona erdi',
       'nothing-to-buy': 'Bu sette alınacak ürün kalmadı',
       'not-completed': 'Görev henüz tamamlanmadı',
       'key-reused': 'Bu istek zaten kullanıldı, tekrar dene',

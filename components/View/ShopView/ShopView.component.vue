@@ -46,7 +46,13 @@
 
   Button.shop-view__more(v-if="groups.length > visibleCount" block plain @click="visibleCount += 4") {{ $t('economy.shop.more') }}
 
-  LazyPurchaseDialog(:is-open="dialog.isOpen" :target="dialog.target" @closed="dialog.isOpen = false" @purchased="loadOwned")
+  LazyPurchaseDialog(
+    :is-open="dialog.isOpen"
+    :target="dialog.target"
+    @closed="dialog.isOpen = false"
+    @purchased="loadOwned"
+    @vitrin-expired="loadVitrin"
+  )
 </template>
 
 <script>
@@ -221,12 +227,15 @@ export default defineComponent({
       }
     })
 
-    onMounted(async () => {
-      loadOwned()
-
+    const loadVitrin = async () => {
       const { data } = await store.dispatch('economy/fetchVitrin')
 
       vitrin.value = data
+    }
+
+    onMounted(() => {
+      loadOwned()
+      loadVitrin()
     })
 
     return {
@@ -246,6 +255,7 @@ export default defineComponent({
       groups,
       visibleGroups,
       vitrinCards,
+      loadVitrin,
       openItem,
       openSet,
       setLabel,

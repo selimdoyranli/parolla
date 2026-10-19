@@ -57,6 +57,7 @@ export default {
       'limit-reached': 'Limit reached',
       'already-owned': 'You already own this item',
       'not-for-sale': 'This item is not for sale',
+      'vitrin-expired': 'This showcase deal has expired',
       'nothing-to-buy': 'Nothing left to buy in this set',
       'not-completed': 'This quest is not completed yet',
       'key-reused': 'This request was already used, try again',
