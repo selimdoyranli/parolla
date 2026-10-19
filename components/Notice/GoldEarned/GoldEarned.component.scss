@@ -25,7 +25,8 @@
   }
 
   &__note {
-    font-size: var(--font-size-text-6);
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
   }
 
   &__quest {
@@ -34,6 +35,6 @@
     gap: 8px;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-text-6);
+    font-size: var(--font-size-text-9);
   }
 }

@@ -64,6 +64,12 @@
     align-items: flex-end;
   }
 
+  // same radius as the shop buttons (.shop-buy)
+  &__claim,
+  &__reroll {
+    border-radius: 8px;
+  }
+
   &__claim {
     font-weight: 700;
   }

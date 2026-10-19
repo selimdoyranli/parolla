@@ -2,18 +2,22 @@
 .collection-view
   .collection-view__login(v-if="!loggedIn")
     p {{ $t('economy.collection.loginPrompt') }}
-    Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
+    Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
 
   template(v-else)
     .collection-view__preview
       h2.collection-view__heading {{ $t('economy.collection.preview') }}
       .collection-view__preview-top
         PlayerAvatar(with-username :user="previewUser" :size="64")
-        .collection-view__plate(:style="plateStyle(previewUser)") {{ previewUser.username }}
+        .collection-view__plate(
+          :style="plateStyle(previewUser)"
+          :class="{ 'collection-view__plate--on': plateStyle(previewUser).backgroundImage }"
+        )
+          | {{ previewUser.username }}
       ProfileView.collection-view__profile(preview :player="previewUser")
       .collection-view__save
         span(v-if="dirty") {{ $t('economy.collection.unsaved') }}
-        Button(type="primary" round :loading="saving" :disabled="!loaded || !dirty" @click="save") {{ $t('economy.collection.save') }}
+        Button(color="var(--color-brand-02)" round :loading="saving" :disabled="!loaded || !dirty" @click="save") {{ $t('economy.collection.save') }}
 
     .collection-view__error(v-if="failed")
       p {{ $t('economy.errors.generic') }}
@@ -21,7 +25,8 @@
 
     .collection-view__empty(v-if="loaded && !groups.length")
       p {{ $t('economy.collection.empty') }}
-      Button(type="primary" round @click="$store.commit('economy/SET_INVENTORY_DIALOG_TAB', 'shop')") {{ $t('economy.collection.goShop') }}
+      Button(color="var(--color-brand-02)" round @click="$store.commit('economy/SET_INVENTORY_DIALOG_TAB', 'shop')")
+        | {{ $t('economy.collection.goShop') }}
 
     section.collection-view__group(v-for="g in groups" :key="g.category")
       h2.collection-view__heading {{ $t(`economy.shop.categories.${g.category}`) }}
@@ -29,7 +34,7 @@
         .collection-view__tile(v-for="item in g.items" :key="item.key")
           CosmeticCard(preview-only :variants="[item]" :viewer="viewer")
           b.collection-view__name {{ item.name }}
-          Button(:type="isOn(item) ? 'default' : 'primary'" size="small" round @click="toggle(item)")
+          Button(:color="isOn(item) ? undefined : 'var(--color-brand-02)'" size="small" round @click="toggle(item)")
             | {{ $t(isOn(item) ? 'economy.collection.unequip' : 'economy.collection.equip') }}
 </template>
 

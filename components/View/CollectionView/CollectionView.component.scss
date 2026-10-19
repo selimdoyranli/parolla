@@ -49,6 +49,12 @@
     background-position: left center;
     background-size: cover;
     border-radius: 7px;
+
+    // plate art is dark or busy in both themes: same text treatment as the shop card plate
+    &--on {
+      color: #fff;
+      text-shadow: 0 1px 3px rgb(0 0 0 / 75%);
+    }
   }
 
   &__profile {

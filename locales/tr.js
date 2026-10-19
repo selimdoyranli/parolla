@@ -1142,7 +1142,13 @@ export default {
       noLogs: 'Henüz komut çalıştırılmadı',
       more: 'Daha fazla',
       ok: 'Başarılı',
-      error: 'Hata'
+      error: 'Hata',
+      errors: {
+        'unknown-command': 'Bilinmeyen komut',
+        'missing-username': 'Kullanıcı adı gerekli',
+        'invalid-amount': 'Miktar 1 ile 100.000 arasında tam sayı olmalı',
+        'user-not-found': 'Kullanıcı bulunamadı'
+      }
     },
     wordblock: {
       title: 'Kelimeblok',

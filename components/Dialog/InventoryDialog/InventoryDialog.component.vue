@@ -17,7 +17,7 @@ Popup.inventory-dialog(
   nav.inventory-dialog__tabs
     button.inventory-dialog__tab(v-for="t in TABS" :key="t.key" type="button" :class="{ 'is-active': tab === t.key }" @click="tab = t.key")
       AppIcon(:name="t.icon" :width="16" :height="16")
-      span {{ $t(`economy.inventory.tabs.${t.key}`) }}
+      span.inventory-dialog__tab-label {{ $t(`economy.inventory.tabs.${t.key}`) }}
 
   .inventory-dialog__body
     template(v-if="state.alive")

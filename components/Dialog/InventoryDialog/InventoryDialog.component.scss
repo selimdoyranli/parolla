@@ -75,7 +75,7 @@
     border-radius: 9px;
     cursor: pointer;
 
-    span {
+    &-label {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;

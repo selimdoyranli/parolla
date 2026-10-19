@@ -7,7 +7,7 @@
     .quest-card__bar
       .quest-card__fill(:class="{ 'quest-card__fill--done': quest.completed }" :style="{ width: percent + '%' }")
   .quest-card__side
-    Button.quest-card__claim(v-if="isClaimable" type="primary" size="small" :disabled="busy" @click="$emit('claim', quest)")
+    Button.quest-card__claim(v-if="isClaimable" color="var(--color-brand-02)" size="small" :disabled="busy" @click="$emit('claim', quest)")
       | {{ $t('economy.quests.claim') }}
       GoldAmount.ms-1(size="sm" :amount="quest.reward")
     template(v-else)

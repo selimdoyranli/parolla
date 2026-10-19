@@ -4,7 +4,7 @@
 
   .gold-history-view__login(v-if="!loggedIn")
     p {{ $t('economy.history.loginPrompt') }}
-    Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
+    Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
 
   template(v-else)
     p.gold-history-view__balance

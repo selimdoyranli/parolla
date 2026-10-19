@@ -303,10 +303,14 @@
   .player-list-item-user__username,
   .player-list-item-user::before,
   .player-list-item-time__value,
-  .player-list-item-time__value sub,
-  .player-list-item-score {
+  .player-list-item-time__value sub {
     color: #fff;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  }
+
+  // the score pill has its own themed background, so it keeps its normal text colors
+  .player-list-item-score {
+    text-shadow: none;
   }
 
   .player-avatar__name,

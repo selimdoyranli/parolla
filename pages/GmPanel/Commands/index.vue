@@ -21,7 +21,15 @@
         @keydown.up.prevent="recall"
       )
     .gm-commands__submit
-      Button(type="primary" round block native-type="button" :loading="isRunning" :disabled="!command.trim()" @click="submit")
+      Button(
+        color="var(--color-brand-02)"
+        round
+        block
+        native-type="button"
+        :loading="isRunning"
+        :disabled="!command.trim()"
+        @click="submit"
+      )
         | {{ $t('gmPanel.commands.run') }}
 
     .gm-commands__result(v-if="result" role="status" :class="`gm-commands__result--${result.ok ? 'ok' : 'error'}`")
@@ -38,9 +46,15 @@
       .gm-commands__log
         .gm-commands__logHead
           small.gm-commands__time {{ formatTime(log.createdAt) }} · {{ log.gmUsername }}
-          Tag(:type="log.status === 'ok' ? 'success' : 'danger'" round) {{ $t(`gmPanel.commands.${log.status === 'ok' ? 'ok' : 'error'}`) }}
+          Tag(:color="log.status === 'ok' ? 'var(--color-success-01)' : 'var(--color-danger-01)'" round)
+            | {{ $t(`gmPanel.commands.${log.status === 'ok' ? 'ok' : 'error'}`) }}
         code.gm-commands__code {{ log.command }}
-        small.gm-commands__time {{ formatResult(log) }}
+        small.gm-commands__time.gm-commands__sent(v-if="log.status === 'ok' && log.result")
+          span {{ log.result.username }} +
+          GoldAmount(size="sm" :amount="log.result.amount")
+          span →
+          GoldAmount(size="sm" :amount="log.result.balance")
+        small.gm-commands__time(v-else) {{ errorText(log) }}
 
     Loading(v-if="isLoading" color="var(--color-brand-02)")
     .gm-commands__submit(v-if="hasMore && !isLoading")
@@ -73,7 +87,14 @@ export default defineComponent({
 
     const fetchLogs = async (target = 1) => {
       isLoading.value = true
-      const { data } = await store.dispatch('gm/fetchCommandLogs', { page: target })
+      const { data, error } = await store.dispatch('gm/fetchCommandLogs', { page: target })
+
+      if (error) {
+        isLoading.value = false
+        showToast.fail(i18n.t('error.anErrorOccurred'))
+
+        return
+      }
 
       logs.value = target === 1 ? data?.items || [] : [...logs.value, ...(data?.items || [])]
       page.value = target
@@ -114,12 +135,12 @@ export default defineComponent({
 
     const formatTime = iso => new Date(iso).toLocaleString(i18n.locale, { dateStyle: 'short', timeStyle: 'short' })
 
-    const formatResult = log => {
-      const res = log.result || {}
+    // logs store only the error code; unknown codes fall back to the raw code
+    const errorText = log => {
+      const code = (log.result && log.result.code) || ''
+      const key = `gmPanel.commands.errors.${code}`
 
-      if (log.status === 'ok') return `${res.username} +${res.amount} → ${res.balance}`
-
-      return res.code || ''
+      return code && i18n.te(key) ? i18n.t(key) : code
     }
 
     const usage = `/sendgold <${i18n.t('gmPanel.commands.userArg')}> <${i18n.t('gmPanel.commands.amountArg')}> [${i18n.t(
@@ -141,7 +162,7 @@ export default defineComponent({
       recall,
       fetchLogs,
       formatTime,
-      formatResult
+      errorText
     }
   },
   head() {
@@ -213,6 +234,13 @@ export default defineComponent({
 
   &__time {
     color: var(--color-text-03);
+  }
+
+  &__sent {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
   }
 }
 </style>

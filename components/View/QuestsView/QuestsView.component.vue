@@ -2,7 +2,7 @@
 .quests-view
   .quests-view__login(v-if="!loggedIn")
     p {{ $t('economy.quests.loginPrompt') }}
-    Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
+    Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
   template(v-else-if="quests")
     section.quests-view__section
       h4.quests-view__heading {{ $t('economy.quests.daily') }}
@@ -24,7 +24,7 @@
           .quests-view__chest-title {{ $t('economy.quests.chestTitle') }}
           .quests-view__chest-hint {{ $t('economy.quests.chestHint') }} · {{ claimedCount }} / {{ quests.weekly.length }}
         AppIcon.quests-view__chest-check(v-if="quests.chest.claimed" name="tabler:check" :width="20" :height="20")
-        Button(v-else-if="chestReady" type="primary" size="small" :disabled="busy" @click="claimChest")
+        Button(v-else-if="chestReady" color="var(--color-brand-02)" size="small" :disabled="busy" @click="claimChest")
           | {{ $t('economy.quests.claim') }}
           GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
         GoldAmount(v-else size="sm" :amount="quests.chest.reward")

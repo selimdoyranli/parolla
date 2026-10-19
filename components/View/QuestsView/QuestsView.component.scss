@@ -28,6 +28,11 @@
     &--done {
       opacity: 0.8;
     }
+
+    .van-button {
+      font-weight: 700;
+      border-radius: 8px;
+    }
   }
 
   &__chest-icon {

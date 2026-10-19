@@ -7,12 +7,12 @@
     p.gold-earned__note(v-if="capped") {{ $t('economy.earned.capped') }}
     .gold-earned__quest(v-for="title in completed" :key="title")
       span {{ $t('economy.earned.questDone', { title }) }}
-      Button(type="primary" size="mini" round @click="openQuests") {{ $t('economy.earned.viewQuests') }}
+      Button(color="var(--color-brand-02)" size="mini" round @click="openQuests") {{ $t('economy.earned.viewQuests') }}
   template(v-else-if="guestGold")
     i18n.gold-earned__note(tag="p" path="economy.earned.guestTeaser")
       template(#amount)
         GoldAmount(:amount="guestGold")
-    Button(type="primary" size="small" round @click="openLogin") {{ $t('economy.earned.login') }}
+    Button(color="var(--color-brand-02)" size="small" round @click="openLogin") {{ $t('economy.earned.login') }}
 </template>
 
 <script>

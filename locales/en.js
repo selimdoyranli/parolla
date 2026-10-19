@@ -1124,7 +1124,13 @@ export default {
       noLogs: 'No commands run yet',
       more: 'Load more',
       ok: 'Success',
-      error: 'Error'
+      error: 'Error',
+      errors: {
+        'unknown-command': 'Unknown command',
+        'missing-username': 'Username is required',
+        'invalid-amount': 'Amount must be a whole number from 1 to 100,000',
+        'user-not-found': 'User not found'
+      }
     },
     wordblock: {
       title: 'Wordblock',
