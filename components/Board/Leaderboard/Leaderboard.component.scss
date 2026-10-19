@@ -568,18 +568,24 @@
 }
 
 /* stylelint-disable no-descending-specificity */
-// Nameplate strip behind the username only; negative margins cancel the padding so the
-// podium geometry is identical with and without a plate.
+// Nameplate strip drawn by a pseudo-element behind the username, so the username's box
+// (margins, padding, size) is identical with and without a plate.
 .top-scorer-list-item--plated {
   .player-avatar__username {
-    padding: 2px 10px;
-    background-image: var(--plate-image);
-    background-repeat: no-repeat;
-    background-position: left center;
-    background-size: cover;
-    border-radius: 4px;
-    margin-inline: -10px;
-    margin-block: -2px;
+    position: relative;
+    isolation: isolate;
+
+    &::before {
+      position: absolute;
+      z-index: -1;
+      background-image: var(--plate-image);
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: cover;
+      border-radius: 4px;
+      content: '';
+      inset: -2px -10px;
+    }
   }
 
   .player-avatar__name,
