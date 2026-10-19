@@ -1,6 +1,7 @@
 <template lang="pug">
-.jeton-earned(v-if="earned || capped || completed.length || guestJeton")
-  template(v-if="$auth.loggedIn")
+.jeton-earned(v-if="pending || earned || capped || completed.length || guestJeton")
+  .jeton-earned__placeholder(v-if="pending")
+  template(v-else-if="$auth.loggedIn")
     p.jeton-earned__amount(v-if="earned") {{ $t('economy.earned.amount', { amount: earned }) }}
     p.jeton-earned__note(v-if="capped") {{ $t('economy.earned.capped') }}
     .jeton-earned__quest(v-for="title in completed" :key="title")
@@ -29,6 +30,7 @@ export default defineComponent({
 
       return e && e.mode === props.mode ? e : null
     })
+    const pending = computed(() => store.state.economy.pendingMode === props.mode)
     const earned = computed(() => (last.value ? last.value.earned : 0))
     const capped = computed(() => !!(last.value && last.value.capped))
     const guestJeton = computed(() => {
@@ -54,7 +56,7 @@ export default defineComponent({
     const openQuests = () => store.commit('economy/SET_IS_OPEN_QUESTS_DIALOG', true)
     const openLogin = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
-    return { earned, capped, guestJeton, completed, openQuests, openLogin }
+    return { pending, earned, capped, guestJeton, completed, openQuests, openLogin }
   }
 })
 </script>

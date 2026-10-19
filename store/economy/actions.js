@@ -66,10 +66,22 @@ export default {
 
   // Called once per game end. Logged in: keep the score response's `economy` for the end dialog
   // and refresh wallet/quests. Guest: ask what they would have earned.
-  async gameEnded({ commit, dispatch }, { mode, data, win, attempts }) {
+  // Call right before the end dialog opens so the previous game's reward never flashes.
+  gameStarting({ commit }, mode) {
     commit('SET_LAST_ECONOMY', null)
     commit('SET_GUEST_PREVIEW', null)
+    commit('SET_PENDING_MODE', mode)
+  },
 
+  async gameEnded({ commit, dispatch }, params) {
+    try {
+      await dispatch('settleGame', params)
+    } finally {
+      commit('SET_PENDING_MODE', null)
+    }
+  },
+
+  async settleGame({ commit, dispatch }, { mode, data, win, attempts }) {
     if (!this.$auth.loggedIn) {
       const query = { mode }
 

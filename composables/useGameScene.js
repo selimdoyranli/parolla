@@ -630,6 +630,10 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
 
     countdownTimerRef.value.pause()
 
+    if (activeGameMode.value === gameModeKeyEnum.DAILY || activeGameMode.value === gameModeKeyEnum.CREATOR) {
+      await store.dispatch('economy/gameStarting', activeGameMode.value === gameModeKeyEnum.DAILY ? 'daily' : 'room')
+    }
+
     if (
       activeGameMode.value === gameModeKeyEnum.DAILY ||
       activeGameMode.value === gameModeKeyEnum.UNLIMITED ||

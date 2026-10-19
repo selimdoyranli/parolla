@@ -6,5 +6,6 @@ export default () => ({
   achievements: null,
   lastEconomy: null,
   guestPreview: null,
+  pendingMode: null,
   dialog: { quests: { isOpen: false } }
 })

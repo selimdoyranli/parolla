@@ -22,6 +22,9 @@ export default {
   SET_GUEST_PREVIEW(state, guestPreview) {
     state.guestPreview = guestPreview
   },
+  SET_PENDING_MODE(state, pendingMode) {
+    state.pendingMode = pendingMode
+  },
   SET_IS_OPEN_QUESTS_DIALOG(state, isOpen) {
     state.dialog.quests.isOpen = isOpen
   },
@@ -32,6 +35,9 @@ export default {
     state.quests = null
     state.inventory = null
     state.achievements = null
+    state.lastEconomy = null
+    state.guestPreview = null
+    state.pendingMode = null
     state.dialog.quests.isOpen = false
   }
 }

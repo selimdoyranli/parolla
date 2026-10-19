@@ -86,6 +86,7 @@ export default charLength => {
   }
 
   const endGame = async () => {
+    store.dispatch('economy/gameStarting', 'wordblock')
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
     store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: true })
