@@ -1,0 +1,159 @@
+import { walletTransformer } from '@/transformers'
+
+const CACHE_KEY = 'parolla.cosmetics.v1'
+const CACHE_TTL_MS = 60 * 60 * 1000
+
+const authHeaders = ctx => ({ Authorization: `${ctx.$auth.strategy.token.get()}` })
+
+const idempotencyKey = () => {
+  const uuid =
+    typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('')
+
+  return uuid.replace(/-/g, '').slice(0, 32)
+}
+
+const readCache = () => {
+  try {
+    return JSON.parse(localStorage.getItem(CACHE_KEY))
+  } catch (e) {
+    return null
+  }
+}
+
+const writeCache = catalog => {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ...catalog, fetchedAt: Date.now() }))
+  } catch (e) {
+    // storage full/blocked: catalog still works from the store
+  }
+}
+
+// Authenticated request; commits `balance` from the response into the wallet when present.
+const authed = async (ctx, params) => {
+  const { data, error } = await ctx.$appFetch({ ...params, headers: authHeaders(ctx) })
+
+  if (data && typeof data.balance === 'number') ctx.commit('economy/SET_WALLET', { jeton: data.balance })
+
+  return { data, error }
+}
+
+export default {
+  async fetchCatalog({ commit }) {
+    const cached = readCache()
+
+    if (cached && Array.isArray(cached.items)) {
+      commit('SET_CATALOG', { version: cached.version, items: cached.items })
+
+      if (Date.now() - cached.fetchedAt < CACHE_TTL_MS) return { data: cached, error: null }
+    }
+
+    const { data, error } = await this.$appFetch({ path: 'cosmetics/catalog' })
+
+    if (data) {
+      const catalog = { version: data.version, items: data.items }
+
+      commit('SET_CATALOG', catalog)
+      writeCache(catalog)
+    }
+
+    return { data, error }
+  },
+
+  async fetchWallet({ commit }) {
+    const { data, error } = await authed(this, { path: 'economy/me' })
+
+    if (data) commit('SET_WALLET', walletTransformer(data))
+
+    return { data, error }
+  },
+
+  async claimDaily({ commit }) {
+    const { data, error } = await authed(this, { path: 'economy/daily/claim', method: 'POST' })
+
+    if (data && data.status === 'claimed') commit('SET_WALLET', { canClaimDaily: false, dailyStreak: data.streak })
+
+    return { data, error }
+  },
+
+  async fetchQuests({ commit }) {
+    const { data, error } = await authed(this, { path: 'economy/quests' })
+
+    if (data) commit('SET_QUESTS', data)
+
+    return { data, error }
+  },
+
+  claimQuest(_, key) {
+    return authed(this, { path: `economy/quests/${key}/claim`, method: 'POST' })
+  },
+
+  rerollQuest(_, key) {
+    return authed(this, { path: `economy/quests/${key}/reroll`, method: 'POST' })
+  },
+
+  claimChest() {
+    return authed(this, { path: 'economy/quests/weekly-chest/claim', method: 'POST' })
+  },
+
+  async fetchInventory({ commit }) {
+    const { data, error } = await authed(this, { path: 'economy/inventory' })
+
+    if (data) commit('SET_INVENTORY', data)
+
+    return { data, error }
+  },
+
+  async saveLoadout({ commit, state }, loadout) {
+    const { data, error } = await authed(this, { path: 'economy/loadout', method: 'PUT', data: { loadout } })
+
+    if (data) commit('SET_INVENTORY', { ...state.inventory, loadout: data.loadout })
+
+    return { data, error }
+  },
+
+  purchase(_, { itemKey, fromVitrin }) {
+    return authed(this, {
+      path: 'economy/shop/purchase',
+      method: 'POST',
+      data: { itemKey, fromVitrin, idempotencyKey: idempotencyKey() }
+    })
+  },
+
+  purchaseSet(_, series) {
+    return authed(this, {
+      path: 'economy/shop/purchase-set',
+      method: 'POST',
+      data: { series, idempotencyKey: idempotencyKey() }
+    })
+  },
+
+  async buyStreakFreeze({ commit }) {
+    const result = await authed(this, {
+      path: 'economy/shop/streak-freeze',
+      method: 'POST',
+      data: { idempotencyKey: idempotencyKey() }
+    })
+
+    if (result.data) commit('SET_WALLET', { streakFreezes: result.data.freezes })
+
+    return result
+  },
+
+  fetchVitrin() {
+    return this.$appFetch({ path: 'economy/shop/vitrin' })
+  },
+
+  async fetchAchievements({ commit }) {
+    const { data, error } = await authed(this, { path: 'economy/achievements' })
+
+    if (data) commit('SET_ACHIEVEMENTS', data)
+
+    return { data, error }
+  },
+
+  fetchHistory(_, page = 1) {
+    return authed(this, { path: 'economy/history', query: { page } })
+  }
+}

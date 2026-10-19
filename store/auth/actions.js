@@ -1,4 +1,5 @@
 import { Dialog } from 'vant'
+import { walletTransformer } from '@/transformers'
 
 // Strapi (and our Apple/merge callbacks) reject a blocked account with 'Your account has been blocked by an administrator'
 const alertIfBlocked = (app, error) => {
@@ -19,6 +20,9 @@ export default {
 
     if (data) {
       commit('SET_USER', data)
+
+      // wallet comes with /users/me so a fresh login needs no extra call
+      if (data.economy) commit('economy/SET_WALLET', walletTransformer(data.economy), { root: true })
     }
 
     return {

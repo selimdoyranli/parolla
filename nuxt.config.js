@@ -111,7 +111,8 @@ module.exports = {
     { src: '~/plugins/portal-vue', ssr: false }, // https://v2.portal-vue.linusb.org/
     { src: '~/plugins/vue-croppa', ssr: false }, // https://www.npmjs.com/package/vue-croppa
     { src: '~/plugins/acs', ssr: false }, // https://audiocss.dev — UI sound effects
-    { src: '~/plugins/vue-infinite-loading', ssr: false } // https://www.npmjs.com/package/vue-infinite-loading
+    { src: '~/plugins/vue-infinite-loading', ssr: false }, // https://www.npmjs.com/package/vue-infinite-loading
+    { src: '~/plugins/economy.client', mode: 'client' }
   ],
 
   /*

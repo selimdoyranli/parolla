@@ -27,6 +27,9 @@ export default {
     flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır',
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
+  economy: {
+    dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})'
+  },
   success: {
     success: 'Başarılı'
   },

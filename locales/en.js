@@ -27,6 +27,9 @@ export default {
     flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards',
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
+  economy: {
+    dailyReward: 'Daily reward: +{amount} tokens (streak {streak})'
+  },
   success: {
     success: 'Success'
   },
