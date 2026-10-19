@@ -47,8 +47,8 @@ Dialog.dialog.menu-dialog(
         icon="balance-list-o"
         size="large"
         is-link
-        :title="$t('dialog.menu.jetonHistory')"
-        @click.native="navigateAndClose('JetonHistory')"
+        :title="$t('dialog.menu.goldHistory')"
+        @click.native="navigateAndClose('GoldHistory')"
       )
       Cell.menu-dialog-nav__item(
         v-if="isGmUser($auth.user)"

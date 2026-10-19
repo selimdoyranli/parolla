@@ -1,6 +1,6 @@
 <template lang="pug">
 .page.history-page
-  JetonHistoryView
+  GoldHistoryView
 </template>
 
 <script>

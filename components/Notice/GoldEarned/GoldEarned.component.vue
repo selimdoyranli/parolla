@@ -1,14 +1,17 @@
 <template lang="pug">
-.jeton-earned(v-if="pending || earned || capped || completed.length || guestJeton")
-  .jeton-earned__placeholder(v-if="pending")
+.gold-earned(v-if="pending || earned || capped || completed.length || guestGold")
+  .gold-earned__placeholder(v-if="pending")
   template(v-else-if="$auth.loggedIn")
-    p.jeton-earned__amount(v-if="earned") {{ $t('economy.earned.amount', { amount: earned }) }}
-    p.jeton-earned__note(v-if="capped") {{ $t('economy.earned.capped') }}
-    .jeton-earned__quest(v-for="title in completed" :key="title")
+    p.gold-earned__amount(v-if="earned")
+      GoldAmount(size="lg" signed :amount="earned")
+    p.gold-earned__note(v-if="capped") {{ $t('economy.earned.capped') }}
+    .gold-earned__quest(v-for="title in completed" :key="title")
       span {{ $t('economy.earned.questDone', { title }) }}
       Button(type="primary" size="mini" round @click="openQuests") {{ $t('economy.earned.viewQuests') }}
-  template(v-else-if="guestJeton")
-    p.jeton-earned__note {{ $t('economy.earned.guestTeaser', { amount: guestJeton }) }}
+  template(v-else-if="guestGold")
+    i18n.gold-earned__note(tag="p" path="economy.earned.guestTeaser")
+      template(#amount)
+        GoldAmount(:amount="guestGold")
     Button(type="primary" size="small" round @click="openLogin") {{ $t('economy.earned.login') }}
 </template>
 
@@ -33,10 +36,10 @@ export default defineComponent({
     const pending = computed(() => store.state.economy.pendingMode === props.mode)
     const earned = computed(() => (last.value ? last.value.earned : 0))
     const capped = computed(() => !!(last.value && last.value.capped))
-    const guestJeton = computed(() => {
+    const guestGold = computed(() => {
       const g = store.state.economy.guestPreview
 
-      return g && g.mode === props.mode ? g.jeton : 0
+      return g && g.mode === props.mode ? g.gold : 0
     })
 
     // quest titles come from the quests list; fall back to the raw key until it has loaded
@@ -56,9 +59,9 @@ export default defineComponent({
     const openQuests = () => store.commit('economy/SET_IS_OPEN_QUESTS_DIALOG', true)
     const openLogin = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
-    return { pending, earned, capped, guestJeton, completed, openQuests, openLogin }
+    return { pending, earned, capped, guestGold, completed, openQuests, openLogin }
   }
 })
 </script>
 
-<style lang="scss" src="./JetonEarned.component.scss"></style>
+<style lang="scss" src="./GoldEarned.component.scss"></style>

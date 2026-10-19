@@ -8,7 +8,9 @@
       b {{ $t('economy.shop.freeze.title') }}
       span {{ $t('economy.shop.freeze.desc') }}
       span(v-if="loggedIn") {{ $t('economy.shop.freeze.owned', { count: freezes, max: MAX_FREEZES }) }}
-    Button(type="primary" size="small" :loading="freezeBusy" :disabled="loggedIn && freezes >= MAX_FREEZES" @click="buyFreeze") {{ freezeText }}
+    Button(type="primary" size="small" :loading="freezeBusy" :disabled="loggedIn && freezes >= MAX_FREEZES" @click="buyFreeze")
+      | {{ freezeText }}
+      GoldAmount.ms-1(v-if="loggedIn" size="sm" :amount="FREEZE_PRICE")
 
   // Vitrin
   template(v-if="vitrinCards.length")
@@ -32,7 +34,9 @@
   section.shop-view__series(v-for="g in visibleGroups" :key="`${tab}-${g.series}`")
     header.shop-view__series-head
       h3 {{ g.name }}
-      Button(v-if="setPrices[g.series]" type="primary" size="small" plain @click="openSet(g)") {{ setLabel(g) }}
+      Button(v-if="setPrices[g.series]" type="primary" size="small" plain @click="openSet(g)")
+        | {{ $t('economy.shop.buySet') }}
+        GoldAmount.ms-1(size="sm" :amount="setPrices[g.series].price")
     .shop-view__grid
       CosmeticCard(
         v-for="e in g.entries"
@@ -178,9 +182,7 @@ export default defineComponent({
       dialog.isOpen = true
     }
 
-    const freezeText = computed(() =>
-      loggedIn.value ? i18n.t('economy.shop.freeze.buy', { price: FREEZE_PRICE }) : i18n.t('economy.shop.loginToBuy')
-    )
+    const freezeText = computed(() => i18n.t(loggedIn.value ? 'economy.shop.freeze.buy' : 'economy.shop.loginToBuy'))
 
     const buyFreeze = async () => {
       if (requireLogin() || freezeBusy.value) return
@@ -215,8 +217,6 @@ export default defineComponent({
         freezeBusy.value = false
       }
     }
-
-    const setLabel = g => i18n.t('economy.shop.buySet', { price: setPrices.value[g.series].price })
 
     const loadOwned = () => (loggedIn.value ? store.dispatch('economy/fetchInventory') : null)
 
@@ -258,7 +258,7 @@ export default defineComponent({
       loadVitrin,
       openItem,
       openSet,
-      setLabel,
+      FREEZE_PRICE,
       buyFreeze,
       loadOwned
     }

@@ -3,7 +3,9 @@
   .achievement-list__family(v-for="family in families" :key="family.key" :class="{ 'achievement-list__family--done': family.done }")
     .achievement-list__head
       strong.achievement-list__name {{ family.current.name[lang] }}
-      span.achievement-list__reward(v-if="!family.done") {{ $t('economy.achievements.reward', { amount: family.current.reward }) }}
+      span.achievement-list__reward(v-if="!family.done")
+        | {{ $t('economy.achievements.reward') }}
+        GoldAmount.ms-1(size="sm" muted :amount="family.current.reward")
       span.achievement-list__reward(v-else) {{ $t('economy.achievements.completed') }}
     .achievement-list__bar
       .achievement-list__bar-fill(:style="{ width: family.percent + '%' }")

@@ -412,9 +412,9 @@ module.exports = {
             tr: '/koleksiyon',
             en: '/collection'
           },
-          'JetonHistory/index': {
-            tr: '/jeton-gecmisi',
-            en: '/token-history'
+          'GoldHistory/index': {
+            tr: '/altin-gecmisi',
+            en: '/gold-history'
           },
           'GmPanel/index': {
             tr: '/gm',

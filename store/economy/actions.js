@@ -37,7 +37,7 @@ const writeCache = catalog => {
 const authed = async (ctx, params) => {
   const { data, error } = await ctx.$appFetch({ ...params, headers: authHeaders(ctx) })
 
-  if (data && typeof data.balance === 'number') ctx.commit('economy/SET_WALLET', { jeton: data.balance })
+  if (data && typeof data.balance === 'number') ctx.commit('economy/SET_WALLET', { gold: data.balance })
 
   return { data, error }
 }
@@ -89,7 +89,7 @@ export default {
 
       const res = await this.$appFetch({ path: 'economy/guest-preview', query })
 
-      if (res.data) commit('SET_GUEST_PREVIEW', { mode, jeton: res.data.jeton })
+      if (res.data) commit('SET_GUEST_PREVIEW', { mode, gold: res.data.gold })
 
       return
     }

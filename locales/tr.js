@@ -30,28 +30,26 @@ export default {
   economy: {
     retry: 'Tekrar dene',
     earned: {
-      amount: '+{amount} jeton',
       capped: 'Günlük tavana ulaştın',
       questDone: 'Görev tamamlandı: {title}',
       viewQuests: 'Görevler',
-      guestTeaser: 'Giriş yapsaydın {amount} jeton kazanacaktın',
+      guestTeaser: 'Giriş yapsaydın {amount} kazanacaktın',
       login: 'Giriş yap'
     },
     quests: {
       title: 'Görevler',
       daily: 'Günlük görevler',
       weekly: 'Haftalık görevler',
-      reward: '{amount} jeton',
       claim: 'Al',
-      reroll: 'Yenile · {cost}',
+      reroll: 'Yenile',
       chest: 'Haftalık sandık: {done}/{total}',
-      openChest: 'Sandığı aç · {amount}',
-      claimed: '+{amount} jeton kazandın',
+      openChest: 'Sandığı aç',
+      claimed: '+{amount} altın kazandın',
       rerolled: 'Görev yenilendi',
-      chestClaimed: 'Sandıktan +{amount} jeton'
+      chestClaimed: 'Sandıktan +{amount} altın'
     },
     errors: {
-      'insufficient-jeton': 'Yeterli jetonun yok',
+      'insufficient-gold': 'Yeterli altının yok',
       'already-claimed': 'Bu ödül zaten alındı',
       'reroll-used': 'Bugünkü yenileme hakkını kullandın',
       'limit-reached': 'Limite ulaşıldı',
@@ -71,10 +69,10 @@ export default {
       generic: 'Bir şeyler ters gitti, tekrar dene'
     },
     achievements: {
-      reward: 'Ödül: {amount} jeton',
+      reward: 'Ödül:',
       completed: 'Tamamlandı'
     },
-    dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})',
+    dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
     collection: {
       title: 'Koleksiyonum',
       preview: 'Önizleme',
@@ -90,11 +88,11 @@ export default {
       login: 'Giriş yap'
     },
     history: {
-      title: 'Jeton geçmişi',
+      title: 'Altın geçmişi',
       balance: 'Bakiye',
       more: 'Daha fazla',
-      empty: 'Henüz jeton hareketin yok.',
-      loginPrompt: 'Jeton geçmişini görmek için giriş yap.',
+      empty: 'Henüz altın hareketin yok.',
+      loginPrompt: 'Altın geçmişini görmek için giriş yap.',
       reasons: {
         signup: 'Hoş geldin bonusu',
         early: 'Erken kullanıcı bonusu',
@@ -120,7 +118,7 @@ export default {
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
       buy: 'Satın al',
-      buySet: 'Seti al · {price}',
+      buySet: 'Seti al',
       loginToBuy: 'Satın almak için giriş yap',
       owned: 'Sahipsin',
       original: 'Orijinal',
@@ -134,7 +132,7 @@ export default {
       equipFailed: 'Satın alındı ama kuşanılamadı, tekrar dene.',
       purchased: 'Satın alındı',
       setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
-      insufficient: 'Yeterli jetonun yok. Bakiyen: {balance}, eksik: {missing} jeton.',
+      insufficient: 'Yeterli altının yok. Bakiyen: {balance}, eksik: {missing}.',
       rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi', sezon: 'Sezon' },
       categories: {
         all: 'Tümü',
@@ -151,8 +149,8 @@ export default {
         title: 'Seri dondurucu',
         desc: 'Bir gün kaçırırsan günlük serin bozulmaz.',
         owned: 'Sahip olduğun: {count}/{max}',
-        buy: 'Satın al · {price}',
-        confirm: 'Seri dondurucu {price} jeton. Alınsın mı?',
+        buy: 'Satın al',
+        confirm: 'Seri dondurucu {price} altın. Alınsın mı?',
         bought: 'Seri dondurucu alındı'
       }
     }
@@ -343,7 +341,7 @@ export default {
       title: 'Daha fazla',
       shop: 'Mağaza',
       collection: 'Koleksiyonum',
-      jetonHistory: 'Jeton geçmişi',
+      goldHistory: 'Altın geçmişi',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       profileEdit: 'Profili düzenle',

@@ -26,8 +26,8 @@
       )
     .cosmetic-card__foot
       span.cosmetic-card__price
-        s(v-if="original") {{ original }}
-        | {{ price }}
+        GoldAmount.me-1(v-if="original" size="sm" strike muted :amount="original")
+        GoldAmount(:amount="price")
       span.cosmetic-card__owned(v-if="owned") {{ $t('economy.shop.owned') }}
       Button(v-else type="primary" size="mini" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })") {{ buyText }}
 </template>

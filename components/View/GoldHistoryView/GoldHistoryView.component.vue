@@ -1,30 +1,32 @@
 <template lang="pug">
-.jeton-history-view
-  h1.jeton-history-view__title {{ $t('economy.history.title') }}
+.gold-history-view
+  h1.gold-history-view__title {{ $t('economy.history.title') }}
 
-  .jeton-history-view__login(v-if="!loggedIn")
+  .gold-history-view__login(v-if="!loggedIn")
     p {{ $t('economy.history.loginPrompt') }}
     Button(type="primary" round @click="openLogin") {{ $t('economy.collection.login') }}
 
   template(v-else)
-    p.jeton-history-view__balance {{ $t('economy.history.balance') }}: #[b {{ balance }}]
+    p.gold-history-view__balance
+      | {{ $t('economy.history.balance') }}:
+      GoldAmount.ms-1(:amount="balance")
 
-    .jeton-history-view__error(v-if="failed && !items.length")
+    .gold-history-view__error(v-if="failed && !items.length")
       p {{ $t('economy.errors.generic') }}
       Button(round :loading="loading" @click="loadMore") {{ $t('economy.retry') }}
 
-    p.jeton-history-view__empty(v-else-if="loaded && !items.length") {{ $t('economy.history.empty') }}
+    p.gold-history-view__empty(v-else-if="loaded && !items.length") {{ $t('economy.history.empty') }}
 
-    ul.jeton-history-view__list(v-else)
-      li.jeton-history-view__row(v-for="(row, i) in items" :key="i")
-        .jeton-history-view__info
+    ul.gold-history-view__list(v-else)
+      li.gold-history-view__row(v-for="(row, i) in items" :key="i")
+        .gold-history-view__info
           b {{ reasonLabel(row.reason) }}
           time {{ formatDate(row.createdAt) }}
-        .jeton-history-view__amount(:class="row.amount >= 0 ? 'jeton-history-view__amount--plus' : 'jeton-history-view__amount--minus'")
-          b {{ row.amount > 0 ? '+' : '' }}{{ row.amount }}
-          small {{ row.balanceAfter }}
+        .gold-history-view__amount(:class="row.amount >= 0 ? 'gold-history-view__amount--plus' : 'gold-history-view__amount--minus'")
+          GoldAmount(signed :amount="row.amount")
+          GoldAmount(size="sm" muted :amount="row.balanceAfter")
 
-    p.jeton-history-view__error(v-if="failed && items.length") {{ $t('economy.errors.generic') }}
+    p.gold-history-view__error(v-if="failed && items.length") {{ $t('economy.errors.generic') }}
     Button(v-if="hasMore || (failed && items.length)" block plain :loading="loading" @click="loadMore") {{ $t('economy.history.more') }}
 </template>
 
@@ -39,7 +41,7 @@ export default defineComponent({
     const { i18n, $auth } = useContext()
 
     const loggedIn = computed(() => $auth.loggedIn)
-    const balance = computed(() => store.state.economy.wallet.jeton)
+    const balance = computed(() => store.state.economy.wallet.gold)
     const items = ref([])
     const page = ref(0)
     const hasMore = ref(false)
@@ -89,4 +91,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" src="./JetonHistoryView.component.scss"></style>
+<style lang="scss" src="./GoldHistoryView.component.scss"></style>

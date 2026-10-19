@@ -48,7 +48,7 @@ Dialog.dialog.stats-dialog.daily-mode-stats-dialog(
           .result-sharer
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults") PAYLAŞ
 
-        JetonEarned(mode="daily")
+        GoldEarned(mode="daily")
 
         // Ad
         DialogAd

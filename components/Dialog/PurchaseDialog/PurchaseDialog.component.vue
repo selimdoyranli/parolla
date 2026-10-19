@@ -14,16 +14,20 @@ Dialog.dialog.purchase-dialog(
     .purchase-dialog__row
       span {{ $t('economy.shop.price') }}
       b
-        s(v-if="target.original") {{ target.original }}
-        | {{ target.price }}
+        GoldAmount.me-1(v-if="target.original" size="sm" strike muted :amount="target.original")
+        GoldAmount(:amount="target.price")
     .purchase-dialog__row
       span {{ $t('economy.shop.balance') }}
-      b {{ balance }}
+      GoldAmount(:amount="balance")
     .purchase-dialog__row(v-if="phase !== 'success'")
       span {{ $t('economy.shop.balanceAfter') }}
-      b(:class="{ 'purchase-dialog__negative': missing > 0 }") {{ balance - target.price }}
+      GoldAmount(:class="{ 'purchase-dialog__negative': missing > 0 }" :amount="balance - target.price")
 
-    p.purchase-dialog__message(v-if="isShort") {{ $t('economy.shop.insufficient', { balance, missing }) }}
+    i18n.purchase-dialog__message(v-if="isShort" tag="p" path="economy.shop.insufficient")
+      template(#balance)
+        GoldAmount(size="sm" :amount="balance")
+      template(#missing)
+        GoldAmount(size="sm" :amount="missing")
     p.purchase-dialog__message(v-else-if="phase === 'error'") {{ errorText }}
     p.purchase-dialog__message.purchase-dialog__message--ok(v-else-if="phase === 'success'") {{ $t('economy.shop.purchased') }}
     p.purchase-dialog__message(v-if="phase === 'success' && equipError") {{ $t('economy.shop.equipFailed') }}
@@ -71,7 +75,7 @@ export default defineComponent({
     const equipError = ref(false)
     let attemptKey = null // reused across retries of an ambiguous failure, reset after a definitive response
 
-    const balance = computed(() => store.state.economy.wallet.jeton)
+    const balance = computed(() => store.state.economy.wallet.gold)
     const missing = computed(() => (props.target ? Math.max(0, props.target.price - balance.value) : 0))
     const isShort = computed(() => phase.value === 'insufficient' || (phase.value === 'confirm' && missing.value > 0))
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
@@ -94,7 +98,7 @@ export default defineComponent({
     const fail = error => {
       const code = error.details && error.details.code
 
-      if (code === 'insufficient-jeton' || error.code === 402) {
+      if (code === 'insufficient-gold' || error.code === 402) {
         phase.value = 'insufficient'
         store.dispatch('economy/fetchWallet')
 

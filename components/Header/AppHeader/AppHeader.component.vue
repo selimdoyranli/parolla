@@ -37,8 +37,8 @@
         :class="{ 'me-2': room.reviewCount > 0 }"
       )
 
-    li.app-header-nav__item.app-header-nav__item--jeton(v-if="$auth.loggedIn" @click="openQuestsDialog")
-      JetonBadge
+    li.app-header-nav__item.app-header-nav__item--gold(v-if="$auth.loggedIn" @click="openQuestsDialog")
+      GoldBadge
 
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
       ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")

@@ -30,28 +30,26 @@ export default {
   economy: {
     retry: 'Retry',
     earned: {
-      amount: '+{amount} tokens',
       capped: 'You hit the daily cap',
       questDone: 'Quest completed: {title}',
       viewQuests: 'Quests',
-      guestTeaser: 'You would have earned {amount} tokens if you had logged in',
+      guestTeaser: 'You would have earned {amount} if you had logged in',
       login: 'Log in'
     },
     quests: {
       title: 'Quests',
       daily: 'Daily quests',
       weekly: 'Weekly quests',
-      reward: '{amount} tokens',
       claim: 'Claim',
-      reroll: 'Reroll · {cost}',
+      reroll: 'Reroll',
       chest: 'Weekly chest: {done}/{total}',
-      openChest: 'Open chest · {amount}',
-      claimed: 'You earned +{amount} tokens',
+      openChest: 'Open chest',
+      claimed: 'You earned +{amount} gold',
       rerolled: 'Quest rerolled',
-      chestClaimed: '+{amount} tokens from the chest'
+      chestClaimed: '+{amount} gold from the chest'
     },
     errors: {
-      'insufficient-jeton': 'Not enough tokens',
+      'insufficient-gold': 'Not enough gold',
       'already-claimed': 'Already claimed',
       'reroll-used': "You already used today's reroll",
       'limit-reached': 'Limit reached',
@@ -71,10 +69,10 @@ export default {
       generic: 'Something went wrong, try again'
     },
     achievements: {
-      reward: 'Reward: {amount} tokens',
+      reward: 'Reward:',
       completed: 'Completed'
     },
-    dailyReward: 'Daily reward: +{amount} tokens (streak {streak})',
+    dailyReward: 'Daily reward: +{amount} gold (streak {streak})',
     collection: {
       title: 'My collection',
       preview: 'Preview',
@@ -90,11 +88,11 @@ export default {
       login: 'Log in'
     },
     history: {
-      title: 'Token history',
+      title: 'Gold history',
       balance: 'Balance',
       more: 'Load more',
-      empty: 'No token activity yet.',
-      loginPrompt: 'Log in to see your token history.',
+      empty: 'No gold activity yet.',
+      loginPrompt: 'Log in to see your gold history.',
       reasons: {
         signup: 'Welcome bonus',
         early: 'Early user bonus',
@@ -120,7 +118,7 @@ export default {
       title: 'Shop',
       vitrin: "Today's showcase",
       buy: 'Buy',
-      buySet: 'Buy set · {price}',
+      buySet: 'Buy set',
       loginToBuy: 'Log in to buy',
       owned: 'Owned',
       original: 'Original',
@@ -134,7 +132,7 @@ export default {
       equipFailed: 'Purchased, but equipping failed. Try again.',
       purchased: 'Purchased',
       setContent: 'Buys all {count} items in the set you do not own yet.',
-      insufficient: 'Not enough tokens. Balance: {balance}, missing: {missing} tokens.',
+      insufficient: 'Not enough gold. Balance: {balance}, missing: {missing}.',
       rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary', sezon: 'Season' },
       categories: {
         all: 'All',
@@ -151,8 +149,8 @@ export default {
         title: 'Streak freeze',
         desc: 'Keeps your daily streak if you miss a day.',
         owned: 'Owned: {count}/{max}',
-        buy: 'Buy · {price}',
-        confirm: 'Streak freeze costs {price} tokens. Buy it?',
+        buy: 'Buy',
+        confirm: 'Streak freeze costs {price} gold. Buy it?',
         bought: 'Streak freeze purchased'
       }
     }
@@ -341,7 +339,7 @@ export default {
       title: 'More',
       shop: 'Shop',
       collection: 'My collection',
-      jetonHistory: 'Token history',
+      goldHistory: 'Gold history',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       profileEdit: 'Edit profile',

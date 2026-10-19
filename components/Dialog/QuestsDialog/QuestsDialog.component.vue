@@ -23,7 +23,9 @@ Dialog.dialog.quests-dialog(
     QuestCard(v-for="q in quests.weekly" :key="q.key" :quest="q" :busy="busy" @claim="claim")
     .quests-dialog__chest
       span {{ $t('economy.quests.chest', { done: claimedCount, total: quests.weekly.length }) }}
-      Button(type="primary" size="small" :disabled="busy || !chestReady" @click="claimChest") {{ chestText }}
+      Button(type="primary" size="small" :disabled="busy || !chestReady" @click="claimChest")
+        | {{ $t('economy.quests.openChest') }}
+        GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
   .quests-dialog__error(v-else-if="failed")
     p {{ $t('economy.errors.generic') }}
     Button(size="small" @click="load") {{ $t('economy.retry') }}
@@ -50,8 +52,6 @@ export default defineComponent({
     const claimedCount = computed(() => (quests.value ? quests.value.weekly.filter(q => q.claimed).length : 0))
 
     const chestReady = computed(() => quests.value.chest.ready && !quests.value.chest.claimed)
-
-    const chestText = computed(() => i18n.t('economy.quests.openChest', { amount: quests.value.chest.reward }))
 
     const refresh = () => Promise.all([store.dispatch('economy/fetchWallet'), store.dispatch('economy/fetchQuests')])
 
@@ -109,7 +109,7 @@ export default defineComponent({
       { immediate: true }
     )
 
-    return { state, quests, busy, failed, load, claimedCount, chestReady, chestText, claim, reroll, claimChest }
+    return { state, quests, busy, failed, load, claimedCount, chestReady, claim, reroll, claimChest }
   }
 })
 </script>

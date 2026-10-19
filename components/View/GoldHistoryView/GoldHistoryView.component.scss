@@ -1,4 +1,4 @@
-.jeton-history-view {
+.gold-history-view {
   max-width: 640px;
   margin: var(--base-m-y) auto;
   padding: var(--base-p-y) var(--base-p-x);
@@ -38,8 +38,7 @@
     flex-direction: column;
   }
 
-  &__info time,
-  &__amount small {
+  &__info time {
     color: var(--color-text-03);
     font-size: 0.75rem;
   }
@@ -47,11 +46,11 @@
   &__amount {
     align-items: flex-end;
 
-    &--plus b {
+    &--plus .gold-amount:first-child {
       color: var(--color-success-01);
     }
 
-    &--minus b {
+    &--minus .gold-amount:first-child {
       color: var(--color-danger-01);
     }
   }

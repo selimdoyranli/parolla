@@ -1,0 +1,29 @@
+.gold-amount {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-weight: 600;
+  font-size: var(--font-size-text-6);
+  white-space: nowrap;
+  vertical-align: middle;
+
+  &--sm {
+    font-size: 0.75rem;
+  }
+
+  &--lg {
+    font-size: var(--font-size-text-4);
+  }
+
+  &--strike &__value {
+    text-decoration: line-through;
+  }
+
+  &--muted {
+    opacity: 0.6;
+  }
+
+  &__coin {
+    flex: none;
+  }
+}
