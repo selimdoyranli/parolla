@@ -56,6 +56,47 @@ export default {
       completed: 'Tamamlandı'
     },
     dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})',
+    collection: {
+      title: 'Koleksiyonum',
+      preview: 'Önizleme',
+      equip: 'Kuşan',
+      unequip: 'Çıkar',
+      equipped: 'Kuşanıldı',
+      save: 'Kaydet',
+      saved: 'Kuşanımın kaydedildi',
+      unsaved: 'Kaydedilmemiş değişiklikler var',
+      empty: 'Henüz hiç ürünün yok.',
+      goShop: 'Mağazaya git',
+      loginPrompt: 'Koleksiyonunu görmek için giriş yap.',
+      login: 'Giriş yap'
+    },
+    history: {
+      title: 'Jeton geçmişi',
+      balance: 'Bakiye',
+      more: 'Daha fazla',
+      empty: 'Henüz jeton hareketin yok.',
+      loginPrompt: 'Jeton geçmişini görmek için giriş yap.',
+      reasons: {
+        signup: 'Hoş geldin bonusu',
+        early: 'Erken kullanıcı bonusu',
+        daily_login: 'Günlük giriş',
+        play_daily: 'Günlük quiz',
+        play_wordblock: 'Kelimeblok',
+        play_tour: 'Turnuva',
+        play_room: 'Oda',
+        creator: 'Oda yapımcısı ödülü',
+        daily_top: 'Günün en iyileri',
+        quest: 'Görev',
+        quest_chest: 'Haftalık sandık',
+        achievement: 'Başarım',
+        purchase: 'Satın alma',
+        set_purchase: 'Set satın alma',
+        reroll: 'Görev yenileme',
+        streak_freeze: 'Seri dondurucu',
+        season: 'Sezon ödülü',
+        admin: 'Yönetici işlemi'
+      }
+    },
     shop: {
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
@@ -282,6 +323,8 @@ export default {
     menu: {
       title: 'Daha fazla',
       shop: 'Mağaza',
+      collection: 'Koleksiyonum',
+      jetonHistory: 'Jeton geçmişi',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       profileEdit: 'Profili düzenle',

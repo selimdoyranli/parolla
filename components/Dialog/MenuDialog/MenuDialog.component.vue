@@ -37,6 +37,20 @@ Dialog.dialog.menu-dialog(
         @click.native="handleClickMyQuizzes"
       )
       Cell.menu-dialog-nav__item(
+        icon="gift-o"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.collection')"
+        @click.native="navigateAndClose('Collection')"
+      )
+      Cell.menu-dialog-nav__item(
+        icon="balance-list-o"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.jetonHistory')"
+        @click.native="navigateAndClose('JetonHistory')"
+      )
+      Cell.menu-dialog-nav__item(
         v-if="isGmUser($auth.user)"
         icon="shield-o"
         size="large"

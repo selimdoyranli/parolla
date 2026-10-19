@@ -408,6 +408,14 @@ module.exports = {
             tr: '/magaza',
             en: '/shop'
           },
+          'Collection/index': {
+            tr: '/koleksiyon',
+            en: '/collection'
+          },
+          'JetonHistory/index': {
+            tr: '/jeton-gecmisi',
+            en: '/token-history'
+          },
           'GmPanel/index': {
             tr: '/gm',
             en: '/gm'

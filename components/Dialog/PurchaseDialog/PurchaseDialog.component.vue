@@ -157,7 +157,7 @@ export default defineComponent({
         }
 
         const current = (store.state.economy.inventory && store.state.economy.inventory.loadout) || {}
-        const { data, error } = await store.dispatch('economy/saveLoadout', {
+        const { error } = await store.dispatch('economy/saveLoadout', {
           ...current,
           [SLOT[props.target.item.category]]: props.target.item.key
         })
@@ -168,7 +168,6 @@ export default defineComponent({
           return
         }
 
-        store.commit('auth/SET_USER', { ...$auth.user, loadout: data.loadout })
         Notify({
           message: i18n.t('economy.shop.equipped'),
           color: 'var(--color-text-04)',

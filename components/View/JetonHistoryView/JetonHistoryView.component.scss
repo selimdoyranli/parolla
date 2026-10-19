@@ -1,0 +1,58 @@
+.jeton-history-view {
+  max-width: 640px;
+  margin: var(--base-m-y) auto;
+  padding: var(--base-p-y) var(--base-p-x);
+  color: var(--color-text-01);
+
+  &__title {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+  }
+
+  &__login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    padding: 32px 0;
+  }
+
+  &__list {
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border-01);
+  }
+
+  &__info,
+  &__amount {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info time,
+  &__amount small {
+    color: var(--color-text-03);
+    font-size: 0.75rem;
+  }
+
+  &__amount {
+    align-items: flex-end;
+
+    &--plus b {
+      color: var(--color-success-01);
+    }
+
+    &--minus b {
+      color: var(--color-danger-01);
+    }
+  }
+}

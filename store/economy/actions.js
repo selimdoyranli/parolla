@@ -111,7 +111,11 @@ export default {
   async saveLoadout({ commit, state }, loadout) {
     const { data, error } = await authed(this, { path: 'economy/loadout', method: 'PUT', data: { loadout } })
 
-    if (data) commit('SET_INVENTORY', { ...state.inventory, loadout: data.loadout })
+    if (data) {
+      commit('SET_INVENTORY', { ...state.inventory, loadout: data.loadout })
+      // header avatar and profile read the loadout from the auth user
+      this.commit('auth/SET_USER', { ...this.$auth.user, loadout: data.loadout })
+    }
 
     return { data, error }
   },

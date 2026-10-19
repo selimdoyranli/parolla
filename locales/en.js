@@ -56,6 +56,47 @@ export default {
       completed: 'Completed'
     },
     dailyReward: 'Daily reward: +{amount} tokens (streak {streak})',
+    collection: {
+      title: 'My collection',
+      preview: 'Preview',
+      equip: 'Equip',
+      unequip: 'Remove',
+      equipped: 'Equipped',
+      save: 'Save',
+      saved: 'Your loadout was saved',
+      unsaved: 'You have unsaved changes',
+      empty: "You don't own any items yet.",
+      goShop: 'Go to the shop',
+      loginPrompt: 'Log in to see your collection.',
+      login: 'Log in'
+    },
+    history: {
+      title: 'Token history',
+      balance: 'Balance',
+      more: 'Load more',
+      empty: 'No token activity yet.',
+      loginPrompt: 'Log in to see your token history.',
+      reasons: {
+        signup: 'Welcome bonus',
+        early: 'Early user bonus',
+        daily_login: 'Daily login',
+        play_daily: 'Daily quiz',
+        play_wordblock: 'Wordblock',
+        play_tour: 'Tournament',
+        play_room: 'Room',
+        creator: 'Room creator reward',
+        daily_top: "Day's top players",
+        quest: 'Quest',
+        quest_chest: 'Weekly chest',
+        achievement: 'Achievement',
+        purchase: 'Purchase',
+        set_purchase: 'Set purchase',
+        reroll: 'Quest reroll',
+        streak_freeze: 'Streak freeze',
+        season: 'Season reward',
+        admin: 'Admin adjustment'
+      }
+    },
     shop: {
       title: 'Shop',
       vitrin: "Today's showcase",
@@ -280,6 +321,8 @@ export default {
     menu: {
       title: 'More',
       shop: 'Shop',
+      collection: 'My collection',
+      jetonHistory: 'Token history',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       profileEdit: 'Edit profile',
