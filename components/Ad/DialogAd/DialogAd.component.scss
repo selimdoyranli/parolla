@@ -1,7 +1,26 @@
 .dialog-ad {
-  width: 100%;
-  min-width: 320px;
+  // full dialog width (dialogs are 90vw up to --tablet), centred over whatever padding the parent has
+  $dialog-width: min(90vw, var(--tablet));
+
+  width: $dialog-width;
   min-height: 100px;
+  margin-inline: calc((100% - #{$dialog-width}) / 2);
   margin-block-start: var(--base-m-y);
+  text-align: center;
   background-color: var(--color-ui-04);
+
+  @include media-breakpoint-down(desktop) {
+    min-height: 250px;
+
+    .adsbygoogle {
+      display: inline-block !important;
+      width: 300px;
+      height: 250px;
+
+      // a 300px unit doesn't fit a 90vw dialog below 334px
+      @media (max-width: 333px) {
+        width: 250px;
+      }
+    }
+  }
 }

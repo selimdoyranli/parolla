@@ -756,11 +756,10 @@
       }
     }
 
+    // no scroll box of its own: the dialog content scrolls, so a touch never lands on a box the ad iframe fills
     .answers {
       position: relative;
-      max-height: 40vh;
       padding: var(--base-p-y) 0;
-      overflow: auto;
       overflow-x: clip;
 
       &__inner {
