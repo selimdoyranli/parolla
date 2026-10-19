@@ -420,6 +420,10 @@ module.exports = {
             tr: '/gm/gunluk',
             en: '/gm/daily'
           },
+          'GmPanel/Commands/index': {
+            tr: '/gm/komutlar',
+            en: '/gm/commands'
+          },
           'GmPanel/Ai/index': {
             tr: '/gm/ai',
             en: '/gm/ai'

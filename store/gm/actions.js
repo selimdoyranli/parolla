@@ -49,6 +49,23 @@ export default {
     })
   },
 
+  runCommand(_, { command }) {
+    return this.$appFetch({
+      path: 'moderation/commands',
+      method: 'POST',
+      data: { command },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  fetchCommandLogs(_, { page }) {
+    return this.$appFetch({
+      path: 'moderation/commands/logs',
+      query: { page },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
   // action: 'block-user' | 'delete-daily-score' | 'delete-wordblock-scores'
   runAction(_, { action, data }) {
     return this.$appFetch({
