@@ -134,7 +134,7 @@ export default {
       title: 'Shop',
       vitrin: "Today's showcase",
       login: 'Log in',
-      equippedState: 'Equipped',
+      equippedLabel: 'Equipped',
       buySet: 'Buy set',
       owned: 'Owned',
       original: 'Original',
@@ -147,7 +147,7 @@ export default {
       equipFailed: 'Purchased, but equipping failed. Try again.',
       purchased: 'Purchased',
       setContent: 'Buys all {count} items in the set you do not own yet.',
-      insufficient: 'Not enough gold. Balance: {balance}, missing: {missing}.',
+      insufficient: 'Not enough gold. Balance: {balance}, missing: {missing}',
       rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary', sezon: 'Season' },
       categories: {
         all: 'All',

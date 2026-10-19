@@ -27,22 +27,27 @@
         :style="{ background: dotColor(v) }"
         @click="index = i"
       )
-    button.shop-buy.shop-buy--block.shop-buy--owned(v-if="owned" type="button" disabled)
+    button.shop-buy.shop-buy--block.shop-buy--owned(v-if="equipped" type="button" disabled)
       AppIcon(name="tabler:check" :width="14" :height="14")
-      span {{ $t(equipped ? 'economy.shop.equippedState' : 'economy.shop.owned') }}
+      span {{ $t('economy.shop.equippedLabel') }}
+    button.shop-buy.shop-buy--block.shop-buy--ghost(v-else-if="owned" type="button" :disabled="equipping" @click="$emit('equip', current)")
+      Loading(v-if="equipping" color="currentColor" size="14")
+      span(v-else) {{ $t('economy.shop.equip') }}
     button.shop-buy.shop-buy--block(
       v-else
       type="button"
-      :class="{ 'shop-buy--short': loggedIn && balance < price }"
+      :class="{ 'shop-buy--short': short }"
       @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })"
     )
       span(v-if="!loggedIn") {{ $t('economy.shop.login') }}
-      GoldAmount(v-else size="sm" :amount="price")
+      template(v-else)
+        AppIcon(v-if="short" name="tabler:lock" :width="12" :height="12")
+        GoldAmount(size="sm" :amount="price")
 </template>
 
 <script>
 import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
-import { Tag } from 'vant'
+import { Tag, Loading } from 'vant'
 
 const SLOT = {
   avatar_frame: 'frame',
@@ -56,7 +61,7 @@ const SLOT = {
 }
 
 export default defineComponent({
-  components: { Tag },
+  components: { Tag, Loading },
   props: {
     // base item first, then its variants
     variants: { type: Array, required: true },
@@ -68,7 +73,9 @@ export default defineComponent({
     loggedIn: { type: Boolean, default: false },
     // vitrin: discounted price replaces the catalog price of the base item
     vitrinPrice: { type: Number, default: null },
-    previewOnly: { type: Boolean, default: false }
+    previewOnly: { type: Boolean, default: false },
+    // an equip request for this card is in flight
+    equipping: { type: Boolean, default: false }
   },
   setup(props) {
     const { nameStyle, plateStyle } = useCosmetics()
@@ -92,6 +99,8 @@ export default defineComponent({
 
     const original = computed(() => (props.vitrinPrice && index.value === 0 ? current.value.price : null))
     const price = computed(() => (original.value ? props.vitrinPrice : current.value.price))
+    // not enough gold: still clickable, the dialog shows the missing amount
+    const short = computed(() => props.loggedIn && props.balance < price.value)
     const discount = computed(() => (original.value ? Math.round((1 - price.value / original.value) * 100) : 0))
 
     // catalog swatch; hashed hue only for items without one, neutral for the original
@@ -120,6 +129,7 @@ export default defineComponent({
       original,
       price,
       discount,
+      short,
       dotColor
     }
   }

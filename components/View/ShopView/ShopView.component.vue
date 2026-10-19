@@ -8,6 +8,7 @@
         v-for="c in vitrinCards"
         :key="`v-${c.item.key}`"
         :variants="[c.item]"
+        :equipping="c.item.key === equippingKey"
         :vitrin-price="c.price"
         :owned-keys="ownedSet"
         :equipped-keys="equippedSet"
@@ -15,6 +16,7 @@
         :viewer="viewer"
         :logged-in="loggedIn"
         @buy="openItem"
+        @equip="equipItem"
       )
 
   // Streak freeze: one compact row, not a banner
@@ -44,12 +46,14 @@
       v-for="e in entries"
       :key="e[0].key"
       :variants="e"
+      :equipping="e.some(v => v.key === equippingKey)"
       :owned-keys="ownedSet"
       :equipped-keys="equippedSet"
       :balance="balance"
       :viewer="viewer"
       :logged-in="loggedIn"
       @buy="openItem"
+      @equip="equipItem"
     )
 
   // Sets: one compact row per series, tap to expand its items
@@ -71,12 +75,14 @@
           v-for="e in s.entries"
           :key="e[0].key"
           :variants="e"
+          :equipping="e.some(v => v.key === equippingKey)"
           :owned-keys="ownedSet"
           :equipped-keys="equippedSet"
           :balance="balance"
           :viewer="viewer"
           :logged-in="loggedIn"
           @buy="openItem"
+          @equip="equipItem"
         )
 
   LazyPurchaseDialog(
@@ -253,6 +259,21 @@ export default defineComponent({
       }
     }
 
+    const { equip } = useEquip()
+    const equippingKey = ref(null)
+
+    const equipItem = async item => {
+      if (equippingKey.value) return
+
+      equippingKey.value = item.key
+
+      try {
+        await equip(item)
+      } finally {
+        equippingKey.value = null
+      }
+    }
+
     const loadOwned = () => (loggedIn.value ? store.dispatch('economy/fetchInventory') : null)
 
     watch(loggedIn, value => {
@@ -294,6 +315,8 @@ export default defineComponent({
       toggleSeries,
       loadVitrin,
       openItem,
+      equippingKey,
+      equipItem,
       openSet,
       buyFreeze,
       loadOwned

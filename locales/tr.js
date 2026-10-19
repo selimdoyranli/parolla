@@ -134,7 +134,7 @@ export default {
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
       login: 'Giriş yap',
-      equippedState: 'Kuşanılı',
+      equippedLabel: 'Kuşanılı',
       buySet: 'Seti al',
       owned: 'Sahipsin',
       original: 'Orijinal',
@@ -147,7 +147,7 @@ export default {
       equipFailed: 'Satın alındı ama kuşanılamadı, tekrar dene.',
       purchased: 'Satın alındı',
       setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
-      insufficient: 'Yeterli altının yok. Bakiyen: {balance}, eksik: {missing}.',
+      insufficient: 'Yeterli altının yok. Bakiyen: {balance}, eksik: {missing}',
       rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi', sezon: 'Sezon' },
       categories: {
         all: 'Tümü',

@@ -47,31 +47,20 @@ Dialog.dialog.purchase-dialog(
         button.shop-buy.shop-buy--solid.shop-buy--block(v-if="target.item" type="button" :disabled="busy" @click="equip")
           Loading(v-if="busy" color="currentColor" size="16")
           span(v-else) {{ $t('economy.shop.equip') }}
-        button.shop-buy.shop-buy--ghost.shop-buy--block(type="button" @click="state.isOpen = false") {{ $t('general.close') }}
+        button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" @click="state.isOpen = false") {{ $t('general.close') }}
       template(v-else)
         button.shop-buy.shop-buy--solid.shop-buy--block(type="button" :disabled="busy || missing > 0" @click="confirm")
           Loading(v-if="busy" color="currentColor" size="16")
           template(v-else)
             span {{ $t('economy.shop.confirm') }}
             GoldAmount(size="sm" :amount="target.price")
-        button.shop-buy.shop-buy--ghost.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
+        button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
 </template>
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
-import { Dialog, Tag, Loading, Notify } from 'vant'
+import { Dialog, Tag, Loading } from 'vant'
 import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
-
-const SLOT = {
-  avatar_frame: 'frame',
-  avatar_decoration: 'decoration',
-  nameplate: 'nameplate',
-  name_color: 'nameColor',
-  title: 'title',
-  profile_cover: 'profileCover',
-  profile_frame: 'profileFrame',
-  profile_effect: 'profileEffect'
-}
 
 export default defineComponent({
   components: { Dialog: Dialog.Component, Tag, Loading },
@@ -161,7 +150,8 @@ export default defineComponent({
       }
     }
 
-    // PUT replaces the whole loadout, so send the current one plus the new slot
+    const { equip: equipItem } = useEquip()
+
     const equip = async () => {
       if (busy.value) return
       busy.value = true
@@ -169,34 +159,8 @@ export default defineComponent({
       equipError.value = false
 
       try {
-        const inv = await store.dispatch('economy/fetchInventory')
-
-        // never PUT without the real current loadout: it replaces the whole thing
-        if (inv.error) {
-          equipError.value = true
-
-          return
-        }
-
-        const current = (store.state.economy.inventory && store.state.economy.inventory.loadout) || {}
-        const { error } = await store.dispatch('economy/saveLoadout', {
-          ...current,
-          [SLOT[props.target.item.category]]: props.target.item.key
-        })
-
-        if (error) {
-          equipError.value = true
-
-          return
-        }
-
-        Notify({
-          message: i18n.t('economy.shop.equipped'),
-          color: 'var(--color-text-04)',
-          background: 'var(--color-success-01)',
-          duration: 2500
-        })
-        state.isOpen = false
+        if (await equipItem(props.target.item, { toastError: false })) state.isOpen = false
+        else equipError.value = true
       } finally {
         busy.value = false
       }

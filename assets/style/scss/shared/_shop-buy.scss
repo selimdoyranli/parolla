@@ -1,0 +1,91 @@
+// Shop action button (cards, sets rows, streak freeze row, purchase dialog). Global so it never depends on a component stylesheet.
+:root {
+  --shop-buy-fg: #b8434a;
+  --shop-buy-bg: rgba(255, 120, 120, 0.16); // --color-brand-02 at 16%
+  --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
+  --shop-buy-border: rgba(255, 120, 120, 0.55);
+  --shop-buy-solid-hover: #f26666;
+}
+
+.dark-mode {
+  --shop-buy-fg: #ffa3a3;
+  --shop-buy-bg: rgba(255, 120, 120, 0.16);
+  --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
+  --shop-buy-border: rgba(255, 120, 120, 0.5);
+}
+
+.shop-buy {
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 4px 12px;
+  color: var(--shop-buy-fg);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  background: var(--shop-buy-bg);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--shop-buy-bg-hover);
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--solid {
+    color: #fff;
+    background: var(--color-brand-02);
+
+    &:hover:not(:disabled) {
+      background: var(--shop-buy-solid-hover);
+    }
+  }
+
+  // secondary action (equip an owned item): outline only
+  &--ghost {
+    background: transparent;
+    border-color: var(--shop-buy-border);
+  }
+
+  // dialog cancel / close
+  &--neutral {
+    color: var(--color-text-02);
+    background: var(--color-ui-03);
+
+    &:hover:not(:disabled) {
+      background: var(--color-active-01);
+    }
+  }
+
+  // not enough gold: neutral background + lock, price stays at full contrast; still opens the dialog
+  &--short {
+    color: var(--color-text-01);
+    background: var(--color-ui-03);
+
+    &:hover:not(:disabled) {
+      background: var(--color-active-01);
+    }
+  }
+
+  &--owned {
+    color: var(--color-text-03);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-ui-03);
+    cursor: default;
+  }
+
+  &:disabled:not(&--owned) {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
