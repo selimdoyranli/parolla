@@ -1147,7 +1147,8 @@ export default {
         'unknown-command': 'Bilinmeyen komut',
         'missing-username': 'Kullanıcı adı gerekli',
         'invalid-amount': 'Miktar 1 ile 100.000 arasında tam sayı olmalı',
-        'user-not-found': 'Kullanıcı bulunamadı'
+        'user-not-found': 'Kullanıcı bulunamadı',
+        'ambiguous-user': 'Bu ada büyük/küçük harf farkıyla birden fazla kullanıcı uyuyor; tam adı yazın'
       }
     },
     wordblock: {

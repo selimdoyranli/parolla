@@ -1129,7 +1129,8 @@ export default {
         'unknown-command': 'Unknown command',
         'missing-username': 'Username is required',
         'invalid-amount': 'Amount must be a whole number from 1 to 100,000',
-        'user-not-found': 'User not found'
+        'user-not-found': 'User not found',
+        'ambiguous-user': 'Several users match this name with different letter case; use the exact name'
       }
     },
     wordblock: {

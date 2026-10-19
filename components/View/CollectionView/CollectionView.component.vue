@@ -86,6 +86,14 @@ export default defineComponent({
     })
 
     const isOn = item => draft.value[SLOTS[item.category]] === item.key
+    // the tab stays mounted: resync the draft when the server loadout changes (shop equip, purchase)
+    watch(
+      () => inventory.value && inventory.value.loadout,
+      (next, prev) => {
+        if (loaded.value && sorted(draft.value) === sorted(prev)) draft.value = clean(next)
+      }
+    )
+
     const toggle = item => (draft.value = { ...draft.value, [SLOTS[item.category]]: isOn(item) ? null : item.key })
 
     const load = async () => {

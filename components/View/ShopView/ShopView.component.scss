@@ -59,11 +59,12 @@
     }
 
     span {
+      display: -webkit-box;
       overflow: hidden;
       color: var(--color-text-03);
       font-size: 12px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 
