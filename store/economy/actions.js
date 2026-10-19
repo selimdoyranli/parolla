@@ -64,6 +64,33 @@ export default {
     return { data, error }
   },
 
+  // Called once per game end. Logged in: keep the score response's `economy` for the end dialog
+  // and refresh wallet/quests. Guest: ask what they would have earned.
+  async gameEnded({ commit, dispatch }, { mode, data, win, attempts }) {
+    commit('SET_LAST_ECONOMY', null)
+    commit('SET_GUEST_PREVIEW', null)
+
+    if (!this.$auth.loggedIn) {
+      const query = { mode }
+
+      if (win !== undefined) Object.assign(query, { win: win ? 1 : 0, attempts })
+
+      const res = await this.$appFetch({ path: 'economy/guest-preview', query })
+
+      if (res.data) commit('SET_GUEST_PREVIEW', { mode, jeton: res.data.jeton })
+
+      return
+    }
+
+    if (!data) return
+
+    if (data.economy) commit('SET_LAST_ECONOMY', { mode, ...data.economy })
+
+    await dispatch('fetchWallet')
+
+    if (data.economy && data.economy.questsCompleted.length) await dispatch('fetchQuests')
+  },
+
   async fetchWallet({ commit }) {
     const { data, error } = await authed(this, { path: 'economy/me' })
 

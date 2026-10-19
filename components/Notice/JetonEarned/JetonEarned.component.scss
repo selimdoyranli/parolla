@@ -1,0 +1,33 @@
+.jeton-earned {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
+  padding: 10px 14px;
+  color: var(--color-text-01);
+  text-align: center;
+  border: 1px solid var(--color-border-01);
+  border-radius: 12px;
+
+  p {
+    margin: 0;
+  }
+
+  &__amount {
+    font-weight: 700;
+    font-size: var(--font-size-text-4);
+  }
+
+  &__note {
+    font-size: var(--font-size-text-6);
+  }
+
+  &__quest {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-text-6);
+  }
+}

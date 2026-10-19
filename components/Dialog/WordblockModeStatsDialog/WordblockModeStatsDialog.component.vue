@@ -60,6 +60,8 @@ Dialog.dialog.stats-dialog.wordblock-mode-stats-dialog(
             size="normal"
             :to="localePath({ name: len === 5 ? 'WordblockMode' : 'WordblockMode-charLength', params: { charLength: len } })"
           ) {{ len }} {{ $t('wordblockMode.letter') }}
+    JetonEarned(mode="wordblock")
+
     // Ad
     DialogAd
 

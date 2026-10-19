@@ -28,6 +28,14 @@ export default {
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
   economy: {
+    earned: {
+      amount: '+{amount} tokens',
+      capped: 'You hit the daily cap',
+      questDone: 'Quest completed: {title}',
+      viewQuests: 'Quests',
+      guestTeaser: 'You would have earned {amount} tokens if you had logged in',
+      login: 'Log in'
+    },
     quests: {
       title: 'Quests',
       daily: 'Daily quests',

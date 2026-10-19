@@ -4,5 +4,7 @@ export default () => ({
   quests: null,
   inventory: null,
   achievements: null,
+  lastEconomy: null,
+  guestPreview: null,
   dialog: { quests: { isOpen: false } }
 })

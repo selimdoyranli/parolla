@@ -16,6 +16,12 @@ export default {
   SET_ACHIEVEMENTS(state, achievements) {
     state.achievements = achievements
   },
+  SET_LAST_ECONOMY(state, lastEconomy) {
+    state.lastEconomy = lastEconomy
+  },
+  SET_GUEST_PREVIEW(state, guestPreview) {
+    state.guestPreview = guestPreview
+  },
   SET_IS_OPEN_QUESTS_DIALOG(state, isOpen) {
     state.dialog.quests.isOpen = isOpen
   },

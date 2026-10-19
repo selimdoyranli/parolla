@@ -28,6 +28,14 @@ export default {
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
   economy: {
+    earned: {
+      amount: '+{amount} jeton',
+      capped: 'Günlük tavana ulaştın',
+      questDone: 'Görev tamamlandı: {title}',
+      viewQuests: 'Görevler',
+      guestTeaser: 'Giriş yapsaydın {amount} jeton kazanacaktın',
+      login: 'Giriş yap'
+    },
     quests: {
       title: 'Görevler',
       daily: 'Günlük görevler',
