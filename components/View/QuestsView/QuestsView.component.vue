@@ -28,9 +28,12 @@
           | {{ $t('economy.quests.claim') }}
           GoldAmount.ms-1(size="sm" :amount="quests.chest.reward")
         GoldAmount(v-else size="sm" :amount="quests.chest.reward")
-    section.quests-view__section(v-if="achievements.length")
+    section.quests-view__section(v-if="achievements.length || achievementsFailed")
       h4.quests-view__heading {{ $t('economy.achievements.title') }}
-      AchievementList(:items="achievements")
+      AchievementList(v-if="achievements.length" :items="achievements")
+      .quests-view__error(v-else)
+        p {{ $t('economy.errors.generic') }}
+        Button(size="small" @click="load") {{ $t('economy.retry') }}
   .quests-view__error(v-else-if="failed")
     p {{ $t('economy.errors.generic') }}
     Button(size="small" @click="load") {{ $t('economy.retry') }}
@@ -50,6 +53,7 @@ export default defineComponent({
     const loggedIn = computed(() => $auth.loggedIn)
     const busy = ref(false)
     const failed = ref(false)
+    const achievementsFailed = ref(false)
     const quests = computed(() => store.state.economy.quests)
     const achievements = computed(() => store.state.economy.achievements || [])
     const claimedCount = computed(() => (quests.value ? quests.value.weekly.filter(q => q.claimed).length : 0))
@@ -75,9 +79,10 @@ export default defineComponent({
       failed.value = false
 
       try {
-        const [{ error }] = await Promise.all([store.dispatch('economy/fetchQuests'), store.dispatch('economy/fetchAchievements')])
+        const [{ error }, ach] = await Promise.all([store.dispatch('economy/fetchQuests'), store.dispatch('economy/fetchAchievements')])
 
         failed.value = Boolean(error)
+        achievementsFailed.value = Boolean(ach.error)
       } catch (e) {
         failed.value = true
       }
@@ -112,7 +117,21 @@ export default defineComponent({
     watch(loggedIn, value => value && load())
     onMounted(() => loggedIn.value && load())
 
-    return { loggedIn, openLogin, quests, busy, failed, load, claimedCount, achievements, chestReady, claim, reroll, claimChest }
+    return {
+      achievementsFailed,
+      loggedIn,
+      openLogin,
+      quests,
+      busy,
+      failed,
+      load,
+      claimedCount,
+      achievements,
+      chestReady,
+      claim,
+      reroll,
+      claimChest
+    }
   }
 })
 </script>

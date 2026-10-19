@@ -47,8 +47,6 @@ export default {
       weekly: 'Haftalık görevler',
       claim: 'Al',
       reroll: 'Yenile',
-      chest: 'Haftalık sandık: {done}/{total}',
-      openChest: 'Sandığı aç',
       chestTitle: 'Haftalık altın hediyesi',
       chestHint: 'Tüm haftalık görevleri al',
       claimed: '+{amount} altın kazandın',
@@ -78,8 +76,17 @@ export default {
     achievements: {
       title: 'Başarımlar',
       titleReward: 'Unvan ödülü: {name}',
-      reward: 'Ödül:',
-      completed: 'Tamamlandı'
+      goal: {
+        'alfabe-ustasi': 'Günlük modu {n} kez bitir',
+        kusursuz: 'Günlük modu {n} kez hatasız ve passız bitir',
+        'kelime-avcisi': '{n} kelime bloğu çöz',
+        'tek-atis': '{n} kelime bloğunu 2 denemede çöz',
+        turcu: 'Turda toplam {n} puan topla',
+        mimar: 'Odalarını {n} farklı oyuncu oynasın',
+        sadik: '{n} günlük giriş serisine ulaş',
+        koleksiyoncu: '{n} kozmetiğe sahip ol',
+        firstLegendary: 'İlk efsanevi kozmetiğini al'
+      }
     },
     dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
     collection: {

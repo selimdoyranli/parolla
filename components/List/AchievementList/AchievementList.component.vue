@@ -6,11 +6,11 @@
       AppIcon.achievement-list__icon(:name="t.unlocked ? 'tabler:trophy' : 'tabler:lock'" :width="18" :height="18")
       .achievement-list__body
         .achievement-list__title
-          span {{ baseName(t) }}
+          span {{ goalText(t) }}
           span.achievement-list__chip {{ roman(t.tier) }}
         .achievement-list__hint(v-if="titleName(t)") {{ $t('economy.achievements.titleReward', { name: titleName(t) }) }}
       .achievement-list__side
-        span.achievement-list__progress(v-if="!t.unlocked") {{ t.current }} / {{ t.goal }}
+        span.achievement-list__progress {{ t.current.toLocaleString(lang) }} / {{ t.goal.toLocaleString(lang) }}
         GoldAmount(size="sm" :amount="t.reward")
 </template>
 
@@ -51,6 +51,13 @@ export default defineComponent({
     // Names carry a trailing roman numeral ("Alfabe Ustası II"); the tier chip shows it instead
     const baseName = t => t.name[lang.value].replace(/\s+[IVX]+$/, '')
 
+    // Falls back to the tier name for families without a goal template
+    const goalText = t => {
+      const key = `economy.achievements.goal.${t.stat === 'firstLegendary' ? 'firstLegendary' : t.family}`
+
+      return i18n.te(key) ? i18n.t(key, { n: t.goal.toLocaleString(lang.value) }) : baseName(t)
+    }
+
     const titleName = t => {
       const item = t.titleItem && catalogMap.value[t.titleItem]
 
@@ -59,7 +66,7 @@ export default defineComponent({
 
     onMounted(() => store.dispatch('economy/fetchCatalog'))
 
-    return { families, titleName, baseName, roman: n => ROMAN[n] || String(n) }
+    return { families, titleName, baseName, goalText, lang, roman: n => ROMAN[n] || String(n) }
   }
 })
 </script>

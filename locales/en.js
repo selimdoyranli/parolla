@@ -47,8 +47,6 @@ export default {
       weekly: 'Weekly quests',
       claim: 'Claim',
       reroll: 'Reroll',
-      chest: 'Weekly chest: {done}/{total}',
-      openChest: 'Open chest',
       chestTitle: 'Weekly gold gift',
       chestHint: 'Claim every weekly quest',
       claimed: 'You earned +{amount} gold',
@@ -78,8 +76,17 @@ export default {
     achievements: {
       title: 'Achievements',
       titleReward: 'Title reward: {name}',
-      reward: 'Reward:',
-      completed: 'Completed'
+      goal: {
+        'alfabe-ustasi': 'Finish the daily mode {n} times',
+        kusursuz: 'Finish the daily mode {n} times with no wrong or passed answers',
+        'kelime-avcisi': 'Solve {n} word blocks',
+        'tek-atis': 'Solve {n} word blocks in 2 tries',
+        turcu: 'Earn {n} tour points in total',
+        mimar: '{n} different players play your rooms',
+        sadik: 'Reach a {n}-day login streak',
+        koleksiyoncu: 'Own {n} cosmetics',
+        firstLegendary: 'Get your first legendary cosmetic'
+      }
     },
     dailyReward: 'Daily reward: +{amount} gold (streak {streak})',
     collection: {
