@@ -250,6 +250,26 @@
   &-error {
     padding: 24px;
   }
+
+  // The frame band is ~5.8% of the card width (26/450 of its viewBox) and ~3% of its height; keep content out from under it.
+  // Percent padding resolves against the card width, so it tracks the stretched band at any size. The banner stays full-bleed.
+  &--framed {
+    --frame-inset: 6%;
+
+    .profile-view-header,
+    .profile-view-identity,
+    .profile-view-stats {
+      padding-inline: calc(var(--base-p-x) + var(--frame-inset));
+    }
+
+    .profile-view-banner__actions {
+      right: calc(8px + var(--frame-inset));
+    }
+
+    .profile-view-stats {
+      padding-bottom: 28px;
+    }
+  }
 }
 
 // ImagePreview is portalled to <body> outside .profile-view, so this
