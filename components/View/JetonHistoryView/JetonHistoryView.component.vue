@@ -24,7 +24,8 @@
           b {{ row.amount > 0 ? '+' : '' }}{{ row.amount }}
           small {{ row.balanceAfter }}
 
-    Button(v-if="hasMore" block plain :loading="loading" @click="loadMore") {{ $t('economy.history.more') }}
+    p.jeton-history-view__error(v-if="failed && items.length") {{ $t('economy.errors.generic') }}
+    Button(v-if="hasMore || (failed && items.length)" block plain :loading="loading" @click="loadMore") {{ $t('economy.history.more') }}
 </template>
 
 <script>

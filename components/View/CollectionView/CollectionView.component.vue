@@ -15,7 +15,7 @@
       ProfileView.collection-view__profile(preview :player="previewUser")
       .collection-view__save
         span(v-if="dirty") {{ $t('economy.collection.unsaved') }}
-        Button(type="primary" round :loading="saving" :disabled="!dirty" @click="save") {{ $t('economy.collection.save') }}
+        Button(type="primary" round :loading="saving" :disabled="!loaded || !dirty" @click="save") {{ $t('economy.collection.save') }}
 
     .collection-view__error(v-if="failed")
       p {{ $t('economy.errors.generic') }}
@@ -91,7 +91,8 @@ export default defineComponent({
       retrying.value = true
 
       try {
-        const { error } = await store.dispatch('economy/fetchInventory')
+        // catalog first (cached = instant): filtering against a still-empty catalog would drop every key
+        const [{ error }] = await Promise.all([store.dispatch('economy/fetchInventory'), store.dispatch('economy/fetchCatalog')])
 
         failed.value = Boolean(error)
 
@@ -100,7 +101,10 @@ export default defineComponent({
         // drop removed catalog items so Save never sends a dead key
         const loadout = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
 
-        draft.value = Object.fromEntries(Object.entries(loadout).filter(([, key]) => catalogMap.value[key]))
+        // an empty catalog (fetch failed) must not wipe the loadout: keep keys as is
+        const known = Object.keys(catalogMap.value).length > 0
+
+        draft.value = Object.fromEntries(Object.entries(loadout).filter(([, key]) => !known || catalogMap.value[key]))
         loaded.value = true
       } finally {
         retrying.value = false
