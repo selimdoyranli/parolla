@@ -28,6 +28,10 @@ export default {
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
   economy: {
+    achievements: {
+      reward: 'Reward: {amount} tokens',
+      completed: 'Completed'
+    },
     dailyReward: 'Daily reward: +{amount} tokens (streak {streak})'
   },
   success: {
@@ -1253,7 +1257,8 @@ export default {
     tabs: {
       quizzes: 'Quizzes',
       reviews: 'Reviews',
-      scores: 'Scores'
+      scores: 'Scores',
+      achievements: 'Achievements'
     },
     stats: {
       created: 'Created',

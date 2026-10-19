@@ -137,6 +137,31 @@
       line-height: 1.2;
     }
 
+    &__title {
+      margin-inline-start: 8px;
+      padding: 0 6px;
+      color: var(--color-text-03);
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 1.6;
+      vertical-align: middle;
+      background-color: var(--color-ui-02);
+      border-radius: var(--border-radius-01);
+    }
+
+    &__name--plated {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: var(--border-radius-01);
+
+      .profile-view-identity__username,
+      .profile-view-identity__title {
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        background: none;
+      }
+    }
+
     &__gm-label {
       margin-inline-start: 8px;
       color: #e4ca1e;
@@ -197,6 +222,22 @@
     &__label {
       color: var(--color-text-03);
       font-size: 14px;
+    }
+  }
+
+  &-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+
+    @media (prefers-reduced-motion: reduce) {
+      &--effect {
+        display: none;
+      }
     }
   }
 

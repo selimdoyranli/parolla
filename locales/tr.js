@@ -28,6 +28,10 @@ export default {
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
   economy: {
+    achievements: {
+      reward: 'Ödül: {amount} jeton',
+      completed: 'Tamamlandı'
+    },
     dailyReward: 'Günlük ödül: +{amount} jeton (seri {streak})'
   },
   success: {
@@ -1275,7 +1279,8 @@ export default {
     tabs: {
       quizzes: 'Quizler',
       reviews: 'Değerlendirmeler',
-      scores: 'Skorlar'
+      scores: 'Skorlar',
+      achievements: 'Başarımlar'
     },
     stats: {
       created: 'Oluşturulan',

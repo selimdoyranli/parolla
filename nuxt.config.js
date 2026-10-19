@@ -349,6 +349,10 @@ module.exports = {
             tr: '/profil/:username/skorlar',
             en: '/profile/:username/scores'
           },
+          'Profile/_username/Achievements/index': {
+            tr: '/profil/:username/basarimlar',
+            en: '/profile/:username/achievements'
+          },
           'WordblockMode/index': {
             tr: '/kelimeblok',
             en: '/wordblock'

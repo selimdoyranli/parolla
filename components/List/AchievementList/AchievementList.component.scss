@@ -1,0 +1,63 @@
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__family {
+    padding: 14px;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-01);
+    border-radius: 12px;
+
+    &--done {
+      border-color: var(--color-brand-02);
+    }
+  }
+
+  &__head,
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__name {
+    color: var(--color-text-01);
+    font-size: 15px;
+  }
+
+  &__reward,
+  &__progress {
+    color: var(--color-text-03);
+    font-size: 13px;
+  }
+
+  &__bar {
+    height: 6px;
+    margin: 10px 0 8px;
+    overflow: hidden;
+    background: var(--color-ui-03);
+    border-radius: 3px;
+
+    &-fill {
+      height: 100%;
+      background: var(--color-brand-02);
+    }
+  }
+
+  &__tiers {
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  &__tier {
+    width: 8px;
+    height: 8px;
+    background: var(--color-ui-03);
+    border-radius: 50%;
+
+    &--on {
+      background: var(--color-brand-02);
+    }
+  }
+}

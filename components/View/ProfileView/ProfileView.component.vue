@@ -63,9 +63,13 @@
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
-      h1.profile-view-identity__name
-        | {{ player.username }}
+      h1.profile-view-identity__name(
+        :class="{ 'profile-view-identity__name--plated': plateImage }"
+        :style="plateImage ? plateStyle(player) : null"
+      )
+        span.profile-view-identity__username(:style="plateImage ? null : nameColorStyle") {{ player.username }}
         span.profile-view-identity__gm-label(v-if="isGm") (GM)
+        span.profile-view-identity__title(v-if="titleLabel") {{ titleLabel }}
       span.profile-view-identity__handle(v-if="player.fullname") {{ player.fullname }}
 
       p.profile-view-identity__bio(v-if="player.bio") {{ player.bio }}
@@ -85,6 +89,9 @@
       .profile-view-stats__item
         strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
         span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
+
+    img.profile-view-overlay(v-if="frameSrc" :src="frameSrc" alt)
+    img.profile-view-overlay.profile-view-overlay--effect(v-if="effectSrc" :src="effectSrc" alt)
 </template>
 
 <script>
@@ -137,7 +144,22 @@ export default defineComponent({
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => props.player?.role?.name === 'GM')
 
-    const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
+    const { asset, nameStyle, titleText, plateStyle } = useCosmetics()
+    const loadout = computed(() => (props.player && props.player.loadout) || {})
+    const coverSrc = computed(() => asset(loadout.value.profileCover))
+    const frameSrc = computed(() => asset(loadout.value.profileFrame))
+    const effectSrc = computed(() => asset(loadout.value.profileEffect))
+    const plateImage = computed(() => asset(loadout.value.nameplate))
+    const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
+    const titleLabel = computed(() => titleText(loadout.value.title))
+
+    const bannerStyle = computed(() => {
+      const base = buildBannerStyle(props.player?.diceBear?.config)
+
+      return coverSrc.value
+        ? { ...base, backgroundImage: `url(${coverSrc.value})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+        : base
+    })
 
     // Only let the avatar open ImagePreview when the user actually has
     // an uploaded photo to view. DiceBear avatars stay non-interactive —
@@ -200,6 +222,13 @@ export default defineComponent({
       isSelf,
       isGm,
       bannerStyle,
+      coverSrc,
+      frameSrc,
+      effectSrc,
+      plateImage,
+      plateStyle,
+      nameColorStyle,
+      titleLabel,
       canPreviewPhoto,
       previewImages,
       handleAvatarClick,

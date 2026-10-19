@@ -15,7 +15,7 @@
     )
 
     template(v-if="!playerLoading && player && player.id")
-      ProfileTabBar(:username="username")
+      ProfileTabBar(:username="username" :show-achievements="isSelf")
 
       nuxt-child(:key="$route.fullPath")
 </template>
@@ -72,6 +72,12 @@ export default defineComponent({
     const playerStats = computed(() => store.getters['profile/playerStats'])
     const tourScore = computed(() => store.getters['tour/tourScoreOfUser'])
 
+    const isSelf = computed(() => {
+      const me = store.getters['auth/user']
+
+      return Boolean(me && player.value && me.username === player.value.username)
+    })
+
     const refetch = () => fetch()
 
     const goHome = () => {
@@ -93,6 +99,7 @@ export default defineComponent({
       username,
       player,
       playerStats,
+      isSelf,
       playerLoading,
       playerError,
       fetchState,
