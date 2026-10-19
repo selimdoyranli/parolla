@@ -1,5 +1,111 @@
 # Changelog
 
+## v3.4.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.3.0...v3.4.0)
+
+
+### 🚀 Enhancements
+
+  - **comments:** Add comment and notification stores, transformers and copy ([e5b1350](https://github.com/selimdoyranli/parolla/commit/e5b1350))
+  - **comments:** Add comment item and composer components ([c1106da](https://github.com/selimdoyranli/parolla/commit/c1106da))
+  - **comments:** Threaded comments and separate rating in the reviews view ([450a8f5](https://github.com/selimdoyranli/parolla/commit/450a8f5))
+  - **profile:** List a player's quiz comments in the reviews tab ([6f2ee72](https://github.com/selimdoyranli/parolla/commit/6f2ee72))
+  - **notifications:** Header bell with unread badge, polling and notifications dialog ([869641f](https://github.com/selimdoyranli/parolla/commit/869641f))
+  - **creator:** Owner stats dialog with players list ([fad1866](https://github.com/selimdoyranli/parolla/commit/fad1866))
+  - **comments:** Quote the reported comment, wider options dialog, like/reply sounds ([721dfbb](https://github.com/selimdoyranli/parolla/commit/721dfbb))
+  - **ui:** ActionButton for comment actions and header icons ([a9a2ec1](https://github.com/selimdoyranli/parolla/commit/a9a2ec1))
+  - **comments:** Replies button opens the replies and a focused reply input together ([a4b8602](https://github.com/selimdoyranli/parolla/commit/a4b8602))
+  - **comments:** Single bottom composer with 'replying to' bar, flash + scroll to the target ([15a6ef2](https://github.com/selimdoyranli/parolla/commit/15a6ef2))
+  - **comments:** First two replies shown inline, load more on demand; PlayerDialog from avatar/username ([2ce0a39](https://github.com/selimdoyranli/parolla/commit/2ce0a39))
+  - **comments:** Title with count on the left, filter on the right; character counter on the comment input ([19b80aa](https://github.com/selimdoyranli/parolla/commit/19b80aa))
+  - **comments:** Scroll to and flash your own new comment; friendly message on the comment rate limit ([9194118](https://github.com/selimdoyranli/parolla/commit/9194118))
+  - **notifications:** Rating notification opens Puanlar and flashes the rater's row ([cf3479c](https://github.com/selimdoyranli/parolla/commit/cf3479c))
+  - **header:** Drop locale and announcements buttons; announcements live in notifications ([648ada4](https://github.com/selimdoyranli/parolla/commit/648ada4))
+  - **creator:** Owner stats in the menu; header shortcut only from tablet up ([6258ac5](https://github.com/selimdoyranli/parolla/commit/6258ac5))
+  - **creator:** Owner stats players use the scoreboard list ([abdddfe](https://github.com/selimdoyranli/parolla/commit/abdddfe))
+  - **creator:** Owner stats as a compact card above the scoreboard ([9293f9c](https://github.com/selimdoyranli/parolla/commit/9293f9c))
+  - **ui:** How-to-play, stats and reviews dialogs open over the game scene ([5395aef](https://github.com/selimdoyranli/parolla/commit/5395aef))
+  - **creator:** Open the stats dialog on a given tab; share room via useRoomShare ([2d588a8](https://github.com/selimdoyranli/parolla/commit/2d588a8))
+  - **intro:** PlayIntroDialog with cover, stats, play, share/rate, rules and creator ([6579dd1](https://github.com/selimdoyranli/parolla/commit/6579dd1))
+  - **intro:** Leaderboard top 10 and comments preview in the play intro ([44d729c](https://github.com/selimdoyranli/parolla/commit/44d729c))
+  - **intro:** Play intro replaces the how-to-play intro in creator, daily and unlimited ([0ec50eb](https://github.com/selimdoyranli/parolla/commit/0ec50eb))
+  - **intro:** Quiz-type pill on cover, empty comments with write action ([e00087d](https://github.com/selimdoyranli/parolla/commit/e00087d))
+  - **intro:** Full comments UI in the intro, top-10 board without scroll box ([3d3a3b2](https://github.com/selimdoyranli/parolla/commit/3d3a3b2))
+  - **ads:** Second square unit in each side rail on tall screens ([8f16daa](https://github.com/selimdoyranli/parolla/commit/8f16daa))
+  - **ads:** Second intro ad, dialog ad pair on stats score and answer tabs ([a6d241c](https://github.com/selimdoyranli/parolla/commit/a6d241c))
+  - **ads:** Ads under the draw lobby's official and community room lists ([58dbdd3](https://github.com/selimdoyranli/parolla/commit/58dbdd3))
+  - **ads:** Horizontal ad between the song quiz intro and its search ([ba24a42](https://github.com/selimdoyranli/parolla/commit/ba24a42))
+  - **game:** Inline 3-2-1-GO flip countdown instead of the start toast ([1e2466d](https://github.com/selimdoyranli/parolla/commit/1e2466d))
+  - **game:** Creator quiz intro splash with sound before the countdown ([71a96fa](https://github.com/selimdoyranli/parolla/commit/71a96fa))
+  - **game:** Countdown pings each number and plays success on go ([7708b20](https://github.com/selimdoyranli/parolla/commit/7708b20))
+
+### 🩹 Fixes
+
+  - **comments:** Stop deep-link reply paging when a fetch makes no progress ([d8bac1d](https://github.com/selimdoyranli/parolla/commit/d8bac1d))
+  - **comments:** Load lists when room id arrives late, brand-coloured send icon, dedupe pages ([124d326](https://github.com/selimdoyranli/parolla/commit/124d326))
+  - **comments:** Load visible list directly when room id arrives late ([02351e7](https://github.com/selimdoyranli/parolla/commit/02351e7))
+  - **profile:** Keep loaded comments when load-more fails and drop stale responses ([ff4fad1](https://github.com/selimdoyranli/parolla/commit/ff4fad1))
+  - **creator:** Owner stats dialog no longer reopens itself and drops stale responses ([8664276](https://github.com/selimdoyranli/parolla/commit/8664276))
+  - **comments:** Rating count on cards, deep-link/pin/delete polish, single axios interceptor ([a94001b](https://github.com/selimdoyranli/parolla/commit/a94001b))
+  - **comments:** FilterDropdown filter, comment actions dialog with preview, bordered composer ([38edec9](https://github.com/selimdoyranli/parolla/commit/38edec9))
+  - **comments:** More dialog with delete/report options opening their own dialogs on top ([352da75](https://github.com/selimdoyranli/parolla/commit/352da75))
+  - **comments:** Scroll to the reply target again ([ca99649](https://github.com/selimdoyranli/parolla/commit/ca99649))
+  - **comments:** @mention comes from replyToUser, not from the typed text ([12710f9](https://github.com/selimdoyranli/parolla/commit/12710f9))
+  - **creator:** Reviews dialog first when arriving from a notification ([e74d1b6](https://github.com/selimdoyranli/parolla/commit/e74d1b6))
+  - **creator:** Scoreboard loads past the first 50 players ([e18cdd5](https://github.com/selimdoyranli/parolla/commit/e18cdd5))
+  - **ui:** No nested max-height scroll boxes inside scene dialogs ([f53d358](https://github.com/selimdoyranli/parolla/commit/f53d358))
+  - **ui:** Scene dialogs scale in like other dialogs; how-to-play footer at the bottom; menu hands off in one tap ([4eeff1e](https://github.com/selimdoyranli/parolla/commit/4eeff1e))
+  - **ui:** Scene dialogs fill their height; footer and comment composer rest at the bottom ([33fdd03](https://github.com/selimdoyranli/parolla/commit/33fdd03))
+  - **ui:** Intro how-to-play has no title and isn't stacked by the header's copy ([9d17fb3](https://github.com/selimdoyranli/parolla/commit/9d17fb3))
+  - **intro:** Hide failed sections; daily link always shown ([e2f59fa](https://github.com/selimdoyranli/parolla/commit/e2f59fa))
+  - **intro:** Stats dialog tab reset, anon creator, comment refresh, plurals, tokens ([d868b57](https://github.com/selimdoyranli/parolla/commit/d868b57))
+  - **game:** Question text survives the countdown; cards roll clockwise ([2531d1b](https://github.com/selimdoyranli/parolla/commit/2531d1b))
+  - **game:** Countdown cards stack and turn in place, larger on desktop ([8ceafeb](https://github.com/selimdoyranli/parolla/commit/8ceafeb))
+  - **game:** Splash backdrop covers the scene from the start; text and sound 0.5s in ([e0178a5](https://github.com/selimdoyranli/parolla/commit/e0178a5))
+  - **game:** Splash text and sound start 200ms in ([1e2258b](https://github.com/selimdoyranli/parolla/commit/1e2258b))
+  - **ui:** Carousel quiz-type pill overflow, contain play-intro cover photo ([3debf2a](https://github.com/selimdoyranli/parolla/commit/3debf2a))
+  - **play-intro:** Leaderboard rows spilling over the ad, smaller mobile daily/unlimited banner ([293afc5](https://github.com/selimdoyranli/parolla/commit/293afc5))
+  - **game-scene:** Refit question text when the Android keyboard shrinks the visual viewport ([dbb7b7a](https://github.com/selimdoyranli/parolla/commit/dbb7b7a))
+  - **game-scene:** Cap the question box to the gap above the answer field ([de55149](https://github.com/selimdoyranli/parolla/commit/de55149))
+
+### 💅 Refactors
+
+  - **quiz-card:** Extract QuizCover (cover photo or gradient/grid placeholder) ([11d3a78](https://github.com/selimdoyranli/parolla/commit/11d3a78))
+  - **how-to-play:** Extract HowToPlayContent ([a68b7c8](https://github.com/selimdoyranli/parolla/commit/a68b7c8))
+
+### 📖 Documentation
+
+  - Update store modules and transformers list ([8714fa7](https://github.com/selimdoyranli/parolla/commit/8714fa7))
+  - Play intro dialog design ([9ff2e1a](https://github.com/selimdoyranli/parolla/commit/9ff2e1a))
+  - Play intro dialog implementation plan ([18420f0](https://github.com/selimdoyranli/parolla/commit/18420f0))
+
+### 🏡 Chore
+
+  - **menu:** Drop unused APP_URL import ([8bfc173](https://github.com/selimdoyranli/parolla/commit/8bfc173))
+
+### 🎨 Styles
+
+  - **comments:** Darker sticky composer bar than the dialog ([5832b90](https://github.com/selimdoyranli/parolla/commit/5832b90))
+  - **comments:** Round the sticky composer bar's top corners ([d2036b6](https://github.com/selimdoyranli/parolla/commit/d2036b6))
+  - **notifications:** Hover background and pointer on clickable notifications ([7535783](https://github.com/selimdoyranli/parolla/commit/7535783))
+  - **notifications:** Rounded notification rows ([152420f](https://github.com/selimdoyranli/parolla/commit/152420f))
+  - **header:** Bell badge uses the default badge red like the other action buttons ([78b5729](https://github.com/selimdoyranli/parolla/commit/78b5729))
+  - **intro:** Creator row label over username beside the avatar, above how-to-play ([e580dd4](https://github.com/selimdoyranli/parolla/commit/e580dd4))
+  - **intro:** Title on cover, long date, full scoreboard button past top 10 ([88631fb](https://github.com/selimdoyranli/parolla/commit/88631fb))
+  - **intro:** Bolder red gradient play button, no glow ([eac95cd](https://github.com/selimdoyranli/parolla/commit/eac95cd))
+  - **ads:** Space between the song quiz subtitle and its ad ([7fc3c68](https://github.com/selimdoyranli/parolla/commit/7fc3c68))
+  - **intro:** Short banner cover for daily/unlimited, rules open on desktop ([59bdf80](https://github.com/selimdoyranli/parolla/commit/59bdf80))
+  - **intro:** Daily/unlimited stats as pills on the banner, long daily date ([1898fa1](https://github.com/selimdoyranli/parolla/commit/1898fa1))
+  - **intro:** Banner pills bottom-left, empty board as Vant Empty ([5d909bf](https://github.com/selimdoyranli/parolla/commit/5d909bf))
+  - **header:** Start-align the logo below 426px so actions don't cover it ([b046091](https://github.com/selimdoyranli/parolla/commit/b046091))
+  - **notifications:** Top-aligned avatars, smaller text on phones ([7ed0919](https://github.com/selimdoyranli/parolla/commit/7ed0919))
+  - **how-to-play:** Drop stray blank line ([69e44d4](https://github.com/selimdoyranli/parolla/commit/69e44d4))
+
+### ❤️  Contributors
+
+- Selimdoyranli <selimdoyranli@gmail.com>
+
 ## v3.3.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.2.0...v3.3.0)
