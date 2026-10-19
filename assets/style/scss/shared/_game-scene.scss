@@ -639,7 +639,11 @@
 
     #{$van-dialog} {
       &__content {
+        // the ad below the results grows the dialog past the viewport; scroll inside instead
+        max-height: 70vh;
+        max-height: 70dvh;
         padding: var(--base-p-y) calc(var(--base-p-x) * 1.5);
+        overflow-y: auto;
       }
     }
 
