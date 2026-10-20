@@ -137,18 +137,6 @@
       line-height: 1.2;
     }
 
-    &__name--plated {
-      display: block;
-      padding: 2px 12px;
-      border-radius: var(--border-radius-01);
-
-      .profile-view-identity__username {
-        color: #fff;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-        background: none;
-      }
-    }
-
     &__gm-label {
       margin-inline-start: 8px;
       color: #e4ca1e;

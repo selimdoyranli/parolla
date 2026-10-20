@@ -40,7 +40,6 @@ import { mergeServerSlots } from '@/helpers/loadoutMerge'
 const SLOTS = {
   avatar_frame: 'frame',
   avatar_decoration: 'decoration',
-  nameplate: 'nameplate',
   name_color: 'nameColor',
   profile_cover: 'profileCover',
   profile_frame: 'profileFrame',

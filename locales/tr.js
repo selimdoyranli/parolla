@@ -152,7 +152,6 @@ export default {
         all: 'Tümü',
         avatar_frame: 'Avatar çerçevesi',
         avatar_decoration: 'Dekorasyon',
-        nameplate: 'İsim plakası',
         profile_effect: 'Profil efekti',
         profile_frame: 'Profil çerçevesi',
         profile_cover: 'Profil arkaplanı',

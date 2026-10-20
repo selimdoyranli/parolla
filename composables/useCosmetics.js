@@ -22,12 +22,5 @@ export default () => {
     return value.color ? { color: value.color } : {}
   }
 
-  // nameplate row background for a user object ({} when none equipped)
-  const plateStyle = user => {
-    const src = asset(user && user.loadout && user.loadout.nameplate)
-
-    return src ? { backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'left center' } : {}
-  }
-
-  return { item, asset, nameStyle, isAnimated, plateStyle }
+  return { item, asset, nameStyle, isAnimated }
 }

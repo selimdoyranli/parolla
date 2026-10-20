@@ -63,11 +63,8 @@
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
-      h1.profile-view-identity__name(
-        :class="{ 'profile-view-identity__name--plated': plateImage }"
-        :style="plateImage ? plateStyle(player) : null"
-      )
-        span.profile-view-identity__username(:style="plateImage ? null : nameColorStyle") {{ player.username }}
+      h1.profile-view-identity__name
+        span.profile-view-identity__username(:style="nameColorStyle") {{ player.username }}
         span.profile-view-identity__gm-label(v-if="isGm") (GM)
       span.profile-view-identity__handle(v-if="player.fullname") {{ player.fullname }}
 
@@ -151,12 +148,11 @@ export default defineComponent({
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => props.player?.role?.name === 'GM')
 
-    const { asset, nameStyle, plateStyle } = useCosmetics()
+    const { asset, nameStyle } = useCosmetics()
     const loadout = computed(() => (props.player && props.player.loadout) || {})
     const coverSrc = computed(() => asset(loadout.value.profileCover))
     const frameSrc = computed(() => asset(loadout.value.profileFrame))
     const effectSrc = computed(() => asset(loadout.value.profileEffect))
-    const plateImage = computed(() => asset(loadout.value.nameplate))
     const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
 
     // the frame is a 9-slice sprite next to the art (<file>.9.svg) laid out by border-image; its box needs the card size
@@ -265,8 +261,6 @@ export default defineComponent({
       frameSrc,
       frameStyle,
       effectSrc,
-      plateImage,
-      plateStyle,
       nameColorStyle,
       canPreviewPhoto,
       previewImages,

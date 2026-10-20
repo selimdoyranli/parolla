@@ -152,7 +152,6 @@ export default {
         all: 'All',
         avatar_frame: 'Avatar frame',
         avatar_decoration: 'Decoration',
-        nameplate: 'Nameplate',
         profile_effect: 'Profile effect',
         profile_frame: 'Profile frame',
         profile_cover: 'Profile cover',

@@ -11,8 +11,7 @@
         .top-scorer-list-item(
           :key="scorers[index - 1].username"
           v-if="scorers[index - 1]"
-          :class="{ 'top-scorer-list-item--self': isCurrentPlayer(scorers[index - 1]), 'top-scorer-list-item--plated': hasPlate(scorers[index - 1]) }"
-          :style="plateVars(scorers[index - 1])"
+          :class="{ 'top-scorer-list-item--self': isCurrentPlayer(scorers[index - 1]) }"
           :data-rank="index"
         )
           AppIcon.top-scorer-list-item-crown(v-if="index === 1" name="tabler:crown" :width="28" :height="28")
@@ -109,15 +108,9 @@ export default defineComponent({
     const isCurrentPlayer = scorer => Boolean(props.currentPlayer) && scorer?.id === props.currentPlayer.id
 
     const { formatElapsedTime } = useElapsedTime()
-    const { plateStyle } = useCosmetics()
-    // The plate only backs the username strip, so it travels as a custom property
-    const plateVars = scorer => (hasPlate(scorer) ? { '--plate-image': plateStyle(scorer).backgroundImage } : {})
-    const hasPlate = scorer => Boolean(plateStyle(scorer).backgroundImage)
 
     return {
       isCurrentPlayer,
-      plateVars,
-      hasPlate,
       maxAttempts: WORDBLOCK_MAX_ATTEMPTS,
       formatElapsedTime
     }

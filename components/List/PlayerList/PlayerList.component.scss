@@ -294,30 +294,3 @@
     }
   }
 }
-
-.player-list-item--plated {
-  background-repeat: no-repeat;
-
-  .van-cell__title,
-  .van-cell__value,
-  .player-list-item-user__username,
-  .player-list-item-user::before,
-  .player-list-item-time__value,
-  .player-list-item-time__value sub {
-    color: #fff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-  }
-
-  // the score pill has its own themed background, so it keeps its normal text colors
-  .player-list-item-score {
-    text-shadow: none;
-  }
-
-  .player-avatar__name,
-  .player-avatar__title {
-    color: #fff !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
-    background: none !important;
-    -webkit-text-fill-color: #fff !important;
-  }
-}

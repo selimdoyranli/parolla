@@ -4,7 +4,6 @@ import { Notify } from 'vant'
 const SLOT = {
   avatar_frame: 'frame',
   avatar_decoration: 'decoration',
-  nameplate: 'nameplate',
   name_color: 'nameColor',
   profile_cover: 'profileCover',
   profile_frame: 'profileFrame',

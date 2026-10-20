@@ -3,7 +3,6 @@
   .cosmetic-card__stage
     span.cosmetic-card__discount(v-if="discount") -{{ discount }}%
     PlayerAvatar(v-if="category === 'avatar_frame' || category === 'avatar_decoration'" :user="previewUser" :size="64")
-    .cosmetic-card__plate(v-else-if="category === 'nameplate'" :style="plateStyleValue") {{ username }}
     .cosmetic-card__cover(v-else-if="category === 'profile_cover'" :style="{ backgroundImage: `url(${current.asset})` }")
     .cosmetic-card__mini(v-else-if="category === 'profile_frame' || category === 'profile_effect'")
       span.cosmetic-card__mini-dot
@@ -47,7 +46,6 @@ import { Tag, Loading } from 'vant'
 const SLOT = {
   avatar_frame: 'frame',
   avatar_decoration: 'decoration',
-  nameplate: 'nameplate',
   name_color: 'nameColor',
   profile_cover: 'profileCover',
   profile_frame: 'profileFrame',
@@ -74,7 +72,7 @@ export default defineComponent({
     equipping: { type: Boolean, default: false }
   },
   setup(props) {
-    const { nameStyle, plateStyle } = useCosmetics()
+    const { nameStyle } = useCosmetics()
 
     const index = ref(0)
     const current = computed(() => props.variants[index.value] || props.variants[0])
@@ -90,7 +88,6 @@ export default defineComponent({
       return { username: username.value, diceBear, avatarSource, profilePhoto, loadout: { [SLOT[category.value]]: current.value.key } }
     })
 
-    const plateStyleValue = computed(() => plateStyle(previewUser.value))
     const nameColorStyle = computed(() => nameStyle(current.value.key))
 
     const original = computed(() => (props.vitrinPrice && index.value === 0 ? current.value.price : null))
@@ -118,7 +115,6 @@ export default defineComponent({
       category,
       username,
       previewUser,
-      plateStyleValue,
       nameColorStyle,
       original,
       price,
