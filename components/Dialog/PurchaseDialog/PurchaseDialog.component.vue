@@ -1,6 +1,7 @@
 <template lang="pug">
 Dialog.dialog.purchase-dialog(
   v-model="state.isOpen"
+  get-container="body"
   :show-confirm-button="false"
   :show-cancel-button="false"
   :close-on-click-overlay="!busy"

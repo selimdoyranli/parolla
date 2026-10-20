@@ -1,5 +1,5 @@
 <template lang="pug">
-.profile-view(ref="root" :class="{ 'profile-view--framed': frameSrc }")
+.profile-view(ref="root" :class="{ 'profile-view--framed': frameStyle }")
   template(v-if="playerLoading")
     .profile-view-loading
       Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
