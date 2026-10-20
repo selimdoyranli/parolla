@@ -176,7 +176,21 @@ export default defineComponent({
 
       if (!fit) return null
 
+      // Chrome samples repeated border-image tiles with wrap-around, so each band's inner edge row picks up the
+      // tile's outer stroke as a thin line; cut a 1px strip off the inner edge of all four bands
+      const [i, w, h] = [1, fit.w, fit.h]
+      const hole = [
+        [fit.l - i, fit.t - i],
+        [fit.l - i, h - fit.b + i],
+        [w - fit.r + i, h - fit.b + i],
+        [w - fit.r + i, fit.t - i]
+      ]
+      const clipPath = `polygon(evenodd, 0 0, ${w}px 0, ${w}px ${h}px, 0 ${h}px, 0 0, ${[...hole, hole[0]]
+        .map(([x, y]) => `${x}px ${y}px`)
+        .join(', ')})`
+
       return {
+        clipPath,
         left: `${fit.x}px`,
         top: `${fit.y}px`,
         width: `${fit.w}px`,
