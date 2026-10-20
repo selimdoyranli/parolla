@@ -57,6 +57,9 @@ const SLOT = {
   profile_effect: 'profileEffect'
 }
 
+// guests preview cosmetics on this name; its DiceBear seed draws the bald avatar
+const GUEST_NAME = 'parolla'
+
 export default defineComponent({
   components: { Tag, Loading },
   props: {
@@ -88,7 +91,7 @@ export default defineComponent({
     const equipped = computed(() => props.equippedKeys.has(current.value.key))
     const free = computed(() => props.freeKeys.has(current.value.key))
 
-    const username = computed(() => (props.viewer && props.viewer.username) || 'selim.d')
+    const username = computed(() => (props.viewer && props.viewer.username) || GUEST_NAME)
     const previewUser = computed(() => {
       const { diceBear, avatarSource, profilePhoto } = props.viewer || {}
 
