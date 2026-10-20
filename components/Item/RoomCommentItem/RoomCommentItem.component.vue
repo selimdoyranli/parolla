@@ -52,7 +52,8 @@
           @deleted="removeReply"
         )
       button.room-comment-item__toggle(v-if="replies.items.length < state.replyCount" :disabled="replies.pending" @click="loadReplies")
-        | {{ $t('comments.loadMoreReplies') }}
+        //- nothing shown yet (profile/activity lists): say how many replies there are
+        | {{ replies.items.length ? $t('comments.loadMoreReplies') : $tc('comments.showReplies', state.replyCount, { n: state.replyCount }) }}
 
   // More dialog: comment preview + options; each option opens its own dialog on top
   VanDialog.dialog.room-comment-more-dialog(

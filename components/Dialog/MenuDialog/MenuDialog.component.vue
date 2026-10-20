@@ -44,13 +44,6 @@ Dialog.dialog.menu-dialog(
         @click.native="navigateAndClose('Activities-Likes')"
       )
       Cell.menu-dialog-nav__item(
-        icon="balance-list-o"
-        size="large"
-        is-link
-        :title="$t('dialog.menu.goldHistory')"
-        @click.native="navigateAndClose('Activities-GoldHistory')"
-      )
-      Cell.menu-dialog-nav__item(
         v-if="isGmUser($auth.user)"
         icon="shield-o"
         size="large"

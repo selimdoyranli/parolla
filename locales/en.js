@@ -357,7 +357,6 @@ export default {
     },
     menu: {
       title: 'More',
-      goldHistory: 'Gold history',
       activities: 'Activities',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
@@ -1050,6 +1049,7 @@ export default {
     send: 'Send',
     reply: 'Reply',
     loadMoreReplies: 'Load more replies',
+    showReplies: 'Show {n} reply | Show {n} replies',
     deleted: 'This comment was deleted',
     quizOwner: 'Quiz owner',
     report: 'Report',

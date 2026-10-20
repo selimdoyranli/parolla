@@ -359,7 +359,6 @@ export default {
     },
     menu: {
       title: 'Daha fazla',
-      goldHistory: 'Altın geçmişi',
       activities: 'Aktiviteler',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
@@ -1068,6 +1067,7 @@ export default {
     send: 'Gönder',
     reply: 'Yanıtla',
     loadMoreReplies: 'Daha fazla yanıt yükle',
+    showReplies: '{n} yanıtı göster',
     deleted: 'Bu yorum silindi',
     quizOwner: 'Quiz sahibi',
     report: 'Raporla',
