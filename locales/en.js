@@ -160,7 +160,7 @@ export default {
       },
       freeze: {
         title: 'Streak freeze',
-        desc: 'Keeps your daily streak if you miss a day.',
+        desc: 'Keeps your streak if you miss a day.',
         confirm: 'Streak freeze costs {price} gold. Buy it?',
         full: 'Full',
         bought: 'Streak freeze purchased'

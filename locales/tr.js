@@ -160,7 +160,7 @@ export default {
       },
       freeze: {
         title: 'Seri dondurucu',
-        desc: 'Bir gün kaçırırsan günlük serin bozulmaz.',
+        desc: 'Bir gün kaçırırsan serin bozulmaz.',
         confirm: 'Seri dondurucu {price} altın. Alınsın mı?',
         full: 'Dolu',
         bought: 'Seri dondurucu alındı'
