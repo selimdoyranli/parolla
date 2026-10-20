@@ -29,34 +29,6 @@
     }
   }
 
-  &__preview-top {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-
-  &__plate {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    min-width: 160px;
-    height: 40px;
-    padding-inline: 10px;
-    color: var(--color-text-01);
-    font-weight: 700;
-    background-position: left center;
-    background-size: cover;
-    border-radius: 7px;
-
-    // plate art is dark or busy in both themes: same text treatment as the shop card plate
-    &--on {
-      color: #fff;
-      text-shadow: 0 1px 3px rgb(0 0 0 / 75%);
-    }
-  }
-
   &__profile {
     position: relative;
     overflow: hidden;

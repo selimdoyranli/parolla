@@ -7,13 +7,6 @@
   template(v-else)
     .collection-view__preview
       h2.collection-view__heading {{ $t('economy.collection.preview') }}
-      .collection-view__preview-top
-        PlayerAvatar(with-username :user="previewUser" :size="64")
-        .collection-view__plate(
-          :style="plateStyle(previewUser)"
-          :class="{ 'collection-view__plate--on': plateStyle(previewUser).backgroundImage }"
-        )
-          | {{ previewUser.username }}
       ProfileView.collection-view__profile(preview :player="previewUser")
       .collection-view__save
         span(v-if="dirty") {{ $t('economy.collection.unsaved') }}
@@ -61,7 +54,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const { i18n, $auth } = useContext()
-    const { plateStyle } = useCosmetics()
 
     const loggedIn = computed(() => $auth.loggedIn)
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
@@ -85,11 +77,21 @@ export default defineComponent({
     })
 
     const isOn = item => draft.value[SLOTS[item.category]] === item.key
-    // the tab stays mounted: resync the draft when the server loadout changes (shop equip, purchase)
+    // the tab stays mounted: when the server loadout changes (shop equip, purchase), take only the slots that
+    // changed server-side, so unsaved edits to other slots survive and Kaydet does not revert the shop equip
     watch(
       () => inventory.value && inventory.value.loadout,
       (next, prev) => {
-        if (loaded.value && sorted(draft.value) === sorted(prev)) draft.value = clean(next)
+        if (!loaded.value) return
+
+        const merged = { ...draft.value }
+
+        Object.values(SLOTS).forEach(slot => {
+          const value = (next && next[slot]) || null
+
+          if (value !== ((prev && prev[slot]) || null)) merged[slot] = value
+        })
+        draft.value = clean(merged)
       }
     )
 
@@ -161,7 +163,6 @@ export default defineComponent({
       dirty,
       previewUser,
       groups,
-      plateStyle,
       isOn,
       toggle,
       save,

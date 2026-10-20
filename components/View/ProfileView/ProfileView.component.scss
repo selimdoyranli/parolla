@@ -138,7 +138,7 @@
     }
 
     &__name--plated {
-      display: inline-block;
+      display: block;
       padding: 2px 12px;
       border-radius: var(--border-radius-01);
 
@@ -218,12 +218,37 @@
     z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
     pointer-events: none;
 
     @media (prefers-reduced-motion: reduce) {
       &--effect {
         display: none;
+      }
+    }
+  }
+
+  // Each quarter shows its own corner of the art, scaled uniformly. The art must be wider than the quarter
+  // (120%: bands reach ~45/450) so the far band never shows; 360px keeps the band from going thin on phones.
+  &-frame {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+
+    i {
+      background-image: var(--frame-src);
+      background-repeat: no-repeat;
+      background-size: max(120%, 360px) auto;
+
+      &:nth-child(2) {
+        background-position: right top;
+      }
+
+      &:nth-child(3) {
+        background-position: left bottom;
+      }
+
+      &:nth-child(4) {
+        background-position: right bottom;
       }
     }
   }
@@ -238,14 +263,17 @@
     padding: 24px;
   }
 
-  // The frame band is ~5.8% of the card width (26/450 of its viewBox) and ~3% of its height; keep content out from under it.
-  // Percent padding resolves against the card width, so it tracks the stretched band at any size. The banner stays full-bleed.
+  // Keep content out from under the frame band (~26-45px at the tile scale); the bottom pad clears the deeper bottom bands.
+  // The banner stays full-bleed.
   &--framed {
     --frame-inset: 6%;
 
     .profile-view-header,
     .profile-view-identity,
     .profile-view-stats {
+      position: relative;
+      // unstretched frame art (e.g. bogaz skyline) is taller than the band: keep the text above it
+      z-index: 2;
       padding-inline: calc(var(--base-p-x) + var(--frame-inset));
     }
 
@@ -254,7 +282,10 @@
     }
 
     .profile-view-stats {
-      padding-bottom: 28px;
+      // the side bands leave too little room for three stats on phones
+      flex-wrap: wrap;
+      row-gap: 4px;
+      padding-bottom: 52px;
     }
   }
 }

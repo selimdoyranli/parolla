@@ -89,7 +89,9 @@
         strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
         span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
 
-    img.profile-view-overlay(v-if="frameSrc" :src="frameSrc" alt)
+    //- one tile per corner at the art's own ratio: stretching the 450x880 frame over a wide card squashed it
+    .profile-view-overlay.profile-view-frame(v-if="frameSrc" :style="{ '--frame-src': `url(${frameSrc})` }")
+      i(v-for="n in 4" :key="n")
     img.profile-view-overlay.profile-view-overlay--effect(v-if="effectSrc" :src="effectSrc" alt)
 </template>
 
