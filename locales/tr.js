@@ -79,10 +79,11 @@ export default {
       goal: {
         'alfabe-ustasi': 'Günlük modu {n} kez bitir',
         kusursuz: 'Günlük modu {n} kez hatasız ve passız bitir',
-        'kelime-avcisi': '{n} kelime bloğu çöz',
-        'tek-atis': '{n} kelime bloğunu 2 denemede çöz',
+        'kelime-avcisi': '{n} kelimeblok çöz',
+        'keskin-goz': "{n} kelimeblok'u en fazla 2 denemede çöz",
+        'tek-atis': "{n} kelimeblok'u ilk denemede çöz",
         turcu: 'Turda toplam {n} puan topla',
-        mimar: 'Odalarını {n} farklı oyuncu oynasın',
+        mimar: 'Quizlerini {n} farklı oyuncu oynasın',
         'quiz-yaraticisi': 'Herkese açık {n} quiz oluştur',
         sadik: '{n} günlük giriş serisine ulaş',
         koleksiyoncu: '{n} kozmetiğe sahip ol',
@@ -168,9 +169,8 @@ export default {
       freeze: {
         title: 'Günlük seri dondurucu',
         desc: 'Bir gün kaçırırsan serin bozulmaz.',
-        confirm: 'Günlük seri dondurucu {price} altın. Alınsın mı?',
-        full: 'Dolu',
-        bought: 'Günlük seri dondurucu alındı'
+        note: 'Bir gün oynamayı kaçırırsan günlük giriş serin bozulmaz. En fazla {max} tane taşıyabilirsin.',
+        full: 'Dolu'
       }
     }
   },

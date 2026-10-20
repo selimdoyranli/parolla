@@ -14,7 +14,7 @@
       button.shop-buy.shop-buy--owned(v-if="freezes >= MAX_FREEZES" type="button" disabled)
         AppIcon(name="tabler:check" :width="14" :height="14")
         span {{ $t('economy.shop.freeze.full') }}
-      button.shop-buy(v-else type="button" :disabled="freezeBusy" @click="buyFreeze")
+      button.shop-buy(v-else type="button" @click="isFreezeOpen = true")
         GoldAmount(size="sm" :amount="FREEZE_PRICE")
     section.quests-view__section
       h4.quests-view__heading {{ $t('economy.quests.daily') }}
@@ -50,12 +50,14 @@
     p {{ $t('economy.errors.generic') }}
     Button(size="small" @click="load") {{ $t('economy.retry') }}
   Loading.quests-view__loading(v-else)
+
+  // mounted only while open: the dialog moves itself to body, which breaks sibling patches when quests load
+  LazyPurchaseDialog(v-if="isFreezeOpen" is-open :target="freezeTarget" @closed="isFreezeOpen = false")
 </template>
 
 <script>
 import { defineComponent, computed, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
-import { Button, Loading, Dialog, Notify } from 'vant'
-import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
+import { Button, Loading, Notify } from 'vant'
 
 const MAX_FREEZES = 2
 const FREEZE_PRICE = 200
@@ -68,8 +70,13 @@ export default defineComponent({
 
     const loggedIn = computed(() => $auth.loggedIn)
     const busy = ref(false)
-    const freezeBusy = ref(false)
-    let freezeKey = null
+    const isFreezeOpen = ref(false)
+    const freezeTarget = computed(() => ({
+      type: 'freeze',
+      name: i18n.t('economy.shop.freeze.title'),
+      price: FREEZE_PRICE,
+      max: MAX_FREEZES
+    }))
     const freezes = computed(() => store.state.economy.wallet.streakFreezes)
     const failed = ref(false)
     const achievementsFailed = ref(false)
@@ -127,40 +134,6 @@ export default defineComponent({
       }
     }
 
-    const buyFreeze = async () => {
-      if (freezeBusy.value) return
-
-      freezeBusy.value = true
-
-      try {
-        await Dialog.confirm({
-          message: i18n.t('economy.shop.freeze.confirm', { price: FREEZE_PRICE }),
-          confirmButtonText: i18n.t('economy.shop.confirm'),
-          cancelButtonText: i18n.t('general.cancel')
-        })
-      } catch (e) {
-        freezeBusy.value = false
-
-        return
-      }
-
-      try {
-        freezeKey = freezeKey || newIdempotencyKey()
-
-        const { error } = await store.dispatch('economy/buyStreakFreeze', freezeKey)
-
-        if (isDefinitiveResponse(error)) freezeKey = null
-
-        const code = error && error.details && error.details.code
-        const key = `economy.errors.${code}`
-
-        if (error) toast(i18n.te(key) ? i18n.t(key) : i18n.t('economy.errors.generic'), false)
-        else toast(i18n.t('economy.shop.freeze.bought'), true)
-      } finally {
-        freezeBusy.value = false
-      }
-    }
-
     const claim = q => run('economy/claimQuest', q.key, d => i18n.t('economy.quests.claimed', { amount: d.reward }))
     const reroll = q => run('economy/rerollQuest', q.key, () => i18n.t('economy.quests.rerolled'))
     const claimChest = () => run('economy/claimChest', undefined, d => i18n.t('economy.quests.chestClaimed', { amount: d.reward }))
@@ -174,8 +147,8 @@ export default defineComponent({
       MAX_FREEZES,
       FREEZE_PRICE,
       freezes,
-      freezeBusy,
-      buyFreeze,
+      isFreezeOpen,
+      freezeTarget,
       achievementsFailed,
       loggedIn,
       openLogin,

@@ -11,12 +11,13 @@ Dialog.dialog.purchase-dialog(
     .purchase-dialog__preview(v-if="target.item")
       CosmeticCard(preview-only :variants="[target.item]" :viewer="viewer")
     .purchase-dialog__set-icon(v-else)
-      AppIcon(name="tabler:packages" :width="40" :height="40")
+      AppIcon(:name="isFreeze ? 'emojione:snowflake' : 'tabler:packages'" :width="40" :height="40")
 
     .purchase-dialog__head
       b.purchase-dialog__name {{ title }}
       Tag.cosmetic-card__rarity(v-if="target.item" round :class="`cosmetic-card__rarity--${target.item.rarity}`")
         | {{ $t(`economy.shop.rarity.${target.item.rarity}`) }}
+      p.purchase-dialog__set(v-else-if="isFreeze") {{ $t('economy.shop.freeze.note', { max: target.max }) }}
       p.purchase-dialog__set(v-else) {{ $t('economy.shop.setContent', { count: target.count }) }}
 
     .purchase-dialog__rows
@@ -55,7 +56,7 @@ Dialog.dialog.purchase-dialog(
           template(v-else)
             span {{ $t('economy.shop.confirm') }}
             GoldAmount(size="sm" :amount="target.price")
-        button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="isPreviewOpen = true")
+        button.shop-buy.shop-buy--neutral.shop-buy--block(v-if="!isFreeze" type="button" :disabled="busy" @click="isPreviewOpen = true")
           AppIcon(name="tabler:eye" :width="16" :height="16")
           span {{ $t('economy.collection.previewOpen') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
@@ -72,7 +73,7 @@ export default defineComponent({
   components: { Dialog: Dialog.Component, Tag, Loading },
   props: {
     isOpen: { type: Boolean, default: false },
-    // { item, price, original, fromVitrin } or { series, name, count, price, items }
+    // { item, price, original, fromVitrin }, { series, name, count, price, items } or { type: 'freeze', name, price, max }
     target: { type: Object, default: null }
   },
   setup(props, { emit }) {
@@ -92,6 +93,7 @@ export default defineComponent({
     const missing = computed(() => (props.target ? Math.max(0, props.target.price - balance.value) : 0))
     const isShort = computed(() => phase.value === 'insufficient' || (phase.value === 'confirm' && missing.value > 0))
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
+    const isFreeze = computed(() => Boolean(props.target && props.target.type === 'freeze'))
     const title = computed(() => (props.target && props.target.item ? props.target.item.name : props.target && props.target.name))
 
     watch(
@@ -139,7 +141,9 @@ export default defineComponent({
 
         attemptKey = attemptKey || newIdempotencyKey()
 
-        const { error } = target.item
+        const { error } = isFreeze.value
+          ? await store.dispatch('economy/buyStreakFreeze', attemptKey)
+          : target.item
           ? await store.dispatch('economy/purchase', {
               itemKey: target.item.key,
               fromVitrin: Boolean(target.fromVitrin),
@@ -154,7 +158,8 @@ export default defineComponent({
 
         phase.value = 'success'
         play('success')
-        await store.dispatch('economy/fetchInventory')
+
+        if (!isFreeze.value) await store.dispatch('economy/fetchInventory')
         emit('purchased')
       } finally {
         busy.value = false
@@ -197,6 +202,7 @@ export default defineComponent({
       missing,
       isShort,
       viewer,
+      isFreeze,
       title,
       confirm,
       equip

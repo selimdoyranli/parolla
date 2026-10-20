@@ -79,10 +79,11 @@ export default {
       goal: {
         'alfabe-ustasi': 'Finish the daily mode {n} times',
         kusursuz: 'Finish the daily mode {n} times with no wrong or passed answers',
-        'kelime-avcisi': 'Solve {n} word blocks',
-        'tek-atis': 'Solve {n} word blocks in 2 tries',
+        'kelime-avcisi': 'Solve {n} Wordblocks',
+        'keskin-goz': 'Solve {n} Wordblocks in 2 tries or fewer',
+        'tek-atis': 'Solve {n} Wordblocks on the first try',
         turcu: 'Earn {n} tour points in total',
-        mimar: '{n} different players play your rooms',
+        mimar: '{n} different players play your quizzes',
         'quiz-yaraticisi': 'Create {n} public quizzes',
         sadik: 'Reach a {n}-day login streak',
         koleksiyoncu: 'Own {n} cosmetics',
@@ -168,9 +169,8 @@ export default {
       freeze: {
         title: 'Daily streak freeze',
         desc: 'Keeps your streak if you miss a day.',
-        confirm: 'Daily streak freeze costs {price} gold. Buy it?',
-        full: 'Full',
-        bought: 'Daily streak freeze purchased'
+        note: 'If you miss a day, your daily login streak is kept. You can hold up to {max}.',
+        full: 'Full'
       }
     }
   },
