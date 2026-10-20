@@ -83,7 +83,7 @@ export default defineComponent({
 
       const path = route.value.path || ''
 
-      if (/\/(reviews|degerlendirmeler)\/?$/.test(path)) return 'reviews'
+      if (/\/(comments|yorumlar|reviews|degerlendirmeler)\/?$/.test(path)) return 'reviews'
 
       if (/\/(achievements|basarimlar)\/?$/.test(path)) return 'achievements'
 

@@ -90,7 +90,14 @@ module.exports = {
    */
   router: {
     trailingSlash: false,
-    middleware: ['redirect']
+    middleware: ['redirect'],
+    // the profile "Değerlendirmeler" tab became "Yorumlar": keep old links working (prod also 301s in .cloudflare)
+    extendRoutes(routes) {
+      routes.push(
+        { path: '/profil/:username/degerlendirmeler', redirect: to => `/profil/${to.params.username}/yorumlar` },
+        { path: '/en/profile/:username/reviews', redirect: to => `/en/profile/${to.params.username}/comments` }
+      )
+    }
   },
 
   /*
@@ -342,8 +349,8 @@ module.exports = {
             en: '/profile/:username/quizzes'
           },
           'Profile/_username/Reviews/index': {
-            tr: '/profil/:username/degerlendirmeler',
-            en: '/profile/:username/reviews'
+            tr: '/profil/:username/yorumlar',
+            en: '/profile/:username/comments'
           },
           'Profile/_username/Scores/index': {
             tr: '/profil/:username/skorlar',
