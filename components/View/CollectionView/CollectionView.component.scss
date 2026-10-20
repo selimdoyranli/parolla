@@ -16,35 +16,6 @@
     padding: 32px 0;
   }
 
-  &__preview {
-    max-width: 480px;
-    margin-bottom: 8px;
-    padding: 12px;
-    background: var(--color-ui-02);
-    border: 1px solid var(--color-border-01);
-    border-radius: 12px;
-
-    .collection-view__heading {
-      margin-top: 0;
-    }
-  }
-
-  &__profile {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--color-border-01);
-    border-radius: 12px;
-  }
-
-  &__save {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 12px;
-    font-size: 0.85rem;
-  }
-
   &__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));

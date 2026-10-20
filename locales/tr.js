@@ -64,6 +64,7 @@ export default {
       'nothing-to-buy': 'Bu sette alınacak ürün kalmadı',
       'not-completed': 'Görev henüz tamamlanmadı',
       'key-reused': 'Bu istek zaten kullanıldı, tekrar dene',
+      'loadout-too-fast': 'Çok hızlı değiştiriyorsun, biraz bekle',
       'bad-key': 'Geçersiz istek',
       'not-assigned': 'Bu görev sana atanmamış',
       'no-replacement': 'Bu görev için yenisi bulunamadı',
@@ -94,9 +95,8 @@ export default {
       equip: 'Kuşan',
       unequip: 'Çıkar',
       equipped: 'Kuşanıldı',
-      save: 'Kaydet',
-      saved: 'Kuşanımın kaydedildi',
-      unsaved: 'Kaydedilmemiş değişiklikler var',
+      unequipped: 'Çıkarıldı',
+      previewOpen: 'Önizle',
       empty: 'Henüz hiç ürünün yok.',
       goShop: 'Mağazaya git',
       loginPrompt: 'Envanterini görmek için giriş yap.',
@@ -124,7 +124,7 @@ export default {
         purchase: 'Satın alma',
         set_purchase: 'Set satın alma',
         reroll: 'Görev yenileme',
-        streak_freeze: 'Seri dondurucu',
+        streak_freeze: 'Günlük seri dondurucu',
         season: 'Sezon ödülü',
         admin: 'Yönetici işlemi'
       }
@@ -160,11 +160,11 @@ export default {
         sets: 'Setler'
       },
       freeze: {
-        title: 'Seri dondurucu',
+        title: 'Günlük seri dondurucu',
         desc: 'Bir gün kaçırırsan serin bozulmaz.',
-        confirm: 'Seri dondurucu {price} altın. Alınsın mı?',
+        confirm: 'Günlük seri dondurucu {price} altın. Alınsın mı?',
         full: 'Dolu',
-        bought: 'Seri dondurucu alındı'
+        bought: 'Günlük seri dondurucu alındı'
       }
     }
   },

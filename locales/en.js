@@ -64,6 +64,7 @@ export default {
       'nothing-to-buy': 'Nothing left to buy in this set',
       'not-completed': 'This quest is not completed yet',
       'key-reused': 'This request was already used, try again',
+      'loadout-too-fast': 'You are changing too fast, wait a moment',
       'bad-key': 'Invalid request',
       'not-assigned': 'This quest is not assigned to you',
       'no-replacement': 'No replacement quest available',
@@ -94,9 +95,8 @@ export default {
       equip: 'Equip',
       unequip: 'Remove',
       equipped: 'Equipped',
-      save: 'Save',
-      saved: 'Your loadout was saved',
-      unsaved: 'You have unsaved changes',
+      unequipped: 'Removed',
+      previewOpen: 'Preview',
       empty: "You don't own any items yet.",
       goShop: 'Go to the shop',
       loginPrompt: 'Log in to see your inventory.',
@@ -124,7 +124,7 @@ export default {
         purchase: 'Purchase',
         set_purchase: 'Set purchase',
         reroll: 'Quest reroll',
-        streak_freeze: 'Streak freeze',
+        streak_freeze: 'Daily streak freeze',
         season: 'Season reward',
         admin: 'Admin adjustment'
       }
@@ -160,11 +160,11 @@ export default {
         sets: 'Sets'
       },
       freeze: {
-        title: 'Streak freeze',
+        title: 'Daily streak freeze',
         desc: 'Keeps your streak if you miss a day.',
-        confirm: 'Streak freeze costs {price} gold. Buy it?',
+        confirm: 'Daily streak freeze costs {price} gold. Buy it?',
         full: 'Full',
-        bought: 'Streak freeze purchased'
+        bought: 'Daily streak freeze purchased'
       }
     }
   },

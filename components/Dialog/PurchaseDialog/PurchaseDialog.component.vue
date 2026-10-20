@@ -55,7 +55,12 @@ Dialog.dialog.purchase-dialog(
           template(v-else)
             span {{ $t('economy.shop.confirm') }}
             GoldAmount(size="sm" :amount="target.price")
+        button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="isPreviewOpen = true")
+          AppIcon(name="tabler:eye" :width="16" :height="16")
+          span {{ $t('economy.collection.previewOpen') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
+
+  LazyPreviewDialog(v-if="viewer" :isOpen="isPreviewOpen" :patch="previewPatch" @closed="isPreviewOpen = false")
 </template>
 
 <script>
@@ -67,7 +72,7 @@ export default defineComponent({
   components: { Dialog: Dialog.Component, Tag, Loading },
   props: {
     isOpen: { type: Boolean, default: false },
-    // { item, price, original, fromVitrin } or { series, name, count, price }
+    // { item, price, original, fromVitrin } or { series, name, count, price, items }
     target: { type: Object, default: null }
   },
   setup(props, { emit }) {
@@ -80,6 +85,7 @@ export default defineComponent({
     const phase = ref('confirm') // confirm | insufficient | error | success
     const errorText = ref('')
     const equipError = ref(false)
+    const isPreviewOpen = ref(false)
     let attemptKey = null // reused across retries of an ambiguous failure, reset after a definitive response
 
     const balance = computed(() => store.state.economy.wallet.gold)
@@ -155,7 +161,15 @@ export default defineComponent({
       }
     }
 
-    const { equip: equipItem } = useEquip()
+    const { equip: equipItem, slotOf } = useEquip()
+
+    // the item (or every item of the set) put on its slot over the current loadout
+    const previewPatch = computed(() => {
+      const t = props.target
+      const items = t ? (t.item ? [t.item] : t.items || []) : []
+
+      return Object.fromEntries(items.map(i => [slotOf(i), i.key]))
+    })
 
     const equip = async () => {
       if (busy.value) return
@@ -171,7 +185,22 @@ export default defineComponent({
       }
     }
 
-    return { state, busy, phase, errorText, equipError, balance, missing, isShort, viewer, title, confirm, equip }
+    return {
+      state,
+      busy,
+      phase,
+      errorText,
+      equipError,
+      isPreviewOpen,
+      previewPatch,
+      balance,
+      missing,
+      isShort,
+      viewer,
+      title,
+      confirm,
+      equip
+    }
   }
 })
 </script>

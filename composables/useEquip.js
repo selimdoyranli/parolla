@@ -10,7 +10,13 @@ const SLOT = {
   profile_effect: 'profileEffect'
 }
 
-// Equips one owned cosmetic. PUT /loadout replaces the whole loadout, so the current one is
+// G4-1: one change at a time, then a short cooldown (the server also rate-limits loadout changes).
+// Module-level so the shop and the inventory share one gate.
+const COOLDOWN_MS = 700
+let busy = false
+let lastOk = 0
+
+// Equips/unequips one owned cosmetic. PUT /loadout replaces the whole loadout, so the current one is
 // refetched first and the item's slot merged in; saveLoadout also updates the auth user (header avatar).
 export default () => {
   const store = useStore()
@@ -25,25 +31,47 @@ export default () => {
       duration: 2500
     })
 
-  // resolves true on success; on failure toasts unless the caller shows its own message
-  const equip = async (item, { toastError = true } = {}) => {
-    const inv = await store.dispatch('economy/fetchInventory')
-    // never PUT without the real current loadout: it replaces the whole thing
-    const { error } = inv.error
-      ? inv
-      : await store.dispatch('economy/saveLoadout', { ...(store.state.economy.inventory.loadout || {}), [SLOT[item.category]]: item.key })
+  const errorText = error => {
+    const key = `economy.errors.${error.details && error.details.code}`
 
-    if (error) {
-      if (toastError) notify(i18n.t('economy.errors.generic'), false)
+    return i18n.te(key) ? i18n.t(key) : i18n.t('economy.errors.generic')
+  }
+
+  // key null unequips; resolves true on success; on failure toasts unless the caller shows its own message
+  const setSlot = async (item, key, { toastError = true } = {}) => {
+    if (busy || Date.now() - lastOk < COOLDOWN_MS) {
+      if (toastError) notify(i18n.t('economy.errors.loadout-too-fast'), false)
 
       return false
     }
 
-    play('confirm')
-    notify(i18n.t('economy.shop.equipped'), true)
+    busy = true
 
-    return true
+    try {
+      const inv = await store.dispatch('economy/fetchInventory')
+      // never PUT without the real current loadout: it replaces the whole thing
+      const { error } = inv.error
+        ? inv
+        : await store.dispatch('economy/saveLoadout', { ...(store.state.economy.inventory.loadout || {}), [SLOT[item.category]]: key })
+
+      if (error) {
+        if (toastError) notify(errorText(error), false)
+
+        return false
+      }
+
+      lastOk = Date.now()
+      play('confirm')
+      notify(i18n.t(key ? 'economy.shop.equipped' : 'economy.collection.unequipped'), true)
+
+      return true
+    } finally {
+      busy = false
+    }
   }
 
-  return { equip }
+  const equip = (item, options) => setSlot(item, item.key, options)
+  const unequip = (item, options) => setSlot(item, null, options)
+
+  return { equip, unequip, slotOf: item => SLOT[item.category] }
 }

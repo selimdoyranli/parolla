@@ -5,13 +5,6 @@
     Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
 
   template(v-else)
-    .collection-view__preview
-      h2.collection-view__heading {{ $t('economy.collection.preview') }}
-      ProfileView.collection-view__profile(preview :player="previewUser")
-      .collection-view__save
-        span(v-if="dirty") {{ $t('economy.collection.unsaved') }}
-        Button(color="var(--color-brand-02)" round :loading="saving" :disabled="!loaded || !dirty" @click="save") {{ $t('economy.collection.save') }}
-
     .collection-view__error(v-if="failed")
       p {{ $t('economy.errors.generic') }}
       Button(round :loading="retrying" @click="load") {{ $t('economy.retry') }}
@@ -27,14 +20,19 @@
         .collection-view__tile(v-for="item in g.items" :key="item.key")
           CosmeticCard(preview-only :variants="[item]" :viewer="viewer")
           b.collection-view__name {{ item.name }}
-          Button(:color="isOn(item) ? undefined : 'var(--color-brand-02)'" size="small" round @click="toggle(item)")
+          Button(
+            :color="isOn(item) ? undefined : 'var(--color-brand-02)'"
+            size="small"
+            round
+            :loading="item.key === togglingKey"
+            @click="toggle(item)"
+          )
             | {{ $t(isOn(item) ? 'economy.collection.unequip' : 'economy.collection.equip') }}
 </template>
 
 <script>
 import { defineComponent, computed, ref, onMounted, watch, useContext, useStore } from '@nuxtjs/composition-api'
-import { Button, Notify } from 'vant'
-import { mergeServerSlots } from '@/helpers/loadoutMerge'
+import { Button } from 'vant'
 
 // catalog category -> loadout slot, in display order
 const SLOTS = {
@@ -46,27 +44,23 @@ const SLOTS = {
   profile_effect: 'profileEffect'
 }
 
-const clean = loadout => Object.fromEntries(Object.entries(loadout || {}).filter(([, v]) => v))
-const sorted = loadout => JSON.stringify(Object.entries(clean(loadout)).sort())
-
 export default defineComponent({
   components: { Button },
   setup() {
     const store = useStore()
-    const { i18n, $auth } = useContext()
+    const { $auth } = useContext()
+    const { equip, unequip } = useEquip()
 
     const loggedIn = computed(() => $auth.loggedIn)
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
     const loaded = ref(false)
-    const saving = ref(false)
     const failed = ref(false)
     const retrying = ref(false)
-    const draft = ref({})
+    const togglingKey = ref(null)
 
     const catalogMap = computed(() => store.getters['economy/catalogMap'])
     const inventory = computed(() => store.state.economy.inventory)
-    const dirty = computed(() => sorted(draft.value) !== sorted(inventory.value && inventory.value.loadout))
-    const previewUser = computed(() => ({ ...(viewer.value || {}), loadout: draft.value }))
+    const loadout = computed(() => (inventory.value && inventory.value.loadout) || {})
 
     const groups = computed(() => {
       const items = ((inventory.value && inventory.value.owned) || []).map(o => catalogMap.value[o.itemKey]).filter(Boolean)
@@ -76,16 +70,18 @@ export default defineComponent({
         .filter(g => g.items.length)
     })
 
-    const isOn = item => draft.value[SLOTS[item.category]] === item.key
-    // the tab stays mounted: merge server loadout changes into the draft so Kaydet does not revert a shop equip
-    watch(
-      () => inventory.value && inventory.value.loadout,
-      (next, prev) => {
-        if (loaded.value) draft.value = mergeServerSlots(draft.value, prev, next, Object.values(SLOTS))
-      }
-    )
+    const isOn = item => loadout.value[SLOTS[item.category]] === item.key
 
-    const toggle = item => (draft.value = { ...draft.value, [SLOTS[item.category]]: isOn(item) ? null : item.key })
+    // applies at once; useEquip blocks overlapping and too-fast changes
+    const toggle = async item => {
+      togglingKey.value = item.key
+
+      try {
+        await (isOn(item) ? unequip(item) : equip(item))
+      } finally {
+        togglingKey.value = null
+      }
+    }
 
     const load = async () => {
       if (!loggedIn.value) return
@@ -97,43 +93,9 @@ export default defineComponent({
         const [{ error }] = await Promise.all([store.dispatch('economy/fetchInventory'), store.dispatch('economy/fetchCatalog')])
 
         failed.value = Boolean(error)
-
-        if (error) return
-
-        // server resolveLoadout already drops dead keys
-        draft.value = clean(store.state.economy.inventory && store.state.economy.inventory.loadout)
-        loaded.value = true
+        loaded.value = !error
       } finally {
         retrying.value = false
-      }
-    }
-
-    const toast = (message, ok) =>
-      Notify({
-        message,
-        color: 'var(--color-text-04)',
-        background: ok ? 'var(--color-success-01)' : 'var(--color-danger-01)',
-        duration: 3000
-      })
-
-    const save = async () => {
-      if (saving.value) return
-
-      saving.value = true
-
-      try {
-        // PUT replaces the whole loadout, so the full draft goes out
-        const { error } = await store.dispatch('economy/saveLoadout', clean(draft.value))
-
-        if (error) {
-          const key = `economy.errors.${error.details && error.details.code}`
-
-          return toast(i18n.te(key) ? i18n.t(key) : i18n.t('economy.errors.generic'), false)
-        }
-
-        toast(i18n.t('economy.collection.saved'), true)
-      } finally {
-        saving.value = false
       }
     }
 
@@ -142,22 +104,7 @@ export default defineComponent({
     watch(loggedIn, load)
     onMounted(load)
 
-    return {
-      loggedIn,
-      viewer,
-      loaded,
-      failed,
-      retrying,
-      load,
-      saving,
-      dirty,
-      previewUser,
-      groups,
-      isOn,
-      toggle,
-      save,
-      openLogin
-    }
+    return { loggedIn, viewer, loaded, failed, retrying, load, groups, isOn, toggle, togglingKey, openLogin }
   }
 })
 </script>

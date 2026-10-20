@@ -217,7 +217,13 @@ export default defineComponent({
     const openSet = s => {
       if (requireLogin()) return
 
-      dialog.target = { series: s.series, name: s.name, count: setPrices.value[s.series].count, price: setPrices.value[s.series].price }
+      dialog.target = {
+        series: s.series,
+        name: s.name,
+        count: setPrices.value[s.series].count,
+        price: setPrices.value[s.series].price,
+        items: s.entries.map(e => e[0])
+      }
       dialog.isOpen = true
     }
 

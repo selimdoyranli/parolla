@@ -13,6 +13,9 @@ Dialog.dialog.inventory-dialog(
       span.inventory-dialog__title {{ $t('economy.inventory.title') }}
       button.inventory-dialog__balance(v-if="loggedIn" type="button" @click="openHistory")
         GoldAmount(size="sm" :amount="gold")
+      button.inventory-dialog__preview(v-if="loggedIn" type="button" @click="isPreviewOpen = true")
+        PlayerAvatar(:user="$auth.user" :size="22")
+        span {{ $t('economy.collection.previewOpen') }}
 
   .inventory-dialog__content
     nav.inventory-dialog__tabs
@@ -28,14 +31,16 @@ Dialog.dialog.inventory-dialog(
 
     .inventory-dialog__body
       template(v-if="state.alive")
-        // a tab mounts on first visit and then stays, so an unsaved loadout draft survives a tab switch
+        // a tab mounts on first visit and then stays, so its loaded state survives a tab switch
         CollectionView(v-if="seen.inventory" v-show="tab === 'inventory'")
         ShopView(v-if="seen.shop" v-show="tab === 'shop'")
         QuestsView(v-if="seen.quests" v-show="tab === 'quests'")
+
+  LazyPreviewDialog(v-if="loggedIn" :isOpen="isPreviewOpen" @closed="isPreviewOpen = false")
 </template>
 
 <script>
-import { defineComponent, computed, reactive, watch, useContext, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, reactive, ref, watch, useContext, useRouter, useStore } from '@nuxtjs/composition-api'
 import { Dialog } from 'vant'
 
 const TABS = [
@@ -56,6 +61,7 @@ export default defineComponent({
 
     const state = reactive({ isOpen: props.isOpen, alive: props.isOpen })
     const seen = reactive({ inventory: false, shop: false, quests: false })
+    const isPreviewOpen = ref(false)
     const loggedIn = computed(() => $auth.loggedIn)
     const gold = computed(() => store.state.economy.wallet.gold)
     const tab = computed({
@@ -91,7 +97,7 @@ export default defineComponent({
       router.push(localePath({ name: 'GoldHistory' }))
     }
 
-    return { TABS, state, seen, loggedIn, gold, tab, close, handleClosed, openHistory }
+    return { TABS, state, seen, isPreviewOpen, loggedIn, gold, tab, close, handleClosed, openHistory }
   }
 })
 </script>

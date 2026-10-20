@@ -22,7 +22,8 @@
 /* === Cells, Tabs, Dropdown items === */
 .van-cell.van-cell--clickable,
 .van-cell[is-link] { sound-on-click: tick; }
-.van-tab { sound-on-click: tick; }
+.van-tab,
+.inventory-dialog__tab { sound-on-click: tick; }
 .van-dropdown-item { sound-on-click: tick; }
 
 /* === Switch — baseline; direction handled imperatively === */
