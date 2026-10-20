@@ -9,8 +9,9 @@ Dialog.dialog.inventory-dialog(
 )
   template(#title)
     .inventory-dialog__header
-      AppIcon.inventory-dialog__icon(name="tabler:backpack" :width="22" :height="22")
-      span.inventory-dialog__title {{ $t('economy.inventory.title') }}
+      // the header follows the active tab (Envanter / Mağaza / Görevler)
+      AppIcon.inventory-dialog__icon(:name="activeTab.icon" :width="22" :height="22")
+      span.inventory-dialog__title {{ $t(`economy.inventory.tabs.${activeTab.key}`) }}
       button.inventory-dialog__balance(v-if="loggedIn" type="button" @click="openHistory")
         GoldAmount(size="sm" :amount="gold")
       button.inventory-dialog__preview(v-if="loggedIn" type="button" @click="isPreviewOpen = true")
@@ -97,7 +98,9 @@ export default defineComponent({
       router.push(localePath({ name: 'GoldHistory' }))
     }
 
-    return { TABS, state, seen, isPreviewOpen, loggedIn, gold, tab, close, handleClosed, openHistory }
+    const activeTab = computed(() => TABS.find(t => t.key === tab.value) || TABS[0])
+
+    return { TABS, state, seen, isPreviewOpen, loggedIn, gold, tab, activeTab, close, handleClosed, openHistory }
   }
 })
 </script>

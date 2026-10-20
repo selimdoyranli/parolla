@@ -230,7 +230,11 @@ export default defineComponent({
           id: props.player.id,
           username: props.player.username,
           bio: props.player.bio || '',
-          diceBear: props.player.diceBear
+          diceBear: props.player.diceBear,
+          avatarSource: props.player.avatarSource,
+          profilePhoto: props.player.profilePhoto && {
+            url: typeof props.player.profilePhoto === 'string' ? props.player.profilePhoto : props.player.profilePhoto.url
+          }
         }
       })
     })

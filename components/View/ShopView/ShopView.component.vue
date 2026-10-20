@@ -15,7 +15,6 @@
           :equipped-keys="equippedSet"
           :balance="balance"
           :viewer="viewer"
-          :logged-in="loggedIn"
           @buy="openItem"
           @equip="equipItem"
         )
@@ -44,7 +43,6 @@
       :equipped-keys="equippedSet"
       :balance="balance"
       :viewer="viewer"
-      :logged-in="loggedIn"
       @buy="openItem"
       @equip="equipItem"
     )
@@ -58,8 +56,8 @@
           span.shop-view__set-name {{ s.name }}
           span.shop-view__set-count {{ s.owned }}/{{ s.total }}
         button.shop-buy(v-if="setPrices[s.series]" type="button" @click="openSet(s)")
-          span {{ $t(loggedIn ? 'economy.shop.buySet' : 'economy.shop.login') }}
-          GoldAmount(v-if="loggedIn" size="sm" :amount="setPrices[s.series].price")
+          span {{ $t('economy.shop.buySet') }}
+          GoldAmount(size="sm" :amount="setPrices[s.series].price")
         button.shop-buy.shop-buy--owned(v-else type="button" disabled)
           AppIcon(name="tabler:check" :width="14" :height="14")
           span {{ $t('economy.shop.owned') }}
@@ -74,7 +72,6 @@
           :equipped-keys="equippedSet"
           :balance="balance"
           :viewer="viewer"
-          :logged-in="loggedIn"
           @buy="openItem"
           @equip="equipItem"
         )

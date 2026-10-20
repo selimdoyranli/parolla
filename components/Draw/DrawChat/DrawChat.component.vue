@@ -253,6 +253,8 @@ export default defineComponent({
         reportedMessage: {
           playerId: m.playerId,
           playerName: m.playerName,
+          // avatar fields so the report dialog shows the real photo, not a generated avatar
+          ...(({ diceBear, avatarSource, profilePhoto }) => ({ diceBear, avatarSource, profilePhoto }))(buildAvatarUser(m)),
           message: m.message,
           timestamp: m.timestamp
         },

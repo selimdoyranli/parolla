@@ -34,9 +34,8 @@
       Loading(v-if="equipping" color="currentColor" size="14")
       span(v-else) {{ $t('economy.shop.equip') }}
     button.shop-buy.shop-buy--block(v-else type="button" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })")
-      span(v-if="!loggedIn") {{ $t('economy.shop.login') }}
-      template(v-else)
-        GoldAmount(size="sm" :amount="price")
+      // guests see the price too; tapping it opens the auth dialog (ShopView.requireLogin)
+      GoldAmount(size="sm" :amount="price")
 </template>
 
 <script>
@@ -62,7 +61,6 @@ export default defineComponent({
     balance: { type: Number, default: 0 },
     // viewer's own user (logged in) or null; sample avatar/name come from it
     viewer: { type: Object, default: null },
-    loggedIn: { type: Boolean, default: false },
     // vitrin: discounted price replaces the catalog price of the base item
     vitrinPrice: { type: Number, default: null },
     // fixed-height rows (shop grid)

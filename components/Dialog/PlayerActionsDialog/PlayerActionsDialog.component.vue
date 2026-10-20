@@ -72,7 +72,11 @@ export default defineComponent({
         reportedUser: {
           id: player.value.id,
           username: player.value.username,
-          diceBear: player.value.diceBear
+          diceBear: player.value.diceBear,
+          avatarSource: player.value.avatarSource,
+          profilePhoto: player.value.profilePhoto && {
+            url: typeof player.value.profilePhoto === 'string' ? player.value.profilePhoto : player.value.profilePhoto.url
+          }
         }
       })
     })

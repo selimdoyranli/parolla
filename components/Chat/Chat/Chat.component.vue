@@ -269,6 +269,10 @@ export default defineComponent({
           playerId: message.playerId,
           playerName: message.playerName,
           diceBear: message.diceBear,
+          avatarSource: message.avatarSource,
+          profilePhoto: message.profilePhoto && {
+            url: typeof message.profilePhoto === 'string' ? message.profilePhoto : message.profilePhoto.url
+          },
           message: message.message,
           timestamp: message.timestamp
         },
