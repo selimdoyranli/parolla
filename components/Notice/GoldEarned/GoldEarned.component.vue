@@ -1,8 +1,9 @@
 <template lang="pug">
-.gold-earned(v-if="pending || earned || capped || completed.length || guestGold")
+.gold-earned(v-if="pending || incomplete || earned || capped || completed.length || guestGold")
   .gold-earned__placeholder(v-if="pending")
   template(v-else-if="$auth.loggedIn")
-    p.gold-earned__amount(v-if="earned")
+    p.gold-earned__note(v-if="incomplete") {{ $t('economy.earned.incomplete') }}
+    p.gold-earned__amount(v-else-if="earned")
       GoldAmount(size="lg" signed :amount="earned")
     p.gold-earned__note(v-if="capped") {{ $t('economy.earned.capped') }}
     .gold-earned__quest(v-for="title in completed" :key="title")
@@ -36,6 +37,7 @@ export default defineComponent({
     const pending = computed(() => store.state.economy.pendingMode === props.mode)
     const earned = computed(() => (last.value ? last.value.earned : 0))
     const capped = computed(() => !!(last.value && last.value.capped))
+    const incomplete = computed(() => !!(last.value && last.value.incomplete))
     const guestGold = computed(() => {
       const g = store.state.economy.guestPreview
 
@@ -59,7 +61,7 @@ export default defineComponent({
     const openQuests = () => store.commit('economy/OPEN_INVENTORY_DIALOG', 'quests')
     const openLogin = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
-    return { pending, earned, capped, guestGold, completed, openQuests, openLogin }
+    return { pending, incomplete, earned, capped, guestGold, completed, openQuests, openLogin }
   }
 })
 </script>

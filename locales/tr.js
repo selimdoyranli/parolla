@@ -30,6 +30,7 @@ export default {
   economy: {
     retry: 'Tekrar dene',
     earned: {
+      incomplete: 'Ödül için tüm harfleri tamamla ya da süreyi bitir.',
       capped: 'Günlük tavana ulaştın',
       questDone: 'Görev tamamlandı: {title}',
       viewQuests: 'Görevler',

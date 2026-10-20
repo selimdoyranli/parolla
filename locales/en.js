@@ -30,6 +30,7 @@ export default {
   economy: {
     retry: 'Retry',
     earned: {
+      incomplete: 'Finish every letter or let the timer run out to earn rewards.',
       capped: 'You hit the daily cap',
       questDone: 'Quest completed: {title}',
       viewQuests: 'Quests',
