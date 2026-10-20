@@ -61,6 +61,8 @@
     display: flex;
     flex-direction: column;
     height: 68vh;
+    // AdSense writes inline `height: auto !important` on an ad's ancestors; max-height still holds the dialog
+    max-height: 68vh;
   }
 
   &__tabs {
@@ -106,6 +108,7 @@
   &__body {
     flex: 1;
     min-height: 0;
+    max-height: 100%;
     padding: var(--base-p-y) var(--base-p-x);
     overflow-y: auto;
     overscroll-behavior: contain;
