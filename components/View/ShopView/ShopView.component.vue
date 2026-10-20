@@ -3,21 +3,27 @@
   // Vitrin
   section.shop-view__section(v-if="vitrinCards.length")
     h3.shop-view__heading {{ $t('economy.shop.vitrin') }}
-    .shop-view__strip
-      CosmeticCard.shop-view__strip-card(
-        v-for="c in vitrinCards"
-        :key="`v-${c.item.key}`"
-        :variants="[c.item]"
-        :equipping="c.item.key === equippingKey"
-        :vitrin-price="c.price"
-        :owned-keys="ownedSet"
-        :equipped-keys="equippedSet"
-        :balance="balance"
-        :viewer="viewer"
-        :logged-in="loggedIn"
-        @buy="openItem"
-        @equip="equipItem"
-      )
+    .shop-view__strip-wrap(:class="{ 'is-end': stripAtEnd }")
+      .shop-view__strip(ref="strip" @scroll.passive="measureStrip")
+        CosmeticCard.shop-view__strip-card(
+          v-for="c in vitrinCards"
+          :key="`v-${c.item.key}`"
+          :variants="[c.item]"
+          :equipping="c.item.key === equippingKey"
+          :vitrin-price="c.price"
+          :owned-keys="ownedSet"
+          :equipped-keys="equippedSet"
+          :balance="balance"
+          :viewer="viewer"
+          :logged-in="loggedIn"
+          @buy="openItem"
+          @equip="equipItem"
+        )
+
+  // phones: a title + category dropdown instead of the tab strip
+  .shop-view__mobile-head
+    h3.shop-view__heading {{ $t('economy.shop.products') }}
+    FilterDropdown(:options="tabOptions" :selected="selectedTabOption" @on-select-option="o => (tab = o.key)")
 
   Tabs.shop-view__tabs(v-model="tab" line-width="20px" line-height="2px" :ellipsis="false" :swipe-threshold="3" :swipeable="false")
     Tab(v-for="t in TABS" :key="t.key" :name="t.key")
@@ -83,7 +89,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, ref, watch, onMounted, useContext, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, reactive, ref, watch, onMounted, nextTick, useContext, useStore } from '@nuxtjs/composition-api'
 import { Tabs, Tab } from 'vant'
 
 const TABS = [
@@ -176,6 +182,19 @@ export default defineComponent({
 
     const toggleSeries = series => (openSeries.value = openSeries.value === series ? null : series)
 
+    const tabOptions = computed(() => TABS.map(t => ({ key: t.key, icon: t.icon, label: i18n.t(`economy.shop.categories.${t.key}`) })))
+    const selectedTabOption = computed(() => tabOptions.value.find(o => o.key === tab.value))
+
+    // hides the right-edge fade once the vitrin strip is scrolled to its end
+    const strip = ref(null)
+    const stripAtEnd = ref(false)
+    const measureStrip = () => {
+      const el = strip.value
+
+      // clientWidth 0 = tab hidden; keep the fade until it can be measured
+      if (el && el.clientWidth) stripAtEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2
+    }
+
     const vitrinCards = computed(() =>
       ((vitrin.value && vitrin.value.items) || []).map(v => ({ item: catalogMap.value[v.key], price: v.price })).filter(c => c.item)
     )
@@ -219,6 +238,9 @@ export default defineComponent({
 
     const loadOwned = () => (loggedIn.value ? store.dispatch('economy/fetchInventory') : null)
 
+    // a strip that fits without scrolling needs no fade
+    watch(vitrinCards, () => nextTick(measureStrip), { immediate: true })
+
     watch(loggedIn, value => {
       if (value) {
         loadOwned()
@@ -251,6 +273,11 @@ export default defineComponent({
       entries,
       seriesList,
       vitrinCards,
+      tabOptions,
+      selectedTabOption,
+      strip,
+      stripAtEnd,
+      measureStrip,
       toggleSeries,
       loadVitrin,
       openItem,

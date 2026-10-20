@@ -132,6 +132,7 @@ export default {
     shop: {
       title: 'Shop',
       vitrin: "Today's showcase",
+      products: 'Products',
       login: 'Log in',
       equippedLabel: 'Equipped',
       buySet: 'Buy set',
@@ -151,7 +152,7 @@ export default {
       categories: {
         all: 'All',
         avatar_frame: 'Avatar frame',
-        avatar_decoration: 'Decoration',
+        avatar_decoration: 'Avatar decoration',
         profile_effect: 'Profile effect',
         profile_frame: 'Profile frame',
         profile_cover: 'Profile cover',

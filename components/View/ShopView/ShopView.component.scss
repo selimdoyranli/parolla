@@ -17,12 +17,38 @@
     font-size: 15px;
   }
 
+  // right-edge fade hints that the vitrin strip scrolls sideways
+  &__strip-wrap {
+    position: relative;
+    min-width: 0;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 4px;
+      z-index: 1;
+      width: 40px;
+      background: linear-gradient(to right, transparent, var(--color-ui-02));
+      transition: opacity 0.2s;
+      content: '';
+      pointer-events: none;
+    }
+
+    &.is-end::after {
+      opacity: 0;
+    }
+  }
+
   // horizontal vitrin strip; scrolls inside itself so the dialog never overflows
   &__strip {
     display: flex;
     gap: 8px;
     padding-bottom: 4px;
     overflow-x: auto;
+    // overflow-x alone computes overflow-y to auto, so vant's dialog scroll lock treats the strip as the
+    // vertical scroller and blocks touch scrolling over it; hidden lets vertical swipes reach the dialog body
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
   }
@@ -32,12 +58,33 @@
     scroll-snap-align: start;
   }
 
+  // phones: title + category dropdown replaces the tab strip (sticky like the tabs)
+  &__mobile-head {
+    position: sticky;
+    top: calc(var(--base-p-y) * -1);
+    z-index: 2;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: calc(var(--base-p-x) * -1);
+    padding: 8px var(--base-p-x);
+    background: var(--color-ui-02);
+
+    @include media-breakpoint-down(mobile) {
+      display: flex;
+    }
+  }
+
   // category tabs stay visible while the grid scrolls inside the dialog body
   &__tabs {
     position: sticky;
     top: calc(var(--base-p-y) * -1);
     z-index: 2;
     margin-inline: calc(var(--base-p-x) * -1);
+
+    @include media-breakpoint-down(mobile) {
+      display: none;
+    }
 
     .van-tab {
       flex: none;

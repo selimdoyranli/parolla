@@ -132,6 +132,7 @@ export default {
     shop: {
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
+      products: 'Ürünler',
       login: 'Giriş yap',
       equippedLabel: 'Kuşanılı',
       buySet: 'Seti al',
@@ -151,7 +152,7 @@ export default {
       categories: {
         all: 'Tümü',
         avatar_frame: 'Avatar çerçevesi',
-        avatar_decoration: 'Dekorasyon',
+        avatar_decoration: 'Avatar dekorasyonu',
         profile_effect: 'Profil efekti',
         profile_frame: 'Profil çerçevesi',
         profile_cover: 'Profil arkaplanı',
