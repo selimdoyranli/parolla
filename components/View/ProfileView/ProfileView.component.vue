@@ -24,7 +24,7 @@
               AppIcon(name="ion:md-more" color="var(--color-text-04)" :width="20" :height="20")
           template(#body)
             nav.profile-view-actions__nav
-              .profile-view-actions__item(dropdown-closer @click="handleGoToProfile")
+              .profile-view-actions__item(v-if="!isOnOwnPage" dropdown-closer @click="handleGoToProfile")
                 AppIcon.profile-view-actions__item-icon(name="tabler:user-circle" :width="18" :height="18")
                 span.profile-view-actions__item-title {{ $t('profile.actions.goToProfile') }}
               .profile-view-actions__item(dropdown-closer @click="handleReport")
@@ -91,7 +91,17 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, onMounted, onBeforeUnmount, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  computed,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  useStore,
+  useContext,
+  useRouter,
+  useRoute
+} from '@nuxtjs/composition-api'
 import { Empty, Button, Loading, ImagePreview } from 'vant'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
@@ -138,8 +148,9 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-    const { localePath } = useContext()
+    const { localePath, getRouteBaseName } = useContext()
     const router = useRouter()
+    const route = useRoute()
     const isOpenReportDialog = ref(false)
     const isActionsOpen = ref(false)
     const isImagePreviewOpen = ref(false)
@@ -147,6 +158,10 @@ export default defineComponent({
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => props.player?.role?.name === 'GM')
+    // already on this player's profile page (a player dialog over it for someone else still offers the link)
+    const isOnOwnPage = computed(
+      () => (getRouteBaseName(route.value) || '').startsWith('Profile-username') && route.value.params.username === props.player?.username
+    )
 
     const { asset, nameStyle } = useCosmetics()
     const loadout = computed(() => (props.player && props.player.loadout) || {})
@@ -277,6 +292,7 @@ export default defineComponent({
       reportAdditional,
       isSelf,
       isGm,
+      isOnOwnPage,
       bannerStyle,
       coverSrc,
       root,

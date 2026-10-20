@@ -11,7 +11,8 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      z-index: 2;
+      // above the framed header/identity/stats (z-index 2): its dropdown hangs over them
+      z-index: 3;
     }
 
     &__more-btn {
