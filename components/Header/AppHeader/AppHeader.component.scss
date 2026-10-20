@@ -106,12 +106,12 @@
       &--shop {
         position: relative;
 
-        // same corner offsets as the bell's AppIcon label (top/right -6px, 16px tall)
         .app-header-nav__gold-badge {
           position: absolute;
+          top: -6px;
+          right: auto;
+          left: calc(100% - 12px);
           display: flex;
-          inset-block-start: -6px;
-          inset-inline-end: -6px;
           height: 16px;
           padding: 0 4px;
           color: var(--color-text-01);
