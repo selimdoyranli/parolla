@@ -1423,14 +1423,14 @@ export default {
   profile: {
     tabs: {
       quizzes: 'Quizzes',
-      reviews: 'Reviews',
+      reviews: 'Comments',
       scores: 'Scores',
       achievements: 'Achievements'
     },
     stats: {
       created: 'Created',
       played: 'Played',
-      reviews: 'Reviews'
+      reviews: 'Comments'
     },
     scoresSubTabs: {
       creator: 'Creator',
@@ -1451,7 +1451,8 @@ export default {
     },
     reviewsTab: {
       empty: 'No comments written yet.',
-      error: 'Could not load comments.'
+      error: 'Could not load comments.',
+      replied: 'Reply sent'
     },
     scoresTab: {
       tour: { title: 'Tour mode scores' },

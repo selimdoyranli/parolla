@@ -207,7 +207,9 @@ export default defineComponent({
     // guests only get the replies; the input needs an account
     const replyTargetOf = () => ({
       parent: props.comment.documentId,
-      username: props.comment.user?.username
+      username: props.comment.user?.username,
+      // lists that mix quizzes (profile comments tab) post the reply to this room
+      roomId: props.roomId
     })
 
     // replying needs an account (auth-control prompts guests to log in)

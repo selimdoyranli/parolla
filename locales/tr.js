@@ -1445,14 +1445,14 @@ export default {
   profile: {
     tabs: {
       quizzes: 'Quizler',
-      reviews: 'Değerlendirmeler',
+      reviews: 'Yorumlar',
       scores: 'Skorlar',
       achievements: 'Başarımlar'
     },
     stats: {
       created: 'Oluşturulan',
       played: 'Oynanan',
-      reviews: 'Değerlendirme'
+      reviews: 'Yorum'
     },
     scoresSubTabs: {
       creator: 'Yaratıcı',
@@ -1473,7 +1473,8 @@ export default {
     },
     reviewsTab: {
       empty: 'Henüz yorum yapmamış.',
-      error: 'Yorumlar yüklenemedi.'
+      error: 'Yorumlar yüklenemedi.',
+      replied: 'Yanıtın gönderildi'
     },
     scoresTab: {
       tour: { title: 'Tur modu skorları' },

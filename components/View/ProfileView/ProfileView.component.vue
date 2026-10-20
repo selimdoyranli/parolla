@@ -77,13 +77,13 @@
 
     .profile-view-stats
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.rooms) }}
+        strong.profile-view-stats__value {{ stat('rooms') }}
         span.profile-view-stats__label {{ $t('profile.stats.created') }}
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.scores) }}
+        strong.profile-view-stats__value {{ stat('scores') }}
         span.profile-view-stats__label {{ $t('profile.stats.played') }}
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
+        strong.profile-view-stats__value {{ stat('reviews') }}
         span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
 
     .profile-view-frame(v-if="frameStyle" aria-hidden="true" :style="frameStyle")
@@ -265,7 +265,11 @@ export default defineComponent({
       return String(value)
     }
 
+    // null while the stats are loading
+    const stat = key => (props.playerStats ? formatNumber(props.playerStats[key]) : '–')
+
     return {
+      stat,
       isOpenReportDialog,
       isActionsOpen,
       isImagePreviewOpen,
@@ -285,8 +289,7 @@ export default defineComponent({
       handleAvatarClick,
       goToEdit,
       handleGoToProfile,
-      handleReport,
-      formatNumber
+      handleReport
     }
   }
 })

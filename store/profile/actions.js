@@ -1,5 +1,8 @@
 export default {
   async fetchPlayerStats({ commit }, { userId, isSelf = false }) {
+    // null = loading, so the card never shows the previous profile's numbers
+    commit('SET_PLAYER_STATS', null)
+
     // Rooms count must mirror the rooms list visibility:
     //   - other viewers see public + visible + non-anon rooms only
     //     (backend also enforces isPublic + isAnon for non-owner queries,
