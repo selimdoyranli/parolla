@@ -37,6 +37,13 @@ Dialog.dialog.menu-dialog(
         @click.native="handleClickMyQuizzes"
       )
       Cell.menu-dialog-nav__item(
+        icon="clock-o"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.activities')"
+        @click.native="navigateAndClose('Activities-Likes')"
+      )
+      Cell.menu-dialog-nav__item(
         v-if="isGmUser($auth.user)"
         icon="shield-o"
         size="large"

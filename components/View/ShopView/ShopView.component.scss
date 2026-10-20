@@ -1,0 +1,167 @@
+.shop-view {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--color-text-01);
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &__heading {
+    margin: 0;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  // right-edge fade hints that the vitrin strip scrolls sideways
+  &__strip-wrap {
+    position: relative;
+    min-width: 0;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 4px;
+      z-index: 1;
+      width: 40px;
+      background: linear-gradient(to right, transparent, var(--color-ui-02));
+      transition: opacity 0.2s;
+      content: '';
+      pointer-events: none;
+    }
+
+    &.is-end::after {
+      opacity: 0;
+    }
+  }
+
+  // horizontal vitrin strip; scrolls inside itself so the dialog never overflows
+  &__strip {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 4px;
+    overflow-x: auto;
+    // overflow-x alone computes overflow-y to auto, so vant's dialog scroll lock treats the strip as the
+    // vertical scroller and blocks touch scrolling over it; hidden lets vertical swipes reach the dialog body
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+
+  &__strip-card {
+    flex: 0 0 160px;
+    scroll-snap-align: start;
+  }
+
+  // phones: title + category dropdown replaces the tab strip (sticky like the tabs)
+  &__mobile-head {
+    position: sticky;
+    top: calc(var(--base-p-y) * -1);
+    z-index: 2;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: calc(var(--base-p-x) * -1);
+    padding: 8px var(--base-p-x);
+    background: var(--color-ui-02);
+
+    @include media-breakpoint-down(mobile) {
+      display: flex;
+    }
+  }
+
+  // category tabs stay visible while the grid scrolls inside the dialog body
+  &__tabs {
+    position: sticky;
+    top: calc(var(--base-p-y) * -1);
+    z-index: 2;
+    margin-inline: calc(var(--base-p-x) * -1);
+
+    @include media-breakpoint-down(mobile) {
+      display: none;
+    }
+
+    .van-tab {
+      flex: none;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    .van-tab--active {
+      font-weight: 600;
+    }
+
+    .van-tabs__line {
+      background: var(--color-brand-02);
+    }
+  }
+
+  &__tab {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
+    gap: 8px;
+  }
+
+  &__sets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__set {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__set-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 6px 8px 6px 4px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 10px;
+  }
+
+  &__set-toggle {
+    display: flex;
+    flex: 1;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+    padding: 4px;
+    color: inherit;
+    text-align: start;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__set-name {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__set-count {
+    flex: none;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+}

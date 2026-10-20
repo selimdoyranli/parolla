@@ -1,0 +1,21 @@
+@import '~/components/View/ProfileView/ProfileTabBar.component.scss';
+
+.activities-page {
+  position: relative;
+  max-width: 640px;
+  min-height: 100vh;
+  margin: 0 auto;
+  color: var(--color-text-01);
+
+  &__title {
+    margin: 0;
+    padding: var(--base-p-y) var(--base-p-x) 4px;
+    font-size: 1.5rem;
+  }
+
+  .profile-tab-bar__tab {
+    flex: 1;
+    min-width: 0;
+    padding-inline: 8px;
+  }
+}

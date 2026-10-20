@@ -36,9 +36,7 @@
 
         // Ad
         template(v-if="showAds && (index + 1) % 4 === 0")
-          .room-list__ad(:key="`ad-${index}`")
-            small.room-list__ad-label {{ $t('general.ad') }}
-            AppAd(:data-ad-slot="6048083070")
+          InlineAd.room-list__ad(:key="`ad-${index}`")
 
   InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" @infinite="handleInfiniteLoading")
 </template>

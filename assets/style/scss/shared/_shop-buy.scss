@@ -1,0 +1,83 @@
+// Shop action button (cards, sets rows, streak freeze row, purchase dialog). Global so it never depends on a component stylesheet.
+:root {
+  --shop-buy-fg: #b8434a;
+  --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
+  --shop-buy-border: rgba(255, 120, 120, 0.55);
+  --shop-buy-solid-hover: #f26666;
+}
+
+.dark-mode {
+  --shop-buy-fg: #ffa3a3;
+  --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
+  --shop-buy-border: rgba(255, 120, 120, 0.5);
+}
+
+.shop-buy {
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 4px 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  background: var(--color-brand-02);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--shop-buy-solid-hover);
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  // secondary action (equip an owned item): outline only
+  &--ghost {
+    color: var(--shop-buy-fg);
+    background: transparent;
+    border-color: var(--shop-buy-border);
+
+    &:hover:not(:disabled) {
+      background: var(--shop-buy-bg-hover);
+    }
+  }
+
+  // dialog cancel / close
+  &--neutral {
+    color: var(--color-text-02);
+    background: var(--color-ui-03);
+
+    &:hover:not(:disabled) {
+      background: var(--color-active-01);
+    }
+  }
+
+  &--owned {
+    color: var(--color-text-03);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-ui-03);
+    cursor: default;
+  }
+
+  &:disabled:not(&--owned) {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // set row of a running free event: a label, not an action
+  &.shop-buy--free:disabled {
+    color: color-mix(in sRGB, var(--color-success-01) 65%, var(--color-text-01));
+    background: color-mix(in sRGB, var(--color-success-01) 15%, transparent);
+    cursor: default;
+    opacity: 1;
+  }
+}

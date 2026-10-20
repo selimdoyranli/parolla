@@ -1,0 +1,213 @@
+.cosmetic-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  overflow: hidden;
+  color: var(--color-text-01);
+  background: var(--color-ui-01);
+  border: 1px solid var(--color-border-02);
+  border-radius: 10px;
+  // own stacking context: avatar layers (z-index 1-2) must stay under the sticky shop tabs
+  isolation: isolate;
+
+  &__stage {
+    position: relative;
+    display: grid;
+    height: 112px;
+    overflow: hidden;
+    // neutral backdrop that reads on both light and dark card surfaces
+    background: rgba(128, 128, 128, 0.1);
+    border-radius: 8px;
+    place-items: center;
+  }
+
+  &__discount {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+    padding: 1px 6px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 11px;
+    background: var(--color-brand-02);
+    border-radius: 6px;
+  }
+
+  .player-avatar {
+    flex-direction: column;
+    gap: 6px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  &__cover {
+    width: 92%;
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px;
+    aspect-ratio: 3 / 1;
+  }
+
+  &__mini {
+    position: relative;
+    width: 58px;
+    height: 100px;
+    overflow: hidden;
+    background: #141a30;
+    border-radius: 8px;
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      inset: 0;
+    }
+  }
+
+  &__mini-dot {
+    position: absolute;
+    top: 12px;
+    left: 17px;
+    width: 24px;
+    height: 24px;
+    background: #f4a261;
+    border-radius: 50%;
+  }
+
+  &__name-sample {
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+  }
+
+  &__title {
+    display: -webkit-box;
+    width: 100%;
+    overflow: hidden;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // vant Tag with a rarity tint; doubled class beats .van-tag's own background
+  &__rarity.van-tag {
+    padding: 0 6px;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__free.van-tag {
+    padding: 0 6px;
+    color: color-mix(in sRGB, var(--color-success-01) 65%, var(--color-text-01));
+    font-weight: 700;
+    font-size: 10px;
+    background: color-mix(in sRGB, var(--color-success-01) 15%, transparent);
+  }
+
+  &__rarity--siradan.van-tag {
+    color: #6b7280;
+    background: rgba(107, 114, 128, 0.15);
+
+    .dark-mode & {
+      color: #a3a9b3;
+    }
+  }
+
+  &__rarity--nadir.van-tag {
+    color: #2563c9;
+    background: rgba(47, 128, 237, 0.14);
+
+    .dark-mode & {
+      color: #7fb2ff;
+    }
+  }
+
+  &__rarity--epik.van-tag {
+    color: #8341c7;
+    background: rgba(155, 81, 224, 0.15);
+
+    .dark-mode & {
+      color: #c79bff;
+    }
+  }
+
+  &__rarity--efsanevi.van-tag {
+    color: #a86a00;
+    background: rgba(230, 149, 0, 0.16);
+
+    .dark-mode & {
+      color: #f5b941;
+    }
+  }
+
+  &__rarity--sezon.van-tag {
+    color: #c94a4f;
+    background: rgba(255, 120, 120, 0.16);
+
+    .dark-mode & {
+      color: #ff9b9b;
+    }
+  }
+
+  &__dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    margin: 6px 0;
+  }
+
+  // shop grid only: fixed rows so a variant switch never changes the card height
+  &--reserve &__title {
+    min-height: 2.6em;
+  }
+
+  &--reserve &__tags {
+    min-height: 20px;
+  }
+
+  &--reserve &__dots {
+    min-height: 16px;
+  }
+
+  &__dot {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 2px solid var(--color-ui-01);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--color-border-02);
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      box-shadow: 0 0 0 2px var(--color-text-01);
+    }
+  }
+
+  .shop-buy--block {
+    margin-top: auto;
+  }
+}

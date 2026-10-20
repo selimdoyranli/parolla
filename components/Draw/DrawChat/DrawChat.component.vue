@@ -229,6 +229,7 @@ export default defineComponent({
         avatarSource: enriched?.avatarSource,
         profilePhoto: typeof enriched?.profilePhoto === 'string' ? { url: enriched.profilePhoto } : enriched?.profilePhoto,
         diceBear: enriched?.diceBear,
+        loadout: enriched?.loadout,
         role: enriched?.role,
         isGuest
       }
@@ -252,6 +253,8 @@ export default defineComponent({
         reportedMessage: {
           playerId: m.playerId,
           playerName: m.playerName,
+          // avatar fields so the report dialog shows the real photo, not a generated avatar
+          ...(({ diceBear, avatarSource, profilePhoto }) => ({ diceBear, avatarSource, profilePhoto }))(buildAvatarUser(m)),
           message: m.message,
           timestamp: m.timestamp
         },

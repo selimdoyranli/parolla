@@ -1,0 +1,53 @@
+import defaultState from './state'
+
+export default {
+  SET_WALLET(state, wallet) {
+    state.wallet = { ...state.wallet, ...wallet }
+  },
+  SET_CATALOG(state, catalog) {
+    state.catalog = catalog
+  },
+  SET_QUESTS(state, quests) {
+    state.quests = quests
+  },
+  SET_INVENTORY(state, inventory) {
+    state.inventory = inventory
+  },
+  SET_FREE_EVENTS(state, freeEvents) {
+    state.freeEvents = freeEvents
+  },
+  SET_ACHIEVEMENTS(state, achievements) {
+    state.achievements = achievements
+  },
+  SET_LAST_ECONOMY(state, lastEconomy) {
+    state.lastEconomy = lastEconomy
+  },
+  SET_GUEST_PREVIEW(state, guestPreview) {
+    state.guestPreview = guestPreview
+  },
+  SET_PENDING_MODE(state, pendingMode) {
+    state.pendingMode = pendingMode
+  },
+  SET_IS_OPEN_INVENTORY_DIALOG(state, isOpen) {
+    state.dialog.inventory.isOpen = isOpen
+  },
+  // opens the dialog on one of: inventory | shop | quests
+  OPEN_INVENTORY_DIALOG(state, tab) {
+    state.dialog.inventory = { isOpen: true, tab }
+  },
+  SET_INVENTORY_DIALOG_TAB(state, tab) {
+    state.dialog.inventory.tab = tab
+  },
+  RESET(state) {
+    const fresh = defaultState()
+
+    state.wallet = fresh.wallet
+    state.quests = null
+    state.inventory = null
+    state.achievements = null
+    state.lastEconomy = null
+    state.guestPreview = null
+    state.pendingMode = null
+    state.dialog.inventory.isOpen = false
+  }
+}

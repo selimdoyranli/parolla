@@ -10,6 +10,10 @@ export default {
   SET_PUBLIC_ROOMS(state, list) {
     state.publicRooms = list || []
   },
+  // Chat rows look their author up in players by id, so patching players updates chat too
+  APPLY_PLAYER_UPDATE(state, player) {
+    state.players = state.players.map(p => (String(p.id) === String(player.id) ? { ...p, ...player, username: player.name } : p))
+  },
   SET_ROOM_STATE(state, payload) {
     state.room = payload
     state.roomKind = payload.kind || null

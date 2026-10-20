@@ -1,0 +1,116 @@
+.inventory-dialog {
+  $van-dialog: '.van-dialog';
+
+  width: 94%;
+  max-width: 960px;
+
+  #{$van-dialog} {
+    &__header {
+      padding-top: 16px;
+    }
+
+    &__content {
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  &__header {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 0 var(--base-p-x);
+    color: var(--color-text-01);
+  }
+
+  &__icon {
+    flex: none;
+  }
+
+  &__title {
+    font-size: 16px;
+  }
+
+  &__balance {
+    padding: 2px 10px;
+    color: var(--color-text-01);
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__preview {
+    display: flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    margin-left: auto;
+    padding: 2px 12px 2px 3px;
+    color: var(--color-text-01);
+    font-weight: 600;
+    font-size: 13px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  // tabs stay put, only the body scrolls
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 68vh;
+    // AdSense writes inline `height: auto !important` on an ad's ancestors; max-height still holds the dialog
+    max-height: 68vh;
+  }
+
+  &__tabs {
+    display: flex;
+    flex: none;
+    gap: 4px;
+    margin: 12px var(--base-p-x) 0;
+    padding: 4px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-01);
+    border-radius: 12px;
+  }
+
+  &__tab {
+    display: flex;
+    flex: 1 1 0;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 7px 2px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 13px;
+    background: none;
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+
+    &-label {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &.is-active {
+      color: var(--color-text-01);
+      background: var(--color-ui-02);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+    max-height: 100%;
+    padding: var(--base-p-y) var(--base-p-x);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}

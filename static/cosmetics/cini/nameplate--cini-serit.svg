@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 84" width="600" height="84"><defs>
+<pattern id="p" width="42" height="42" patternUnits="userSpaceOnUse">
+<rect x="12" y="12" width="18" height="18" fill="#2a9d9c" fill-opacity=".18" stroke="#2a9d9c" stroke-width="1.4"/>
+<rect x="12" y="12" width="18" height="18" fill="#2a9d9c" fill-opacity=".18" stroke="#2a9d9c" stroke-width="1.4" transform="rotate(45 21 21)"/>
+<circle cx="21" cy="21" r="3" fill="#c8372d"/>
+<path d="M0 -3 V3 M-3 0 H3" stroke="#f7f3ea" stroke-width="1.2" opacity=".7" transform="translate(0 0)"/>
+<path d="M42 39 V45 M39 42 H45 M0 39 V45 M-3 42 H3 M42 -3 V3 M39 0 H45" stroke="#f7f3ea" stroke-width="1.2" opacity=".7"/>
+<animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-42 0" dur="7s" repeatCount="indefinite"/>
+</pattern>
+<linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#13285e"/><stop offset="1" stop-color="#1d3f8f"/></linearGradient>
+<linearGradient id="f" x1="0" x2="1"><stop offset="0" stop-color="#13285e" stop-opacity=".97"/><stop offset=".42" stop-color="#13285e" stop-opacity=".75"/><stop offset=".7" stop-color="#13285e" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="600" height="84" fill="url(#g)"/>
+<rect width="600" height="84" fill="url(#p)"/>
+<rect width="600" height="84" fill="url(#f)"/>
+<rect y="0" width="600" height="3" fill="#d9a441"/><rect y="81" width="600" height="3" fill="#d9a441"/></svg>

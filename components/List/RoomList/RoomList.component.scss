@@ -35,35 +35,8 @@
     }
   }
 
-  /* in-grid ad slot — spans the full row, not a real quiz card */
-  &__ad {
-    position: relative;
-    display: flex;
-    // grid-column: 1 / -1;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: auto;
-    min-height: 90px;
-    overflow: hidden;
-    background: var(--color-ui-03);
-    border: 1px solid var(--color-border-01);
+  /* in-grid ad (InlineAd): keeps the list's square edges */
+  &__ad.inline-ad {
     border-radius: 0;
-  }
-
-  .app-ad {
-    width: 100%;
-    height: 100%;
-  }
-
-  &__ad-label {
-    position: absolute;
-    color: var(--color-text-02);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transform: translate(-50%, -50%);
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
   }
 }

@@ -34,13 +34,28 @@ export default {
     }
   },
 
-  async fetchByUser(_, { userId, page = 1 }) {
-    const { data, error } = await this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { page, pageSize: 10 } })
+  // topLevel: only comments posted on the quiz (profile tab); otherwise replies come too, with a parent quote
+  async fetchByUser(_, { userId, page = 1, topLevel = false }) {
+    const { data, error } = await this.$appFetch({
+      path: `room-comments/by-user/${userId}`,
+      query: { page, pageSize: 10, ...(topLevel && { topLevel: 1 }) },
+      headers: authHeaders(this)
+    })
 
     return {
       data: data ? { items: data.data.map(roomCommentTransformer), hasMore: data.meta.hasMore, total: data.meta.total } : null,
       error
     }
+  },
+
+  async fetchMyLikes(_, { page = 1 }) {
+    const { data, error } = await this.$appFetch({
+      path: 'room-comment-likes/me',
+      query: { page, pageSize: 10 },
+      headers: authHeaders(this)
+    })
+
+    return { data: data ? { items: data.data.map(roomCommentTransformer), hasMore: data.meta.hasMore } : null, error }
   },
 
   async postComment({ dispatch }, { roomId, content, parent = null }) {

@@ -1,0 +1,105 @@
+.quest-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  color: var(--color-text-01);
+  background: var(--color-ui-01);
+  border: 1px solid var(--color-border-02);
+  border-radius: 10px;
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &__head {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  &__title {
+    min-width: 0;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  &__count {
+    flex: none;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__bar {
+    height: 6px;
+    overflow: hidden;
+    // neutral track that stays visible on both light and dark card surfaces
+    background: rgba(128, 128, 128, 0.3);
+    border-radius: 3px;
+  }
+
+  &__fill {
+    height: 100%;
+    background: var(--color-brand-02);
+    border-radius: 3px;
+    transition: width 0.3s;
+
+    &--done {
+      background: var(--color-success-01);
+    }
+  }
+
+  &__side {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  // same radius as the shop buttons (.shop-buy)
+  &__claim,
+  &__reroll {
+    border-radius: 8px;
+  }
+
+  &__claim {
+    font-weight: 700;
+  }
+
+  // vant puts the slot content in an inline span; make it a centred row so the label lines up with the coin
+  .van-button__text {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  // caps (and the dotted İ) sit high in the line box; nudge the label to the coin/number centre
+  &__label {
+    position: relative;
+    top: 1px;
+  }
+
+  &__reroll {
+    color: var(--color-text-01);
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--color-ui-03);
+    border-color: var(--color-border-02);
+  }
+
+  &__done {
+    color: var(--color-success-01);
+  }
+
+  &--claimed {
+    opacity: 0.8;
+  }
+}

@@ -630,6 +630,10 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
 
     countdownTimerRef.value.pause()
 
+    if (activeGameMode.value === gameModeKeyEnum.DAILY || activeGameMode.value === gameModeKeyEnum.CREATOR) {
+      await store.dispatch('economy/gameStarting', activeGameMode.value === gameModeKeyEnum.DAILY ? 'daily' : 'room')
+    }
+
     if (
       activeGameMode.value === gameModeKeyEnum.DAILY ||
       activeGameMode.value === gameModeKeyEnum.UNLIMITED ||
@@ -643,7 +647,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
 
     if (activeGameMode.value === gameModeKeyEnum.DAILY) {
       if ($auth.loggedIn && $auth.user) {
-        await store.dispatch('daily/postStats', {
+        const res = await store.dispatch('daily/postStats', {
           stats: {
             correctAnswers,
             wrongAnswers,
@@ -653,6 +657,10 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
             remainTimeAsMs
           }
         })
+
+        await store.dispatch('economy/gameEnded', { mode: 'daily', data: res && res.data })
+      } else {
+        await store.dispatch('economy/gameEnded', { mode: 'daily' })
       }
 
       await store.dispatch('daily/increaseDailyPlayingCount')
@@ -661,7 +669,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
       const room = computed(() => store.getters['creator/room'])
 
-      await store.dispatch('creator/postStats', {
+      const res = await store.dispatch('creator/postStats', {
         roomDocumentId: room.value.documentId,
         stats: {
           correctAnswers,
@@ -673,6 +681,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
         }
       })
 
+      await store.dispatch('economy/gameEnded', { mode: 'room', data: res && res.data })
       await store.dispatch('creator/increaseDailyPlayingCount')
     }
 

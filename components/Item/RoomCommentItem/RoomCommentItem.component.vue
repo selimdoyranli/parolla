@@ -11,7 +11,8 @@
       p.room-comment-item__deleted {{ $t('comments.deleted') }}
     template(v-else)
       .room-comment-item__meta
-        button.room-comment-item__username(type="button" @click="openPlayer(comment.user)") {{ comment.user && comment.user.username }}
+        button.room-comment-item__username(type="button" :style="usernameStyle" @click="openPlayer(comment.user)")
+          | {{ comment.user && comment.user.username }}
         Tag.room-comment-item__owner(v-if="comment.isQuizOwner" round) {{ $t('comments.quizOwner') }}
         Timeago.room-comment-item__time(:datetime="comment.createdAt" :auto-update="60" :locale="$i18n.locale")
       p.room-comment-item__content
@@ -51,7 +52,8 @@
           @deleted="removeReply"
         )
       button.room-comment-item__toggle(v-if="replies.items.length < state.replyCount" :disabled="replies.pending" @click="loadReplies")
-        | {{ $t('comments.loadMoreReplies') }}
+        //- nothing shown yet (profile/activity lists): say how many replies there are
+        | {{ replies.items.length ? $t('comments.loadMoreReplies') : $tc('comments.showReplies', state.replyCount, { n: state.replyCount }) }}
 
   // More dialog: comment preview + options; each option opens its own dialog on top
   VanDialog.dialog.room-comment-more-dialog(
@@ -206,7 +208,9 @@ export default defineComponent({
     // guests only get the replies; the input needs an account
     const replyTargetOf = () => ({
       parent: props.comment.documentId,
-      username: props.comment.user?.username
+      username: props.comment.user?.username,
+      // lists that mix quizzes (profile comments tab) post the reply to this room
+      roomId: props.roomId
     })
 
     // replying needs an account (auth-control prompts guests to log in)
@@ -277,7 +281,12 @@ export default defineComponent({
       }
     })
 
+    const { nameStyle } = useCosmetics()
+    const loadout = computed(() => (props.comment.user && props.comment.user.loadout) || {})
+    const usernameStyle = computed(() => nameStyle(loadout.value.nameColor))
+
     return {
+      usernameStyle,
       reportTypeEnum,
       state,
       isReply,

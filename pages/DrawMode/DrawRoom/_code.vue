@@ -797,6 +797,7 @@ export default defineComponent({
           avatarSource: live.avatarSource,
           profilePhoto: typeof live.profilePhoto === 'string' ? { url: live.profilePhoto } : live.profilePhoto,
           diceBear: live.diceBear,
+          loadout: live.loadout,
           role: live.role
         }
       })

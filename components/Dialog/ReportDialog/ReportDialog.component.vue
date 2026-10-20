@@ -25,10 +25,7 @@ Dialog.dialog.report-dialog(
     .report-dialog-form-reported-user(v-if="reportedUser")
       label.report-dialog-form-reported-user__label {{ $t('dialog.report.reportedUser.label') }}
       .report-dialog-form-reported-user__content
-        PlayerAvatar.report-dialog-form-reported-user__player(
-          with-username
-          :user="{ id: reportedUser.id, username: reportedUser.username, diceBear: reportedUser.diceBear }"
-        )
+        PlayerAvatar.report-dialog-form-reported-user__player(with-username :user="{ ...reportedUser }")
 
     .report-dialog-form-reported-message(v-if="reportedMessage")
       label.report-dialog-form-reported-message__label {{ $t('dialog.report.reportedMessage.label') }}
@@ -36,7 +33,7 @@ Dialog.dialog.report-dialog(
         PlayerAvatar.report-dialog-form-reported-message__player(
           with-username
           :size="20"
-          :user="{ id: reportedMessage.playerId, username: reportedMessage.playerName, diceBear: reportedMessage.diceBear }"
+          :user="{ ...reportedMessage, id: reportedMessage.playerId, username: reportedMessage.playerName }"
         )
         span.report-dialog-form-reported-message__text {{ reportedMessage.message }}
         small.report-dialog-form-reported-message__time {{ isoToHumanDate(reportedMessage.timestamp) }}
@@ -259,13 +256,14 @@ export default defineComponent({
         const parsed = JSON.parse(value)
 
         if (parsed.reportedUser) {
-          const { diceBear, ...rest } = parsed.reportedUser
+          // avatar fields are only for the dialog preview; keep them out of the stored report
+          const { diceBear, avatarSource, profilePhoto, ...rest } = parsed.reportedUser
 
           parsed.reportedUser = rest
         }
 
         if (parsed.reportedMessage) {
-          const { diceBear, ...rest } = parsed.reportedMessage
+          const { diceBear, avatarSource, profilePhoto, ...rest } = parsed.reportedMessage
 
           parsed.reportedMessage = rest
         }

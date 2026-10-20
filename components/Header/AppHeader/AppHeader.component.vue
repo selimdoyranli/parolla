@@ -5,6 +5,11 @@
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
+    li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
+      ActionButton(icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
+      span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
+        GoldAmount(size="sm" :amount="gold")
+
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
   // Icon-only logo swapped in while the on-screen keyboard is open on mobile
   AppLogo.app-logo--osk(:class="[logoClasses]" :width="32" :height="32" @click.native.prevent.capture="handleClickAppLogo")
@@ -80,6 +85,8 @@
   )
   // Notifications Dialog
   LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
+  // Inventory Dialog (inventory / shop / quests)
+  LazyInventoryDialog(:isOpen="inventoryDialog.isOpen" @closed="closeInventoryDialog")
   // Room Review Dialog
   LazyRoomReviewDialog(
     :isOpen="dialog.roomReview.isOpen"
@@ -138,6 +145,12 @@ export default defineComponent({
     })
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    const isHome = computed(() => getRouteBaseName(route.value) === 'Main')
+    const gold = computed(() => store.state.economy.wallet.gold)
+    const inventoryDialog = computed(() => store.state.economy.dialog.inventory)
+    const openInventoryDialog = tab => store.commit('economy/OPEN_INVENTORY_DIALOG', tab)
+    const closeInventoryDialog = () => store.commit('economy/SET_IS_OPEN_INVENTORY_DIALOG', false)
 
     const toggleNotificationsDialog = () => {
       dialog.notifications.isOpen = !dialog.notifications.isOpen
@@ -289,7 +302,8 @@ export default defineComponent({
     const logoClasses = computed(() => {
       return {
         'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' })),
-        'app-logo--hasBack': isVisibleBackButton.value
+        'app-logo--hasBack': isVisibleBackButton.value,
+        'app-logo--hasShop': isHome.value
       }
     })
 
@@ -312,7 +326,8 @@ export default defineComponent({
         route.value.path === localePath({ name: 'MusicMode-GuessTheSong' }) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' }))
       ) {
         return true
       }
@@ -350,6 +365,11 @@ export default defineComponent({
       toggleRoomReviewDialog,
       unreadCount,
       toggleNotificationsDialog,
+      isHome,
+      gold,
+      inventoryDialog,
+      openInventoryDialog,
+      closeInventoryDialog,
       targetCommentId,
       targetRatingUserId,
       handleRoomReviewClosed,

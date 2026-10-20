@@ -47,6 +47,8 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
             Button.result-sharer__button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
+        GoldEarned(mode="room")
+
         // Ad
         DialogAd
 

@@ -15,7 +15,7 @@
     )
 
     template(v-if="!playerLoading && player && player.id")
-      ProfileTabBar(:username="username")
+      ProfileTabBar(:username="username" :show-achievements="isSelf")
 
       nuxt-child(:key="$route.fullPath")
 </template>
@@ -43,23 +43,31 @@ export default defineComponent({
     const tourScoreLoading = ref(true)
     const tourScoreError = ref(null)
 
-    const { fetch, fetchState } = useFetch(async () => {
-      playerLoading.value = true
-      playerError.value = null
+    const fetchTourScore = async name => {
       tourScoreLoading.value = true
       tourScoreError.value = null
 
-      const [{ data: playerData, error: pErr }, { error: tErr }] = await Promise.all([
-        store.dispatch('profile/fetchPlayer', { username: username.value }),
-        store.dispatch('tour/fetchTourScoreOfUser', { username: username.value })
-      ])
+      const { error } = await store.dispatch('tour/fetchTourScoreOfUser', { username: name })
+
+      // a newer profile was opened meanwhile
+      if (name !== username.value) return
+
+      tourScoreError.value = error || null
+      tourScoreLoading.value = false
+    }
+
+    const { fetch, fetchState } = useFetch(async () => {
+      playerLoading.value = true
+      playerError.value = null
+
+      // the tour score is only shown on the Scores tab: start it now but never block the card on it
+      fetchTourScore(username.value)
+
+      const { data: playerData, error: pErr } = await store.dispatch('profile/fetchPlayer', { username: username.value })
 
       if (pErr) playerError.value = pErr
 
-      if (tErr) tourScoreError.value = tErr
-
       playerLoading.value = false
-      tourScoreLoading.value = false
 
       if (playerData?.id) {
         const me = store.getters['auth/user']
@@ -71,6 +79,12 @@ export default defineComponent({
     const player = computed(() => store.getters['profile/player'])
     const playerStats = computed(() => store.getters['profile/playerStats'])
     const tourScore = computed(() => store.getters['tour/tourScoreOfUser'])
+
+    const isSelf = computed(() => {
+      const me = store.getters['auth/user']
+
+      return Boolean(me && player.value && me.username === player.value.username)
+    })
 
     const refetch = () => fetch()
 
@@ -93,6 +107,7 @@ export default defineComponent({
       username,
       player,
       playerStats,
+      isSelf,
       playerLoading,
       playerError,
       fetchState,

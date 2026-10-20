@@ -5,37 +5,54 @@
       Loading(color="var(--color-brand-02)")
 
   template(v-else-if="error")
-    Empty(image="error" :description="$t('profile.reviewsTab.error')")
+    Empty(image="error" :description="$t(source === 'likes' ? 'activities.likesError' : 'profile.reviewsTab.error')")
       Button(@click="reload") {{ $t('error.tryAgain') }}
 
   template(v-else-if="items.length === 0")
-    Empty(:description="$t('profile.reviewsTab.empty')")
+    Empty(:description="$t(emptyKey)")
 
   template(v-else)
     .profile-reviews-tab__list
       .profile-reviews-tab__item(v-for="item in items" :key="item.documentId")
-        component.profile-reviews-tab__item-link(:to="item.room ? roomLocation(item) : undefined" :is="item.room ? 'NuxtLink' : 'div'")
-          .profile-reviews-tab__head
-            .profile-reviews-tab__room-row(v-if="item.room")
-              AppIcon(name="tabler:target" color="var(--color-text-03)" :width="14" :height="14")
-              span.profile-reviews-tab__room-title {{ item.room.title }}
-            Timeago.profile-reviews-tab__date(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
+        //- quote header: which quiz the comment is on; opens the quiz with the thread pinned
+        NuxtLink.profile-reviews-tab__quote(:to="roomLocation(item)")
+          img.profile-reviews-tab__quote-cover(v-if="item.room.coverPhoto" :src="item.room.coverPhoto" alt loading="lazy")
+          AppIcon.profile-reviews-tab__quote-icon(v-else name="tabler:quote" :width="16" :height="16")
+          span.profile-reviews-tab__quote-title {{ item.room.title }}
+          AppIcon.profile-reviews-tab__quote-arrow(name="tabler:chevron-right" :width="16" :height="16")
+        //- a reply: label + short quote of the comment it answers, opening the quiz on that thread
+        NuxtLink.profile-reviews-tab__parent(v-if="item.parent" :to="roomLocation(item)")
+          span.profile-reviews-tab__parent-label
+            AppIcon(name="tabler:corner-down-right" :width="14" :height="14")
+            | {{ $t('activities.replyTo') }}
+          span.profile-reviews-tab__parent-text(v-if="item.parent.isDeleted") {{ $t('comments.deleted') }}
+          span.profile-reviews-tab__parent-text(v-else)
+            b(v-if="item.parent.user") {{ item.parent.user.username }}:
+            | {{ ' ' + item.parent.content }}
+        RoomCommentItem(:comment="item" :room-id="item.room.id" @deleted="removeItem")
 
-          p.profile-reviews-tab__text
-            strong.profile-reviews-tab__mention(v-if="item.replyToUser") @{{ item.replyToUser.username }}
-            |
-            | {{ contentWithoutMention(item) }}
-
-    InfiniteLoading(:key="playerId" v-if="hasMore" @infinite="handleInfinite")
+    InfiniteLoading(:key="`${source}-${playerId}`" v-if="hasMore" @infinite="handleInfinite")
       template(#spinner)
         Loading(color="var(--color-brand-02)" size="20")
       template(#no-more) {{ '' }}
       template(#no-results) {{ '' }}
+
+  //- one composer for every comment on the tab, shown only while replying
+  .profile-reviews-tab__composer(v-if="replyTarget")
+    RoomCommentComposer(
+      :key="replyTarget.parent"
+      autofocus
+      :room-id="replyTarget.roomId"
+      :parent="replyTarget.parent"
+      :reply-to="replyTarget.username"
+      @posted="handlePosted"
+      @cancel="cancelReply"
+    )
 </template>
 
 <script>
-import { defineComponent, inject, ref, computed, watch, useStore, useContext } from '@nuxtjs/composition-api'
-import { Loading, Empty, Button } from 'vant'
+import { defineComponent, inject, ref, computed, watch, provide, useStore, useContext } from '@nuxtjs/composition-api'
+import { Loading, Empty, Button, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default defineComponent({
@@ -45,10 +62,14 @@ export default defineComponent({
     Button,
     InfiniteLoading
   },
-  setup() {
-    const shell = inject('profileShell')
+  props: {
+    // profile: top-level comments of the profile user; mine: own comments + replies; likes: own likes
+    source: { type: String, default: 'profile' }
+  },
+  setup(props) {
+    const shell = inject('profileShell', null)
     const store = useStore()
-    const { localePath } = useContext()
+    const { localePath, i18n, $auth } = useContext()
 
     const items = ref([])
     const page = ref(0)
@@ -56,7 +77,8 @@ export default defineComponent({
     const loading = ref(false)
     const error = ref(null)
 
-    const playerId = computed(() => shell?.player?.value?.id || null)
+    const playerId = computed(() => (props.source === 'profile' ? shell?.player?.value?.id : $auth.user?.id) || null)
+    const emptyKey = { profile: 'profile.reviewsTab.empty', mine: 'activities.commentsEmpty', likes: 'activities.likesEmpty' }[props.source]
 
     const roomLocation = item =>
       localePath({
@@ -64,13 +86,6 @@ export default defineComponent({
         params: { slug: item.room.roomId },
         query: { comment: item.documentId }
       })
-
-    // mention comes from replyToUser; older replies also carry an "@username " prefix in the text
-    const contentWithoutMention = item => {
-      const prefix = item.replyToUser && `@${item.replyToUser.username}`
-
-      return prefix && item.content.startsWith(prefix) ? item.content.slice(prefix.length).trimStart() : item.content
-    }
 
     const load = async (isLoadMore = false) => {
       if (!playerId.value) return null
@@ -83,7 +98,10 @@ export default defineComponent({
       error.value = null
 
       const userId = playerId.value
-      const { data, error: err } = await store.dispatch('comment/fetchByUser', { userId, page: page.value + 1 })
+      const nextPage = page.value + 1
+      const { data, error: err } = await (props.source === 'likes'
+        ? store.dispatch('comment/fetchMyLikes', { page: nextPage })
+        : store.dispatch('comment/fetchByUser', { userId, page: nextPage, topLevel: props.source === 'profile' }))
 
       // The profile changed while loading: drop this response
       if (userId !== playerId.value) return { stale: true }
@@ -92,7 +110,10 @@ export default defineComponent({
       if (err) {
         if (!isLoadMore) error.value = err
       } else {
-        items.value = isLoadMore ? [...items.value, ...data.items] : data.items
+        // the server only returns comments on rooms the viewer may see, so room is always set
+        const fresh = data.items.filter(i => i.room && !items.value.some(c => c.documentId === i.documentId))
+
+        items.value = isLoadMore ? [...items.value, ...fresh] : fresh
         page.value += 1
         hasMore.value = data.hasMore
       }
@@ -128,8 +149,34 @@ export default defineComponent({
       if (!hasMore.value) $state.complete()
     }
 
+    // same reply flow as RoomReviewView: an item asks to reply, the composer posts,
+    // and the root item of the thread picks the reply up from lastReply
+    const replyTarget = ref(null)
+    const lastReply = ref(null)
+
+    const startReply = target => {
+      replyTarget.value = target
+    }
+
+    const cancelReply = () => {
+      replyTarget.value = null
+    }
+
+    const handlePosted = comment => {
+      lastReply.value = comment
+      cancelReply()
+      Toast(i18n.t('profile.reviewsTab.replied'))
+    }
+
+    provide('commentThread', { replyTarget, lastReply, startReply, cancelReply })
+
+    const removeItem = documentId => {
+      items.value = items.value.filter(c => c.documentId !== documentId)
+    }
+
     return {
       items,
+      emptyKey,
       hasMore,
       playerId,
       loading,
@@ -137,7 +184,10 @@ export default defineComponent({
       reload,
       handleInfinite,
       roomLocation,
-      contentWithoutMention
+      replyTarget,
+      handlePosted,
+      cancelReply,
+      removeItem
     }
   }
 })

@@ -1,5 +1,8 @@
 export default {
   async fetchPlayerStats({ commit }, { userId, isSelf = false }) {
+    // null = loading, so the card never shows the previous profile's numbers
+    commit('SET_PLAYER_STATS', null)
+
     // Rooms count must mirror the rooms list visibility:
     //   - other viewers see public + visible + non-anon rooms only
     //     (backend also enforces isPublic + isAnon for non-owner queries,
@@ -25,7 +28,7 @@ export default {
     const [roomsRes, scoresRes, reviewsRes] = await Promise.all([
       this.$appFetch({ path: 'rooms', query: roomsQuery }),
       this.$appFetch({ path: 'room-scores', query: simpleQuery }),
-      this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { pageSize: 1 } })
+      this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { pageSize: 1, topLevel: 1 } })
     ])
 
     const stats = {

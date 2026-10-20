@@ -179,7 +179,8 @@
 
   &-stats {
     display: flex;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 4px 24px;
     padding: 0 var(--base-p-x) 16px;
 
     &__item {
@@ -200,6 +201,31 @@
     }
   }
 
+  &-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+
+    @media (prefers-reduced-motion: reduce) {
+      &--effect {
+        display: none;
+      }
+    }
+  }
+
+  // Box position, size and border-image-width come from helpers/frameFit (whole-px tiles)
+  &-frame {
+    position: absolute;
+    z-index: 1;
+    border: 0 solid transparent;
+    border-image-repeat: round;
+    pointer-events: none;
+  }
+
   &-loading {
     display: flex;
     justify-content: center;
@@ -208,6 +234,32 @@
 
   &-error {
     padding: 24px;
+  }
+
+  // Keep content off the frame: corners and edge units are drawn at about half the art scale (110 art px -> 55px),
+  // with the art's own band well inside that. The banner stays full-bleed.
+  &--framed {
+    --frame-band: 55px;
+
+    .profile-view-header,
+    .profile-view-identity,
+    .profile-view-stats {
+      position: relative;
+      // tall corner art (e.g. bogaz skyline, patili tail) can reach the text: keep the text above it
+      z-index: 2;
+      padding-inline: calc(var(--base-p-x) + var(--frame-band) * 0.5);
+    }
+
+    .profile-view-banner__actions {
+      right: calc(8px + var(--frame-band) * 0.5);
+    }
+
+    .profile-view-stats {
+      // the side bands leave too little room for three stats on phones
+      flex-wrap: wrap;
+      row-gap: 4px;
+      padding-bottom: calc(var(--frame-band) + 8px);
+    }
   }
 }
 

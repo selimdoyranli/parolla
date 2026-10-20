@@ -122,7 +122,7 @@ export default defineComponent({
     const currentWs = ref(null)
 
     const handleWsMessage = data => {
-      const { type, chatHistory, playerId, playerName, diceBear, profilePhoto, avatarSource, role, message, isSystem, timestamp } =
+      const { type, chatHistory, playerId, playerName, diceBear, profilePhoto, avatarSource, loadout, role, message, isSystem, timestamp } =
         JSON.parse(data.data)
 
       if (type === wsTypeEnum.CONNECTED) {
@@ -154,6 +154,7 @@ export default defineComponent({
               diceBear,
               profilePhoto,
               avatarSource,
+              loadout,
               role,
               message,
               timestamp
@@ -268,6 +269,10 @@ export default defineComponent({
           playerId: message.playerId,
           playerName: message.playerName,
           diceBear: message.diceBear,
+          avatarSource: message.avatarSource,
+          profilePhoto: message.profilePhoto && {
+            url: typeof message.profilePhoto === 'string' ? message.profilePhoto : message.profilePhoto.url
+          },
           message: message.message,
           timestamp: message.timestamp
         },
@@ -290,6 +295,7 @@ export default defineComponent({
       diceBear: message.diceBear,
       profilePhoto: message.profilePhoto,
       avatarSource: message.avatarSource,
+      loadout: message.loadout,
       role: message.role
     })
 

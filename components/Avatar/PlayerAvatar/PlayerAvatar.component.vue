@@ -19,9 +19,20 @@
       :style="{ width: `inherit`, height: `inherit` }"
     )
 
+    img.player-avatar__frame(v-if="frameSrc" :src="frameSrc" alt aria-hidden="true" loading="lazy")
+    img.player-avatar__decoration(
+      v-if="decorationSrc"
+      :src="decorationSrc"
+      alt
+      aria-hidden="true"
+      loading="lazy"
+      :class="{ 'player-avatar__decoration--animated': decorationAnimated }"
+    )
+
   span.player-avatar__username(v-if="withUsername")
-    template(v-if="user") {{ user.username }}
-    template(v-else) {{ $t('general.anon') }}
+    span.player-avatar__name(:style="nameColorStyle")
+      template(v-if="user") {{ user.username }}
+      template(v-else) {{ $t('general.anon') }}
     span.gm-username-extra(v-if="isGm") &nbsp;(GM)
 
   slot(name="append")
@@ -150,7 +161,16 @@ export default defineComponent({
       return generateAvatarDataImage()
     })
 
-    return { handleClickPlayerAvatar, isGm, avatarSrc }
+    const { asset, nameStyle, isAnimated } = useCosmetics()
+
+    // Users without a loadout (guests, old payloads) resolve everything to empty
+    const loadout = computed(() => (props.user && props.user.loadout) || {})
+    const frameSrc = computed(() => asset(loadout.value.frame))
+    const decorationSrc = computed(() => asset(loadout.value.decoration))
+    const decorationAnimated = computed(() => isAnimated(loadout.value.decoration))
+    const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
+
+    return { handleClickPlayerAvatar, isGm, avatarSrc, frameSrc, decorationSrc, decorationAnimated, nameColorStyle }
   }
 })
 </script>

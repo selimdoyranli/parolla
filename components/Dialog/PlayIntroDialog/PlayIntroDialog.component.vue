@@ -61,6 +61,9 @@ Dialog.dialog.dialog--scene.play-intro(
       CollapseItem(name="rules" icon="question-o" :title="$t('playIntro.howToPlay')")
         HowToPlayContent
 
+    //- daily / unlimited: the ad sits above the leaderboard, not under it
+    DialogAd.play-intro__ad(v-if="!isCreator")
+
     section.play-intro__leaderboard(v-if="isQa || mode === 'daily'")
       h3.play-intro__section-title
         AppIcon(name="tabler:crown" :width="18" :height="18")
@@ -87,7 +90,7 @@ Dialog.dialog.dialog--scene.play-intro(
     section.play-intro__comments(v-if="isCreator && room.id")
       RoomReviewView(:key="reviewsKey" comments-only)
 
-    DialogAd.play-intro__ad
+    DialogAd.play-intro__ad(v-if="isCreator")
 
   footer.play-intro__footer
     i18n.d-flex(path="app.copyright")

@@ -27,6 +27,159 @@ export default {
     flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır',
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
+  economy: {
+    retry: 'Tekrar dene',
+    earned: {
+      incomplete: 'Ödül için tüm harfleri tamamla ya da süreyi bitir.',
+      capped: 'Günlük tavana ulaştın',
+      questDone: 'Görev tamamlandı: {title}',
+      viewQuests: 'Görevler',
+      guestTeaser: 'Giriş yapsaydın {amount} kazanacaktın',
+      login: 'Giriş yap'
+    },
+    inventory: {
+      title: 'Envanter',
+      tabs: { inventory: 'Envanter', shop: 'Mağaza', quests: 'Görevler' }
+    },
+    quests: {
+      loginPrompt: 'Görevleri görmek için giriş yap.',
+      title: 'Görevler',
+      daily: 'Günlük görevler',
+      weekly: 'Haftalık görevler',
+      claim: 'Al',
+      reroll: 'Yenile',
+      chestTitle: 'Haftalık altın hediyesi',
+      chestHint: 'Tüm haftalık görevleri al',
+      claimed: '+{amount} altın kazandın',
+      rerolled: 'Görev yenilendi',
+      chestClaimed: 'Sandıktan +{amount} altın'
+    },
+    errors: {
+      'free-event': 'Bu set etkinlik süresince ücretsiz, satın almadan kuşanabilirsin',
+      'insufficient-gold': 'Yeterli altının yok',
+      'already-claimed': 'Bu ödül zaten alındı',
+      'reroll-used': 'Bugünkü yenileme hakkını kullandın',
+      'limit-reached': 'Limite ulaşıldı',
+      'already-owned': 'Bu ürüne zaten sahipsin',
+      'not-for-sale': 'Bu ürün satışta değil',
+      'vitrin-expired': 'Bu ürünün vitrin indirimi sona erdi',
+      'nothing-to-buy': 'Bu sette alınacak ürün kalmadı',
+      'not-completed': 'Görev henüz tamamlanmadı',
+      'key-reused': 'Bu istek zaten kullanıldı, tekrar dene',
+      'loadout-too-fast': 'Çok hızlı değiştiriyorsun, biraz bekle',
+      'bad-key': 'Geçersiz istek',
+      'not-assigned': 'Bu görev sana atanmamış',
+      'no-replacement': 'Bu görev için yenisi bulunamadı',
+      completed: 'Bu görev zaten tamamlandı',
+      'not-ready': 'Henüz hazır değil',
+      'unknown-item': 'Ürün bulunamadı',
+      'invalid-slot': 'Geçersiz kuşanma yuvası',
+      generic: 'Bir şeyler ters gitti, tekrar dene'
+    },
+    achievements: {
+      title: 'Başarımlar',
+      goal: {
+        'alfabe-ustasi': 'Günlük modu {n} kez bitir',
+        kusursuz: 'Günlük modu {n} kez hatasız ve passız bitir',
+        'kelime-avcisi': '{n} kelimeblok çöz',
+        'keskin-goz': "{n} kelimeblok'u en fazla 2 denemede çöz",
+        'tek-atis': "{n} kelimeblok'u ilk denemede çöz",
+        turcu: 'Turda toplam {n} puan topla',
+        mimar: 'Quizlerini {n} farklı oyuncu oynasın',
+        'quiz-yaraticisi': 'Herkese açık {n} quiz oluştur',
+        sadik: '{n} günlük giriş serisine ulaş',
+        koleksiyoncu: '{n} kozmetiğe sahip ol',
+        'profil-fotografi': 'Profiline fotoğraf ekle',
+        firstLegendary: 'İlk efsanevi kozmetiğini al'
+      },
+      note: {
+        'profil-fotografi': 'Avatar yerine yüklediğin fotoğrafı kullanman yeterli.',
+        'quiz-yaraticisi': 'Quizin kurallara uyuyorsa sayılır, 1 saat içinde otomatik kontrol edilir.'
+      }
+    },
+    dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
+    collection: {
+      freeTitle: 'Etkinlik süresince ücretsiz ürünler',
+      freeUntil: "{date}'a kadar",
+      title: 'Envanter',
+      preview: 'Önizleme',
+      equip: 'Kuşan',
+      unequip: 'Çıkar',
+      equipped: 'Kuşanıldı',
+      unequipped: 'Çıkarıldı',
+      previewOpen: 'Önizle',
+      empty: 'Henüz hiç ürünün yok.',
+      goShop: 'Mağazaya git',
+      loginPrompt: 'Envanterini görmek için giriş yap.',
+      login: 'Giriş yap'
+    },
+    history: {
+      title: 'Altın geçmişi',
+      balance: 'Bakiye',
+      more: 'Daha fazla',
+      empty: 'Henüz altın hareketin yok.',
+      loginPrompt: 'Altın geçmişini görmek için giriş yap.',
+      reasons: {
+        signup: 'Hoş geldin bonusu',
+        early: 'Erken kullanıcı bonusu',
+        daily_login: 'Günlük giriş',
+        play_daily: 'Günlük quiz',
+        play_wordblock: 'Kelimeblok',
+        play_tour: 'Turnuva',
+        play_room: 'Oda',
+        creator: 'Oda yapımcısı ödülü',
+        daily_top: 'Günün en iyileri',
+        quest: 'Görev',
+        quest_chest: 'Haftalık sandık',
+        achievement: 'Başarım',
+        purchase: 'Satın alma',
+        set_purchase: 'Set satın alma',
+        reroll: 'Görev yenileme',
+        streak_freeze: 'Günlük seri dondurucu',
+        season: 'Sezon ödülü',
+        admin: 'Yönetici işlemi'
+      }
+    },
+    shop: {
+      freeChip: 'Ücretsiz · Etkinlik',
+      freeSet: 'Etkinlikte ücretsiz',
+      title: 'Mağaza',
+      vitrin: 'Günün vitrini',
+      products: 'Ürünler',
+      login: 'Giriş yap',
+      equippedLabel: 'Kuşanılı',
+      buySet: 'Seti al',
+      owned: 'Sahipsin',
+      original: 'Orijinal',
+      price: 'Fiyat',
+      balance: 'Bakiyen',
+      balanceAfter: 'Satın alma sonrası',
+      confirm: 'Onayla',
+      equip: 'Kuşan',
+      equipped: 'Kuşandın',
+      equipFailed: 'Satın alındı ama kuşanılamadı, tekrar dene.',
+      purchased: 'Satın alındı',
+      setContent: 'Setteki sahip olmadığın {count} ürünün hepsi alınır.',
+      insufficient: 'Yeterli altının yok. Bakiyen: {balance}, eksik: {missing}',
+      rarity: { siradan: 'Sıradan', nadir: 'Nadir', epik: 'Epik', efsanevi: 'Efsanevi', sezon: 'Sezon' },
+      categories: {
+        all: 'Tümü',
+        avatar_frame: 'Avatar çerçevesi',
+        avatar_decoration: 'Avatar dekorasyonu',
+        profile_effect: 'Profil efekti',
+        profile_frame: 'Profil çerçevesi',
+        profile_cover: 'Profil arkaplanı',
+        name_color: 'İsim rengi',
+        sets: 'Setler'
+      },
+      freeze: {
+        title: 'Günlük seri dondurucu',
+        desc: 'Bir gün kaçırırsan serin bozulmaz.',
+        note: 'Bir gün oynamayı kaçırırsan günlük giriş serin bozulmaz. En fazla {max} tane taşıyabilirsin.',
+        full: 'Dolu'
+      }
+    }
+  },
   success: {
     success: 'Başarılı'
   },
@@ -211,6 +364,7 @@ export default {
     },
     menu: {
       title: 'Daha fazla',
+      activities: 'Aktiviteler',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       profileEdit: 'Profili düzenle',
@@ -918,6 +1072,7 @@ export default {
     send: 'Gönder',
     reply: 'Yanıtla',
     loadMoreReplies: 'Daha fazla yanıt yükle',
+    showReplies: '{n} yanıtı göster',
     deleted: 'Bu yorum silindi',
     quizOwner: 'Quiz sahibi',
     report: 'Raporla',
@@ -982,6 +1137,61 @@ export default {
     anomalyCount: '{count} anomali tespit edildi',
     notifyTitle: 'Oyuncuya bildirim metni',
     actionDone: 'İşlem tamamlandı',
+    events: {
+      title: 'Etkinlikler',
+      description: 'Bir seti belirli tarihlerde tüm oyunculara ücretsiz aç. Süre dolunca otomatik çıkar, set yeniden satışa döner.',
+      list: 'Etkinlikler',
+      empty: 'Henüz etkinlik yok',
+      add: 'Etkinlik ekle',
+      edit: 'Etkinliği düzenle',
+      editAction: 'Düzenle',
+      series: 'Set',
+      seriesPick: 'Set seç',
+      start: 'Başlangıç',
+      startDay: 'Başlangıç günü',
+      days: 'Süre (gün)',
+      end: 'Bitiş',
+      note: 'Not',
+      notePlaceholder: 'İsteğe bağlı kısa not',
+      save: 'Kaydet',
+      cancel: 'Vazgeç',
+      delete: 'Sil',
+      deleteConfirm: '{name} etkinliği silinsin mi?',
+      saved: 'Kaydedildi',
+      deleted: 'Silindi',
+      status: { active: 'Aktif', planned: 'Planlı', ended: 'Bitti' },
+      errors: {
+        'invalid-series': 'Geçerli bir set seç',
+        'invalid-window': 'Tarih veya süre geçersiz (1-60 gün)',
+        'invalid-note': 'Not en fazla 200 karakter olabilir',
+        'not-found': 'Etkinlik bulunamadı'
+      }
+    },
+    commands: {
+      title: 'Komut Paneli',
+      description: 'GM komutlarını buradan çalıştır. Her komut kayıt altına alınır.',
+      help: 'Komutlar',
+      userArg: 'kullanıcı',
+      amountArg: 'miktar',
+      noteArg: 'not',
+      sendgoldHelp: 'Kullanıcıya altın gönderir (1 - 100.000). Not isteğe bağlı.',
+      example: 'Örnek',
+      placeholder: '/sendgold kullanici 500 hediye',
+      run: 'Çalıştır',
+      sent: '{username} kullanıcısına {amount} gönderildi • yeni bakiye {balance}',
+      logs: 'Komut kayıtları',
+      noLogs: 'Henüz komut çalıştırılmadı',
+      more: 'Daha fazla',
+      ok: 'Başarılı',
+      error: 'Hata',
+      errors: {
+        'unknown-command': 'Bilinmeyen komut',
+        'missing-username': 'Kullanıcı adı gerekli',
+        'invalid-amount': 'Miktar 1 ile 100.000 arasında tam sayı olmalı',
+        'user-not-found': 'Kullanıcı bulunamadı',
+        'ambiguous-user': 'Bu ada büyük/küçük harf farkıyla birden fazla kullanıcı uyuyor; tam adı yazın'
+      }
+    },
     wordblock: {
       title: 'Kelimeblok',
       description: 'Aynı gün 5, 6 ve 7 harfli tabloların üçünde de birinci olan oyuncular.',
@@ -1268,16 +1478,25 @@ export default {
       }
     }
   },
+  activities: {
+    title: 'Aktiviteler',
+    tabs: { likes: 'Beğenilerim', comments: 'Yorumlarım', goldHistory: 'Altın geçmişi' },
+    likesEmpty: 'Henüz bir yorumu beğenmedin.',
+    commentsEmpty: 'Henüz yorum yazmadın.',
+    likesError: 'Beğenilerin yüklenemedi.',
+    replyTo: 'Yoruma yanıt'
+  },
   profile: {
     tabs: {
       quizzes: 'Quizler',
-      reviews: 'Değerlendirmeler',
-      scores: 'Skorlar'
+      reviews: 'Yorumlar',
+      scores: 'Skorlar',
+      achievements: 'Başarımlar'
     },
     stats: {
       created: 'Oluşturulan',
       played: 'Oynanan',
-      reviews: 'Değerlendirme'
+      reviews: 'Yorum'
     },
     scoresSubTabs: {
       creator: 'Yaratıcı',
@@ -1298,7 +1517,8 @@ export default {
     },
     reviewsTab: {
       empty: 'Henüz yorum yapmamış.',
-      error: 'Yorumlar yüklenemedi.'
+      error: 'Yorumlar yüklenemedi.',
+      replied: 'Yanıtın gönderildi'
     },
     scoresTab: {
       tour: { title: 'Tur modu skorları' },

@@ -86,6 +86,7 @@ export default charLength => {
   }
 
   const endGame = async () => {
+    store.dispatch('economy/gameStarting', 'wordblock')
     const day = new Date().toLocaleDateString('tr').slice(0, 10)
 
     store.commit('wordblock/SET_IS_GAME_OVER', { ...gameKey.value, isGameOver: true })
@@ -102,8 +103,12 @@ export default charLength => {
     })
 
     // Only authenticated players enter the leaderboard, same rule as daily mode
+    const won = gameStatus.value === gameStatusEnum.WON
+    const attempts = currentAttempt.value
+    let res
+
     if ($auth.loggedIn && $auth.user) {
-      await store.dispatch('wordblock/postStats', {
+      res = await store.dispatch('wordblock/postStats', {
         charLength: charLen.value,
         stats: {
           status: gameStatus.value,
@@ -114,6 +119,7 @@ export default charLength => {
       })
     }
 
+    await store.dispatch('economy/gameEnded', { mode: 'wordblock', data: res && res.data, win: won, attempts })
     await store.dispatch('wordblock/increaseDailyPlayingCount')
   }
 

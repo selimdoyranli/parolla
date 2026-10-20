@@ -1,5 +1,5 @@
 <template lang="pug">
-.profile-view
+.profile-view(ref="root" :class="{ 'profile-view--framed': frameStyle }")
   template(v-if="playerLoading")
     .profile-view-loading
       Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
@@ -59,12 +59,12 @@
           @click.native="handleAvatarClick"
         )
 
-      .profile-view-header__action(v-if="isSelf")
+      .profile-view-header__action(v-if="isSelf && !preview")
         Button.profile-view-header__edit-btn(plain round size="small" @click="goToEdit") {{ $t('profile.editButton') }}
 
     .profile-view-identity
       h1.profile-view-identity__name
-        | {{ player.username }}
+        span.profile-view-identity__username(:style="nameColorStyle") {{ player.username }}
         span.profile-view-identity__gm-label(v-if="isGm") (GM)
       span.profile-view-identity__handle(v-if="player.fullname") {{ player.fullname }}
 
@@ -77,23 +77,28 @@
 
     .profile-view-stats
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.rooms) }}
+        strong.profile-view-stats__value {{ stat('rooms') }}
         span.profile-view-stats__label {{ $t('profile.stats.created') }}
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.scores) }}
+        strong.profile-view-stats__value {{ stat('scores') }}
         span.profile-view-stats__label {{ $t('profile.stats.played') }}
       .profile-view-stats__item
-        strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
+        strong.profile-view-stats__value {{ stat('reviews') }}
         span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
+
+    .profile-view-frame(v-if="frameStyle" aria-hidden="true" :style="frameStyle")
+    img.profile-view-overlay.profile-view-overlay--effect(v-if="effectSrc" :src="effectSrc" alt aria-hidden="true")
 </template>
 
 <script>
-import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, onMounted, onBeforeUnmount, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
 import { Empty, Button, Loading, ImagePreview } from 'vant'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
 import { buildBannerStyle } from '@/helpers/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { fitFrame } from '@/helpers/frameFit'
+import FRAME_SLICES from '@/static/cosmetics/frames.json'
 
 export default defineComponent({
   components: {
@@ -108,6 +113,12 @@ export default defineComponent({
       type: Object,
       required: false,
       default: null
+    },
+    // collection preview: no edit/report actions
+    preview: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     playerLoading: {
       type: Boolean,
@@ -137,7 +148,66 @@ export default defineComponent({
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
     const isGm = computed(() => props.player?.role?.name === 'GM')
 
-    const bannerStyle = computed(() => buildBannerStyle(props.player?.diceBear?.config))
+    const { asset, nameStyle } = useCosmetics()
+    const loadout = computed(() => (props.player && props.player.loadout) || {})
+    const coverSrc = computed(() => asset(loadout.value.profileCover))
+    const frameSrc = computed(() => asset(loadout.value.profileFrame))
+    const effectSrc = computed(() => asset(loadout.value.profileEffect))
+    const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
+
+    // the frame is a 9-slice sprite next to the art (<file>.9.svg) laid out by border-image; its box needs the card size
+    const root = ref(null)
+    const size = ref(null)
+    let observer = null
+
+    onMounted(() => {
+      if (!root.value || typeof ResizeObserver === 'undefined') return
+
+      observer = new ResizeObserver(([entry]) => {
+        size.value = { width: entry.contentRect.width, height: entry.contentRect.height }
+      })
+      observer.observe(root.value)
+    })
+    onBeforeUnmount(() => observer && observer.disconnect())
+
+    const frameStyle = computed(() => {
+      const slice = frameSrc.value && FRAME_SLICES[loadout.value.profileFrame.split('.')[0]]
+      const fit = slice && size.value && fitFrame(slice, size.value.width, size.value.height)
+
+      if (!fit) return null
+
+      // Chrome samples repeated border-image tiles with wrap-around, so each band's inner edge row picks up the
+      // tile's outer stroke as a thin line; cut a 1px strip off the inner edge of all four bands
+      const [i, w, h] = [1, fit.w, fit.h]
+      const hole = [
+        [fit.l - i, fit.t - i],
+        [fit.l - i, h - fit.b + i],
+        [w - fit.r + i, h - fit.b + i],
+        [w - fit.r + i, fit.t - i]
+      ]
+      const clipPath = `polygon(evenodd, 0 0, ${w}px 0, ${w}px ${h}px, 0 ${h}px, 0 0, ${[...hole, hole[0]]
+        .map(([x, y]) => `${x}px ${y}px`)
+        .join(', ')})`
+
+      return {
+        clipPath,
+        left: `${fit.x}px`,
+        top: `${fit.y}px`,
+        width: `${fit.w}px`,
+        height: `${fit.h}px`,
+        borderImageSource: `url(${frameSrc.value.replace(/\.svg$/, '.9.svg')})`,
+        borderImageSlice: `${slice.t} ${slice.r} ${slice.b} ${slice.l}`,
+        borderImageWidth: `${fit.t}px ${fit.r}px ${fit.b}px ${fit.l}px`
+      }
+    })
+
+    const bannerStyle = computed(() => {
+      const base = buildBannerStyle(props.player?.diceBear?.config)
+
+      return coverSrc.value
+        ? { ...base, backgroundImage: `url(${coverSrc.value})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+        : base
+    })
 
     // Only let the avatar open ImagePreview when the user actually has
     // an uploaded photo to view. DiceBear avatars stay non-interactive —
@@ -160,7 +230,11 @@ export default defineComponent({
           id: props.player.id,
           username: props.player.username,
           bio: props.player.bio || '',
-          diceBear: props.player.diceBear
+          diceBear: props.player.diceBear,
+          avatarSource: props.player.avatarSource,
+          profilePhoto: props.player.profilePhoto && {
+            url: typeof props.player.profilePhoto === 'string' ? props.player.profilePhoto : props.player.profilePhoto.url
+          }
         }
       })
     })
@@ -191,7 +265,11 @@ export default defineComponent({
       return String(value)
     }
 
+    // null while the stats are loading
+    const stat = key => (props.playerStats ? formatNumber(props.playerStats[key]) : '–')
+
     return {
+      stat,
       isOpenReportDialog,
       isActionsOpen,
       isImagePreviewOpen,
@@ -200,13 +278,18 @@ export default defineComponent({
       isSelf,
       isGm,
       bannerStyle,
+      coverSrc,
+      root,
+      frameSrc,
+      frameStyle,
+      effectSrc,
+      nameColorStyle,
       canPreviewPhoto,
       previewImages,
       handleAvatarClick,
       goToEdit,
       handleGoToProfile,
-      handleReport,
-      formatNumber
+      handleReport
     }
   }
 })

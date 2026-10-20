@@ -35,6 +35,14 @@
 
       NuxtLink.profile-tab-bar__tab(role="tab" :to="scoresPath" :class="{ 'profile-tab-bar__tab--active': activeTab === 'scores' }")
         span.profile-tab-bar__tab-label {{ $t('profile.tabs.scores') }}
+
+      NuxtLink.profile-tab-bar__tab(
+        v-if="showAchievements"
+        role="tab"
+        :to="achievementsPath"
+        :class="{ 'profile-tab-bar__tab--active': activeTab === 'achievements' }"
+      )
+        span.profile-tab-bar__tab-label {{ $t('profile.tabs.achievements') }}
 </template>
 
 <script>
@@ -49,6 +57,11 @@ export default defineComponent({
     username: {
       type: String,
       required: true
+    },
+    showAchievements: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     local: {
       type: Boolean,
@@ -70,7 +83,9 @@ export default defineComponent({
 
       const path = route.value.path || ''
 
-      if (/\/(reviews|degerlendirmeler)\/?$/.test(path)) return 'reviews'
+      if (/\/(comments|yorumlar|reviews|degerlendirmeler)\/?$/.test(path)) return 'reviews'
+
+      if (/\/(achievements|basarimlar)\/?$/.test(path)) return 'achievements'
 
       if (/\/(scores|skorlar)\/?$/.test(path)) return 'scores'
 
@@ -81,6 +96,8 @@ export default defineComponent({
     const reviewsPath = computed(() => localePath({ name: 'Profile-username-Reviews', params: { username: props.username } }))
     const scoresPath = computed(() => localePath({ name: 'Profile-username-Scores', params: { username: props.username } }))
 
+    const achievementsPath = computed(() => localePath({ name: 'Profile-username-Achievements', params: { username: props.username } }))
+
     const changeTo = name => {
       emit('input', name)
     }
@@ -90,6 +107,7 @@ export default defineComponent({
       quizzesPath,
       reviewsPath,
       scoresPath,
+      achievementsPath,
       changeTo
     }
   }

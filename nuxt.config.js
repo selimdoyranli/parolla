@@ -90,7 +90,17 @@ module.exports = {
    */
   router: {
     trailingSlash: false,
-    middleware: ['redirect']
+    middleware: ['redirect'],
+    // the profile "Değerlendirmeler" tab became "Yorumlar": keep old links working (prod also 301s in .cloudflare)
+    extendRoutes(routes) {
+      routes.push(
+        { path: '/profil/:username/degerlendirmeler', redirect: to => `/profil/${to.params.username}/yorumlar` },
+        { path: '/en/profile/:username/reviews', redirect: to => `/en/profile/${to.params.username}/comments` },
+        // gold history moved under Aktiviteler
+        { path: '/altin-gecmisi', redirect: '/aktiviteler/altin-gecmisi' },
+        { path: '/en/gold-history', redirect: '/en/activities/gold-history' }
+      )
+    }
   },
 
   /*
@@ -111,7 +121,8 @@ module.exports = {
     { src: '~/plugins/portal-vue', ssr: false }, // https://v2.portal-vue.linusb.org/
     { src: '~/plugins/vue-croppa', ssr: false }, // https://www.npmjs.com/package/vue-croppa
     { src: '~/plugins/acs', ssr: false }, // https://audiocss.dev — UI sound effects
-    { src: '~/plugins/vue-infinite-loading', ssr: false } // https://www.npmjs.com/package/vue-infinite-loading
+    { src: '~/plugins/vue-infinite-loading', ssr: false }, // https://www.npmjs.com/package/vue-infinite-loading
+    { src: '~/plugins/economy.client', mode: 'client' }
   ],
 
   /*
@@ -341,12 +352,16 @@ module.exports = {
             en: '/profile/:username/quizzes'
           },
           'Profile/_username/Reviews/index': {
-            tr: '/profil/:username/degerlendirmeler',
-            en: '/profile/:username/reviews'
+            tr: '/profil/:username/yorumlar',
+            en: '/profile/:username/comments'
           },
           'Profile/_username/Scores/index': {
             tr: '/profil/:username/skorlar',
             en: '/profile/:username/scores'
+          },
+          'Profile/_username/Achievements/index': {
+            tr: '/profil/:username/basarimlar',
+            en: '/profile/:username/achievements'
           },
           'WordblockMode/index': {
             tr: '/kelimeblok',
@@ -399,6 +414,22 @@ module.exports = {
             tr: '/sayfa/kullanim-kosullari',
             en: '/page/terms-of-use'
           },
+          'Activities/index': {
+            tr: '/aktiviteler',
+            en: '/activities'
+          },
+          'Activities/Likes/index': {
+            tr: '/aktiviteler/begenilerim',
+            en: '/activities/likes'
+          },
+          'Activities/Comments/index': {
+            tr: '/aktiviteler/yorumlarim',
+            en: '/activities/comments'
+          },
+          'Activities/GoldHistory/index': {
+            tr: '/aktiviteler/altin-gecmisi',
+            en: '/activities/gold-history'
+          },
           'GmPanel/index': {
             tr: '/gm',
             en: '/gm'
@@ -410,6 +441,14 @@ module.exports = {
           'GmPanel/Daily/index': {
             tr: '/gm/gunluk',
             en: '/gm/daily'
+          },
+          'GmPanel/Commands/index': {
+            tr: '/gm/komutlar',
+            en: '/gm/commands'
+          },
+          'GmPanel/Events/index': {
+            tr: '/gm/etkinlikler',
+            en: '/gm/events'
           },
           'GmPanel/Ai/index': {
             tr: '/gm/ai',

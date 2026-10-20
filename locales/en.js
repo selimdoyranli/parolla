@@ -27,6 +27,159 @@ export default {
     flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards',
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
+  economy: {
+    retry: 'Retry',
+    earned: {
+      incomplete: 'Finish every letter or let the timer run out to earn rewards.',
+      capped: 'You hit the daily cap',
+      questDone: 'Quest completed: {title}',
+      viewQuests: 'Quests',
+      guestTeaser: 'You would have earned {amount} if you had logged in',
+      login: 'Log in'
+    },
+    inventory: {
+      title: 'Inventory',
+      tabs: { inventory: 'Inventory', shop: 'Shop', quests: 'Quests' }
+    },
+    quests: {
+      loginPrompt: 'Log in to see your quests.',
+      title: 'Quests',
+      daily: 'Daily quests',
+      weekly: 'Weekly quests',
+      claim: 'Claim',
+      reroll: 'Reroll',
+      chestTitle: 'Weekly gold gift',
+      chestHint: 'Claim every weekly quest',
+      claimed: 'You earned +{amount} gold',
+      rerolled: 'Quest rerolled',
+      chestClaimed: '+{amount} gold from the chest'
+    },
+    errors: {
+      'free-event': 'This set is free during the event, equip it without buying',
+      'insufficient-gold': 'Not enough gold',
+      'already-claimed': 'Already claimed',
+      'reroll-used': "You already used today's reroll",
+      'limit-reached': 'Limit reached',
+      'already-owned': 'You already own this item',
+      'not-for-sale': 'This item is not for sale',
+      'vitrin-expired': 'This showcase deal has expired',
+      'nothing-to-buy': 'Nothing left to buy in this set',
+      'not-completed': 'This quest is not completed yet',
+      'key-reused': 'This request was already used, try again',
+      'loadout-too-fast': 'You are changing too fast, wait a moment',
+      'bad-key': 'Invalid request',
+      'not-assigned': 'This quest is not assigned to you',
+      'no-replacement': 'No replacement quest available',
+      completed: 'This quest is already completed',
+      'not-ready': 'Not ready yet',
+      'unknown-item': 'Item not found',
+      'invalid-slot': 'Invalid loadout slot',
+      generic: 'Something went wrong, try again'
+    },
+    achievements: {
+      title: 'Achievements',
+      goal: {
+        'alfabe-ustasi': 'Finish the daily mode {n} times',
+        kusursuz: 'Finish the daily mode {n} times with no wrong or passed answers',
+        'kelime-avcisi': 'Solve {n} Wordblocks',
+        'keskin-goz': 'Solve {n} Wordblocks in 2 tries or fewer',
+        'tek-atis': 'Solve {n} Wordblocks on the first try',
+        turcu: 'Earn {n} tour points in total',
+        mimar: '{n} different players play your quizzes',
+        'quiz-yaraticisi': 'Create {n} public quizzes',
+        sadik: 'Reach a {n}-day login streak',
+        koleksiyoncu: 'Own {n} cosmetics',
+        'profil-fotografi': 'Add a profile photo',
+        firstLegendary: 'Get your first legendary cosmetic'
+      },
+      note: {
+        'profil-fotografi': 'Just use an uploaded photo instead of the avatar.',
+        'quiz-yaraticisi': 'Your quiz counts if it follows the rules; it is checked automatically within 1 hour.'
+      }
+    },
+    dailyReward: 'Daily reward: +{amount} gold (streak {streak})',
+    collection: {
+      freeTitle: 'Free during the event',
+      freeUntil: 'Until {date}',
+      title: 'Inventory',
+      preview: 'Preview',
+      equip: 'Equip',
+      unequip: 'Remove',
+      equipped: 'Equipped',
+      unequipped: 'Removed',
+      previewOpen: 'Preview',
+      empty: "You don't own any items yet.",
+      goShop: 'Go to the shop',
+      loginPrompt: 'Log in to see your inventory.',
+      login: 'Log in'
+    },
+    history: {
+      title: 'Gold history',
+      balance: 'Balance',
+      more: 'Load more',
+      empty: 'No gold activity yet.',
+      loginPrompt: 'Log in to see your gold history.',
+      reasons: {
+        signup: 'Welcome bonus',
+        early: 'Early user bonus',
+        daily_login: 'Daily login',
+        play_daily: 'Daily quiz',
+        play_wordblock: 'Wordblock',
+        play_tour: 'Tournament',
+        play_room: 'Room',
+        creator: 'Room creator reward',
+        daily_top: "Day's top players",
+        quest: 'Quest',
+        quest_chest: 'Weekly chest',
+        achievement: 'Achievement',
+        purchase: 'Purchase',
+        set_purchase: 'Set purchase',
+        reroll: 'Quest reroll',
+        streak_freeze: 'Login streak freeze',
+        season: 'Season reward',
+        admin: 'Admin adjustment'
+      }
+    },
+    shop: {
+      freeChip: 'Free · Event',
+      freeSet: 'Free during the event',
+      title: 'Shop',
+      vitrin: "Today's showcase",
+      products: 'Products',
+      login: 'Log in',
+      equippedLabel: 'Equipped',
+      buySet: 'Buy set',
+      owned: 'Owned',
+      original: 'Original',
+      price: 'Price',
+      balance: 'Your balance',
+      balanceAfter: 'After purchase',
+      confirm: 'Confirm',
+      equip: 'Equip',
+      equipped: 'Equipped',
+      equipFailed: 'Purchased, but equipping failed. Try again.',
+      purchased: 'Purchased',
+      setContent: 'Buys all {count} items in the set you do not own yet.',
+      insufficient: 'Not enough gold. Balance: {balance}, missing: {missing}',
+      rarity: { siradan: 'Common', nadir: 'Rare', epik: 'Epic', efsanevi: 'Legendary', sezon: 'Season' },
+      categories: {
+        all: 'All',
+        avatar_frame: 'Avatar frame',
+        avatar_decoration: 'Avatar decoration',
+        profile_effect: 'Profile effect',
+        profile_frame: 'Profile frame',
+        profile_cover: 'Profile cover',
+        name_color: 'Name color',
+        sets: 'Sets'
+      },
+      freeze: {
+        title: 'Login streak freeze',
+        desc: 'Keeps your login streak if you miss a day.',
+        note: 'If you miss a day, your login streak is kept. You can hold up to {max}.',
+        full: 'Full'
+      }
+    }
+  },
   success: {
     success: 'Success'
   },
@@ -209,6 +362,7 @@ export default {
     },
     menu: {
       title: 'More',
+      activities: 'Activities',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       profileEdit: 'Edit profile',
@@ -900,6 +1054,7 @@ export default {
     send: 'Send',
     reply: 'Reply',
     loadMoreReplies: 'Load more replies',
+    showReplies: 'Show {n} reply | Show {n} replies',
     deleted: 'This comment was deleted',
     quizOwner: 'Quiz owner',
     report: 'Report',
@@ -964,6 +1119,61 @@ export default {
     anomalyCount: '{count} anomalies detected',
     notifyTitle: 'Notice text for the player',
     actionDone: 'Done',
+    events: {
+      title: 'Events',
+      description: 'Make a set free for every player on chosen dates. It ends on its own and the set goes back on sale.',
+      list: 'Events',
+      empty: 'No events yet',
+      add: 'Add event',
+      edit: 'Edit event',
+      editAction: 'Edit',
+      series: 'Set',
+      seriesPick: 'Pick a set',
+      start: 'Start',
+      startDay: 'Start day',
+      days: 'Duration (days)',
+      end: 'End',
+      note: 'Note',
+      notePlaceholder: 'Optional short note',
+      save: 'Save',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      deleteConfirm: 'Delete the {name} event?',
+      saved: 'Saved',
+      deleted: 'Deleted',
+      status: { active: 'Active', planned: 'Planned', ended: 'Ended' },
+      errors: {
+        'invalid-series': 'Pick a valid set',
+        'invalid-window': 'Invalid date or duration (1-60 days)',
+        'invalid-note': 'The note can be at most 200 characters',
+        'not-found': 'Event not found'
+      }
+    },
+    commands: {
+      title: 'Command Panel',
+      description: 'Run GM commands here. Every command is logged.',
+      help: 'Commands',
+      userArg: 'user',
+      amountArg: 'amount',
+      noteArg: 'note',
+      sendgoldHelp: 'Sends gold to a user (1 - 100,000). Note is optional.',
+      example: 'Example',
+      placeholder: '/sendgold username 500 gift',
+      run: 'Run',
+      sent: 'Sent {amount} to {username} • new balance {balance}',
+      logs: 'Command log',
+      noLogs: 'No commands run yet',
+      more: 'Load more',
+      ok: 'Success',
+      error: 'Error',
+      errors: {
+        'unknown-command': 'Unknown command',
+        'missing-username': 'Username is required',
+        'invalid-amount': 'Amount must be a whole number from 1 to 100,000',
+        'user-not-found': 'User not found',
+        'ambiguous-user': 'Several users match this name with different letter case; use the exact name'
+      }
+    },
     wordblock: {
       title: 'Wordblock',
       description: 'Players who are first on all of the 5, 6 and 7 letter boards on the same day.',
@@ -1246,16 +1456,25 @@ export default {
       }
     }
   },
+  activities: {
+    title: 'Activities',
+    tabs: { likes: 'My likes', comments: 'My comments', goldHistory: 'Gold history' },
+    likesEmpty: "You haven't liked any comments yet.",
+    commentsEmpty: "You haven't written any comments yet.",
+    likesError: 'Could not load your likes.',
+    replyTo: 'Reply to a comment'
+  },
   profile: {
     tabs: {
       quizzes: 'Quizzes',
-      reviews: 'Reviews',
-      scores: 'Scores'
+      reviews: 'Comments',
+      scores: 'Scores',
+      achievements: 'Achievements'
     },
     stats: {
       created: 'Created',
       played: 'Played',
-      reviews: 'Reviews'
+      reviews: 'Comments'
     },
     scoresSubTabs: {
       creator: 'Creator',
@@ -1276,7 +1495,8 @@ export default {
     },
     reviewsTab: {
       empty: 'No comments written yet.',
-      error: 'Could not load comments.'
+      error: 'Could not load comments.',
+      replied: 'Reply sent'
     },
     scoresTab: {
       tour: { title: 'Tour mode scores' },
