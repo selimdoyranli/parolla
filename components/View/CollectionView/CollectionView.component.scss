@@ -34,6 +34,19 @@
     align-items: stretch;
   }
 
+  &__free-note {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 0 0 10px;
+    color: color-mix(in sRGB, var(--color-success-01) 65%, var(--color-text-01));
+    font-size: 0.85rem;
+  }
+
+  &__free .collection-view__grid + .collection-view__free-note {
+    margin-top: 16px;
+  }
+
   &__name {
     font-size: 0.9rem;
   }

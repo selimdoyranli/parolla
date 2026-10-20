@@ -13,6 +13,7 @@
           :vitrin-price="c.price"
           :owned-keys="ownedSet"
           :equipped-keys="equippedSet"
+          :free-keys="freeKeys"
           :balance="balance"
           :viewer="viewer"
           @buy="openItem"
@@ -43,6 +44,7 @@
       :equipping="e.some(v => v.key === equippingKey)"
       :owned-keys="ownedSet"
       :equipped-keys="equippedSet"
+      :free-keys="freeKeys"
       :balance="balance"
       :viewer="viewer"
       @buy="openItem"
@@ -57,7 +59,10 @@
           AppIcon(:name="openSeries === s.series ? 'tabler:chevron-down' : 'tabler:chevron-right'" :width="16" :height="16")
           span.shop-view__set-name {{ s.name }}
           span.shop-view__set-count {{ s.owned }}/{{ s.total }}
-        button.shop-buy(v-if="setPrices[s.series]" type="button" @click="openSet(s)")
+        button.shop-buy.shop-buy--free(v-if="freeEnds[s.series]" type="button" disabled)
+          AppIcon(name="tabler:gift" :width="14" :height="14")
+          span {{ $t('economy.shop.freeSet') }}
+        button.shop-buy(v-else-if="setPrices[s.series]" type="button" @click="openSet(s)")
           span {{ $t('economy.shop.buySet') }}
           GoldAmount(size="sm" :amount="setPrices[s.series].price")
         button.shop-buy.shop-buy--owned(v-else type="button" disabled)
@@ -72,6 +77,7 @@
           :equipping="e.some(v => v.key === equippingKey)"
           :owned-keys="ownedSet"
           :equipped-keys="equippedSet"
+          :free-keys="freeKeys"
           :balance="balance"
           :viewer="viewer"
           @buy="openItem"
@@ -123,6 +129,8 @@ export default defineComponent({
     const inventory = computed(() => store.state.economy.inventory || {})
     const ownedSet = computed(() => new Set((inventory.value.owned || []).map(o => o.itemKey)))
     const equippedSet = computed(() => new Set(Object.values(inventory.value.loadout || {})))
+    const freeKeys = computed(() => store.getters['economy/freeKeys'])
+    const freeEnds = computed(() => store.getters['economy/freeSeriesEnds'])
 
     const variantsOf = computed(() => {
       const map = {}
@@ -268,6 +276,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      store.dispatch('economy/fetchFreeEvents')
       loadOwned()
       loadVitrin()
     })
@@ -282,6 +291,8 @@ export default defineComponent({
       dialog,
       ownedSet,
       equippedSet,
+      freeKeys,
+      freeEnds,
       setPrices,
       entries,
       seriesList,

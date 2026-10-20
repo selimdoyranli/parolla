@@ -58,6 +58,28 @@ export default {
     })
   },
 
+  fetchFreeEvents() {
+    return this.$appFetch({ path: 'moderation/free-events', headers: { Authorization: `${this.$auth.strategy.token.get()}` } })
+  },
+
+  // id set: edit, otherwise create
+  saveFreeEvent(_, { id, data }) {
+    return this.$appFetch({
+      path: id ? `moderation/free-events/${id}` : 'moderation/free-events',
+      method: id ? 'PUT' : 'POST',
+      data,
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  deleteFreeEvent(_, id) {
+    return this.$appFetch({
+      path: `moderation/free-events/${id}`,
+      method: 'DELETE',
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
   fetchCommandLogs(_, { page }) {
     return this.$appFetch({
       path: 'moderation/commands/logs',

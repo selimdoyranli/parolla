@@ -49,7 +49,7 @@
           Tag(:color="log.status === 'ok' ? 'var(--color-success-01)' : 'var(--color-danger-01)'" round)
             | {{ $t(`gmPanel.commands.${log.status === 'ok' ? 'ok' : 'error'}`) }}
         code.gm-commands__code {{ log.command }}
-        small.gm-commands__time.gm-commands__sent(v-if="log.status === 'ok' && log.result")
+        small.gm-commands__time.gm-commands__sent(v-if="log.status === 'ok' && log.result && log.result.username")
           span {{ log.result.username }} +
           GoldAmount(size="sm" :amount="log.result.amount")
           span →

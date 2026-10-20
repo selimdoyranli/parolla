@@ -55,6 +55,7 @@ export default {
       chestClaimed: 'Sandıktan +{amount} altın'
     },
     errors: {
+      'free-event': 'Bu set etkinlik süresince ücretsiz, satın almadan kuşanabilirsin',
       'insufficient-gold': 'Yeterli altının yok',
       'already-claimed': 'Bu ödül zaten alındı',
       'reroll-used': 'Bugünkü yenileme hakkını kullandın',
@@ -98,6 +99,8 @@ export default {
     },
     dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
     collection: {
+      freeTitle: 'Etkinlik süresince ücretsiz ürünler',
+      freeUntil: "{date}'a kadar",
       title: 'Envanter',
       preview: 'Önizleme',
       equip: 'Kuşan',
@@ -138,6 +141,8 @@ export default {
       }
     },
     shop: {
+      freeChip: 'Ücretsiz · Etkinlik',
+      freeSet: 'Etkinlikte ücretsiz',
       title: 'Mağaza',
       vitrin: 'Günün vitrini',
       products: 'Ürünler',
@@ -1132,6 +1137,36 @@ export default {
     anomalyCount: '{count} anomali tespit edildi',
     notifyTitle: 'Oyuncuya bildirim metni',
     actionDone: 'İşlem tamamlandı',
+    events: {
+      title: 'Etkinlikler',
+      description: 'Bir seti belirli tarihlerde tüm oyunculara ücretsiz aç. Süre dolunca otomatik çıkar, set yeniden satışa döner.',
+      list: 'Etkinlikler',
+      empty: 'Henüz etkinlik yok',
+      add: 'Etkinlik ekle',
+      edit: 'Etkinliği düzenle',
+      editAction: 'Düzenle',
+      series: 'Set',
+      seriesPick: 'Set seç',
+      start: 'Başlangıç',
+      startDay: 'Başlangıç günü',
+      days: 'Süre (gün)',
+      end: 'Bitiş',
+      note: 'Not',
+      notePlaceholder: 'İsteğe bağlı kısa not',
+      save: 'Kaydet',
+      cancel: 'Vazgeç',
+      delete: 'Sil',
+      deleteConfirm: '{name} etkinliği silinsin mi?',
+      saved: 'Kaydedildi',
+      deleted: 'Silindi',
+      status: { active: 'Aktif', planned: 'Planlı', ended: 'Bitti' },
+      errors: {
+        'invalid-series': 'Geçerli bir set seç',
+        'invalid-window': 'Tarih veya süre geçersiz (1-60 gün)',
+        'invalid-note': 'Not en fazla 200 karakter olabilir',
+        'not-found': 'Etkinlik bulunamadı'
+      }
+    },
     commands: {
       title: 'Komut Paneli',
       description: 'GM komutlarını buradan çalıştır. Her komut kayıt altına alınır.',

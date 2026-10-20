@@ -3,6 +3,8 @@ export default () => ({
   catalog: { version: null, items: [] },
   quests: null,
   inventory: null,
+  // active free events: [{ series, seriesName, startsAt, endsAt, note }]
+  freeEvents: [],
   achievements: null,
   lastEconomy: null,
   guestPreview: null,

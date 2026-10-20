@@ -13,6 +13,9 @@ export default {
   SET_INVENTORY(state, inventory) {
     state.inventory = inventory
   },
+  SET_FREE_EVENTS(state, freeEvents) {
+    state.freeEvents = freeEvents
+  },
   SET_ACHIEVEMENTS(state, achievements) {
     state.achievements = achievements
   },

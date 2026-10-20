@@ -9,11 +9,14 @@
     title-active-color="var(--color-text-01)"
     title-inactive-color="var(--color-text-03)"
     :active="activeTab"
+    :ellipsis="false"
+    :swipe-threshold="4"
   )
     Tab(name="GmPanel-Wordblock" replace :to="localePath({ name: 'GmPanel-Wordblock' })" :title="$t('gmPanel.wordblock.title')")
     Tab(name="GmPanel-Daily" replace :to="localePath({ name: 'GmPanel-Daily' })" :title="$t('gmPanel.daily.title')")
     Tab(name="GmPanel-Ai" replace :to="localePath({ name: 'GmPanel-Ai' })" :title="$t('gmPanel.ai.title')")
     Tab(name="GmPanel-Commands" replace :to="localePath({ name: 'GmPanel-Commands' })" :title="$t('gmPanel.commands.title')")
+    Tab(name="GmPanel-Events" replace :to="localePath({ name: 'GmPanel-Events' })" :title="$t('gmPanel.events.title')")
 
   Tabs.gm-panel__tabs(
     v-if="activeTab === 'GmPanel-Ai'"

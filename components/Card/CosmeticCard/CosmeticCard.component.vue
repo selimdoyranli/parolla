@@ -14,6 +14,7 @@
     b.cosmetic-card__title {{ current.name }}
     .cosmetic-card__tags
       Tag.cosmetic-card__rarity(round :class="`cosmetic-card__rarity--${current.rarity}`") {{ $t(`economy.shop.rarity.${current.rarity}`) }}
+      Tag.cosmetic-card__free(v-if="free" round) {{ $t('economy.shop.freeChip') }}
       GoldAmount(v-if="original" size="sm" strike muted :amount="original")
     // grid cards always render the row so single- and multi-variant cards keep the same height
     .cosmetic-card__dots(v-if="variants.length > 1 || reserve")
@@ -30,7 +31,12 @@
     button.shop-buy.shop-buy--block.shop-buy--owned(v-if="equipped" type="button" disabled)
       AppIcon(name="tabler:check" :width="14" :height="14")
       span {{ $t('economy.shop.equippedLabel') }}
-    button.shop-buy.shop-buy--block.shop-buy--ghost(v-else-if="owned" type="button" :disabled="equipping" @click="$emit('equip', current)")
+    button.shop-buy.shop-buy--block.shop-buy--ghost(
+      v-else-if="owned || free"
+      type="button"
+      :disabled="equipping"
+      @click="$emit('equip', current)"
+    )
       Loading(v-if="equipping" color="currentColor" size="14")
       span(v-else) {{ $t('economy.shop.equip') }}
     button.shop-buy.shop-buy--block(v-else type="button" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })")
@@ -58,6 +64,8 @@ export default defineComponent({
     variants: { type: Array, required: true },
     ownedKeys: { type: Set, default: () => new Set() },
     equippedKeys: { type: Set, default: () => new Set() },
+    // free-event items: equippable without owning, not sold meanwhile
+    freeKeys: { type: Set, default: () => new Set() },
     balance: { type: Number, default: 0 },
     // viewer's own user (logged in) or null; sample avatar/name come from it
     viewer: { type: Object, default: null },
@@ -78,6 +86,7 @@ export default defineComponent({
     // ownership follows the selected variant
     const owned = computed(() => props.ownedKeys.has(current.value.key))
     const equipped = computed(() => props.equippedKeys.has(current.value.key))
+    const free = computed(() => props.freeKeys.has(current.value.key))
 
     const username = computed(() => (props.viewer && props.viewer.username) || 'selim.d')
     const previewUser = computed(() => {
@@ -109,6 +118,7 @@ export default defineComponent({
       index,
       owned,
       equipped,
+      free,
       current,
       category,
       username,

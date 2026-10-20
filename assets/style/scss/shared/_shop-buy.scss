@@ -72,4 +72,12 @@
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  // set row of a running free event: a label, not an action
+  &.shop-buy--free:disabled {
+    color: color-mix(in sRGB, var(--color-success-01) 65%, var(--color-text-01));
+    background: color-mix(in sRGB, var(--color-success-01) 15%, transparent);
+    cursor: default;
+    opacity: 1;
+  }
 }

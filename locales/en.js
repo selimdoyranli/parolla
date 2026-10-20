@@ -55,6 +55,7 @@ export default {
       chestClaimed: '+{amount} gold from the chest'
     },
     errors: {
+      'free-event': 'This set is free during the event, equip it without buying',
       'insufficient-gold': 'Not enough gold',
       'already-claimed': 'Already claimed',
       'reroll-used': "You already used today's reroll",
@@ -98,6 +99,8 @@ export default {
     },
     dailyReward: 'Daily reward: +{amount} gold (streak {streak})',
     collection: {
+      freeTitle: 'Free during the event',
+      freeUntil: 'Until {date}',
       title: 'Inventory',
       preview: 'Preview',
       equip: 'Equip',
@@ -138,6 +141,8 @@ export default {
       }
     },
     shop: {
+      freeChip: 'Free · Event',
+      freeSet: 'Free during the event',
       title: 'Shop',
       vitrin: "Today's showcase",
       products: 'Products',
@@ -1114,6 +1119,36 @@ export default {
     anomalyCount: '{count} anomalies detected',
     notifyTitle: 'Notice text for the player',
     actionDone: 'Done',
+    events: {
+      title: 'Events',
+      description: 'Make a set free for every player on chosen dates. It ends on its own and the set goes back on sale.',
+      list: 'Events',
+      empty: 'No events yet',
+      add: 'Add event',
+      edit: 'Edit event',
+      editAction: 'Edit',
+      series: 'Set',
+      seriesPick: 'Pick a set',
+      start: 'Start',
+      startDay: 'Start day',
+      days: 'Duration (days)',
+      end: 'End',
+      note: 'Note',
+      notePlaceholder: 'Optional short note',
+      save: 'Save',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      deleteConfirm: 'Delete the {name} event?',
+      saved: 'Saved',
+      deleted: 'Deleted',
+      status: { active: 'Active', planned: 'Planned', ended: 'Ended' },
+      errors: {
+        'invalid-series': 'Pick a valid set',
+        'invalid-window': 'Invalid date or duration (1-60 days)',
+        'invalid-note': 'The note can be at most 200 characters',
+        'not-found': 'Event not found'
+      }
+    },
     commands: {
       title: 'Command Panel',
       description: 'Run GM commands here. Every command is logged.',

@@ -446,6 +446,10 @@ module.exports = {
             tr: '/gm/komutlar',
             en: '/gm/commands'
           },
+          'GmPanel/Events/index': {
+            tr: '/gm/etkinlikler',
+            en: '/gm/events'
+          },
           'GmPanel/Ai/index': {
             tr: '/gm/ai',
             en: '/gm/ai'

@@ -9,12 +9,32 @@
       p {{ $t('economy.errors.generic') }}
       Button(round :loading="retrying" @click="load") {{ $t('economy.retry') }}
 
-    .collection-view__empty(v-if="loaded && !groups.length")
+    // free-event items: equippable by everyone until the event ends; owned ones stay in their own group
+    section.collection-view__group.collection-view__free(v-if="loaded && freeGroups.length")
+      h2.collection-view__heading {{ $t('economy.collection.freeTitle') }}
+      template(v-for="f in freeGroups")
+        p.collection-view__free-note(:key="`n-${f.series}`")
+          AppIcon(name="tabler:gift" :width="14" :height="14")
+          span {{ f.name }} · {{ $t('economy.collection.freeUntil', { date: f.until }) }}
+        .collection-view__grid(:key="`g-${f.series}`")
+          .collection-view__tile(v-for="item in f.items" :key="item.key")
+            CosmeticCard(preview-only :variants="[item]" :viewer="viewer")
+            b.collection-view__name {{ item.name }}
+            Button(
+              :color="isOn(item) ? undefined : 'var(--color-brand-02)'"
+              size="small"
+              round
+              :loading="item.key === togglingKey"
+              @click="toggle(item)"
+            )
+              | {{ $t(isOn(item) ? 'economy.collection.unequip' : 'economy.collection.equip') }}
+
+    .collection-view__empty(v-if="loaded && !groups.length && !freeGroups.length")
       p {{ $t('economy.collection.empty') }}
       Button(color="var(--color-brand-02)" round @click="$store.commit('economy/SET_INVENTORY_DIALOG_TAB', 'shop')")
         | {{ $t('economy.collection.goShop') }}
 
-    InlineAd(v-if="loaded && !groups.length")
+    InlineAd(v-if="loaded && !groups.length && !freeGroups.length")
 
     template(v-for="(g, i) in groups")
       section.collection-view__group(:key="g.category")
@@ -52,7 +72,7 @@ export default defineComponent({
   components: { Button },
   setup() {
     const store = useStore()
-    const { $auth } = useContext()
+    const { $auth, i18n } = useContext()
     const { equip, unequip } = useEquip()
 
     const loggedIn = computed(() => $auth.loggedIn)
@@ -71,6 +91,32 @@ export default defineComponent({
 
       return Object.keys(SLOTS)
         .map(category => ({ category, items: items.filter(i => i.category === category) }))
+        .filter(g => g.items.length)
+    })
+
+    const freeKeys = computed(() => store.getters['economy/freeKeys'])
+    const freeEnds = computed(() => store.getters['economy/freeSeriesEnds'])
+    // end is exclusive (next day 00:00): show the last minute, "29 Ekim 23:59"
+    const untilText = iso =>
+      new Date(new Date(iso).getTime() - 1).toLocaleString(i18n.locale, {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Europe/Istanbul'
+      })
+
+    const freeGroups = computed(() => {
+      const owned = new Set(((inventory.value && inventory.value.owned) || []).map(o => o.itemKey))
+      const items = store.state.economy.catalog.items.filter(i => freeKeys.value.has(i.key) && !owned.has(i.key) && SLOTS[i.category])
+
+      return Object.keys(freeEnds.value)
+        .map(series => ({
+          series,
+          until: untilText(freeEnds.value[series]),
+          items: items.filter(i => i.series === series),
+          name: (items.find(i => i.series === series) || {}).seriesName
+        }))
         .filter(g => g.items.length)
     })
 
@@ -94,7 +140,11 @@ export default defineComponent({
 
       try {
         // catalog first (cached = instant): filtering against a still-empty catalog would drop every key
-        const [{ error }] = await Promise.all([store.dispatch('economy/fetchInventory'), store.dispatch('economy/fetchCatalog')])
+        const [{ error }] = await Promise.all([
+          store.dispatch('economy/fetchInventory'),
+          store.dispatch('economy/fetchCatalog'),
+          store.dispatch('economy/fetchFreeEvents')
+        ])
 
         failed.value = Boolean(error)
         loaded.value = !error
@@ -108,7 +158,7 @@ export default defineComponent({
     watch(loggedIn, load)
     onMounted(load)
 
-    return { loggedIn, viewer, loaded, failed, retrying, load, groups, isOn, toggle, togglingKey, openLogin }
+    return { loggedIn, viewer, loaded, failed, retrying, load, groups, freeGroups, isOn, toggle, togglingKey, openLogin }
   }
 })
 </script>

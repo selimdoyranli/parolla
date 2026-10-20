@@ -200,6 +200,14 @@ export default {
     return result
   },
 
+  async fetchFreeEvents({ commit }) {
+    const { data, error } = await this.$appFetch({ path: 'economy/free-events/active' })
+
+    if (Array.isArray(data)) commit('SET_FREE_EVENTS', data)
+
+    return { data, error }
+  },
+
   fetchVitrin() {
     return this.$appFetch({ path: 'economy/shop/vitrin' })
   },

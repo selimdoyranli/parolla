@@ -119,6 +119,14 @@
     text-transform: uppercase;
   }
 
+  &__free.van-tag {
+    padding: 0 6px;
+    color: color-mix(in sRGB, var(--color-success-01) 65%, var(--color-text-01));
+    font-weight: 700;
+    font-size: 10px;
+    background: color-mix(in sRGB, var(--color-success-01) 15%, transparent);
+  }
+
   &__rarity--siradan.van-tag {
     color: #6b7280;
     background: rgba(107, 114, 128, 0.15);
