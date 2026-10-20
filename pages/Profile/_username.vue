@@ -21,8 +21,20 @@
 </template>
 
 <script>
-import { defineComponent, useRoute, useStore, useFetch, useRouter, useContext, computed, ref, provide } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useRoute,
+  useStore,
+  useFetch,
+  useRouter,
+  useContext,
+  useMeta,
+  computed,
+  ref,
+  provide
+} from '@nuxtjs/composition-api'
 import { Empty, Button } from 'vant'
+import { profileHead } from '@/helpers/profileSeo'
 
 export default defineComponent({
   components: {
@@ -34,7 +46,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const { localePath } = useContext()
+    const { localePath, getRouteBaseName, i18n } = useContext()
 
     const username = computed(() => route.value.params.username)
 
@@ -88,6 +100,16 @@ export default defineComponent({
 
     const refetch = () => fetch()
 
+    const TAB_BY_ROUTE = { Quizzes: 'quizzes', Reviews: 'reviews', Scores: 'scores', Achievements: 'achievements' }
+
+    useMeta(() => {
+      if (!player.value?.username || player.value.username !== username.value) return {}
+
+      const tab = TAB_BY_ROUTE[(getRouteBaseName(route.value) || '').replace('Profile-username-', '')] || null
+
+      return profileHead({ player: player.value, locale: i18n.locale, tab, quizCount: playerStats.value?.rooms ?? null })
+    })
+
     const goHome = () => {
       router.push(localePath({ name: 'Main' }))
     }
@@ -114,7 +136,8 @@ export default defineComponent({
       refetch,
       goHome
     }
-  }
+  },
+  head: {}
 })
 </script>
 
