@@ -30,7 +30,7 @@
     button.shop-buy.shop-buy--owned(v-else-if="freezes >= MAX_FREEZES" type="button" disabled)
       AppIcon(name="tabler:check" :width="14" :height="14")
       span {{ $t('economy.shop.freeze.full') }}
-    button.shop-buy(v-else type="button" :class="{ 'shop-buy--short': balance < FREEZE_PRICE }" :disabled="freezeBusy" @click="buyFreeze")
+    button.shop-buy(v-else type="button" :disabled="freezeBusy" @click="buyFreeze")
       GoldAmount(size="sm" :amount="FREEZE_PRICE")
 
   Tabs.shop-view__tabs(v-model="tab" line-width="20px" line-height="2px" :ellipsis="false" :swipe-threshold="3" :swipeable="false")
@@ -146,8 +146,13 @@ export default defineComponent({
       return map
     })
 
-    // [base, ...variants] per base item, in catalog order
-    const allEntries = computed(() => forSale.value.filter(i => !i.variantOf).map(i => [i, ...(variantsOf.value[i.key] || [])]))
+    // [base, ...variants] per base item, cheapest first (ties by name)
+    const allEntries = computed(() =>
+      forSale.value
+        .filter(i => !i.variantOf)
+        .map(i => [i, ...(variantsOf.value[i.key] || [])])
+        .sort((a, b) => a[0].price - b[0].price || a[0].name.localeCompare(b[0].name, i18n.locale))
+    )
 
     const entries = computed(() => allEntries.value.filter(e => e[0].category === tab.value))
 

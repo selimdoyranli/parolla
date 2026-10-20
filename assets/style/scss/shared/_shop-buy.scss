@@ -5,6 +5,7 @@
   --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
   --shop-buy-border: rgba(255, 120, 120, 0.55);
   --shop-buy-solid-hover: #f26666;
+  --shop-buy-ink: #2b0a0c; // dark ink: white on #ff7878 is only ~2.5:1
 }
 
 .dark-mode {
@@ -22,52 +23,38 @@
   justify-content: center;
   min-height: 32px;
   padding: 4px 12px;
-  color: var(--shop-buy-fg);
+  color: var(--shop-buy-ink);
   font-weight: 700;
   font-size: 12px;
   line-height: 1.2;
-  background: var(--shop-buy-bg);
+  background: var(--color-brand-02);
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.15s;
 
   &:hover:not(:disabled) {
-    background: var(--shop-buy-bg-hover);
+    background: var(--shop-buy-solid-hover);
   }
 
   &--block {
     width: 100%;
   }
 
-  &--solid {
-    color: #fff;
-    background: var(--color-brand-02);
-
-    &:hover:not(:disabled) {
-      background: var(--shop-buy-solid-hover);
-    }
-  }
-
   // secondary action (equip an owned item): outline only
   &--ghost {
+    color: var(--shop-buy-fg);
     background: transparent;
     border-color: var(--shop-buy-border);
+
+    &:hover:not(:disabled) {
+      background: var(--shop-buy-bg-hover);
+    }
   }
 
   // dialog cancel / close
   &--neutral {
     color: var(--color-text-02);
-    background: var(--color-ui-03);
-
-    &:hover:not(:disabled) {
-      background: var(--color-active-01);
-    }
-  }
-
-  // not enough gold: neutral background + lock, price stays at full contrast; still opens the dialog
-  &--short {
-    color: var(--color-text-01);
     background: var(--color-ui-03);
 
     &:hover:not(:disabled) {

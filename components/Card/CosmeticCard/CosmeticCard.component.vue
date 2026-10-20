@@ -16,9 +16,10 @@
     .cosmetic-card__tags
       Tag.cosmetic-card__rarity(round :class="`cosmetic-card__rarity--${current.rarity}`") {{ $t(`economy.shop.rarity.${current.rarity}`) }}
       GoldAmount(v-if="original" size="sm" strike muted :amount="original")
-    .cosmetic-card__dots(v-if="variants.length > 1")
+    // always rendered so single- and multi-variant cards keep the same height
+    .cosmetic-card__dots
       button.cosmetic-card__dot(
-        v-for="(v, i) in variants"
+        v-for="(v, i) in variants.length > 1 ? variants : []"
         :key="v.key"
         type="button"
         :aria-label="v.variantName || $t('economy.shop.original')"
@@ -33,15 +34,9 @@
     button.shop-buy.shop-buy--block.shop-buy--ghost(v-else-if="owned" type="button" :disabled="equipping" @click="$emit('equip', current)")
       Loading(v-if="equipping" color="currentColor" size="14")
       span(v-else) {{ $t('economy.shop.equip') }}
-    button.shop-buy.shop-buy--block(
-      v-else
-      type="button"
-      :class="{ 'shop-buy--short': short }"
-      @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })"
-    )
+    button.shop-buy.shop-buy--block(v-else type="button" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })")
       span(v-if="!loggedIn") {{ $t('economy.shop.login') }}
       template(v-else)
-        AppIcon(v-if="short" name="tabler:lock" :width="12" :height="12")
         GoldAmount(size="sm" :amount="price")
 </template>
 
@@ -98,8 +93,6 @@ export default defineComponent({
 
     const original = computed(() => (props.vitrinPrice && index.value === 0 ? current.value.price : null))
     const price = computed(() => (original.value ? props.vitrinPrice : current.value.price))
-    // not enough gold: still clickable, the dialog shows the missing amount
-    const short = computed(() => props.loggedIn && props.balance < price.value)
     const discount = computed(() => (original.value ? Math.round((1 - price.value / original.value) * 100) : 0))
 
     // catalog swatch; hashed hue only for items without one, neutral for the original
@@ -128,7 +121,6 @@ export default defineComponent({
       original,
       price,
       discount,
-      short,
       dotColor
     }
   }

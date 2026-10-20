@@ -74,6 +74,12 @@
     font-weight: 700;
   }
 
+  // vant puts the slot content in an inline span; make it a centred row so the label lines up with the coin
+  .van-button__text {
+    display: inline-flex;
+    align-items: center;
+  }
+
   &__reroll {
     color: var(--color-text-01);
     font-weight: 700;

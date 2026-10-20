@@ -16,6 +16,7 @@ const SLOT = {
 export default () => {
   const store = useStore()
   const { i18n } = useContext()
+  const { play } = useSfx()
 
   const notify = (message, ok) =>
     Notify({
@@ -39,6 +40,7 @@ export default () => {
       return false
     }
 
+    play('confirm')
     notify(i18n.t('economy.shop.equipped'), true)
 
     return true

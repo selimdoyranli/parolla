@@ -71,6 +71,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
+    const { play } = useSfx()
     const { i18n, $auth } = useContext()
 
     const state = reactive({ isOpen: props.isOpen })
@@ -102,6 +103,8 @@ export default defineComponent({
 
     const fail = error => {
       const code = error.details && error.details.code
+
+      play('error')
 
       if (code === 'insufficient-gold' || error.code === 402) {
         phase.value = 'insufficient'
@@ -143,6 +146,7 @@ export default defineComponent({
         if (error) return fail(error)
 
         phase.value = 'success'
+        play('success')
         await store.dispatch('economy/fetchInventory')
         emit('purchased')
       } finally {
