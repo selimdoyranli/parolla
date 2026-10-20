@@ -21,22 +21,27 @@
 
   template(v-else)
     .room-list__grid
-      template(v-for="(room, index) in list.items")
+      template(v-for="cell in cells")
+        //- full-row horizontal ad after every 6 cells (three rows)
+        InlineAd.room-list__banner(:key="cell.key" v-if="cell.type === 'banner'" lazy :data-ad-slot="4450666221")
+
+        //- card-sized ad: every 5th cell, fills the quiz card's height
+        .room-list__ad(:key="cell.key" v-else-if="cell.type === 'ad'")
+          small.room-list__ad-label {{ $t('general.ad') }}
+          AppAd(lazy :data-ad-slot="6048083070")
+
         QuizCard(
-          :key="room.documentId || room.roomId"
-          :room="room"
+          v-else
+          :key="cell.key"
+          :room="cell.room"
           :viewer="user"
           :userScoped="userScoped"
-          :index="index"
+          :index="cell.index"
           @edit="handleEditRoom"
           @delete="handleDeleteRoom"
         )
           template(v-if="$scopedSlots['card-extra']" #extra)
-            slot(name="card-extra" :room="room")
-
-        // Ad
-        template(v-if="showAds && (index + 1) % 4 === 0")
-          InlineAd.room-list__ad(:key="`ad-${index}`")
+            slot(name="card-extra" :room="cell.room")
 
   InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" @infinite="handleInfiniteLoading")
 </template>
@@ -260,6 +265,25 @@ export default defineComponent({
       Toast.clear()
     }
 
+    // grid cells: a card-sized ad after every 4 quizzes (every 5th cell), a full-row ad after every 6 cells
+    const cells = computed(() => {
+      const result = []
+      let count = 0
+      const push = cell => {
+        if (props.showAds && count > 0 && count % 6 === 0) result.push({ type: 'banner', key: `banner-${count}` })
+        result.push(cell)
+        count++
+      }
+
+      ;(list.items || []).forEach((room, index) => {
+        push({ type: 'room', room, index, key: room.documentId || room.roomId })
+
+        if (props.showAds && (index + 1) % 4 === 0) push({ type: 'ad', key: `ad-${index}` })
+      })
+
+      return result
+    })
+
     const searchFieldPlaceholder = computed(() => {
       if (props.user) {
         return i18n.t('creatorModeRooms.rooms.searchField.searchRoom.placeholder')
@@ -270,6 +294,7 @@ export default defineComponent({
 
     return {
       list,
+      cells,
       pagination,
       handleInfiniteLoading,
       form,
