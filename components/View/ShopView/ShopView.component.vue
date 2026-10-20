@@ -167,17 +167,20 @@ export default defineComponent({
       for (const e of allEntries.value) {
         const [i] = e
 
-        if (!bySeries.has(i.series)) bySeries.set(i.series, { series: i.series, name: i.seriesName, entries: [], owned: 0, total: 0 })
+        if (!bySeries.has(i.series))
+          bySeries.set(i.series, { series: i.series, name: i.seriesName, entries: [], owned: 0, total: 0, full: 0 })
 
         const s = bySeries.get(i.series)
 
         s.entries.push(e)
         s.total++
+        s.full += i.price
 
         if (ownedSet.value.has(i.key)) s.owned++
       }
 
-      return [...bySeries.values()]
+      // cheapest set first by its full price (stable while the user owns some), ties by name
+      return [...bySeries.values()].sort((a, b) => a.full - b.full || (a.name || '').localeCompare(b.name || '', i18n.locale))
     })
 
     const toggleSeries = series => (openSeries.value = openSeries.value === series ? null : series)
