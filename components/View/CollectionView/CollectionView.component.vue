@@ -34,6 +34,7 @@
 <script>
 import { defineComponent, computed, ref, onMounted, watch, useContext, useStore } from '@nuxtjs/composition-api'
 import { Button, Notify } from 'vant'
+import { mergeServerSlots } from '@/helpers/loadoutMerge'
 
 // catalog category -> loadout slot, in display order
 const SLOTS = {
@@ -77,21 +78,11 @@ export default defineComponent({
     })
 
     const isOn = item => draft.value[SLOTS[item.category]] === item.key
-    // the tab stays mounted: when the server loadout changes (shop equip, purchase), take only the slots that
-    // changed server-side, so unsaved edits to other slots survive and Kaydet does not revert the shop equip
+    // the tab stays mounted: merge server loadout changes into the draft so Kaydet does not revert a shop equip
     watch(
       () => inventory.value && inventory.value.loadout,
       (next, prev) => {
-        if (!loaded.value) return
-
-        const merged = { ...draft.value }
-
-        Object.values(SLOTS).forEach(slot => {
-          const value = (next && next[slot]) || null
-
-          if (value !== ((prev && prev[slot]) || null)) merged[slot] = value
-        })
-        draft.value = clean(merged)
+        if (loaded.value) draft.value = mergeServerSlots(draft.value, prev, next, Object.values(SLOTS))
       }
     )
 

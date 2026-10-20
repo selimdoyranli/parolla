@@ -1,5 +1,5 @@
 <template lang="pug">
-.profile-view(:class="{ 'profile-view--framed': frameSrc }")
+.profile-view(ref="root" :class="{ 'profile-view--framed': frameSrc }")
   template(v-if="playerLoading")
     .profile-view-loading
       Loading(color="var(--color-brand-02)") {{ $t('dialog.player.loading') }}
@@ -89,19 +89,19 @@
         strong.profile-view-stats__value {{ formatNumber(playerStats.reviews) }}
         span.profile-view-stats__label {{ $t('profile.stats.reviews') }}
 
-    //- one tile per corner at the art's own ratio: stretching the 450x880 frame over a wide card squashed it
-    .profile-view-overlay.profile-view-frame(v-if="frameSrc" :style="{ '--frame-src': `url(${frameSrc})` }")
-      i(v-for="n in 4" :key="n")
-    img.profile-view-overlay.profile-view-overlay--effect(v-if="effectSrc" :src="effectSrc" alt)
+    .profile-view-frame(v-if="frameStyle" aria-hidden="true" :style="frameStyle")
+    img.profile-view-overlay.profile-view-overlay--effect(v-if="effectSrc" :src="effectSrc" alt aria-hidden="true")
 </template>
 
 <script>
-import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, onMounted, onBeforeUnmount, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
 import { Empty, Button, Loading, ImagePreview } from 'vant'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
 import { buildBannerStyle } from '@/helpers/profileBanner'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { fitFrame } from '@/helpers/frameFit'
+import FRAME_SLICES from '@/static/cosmetics/frames.json'
 
 export default defineComponent({
   components: {
@@ -158,6 +158,38 @@ export default defineComponent({
     const effectSrc = computed(() => asset(loadout.value.profileEffect))
     const plateImage = computed(() => asset(loadout.value.nameplate))
     const nameColorStyle = computed(() => nameStyle(loadout.value.nameColor))
+
+    // the frame is a 9-slice sprite next to the art (<file>.9.svg) laid out by border-image; its box needs the card size
+    const root = ref(null)
+    const size = ref(null)
+    let observer = null
+
+    onMounted(() => {
+      if (!root.value || typeof ResizeObserver === 'undefined') return
+
+      observer = new ResizeObserver(([entry]) => {
+        size.value = { width: entry.contentRect.width, height: entry.contentRect.height }
+      })
+      observer.observe(root.value)
+    })
+    onBeforeUnmount(() => observer && observer.disconnect())
+
+    const frameStyle = computed(() => {
+      const slice = frameSrc.value && FRAME_SLICES[loadout.value.profileFrame.split('.')[0]]
+      const fit = slice && size.value && fitFrame(slice, size.value.width, size.value.height)
+
+      if (!fit) return null
+
+      return {
+        left: `${fit.x}px`,
+        top: `${fit.y}px`,
+        width: `${fit.w}px`,
+        height: `${fit.h}px`,
+        borderImageSource: `url(${frameSrc.value.replace(/\.svg$/, '.9.svg')})`,
+        borderImageSlice: `${slice.t} ${slice.r} ${slice.b} ${slice.l}`,
+        borderImageWidth: `${fit.t}px ${fit.r}px ${fit.b}px ${fit.l}px`
+      }
+    })
 
     const bannerStyle = computed(() => {
       const base = buildBannerStyle(props.player?.diceBear?.config)
@@ -229,7 +261,9 @@ export default defineComponent({
       isGm,
       bannerStyle,
       coverSrc,
+      root,
       frameSrc,
+      frameStyle,
       effectSrc,
       plateImage,
       plateStyle,

@@ -228,29 +228,13 @@
     }
   }
 
-  // Each quarter shows its own corner of the art, scaled uniformly. The art must be wider than the quarter
-  // (120%: bands reach ~45/450) so the far band never shows; 360px keeps the band from going thin on phones.
+  // Box position, size and border-image-width come from helpers/frameFit (whole-px tiles)
   &-frame {
-    display: grid;
-    grid-template: 1fr 1fr / 1fr 1fr;
-
-    i {
-      background-image: var(--frame-src);
-      background-repeat: no-repeat;
-      background-size: max(120%, 360px) auto;
-
-      &:nth-child(2) {
-        background-position: right top;
-      }
-
-      &:nth-child(3) {
-        background-position: left bottom;
-      }
-
-      &:nth-child(4) {
-        background-position: right bottom;
-      }
-    }
+    position: absolute;
+    z-index: 1;
+    border: 0 solid transparent;
+    border-image-repeat: round;
+    pointer-events: none;
   }
 
   &-loading {
@@ -263,29 +247,29 @@
     padding: 24px;
   }
 
-  // Keep content out from under the frame band (~26-45px at the tile scale); the bottom pad clears the deeper bottom bands.
-  // The banner stays full-bleed.
+  // Keep content off the frame: corners and edge units are drawn at about half the art scale (110 art px -> 55px),
+  // with the art's own band well inside that. The banner stays full-bleed.
   &--framed {
-    --frame-inset: 6%;
+    --frame-band: 55px;
 
     .profile-view-header,
     .profile-view-identity,
     .profile-view-stats {
       position: relative;
-      // unstretched frame art (e.g. bogaz skyline) is taller than the band: keep the text above it
+      // tall corner art (e.g. bogaz skyline, patili tail) can reach the text: keep the text above it
       z-index: 2;
-      padding-inline: calc(var(--base-p-x) + var(--frame-inset));
+      padding-inline: calc(var(--base-p-x) + var(--frame-band) * 0.5);
     }
 
     .profile-view-banner__actions {
-      right: calc(8px + var(--frame-inset));
+      right: calc(8px + var(--frame-band) * 0.5);
     }
 
     .profile-view-stats {
       // the side bands leave too little room for three stats on phones
       flex-wrap: wrap;
       row-gap: 4px;
-      padding-bottom: 52px;
+      padding-bottom: calc(var(--frame-band) + 8px);
     }
   }
 }
