@@ -179,8 +179,13 @@ export default defineComponent({
         if (ownedSet.value.has(i.key)) s.owned++
       }
 
+      // a set is one item per slot: same-category packs (the ozel name colours) are sold item by item only
+      const isRealSet = s => new Set(s.entries.map(([i]) => i.category)).size === s.entries.length
+
       // cheapest set first by its full price (stable while the user owns some), ties by name
-      return [...bySeries.values()].sort((a, b) => a.full - b.full || (a.name || '').localeCompare(b.name || '', i18n.locale))
+      return [...bySeries.values()]
+        .filter(isRealSet)
+        .sort((a, b) => a.full - b.full || (a.name || '').localeCompare(b.name || '', i18n.locale))
     })
 
     const toggleSeries = series => (openSeries.value = openSeries.value === series ? null : series)
