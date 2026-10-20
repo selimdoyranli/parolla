@@ -65,6 +65,35 @@
     }
   }
 
+  &__parent {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 4px 8px;
+    color: var(--color-text-02);
+    font-size: 13px;
+    text-decoration: none;
+    border-inline-start: 2px solid var(--color-border-01);
+
+    &-label {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      color: var(--color-text-03);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    &-text {
+      display: -webkit-box;
+      overflow: hidden;
+      word-break: break-word;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
   // pinned to the bottom of the viewport while replying
   &__composer {
     position: sticky;

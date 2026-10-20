@@ -28,7 +28,7 @@ export default {
     const [roomsRes, scoresRes, reviewsRes] = await Promise.all([
       this.$appFetch({ path: 'rooms', query: roomsQuery }),
       this.$appFetch({ path: 'room-scores', query: simpleQuery }),
-      this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { pageSize: 1 } })
+      this.$appFetch({ path: `room-comments/by-user/${userId}`, query: { pageSize: 1, topLevel: 1 } })
     ])
 
     const stats = {

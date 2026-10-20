@@ -95,7 +95,7 @@ export default defineComponent({
     }
     const openHistory = () => {
       close()
-      router.push(localePath({ name: 'GoldHistory' }))
+      router.push(localePath({ name: 'Activities-GoldHistory' }))
     }
 
     const activeTab = computed(() => TABS.find(t => t.key === tab.value) || TABS[0])

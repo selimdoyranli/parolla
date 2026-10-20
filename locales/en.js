@@ -358,6 +358,7 @@ export default {
     menu: {
       title: 'More',
       goldHistory: 'Gold history',
+      activities: 'Activities',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       profileEdit: 'Edit profile',
@@ -1419,6 +1420,14 @@ export default {
         keywords: 'music quiz, music quiz play, listen to songs and guess them'
       }
     }
+  },
+  activities: {
+    title: 'Activities',
+    tabs: { likes: 'My likes', comments: 'My comments', goldHistory: 'Gold history' },
+    likesEmpty: "You haven't liked any comments yet.",
+    commentsEmpty: "You haven't written any comments yet.",
+    likesError: 'Could not load your likes.',
+    replyTo: 'Reply to a comment'
   },
   profile: {
     tabs: {

@@ -37,11 +37,18 @@ Dialog.dialog.menu-dialog(
         @click.native="handleClickMyQuizzes"
       )
       Cell.menu-dialog-nav__item(
+        icon="clock-o"
+        size="large"
+        is-link
+        :title="$t('dialog.menu.activities')"
+        @click.native="navigateAndClose('Activities-Likes')"
+      )
+      Cell.menu-dialog-nav__item(
         icon="balance-list-o"
         size="large"
         is-link
         :title="$t('dialog.menu.goldHistory')"
-        @click.native="navigateAndClose('GoldHistory')"
+        @click.native="navigateAndClose('Activities-GoldHistory')"
       )
       Cell.menu-dialog-nav__item(
         v-if="isGmUser($auth.user)"

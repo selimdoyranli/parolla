@@ -14,6 +14,8 @@ const roomCommentTransformer = model => {
     likedByMe: model.likedByMe,
     parentDocumentId: model.parentDocumentId,
     room: model.room || null,
+    // replies on the profile/activities lists: short quote of the comment they answer
+    parent: model.parent || null,
     // first replies of a root, shipped inline by the list endpoint
     previewReplies: (model.previewReplies || []).map(roomCommentTransformer)
   }

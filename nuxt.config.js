@@ -95,7 +95,10 @@ module.exports = {
     extendRoutes(routes) {
       routes.push(
         { path: '/profil/:username/degerlendirmeler', redirect: to => `/profil/${to.params.username}/yorumlar` },
-        { path: '/en/profile/:username/reviews', redirect: to => `/en/profile/${to.params.username}/comments` }
+        { path: '/en/profile/:username/reviews', redirect: to => `/en/profile/${to.params.username}/comments` },
+        // gold history moved under Aktiviteler
+        { path: '/altin-gecmisi', redirect: '/aktiviteler/altin-gecmisi' },
+        { path: '/en/gold-history', redirect: '/en/activities/gold-history' }
       )
     }
   },
@@ -411,9 +414,21 @@ module.exports = {
             tr: '/sayfa/kullanim-kosullari',
             en: '/page/terms-of-use'
           },
-          'GoldHistory/index': {
-            tr: '/altin-gecmisi',
-            en: '/gold-history'
+          'Activities/index': {
+            tr: '/aktiviteler',
+            en: '/activities'
+          },
+          'Activities/Likes/index': {
+            tr: '/aktiviteler/begenilerim',
+            en: '/activities/likes'
+          },
+          'Activities/Comments/index': {
+            tr: '/aktiviteler/yorumlarim',
+            en: '/activities/comments'
+          },
+          'Activities/GoldHistory/index': {
+            tr: '/aktiviteler/altin-gecmisi',
+            en: '/activities/gold-history'
           },
           'GmPanel/index': {
             tr: '/gm',

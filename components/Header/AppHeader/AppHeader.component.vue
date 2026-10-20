@@ -327,7 +327,7 @@ export default defineComponent({
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'GoldHistory' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' }))
       ) {
         return true
       }

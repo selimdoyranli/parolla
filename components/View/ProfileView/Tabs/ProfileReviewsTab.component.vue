@@ -5,11 +5,11 @@
       Loading(color="var(--color-brand-02)")
 
   template(v-else-if="error")
-    Empty(image="error" :description="$t('profile.reviewsTab.error')")
+    Empty(image="error" :description="$t(source === 'likes' ? 'activities.likesError' : 'profile.reviewsTab.error')")
       Button(@click="reload") {{ $t('error.tryAgain') }}
 
   template(v-else-if="items.length === 0")
-    Empty(:description="$t('profile.reviewsTab.empty')")
+    Empty(:description="$t(emptyKey)")
 
   template(v-else)
     .profile-reviews-tab__list
@@ -20,9 +20,18 @@
           AppIcon.profile-reviews-tab__quote-icon(v-else name="tabler:quote" :width="16" :height="16")
           span.profile-reviews-tab__quote-title {{ item.room.title }}
           AppIcon.profile-reviews-tab__quote-arrow(name="tabler:chevron-right" :width="16" :height="16")
+        //- a reply: label + short quote of the comment it answers, opening the quiz on that thread
+        NuxtLink.profile-reviews-tab__parent(v-if="item.parent" :to="roomLocation(item)")
+          span.profile-reviews-tab__parent-label
+            AppIcon(name="tabler:corner-down-right" :width="14" :height="14")
+            | {{ $t('activities.replyTo') }}
+          span.profile-reviews-tab__parent-text(v-if="item.parent.isDeleted") {{ $t('comments.deleted') }}
+          span.profile-reviews-tab__parent-text(v-else)
+            b(v-if="item.parent.user") {{ item.parent.user.username }}:
+            | {{ ' ' + item.parent.content }}
         RoomCommentItem(:comment="item" :room-id="item.room.id" @deleted="removeItem")
 
-    InfiniteLoading(:key="playerId" v-if="hasMore" @infinite="handleInfinite")
+    InfiniteLoading(:key="`${source}-${playerId}`" v-if="hasMore" @infinite="handleInfinite")
       template(#spinner)
         Loading(color="var(--color-brand-02)" size="20")
       template(#no-more) {{ '' }}
@@ -53,10 +62,14 @@ export default defineComponent({
     Button,
     InfiniteLoading
   },
-  setup() {
-    const shell = inject('profileShell')
+  props: {
+    // profile: top-level comments of the profile user; mine: own comments + replies; likes: own likes
+    source: { type: String, default: 'profile' }
+  },
+  setup(props) {
+    const shell = inject('profileShell', null)
     const store = useStore()
-    const { localePath, i18n } = useContext()
+    const { localePath, i18n, $auth } = useContext()
 
     const items = ref([])
     const page = ref(0)
@@ -64,7 +77,8 @@ export default defineComponent({
     const loading = ref(false)
     const error = ref(null)
 
-    const playerId = computed(() => shell?.player?.value?.id || null)
+    const playerId = computed(() => (props.source === 'profile' ? shell?.player?.value?.id : $auth.user?.id) || null)
+    const emptyKey = { profile: 'profile.reviewsTab.empty', mine: 'activities.commentsEmpty', likes: 'activities.likesEmpty' }[props.source]
 
     const roomLocation = item =>
       localePath({
@@ -84,7 +98,10 @@ export default defineComponent({
       error.value = null
 
       const userId = playerId.value
-      const { data, error: err } = await store.dispatch('comment/fetchByUser', { userId, page: page.value + 1 })
+      const nextPage = page.value + 1
+      const { data, error: err } = await (props.source === 'likes'
+        ? store.dispatch('comment/fetchMyLikes', { page: nextPage })
+        : store.dispatch('comment/fetchByUser', { userId, page: nextPage, topLevel: props.source === 'profile' }))
 
       // The profile changed while loading: drop this response
       if (userId !== playerId.value) return { stale: true }
@@ -159,6 +176,7 @@ export default defineComponent({
 
     return {
       items,
+      emptyKey,
       hasMore,
       playerId,
       loading,

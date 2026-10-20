@@ -1,7 +1,5 @@
 <template lang="pug">
 .gold-history-view
-  h1.gold-history-view__title {{ $t('economy.history.title') }}
-
   .gold-history-view__login(v-if="!loggedIn")
     p {{ $t('economy.history.loginPrompt') }}
     Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}

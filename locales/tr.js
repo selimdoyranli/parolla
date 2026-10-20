@@ -360,6 +360,7 @@ export default {
     menu: {
       title: 'Daha fazla',
       goldHistory: 'Altın geçmişi',
+      activities: 'Aktiviteler',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       profileEdit: 'Profili düzenle',
@@ -1441,6 +1442,14 @@ export default {
         keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
       }
     }
+  },
+  activities: {
+    title: 'Aktiviteler',
+    tabs: { likes: 'Beğenilerim', comments: 'Yorumlarım', goldHistory: 'Altın geçmişi' },
+    likesEmpty: 'Henüz bir yorumu beğenmedin.',
+    commentsEmpty: 'Henüz yorum yazmadın.',
+    likesError: 'Beğenilerin yüklenemedi.',
+    replyTo: 'Yoruma yanıt'
   },
   profile: {
     tabs: {
