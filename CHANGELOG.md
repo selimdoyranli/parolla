@@ -1,5 +1,101 @@
 # Changelog
 
+## v3.5.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.4.1...v3.5.0)
+
+
+### 🚀 Enhancements
+
+  - **economy:** Add cosmetic SVG assets ([bd41d67](https://github.com/selimdoyranli/parolla/commit/bd41d67))
+  - **economy:** Economy store, useCosmetics and catalog cache ([de4689c](https://github.com/selimdoyranli/parolla/commit/de4689c))
+  - **economy:** Render avatar frames, decorations, name colors, titles and nameplates ([71d09b7](https://github.com/selimdoyranli/parolla/commit/71d09b7))
+  - **economy:** Profile cover, frame, effect and achievements tab ([0fff1e3](https://github.com/selimdoyranli/parolla/commit/0fff1e3))
+  - **economy:** Jeton badge and quests dialog ([d6ca22c](https://github.com/selimdoyranli/parolla/commit/d6ca22c))
+  - **economy:** Shop page ([1329c57](https://github.com/selimdoyranli/parolla/commit/1329c57))
+  - **economy:** Collection (loadout) and jeton history pages ([56559d0](https://github.com/selimdoyranli/parolla/commit/56559d0))
+  - **economy:** Show earned jeton after games and guest teaser ([381e2d9](https://github.com/selimdoyranli/parolla/commit/381e2d9))
+  - **economy:** I18n strings, error states and real variant swatches ([377d875](https://github.com/selimdoyranli/parolla/commit/377d875))
+  - **economy:** Inventory dialog and homepage shop button ([cd2c3a9](https://github.com/selimdoyranli/parolla/commit/cd2c3a9))
+  - **economy:** Redesign quests tab ([b953097](https://github.com/selimdoyranli/parolla/commit/b953097))
+  - **economy:** Redesign shop tab ([80a3a1f](https://github.com/selimdoyranli/parolla/commit/80a3a1f))
+  - **economy:** Gm command panel ([7f98fc5](https://github.com/selimdoyranli/parolla/commit/7f98fc5))
+  - **economy:** Live loadout updates in tour and draw rooms ([373704b](https://github.com/selimdoyranli/parolla/commit/373704b))
+  - **economy:** Vant-based InventoryDialog, top-end shop badge, history back button, remove titles ([7129c25](https://github.com/selimdoyranli/parolla/commit/7129c25))
+  - **economy:** Shop polish, brand buy button, purchase sounds ([b48e5f5](https://github.com/selimdoyranli/parolla/commit/b48e5f5))
+  - **economy:** Vitrin scroll fade, touch scroll over vitrin, mobile category dropdown ([172be1f](https://github.com/selimdoyranli/parolla/commit/172be1f))
+  - **economy:** Instant equip in inventory, preview dialog, purchase preview ([84ce701](https://github.com/selimdoyranli/parolla/commit/84ce701))
+  - **shop:** Takim rengi set assets, list sets cheapest first ([d3164a7](https://github.com/selimdoyranli/parolla/commit/d3164a7))
+  - **economy:** Add quiz-yaraticisi achievement goal texts ([1fa3b92](https://github.com/selimdoyranli/parolla/commit/1fa3b92))
+  - **economy:** Family note under quiz-yaraticisi achievements ([b92b69d](https://github.com/selimdoyranli/parolla/commit/b92b69d))
+  - **economy:** Profil-fotografi achievement goal and note copy ([de38336](https://github.com/selimdoyranli/parolla/commit/de38336))
+  - **economy:** Streak freeze buys through purchase dialog, quest and achievement wording ([e20ba27](https://github.com/selimdoyranli/parolla/commit/e20ba27))
+  - **economy:** Show a finish-every-letter hint when an early-ended game earns nothing ([5a47863](https://github.com/selimdoyranli/parolla/commit/5a47863))
+  - **profile:** Comments tab with quiz quote, like and reply; card no longer waits for tour score ([a1ce83c](https://github.com/selimdoyranli/parolla/commit/a1ce83c))
+  - **profile:** Comments tab url yorumlar/comments, redirect the old reviews url ([12d8550](https://github.com/selimdoyranli/parolla/commit/12d8550))
+  - **activities:** Aktiviteler page with my likes, my comments and gold history; profile top-level ([66e5259](https://github.com/selimdoyranli/parolla/commit/66e5259))
+  - **comments:** Show the reply count, drop the gold history menu entry ([569b8e8](https://github.com/selimdoyranli/parolla/commit/569b8e8))
+  - **ads:** Compact horizontal ads in inventory tabs and quiz lists, daily intro ad above board ([c5bcd9e](https://github.com/selimdoyranli/parolla/commit/c5bcd9e))
+  - **cosmetics:** New cumhuriyet cover with flag and atatürk silhouette, undated yilbasi cover ([6a87783](https://github.com/selimdoyranli/parolla/commit/6a87783))
+  - **cosmetics:** Cumhuriyet cover uses a public-domain ataturk portrait, centred for phone crops ([11e1ee3](https://github.com/selimdoyranli/parolla/commit/11e1ee3))
+  - **economy:** Gm events tab and free event items in inventory and shop ([44a2a22](https://github.com/selimdoyranli/parolla/commit/44a2a22))
+  - **ads:** Card-sized quiz list ad back, banner every 6 cells on its own unit, lazy list ads ([60c3b27](https://github.com/selimdoyranli/parolla/commit/60c3b27))
+  - **profile:** Client-side seo head, own-page menu without go-to-profile, report above frame ([016bb84](https://github.com/selimdoyranli/parolla/commit/016bb84))
+
+### 🔥 Performance
+
+  - **economy:** Do not await wallet refresh before showing end dialog ([f8e464f](https://github.com/selimdoyranli/parolla/commit/f8e464f))
+
+### 🩹 Fixes
+
+  - **economy:** Keep plated names readable and scope podium nameplate to the username strip ([7d3dd9b](https://github.com/selimdoyranli/parolla/commit/7d3dd9b))
+  - **economy:** Draw podium nameplate with a pseudo-element so geometry is unchanged ([952ce5d](https://github.com/selimdoyranli/parolla/commit/952ce5d))
+  - **economy:** Keep profile content clear of the frame band, handle achievements error ([8a58aad](https://github.com/selimdoyranli/parolla/commit/8a58aad))
+  - **economy:** Per-variant ownership, equip error handling and reusable idempotency keys in shop ([19fec53](https://github.com/selimdoyranli/parolla/commit/19fec53))
+  - **economy:** Keep the idempotency key after network failures ([dd3fe7c](https://github.com/selimdoyranli/parolla/commit/dd3fe7c))
+  - **economy:** Clear previous game reward before end dialog opens ([cd00225](https://github.com/selimdoyranli/parolla/commit/cd00225))
+  - **economy:** Collection cold-load keeps loadout, surface history load-more errors ([8638440](https://github.com/selimdoyranli/parolla/commit/8638440))
+  - **economy:** Pass loadout through ws player mappers ([76ed12f](https://github.com/selimdoyranli/parolla/commit/76ed12f))
+  - **economy:** Refetch vitrin when a vitrin deal has expired ([a36ef8d](https://github.com/selimdoyranli/parolla/commit/a36ef8d))
+  - **economy:** Keep loadout draft as the server returns it ([37cfb34](https://github.com/selimdoyranli/parolla/commit/37cfb34))
+  - **economy:** Compact shop badge and inventory dialog tabs ([44744b8](https://github.com/selimdoyranli/parolla/commit/44744b8))
+  - **economy:** Shrink shop badge so the icon stays visible ([fe98d12](https://github.com/selimdoyranli/parolla/commit/fe98d12))
+  - **economy:** Describe achievement goals and polish quests tab ([ae1e70d](https://github.com/selimdoyranli/parolla/commit/ae1e70d))
+  - **economy:** Equip from shop cards and readable short-balance buttons ([f6c180e](https://github.com/selimdoyranli/parolla/commit/f6c180e))
+  - **economy:** Resync Envanter draft to server loadout, 2-line freeze desc, ambiguous-user i18n ([3f0f22d](https://github.com/selimdoyranli/parolla/commit/3f0f22d))
+  - **economy:** White buy label, reserve card rows in grid only, centre reroll label ([b69baca](https://github.com/selimdoyranli/parolla/commit/b69baca))
+  - **economy:** Keep profile frame/effect proportions, block nameplate, merge shop equip into draft ([7bd85a1](https://github.com/selimdoyranli/parolla/commit/7bd85a1))
+  - **economy:** 9-slice border-image profile frames, merge helper, aria-hidden overlays ([6f71ef9](https://github.com/selimdoyranli/parolla/commit/6f71ef9))
+  - **economy:** Larger frame edge units so repeats show several motifs ([4b11749](https://github.com/selimdoyranli/parolla/commit/4b11749))
+  - **economy:** Mount purchase dialog on body, framed padding only when a frame renders ([78ded08](https://github.com/selimdoyranli/parolla/commit/78ded08))
+  - **economy:** Edition-neutral streak freeze copy ([edaca29](https://github.com/selimdoyranli/parolla/commit/edaca29))
+  - **economy:** Keep shop card avatar layers under the sticky category tabs ([0cfd3e4](https://github.com/selimdoyranli/parolla/commit/0cfd3e4))
+  - **profile:** Wrap profile stats instead of clipping on narrow cards ([50bc94c](https://github.com/selimdoyranli/parolla/commit/50bc94c))
+  - **profile:** Clip the inner edge of profile frame bands to hide border-image wrap lines ([45fcdb8](https://github.com/selimdoyranli/parolla/commit/45fcdb8))
+  - **shop:** List only real sets (one item per slot) in Setler ([8a431bd](https://github.com/selimdoyranli/parolla/commit/8a431bd))
+  - **economy:** Revalidate the cached cosmetics catalog on every load ([4b70dfc](https://github.com/selimdoyranli/parolla/commit/4b70dfc))
+  - **i18n:** Call the en streak freeze a login streak freeze ([a90618c](https://github.com/selimdoyranli/parolla/commit/a90618c))
+  - **economy:** Guest prices, tab-aware inventory header, photos in report dialog ([1187aa3](https://github.com/selimdoyranli/parolla/commit/1187aa3))
+  - **ads:** Fixed-size inline ad, cap the inventory dialog height against adsense resizing ([944c0a3](https://github.com/selimdoyranli/parolla/commit/944c0a3))
+  - **shop:** Guest previews use the parolla avatar (bald dicebear seed) ([4da3b8e](https://github.com/selimdoyranli/parolla/commit/4da3b8e))
+  - **shop:** Guest previews use a fixed bald, open-eyed brand avatar ([2fdeccd](https://github.com/selimdoyranli/parolla/commit/2fdeccd))
+
+### 💅 Refactors
+
+  - **economy:** Rename jeton to gold and add GoldAmount ([cefac85](https://github.com/selimdoyranli/parolla/commit/cefac85))
+  - **economy:** Remove nameplates, move streak freeze to quests, align shop badge ([b938552](https://github.com/selimdoyranli/parolla/commit/b938552))
+  - **cosmetics:** Move efsane and burclar assets to ejderha and zodyak ([b937b5a](https://github.com/selimdoyranli/parolla/commit/b937b5a))
+
+### 🎨 Styles
+
+  - **economy:** Dark mode and consistency pass ([ae08f8a](https://github.com/selimdoyranli/parolla/commit/ae08f8a))
+  - **economy:** Shop gold badge offset ([0bfead6](https://github.com/selimdoyranli/parolla/commit/0bfead6))
+  - **ads:** Space above the inventory ad ([b9a43f7](https://github.com/selimdoyranli/parolla/commit/b9a43f7))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.4.1
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.4.0...v3.4.1)
