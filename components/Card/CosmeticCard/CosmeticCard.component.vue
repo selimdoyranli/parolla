@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { createAvatar } from '@dicebear/core'
+import * as adventurer from '@dicebear/adventurer'
 import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
 import { Tag, Loading } from 'vant'
 
@@ -57,8 +59,18 @@ const SLOT = {
   profile_effect: 'profileEffect'
 }
 
-// guests preview cosmetics on this name; its DiceBear seed draws the bald avatar
+// guests preview cosmetics on the parolla mascot: bald, eyes open, brand background (fixed options, not seed luck)
 const GUEST_NAME = 'parolla'
+let guestAvatar = null
+const guestDiceBear = () =>
+  (guestAvatar = guestAvatar || {
+    dataImage: createAvatar(adventurer, {
+      seed: GUEST_NAME,
+      hairProbability: 0,
+      eyes: ['variant01'],
+      backgroundColor: ['ff7878']
+    }).toDataUri()
+  })
 
 export default defineComponent({
   components: { Tag, Loading },
@@ -93,7 +105,7 @@ export default defineComponent({
 
     const username = computed(() => (props.viewer && props.viewer.username) || GUEST_NAME)
     const previewUser = computed(() => {
-      const { diceBear, avatarSource, profilePhoto } = props.viewer || {}
+      const { diceBear, avatarSource, profilePhoto } = props.viewer || { diceBear: guestDiceBear() }
 
       return { username: username.value, diceBear, avatarSource, profilePhoto, loadout: { [SLOT[category.value]]: current.value.key } }
     })
