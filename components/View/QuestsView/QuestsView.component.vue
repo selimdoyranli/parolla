@@ -27,6 +27,7 @@
         @claim="claim"
         @reroll="reroll"
       )
+    InlineAd
     section.quests-view__section
       h4.quests-view__heading {{ $t('economy.quests.weekly') }}
       QuestCard(v-for="q in quests.weekly" :key="q.key" :quest="q" :busy="busy" @claim="claim")

@@ -14,20 +14,24 @@
       Button(color="var(--color-brand-02)" round @click="$store.commit('economy/SET_INVENTORY_DIALOG_TAB', 'shop')")
         | {{ $t('economy.collection.goShop') }}
 
-    section.collection-view__group(v-for="g in groups" :key="g.category")
-      h2.collection-view__heading {{ $t(`economy.shop.categories.${g.category}`) }}
-      .collection-view__grid
-        .collection-view__tile(v-for="item in g.items" :key="item.key")
-          CosmeticCard(preview-only :variants="[item]" :viewer="viewer")
-          b.collection-view__name {{ item.name }}
-          Button(
-            :color="isOn(item) ? undefined : 'var(--color-brand-02)'"
-            size="small"
-            round
-            :loading="item.key === togglingKey"
-            @click="toggle(item)"
-          )
-            | {{ $t(isOn(item) ? 'economy.collection.unequip' : 'economy.collection.equip') }}
+    InlineAd(v-if="loaded && !groups.length")
+
+    template(v-for="(g, i) in groups")
+      section.collection-view__group(:key="g.category")
+        h2.collection-view__heading {{ $t(`economy.shop.categories.${g.category}`) }}
+        .collection-view__grid
+          .collection-view__tile(v-for="item in g.items" :key="item.key")
+            CosmeticCard(preview-only :variants="[item]" :viewer="viewer")
+            b.collection-view__name {{ item.name }}
+            Button(
+              :color="isOn(item) ? undefined : 'var(--color-brand-02)'"
+              size="small"
+              round
+              :loading="item.key === togglingKey"
+              @click="toggle(item)"
+            )
+              | {{ $t(isOn(item) ? 'economy.collection.unequip' : 'economy.collection.equip') }}
+      InlineAd(:key="`ad-${g.category}`" v-if="i === 0")
 </template>
 
 <script>

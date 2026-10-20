@@ -19,6 +19,8 @@
           @equip="equipItem"
         )
 
+  InlineAd
+
   // phones: a title + category dropdown instead of the tab strip
   .shop-view__mobile-head
     h3.shop-view__heading {{ $t('economy.shop.products') }}
