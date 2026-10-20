@@ -45,6 +45,7 @@
     CosmeticCard(
       v-for="e in entries"
       :key="e[0].key"
+      reserve
       :variants="e"
       :equipping="e.some(v => v.key === equippingKey)"
       :owned-keys="ownedSet"
@@ -74,6 +75,7 @@
         CosmeticCard(
           v-for="e in s.entries"
           :key="e[0].key"
+          reserve
           :variants="e"
           :equipping="e.some(v => v.key === equippingKey)"
           :owned-keys="ownedSet"
@@ -151,7 +153,7 @@ export default defineComponent({
       forSale.value
         .filter(i => !i.variantOf)
         .map(i => [i, ...(variantsOf.value[i.key] || [])])
-        .sort((a, b) => a[0].price - b[0].price || a[0].name.localeCompare(b[0].name, i18n.locale))
+        .sort((a, b) => a[0].price - b[0].price || (a[0].name || '').localeCompare(b[0].name || '', i18n.locale))
     )
 
     const entries = computed(() => allEntries.value.filter(e => e[0].category === tab.value))

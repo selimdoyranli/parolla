@@ -1,5 +1,5 @@
 <template lang="pug">
-.cosmetic-card(:class="{ 'cosmetic-card--owned': owned }")
+.cosmetic-card(:class="{ 'cosmetic-card--owned': owned, 'cosmetic-card--reserve': reserve }")
   .cosmetic-card__stage
     span.cosmetic-card__discount(v-if="discount") -{{ discount }}%
     PlayerAvatar(v-if="category === 'avatar_frame' || category === 'avatar_decoration'" :user="previewUser" :size="64")
@@ -16,8 +16,8 @@
     .cosmetic-card__tags
       Tag.cosmetic-card__rarity(round :class="`cosmetic-card__rarity--${current.rarity}`") {{ $t(`economy.shop.rarity.${current.rarity}`) }}
       GoldAmount(v-if="original" size="sm" strike muted :amount="original")
-    // always rendered so single- and multi-variant cards keep the same height
-    .cosmetic-card__dots
+    // grid cards always render the row so single- and multi-variant cards keep the same height
+    .cosmetic-card__dots(v-if="variants.length > 1 || reserve")
       button.cosmetic-card__dot(
         v-for="(v, i) in variants.length > 1 ? variants : []"
         :key="v.key"
@@ -67,6 +67,8 @@ export default defineComponent({
     loggedIn: { type: Boolean, default: false },
     // vitrin: discounted price replaces the catalog price of the base item
     vitrinPrice: { type: Number, default: null },
+    // fixed-height rows (shop grid)
+    reserve: { type: Boolean, default: false },
     previewOnly: { type: Boolean, default: false },
     // an equip request for this card is in flight
     equipping: { type: Boolean, default: false }

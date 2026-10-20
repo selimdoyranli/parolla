@@ -1,16 +1,13 @@
 // Shop action button (cards, sets rows, streak freeze row, purchase dialog). Global so it never depends on a component stylesheet.
 :root {
   --shop-buy-fg: #b8434a;
-  --shop-buy-bg: rgba(255, 120, 120, 0.16); // --color-brand-02 at 16%
   --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
   --shop-buy-border: rgba(255, 120, 120, 0.55);
   --shop-buy-solid-hover: #f26666;
-  --shop-buy-ink: #2b0a0c; // dark ink: white on #ff7878 is only ~2.5:1
 }
 
 .dark-mode {
   --shop-buy-fg: #ffa3a3;
-  --shop-buy-bg: rgba(255, 120, 120, 0.16);
   --shop-buy-bg-hover: rgba(255, 120, 120, 0.26);
   --shop-buy-border: rgba(255, 120, 120, 0.5);
 }
@@ -23,7 +20,7 @@
   justify-content: center;
   min-height: 32px;
   padding: 4px 12px;
-  color: var(--shop-buy-ink);
+  color: #fff;
   font-weight: 700;
   font-size: 12px;
   line-height: 1.2;

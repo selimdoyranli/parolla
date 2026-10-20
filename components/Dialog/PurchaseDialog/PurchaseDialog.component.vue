@@ -44,12 +44,12 @@ Dialog.dialog.purchase-dialog(
 
     .purchase-dialog__actions
       template(v-if="phase === 'success'")
-        button.shop-buy.shop-buy--solid.shop-buy--block(v-if="target.item" type="button" :disabled="busy" @click="equip")
+        button.shop-buy.shop-buy--block(v-if="target.item" type="button" :disabled="busy" @click="equip")
           Loading(v-if="busy" color="currentColor" size="16")
           span(v-else) {{ $t('economy.shop.equip') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" @click="state.isOpen = false") {{ $t('general.close') }}
       template(v-else)
-        button.shop-buy.shop-buy--solid.shop-buy--block(type="button" :disabled="busy || missing > 0" @click="confirm")
+        button.shop-buy.shop-buy--block(type="button" :disabled="busy || missing > 0" @click="confirm")
           Loading(v-if="busy" color="currentColor" size="16")
           template(v-else)
             span {{ $t('economy.shop.confirm') }}

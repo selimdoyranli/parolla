@@ -107,8 +107,6 @@
   &__title {
     display: -webkit-box;
     width: 100%;
-    // two lines reserved so a longer variant name never changes the card height
-    min-height: 2.6em;
     overflow: hidden;
     font-weight: 600;
     font-size: 13px;
@@ -123,7 +121,6 @@
     gap: 6px;
     align-items: center;
     justify-content: center;
-    min-height: 20px;
   }
 
   // vant Tag with a rarity tint; doubled class beats .van-tag's own background
@@ -185,9 +182,20 @@
     gap: 6px;
     align-items: center;
     justify-content: center;
-    // fixed row (also empty) + air above, so the colour switch does not hug the rarity label
-    min-height: 16px;
     margin: 6px 0;
+  }
+
+  // shop grid only: fixed rows so a variant switch never changes the card height
+  &--reserve &__title {
+    min-height: 2.6em;
+  }
+
+  &--reserve &__tags {
+    min-height: 20px;
+  }
+
+  &--reserve &__dots {
+    min-height: 16px;
   }
 
   &__dot {

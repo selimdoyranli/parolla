@@ -78,6 +78,13 @@
   .van-button__text {
     display: inline-flex;
     align-items: center;
+    line-height: 1;
+  }
+
+  // caps (and the dotted İ) sit high in the line box; nudge the label to the coin/number centre
+  &__label {
+    position: relative;
+    top: 1px;
   }
 
   &__reroll {

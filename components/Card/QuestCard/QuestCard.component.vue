@@ -14,7 +14,7 @@
       AppIcon.quest-card__done(v-if="quest.claimed" name="tabler:check" :width="20" :height="20")
       GoldAmount(v-else size="sm" :amount="quest.reward")
       Button.quest-card__reroll(v-if="canReroll" size="mini" plain :disabled="busy" @click="$emit('reroll', quest)")
-        | {{ $t('economy.quests.reroll') }}
+        span.quest-card__label {{ $t('economy.quests.reroll') }}
         GoldAmount.ms-1(size="sm" :amount="REROLL_COST")
 </template>
 
