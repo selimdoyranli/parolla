@@ -132,7 +132,7 @@ export default {
         purchase: 'Purchase',
         set_purchase: 'Set purchase',
         reroll: 'Quest reroll',
-        streak_freeze: 'Daily streak freeze',
+        streak_freeze: 'Login streak freeze',
         season: 'Season reward',
         admin: 'Admin adjustment'
       }
@@ -168,9 +168,9 @@ export default {
         sets: 'Sets'
       },
       freeze: {
-        title: 'Daily streak freeze',
-        desc: 'Keeps your streak if you miss a day.',
-        note: 'If you miss a day, your daily login streak is kept. You can hold up to {max}.',
+        title: 'Login streak freeze',
+        desc: 'Keeps your login streak if you miss a day.',
+        note: 'If you miss a day, your login streak is kept. You can hold up to {max}.',
         full: 'Full'
       }
     }
