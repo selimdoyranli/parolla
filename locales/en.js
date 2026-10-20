@@ -86,9 +86,11 @@ export default {
         'quiz-yaraticisi': 'Create {n} public quizzes',
         sadik: 'Reach a {n}-day login streak',
         koleksiyoncu: 'Own {n} cosmetics',
+        'profil-fotografi': 'Add a profile photo',
         firstLegendary: 'Get your first legendary cosmetic'
       },
       note: {
+        'profil-fotografi': 'Just use an uploaded photo instead of the avatar.',
         'quiz-yaraticisi': 'Your quiz counts if it follows the rules; it is checked automatically within 1 hour.'
       }
     },

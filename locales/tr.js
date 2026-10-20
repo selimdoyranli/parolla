@@ -86,9 +86,11 @@ export default {
         'quiz-yaraticisi': 'Herkese açık {n} quiz oluştur',
         sadik: '{n} günlük giriş serisine ulaş',
         koleksiyoncu: '{n} kozmetiğe sahip ol',
+        'profil-fotografi': 'Profiline fotoğraf ekle',
         firstLegendary: 'İlk efsanevi kozmetiğini al'
       },
       note: {
+        'profil-fotografi': 'Avatar yerine yüklediğin fotoğrafı kullanman yeterli.',
         'quiz-yaraticisi': 'Quizin kurallara uyuyorsa sayılır, 1 saat içinde otomatik kontrol edilir.'
       }
     },

@@ -8,7 +8,7 @@
       .achievement-list__body
         .achievement-list__title
           span {{ goalText(t) }}
-          span.achievement-list__chip {{ roman(t.tier) }}
+          span.achievement-list__chip(v-if="family.tiers.length > 1") {{ roman(t.tier) }}
       .achievement-list__side
         span.achievement-list__progress {{ t.current.toLocaleString(lang) }} / {{ t.goal.toLocaleString(lang) }}
         GoldAmount(size="sm" :amount="t.reward")
