@@ -83,6 +83,7 @@ export default {
         'tek-atis': 'Solve {n} word blocks in 2 tries',
         turcu: 'Earn {n} tour points in total',
         mimar: '{n} different players play your rooms',
+        'quiz-yaraticisi': 'Create {n} public quizzes',
         sadik: 'Reach a {n}-day login streak',
         koleksiyoncu: 'Own {n} cosmetics',
         firstLegendary: 'Get your first legendary cosmetic'

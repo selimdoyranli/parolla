@@ -83,6 +83,7 @@ export default {
         'tek-atis': '{n} kelime bloğunu 2 denemede çöz',
         turcu: 'Turda toplam {n} puan topla',
         mimar: 'Odalarını {n} farklı oyuncu oynasın',
+        'quiz-yaraticisi': 'Herkese açık {n} quiz oluştur',
         sadik: '{n} günlük giriş serisine ulaş',
         koleksiyoncu: '{n} kozmetiğe sahip ol',
         firstLegendary: 'İlk efsanevi kozmetiğini al'
