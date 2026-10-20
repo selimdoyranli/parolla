@@ -18,6 +18,12 @@
     text-transform: uppercase;
   }
 
+  &__family-note {
+    margin: 0;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
   &__tier {
     display: flex;
     gap: 10px;

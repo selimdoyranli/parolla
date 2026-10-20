@@ -87,6 +87,9 @@ export default {
         sadik: 'Reach a {n}-day login streak',
         koleksiyoncu: 'Own {n} cosmetics',
         firstLegendary: 'Get your first legendary cosmetic'
+      },
+      note: {
+        'quiz-yaraticisi': 'Your quiz counts if it follows the rules; it is checked automatically within 1 hour.'
       }
     },
     dailyReward: 'Daily reward: +{amount} gold (streak {streak})',

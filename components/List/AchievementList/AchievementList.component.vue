@@ -2,6 +2,7 @@
 .achievement-list
   section.achievement-list__family(v-for="family in families" :key="family.key")
     h5.achievement-list__family-name {{ family.name }}
+    p.achievement-list__family-note(v-if="family.note") {{ family.note }}
     .achievement-list__tier(v-for="t in family.tiers" :key="t.key" :class="{ 'achievement-list__tier--locked': !t.unlocked }")
       AppIcon.achievement-list__icon(:name="t.unlocked ? 'tabler:trophy' : 'tabler:lock'" :width="18" :height="18")
       .achievement-list__body
@@ -41,7 +42,9 @@ export default defineComponent({
       return Object.keys(map).map(key => {
         const tiers = map[key].slice().sort((a, b) => a.tier - b.tier)
 
-        return { key, tiers, name: baseName(tiers[0]) }
+        const noteKey = `economy.achievements.note.${key}`
+
+        return { key, tiers, name: baseName(tiers[0]), note: i18n.te(noteKey) ? i18n.t(noteKey) : null }
       })
     })
 

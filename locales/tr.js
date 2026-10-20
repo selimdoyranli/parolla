@@ -87,6 +87,9 @@ export default {
         sadik: '{n} günlük giriş serisine ulaş',
         koleksiyoncu: '{n} kozmetiğe sahip ol',
         firstLegendary: 'İlk efsanevi kozmetiğini al'
+      },
+      note: {
+        'quiz-yaraticisi': 'Quizin kurallara uyuyorsa sayılır, 1 saat içinde otomatik kontrol edilir.'
       }
     },
     dailyReward: 'Günlük ödül: +{amount} altın (seri {streak})',
