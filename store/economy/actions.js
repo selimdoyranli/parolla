@@ -3,7 +3,6 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 import { getDrawSocket, isDrawSocketReady } from '@/composables/useDrawSocket'
 
 const CACHE_KEY = 'parolla.cosmetics.v1'
-const CACHE_TTL_MS = 60 * 60 * 1000
 
 const authHeaders = ctx => ({ Authorization: `${ctx.$auth.strategy.token.get()}` })
 
@@ -54,18 +53,18 @@ const authed = async (ctx, params) => {
 }
 
 export default {
+  // Cached copy renders at once; every load revalidates with ?v= and the server answers `unchanged` when it matches
   async fetchCatalog({ commit }) {
     const cached = readCache()
+    const hasCache = cached && Array.isArray(cached.items)
 
-    if (cached && Array.isArray(cached.items)) {
-      commit('SET_CATALOG', { version: cached.version, items: cached.items })
+    if (hasCache) commit('SET_CATALOG', { version: cached.version, items: cached.items })
 
-      if (Date.now() - cached.fetchedAt < CACHE_TTL_MS) return { data: cached, error: null }
-    }
+    const { data, error } = await this.$appFetch({ path: 'cosmetics/catalog', query: hasCache ? { v: cached.version } : {} })
 
-    const { data, error } = await this.$appFetch({ path: 'cosmetics/catalog' })
+    if (data && data.unchanged) return { data: cached, error: null }
 
-    if (data) {
+    if (data && Array.isArray(data.items)) {
       const catalog = { version: data.version, items: data.items }
 
       commit('SET_CATALOG', catalog)
