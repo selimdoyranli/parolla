@@ -1,6 +1,11 @@
 .collection-view {
   color: var(--color-text-01);
 
+  // same breathing room as a category heading above it
+  .inline-ad {
+    margin-top: 20px;
+  }
+
   &__heading {
     margin: 20px 0 10px;
     font-size: var(--font-size-text-5);
