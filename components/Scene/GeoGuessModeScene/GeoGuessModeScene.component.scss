@@ -461,35 +461,50 @@
   }
 }
 
-// Fullscreen: the app header leaves the layout and floats over the game as a rounded glass bar
+// Fullscreen: the app header leaves the layout and floats over the game as a rounded glass bar.
+// The header hosts its own dialogs (menu, notifications…), and a backdrop-filter or transform on it would become their
+// containing block — fixed dialogs would center on the bar. So the glass lives on ::before and the slide-in animates top.
 html.geoguess-immersive .app-header {
   position: fixed;
   z-index: 110;
+  inset-inline: 0;
+  inset-block-start: 8px;
   width: min(var(--layout-max-width), calc(100vw - 16px));
-  background-color: color-mix(in sRGB, var(--color-ui-02) 72%, transparent);
+  margin-inline: auto;
   border: 1px solid color-mix(in sRGB, var(--color-text-04) 22%, transparent);
   border-radius: 16px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
-  -webkit-backdrop-filter: blur(14px) saturate(1.5);
-  backdrop-filter: blur(14px) saturate(1.5);
   animation: geoguess-header-float-in 0.45s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  inset-inline: 0;
-  inset-block-start: 8px;
-  margin-inline: auto;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
   }
+
+  &::before {
+    position: absolute;
+    z-index: -1;
+    background-color: color-mix(in sRGB, var(--color-ui-02) 72%, transparent);
+    border-radius: inherit;
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+    backdrop-filter: blur(14px) saturate(1.5);
+    content: '';
+    inset: 0;
+  }
+}
+
+// Scene dialogs normally start right under the header — start under the floating bar instead
+html.geoguess-immersive .dialog.dialog--scene.van-dialog {
+  top: calc(var(--header-height) + 16px);
 }
 
 @keyframes geoguess-header-float-in {
   from {
-    transform: translateY(calc(-100% - 16px));
+    top: calc(-1 * var(--header-height) - 16px);
     opacity: 0;
   }
 
   to {
-    transform: none;
+    top: 8px;
     opacity: 1;
   }
 }
