@@ -1,5 +1,5 @@
 <template lang="pug">
-.scene.geoguess-scene(:class="[`geoguess-scene--${phase}`, { 'geoguess-scene--fullscreen': isFullscreen }]")
+.scene.geoguess-scene(ref="rootRef" :class="[`geoguess-scene--${phase}`, `geoguess-scene--fs-${fullscreenState}`]")
   // Setup
   .geoguess-scene-setup(v-if="phase === 'setup'")
     .geoguess-scene-setup__hero
@@ -61,7 +61,7 @@
           type="button"
           :aria-label="isFullscreen ? $t('geoGuessMode.exitFullscreen') : $t('geoGuessMode.fullscreen')"
           :title="isFullscreen ? $t('geoGuessMode.exitFullscreen') : $t('geoGuessMode.fullscreen')"
-          @click="isFullscreen = !isFullscreen"
+          @click="toggleFullscreen"
         )
           AppIcon(:name="isFullscreen ? 'tabler:minimize' : 'tabler:maximize'" :width="18" :height="18")
 
@@ -112,12 +112,17 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, watch, nextTick, onBeforeUnmount, useContext } from '@nuxtjs/composition-api'
 import { Button, Empty, Loading } from 'vant'
 import { findPanorama } from '@/services/streetView.service'
 import { distanceKm, locationScore, randomPointInBoxes, formatDistance } from '@/helpers/geo'
 import { showToast } from '@/helpers/toast'
 import { GEOGUESS_REGIONS, GEOGUESS_TOTAL_ROUNDS, GEOGUESS_MAX_ROUND_SCORE, GEOGUESS_PANORAMA_ATTEMPTS } from '@/system/geoguess'
+
+// Must match the inset transition in the scene stylesheet
+const FULLSCREEN_TRANSITION_MS = 450
+// On <html> while fullscreen: turns the app header into a floating glass bar (styles live in the scene stylesheet)
+const IMMERSIVE_HTML_CLASS = 'geoguess-immersive'
 
 // One random panorama inside the region, or null after the attempts run out (open sea, no coverage)
 const pickPanorama = async region => {
@@ -150,8 +155,58 @@ export default defineComponent({
     const results = ref([])
     const guess = ref(null)
     const isMapExpanded = ref(false)
-    // Breaks the scene out of the narrow layout column to the full viewport width (header stays visible)
-    const isFullscreen = ref(false)
+    // Covers the whole viewport, header included. off → entering → on → leaving → off:
+    // entering/leaving pin the fixed scene onto its in-layout rect, so the inset transition grows/shrinks from there
+    const rootRef = ref(null)
+    const fullscreenState = ref('off')
+    const isFullscreen = computed(() => ['entering', 'on'].includes(fullscreenState.value))
+    let fullscreenTimer = null
+
+    const pinToLayoutRect = () => {
+      // The page wrapper keeps the scene's slot in the layout while the scene itself is fixed
+      const rect = rootRef.value.parentElement.getBoundingClientRect()
+      const { style } = rootRef.value
+
+      style.setProperty('--fs-top', `${rect.top}px`)
+      style.setProperty('--fs-left', `${rect.left}px`)
+      style.setProperty('--fs-right', `${window.innerWidth - rect.right}px`)
+      style.setProperty('--fs-bottom', `${window.innerHeight - rect.bottom}px`)
+    }
+
+    const enterFullscreen = () => {
+      clearTimeout(fullscreenTimer)
+      pinToLayoutRect()
+      fullscreenState.value = 'entering'
+      document.documentElement.classList.add(IMMERSIVE_HTML_CLASS)
+      sfx.play('swoosh', { volume: 0.5 })
+      // Two frames: let the pinned rect paint before transitioning away from it
+      requestAnimationFrame(() => requestAnimationFrame(() => (fullscreenState.value = 'on')))
+    }
+
+    const exitFullscreen = async () => {
+      clearTimeout(fullscreenTimer)
+      // Header back in the flow first, so the rect we shrink into is the real one under it
+      document.documentElement.classList.remove(IMMERSIVE_HTML_CLASS)
+      await nextTick()
+      pinToLayoutRect()
+      fullscreenState.value = 'leaving'
+      sfx.play('swoosh', { volume: 0.5, pitch: '-2st' })
+      fullscreenTimer = setTimeout(() => (fullscreenState.value = 'off'), FULLSCREEN_TRANSITION_MS)
+    }
+
+    const toggleFullscreen = () => (isFullscreen.value ? exitFullscreen() : enterFullscreen())
+
+    const handleKeydown = event => {
+      if (event.key === 'Escape' && isFullscreen.value) exitFullscreen()
+    }
+
+    window.addEventListener('keydown', handleKeydown)
+
+    onBeforeUnmount(() => {
+      clearTimeout(fullscreenTimer)
+      window.removeEventListener('keydown', handleKeydown)
+      document.documentElement.classList.remove(IMMERSIVE_HTML_CLASS)
+    })
 
     const currentRound = computed(() => rounds.value[roundIndex.value])
     const isLastRound = computed(() => roundIndex.value === rounds.value.length - 1)
@@ -279,7 +334,10 @@ export default defineComponent({
       results,
       guess,
       isMapExpanded,
+      rootRef,
+      fullscreenState,
       isFullscreen,
+      toggleFullscreen,
       countryName,
       currentRound,
       isLastRound,

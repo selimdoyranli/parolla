@@ -4,6 +4,9 @@
   --glass-border: color-mix(in sRGB, var(--color-text-04) 22%, transparent);
   --glass-blur: blur(14px) saturate(1.5);
   --hud-height: 44px;
+  // Where the HUD starts; pushed down under the floating header while fullscreen
+  --hud-top: 8px;
+  --fs-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
   display: flex;
   flex-direction: column;
@@ -12,12 +15,35 @@
   color: var(--color-text-01);
   background-color: var(--color-ui-01);
 
-  // Full viewport width, right under the app header
-  &--fullscreen {
+  // Fullscreen covers the whole viewport. entering/leaving sit on the scene's in-layout rect (--fs-*, set from JS)
+  // and the inset transition grows the scene out of it / shrinks it back into it.
+  &--fs-entering,
+  &--fs-on,
+  &--fs-leaving {
     position: fixed;
     z-index: 100;
-    inset: var(--header-height) 0 0;
     height: auto;
+    overflow: hidden;
+  }
+
+  &--fs-entering,
+  &--fs-leaving {
+    inset: var(--fs-top) var(--fs-right) var(--fs-bottom) var(--fs-left);
+  }
+
+  &--fs-on {
+    --hud-top: calc(var(--header-height) + 20px);
+
+    inset: 0;
+  }
+
+  &--fs-on,
+  &--fs-leaving {
+    transition: top 0.45s var(--fs-ease), right 0.45s var(--fs-ease), bottom 0.45s var(--fs-ease), left 0.45s var(--fs-ease);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &__state {
@@ -130,7 +156,7 @@
     position: absolute;
     z-index: 4;
     inset-inline: 8px;
-    inset-block-start: 8px;
+    inset-block-start: var(--hud-top);
     display: flex;
     gap: 6px;
     align-items: center;
@@ -269,7 +295,7 @@
 
     &.is-active {
       inset-inline: auto 8px;
-      inset-block-start: calc(var(--hud-height) + 8px);
+      inset-block-start: calc(var(--hud-top) + var(--hud-height));
       inset-block-end: auto;
       width: 40px;
       height: 40px;
@@ -300,7 +326,7 @@
       }
 
       .leaflet-top {
-        top: var(--hud-height);
+        top: calc(var(--hud-top) + var(--hud-height) - 8px);
       }
     }
   }
@@ -425,6 +451,39 @@
 @keyframes geoguess-card-in {
   from {
     transform: translateY(16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+// Fullscreen: the app header leaves the layout and floats over the game as a rounded glass bar
+html.geoguess-immersive .app-header {
+  position: fixed;
+  z-index: 110;
+  width: min(var(--layout-max-width), calc(100vw - 16px));
+  background-color: color-mix(in sRGB, var(--color-ui-02) 72%, transparent);
+  border: 1px solid color-mix(in sRGB, var(--color-text-04) 22%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  animation: geoguess-header-float-in 0.45s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  inset-inline: 0;
+  inset-block-start: 8px;
+  margin-inline: auto;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes geoguess-header-float-in {
+  from {
+    transform: translateY(calc(-100% - 16px));
     opacity: 0;
   }
 

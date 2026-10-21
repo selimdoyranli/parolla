@@ -5,6 +5,7 @@
 
 <script>
 import { defineComponent, ref, watch, onMounted, onBeforeUnmount, useContext } from '@nuxtjs/composition-api'
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 // Same source as the Street View panoramas, labelled in the player's language. Dark mode is a CSS filter on the tiles.
@@ -45,7 +46,6 @@ export default defineComponent({
     const { i18n } = useContext()
     const canvasRef = ref(null)
 
-    let L = null
     let map = null
     let guessMarker = null
     let pairsLayer = null
@@ -114,9 +114,7 @@ export default defineComponent({
       fitRevealed()
     }
 
-    onMounted(async () => {
-      L = (await import('leaflet')).default
-
+    onMounted(() => {
       map = L.map(canvasRef.value, {
         center: props.view.center,
         zoom: props.view.zoom,
