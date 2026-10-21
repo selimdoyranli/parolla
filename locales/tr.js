@@ -310,8 +310,8 @@ export default {
       },
       geoGuess: {
         title: 'GEOGUESS',
-        description: 'Sokak fotoğrafından nerede olduğunu tahmin et ve haritada işaretle',
-        label: 'Yeni'
+        description: 'Sokak fotoğrafından nerede olduğunu tahmin et',
+        label: "Dünya'nın herhangi bir noktası"
       }
     }
   },

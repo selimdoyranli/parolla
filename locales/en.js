@@ -308,7 +308,7 @@ export default {
       },
       geoGuess: {
         title: 'GEOGUESS',
-        description: 'Guess where the street photo was taken and mark it on the map',
+        description: 'Guess where the street photo was taken',
         label: 'New'
       }
     }
