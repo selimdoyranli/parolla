@@ -191,7 +191,8 @@ export default defineComponent({
     const regions = computed(() => GEOGUESS_REGIONS.filter(item => item.locales.includes(i18n.locale)))
     const regionKey = ref(regions.value[0].key)
     const region = computed(() => GEOGUESS_REGIONS.find(item => item.key === regionKey.value))
-    const rulesOpen = ref([])
+    // The rules start expanded on every screen size — first-time players need them before picking a region
+    const rulesOpen = ref(['rules'])
 
     // Switching language can drop the picked region (Europe/USA are EN-only, Türkiye TR-only)
     watch(regions, list => {
