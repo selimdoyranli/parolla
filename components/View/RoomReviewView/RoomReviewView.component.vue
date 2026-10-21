@@ -11,16 +11,18 @@
         Rate(:value="ratings.mine" color="var(--color-brand-02)" readonly allow-half void-color="var(--color-text-03)" :size="18")
       template(v-else)
         small {{ $t('comments.rateThisQuiz') }}
-        Rate(
-          v-model="ratings.draft"
-          color="var(--color-brand-02)"
-          allow-half
-          void-color="var(--color-text-03)"
-          auth-control
-          :size="22"
-          :disabled="ratings.pending"
-          @change="submitRating"
-        )
+        //- vant 2 Rate has no hover state: preview the hovered star by overriding the shown value
+        //- clicks handled here too: vant skips change when the clicked star equals the hover-shown value
+        .room-review-view__rating-input(@click="handleRateClick" @mouseover="handleRateHover" @mouseleave="ratings.hover = 0")
+          Rate(
+            :value="ratings.hover || ratings.draft"
+            color="var(--color-brand-02)"
+            void-color="var(--color-text-03)"
+            auth-control
+            :size="22"
+            :touchable="false"
+            :disabled="ratings.pending"
+          )
 
   .room-review-view__filter
     h4.room-review-view__filter-title
@@ -108,7 +110,7 @@ import {
   provide,
   nextTick
 } from '@nuxtjs/composition-api'
-import { Rate, List, Empty, Toast } from 'vant'
+import { Rate, List, Empty, Toast, Dialog } from 'vant'
 
 export default defineComponent({
   components: { Rate, List, Empty },
@@ -132,7 +134,7 @@ export default defineComponent({
 
     const comments = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
     const ratingList = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
-    const ratings = reactive({ average: 0, count: 0, mine: null, draft: 0, pending: false })
+    const ratings = reactive({ average: 0, count: 0, mine: null, draft: 0, hover: 0, pending: false })
     const pinned = reactive({ item: null, targetDocumentId: null })
 
     // the pinned thread is rendered above the list; don't render it twice
@@ -197,8 +199,38 @@ export default defineComponent({
       if (data) applyRatingMeta(data)
     }
 
+    const getStarIndex = e => {
+      const item = e.target.closest('.van-rate__item')
+
+      return item ? [...item.parentNode.children].indexOf(item) + 1 : 0
+    }
+
+    const handleRateHover = e => {
+      if (!ratings.pending) ratings.hover = getStarIndex(e)
+    }
+
+    const handleRateClick = e => {
+      if (!ratings.pending) submitRating(getStarIndex(e))
+    }
+
     const submitRating = async value => {
       if (!$auth.loggedIn || !value) return
+
+      ratings.hover = 0
+      ratings.draft = value
+
+      try {
+        await Dialog.confirm({
+          title: i18n.t('comments.rateThisQuiz'),
+          message: i18n.t('comments.rateConfirm', { rating: value }),
+          cancelButtonText: i18n.t('general.cancel'),
+          confirmButtonText: i18n.t('comments.rateConfirmButton')
+        })
+      } catch {
+        ratings.draft = 0
+
+        return
+      }
 
       ratings.pending = true
       const { error } = await store.dispatch('comment/postRating', { roomId: room.value.id, rating: value })
@@ -383,6 +415,8 @@ export default defineComponent({
       loadComments,
       loadRatings,
       submitRating,
+      handleRateHover,
+      handleRateClick,
       handleRootDeleted,
       replyTarget,
       composerRef,

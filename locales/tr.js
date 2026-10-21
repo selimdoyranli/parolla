@@ -1088,6 +1088,8 @@ export default {
     yourRating: 'Puanın: {rating}',
     rateThisQuiz: 'Bu quizi puanla',
     ratingCount: '({count} oyuncu puan verdi)',
+    rateConfirm: 'Bu quize {rating} puan vermek istediğinden emin misin?',
+    rateConfirmButton: 'Puan Ver',
     rated: 'Puanın kaydedildi',
     alreadyRated: 'Bu quizi zaten puanladın',
     error: 'Bir şeyler ters gitti, tekrar dene'
