@@ -1,0 +1,28 @@
+.street-view-panorama {
+  // The embed prints the street address in its top-left card — pushing the frame up crops it out of view
+  --address-card-crop: 64px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-ui-03);
+
+  &__frame {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(-1 * var(--address-card-crop));
+    width: 100%;
+    height: calc(100% + var(--address-card-crop));
+    border: 0;
+  }
+
+  &__loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-ui-03);
+  }
+}

@@ -11876,6 +11876,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"leaflet@npm:1.9.4":
+  version: 1.9.4
+  resolution: "leaflet@npm:1.9.4"
+  checksum: 10c0/f639441dbb7eb9ae3fcd29ffd7d3508f6c6106892441634b0232fafb9ffb1588b05a8244ec7085de2c98b5ed703894df246898477836cfd0ce5b96d4717b5ca1
+  languageName: node
+  linkType: hard
+
 "leven@npm:^2.1.0":
   version: 2.1.0
   resolution: "leven@npm:2.1.0"
@@ -14034,6 +14041,7 @@ __metadata:
     husky: "npm:^4.2.5"
     ios-haptics: "npm:^0.1.4"
     isomorphic-ws: "npm:^5.0.0"
+    leaflet: "npm:1.9.4"
     lint-staged: "npm:^10.2.11"
     markdown-it: "npm:^15.0.0"
     nuxt: "npm:2.17.1"

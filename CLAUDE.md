@@ -54,6 +54,7 @@ Pages use Nuxt file-based routing in `pages/`. Each game mode has its own direct
 - `TourMode/` → `/tur`, `/tour`
 - `WordblockMode/` → `/kelimeblok`, `/wordblock`
 - `MusicMode/` → `/muzik`, `/music`
+- `GeoGuessMode/` → `/geoguess` (both locales). GeoGuessr-style: Google Street View panorama → pin on a map → distance-based score, 5 rounds, regions in `system/geoguess.js`. No API key: `services/streetView.service.js` finds official panoramas through the endpoint Google's Maps JS client uses (CORS-open) and embeds them keylessly (`output=svembed`); the map is Leaflet on keyless Google tiles. Map/panorama pieces are generic for reuse in creator-quiz location questions: `components/Geo/GeoMap` (v-model pick + `pairs` reveal) and `components/Geo/StreetViewPanorama`; distance/score math in `helpers/geo.js` (self-check: `node scripts/geo-selfcheck.mjs`).
 - `Page/` → legal pages (`/sayfa/gizlilik-politikasi` | `/page/privacy-policy`, cookie policy, KVKK, terms of use). Content lives in `content/legal/<locale>/*.md`, compiled at build time by `frontmatter-markdown-loader` (see `build.extend`) and rendered by `LegalDocument` — NOT @nuxt/content (its content API doesn't exist on a static SPA deploy). Each page imports both locales' md and picks by `i18n.locale`; links to them sit in `MenuDialog`'s "Legal" group.
 
 Localized route mappings are defined in `nuxt.config.js` under the i18n `pages` option.

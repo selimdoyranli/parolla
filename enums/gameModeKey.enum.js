@@ -5,5 +5,6 @@ export const gameModeKeyEnum = Object.freeze({
   TOUR: 'tour',
   WORDBLOCK: 'wordblock',
   MUSIC: 'music',
-  DRAW: 'draw'
+  DRAW: 'draw',
+  GEOGUESS: 'geoguess'
 })

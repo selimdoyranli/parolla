@@ -339,6 +339,10 @@ module.exports = {
             tr: '/ciz/oda/:code',
             en: '/draw/room/:code'
           },
+          'GeoGuessMode/index': {
+            tr: '/geoguess',
+            en: '/geoguess'
+          },
           'Account/AccountEdit/index': {
             tr: '/hesap/duzenle',
             en: '/account/edit'
