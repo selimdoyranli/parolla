@@ -28,7 +28,7 @@
         //- card-sized ad: every 5th cell, fills the quiz card's height
         .room-list__ad(:key="cell.key" v-else-if="cell.type === 'ad'")
           small.room-list__ad-label {{ $t('general.ad') }}
-          AppAd(lazy :data-ad-slot="6048083070")
+          AppAd(lazy format="rectangle" :data-ad-slot="6048083070")
 
         QuizCard(
           v-else
@@ -266,11 +266,19 @@ export default defineComponent({
     }
 
     // grid cells: a card-sized ad after every 4 quizzes (every 5th cell), a full-row ad after every 6 cells
+    // capped: infinite scroll stays one SPA page view, and AdSense leaves the extra slots unfilled
+    const MAX_LIST_ADS = 4
     const cells = computed(() => {
       const result = []
       let count = 0
+      let ads = 0
+      const canAd = () => props.showAds && ads < MAX_LIST_ADS
       const push = cell => {
-        if (props.showAds && count > 0 && count % 6 === 0) result.push({ type: 'banner', key: `banner-${count}` })
+        if (canAd() && count > 0 && count % 6 === 0) {
+          result.push({ type: 'banner', key: `banner-${count}` })
+          ads++
+        }
+
         result.push(cell)
         count++
       }
@@ -278,7 +286,10 @@ export default defineComponent({
       ;(list.items || []).forEach((room, index) => {
         push({ type: 'room', room, index, key: room.documentId || room.roomId })
 
-        if (props.showAds && (index + 1) % 4 === 0) push({ type: 'ad', key: `ad-${index}` })
+        if (canAd() && (index + 1) % 4 === 0) {
+          ads++
+          push({ type: 'ad', key: `ad-${index}` })
+        }
       })
 
       return result

@@ -2,3 +2,8 @@
   position: relative;
   display: block;
 }
+
+// no ad for this request: hide the blank white iframe so the slot placeholder shows
+.adsbygoogle[data-ad-status='unfilled'] {
+  display: none !important;
+}
