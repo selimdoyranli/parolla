@@ -309,7 +309,7 @@ export default {
       geoGuess: {
         title: 'GEOGUESS',
         description: 'Guess where the street photo was taken',
-        label: 'New'
+        label: 'Anywhere in the world'
       }
     }
   },
