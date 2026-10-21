@@ -19,6 +19,15 @@
     align-items: center;
   }
 
+  &__rating-input .van-rate__item {
+    cursor: pointer;
+    transition: transform 0.15s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
   &__filter {
     display: flex;
     align-items: center;

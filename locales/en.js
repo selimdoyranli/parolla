@@ -1070,6 +1070,8 @@ export default {
     yourRating: 'Your rating: {rating}',
     rateThisQuiz: 'Rate this quiz',
     ratingCount: '({count} players rated)',
+    rateConfirm: 'Are you sure you want to give this quiz {rating} stars?',
+    rateConfirmButton: 'Rate',
     rated: 'Rating saved',
     alreadyRated: 'You already rated this quiz',
     error: 'Something went wrong, try again'
