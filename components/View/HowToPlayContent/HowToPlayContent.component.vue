@@ -7,6 +7,7 @@
   HowToPlayFlashcardsContent(v-if="room && room.quizType === quizTypeEnum.FLASHCARDS")
   HowToPlayTourModeContent(v-if="activeGameMode === gameModeKeyEnum.TOUR")
   HowToPlayWordblockModeContent(v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK")
+  HowToPlayGeoGuessModeContent(v-if="activeGameMode === gameModeKeyEnum.GEOGUESS")
 </template>
 
 <script>

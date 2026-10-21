@@ -1364,13 +1364,28 @@ export default {
     regions: {
       world: { title: 'Dünya', description: 'Tüm kıtalardan sokaklar' },
       europe: { title: 'Avrupa', description: 'Avrupa şehir ve kasabaları' },
-      turkey: { title: 'Türkiye', description: "Türkiye'nin dört bir yanı" }
+      turkey: { title: 'Türkiye', description: "Türkiye'nin dört bir yanı" },
+      usa: { title: 'ABD', description: 'Amerika Birleşik Devletleri' }
     },
     rules: {
       rounds: '{count} tur, her turda yeni bir sokak',
+      timer: 'Her tur için {minutes} dakikan var, son 10 saniyede saat tıklamaya başlar',
       maxScore: 'Tur başına en fazla {score} puan, ne kadar yakınsan o kadar çok',
-      explore: 'Sokakta ilerleyebilir, etrafına bakabilirsin'
+      explore: 'Sokakta ilerle, etrafına bak, tabelalardan ve yollardan ipucu topla',
+      mark: 'Nerede olduğunu düşünüyorsan haritada işaretle ve tahmin et'
     },
+    stats: {
+      rounds: '{count} tur',
+      timer: '{minutes} dk / tur',
+      maxScore: '{score} puan'
+    },
+    howToPlay: 'Nasıl oynanır?',
+    play: 'OYNA',
+    timeLeft: 'Kalan süre',
+    timeUp: 'Süre doldu, tahmin yapmadın',
+    points: '{score} puan',
+    you: 'Sen',
+    target: 'Hedef',
     start: 'BAŞLA',
     preparing: 'Konumlar hazırlanıyor',
     notEnoughLocations: 'Konum bulunamadı, tekrar dene',
@@ -1379,6 +1394,7 @@ export default {
     openMap: 'Haritayı aç',
     closeMap: 'Haritayı kapat',
     pickOnMap: 'HARİTADA İŞARETLE',
+    openMapHint: 'Tahmin etmek için haritaya dokun',
     guess: 'TAHMİN ET',
     distance: 'Tahminin {distance} uzaktaydı',
     next: 'SONRAKİ TUR',

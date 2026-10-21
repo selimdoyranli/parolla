@@ -40,6 +40,12 @@ export default defineComponent({
       type: Object,
       required: false,
       default: () => ({ center: [25, 10], zoom: 1 })
+    },
+    // Balloon text over the pins, e.g. { guess: 'You', answer: 'Target' }; a missing key leaves that pin bare
+    pinLabels: {
+      type: Object,
+      required: false,
+      default: () => ({})
     }
   },
   setup(props, { emit }) {
@@ -52,13 +58,18 @@ export default defineComponent({
     let resizeObserver = null
     let revealedBounds = null
 
-    const pinIcon = modifier =>
-      L.divIcon({
+    const escapeHtml = text => String(text).replace(/[&<>"']/g, char => `&#${char.charCodeAt(0)};`)
+
+    const pinIcon = modifier => {
+      const label = props.pinLabels[modifier]
+
+      return L.divIcon({
         className: `geo-map-pin geo-map-pin--${modifier}`,
-        html: '<span class="geo-map-pin__dot"></span>',
+        html: `${label ? `<span class="geo-map-pin__label">${escapeHtml(label)}</span>` : ''}<span class="geo-map-pin__dot"></span>`,
         iconSize: [28, 28],
         iconAnchor: [14, 28]
       })
+    }
 
     const resetView = () => map?.setView(props.view.center, props.view.zoom, { animate: false })
 

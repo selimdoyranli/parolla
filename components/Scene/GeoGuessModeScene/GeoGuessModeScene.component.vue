@@ -1,39 +1,38 @@
 <template lang="pug">
 .scene.geoguess-scene(ref="rootRef" :class="[`geoguess-scene--${phase}`, `geoguess-scene--fs-${fullscreenState}`]")
-  // Setup
+  // Setup (intro)
   .geoguess-scene-setup(v-if="phase === 'setup'")
-    .geoguess-scene-setup__hero
-      AppIcon.geoguess-scene-setup__icon(name="noto:world-map" :width="44" :height="44")
-      h1.geoguess-scene-setup__title {{ $t('geoGuessMode.title') }}
-      p.geoguess-scene-setup__description {{ $t('geoGuessMode.description') }}
+    QuizCover.geoguess-scene-setup__cover(:label="$t('geoGuessMode.title')" seed="geoguess" :sublabel="$t('geoGuessMode.description')")
+      ul.geoguess-scene-setup__stats
+        li.geoguess-scene-setup__stat(v-for="stat in introStats" :key="stat.key")
+          AppIcon(:name="stat.icon" :width="14" :height="14")
+          span {{ stat.text }}
 
-    span.geoguess-scene-setup__label {{ $t('geoGuessMode.chooseRegion') }}
-    .geoguess-scene-setup__regions
-      button.geoguess-scene-region(
-        v-for="item in regions"
-        :key="item.key"
-        type="button"
-        :class="{ 'is-active': item.key === regionKey }"
-        :aria-pressed="item.key === regionKey"
-        @click="regionKey = item.key"
-      )
-        AppIcon.geoguess-scene-region__icon(:name="item.icon" :width="28" :height="28")
-        span.geoguess-scene-region__title {{ $t(`geoGuessMode.regions.${item.key}.title`) }}
-        span.geoguess-scene-region__description {{ $t(`geoGuessMode.regions.${item.key}.description`) }}
+    .geoguess-scene-setup__body
+      span.geoguess-scene-setup__label {{ $t('geoGuessMode.chooseRegion') }}
+      .geoguess-scene-setup__regions(:style="{ '--region-count': regions.length }")
+        button.geoguess-scene-region(
+          v-for="item in regions"
+          :key="item.key"
+          type="button"
+          :class="{ 'is-active': item.key === regionKey }"
+          :aria-pressed="item.key === regionKey"
+          @click="regionKey = item.key"
+        )
+          AppIcon.geoguess-scene-region__icon(:name="item.icon" :width="30" :height="30")
+          span.geoguess-scene-region__title {{ $t(`geoGuessMode.regions.${item.key}.title`) }}
+          span.geoguess-scene-region__description {{ $t(`geoGuessMode.regions.${item.key}.description`) }}
+          AppIcon.geoguess-scene-region__check(v-if="item.key === regionKey" name="tabler:circle-check-filled" :width="18" :height="18")
 
-    ul.geoguess-scene-setup__rules
-      li
-        AppIcon(name="tabler:map-pin" :width="16" :height="16")
-        | {{ $t('geoGuessMode.rules.rounds', { count: totalRounds }) }}
-      li
-        AppIcon(name="tabler:trophy" :width="16" :height="16")
-        | {{ $t('geoGuessMode.rules.maxScore', { score: maxRoundScore.toLocaleString($i18n.locale) }) }}
-      li
-        AppIcon(name="tabler:walk" :width="16" :height="16")
-        | {{ $t('geoGuessMode.rules.explore') }}
+      Button.geoguess-scene-setup__play(block round @click="startGame")
+        AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
+        span {{ $t('geoGuessMode.play') }}
 
-    Button.geoguess-scene-setup__start(type="primary" round block @click="startGame")
-      | {{ $t('geoGuessMode.start') }}
+      Collapse.geoguess-scene-setup__rules(v-model="rulesOpen" :border="false")
+        CollapseItem(name="rules" icon="question-o" :title="$t('geoGuessMode.howToPlay')")
+          HowToPlayGeoGuessModeContent
+
+      DialogAd.geoguess-scene-setup__ad
 
   // Loading / Error
   Empty.geoguess-scene__state(v-else-if="phase === 'loading'" :description="$t('geoGuessMode.preparing')")
@@ -51,6 +50,15 @@
         button.geoguess-scene-hud__chip.geoguess-scene-hud__chip--region(type="button" @click="backToSetup")
           AppIcon(:name="region.icon" :width="16" :height="16")
           span {{ $t(`geoGuessMode.regions.${region.key}.title`) }}
+        .geoguess-scene-hud__chip.geoguess-scene-hud__chip--timer(
+          v-if="phase === 'guessing'"
+          :class="{ 'is-urgent': isHurryUp }"
+          :aria-label="`${$t('geoGuessMode.timeLeft')}: ${remainingLabel}`"
+        )
+          svg.geoguess-scene-hud__ring(viewBox="0 0 24 24" aria-hidden="true")
+            circle.geoguess-scene-hud__ringTrack(cx="12" cy="12" r="10")
+            circle.geoguess-scene-hud__ringFill(cx="12" cy="12" r="10" :style="{ strokeDashoffset: ringOffset }")
+          strong {{ remainingLabel }}
         .geoguess-scene-hud__chip
           span.geoguess-scene-hud__chipLabel {{ $t('geoGuessMode.round') }}
           strong {{ roundIndex + 1 }}/{{ rounds.length }}
@@ -65,29 +73,48 @@
         )
           AppIcon(:name="isFullscreen ? 'tabler:minimize' : 'tabler:maximize'" :width="18" :height="18")
 
+      // Mobile: tapping anywhere off the open map sheet closes it
+      .geoguess-scene-map-backdrop(v-if="phase === 'guessing' && isMapExpanded" @click="isMapExpanded = false")
+
       .geoguess-scene-map(:class="{ 'is-expanded': isMapExpanded }")
-        GeoMap.geoguess-scene-map__map(v-model="guess" :interactive="phase === 'guessing'" :pairs="mapPairs" :view="region.view")
+        GeoMap.geoguess-scene-map__map(
+          v-model="guess"
+          :interactive="phase === 'guessing'"
+          :pairs="mapPairs"
+          :view="region.view"
+          :pin-labels="{ guess: $t('geoGuessMode.you'), answer: $t('geoGuessMode.target') }"
+        )
 
         .geoguess-scene-map__actions(v-if="phase === 'guessing'")
           Button.geoguess-scene-map__guess(type="primary" round block :disabled="!guess" @click="submitGuess")
             | {{ guess ? $t('geoGuessMode.guess') : $t('geoGuessMode.pickOnMap') }}
 
-      button.geoguess-scene-map-toggle(
-        v-if="phase === 'guessing'"
+        // Mobile: the collapsed mini map is one big button that opens the sheet
+        button.geoguess-scene-map__opener(
+          v-if="phase === 'guessing' && !isMapExpanded"
+          type="button"
+          :aria-label="$t('geoGuessMode.openMapHint')"
+          @click="isMapExpanded = true"
+        )
+          AppIcon(name="tabler:arrows-maximize" :width="14" :height="14")
+
+      button.geoguess-scene-map-close(
+        v-if="phase === 'guessing' && isMapExpanded"
         type="button"
-        :class="{ 'is-active': isMapExpanded }"
-        :aria-label="isMapExpanded ? $t('geoGuessMode.closeMap') : $t('geoGuessMode.openMap')"
-        @click="isMapExpanded = !isMapExpanded"
+        :aria-label="$t('geoGuessMode.closeMap')"
+        @click="isMapExpanded = false"
       )
-        AppIcon(:name="isMapExpanded ? 'tabler:x' : 'tabler:map-2'" :width="24" :height="24")
+        AppIcon(name="tabler:x" :width="20" :height="20")
 
       // Round result
       .geoguess-scene-card(v-if="phase === 'revealed'")
-        strong.geoguess-scene-card__points +{{ lastResult.score.toLocaleString($i18n.locale) }}
+        strong.geoguess-scene-card__points +{{ $t('geoGuessMode.points', { score: lastResult.score.toLocaleString($i18n.locale) }) }}
         span.geoguess-scene-card__place(v-if="countryName(currentRound.country)")
           AppIcon(name="tabler:map-pin-filled" :width="14" :height="14")
           | {{ countryName(currentRound.country) }}
-        p.geoguess-scene-card__text {{ $t('geoGuessMode.distance', { distance: formatDistance(lastResult.distance, $i18n.locale) }) }}
+        p.geoguess-scene-card__text(v-if="lastResult.guess")
+          | {{ $t('geoGuessMode.distance', { distance: formatDistance(lastResult.distance, $i18n.locale) }) }}
+        p.geoguess-scene-card__text(v-else) {{ $t('geoGuessMode.timeUp') }}
         .geoguess-scene-card__bar
           span(:style="{ width: `${(lastResult.score / maxRoundScore) * 100}%` }")
         Button.geoguess-scene-card__button(type="primary" round block @click="nextRound")
@@ -102,7 +129,7 @@
         ol.geoguess-scene-card__rounds
           li(v-for="(result, index) in results" :key="index")
             span {{ index + 1 }}.
-            span {{ formatDistance(result.distance, $i18n.locale) }}
+            span {{ result.guess ? formatDistance(result.distance, $i18n.locale) : '—' }}
             strong {{ result.score.toLocaleString($i18n.locale) }}
         .geoguess-scene-card__actions
           Button(color="var(--color-success-01)" icon="share-o" icon-position="right" round @click="shareResults")
@@ -112,14 +139,24 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, nextTick, onBeforeUnmount, useContext } from '@nuxtjs/composition-api'
-import { Button, Empty, Loading } from 'vant'
+import { defineComponent, ref, computed, watch, nextTick, onBeforeUnmount, useContext, useStore } from '@nuxtjs/composition-api'
+import { Button, Empty, Loading, Collapse, CollapseItem } from 'vant'
+import { Howl } from 'howler'
 import { findPanorama } from '@/services/streetView.service'
 import { distanceKm, locationScore, randomPointInBoxes, formatDistance } from '@/helpers/geo'
 import { showToast } from '@/helpers/toast'
-import { GEOGUESS_REGIONS, GEOGUESS_TOTAL_ROUNDS, GEOGUESS_MAX_ROUND_SCORE, GEOGUESS_PANORAMA_ATTEMPTS } from '@/system/geoguess'
+import {
+  GEOGUESS_REGIONS,
+  GEOGUESS_TOTAL_ROUNDS,
+  GEOGUESS_MAX_ROUND_SCORE,
+  GEOGUESS_PANORAMA_ATTEMPTS,
+  GEOGUESS_ROUND_TIME_MS,
+  GEOGUESS_HURRY_UP_MS
+} from '@/system/geoguess'
 
-// Must match the inset transition in the scene stylesheet
+// Circumference of the HUD timer ring (r = 10)
+const RING_LENGTH = 2 * Math.PI * 10
+// Must match the clip-path transition in the scene stylesheet
 const FULLSCREEN_TRANSITION_MS = 450
 // On <html> while fullscreen: turns the app header into a floating glass bar (styles live in the scene stylesheet)
 const IMMERSIVE_HTML_CLASS = 'geoguess-immersive'
@@ -139,17 +176,69 @@ export default defineComponent({
   components: {
     Button,
     Empty,
-    Loading
+    Loading,
+    Collapse,
+    CollapseItem
   },
   setup() {
     const { i18n } = useContext()
+    const store = useStore()
     const sfx = useSfx()
     const { postToNative } = useNativeBridge()
 
     // setup → loading → guessing ⇄ revealed → finished
     const phase = ref('setup')
-    const regionKey = ref(GEOGUESS_REGIONS[0].key)
+    const regions = computed(() => GEOGUESS_REGIONS.filter(item => item.locales.includes(i18n.locale)))
+    const regionKey = ref(regions.value[0].key)
     const region = computed(() => GEOGUESS_REGIONS.find(item => item.key === regionKey.value))
+    const rulesOpen = ref([])
+
+    // Switching language can drop the picked region (Europe/USA are EN-only, Türkiye TR-only)
+    watch(regions, list => {
+      if (!list.some(item => item.key === regionKey.value)) regionKey.value = list[0].key
+    })
+
+    const introStats = computed(() => [
+      { key: 'rounds', icon: 'tabler:flag', text: i18n.t('geoGuessMode.stats.rounds', { count: GEOGUESS_TOTAL_ROUNDS }) },
+      { key: 'timer', icon: 'tabler:clock', text: i18n.t('geoGuessMode.stats.timer', { minutes: GEOGUESS_ROUND_TIME_MS / 60000 }) },
+      {
+        key: 'maxScore',
+        icon: 'tabler:trophy',
+        text: i18n.t('geoGuessMode.stats.maxScore', {
+          score: (GEOGUESS_MAX_ROUND_SCORE * GEOGUESS_TOTAL_ROUNDS).toLocaleString(i18n.locale)
+        })
+      }
+    ])
+
+    // Round timer. The tick-tock file is ~6 s, so it loops through the last 10 s; game-scene sounds setting mutes it
+    const remainingMs = ref(GEOGUESS_ROUND_TIME_MS)
+    let roundDeadline = 0
+    let roundTimer = null
+    const isGameSoundOn = () => store.getters['app/isActiveGameSceneSoundFx']
+    const hurryUpSound = new Howl({ src: ['/sound/fx/tick-tock.wav'], loop: true, volume: 0.35, mute: !isGameSoundOn() })
+    const timeUpSound = new Howl({ src: ['/sound/fx/notification1.wav'], mute: !isGameSoundOn() })
+
+    watch(
+      () => store.getters['app/isActiveGameSceneSoundFx'],
+      value => {
+        hurryUpSound.mute(!value)
+        timeUpSound.mute(!value)
+      }
+    )
+
+    const isHurryUp = computed(() => remainingMs.value <= GEOGUESS_HURRY_UP_MS)
+    const ringOffset = computed(() => RING_LENGTH * (1 - remainingMs.value / GEOGUESS_ROUND_TIME_MS))
+    const remainingLabel = computed(() => {
+      const totalSeconds = Math.ceil(remainingMs.value / 1000)
+
+      return `${Math.floor(totalSeconds / 60)}:${String(totalSeconds % 60).padStart(2, '0')}`
+    })
+
+    const stopRoundTimer = () => {
+      clearInterval(roundTimer)
+      roundTimer = null
+      hurryUpSound.stop()
+    }
     const rounds = ref([])
     const roundIndex = ref(0)
     const results = ref([])
@@ -207,6 +296,9 @@ export default defineComponent({
       clearTimeout(fullscreenTimer)
       window.removeEventListener('keydown', handleKeydown)
       document.documentElement.classList.remove(IMMERSIVE_HTML_CLASS)
+      stopRoundTimer()
+      hurryUpSound.unload()
+      timeUpSound.unload()
     })
 
     const currentRound = computed(() => rounds.value[roundIndex.value])
@@ -222,7 +314,22 @@ export default defineComponent({
       return []
     })
 
+    function startRoundTimer() {
+      stopRoundTimer()
+      roundDeadline = Date.now() + GEOGUESS_ROUND_TIME_MS
+      remainingMs.value = GEOGUESS_ROUND_TIME_MS
+
+      roundTimer = setInterval(() => {
+        remainingMs.value = Math.max(0, roundDeadline - Date.now())
+
+        if (isHurryUp.value && !hurryUpSound.playing()) hurryUpSound.play()
+
+        if (remainingMs.value === 0) submitGuess({ isTimeUp: true })
+      }, 250)
+    }
+
     const startGame = async () => {
+      stopRoundTimer()
       phase.value = 'loading'
       results.value = []
       roundIndex.value = 0
@@ -246,18 +353,24 @@ export default defineComponent({
       rounds.value = panoramas
       phase.value = 'guessing'
       sfx.play('page-enter')
+      startRoundTimer()
     }
 
-    const submitGuess = () => {
-      if (!guess.value || phase.value !== 'guessing') return
+    // Time's up without a pin → `guess` is null and the round scores 0
+    const submitGuess = ({ isTimeUp = false } = {}) => {
+      if ((!guess.value && !isTimeUp) || phase.value !== 'guessing') return
+
+      stopRoundTimer()
 
       const answer = { lat: currentRound.value.lat, lng: currentRound.value.lng }
-      const distance = distanceKm(guess.value, answer)
-      const score = locationScore({ distance, scaleKm: region.value.scaleKm, maxScore: GEOGUESS_MAX_ROUND_SCORE })
+      const distance = guess.value ? distanceKm(guess.value, answer) : null
+      const score = guess.value ? locationScore({ distance, scaleKm: region.value.scaleKm, maxScore: GEOGUESS_MAX_ROUND_SCORE }) : 0
 
       results.value = [...results.value, { guess: guess.value, answer, distance, score }]
       phase.value = 'revealed'
       isMapExpanded.value = false
+
+      if (isTimeUp) timeUpSound.play()
 
       if (score >= GEOGUESS_MAX_ROUND_SCORE * 0.8) {
         sfx.play('success')
@@ -282,6 +395,7 @@ export default defineComponent({
       roundIndex.value += 1
       phase.value = 'guessing'
       sfx.play('page-enter', { volume: 0.3 })
+      startRoundTimer()
     }
 
     const countryName = code => {
@@ -295,6 +409,7 @@ export default defineComponent({
     }
 
     const backToSetup = () => {
+      stopRoundTimer()
       phase.value = 'setup'
       rounds.value = []
     }
@@ -327,7 +442,12 @@ export default defineComponent({
 
     return {
       phase,
-      regions: GEOGUESS_REGIONS,
+      regions,
+      rulesOpen,
+      introStats,
+      isHurryUp,
+      ringOffset,
+      remainingLabel,
       regionKey,
       region,
       rounds,

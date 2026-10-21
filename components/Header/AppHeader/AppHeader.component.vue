@@ -314,6 +314,7 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.CREATOR ||
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
         activeGameMode.value === gameModeKeyEnum.DRAW ||
+        activeGameMode.value === gameModeKeyEnum.GEOGUESS ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||

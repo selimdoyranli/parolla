@@ -1,12 +1,17 @@
-// GeoGuess game rules + play areas. Boxes are rough rectangles over well-covered Street View areas;
+// GeoGuess game rules + play areas. `locales` limits which UI languages offer a region.
+// Boxes are rough rectangles over well-covered Street View areas;
 // a random point inside one is snapped to the nearest official panorama within `searchRadius` metres.
 export const GEOGUESS_TOTAL_ROUNDS = 5
 export const GEOGUESS_MAX_ROUND_SCORE = 5000
 export const GEOGUESS_PANORAMA_ATTEMPTS = 12
+export const GEOGUESS_ROUND_TIME_MS = 3 * 60 * 1000
+// The tick-tock countdown starts this close to the end of a round
+export const GEOGUESS_HURRY_UP_MS = 10 * 1000
 
 export const GEOGUESS_REGIONS = Object.freeze([
   {
     key: 'world',
+    locales: ['tr', 'en'],
     icon: 'noto:globe-showing-europe-africa',
     scaleKm: 2000,
     searchRadius: 50000,
@@ -31,6 +36,7 @@ export const GEOGUESS_REGIONS = Object.freeze([
   },
   {
     key: 'europe',
+    locales: ['en'],
     icon: 'noto:castle',
     scaleKm: 800,
     searchRadius: 30000,
@@ -48,6 +54,7 @@ export const GEOGUESS_REGIONS = Object.freeze([
   },
   {
     key: 'turkey',
+    locales: ['tr'],
     icon: 'twemoji:flag-turkey',
     scaleKm: 300,
     searchRadius: 20000,
@@ -55,5 +62,22 @@ export const GEOGUESS_REGIONS = Object.freeze([
     country: 'TR',
     view: { center: [39, 35], zoom: 5 },
     boxes: [{ south: 36, west: 26, north: 42, east: 44.8, weight: 1 }]
+  },
+  {
+    key: 'usa',
+    locales: ['en'],
+    icon: 'twemoji:flag-united-states',
+    scaleKm: 1000,
+    searchRadius: 40000,
+    // The boxes brush Canada and Mexico — keep US panoramas only
+    country: 'US',
+    view: { center: [39, -97], zoom: 3 },
+    boxes: [
+      { south: 37, west: -124, north: 48.5, east: -104, weight: 3 }, // West
+      { south: 30, west: -110, north: 37, east: -95, weight: 2 }, // Southwest + Texas
+      { south: 37, west: -104, north: 48.5, east: -84, weight: 3 }, // Midwest
+      { south: 29, west: -95, north: 37, east: -76, weight: 3 }, // South
+      { south: 37, west: -84, north: 45, east: -70, weight: 3 } // Northeast
+    ]
   }
 ])

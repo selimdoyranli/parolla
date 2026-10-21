@@ -1342,13 +1342,28 @@ export default {
     regions: {
       world: { title: 'World', description: 'Streets from every continent' },
       europe: { title: 'Europe', description: 'European cities and towns' },
-      turkey: { title: 'Türkiye', description: 'All around Türkiye' }
+      turkey: { title: 'Türkiye', description: 'All around Türkiye' },
+      usa: { title: 'USA', description: 'Coast to coast across the States' }
     },
     rules: {
       rounds: '{count} rounds, a new street each round',
+      timer: 'You have {minutes} minutes per round, the clock ticks in the last 10 seconds',
       maxScore: 'Up to {score} points per round, the closer the better',
-      explore: 'You can walk down the street and look around'
+      explore: 'Walk down the street, look around, read the signs and roads for clues',
+      mark: 'Mark where you think you are on the map and guess'
     },
+    stats: {
+      rounds: '{count} rounds',
+      timer: '{minutes} min / round',
+      maxScore: '{score} points'
+    },
+    howToPlay: 'How to play?',
+    play: 'PLAY',
+    timeLeft: 'Time left',
+    timeUp: "Time's up, no guess made",
+    points: '{score} points',
+    you: 'You',
+    target: 'Target',
     start: 'START',
     preparing: 'Preparing locations',
     notEnoughLocations: 'No locations found, try again',
@@ -1357,6 +1372,7 @@ export default {
     openMap: 'Open map',
     closeMap: 'Close map',
     pickOnMap: 'MARK ON THE MAP',
+    openMapHint: 'Tap the map to guess',
     guess: 'GUESS',
     distance: 'Your guess was {distance} away',
     next: 'NEXT ROUND',

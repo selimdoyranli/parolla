@@ -1,0 +1,23 @@
+.how-to-play-geoguess-mode-content {
+  &__rules {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-8);
+    list-style: none;
+
+    li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: var(--color-brand-02);
+    }
+  }
+}
