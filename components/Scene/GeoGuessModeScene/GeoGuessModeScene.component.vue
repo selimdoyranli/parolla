@@ -1,5 +1,5 @@
 <template lang="pug">
-.scene.geoguess-scene(:class="`geoguess-scene--${phase}`")
+.scene.geoguess-scene(:class="[`geoguess-scene--${phase}`, { 'geoguess-scene--fullscreen': isFullscreen }]")
   // Setup
   .geoguess-scene-setup(v-if="phase === 'setup'")
     .geoguess-scene-setup__hero
@@ -44,19 +44,26 @@
 
   // Game
   template(v-else)
-    header.geoguess-scene-hud
-      button.geoguess-scene-hud__chip.geoguess-scene-hud__chip--region(type="button" @click="backToSetup")
-        AppIcon(:name="region.icon" :width="16" :height="16")
-        span {{ $t(`geoGuessMode.regions.${region.key}.title`) }}
-      .geoguess-scene-hud__chip
-        span.geoguess-scene-hud__chipLabel {{ $t('geoGuessMode.round') }}
-        strong {{ roundIndex + 1 }}/{{ rounds.length }}
-      .geoguess-scene-hud__chip
-        span.geoguess-scene-hud__chipLabel {{ $t('geoGuessMode.score') }}
-        strong {{ totalScore.toLocaleString($i18n.locale) }}
-
     .geoguess-scene-stage
       StreetViewPanorama.geoguess-scene-stage__panorama(:pano-id="currentRound.panoId" :heading="currentRound.heading")
+
+      header.geoguess-scene-hud
+        button.geoguess-scene-hud__chip.geoguess-scene-hud__chip--region(type="button" @click="backToSetup")
+          AppIcon(:name="region.icon" :width="16" :height="16")
+          span {{ $t(`geoGuessMode.regions.${region.key}.title`) }}
+        .geoguess-scene-hud__chip
+          span.geoguess-scene-hud__chipLabel {{ $t('geoGuessMode.round') }}
+          strong {{ roundIndex + 1 }}/{{ rounds.length }}
+        .geoguess-scene-hud__chip
+          span.geoguess-scene-hud__chipLabel {{ $t('geoGuessMode.score') }}
+          strong {{ totalScore.toLocaleString($i18n.locale) }}
+        button.geoguess-scene-hud__chip.geoguess-scene-hud__chip--icon(
+          type="button"
+          :aria-label="isFullscreen ? $t('geoGuessMode.exitFullscreen') : $t('geoGuessMode.fullscreen')"
+          :title="isFullscreen ? $t('geoGuessMode.exitFullscreen') : $t('geoGuessMode.fullscreen')"
+          @click="isFullscreen = !isFullscreen"
+        )
+          AppIcon(:name="isFullscreen ? 'tabler:minimize' : 'tabler:maximize'" :width="18" :height="18")
 
       .geoguess-scene-map(:class="{ 'is-expanded': isMapExpanded }")
         GeoMap.geoguess-scene-map__map(v-model="guess" :interactive="phase === 'guessing'" :pairs="mapPairs" :view="region.view")
@@ -77,6 +84,9 @@
       // Round result
       .geoguess-scene-card(v-if="phase === 'revealed'")
         strong.geoguess-scene-card__points +{{ lastResult.score.toLocaleString($i18n.locale) }}
+        span.geoguess-scene-card__place(v-if="countryName(currentRound.country)")
+          AppIcon(name="tabler:map-pin-filled" :width="14" :height="14")
+          | {{ countryName(currentRound.country) }}
         p.geoguess-scene-card__text {{ $t('geoGuessMode.distance', { distance: formatDistance(lastResult.distance, $i18n.locale) }) }}
         .geoguess-scene-card__bar
           span(:style="{ width: `${(lastResult.score / maxRoundScore) * 100}%` }")
@@ -140,6 +150,8 @@ export default defineComponent({
     const results = ref([])
     const guess = ref(null)
     const isMapExpanded = ref(false)
+    // Breaks the scene out of the narrow layout column to the full viewport width (header stays visible)
+    const isFullscreen = ref(false)
 
     const currentRound = computed(() => rounds.value[roundIndex.value])
     const isLastRound = computed(() => roundIndex.value === rounds.value.length - 1)
@@ -216,6 +228,16 @@ export default defineComponent({
       sfx.play('swoosh')
     }
 
+    const countryName = code => {
+      if (!code) return ''
+
+      try {
+        return new Intl.DisplayNames([i18n.locale], { type: 'region' }).of(code)
+      } catch {
+        return code
+      }
+    }
+
     const backToSetup = () => {
       phase.value = 'setup'
       rounds.value = []
@@ -257,6 +279,8 @@ export default defineComponent({
       results,
       guess,
       isMapExpanded,
+      isFullscreen,
+      countryName,
       currentRound,
       isLastRound,
       lastResult,

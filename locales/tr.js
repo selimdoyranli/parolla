@@ -1385,7 +1385,9 @@ export default {
     seeResults: 'SONUÇLARI GÖR',
     totalScore: 'Toplam puan',
     playAgain: 'TEKRAR OYNA',
-    changeRegion: 'Bölge değiştir'
+    changeRegion: 'Bölge değiştir',
+    fullscreen: 'Tam ekran',
+    exitFullscreen: 'Tam ekrandan çık'
   },
   period: {
     daily: {

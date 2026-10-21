@@ -50,6 +50,7 @@ export default defineComponent({
     let guessMarker = null
     let pairsLayer = null
     let resizeObserver = null
+    let revealedBounds = null
 
     const pinIcon = modifier =>
       L.divIcon({
@@ -60,6 +61,11 @@ export default defineComponent({
       })
 
     const resetView = () => map?.setView(props.view.center, props.view.zoom, { animate: false })
+
+    // Extra bottom room: callers usually float a result card over the lower part of the map
+    const fitRevealed = () =>
+      revealedBounds &&
+      map.fitBounds(revealedBounds, { paddingTopLeft: [48, 64], paddingBottomRight: [48, 200], maxZoom: 14, animate: false })
 
     const renderGuess = () => {
       if (!map) return
@@ -85,6 +91,7 @@ export default defineComponent({
       pairsLayer.clearLayers()
 
       if (!props.pairs.length) {
+        revealedBounds = null
         resetView()
 
         return
@@ -103,8 +110,8 @@ export default defineComponent({
         bounds.push(guess)
       })
 
-      // Extra bottom room: callers usually float a result card over the lower part of the map
-      map.fitBounds(bounds, { paddingTopLeft: [48, 48], paddingBottomRight: [48, 200], maxZoom: 14, animate: true })
+      revealedBounds = bounds
+      fitRevealed()
     }
 
     onMounted(async () => {
@@ -132,7 +139,13 @@ export default defineComponent({
       })
 
       // The map lives in panels that grow/shrink (hover, mobile toggle, reveal) — keep tiles in sync
-      resizeObserver = new ResizeObserver(() => map?.invalidateSize())
+      // A reveal usually grows the map right as the pairs arrive, so refit once the new size settles
+      resizeObserver = new ResizeObserver(() => {
+        if (!map) return
+
+        map.invalidateSize()
+        fitRevealed()
+      })
       resizeObserver.observe(canvasRef.value)
 
       renderGuess()

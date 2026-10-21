@@ -1363,7 +1363,9 @@ export default {
     seeResults: 'SEE RESULTS',
     totalScore: 'Total score',
     playAgain: 'PLAY AGAIN',
-    changeRegion: 'Change region'
+    changeRegion: 'Change region',
+    fullscreen: 'Fullscreen',
+    exitFullscreen: 'Exit fullscreen'
   },
   period: {
     daily: {
