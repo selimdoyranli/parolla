@@ -152,6 +152,14 @@
         :playerList="drawUserList"
       )
 
+      IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--geoguess(
+        icon="noto:world-map"
+        :to="localePath({ name: 'GeoGuessMode' })"
+        :title="$t('introScene.modeList.geoGuess.title')"
+        :headLabel="{ title: $t('introScene.modeList.geoGuess.label'), icon: 'tabler:map-pin' }"
+        :description="$t('introScene.modeList.geoGuess.description')"
+      )
+
     .intro-scene__keywords.d-none
       h3.intro-scene__subtitle {{ $t('introScene.subtitle') }}
       p.intro-scene__description {{ $t('introScene.description') }}

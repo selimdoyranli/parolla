@@ -1,0 +1,688 @@
+.geoguess-scene {
+  // Frosted glass for everything floating over the panorama
+  --glass-bg: color-mix(in sRGB, var(--color-ui-02) 72%, transparent);
+  --glass-border: color-mix(in sRGB, var(--color-text-04) 22%, transparent);
+  --glass-blur: blur(14px) saturate(1.5);
+  --hud-height: 44px;
+  // Where the HUD starts; pushed down under the floating header while fullscreen
+  --hud-top: 8px;
+  --fs-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  color: var(--color-text-01);
+  background-color: var(--color-ui-01);
+
+  // Fullscreen covers the whole viewport. The scene is laid out full-size from the first frame and a clip-path mask
+  // reveals it: entering/leaving clip it to its in-layout rect (--fs-*, set from JS), on unclips. Only the mask
+  // animates, so the panorama iframe and the map never re-layout mid-transition.
+  &--fs-entering,
+  &--fs-on,
+  &--fs-leaving {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    height: auto;
+    overflow: hidden;
+    will-change: clip-path;
+  }
+
+  &--fs-entering,
+  &--fs-leaving {
+    clip-path: inset(var(--fs-top) var(--fs-right) var(--fs-bottom) var(--fs-left));
+  }
+
+  &--fs-on {
+    --hud-top: calc(var(--header-height) + 20px);
+
+    clip-path: inset(0);
+  }
+
+  &--fs-on,
+  &--fs-leaving {
+    transition: clip-path 0.45s var(--fs-ease);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  // ── Setup ───────────────────────────────────────────
+  &-setup {
+    flex: 1;
+    width: 100%;
+    max-width: var(--layout-max-width);
+    min-height: 0;
+    margin: 0 auto;
+    overflow-y: auto;
+
+    // Same banner as the daily / unlimited intros, with the mode's stats riding on it as pills
+    &__cover {
+      aspect-ratio: auto;
+      height: 150px;
+
+      @include media-breakpoint-down(mobile) {
+        height: 124px;
+
+        .quiz-cover__label {
+          font-size: var(--font-size-text-4);
+        }
+
+        .quiz-cover__sublabel {
+          margin-top: 2px;
+          font-size: var(--font-size-text-10);
+        }
+      }
+    }
+
+    &__stats {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      color: var(--color-text-01);
+      font-weight: 600;
+      font-size: var(--font-size-text-9);
+      list-style: none;
+
+      @include media-breakpoint-down(mobile) {
+        gap: 4px;
+        font-size: var(--font-size-text-10);
+      }
+    }
+
+    &__stat {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      padding: 3px 8px;
+      background-color: var(--color-ui-01);
+      border-radius: 999px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: $spacer * 3;
+      padding: var(--base-p-y) var(--base-p-x);
+    }
+
+    &__label {
+      color: var(--color-text-03);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    &__regions {
+      display: grid;
+      grid-template-columns: repeat(var(--region-count, 3), 1fr);
+      gap: $spacer * 2;
+    }
+
+    &__play.van-button {
+      height: 52px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      background: linear-gradient(
+        135deg,
+        var(--color-brand-02) 0%,
+        color-mix(in sRGB, var(--color-brand-02) 45%, #e60023) 55%,
+        color-mix(in sRGB, var(--color-brand-02) 15%, #c4001d) 100%
+      );
+      border: 0;
+      transition: filter 0.15s ease, transform 0.1s ease;
+
+      &:hover {
+        filter: brightness(1.06) saturate(1.1);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+
+      .van-button__text {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+      }
+    }
+
+    &__rules {
+      overflow: hidden;
+      border: 1px solid var(--color-border-02);
+      border-radius: calc(var(--border-radius-01) / 2);
+
+      .van-collapse-item__content {
+        padding: var(--base-p-y) calc(var(--base-p-x) * 1.2);
+      }
+    }
+  }
+
+  &-region {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $spacer;
+    align-items: center;
+    padding: $spacer * 4 $spacer * 2 $spacer * 3;
+    overflow: hidden;
+    color: var(--color-text-01);
+    text-align: center;
+    background-color: var(--color-ui-02);
+    border: 2px solid var(--color-border-01);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    // Soft brand wash behind the picked region
+    &::before {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, color-mix(in sRGB, var(--color-brand-02) 22%, transparent), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s;
+      content: '';
+    }
+
+    &.is-active {
+      border-color: var(--color-brand-02);
+      box-shadow: 0 6px 18px color-mix(in sRGB, var(--color-brand-02) 25%, transparent);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    > * {
+      position: relative;
+    }
+
+    &__icon {
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+    }
+
+    &__title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    &__description {
+      color: var(--color-text-03);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    &__check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: var(--color-brand-02);
+    }
+  }
+
+  // ── HUD ─────────────────────────────────────────────
+  &-hud {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    // Slides under the floating header instead of jumping there
+    transition: top 0.45s var(--fs-ease);
+    // Only the chips take clicks — the gaps between them keep dragging the panorama
+    pointer-events: none;
+    inset-inline: 8px;
+    inset-block-start: var(--hud-top);
+
+    &__chip {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      height: 36px;
+      padding: 0 10px;
+      color: var(--color-text-01);
+      font-size: 13px;
+      // Label (10px caps) and value (13px) share one line box, so both sit on the chip's vertical centre
+      line-height: 1;
+
+      > span,
+      > strong {
+        display: block;
+      }
+
+      background-color: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      pointer-events: auto;
+
+      &--region {
+        min-width: 0;
+        font-weight: 600;
+        cursor: pointer;
+        margin-inline-end: auto;
+
+        span {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &--timer {
+        gap: 6px;
+        padding-inline-start: 6px;
+        font-variant-numeric: tabular-nums;
+
+        &.is-urgent {
+          color: var(--color-danger-02);
+          border-color: color-mix(in sRGB, var(--color-danger-02) 60%, transparent);
+          animation: geoguess-timer-pulse 1s ease-in-out infinite;
+        }
+      }
+
+      &--icon {
+        justify-content: center;
+        width: 36px;
+        padding: 0;
+        cursor: pointer;
+      }
+    }
+
+    &__ring {
+      width: 24px;
+      height: 24px;
+      transform: rotate(-90deg);
+
+      circle {
+        fill: none;
+        stroke-width: 3;
+      }
+    }
+
+    &__ringTrack {
+      stroke: color-mix(in sRGB, var(--color-text-01) 15%, transparent);
+    }
+
+    &__ringFill {
+      transition: stroke-dashoffset 0.25s linear;
+      stroke: var(--color-brand-02);
+      stroke-linecap: round;
+      stroke-dasharray: 62.832;
+
+      .is-urgent & {
+        stroke: var(--color-danger-02);
+      }
+    }
+
+    &__chipLabel {
+      color: var(--color-text-02);
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+  }
+
+  // ── Stage (panorama + map) ──────────────────────────
+  &-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+    &__panorama {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  // The panorama keeps its own controls on the right and Google's attribution along the bottom edge,
+  // so the map sits bottom-left, above that row
+  --stage-bottom-row: 28px;
+  // Mobile map sheet height; the close button rides just above it
+  --sheet-height: 62%;
+
+  &-map {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, inset 0.25s ease;
+
+    &__map {
+      flex: 1;
+      min-height: 0;
+    }
+
+    &__actions {
+      flex-shrink: 0;
+      padding: 6px;
+    }
+
+    // Covers the collapsed mobile mini map so a tap opens the sheet instead of dropping a pin
+    &__opener {
+      position: absolute;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+
+    // Desktop: small corner map that grows while it's being used
+    @include media-breakpoint-up(tablet) {
+      inset-inline-start: 12px;
+      inset-block-end: var(--stage-bottom-row);
+      width: min(300px, calc(100% - 84px));
+      height: 220px;
+      opacity: 0.85;
+
+      &:hover,
+      &:focus-within {
+        width: min(560px, calc(100% - 24px));
+        height: min(420px, calc(100% - var(--stage-bottom-row) - 12px));
+        opacity: 1;
+      }
+    }
+
+    // Mobile: a tiny always-visible mini map; tapping it opens the full-width sheet
+    @include media-breakpoint-down(tablet) {
+      inset-inline-start: 10px;
+      inset-block-end: var(--stage-bottom-row);
+      width: 128px;
+      height: 96px;
+
+      .leaflet-control-container {
+        display: none;
+      }
+
+      &:not(.is-expanded) &__actions {
+        display: none;
+      }
+
+      &__opener {
+        display: flex;
+      }
+
+      &.is-expanded {
+        inset-inline-start: 6px;
+        inset-block-end: 6px;
+        width: calc(100% - 12px);
+        height: var(--sheet-height);
+
+        .leaflet-control-container {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // Mobile only: invisible layer behind the open sheet — a tap on the panorama closes the sheet
+  &-map-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    @include media-breakpoint-up(tablet) {
+      display: none;
+    }
+  }
+
+  &-map-close {
+    position: absolute;
+    z-index: 4;
+    inset-inline-end: 10px;
+    inset-block-end: calc(var(--sheet-height) + 6px + 8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--color-text-01);
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    animation: geoguess-card-in 0.25s ease;
+
+    @include media-breakpoint-up(tablet) {
+      display: none;
+    }
+  }
+
+  // Reveal + summary: the map takes over the whole stage
+  &--revealed,
+  &--finished {
+    .geoguess-scene-map {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      transform: none;
+      opacity: 1;
+
+      &:hover,
+      &:focus-within {
+        width: 100%;
+        height: 100%;
+      }
+
+      .leaflet-top {
+        top: calc(var(--hud-top) + var(--hud-height) - 8px);
+      }
+    }
+  }
+
+  // ── Result / summary card ───────────────────────────
+  &-card {
+    position: absolute;
+    z-index: 6;
+    inset-inline: 0;
+    inset-block-end: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 2;
+    align-items: center;
+    width: calc(100% - 24px);
+    max-width: 380px;
+    margin: 0 auto;
+    padding: $spacer * 4;
+    text-align: center;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    animation: geoguess-card-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &__label {
+      color: var(--color-text-03);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    &__points {
+      color: var(--color-brand-02);
+      font-size: var(--font-size-text-3);
+      line-height: 1;
+
+      @include font-weight-bold;
+
+      small {
+        color: var(--color-text-03);
+        font-size: 14px;
+      }
+    }
+
+    &__place {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      color: var(--color-text-01);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    &__text {
+      margin: 0;
+      color: var(--color-text-02);
+      font-size: 14px;
+    }
+
+    &__bar {
+      width: 100%;
+      height: 8px;
+      overflow: hidden;
+      background-color: var(--color-ui-03);
+      border-radius: 8px;
+
+      span {
+        display: block;
+        height: 100%;
+        background-color: var(--color-brand-02);
+        border-radius: 8px;
+        transition: width 0.6s ease;
+      }
+    }
+
+    &__rounds {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      list-style: none;
+
+      li {
+        display: grid;
+        grid-template-columns: 24px 1fr auto;
+        padding: 4px 0;
+        color: var(--color-text-02);
+        text-align: start;
+        border-bottom: 1px dashed var(--color-border-01);
+
+        &:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    &__actions {
+      display: flex;
+      gap: $spacer * 2;
+      width: 100%;
+
+      .van-button {
+        flex: 1;
+      }
+    }
+
+    &__link {
+      padding: 0;
+      color: var(--color-link-01);
+      font-size: 13px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes geoguess-card-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+// Fullscreen: the app header leaves the layout and floats over the game as a rounded glass bar.
+// The header hosts its own dialogs (menu, notifications…), and a backdrop-filter or transform on it would become their
+// containing block — fixed dialogs would center on the bar. So the glass lives on ::before and the slide-in animates top.
+html.geoguess-immersive .app-header {
+  position: fixed;
+  z-index: 110;
+  inset-inline: 0;
+  inset-block-start: 8px;
+  width: min(var(--layout-max-width), calc(100vw - 16px));
+  margin-inline: auto;
+  border: 1px solid color-mix(in sRGB, var(--color-text-04) 22%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  animation: geoguess-header-float-in 0.45s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  &::before {
+    position: absolute;
+    z-index: -1;
+    background-color: color-mix(in sRGB, var(--color-ui-02) 72%, transparent);
+    border-radius: inherit;
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+    backdrop-filter: blur(14px) saturate(1.5);
+    content: '';
+    inset: 0;
+  }
+}
+
+// Scene dialogs normally start right under the header — start under the floating bar instead
+html.geoguess-immersive .dialog.dialog--scene.van-dialog {
+  top: calc(var(--header-height) + 16px);
+}
+
+@keyframes geoguess-header-float-in {
+  from {
+    top: calc(-1 * var(--header-height) - 16px);
+    opacity: 0;
+  }
+
+  to {
+    top: 8px;
+    opacity: 1;
+  }
+}
+
+@keyframes geoguess-timer-pulse {
+  50% {
+    transform: scale(1.06);
+  }
+}

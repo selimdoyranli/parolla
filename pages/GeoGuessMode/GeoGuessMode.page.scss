@@ -1,0 +1,9 @@
+// AdSense writes inline `height: auto !important` on every ancestor of a filled ad (the intro has one), which
+// would collapse a percentage height to 0 — so the page is pinned to layout__main and the scene fills it by flex
+.geoguess-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}

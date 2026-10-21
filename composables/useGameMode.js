@@ -39,6 +39,10 @@ export default () => {
     ) {
       return gameModeKeyEnum.DRAW
     }
+
+    if (route.value.path === localePath({ name: 'GeoGuessMode' })) {
+      return gameModeKeyEnum.GEOGUESS
+    }
   })
 
   return {

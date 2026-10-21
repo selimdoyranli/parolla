@@ -305,6 +305,11 @@ export default {
         description: 'Draw, guess, win — live drawing game',
         label: 'LIVE',
         newLabel: 'New'
+      },
+      geoGuess: {
+        title: 'GEOGUESS',
+        description: 'Guess where the street photo was taken',
+        label: 'Anywhere in the world'
       }
     }
   },
@@ -721,6 +726,9 @@ export default {
     },
     guessTheSongStats: {
       description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
+    },
+    geoGuessStats: {
+      description: `parolla - GeoGuess ({region}) 🌍 \n \nScore: {score} \n \n{url}`
     }
   },
   creatorModeRooms: {
@@ -1326,6 +1334,55 @@ export default {
     otherLengths: 'Play other modes',
     letter: 'Letter'
   },
+  geoGuessMode: {
+    title: 'GeoGuess',
+    description: 'Guess where the street photo was taken and mark it on the map',
+    panoramaTitle: 'Street view',
+    chooseRegion: 'Choose a region',
+    regions: {
+      world: { title: 'World', description: 'Streets from every continent' },
+      europe: { title: 'Europe', description: 'European cities and towns' },
+      turkey: { title: 'Türkiye', description: 'All around Türkiye' },
+      usa: { title: 'USA', description: 'Coast to coast across the States' }
+    },
+    rules: {
+      rounds: '{count} rounds, a new street each round',
+      timer: 'You have {minutes} minutes per round, the clock ticks in the last 10 seconds',
+      maxScore: 'Up to {score} points per round, the closer the better',
+      explore: 'Walk down the street, look around, read the signs and roads for clues',
+      mark: 'Mark where you think you are on the map and guess'
+    },
+    stats: {
+      rounds: '{count} rounds',
+      timer: '{minutes} min / round',
+      maxScore: '{score} points'
+    },
+    howToPlay: 'How to play?',
+    play: 'PLAY',
+    timeLeft: 'Time left',
+    timeUp: "Time's up, no guess made",
+    points: '{score} points',
+    you: 'You',
+    target: 'Target',
+    start: 'START',
+    preparing: 'Preparing locations',
+    notEnoughLocations: 'No locations found, try again',
+    round: 'Round',
+    score: 'Score',
+    openMap: 'Open map',
+    closeMap: 'Close map',
+    pickOnMap: 'MARK ON THE MAP',
+    openMapHint: 'Tap the map to guess',
+    guess: 'GUESS',
+    distance: 'Your guess was {distance} away',
+    next: 'NEXT ROUND',
+    seeResults: 'SEE RESULTS',
+    totalScore: 'Total score',
+    playAgain: 'PLAY AGAIN',
+    changeRegion: 'Change region',
+    fullscreen: 'Fullscreen',
+    exitFullscreen: 'Exit fullscreen'
+  },
   period: {
     daily: {
       title: 'Daily',
@@ -1456,6 +1513,11 @@ export default {
         description: 'Listen to {artists} songs and guess them in the music quiz',
         keywords: 'music quiz, music quiz play, listen to songs and guess them'
       }
+    },
+    geoGuessMode: {
+      title: 'GeoGuess - Guess the location from street view',
+      description: 'Guess where the street photo was taken and mark it on the map. World, Europe and Türkiye rounds.',
+      keywords: 'geoguess, geoguessr, location guessing game, street view game, map game, geography game'
     }
   },
   activities: {

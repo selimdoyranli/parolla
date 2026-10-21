@@ -307,6 +307,11 @@ export default {
         description: 'Verilen kelimeyi çiz , çizimi tahmin et',
         label: 'CANLI',
         newLabel: 'Yeni'
+      },
+      geoGuess: {
+        title: 'GEOGUESS',
+        description: 'Sokak fotoğrafından nerede olduğunu tahmin et',
+        label: "Dünya'nın herhangi bir noktası"
       }
     }
   },
@@ -725,6 +730,9 @@ export default {
     },
     guessTheSongStats: {
       description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
+    },
+    geoGuessStats: {
+      description: `parolla - GeoGuess ({region}) 🌍 \n \nSkorum: {score} \n \n{url}`
     }
   },
   creatorModeRooms: {
@@ -1348,6 +1356,55 @@ export default {
     seeResults: 'Sonuçları gör',
     appleMusic: 'Apple Music'
   },
+  geoGuessMode: {
+    title: 'GeoGuess',
+    description: 'Sokak fotoğrafından nerede olduğunu tahmin et ve haritada işaretle',
+    panoramaTitle: 'Sokak görünümü',
+    chooseRegion: 'Bölge seç',
+    regions: {
+      world: { title: 'Dünya', description: 'Tüm kıtalardan sokaklar' },
+      europe: { title: 'Avrupa', description: 'Avrupa şehir ve kasabaları' },
+      turkey: { title: 'Türkiye', description: "Türkiye'nin dört bir yanı" },
+      usa: { title: 'ABD', description: 'Amerika Birleşik Devletleri' }
+    },
+    rules: {
+      rounds: '{count} tur, her turda yeni bir sokak',
+      timer: 'Her tur için {minutes} dakikan var, son 10 saniyede saat tıklamaya başlar',
+      maxScore: 'Tur başına en fazla {score} puan, ne kadar yakınsan o kadar çok',
+      explore: 'Sokakta ilerle, etrafına bak, tabelalardan ve yollardan ipucu topla',
+      mark: 'Nerede olduğunu düşünüyorsan haritada işaretle ve tahmin et'
+    },
+    stats: {
+      rounds: '{count} tur',
+      timer: '{minutes} dk / tur',
+      maxScore: '{score} puan'
+    },
+    howToPlay: 'Nasıl oynanır?',
+    play: 'OYNA',
+    timeLeft: 'Kalan süre',
+    timeUp: 'Süre doldu, tahmin yapmadın',
+    points: '{score} puan',
+    you: 'Sen',
+    target: 'Hedef',
+    start: 'BAŞLA',
+    preparing: 'Konumlar hazırlanıyor',
+    notEnoughLocations: 'Konum bulunamadı, tekrar dene',
+    round: 'Tur',
+    score: 'Puan',
+    openMap: 'Haritayı aç',
+    closeMap: 'Haritayı kapat',
+    pickOnMap: 'HARİTADA İŞARETLE',
+    openMapHint: 'Tahmin etmek için haritaya dokun',
+    guess: 'TAHMİN ET',
+    distance: 'Tahminin {distance} uzaktaydı',
+    next: 'SONRAKİ TUR',
+    seeResults: 'SONUÇLARI GÖR',
+    totalScore: 'Toplam puan',
+    playAgain: 'TEKRAR OYNA',
+    changeRegion: 'Bölge değiştir',
+    fullscreen: 'Tam ekran',
+    exitFullscreen: 'Tam ekrandan çık'
+  },
   period: {
     daily: {
       title: 'Günlük',
@@ -1478,6 +1535,11 @@ export default {
         description: 'Müzik quizde {artists} şarkılarını dinle ve tahmin et',
         keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
       }
+    },
+    geoGuessMode: {
+      title: 'GeoGuess - Sokak görünümünden konumu tahmin et',
+      description: 'Sokak fotoğrafından nerede olduğunu tahmin et ve haritada işaretle. Dünya, Avrupa ve Türkiye turları.',
+      keywords: 'geoguess, geoguessr türkçe, konum tahmin oyunu, sokak görünümü oyunu, harita oyunu, coğrafya oyunu'
     }
   },
   activities: {

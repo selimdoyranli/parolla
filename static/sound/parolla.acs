@@ -83,6 +83,16 @@ input:on-input, textarea:on-input { sound: keystroke; }
 .room-comment-item__action--reply { sound-on-click: tick; }
 .room-comment-more-dialog__option { sound-on-click: tick; }
 
+/* GeoGuess — region cards tick, mini map opens / sheet closes like a drawer, HUD region chip backs out.
+   Pin drop, reveal (success/ding/denied by score), round + fullscreen sine sweeps (page-enter/exit) and finish are played from the scene via useSfx. */
+.geoguess-scene-region { sound-on-click: tick; }
+.geoguess-scene-map__opener { sound-on-click: drawer-open; }
+.geoguess-scene-map-close,
+.geoguess-scene-map-backdrop { sound-on-click: drawer-close; }
+.geoguess-scene-setup__play { sound-on-click: pop; }
+.geoguess-scene-hud__chip--region,
+.geoguess-scene-card__link { sound-on-click: thunk; volume: 0.5; }
+
 /* === Remove / destructive actions — thunk (decisive removal) ===
    Compound selectors are used to beat .van-button.van-button--danger
    specificity (0,2,0) on remove buttons that are vant Buttons. */

@@ -1,0 +1,134 @@
+.geo-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-ui-03);
+
+  &--interactive {
+    .leaflet-container {
+      cursor: crosshair;
+    }
+  }
+
+  // Google tiles only come in light — flip them for dark mode, keeping water blue and parks green
+  @at-root .dark-mode & .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9);
+  }
+
+  &__canvas {
+    width: 100%;
+    height: 100%;
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--color-ui-03);
+  }
+
+  .leaflet-control-attribution {
+    color: var(--color-text-03);
+    font-size: 9px;
+    background-color: var(--color-overlay-02);
+
+    a {
+      color: var(--color-text-02);
+    }
+  }
+
+  .leaflet-control-zoom {
+    overflow: hidden;
+    border: 1px solid var(--color-border-01) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+    a {
+      color: var(--color-text-01);
+      background-color: var(--color-ui-02);
+      border-color: var(--color-border-01);
+
+      &:hover {
+        background-color: var(--color-hover-01);
+      }
+    }
+  }
+}
+
+.geo-map-pin {
+  --pin-gradient: linear-gradient(135deg, #ff9a8b, var(--color-brand-02) 45%, #e0245e);
+  --pin-label-color: #fff;
+
+  &--answer {
+    --pin-gradient: linear-gradient(135deg, #7ef0b0, #1fb873 45%, #0b7a63);
+  }
+
+  &__dot {
+    position: absolute;
+    inset: 0;
+    background: var(--pin-gradient);
+    border: 3px solid #fff;
+    border-radius: 50% 50% 50% 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    transform: rotate(-45deg) scale(0.85);
+    transform-origin: center;
+    animation: geo-map-pin-drop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  // Balloon over the pin, with a small tail pointing down at it
+  &__label {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    z-index: 1;
+    padding: 3px 8px;
+    color: var(--pin-label-color);
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1.2;
+    white-space: nowrap;
+    background: var(--pin-gradient);
+    border: 1.5px solid #fff;
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: translateX(-50%);
+    animation: geo-map-pin-drop-label 0.3s 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+
+    &::after {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      margin-top: -4px;
+      background: #fff;
+      transform: translateX(-50%) rotate(45deg);
+      content: '';
+    }
+  }
+}
+
+.geo-map-line {
+  stroke: var(--color-brand-01);
+  stroke-linecap: round;
+}
+
+@keyframes geo-map-pin-drop {
+  from {
+    transform: translateY(-14px) rotate(-45deg) scale(0.85);
+    opacity: 0;
+  }
+
+  to {
+    transform: rotate(-45deg) scale(0.85);
+    opacity: 1;
+  }
+}
+
+@keyframes geo-map-pin-drop-label {
+  from {
+    transform: translate(-50%, 6px) scale(0.6);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+}
