@@ -1,6 +1,7 @@
 .street-view-panorama {
-  // The embed prints the street address in its top-left card — pushing the frame up crops it out of view
-  --address-card-crop: 64px;
+  // The embed prints the street address in a top-left card (gm-iv-address) that can't be styled cross-origin.
+  // Pushing the frame up crops it: the card ends ~62px down, the rest covers its drop shadow
+  --address-card-crop: 76px;
 
   position: relative;
   width: 100%;
