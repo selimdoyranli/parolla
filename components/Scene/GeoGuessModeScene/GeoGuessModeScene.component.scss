@@ -391,20 +391,9 @@
       inset: 0;
       z-index: 1000;
       display: none;
-      align-items: flex-start;
-      justify-content: flex-end;
-      padding: 6px;
-      color: var(--color-text-01);
       background: transparent;
       border: 0;
       cursor: pointer;
-
-      svg {
-        box-sizing: content-box;
-        padding: 3px;
-        background-color: var(--glass-bg);
-        border-radius: 6px;
-      }
     }
 
     // Desktop: small corner map that grows while it's being used

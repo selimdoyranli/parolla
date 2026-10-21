@@ -96,7 +96,6 @@
           :aria-label="$t('geoGuessMode.openMapHint')"
           @click="isMapExpanded = true"
         )
-          AppIcon(name="tabler:arrows-maximize" :width="14" :height="14")
 
       button.geoguess-scene-map-close(
         v-if="phase === 'guessing' && isMapExpanded"
