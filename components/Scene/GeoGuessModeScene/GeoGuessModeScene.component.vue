@@ -155,8 +155,9 @@ export default defineComponent({
     const results = ref([])
     const guess = ref(null)
     const isMapExpanded = ref(false)
-    // Covers the whole viewport, header included. off → entering → on → leaving → off:
-    // entering/leaving pin the fixed scene onto its in-layout rect, so the inset transition grows/shrinks from there
+    // Covers the whole viewport, header included. off → entering → on → leaving → off.
+    // The scene is full-size for the whole ride and only a clip-path mask animates, pinned to the in-layout rect at
+    // entering/leaving — resizing the panorama iframe and Leaflet every frame is what made it flicker
     const rootRef = ref(null)
     const fullscreenState = ref('off')
     const isFullscreen = computed(() => ['entering', 'on'].includes(fullscreenState.value))
@@ -178,7 +179,7 @@ export default defineComponent({
       pinToLayoutRect()
       fullscreenState.value = 'entering'
       document.documentElement.classList.add(IMMERSIVE_HTML_CLASS)
-      sfx.play('swoosh', { volume: 0.5 })
+      sfx.play('page-enter', { volume: 0.25 })
       // Two frames: let the pinned rect paint before transitioning away from it
       requestAnimationFrame(() => requestAnimationFrame(() => (fullscreenState.value = 'on')))
     }
@@ -190,7 +191,7 @@ export default defineComponent({
       await nextTick()
       pinToLayoutRect()
       fullscreenState.value = 'leaving'
-      sfx.play('swoosh', { volume: 0.5, pitch: '-2st' })
+      sfx.play('page-exit', { volume: 0.25 })
       fullscreenTimer = setTimeout(() => (fullscreenState.value = 'off'), FULLSCREEN_TRANSITION_MS)
     }
 
@@ -280,7 +281,7 @@ export default defineComponent({
 
       roundIndex.value += 1
       phase.value = 'guessing'
-      sfx.play('swoosh')
+      sfx.play('page-enter', { volume: 0.3 })
     }
 
     const countryName = code => {

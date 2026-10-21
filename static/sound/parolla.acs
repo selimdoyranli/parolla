@@ -84,7 +84,7 @@ input:on-input, textarea:on-input { sound: keystroke; }
 .room-comment-more-dialog__option { sound-on-click: tick; }
 
 /* GeoGuess — region cards tick, map sheet opens/closes like a drawer, HUD region chip backs out.
-   Pin drop, reveal (success/ding/denied by score), round swoosh and finish are played from the scene via useSfx. */
+   Pin drop, reveal (success/ding/denied by score), round + fullscreen sine sweeps (page-enter/exit) and finish are played from the scene via useSfx. */
 .geoguess-scene-region { sound-on-click: tick; }
 .geoguess-scene-map-toggle { sound-on-click: drawer-open; }
 .geoguess-scene-map-toggle.is-active { sound-on-click: drawer-close; }
