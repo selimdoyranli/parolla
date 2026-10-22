@@ -1328,6 +1328,7 @@ export default {
       postPermissionDenied: 'Bu toplulukta yalnızca sahip ve moderatörler quiz paylaşabilir.',
       hidden: 'Bu topluluk şu an kullanılamıyor.',
       roomNotShareable: 'Bu quiz paylaşılamaz.',
+      anonymousQuiz: 'Anonim quizler toplulukta paylaşılamaz.',
       alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
       ownedLimitReached: 'En fazla {max} topluluk kurabilirsin.',
       notFound: 'Topluluk bulunamadı.'

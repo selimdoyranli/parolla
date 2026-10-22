@@ -76,7 +76,13 @@
         small.creator-mode-compose-form__optionalHint
           | {{ $t('form.optionalHint') }}
 
-    RoomCommunitySelect(v-model="form.community" :room="room" :is-listed="form.visibilityMode === 'public'" :disabled="form.isBusy")
+    RoomCommunitySelect(
+      v-if="!form.isAnon"
+      v-model="form.community"
+      :room="room"
+      :is-listed="form.visibilityMode === 'public'"
+      :disabled="form.isBusy"
+    )
 
     Cell.creator-mode-compose-form__visibilityTitle(:title="$t('form.creatorModeCompose.room.visibility.label')")
     RadioGroup(v-model="form.visibilityMode" :disabled="form.isBusy")

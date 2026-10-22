@@ -166,13 +166,14 @@ export default defineComponent({
     const isCreator = computed(() => props.mode === 'creator')
     const me = computed(() => store.getters['auth/user'])
     const communityShareOpen = ref(false)
-    // mirrors the server rule: others' quizzes only when listed publicly (not community-only); moderated quizzes never
+    // mirrors the server rule: others' quizzes only when listed publicly (not community-only); moderated and anonymous quizzes never
     const canShareToCommunity = computed(
       () =>
         isCreator.value &&
         Boolean(me.value) &&
         Boolean(room.value.documentId) &&
         !room.value.isSystemRemovedFromPublic &&
+        !room.value.isAnon &&
         (store.getters['auth/postableCommunities'] || []).length > 0 &&
         (room.value.user?.id === me.value.id || (room.value.isListed && !room.value.isCommunityOnly))
     )

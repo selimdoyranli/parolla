@@ -1310,6 +1310,7 @@ export default {
       postPermissionDenied: 'Only the owner and moderators can share quizzes here.',
       hidden: 'This community is unavailable right now.',
       roomNotShareable: 'This quiz cannot be shared.',
+      anonymousQuiz: "Anonymous quizzes can't be shared to communities.",
       alreadyShared: 'This quiz is already shared in this community.',
       ownedLimitReached: 'You can own at most {max} communities.',
       notFound: 'Community not found.'

@@ -99,11 +99,25 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isListed: form.visibilityMode === 'public'
   })
 
-  // community-only needs a community to live in
+  // community-only needs a community to live in; fall back to the closest non-public mode
+  const dropCommunity = () => {
+    form.community = null
+
+    if (form.visibilityMode === 'communityOnly') form.visibilityMode = 'unlisted'
+  }
+
   watch(
     () => form.community,
     community => {
-      if (!community && form.visibilityMode === 'communityOnly') form.visibilityMode = 'public'
+      if (!community) dropCommunity()
+    }
+  )
+
+  // a post shows its author, so an anonymous quiz is never shared to a community
+  watch(
+    () => form.isAnon,
+    isAnon => {
+      if (isAnon) dropCommunity()
     }
   )
 
