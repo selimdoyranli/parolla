@@ -375,6 +375,7 @@ export default {
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',
+      communities: 'Communities',
       darkTheme: 'Dark theme',
       soundFx: 'Sound Effects',
       reactionSoundFx: 'Reaction sounds',
@@ -1677,6 +1678,11 @@ export default {
       title: 'Create Flashcards Quiz',
       description: 'Create a flashcard quiz for studying',
       keywords: 'flashcards, quiz, study, learning'
+    },
+    communityList: {
+      title: 'Communities, share quizzes around shared interests',
+      description: 'Join communities, start your own and share quizzes together',
+      keywords: 'communities, quiz community, share quiz'
     },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',

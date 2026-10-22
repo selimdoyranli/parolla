@@ -377,6 +377,7 @@ export default {
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',
+      communities: 'Topluluklar',
       darkTheme: 'Koyu tema',
       soundFx: 'Ses Efektleri',
       reactionSoundFx: 'Tepki Sesleri',
@@ -1698,6 +1699,11 @@ export default {
       title: 'Flashcards Quiz Oluştur',
       description: 'Çalışma ya da eğlence için flashcards quiz oluştur',
       keywords: 'flashcards, quiz, çalışma, öğrenme'
+    },
+    communityList: {
+      title: 'Topluluklar, ortak ilgi alanlarında quiz paylaş',
+      description: 'Topluluklara katıl, kendi topluluğunu kur ve quizleri birlikte paylaş',
+      keywords: 'topluluk, quiz topluluğu, quiz paylaş'
     },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',

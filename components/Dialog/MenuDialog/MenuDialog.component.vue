@@ -129,6 +129,13 @@ Dialog.dialog.menu-dialog(
       @click.native="openDialog('clickedReviewRoom')"
     )
     Cell.menu-dialog-nav__item(
+      icon="friends-o"
+      size="large"
+      is-link
+      :title="$t('dialog.menu.communities')"
+      @click.native="navigateAndClose('Community-CommunityList')"
+    )
+    Cell.menu-dialog-nav__item(
       icon="smile-comment-o"
       size="large"
       is-link
