@@ -12,7 +12,7 @@
       Button.filter-dropdown-trigger-button(size="small" round)
         template(v-if="selectedOption && Object.keys(selectedOption).length > 0")
           slot(name="selected" :option="selectedOption")
-            AppIcon.filter-dropdown-trigger-button__icon(:name="selectedOption.icon")
+            AppIcon.filter-dropdown-trigger-button__icon(v-if="selectedOption.icon" :name="selectedOption.icon")
             span.filter-dropdown-trigger-button__title {{ selectedOption.label }}
         template(v-else)
           AppIcon.filter-dropdown-trigger-button__icon(name="tabler:list-details")
