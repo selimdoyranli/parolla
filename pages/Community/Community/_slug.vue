@@ -36,15 +36,6 @@
         Empty(v-else-if="!items.length" :description="$t('community.detail.feedEmpty')")
         template(v-else)
           RoomList(:items="items" :is-active-infinite-loading="false" :show-ads="false")
-            template(v-if="canUnlinkRooms" #card-extra="{ room }")
-              .community-page__card-actions
-                Button(
-                  type="danger"
-                  size="mini"
-                  plain
-                  :loading="unlinkingId === room.documentId"
-                  @click.prevent.stop="handleUnlinkRoom(room)"
-                ) {{ $t('community.detail.unlinkRoom.action') }}
           InfiniteLoading(v-if="hasMore" :identifier="infiniteId" @infinite="handleInfinite")
             template(#no-more) {{ $t('community.list.noMore') }}
             template(#no-results) {{ $t('community.list.noMore') }}
@@ -68,8 +59,6 @@ import { Button, Empty } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 import { communityViewerRoleEnum } from '@/enums/community.enum'
-import useCommunityActions from '@/composables/useCommunityActions'
-import { isGmUser } from '@/helpers/chat-command'
 
 const SORTS = ['recent', 'popular', 'oldest']
 
@@ -78,8 +67,7 @@ export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
     const store = useStore()
-    const { i18n, route, $auth } = useContext()
-    const { run } = useCommunityActions()
+    const { i18n, route } = useContext()
 
     const community = ref(null)
     const isLoading = ref(true)
@@ -105,7 +93,7 @@ export default defineComponent({
     const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
 
     const loadFeedPage = async (nextPage, id) => {
-      const { data, error } = await store.dispatch('community/fetchCommunityRooms', {
+      const { data, error } = await store.dispatch('community/fetchCommunityPosts', {
         documentId: community.value.documentId,
         sort: sort.value,
         page: nextPage
@@ -122,7 +110,10 @@ export default defineComponent({
 
       if (error || !data) return { error: true }
 
-      items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
+      // Task 8 replaces this room-card feed with post cards
+      const rooms = data.items.map(post => post.room)
+
+      items.value = nextPage === 1 ? rooms : [...items.value, ...rooms]
       page.value = nextPage
       hasMore.value = data.hasMore
 
@@ -169,31 +160,6 @@ export default defineComponent({
     const handleOpenDelete = () => (isDeleteOpen.value = true)
 
     const isManager = () => [communityViewerRoleEnum.OWNER, communityViewerRoleEnum.MODERATOR].includes(community.value?.viewerRole)
-
-    // authors can unlink their own quiz from its edit form; here owner/moderator/GM act on any feed card
-    const canUnlinkRooms = computed(() => isManager() || isGmUser($auth.user))
-    const unlinkingId = ref(null)
-
-    const handleUnlinkRoom = async room => {
-      if (unlinkingId.value) return
-
-      unlinkingId.value = room.documentId
-
-      const ok = await run({
-        action: 'unlinkCommunityRoom',
-        documentId: community.value.documentId,
-        roomDocumentId: room.documentId,
-        confirmKey: 'community.detail.unlinkRoom.confirm',
-        successKey: 'community.detail.unlinkRoom.success'
-      })
-
-      unlinkingId.value = null
-
-      if (!ok) return
-
-      items.value = items.value.filter(item => item.documentId !== room.documentId)
-      loadCommunity()
-    }
 
     // returns false when the community could not be (re)loaded
     const loadCommunity = async () => {
@@ -249,9 +215,6 @@ export default defineComponent({
       hasFeedError,
       isLocked,
       infiniteId,
-      canUnlinkRooms,
-      unlinkingId,
-      handleUnlinkRoom,
       loadCommunity: init,
       reloadFeed,
       handleInfinite,

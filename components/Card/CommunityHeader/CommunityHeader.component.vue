@@ -24,7 +24,7 @@
           | {{ community.memberCount }} {{ $t('community.detail.memberCountLabel') }}
         span.community-header__stat
           AppIcon(name="tabler:file-text" :width="15" :height="15")
-          | {{ community.roomCount }} {{ $t('community.detail.roomCountLabel') }}
+          | {{ community.postCount }} {{ $t('community.detail.postCountLabel') }}
 </template>
 
 <script>

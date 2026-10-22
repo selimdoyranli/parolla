@@ -1114,7 +1114,9 @@ export default {
       community_join_approved: '{actor} approved your request to join {community}',
       community_member_promoted: '{actor} made you a moderator of {community}',
       community_member_kicked: '{actor} removed you from {community}',
-      community_hidden: 'Your community {community} was hidden by moderation'
+      community_hidden: 'Your community {community} was hidden by moderation',
+      post_commented: '{actor} commented on your post in {community}',
+      post_liked: '{actor} liked your post in {community}'
     }
   },
   ownerStats: {
@@ -1138,21 +1140,43 @@ export default {
       title: 'Communities',
       empty: 'No communities yet.',
       search: 'Search communities',
-      sort: { recent: 'Newest', memberCount: 'Most members', roomCount: 'Most quizzes' },
+      sort: { recent: 'Newest', memberCount: 'Most members', postCount: 'Most posts' },
       createButton: 'Create community',
       noMore: "That's all",
       joined: 'Joined',
       pending: 'Pending',
       owned: 'Mine',
       members: '{count} members',
-      rooms: '{count} quizzes'
+      posts: '{count} posts'
+    },
+    visibilityMode: {
+      public: 'Public',
+      publicDescription: 'Listed for everyone and shown in search.',
+      communityOnly: 'Community only',
+      communityOnlyDescription: 'Only visible inside the communities you share it in, not in public lists or search.',
+      unlisted: 'Unlisted',
+      unlistedDescription: 'Not listed anywhere, only people with the link can play it.'
+    },
+    post: {
+      shareTitle: 'Share to a community',
+      notePlaceholder: 'Add a note (optional)',
+      share: 'Share',
+      shared: 'Quiz shared.',
+      alreadyShared: 'This quiz is already shared in this community.',
+      sharedBadge: 'Shared',
+      delete: 'Delete post',
+      confirmDelete: 'Delete this post? Its comments and likes are deleted too. The quiz itself is not deleted.',
+      deleted: 'Post deleted.',
+      likes: '{count} likes',
+      comments: '{count} comments',
+      sharedQuiz: '{user} shared a quiz'
     },
     detail: {
       aboutTitle: 'About',
       createdAt: 'Founded',
       createdBy: 'Created by',
       memberCountLabel: 'Members',
-      roomCountLabel: 'Quizzes',
+      postCountLabel: 'Posts',
       visibility: {
         public: 'Public',
         publicDescription: 'Anyone can see and join.',
@@ -1168,18 +1192,13 @@ export default {
         modsOnly: 'Moderators only',
         modsOnlyDescription: 'Only the owner and moderators can share quizzes.'
       },
-      feedEmpty: 'No quizzes in this community yet.',
+      feedEmpty: 'No posts in this community yet.',
       feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
       privateNotice: 'This community is private. Join to see its quizzes.',
       feedLocked: 'Join this community to see its quizzes',
       menu: { label: 'Menu', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
       moderator: 'Moderator',
-      owner: 'Owner',
-      unlinkRoom: {
-        action: 'Remove from community',
-        confirm: 'Remove this quiz from the community? The quiz itself is not deleted.',
-        success: 'Quiz removed from the community.'
-      }
+      owner: 'Owner'
     },
     joinButton: {
       guestJoin: 'Log in to join',

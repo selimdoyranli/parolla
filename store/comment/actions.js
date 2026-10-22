@@ -2,11 +2,14 @@ import { roomCommentTransformer } from '@/transformers'
 
 const authHeaders = ctx => (ctx.$auth.loggedIn ? { Authorization: `${ctx.$auth.strategy.token.get()}` } : {})
 
+// a comment target is either a quiz room or a community post (exactly one of roomId / postId)
+const targetQuery = ({ roomId, postId }) => (postId ? { post: postId } : { room: roomId })
+
 export default {
-  async fetchComments(_, { roomId, page = 1 }) {
+  async fetchComments(_, { roomId, postId, page = 1 }) {
     const { data, error } = await this.$appFetch({
       path: 'room-comments',
-      query: { room: roomId, page, pageSize: 20 },
+      query: { ...targetQuery({ roomId, postId }), page, pageSize: 20 },
       headers: authHeaders(this)
     })
 
@@ -28,7 +31,13 @@ export default {
 
     return {
       data: data
-        ? { item: roomCommentTransformer(data.data), targetDocumentId: data.meta.targetDocumentId, roomId: data.meta.roomId }
+        ? {
+            item: roomCommentTransformer(data.data),
+            targetDocumentId: data.meta.targetDocumentId,
+            roomId: data.meta.roomId,
+            postDocumentId: data.meta.postDocumentId,
+            communitySlug: data.meta.communitySlug
+          }
         : null,
       error
     }
@@ -58,12 +67,12 @@ export default {
     return { data: data ? { items: data.data.map(roomCommentTransformer), hasMore: data.meta.hasMore } : null, error }
   },
 
-  async postComment({ dispatch }, { roomId, content, parent = null }) {
+  async postComment({ dispatch }, { roomId, postId, content, parent = null }) {
     const { data: deviceInfo } = await dispatch('auth/getDeviceInfo', null, { root: true })
     const { data, error } = await this.$appFetch({
       path: 'room-comments',
       method: 'POST',
-      data: { room: roomId, content, parent, deviceInfo },
+      data: postId ? { data: { post: postId, content, parent, deviceInfo } } : { room: roomId, content, parent, deviceInfo },
       headers: authHeaders(this)
     })
 

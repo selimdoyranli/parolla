@@ -6,4 +6,4 @@ const getInitials = (name = '') => {
   return letters.join('').toLocaleUpperCase('tr')
 }
 
-export default model => ({ ...model, avatarInitials: getInitials(model.name) })
+export default model => ({ ...model, postCount: model.postCount ?? 0, avatarInitials: getInitials(model.name) })

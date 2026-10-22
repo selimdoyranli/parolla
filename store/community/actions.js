@@ -1,8 +1,6 @@
-import { communityTransformer, roomTransformer } from '@/transformers'
+import { communityTransformer, communityPostTransformer } from '@/transformers'
 
 const authHeaders = ctx => (ctx.$auth.loggedIn ? { Authorization: `${ctx.$auth.strategy.token.get()}` } : {})
-
-const ROOM_SORT = { recent: 'createdAt:desc', popular: 'viewCount:desc', oldest: 'createdAt:asc' }
 
 // text fields only: avatar/coverPhoto go through uploadCommunityMedia
 const toPayload = ({ name, description, tags, visibility, postPermission }) => ({
@@ -155,10 +153,36 @@ export default {
     return memberAction(this, documentId, memberDocumentId)
   },
 
-  // detaches the room (every locale) from this community; owner/moderator/GM or the room's author
-  async unlinkCommunityRoom(_, { documentId, roomDocumentId }) {
+  async fetchCommunityPosts(_, { documentId, sort = 'recent', page = 1 }) {
     const { data, error } = await this.$appFetch({
-      path: `communities/${documentId}/rooms/${roomDocumentId}`,
+      path: `communities/${documentId}/posts`,
+      query: { sort, page, pageSize: 10 },
+      headers: authHeaders(this)
+    })
+
+    return { data: data ? { items: data.data.map(communityPostTransformer), hasMore: data.meta.hasMore } : null, error }
+  },
+
+  async fetchPost(_, { documentId }) {
+    const { data, error } = await this.$appFetch({ path: `community-posts/${documentId}`, headers: authHeaders(this) })
+
+    return { data: data ? communityPostTransformer(data.data) : null, error }
+  },
+
+  async createPost(_, { communityDocumentId, roomDocumentId, note = '' }) {
+    const { data, error } = await this.$appFetch({
+      path: `communities/${communityDocumentId}/posts`,
+      method: 'POST',
+      data: { data: { room: roomDocumentId, note } },
+      headers: authHeaders(this)
+    })
+
+    return { data: data ? communityPostTransformer(data.data) : null, error }
+  },
+
+  async deletePost(_, { documentId }) {
+    const { data, error } = await this.$appFetch({
+      path: `community-posts/${documentId}`,
       method: 'DELETE',
       headers: authHeaders(this)
     })
@@ -166,32 +190,36 @@ export default {
     return { data: data?.data?.data ?? null, error }
   },
 
-  // feed = the regular rooms endpoint filtered by community; the server answers 403 for non-members of private ones
-  async fetchCommunityRooms(_, { documentId, sort = 'recent', page = 1 }) {
+  // resolves { liked, likeCount }
+  async likePost(_, { documentId }) {
     const { data, error } = await this.$appFetch({
-      path: 'rooms',
-      query: {
-        'filters[community][documentId][$eq]': documentId,
-        sort: ROOM_SORT[sort] || ROOM_SORT.recent,
-        'pagination[page]': page,
-        'pagination[pageSize]': 10,
-        'populate[user][populate][0]': 'diceBear',
-        'populate[user][populate][1]': 'role',
-        populate: 'roomTags',
-        locale: this.$i18n.locale
-      },
+      path: `community-posts/${documentId}/like`,
+      method: 'POST',
       headers: authHeaders(this)
     })
 
-    return {
-      data: data
-        ? {
-            items: data.data.map(roomTransformer),
-            hasMore: data.meta.pagination.page < data.meta.pagination.pageCount
-          }
-        : null,
-      error
-    }
+    return { data: data?.data ?? null, error }
+  },
+
+  async unlikePost(_, { documentId }) {
+    const { data, error } = await this.$appFetch({
+      path: `community-posts/${documentId}/like`,
+      method: 'DELETE',
+      headers: authHeaders(this)
+    })
+
+    return { data: data?.data?.data ?? null, error }
+  },
+
+  // communities of the viewer that already hold this quiz -> { communityDocumentIds }
+  async fetchSharedIn(_, { roomDocumentId }) {
+    const { data, error } = await this.$appFetch({
+      path: 'community-posts/shared-in',
+      query: { room: roomDocumentId },
+      headers: authHeaders(this)
+    })
+
+    return { data: data?.data ?? null, error }
   },
 
   // GM moderation (api/moderation, GM role only)

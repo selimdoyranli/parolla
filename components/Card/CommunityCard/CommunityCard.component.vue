@@ -25,7 +25,7 @@ NuxtLink.community-card(:to="localePath({ name: 'Community-Community-slug', para
         | {{ $t('community.list.members', { count: community.memberCount }) }}
       span.community-card__stat
         AppIcon(name="tabler:file-text" :width="14" :height="14")
-        | {{ $t('community.list.rooms', { count: community.roomCount }) }}
+        | {{ $t('community.list.posts', { count: community.postCount }) }}
 </template>
 
 <script>

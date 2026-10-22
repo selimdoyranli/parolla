@@ -307,6 +307,10 @@ module.exports = {
             tr: '/topluluk/:slug/duzenle',
             en: '/community/:slug/edit'
           },
+          'Community/CommunityPost/_slug/_postId': {
+            tr: '/topluluk/:slug/gonderi/:postId',
+            en: '/community/:slug/post/:postId'
+          },
           'Profile/_username/Communities/index': {
             tr: '/profil/:username/topluluklar',
             en: '/profile/:username/communities'

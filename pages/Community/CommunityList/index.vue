@@ -73,7 +73,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 const PAGE_SIZE = 12
 const MAX_TAGS = 10
 const MAX_ADS = 4
-const SORTS = ['recent', 'memberCount', 'roomCount']
+const SORTS = ['recent', 'memberCount', 'postCount']
 
 // outlives the page component: coming back from a community keeps the loaded pages and the scroll spot
 const listMemory = { key: null, items: [], page: 1, hasMore: false, scrollTop: 0 }

@@ -1131,7 +1131,9 @@ export default {
       community_join_approved: '{actor} {community} topluluğuna katılma isteğini onayladı',
       community_member_promoted: '{actor} seni {community} topluluğunda moderatör yaptı',
       community_member_kicked: '{actor} seni {community} topluluğundan çıkardı',
-      community_hidden: '{community} topluluğun moderasyon nedeniyle gizlendi'
+      community_hidden: '{community} topluluğun moderasyon nedeniyle gizlendi',
+      post_commented: '{actor} {community} topluluğundaki gönderine yorum yaptı',
+      post_liked: '{actor} {community} topluluğundaki gönderini beğendi'
     }
   },
   ownerStats: {
@@ -1155,21 +1157,43 @@ export default {
       title: 'Topluluklar',
       empty: 'Henüz topluluk yok.',
       search: 'Topluluk ara',
-      sort: { recent: 'En yeni', memberCount: 'En çok üyeli', roomCount: 'En çok quizli' },
+      sort: { recent: 'En yeni', memberCount: 'En çok üyeli', postCount: 'En çok gönderili' },
       createButton: 'Topluluk oluştur',
       noMore: 'Hepsi bu kadar',
       joined: 'Katıldıklarım',
       pending: 'Bekleyenler',
       owned: 'Benimkiler',
       members: '{count} üye',
-      rooms: '{count} quiz'
+      posts: '{count} gönderi'
+    },
+    visibilityMode: {
+      public: 'Herkese açık',
+      publicDescription: 'Herkese listelenir ve aramada görünür.',
+      communityOnly: 'Sadece toplulukta',
+      communityOnlyDescription: 'Yalnızca paylaştığın toplulukların içinde görünür, genel listelerde ve aramada çıkmaz.',
+      unlisted: 'Listelenmemiş',
+      unlistedDescription: 'Hiçbir yerde listelenmez, yalnızca bağlantıya sahip olanlar oynayabilir.'
+    },
+    post: {
+      shareTitle: 'Topluluğa paylaş',
+      notePlaceholder: 'Bir not ekle (isteğe bağlı)',
+      share: 'Paylaş',
+      shared: 'Quiz paylaşıldı.',
+      alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
+      sharedBadge: 'Paylaşıldı',
+      delete: 'Gönderiyi sil',
+      confirmDelete: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir. Quiz silinmez.',
+      deleted: 'Gönderi silindi.',
+      likes: '{count} beğeni',
+      comments: '{count} yorum',
+      sharedQuiz: '{user} bir quiz paylaştı'
     },
     detail: {
       aboutTitle: 'Hakkında',
       createdAt: 'Kuruluş',
       createdBy: 'Kuran',
       memberCountLabel: 'Üye',
-      roomCountLabel: 'Quiz',
+      postCountLabel: 'Gönderi',
       visibility: {
         public: 'Herkese açık',
         publicDescription: 'Herkes görebilir ve katılabilir.',
@@ -1185,18 +1209,13 @@ export default {
         modsOnly: 'Yalnızca moderatörler',
         modsOnlyDescription: 'Yalnızca sahip ve moderatörler quiz paylaşabilir.'
       },
-      feedEmpty: 'Bu toplulukta henüz quiz yok.',
+      feedEmpty: 'Bu toplulukta henüz gönderi yok.',
       feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
       privateNotice: 'Bu topluluk gizli. Quizleri görmek için üye olmalısın.',
       feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
       menu: { label: 'Menü', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
       moderator: 'Moderatör',
-      owner: 'Sahip',
-      unlinkRoom: {
-        action: 'Topluluktan çıkar',
-        confirm: 'Bu quizi topluluktan çıkarmak istediğine emin misin? Quiz silinmez.',
-        success: 'Quiz topluluktan çıkarıldı.'
-      }
+      owner: 'Sahip'
     },
     joinButton: {
       guestJoin: 'Katılmak için giriş yap',

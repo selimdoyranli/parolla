@@ -328,7 +328,12 @@ export default defineComponent({
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityList' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-Community-slug' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityCompose' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityEdit-slug' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityPost-slug-postId' }))
       ) {
         return true
       }

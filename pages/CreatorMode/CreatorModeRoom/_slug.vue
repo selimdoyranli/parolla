@@ -8,11 +8,6 @@
       Button(@click="fetch") {{ $t('gameScene.error.fetchQuestions.action') }}
 
   template(v-else)
-    NuxtLink.creator-mode-room-page__community(
-      v-if="room.community"
-      :to="localePath({ name: 'Community-Community-slug', params: { slug: room.community.slug } })"
-    )
-      | {{ $t('form.creatorModeCompose.room.community.label') }}: {{ room.community.name }}
     CreatorModeGameScene(v-if="room.quizType === quizTypeEnum.QA || !room.quizType")
     ChoicesGameScene(v-if="room.quizType === quizTypeEnum.CHOICES")
     FlashcardGameScene(v-if="room.quizType === quizTypeEnum.FLASHCARDS")
