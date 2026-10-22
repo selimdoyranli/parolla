@@ -16,6 +16,9 @@
   border-radius: var(--quiz-card-radius);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 24px -18px rgba(0, 0, 0, 0.45);
   isolation: isolate;
+  // lets the cover height below be computed from the card width (cqw)
+  /* stylelint-disable-next-line property-no-unknown */
+  container-type: inline-size;
   transition: transform 0.1s var(--motion-01), border-color 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01),
     background-color 0.1s var(--motion-01);
 
@@ -130,6 +133,19 @@
   &--hasCoverPhoto &__placeholder-title {
     padding-top: 24px;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
+  }
+
+  // 16:9 of a fractional card width is a fractional height, so every grid row lands on a different
+  // sub-pixel offset and the footer text (snapped to whole pixels) drifts against its icons row by
+  // row; rounding the cover to whole pixels keeps every card on the same offset
+  // CSS round(), not Sass's one-argument math round: pass it through as plain text.
+  // Test round() and cqw together: Safari 15.4-15.x has round() but no cqw, and there the height
+  // would be dropped while aspect-ratio: auto still applied, collapsing the cover
+  @supports (height: #{'round(1cqw, 1px)'}) {
+    & &__media {
+      height: unquote('round(100cqw * 9 / 16, 1px)');
+      aspect-ratio: auto;
+    }
   }
 
   &__media-top {

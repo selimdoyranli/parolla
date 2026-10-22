@@ -189,6 +189,8 @@ export default {
     no: 'No',
     ok: 'OK',
     cancel: 'Cancel',
+    clear: 'Clear',
+    backToTop: 'Back to top',
     save: 'Save',
     apply: 'Apply',
     question: 'Question',
@@ -748,6 +750,10 @@ export default {
         recently: 'Recent quizzes',
         oldest: 'Old quizzes',
         byViewCount: 'Most viewed'
+      },
+      quizKind: {
+        title: 'TYPE',
+        all: 'All types'
       },
       refresh: 'REFRESH',
       searchField: {

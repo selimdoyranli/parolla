@@ -26,7 +26,7 @@ module.exports = {
     'unit-no-unknown': [
       true,
       {
-        ignoreUnits: ['dvh', 'svh', 'lvh', 'dvw', 'svw', 'lvw']
+        ignoreUnits: ['dvh', 'svh', 'lvh', 'dvw', 'svw', 'lvw', 'cqw']
       }
     ],
     // text-wrap and its longhands are newer than this stylelint version's

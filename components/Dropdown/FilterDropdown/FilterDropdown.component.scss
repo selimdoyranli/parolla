@@ -32,6 +32,11 @@
       }
     }
 
+    &__title {
+      // the caps text sits high in its line box; nudge it onto the icons' centre line
+      transform: translateY(1px);
+    }
+
     &__icon {
       width: 16px;
       height: 16px;
@@ -90,5 +95,7 @@
   .caret-down {
     margin-inline-start: $spacer;
     color: var(--color-icon-03);
+    // the filled caret is drawn below its box centre
+    transform: translateY(-1px);
   }
 }
