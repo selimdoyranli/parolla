@@ -291,6 +291,30 @@ module.exports = {
             tr: '/limitsiz',
             en: '/unlimited'
           },
+          'Community/CommunityList/index': {
+            tr: '/topluluklar',
+            en: '/communities'
+          },
+          'Community/CommunityCompose/index': {
+            tr: '/topluluk-olustur',
+            en: '/community-create'
+          },
+          'Community/Community/_slug': {
+            tr: '/topluluk/:slug',
+            en: '/community/:slug'
+          },
+          'Community/CommunityEdit/_slug': {
+            tr: '/topluluk/:slug/duzenle',
+            en: '/community/:slug/edit'
+          },
+          'Profile/_username/Communities/index': {
+            tr: '/profil/:username/topluluklar',
+            en: '/profile/:username/communities'
+          },
+          'GmPanel/Communities/index': {
+            tr: '/gm/topluluklar',
+            en: '/gm/communities'
+          },
           'CreatorMode/index': {
             tr: '/yaratici',
             en: '/creator'

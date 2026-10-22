@@ -3,5 +3,6 @@ export const reportTypeEnum = Object.freeze({
   CHAT: 'chat',
   DRAW_CHAT: 'drawChat',
   REVIEW: 'review',
-  COMMENT: 'comment'
+  COMMENT: 'comment',
+  COMMUNITY: 'community'
 })
