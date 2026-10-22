@@ -1,0 +1,20 @@
+.community-delete-dialog {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 16px 16px;
+  }
+
+  &__warning {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 14px;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+}

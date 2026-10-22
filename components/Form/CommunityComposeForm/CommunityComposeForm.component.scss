@@ -1,0 +1,78 @@
+.community-compose-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__option-description {
+    display: block;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__media-hint {
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__picker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--color-text-02);
+    background-color: light-dark(#f2f2f2, #222);
+    border: 2px dashed var(--color-border-02);
+    cursor: pointer;
+
+    &--avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+    }
+
+    &--cover {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: calc(var(--border-radius-01) / 2);
+    }
+  }
+
+  &__picker-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__summary {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--color-text-01);
+  }
+
+  &__summary-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+}

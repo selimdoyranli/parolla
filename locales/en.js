@@ -1222,9 +1222,11 @@ export default {
       previousButton: 'Back',
       submitButton: 'Create community',
       creating: 'Creating community...',
-      createdSuccess: 'Your community is ready!'
+      createdSuccess: 'Your community is ready!',
+      mediaUploadFailed: "Community created but the image couldn't be uploaded. You can retry from the edit page.",
+      noTags: 'No tags added'
     },
-    edit: { title: 'Edit community', saveButton: 'Save' },
+    edit: { title: 'Edit community', saveButton: 'Save', slug: 'Address', dangerZone: 'Danger zone' },
     members: {
       title: 'Members',
       search: 'Search members',

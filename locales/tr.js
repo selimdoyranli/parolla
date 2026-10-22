@@ -1239,9 +1239,11 @@ export default {
       previousButton: 'Geri',
       submitButton: 'Topluluğu oluştur',
       creating: 'Topluluk oluşturuluyor...',
-      createdSuccess: 'Topluluğun hazır!'
+      createdSuccess: 'Topluluğun hazır!',
+      mediaUploadFailed: 'Topluluk oluşturuldu ama görsel yüklenemedi. Düzenleme sayfasından tekrar deneyebilirsin.',
+      noTags: 'Etiket eklenmedi'
     },
-    edit: { title: 'Topluluğu düzenle', saveButton: 'Kaydet' },
+    edit: { title: 'Topluluğu düzenle', saveButton: 'Kaydet', slug: 'Adres', dangerZone: 'Tehlikeli bölge' },
     members: {
       title: 'Üyeler',
       search: 'Üye ara',
