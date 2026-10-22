@@ -12,7 +12,7 @@
       background: linear-gradient(135deg, var(--color-brand-02), var(--color-warning-01));
     }
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(tablet) {
       aspect-ratio: 4 / 1;
     }
   }
@@ -32,6 +32,7 @@
   }
 
   &__info {
+    position: relative; // paint over the cover it overlaps
     display: flex;
     gap: 14px;
     align-items: flex-end;
