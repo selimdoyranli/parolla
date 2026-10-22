@@ -201,6 +201,7 @@ export default {
     return { data: data?.data ?? null, error }
   },
 
+  // $appFetch returns the whole axios response for DELETE (plugins/app-fetch.js), hence the extra .data
   async unlikePost(_, { documentId }) {
     const { data, error } = await this.$appFetch({
       path: `community-posts/${documentId}/like`,
