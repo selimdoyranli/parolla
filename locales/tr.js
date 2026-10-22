@@ -1186,7 +1186,7 @@ export default {
       feedEmpty: 'Bu toplulukta henüz quiz yok.',
       feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
       privateNotice: 'Bu topluluk gizli. Quizleri görmek için üye olmalısın.',
-      feedLocked: 'Bu topluluğun quiz\'lerini görmek için üye olmalısın',
+      feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
       menu: { label: 'Menü', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
       moderator: 'Moderatör',
       owner: 'Sahip'
