@@ -26,17 +26,6 @@
     }
   }
 
-  &-join-room {
-    position: relative;
-
-    &__urlField {
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      border-radius: var(--border-radius-01);
-    }
-  }
-
   &-rooms {
     &-head {
       position: relative;
@@ -51,6 +40,8 @@
 
       &__actions {
         display: flex;
+        flex-wrap: wrap;
+        row-gap: 8px;
         align-items: center;
         justify-content: space-between;
 
@@ -70,6 +61,90 @@
             }
           }
         }
+
+        // the sort filter sits on the right of the row: open its menu leftwards so it stays on screen
+        .creator-mode-rooms-page-rooms__sortFilter .v-dropdown-menu__container {
+          @include media-breakpoint-down(mobile) {
+            right: 0;
+            left: auto;
+          }
+        }
+      }
+    }
+
+    &__list {
+      position: relative;
+    }
+
+    &__loading {
+      position: absolute;
+      // above the cards' own stacked badges and covers
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      background: color-mix(in sRGB, var(--color-ui-01) 60%, transparent);
+      border-radius: var(--border-radius-01);
+      inset: 0;
+
+      .van-loading {
+        // keep the spinner in view however long the list behind it is
+        position: sticky;
+        top: 30vh;
+        align-self: flex-start;
+        margin-top: 80px;
+        padding: 12px;
+        background: var(--color-ui-02);
+        border-radius: 50%;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    // the trigger shows the picked type's coloured icon + text without the card pill's frame
+    &__kindFilter .filter-dropdown-trigger-button .quiz-type-label {
+      padding: 0;
+      font-size: inherit;
+      background: none;
+      border: 0;
+    }
+
+    // zero-height sticky strip at the end of the list: the button floats above it at the bottom-right
+    &__toTop {
+      position: sticky;
+      bottom: 24px;
+      z-index: 5;
+      display: flex;
+      justify-content: flex-end;
+      height: 0;
+    }
+
+    &__toTopButton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      color: var(--color-text-01);
+      background-color: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transform: translateY(calc(-100% + 12px));
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+
+      &.is-visible {
+        transform: translateY(-100%);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--color-hover-01);
+        }
       }
     }
 
@@ -77,6 +152,11 @@
       color: var(--color-text-02);
       background-color: var(--color-ui-02);
       border: 1px solid var(--color-border-02);
+
+      // same as the filter triggers: the caps label sits high, nudge it onto the icon's centre line
+      .van-button__text {
+        transform: translateY(1px);
+      }
     }
   }
 

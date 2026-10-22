@@ -5,6 +5,10 @@ export default {
     state.room.sort = sort
   },
 
+  SET_ROOMS_QUIZ_KIND(state, quizKind) {
+    state.room.quizKind = quizKind
+  },
+
   SET_ROOMS(state, rooms) {
     state.room.list = rooms
   },

@@ -16,6 +16,7 @@
 <script>
 import { defineComponent, useContext, ref } from '@nuxtjs/composition-api'
 import { Tag } from 'vant'
+import { ROOM_FEATURED_TAGS } from '@/system/constant'
 
 export default defineComponent({
   components: {
@@ -46,73 +47,7 @@ export default defineComponent({
 
     return {
       rootRef,
-      tags: [
-        {
-          title: 'Tümü',
-          tagsFilter: null,
-          icon: 'fluent-emoji-flat:diamond-with-a-dot'
-        },
-        {
-          title: 'Genel Kültür',
-          tagsFilter: 'GenelKültür',
-          icon: 'fluent-emoji-flat:books'
-        },
-        {
-          title: 'Müzik',
-          tagsFilter: 'müzik',
-          icon: 'fluent-emoji-flat:musical-note'
-        },
-        {
-          title: 'Dizi-Film',
-          tagsFilter: 'dizi,film',
-          icon: 'fluent-emoji-flat:television'
-        },
-        {
-          title: 'Oyun',
-          tagsFilter: 'oyun,VideoOyunları,VideoOyunu',
-          icon: 'fluent-emoji-flat:video-game'
-        },
-        {
-          title: 'Dil Öğren',
-          tagsFilter: 'ingilizce,ispanyolca,fransızca,almanca,italyanca,portekizce,japonca,çince',
-          icon: 'fluent-emoji-flat:japanese-prohibited-button'
-        },
-        {
-          title: 'Futbol',
-          tagsFilter: 'futbol',
-          icon: 'fluent-emoji-flat:soccer-ball'
-        },
-        {
-          title: 'Basketbol',
-          tagsFilter: 'basketbol',
-          icon: 'fluent-emoji-flat:basketball'
-        },
-        {
-          title: 'Tarih',
-          tagsFilter: 'tarih',
-          icon: 'fluent-emoji-flat:calendar'
-        },
-        {
-          title: 'Bilim',
-          tagsFilter: 'bilim',
-          icon: 'fluent-emoji-flat:microscope'
-        },
-        {
-          title: 'Coğrafya',
-          tagsFilter: 'coğrafya',
-          icon: 'fluent-emoji-flat:globe-showing-europe-africa'
-        },
-        {
-          title: 'Otomobil',
-          tagsFilter: 'otomobil,araba,arabalar',
-          icon: 'twemoji:sport-utility-vehicle'
-        },
-        {
-          title: 'Bayrak Bilmece',
-          tagsFilter: 'bayrak,bayraklar,ülkebayrakları,bayrakbilmece',
-          icon: 'flag:tr-4x3'
-        }
-      ],
+      tags: ROOM_FEATURED_TAGS,
       handleTagClick,
       getTagActiveClass
     }

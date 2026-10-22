@@ -11,8 +11,9 @@
     template(#trigger)
       Button.filter-dropdown-trigger-button(size="small" round)
         template(v-if="selectedOption && Object.keys(selectedOption).length > 0")
-          AppIcon.filter-dropdown-trigger-button__icon(:name="selectedOption.icon")
-          span.filter-dropdown-trigger-button__title {{ selectedOption.label }}
+          slot(name="selected" :option="selectedOption")
+            AppIcon.filter-dropdown-trigger-button__icon(:name="selectedOption.icon")
+            span.filter-dropdown-trigger-button__title {{ selectedOption.label }}
         template(v-else)
           AppIcon.filter-dropdown-trigger-button__icon(name="tabler:list-details")
           span.filter-dropdown-trigger-button__title {{ triggerButtonTitle }}
@@ -24,8 +25,9 @@
       nav.filter-dropdown-nav(v-if="options?.length > 0")
         template(v-for="(item, index) in options")
           .filter-dropdown-nav-item(:key="index" dropdown-closer @click="handleOptionSelect(item)")
-            AppIcon.filter-dropdown-nav-item__icon(v-if="item.icon" :name="item.icon" :width="20" :height="20")
-            span.filter-dropdown-nav-item__title {{ item.label }}
+            slot(name="option" :option="item")
+              AppIcon.filter-dropdown-nav-item__icon(v-if="item.icon" :name="item.icon" :width="20" :height="20")
+              span.filter-dropdown-nav-item__title {{ item.label }}
 </template>
 
 <script>

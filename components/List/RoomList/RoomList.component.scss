@@ -21,6 +21,12 @@
     #{$van-cell} {
       margin-bottom: 0 !important;
     }
+
+    // centre the clear ActionButton vertically; as a block the icon slot leaves it sitting on the top edge
+    .van-field__right-icon {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__grid {

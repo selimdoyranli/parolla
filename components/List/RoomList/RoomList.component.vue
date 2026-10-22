@@ -8,6 +8,8 @@
   )
     template(#right-icon)
       Loading(v-if="form.search.isBusy" color="var(--color-info-01)" size="16")
+      //- own clear button: vant 2's clear icon only listens to touchstart, so a mouse click does nothing
+      ActionButton(v-else-if="form.search.keyword" icon="tabler:x" :aria-label="$t('general.clear')" @click="clearSearch")
 
   template(v-if="items && items.length <= 0")
     Empty(:description="$t('creatorModeRooms.rooms.empty.description')")
@@ -51,6 +53,7 @@ import { defineComponent, useContext, useRouter, useStore, reactive, computed, w
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
+import { ROOM_FEATURED_TAGS } from '@/system/constant'
 
 export default defineComponent({
   components: {
@@ -128,7 +131,8 @@ export default defineComponent({
         isVisible: true,
         isLoadMore: true,
         page: pagination.value.page + 1,
-        keyword: form.search.keyword,
+        // with a tag filter the field only shows its label; the tags do the filtering
+        keyword: route.value.query.tags ? '' : form.search.keyword,
         tags: route.value.query.tags ? route.value.query.tags.split(',') : [],
         user: props.user?.id,
         includeDrafts: isOwnUserFilter.value,
@@ -161,49 +165,84 @@ export default defineComponent({
       form.search.keyword = ''
     }
 
+    // the field mirrors the active tag filter: the featured chip's title, else the raw tags as #hashtags
+    const tagsLabel = tags => {
+      const featured = ROOM_FEATURED_TAGS.find(
+        tag => tag.tagsFilter?.toLocaleLowerCase(i18n.locale) === tags.toLocaleLowerCase(i18n.locale)
+      )
+
+      return featured ? featured.title : `#${tags.split(',').join(' #')}`
+    }
+
+    let tagKeyword = ''
+
     watch(
       () => route.value.query.tags,
       value => {
-        if (!value) {
-          resetKeyword()
+        if (props.user) {
+          return
         }
-      }
+
+        if (value) {
+          tagKeyword = tagsLabel(value)
+          form.search.keyword = tagKeyword
+        } else {
+          // keep what the user typed when that text is what dropped the tags
+          if (form.search.keyword === tagKeyword) {
+            resetKeyword()
+          }
+
+          tagKeyword = ''
+        }
+      },
+      { immediate: true }
     )
 
-    const fetchRooms = useDebounceFn(
-      async () => {
-        if (props.isActiveInfiniteLoading) {
-          if (!props.user) {
-            if (form.search.keyword.includes('#')) {
-              const tag = form.search.keyword.replace('#', '')
-              router.push(localePath({ name: 'CreatorMode-CreatorModeRooms', query: { tags: tag } }))
-            }
+    const runSearch = async () => {
+      if (props.isActiveInfiniteLoading) {
+        if (!props.user) {
+          // field still shows the tag label: the tag-filtered list is already what it says
+          if (route.value.query.tags && form.search.keyword === tagKeyword) {
+            form.search.isBusy = false
 
-            if (form.search.keyword.length === 0) {
-              if (route.value.query.tags) {
-                router.push(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
-              }
-            }
+            return
           }
 
-          await store.dispatch(fetchActionName.value, {
-            isVisible: true,
-            keyword: form.search.keyword,
-            user: props.user?.id,
-            includeDrafts: isOwnUserFilter.value,
-            includeUnlisted: isOwnUserFilter.value
-          })
-        } else {
-          if (form.search.keyword.trim() === '') {
-            list.items = list.originalItems.slice()
-          } else {
-            list.items = list.originalItems.filter(room => {
-              return room.title.toLowerCase().includes(form.search.keyword.toLowerCase())
-            })
+          if (form.search.keyword.includes('#')) {
+            const tag = form.search.keyword.replace('#', '')
+            router.push(localePath({ name: 'CreatorMode-CreatorModeRooms', query: { tags: tag } }))
+          } else if (route.value.query.tags) {
+            // emptied or edited the tag label → leave the tag filter ("Tümü" when empty)
+            router.push(localePath({ name: 'CreatorMode-CreatorModeRooms' }))
           }
         }
 
-        form.search.isBusy = false
+        await store.dispatch(fetchActionName.value, {
+          isVisible: true,
+          keyword: form.search.keyword,
+          user: props.user?.id,
+          includeDrafts: isOwnUserFilter.value,
+          includeUnlisted: isOwnUserFilter.value
+        })
+      } else {
+        if (form.search.keyword.trim() === '') {
+          list.items = list.originalItems.slice()
+        } else {
+          list.items = list.originalItems.filter(room => {
+            return room.title.toLowerCase().includes(form.search.keyword.toLowerCase())
+          })
+        }
+      }
+
+      form.search.isBusy = false
+    }
+
+    // empty keywords skip the debounce (handled at once below), so a late call can't reset the list again
+    const fetchRooms = useDebounceFn(
+      async () => {
+        if (form.search.keyword) {
+          await runSearch()
+        }
       },
       1000,
       { maxWait: 5000 }
@@ -211,7 +250,13 @@ export default defineComponent({
 
     const handleSearchRoom = async () => {
       form.search.isBusy = true
-      await fetchRooms()
+      // emptied (clear button or deleted) → back to "Tümü" right away
+      await (form.search.keyword ? fetchRooms() : runSearch())
+    }
+
+    const clearSearch = () => {
+      form.search.keyword = ''
+      handleSearchRoom()
     }
 
     const handleEditRoom = async ({ room }) => {
@@ -310,6 +355,7 @@ export default defineComponent({
       handleInfiniteLoading,
       form,
       handleSearchRoom,
+      clearSearch,
       handleEditRoom,
       handleDeleteRoom,
       searchFieldPlaceholder

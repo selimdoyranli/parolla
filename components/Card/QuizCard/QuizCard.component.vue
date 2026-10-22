@@ -61,6 +61,10 @@ NuxtLink.quiz-card(
           AppIcon.quiz-card__stat-icon(name="tabler:help-square-rounded" :width="13" :height="13")
           span.quiz-card__stat-value {{ room.questionCount }}
 
+        span.quiz-card__stat(v-if="room.reviewCount > 0")
+          AppIcon.quiz-card__stat-icon(name="tabler:message-2" :width="13" :height="13")
+          span.quiz-card__stat-value {{ formatCount(room.reviewCount) }}
+
         span.quiz-card__stat(v-if="room.choices && room.choices.length > 0")
           AppIcon.quiz-card__stat-icon(name="tabler:list-check" :width="13" :height="13")
           span.quiz-card__stat-value {{ room.choices.length }}

@@ -343,6 +343,21 @@ export default {
       })
     }
 
+    // same split as QuizTypeLabel; old rows have no quizType and count as plain qa quizzes
+    const quizKind = state.room.quizKind
+
+    if (quizKind === 'choices' || quizKind === 'flashcards') {
+      query['filters[quizType][$eq]'] = quizKind
+    } else if (quizKind) {
+      query['filters[$or][0][quizType][$eq]'] = 'qa'
+      query['filters[$or][1][quizType][$null]'] = true
+      query['filters[questionTypeDominance][$eq]'] = quizKind === 'media' ? 'media' : 'text'
+
+      if (quizKind !== 'media') {
+        query['filters[answerTypeDominance][$eq]'] = quizKind === 'trivia' ? 'trivia' : 'textField'
+      }
+    }
+
     const token = this.$auth.strategy.token.get()
 
     const { data, error } = await this.$appFetch({

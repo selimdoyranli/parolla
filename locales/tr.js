@@ -189,6 +189,8 @@ export default {
     no: 'Hayır',
     ok: 'Tamam',
     cancel: 'Vazgeç',
+    clear: 'Temizle',
+    backToTop: 'Yukarı çık',
     save: 'Kaydet',
     apply: 'Uygula',
     question: 'Soru',
@@ -752,6 +754,10 @@ export default {
         recently: 'En yeni quizler',
         oldest: 'En eski quizler',
         byViewCount: 'En çok oynanan quizler'
+      },
+      quizKind: {
+        title: 'TÜR',
+        all: 'Tüm türler'
       },
       refresh: 'TAZELE',
       searchField: {

@@ -6,6 +6,8 @@ export default () => ({
     pagination: {},
     total: null,
     sort: 'recently',
+    // list filter by the quiz-type pill: null (all) | 'qa' | 'media' | 'choices' | 'trivia' | 'flashcards'
+    quizKind: null,
     room: {},
     quizType: 'qa' // 'qa' | 'choices'
   },
