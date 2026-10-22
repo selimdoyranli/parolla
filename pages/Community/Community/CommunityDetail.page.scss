@@ -11,42 +11,22 @@
   }
 
   &__body {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: var(--base-m-y);
     width: calc(100% - (var(--base-p-x) * 2));
+    max-width: 720px;
     margin: var(--base-m-y) auto;
-
-    @include media-breakpoint-up(desktop) {
-      flex-direction: row;
-      align-items: flex-start;
-    }
   }
 
-  &__main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  &__side {
-    @include media-breakpoint-up(desktop) {
-      position: sticky;
-      top: var(--base-m-y);
-      flex: 0 0 320px;
-    }
+  &__posts {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   &__toolbar {
     display: flex;
     gap: 8px;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  &__card-actions {
-    display: flex;
     justify-content: flex-end;
-    padding: 0 12px 8px;
+    margin-bottom: 12px;
   }
 }

@@ -8,7 +8,7 @@
   template(v-else)
     .community-page__hidden-banner(v-if="community.isHidden") {{ $t('community.hiddenBanner') }}
 
-    CommunityHeader(:community="community")
+    CommunityHeader(:community="community" @changed="handleChanged")
       template(v-if="$auth.loggedIn" #actions)
         CommunityActionsMenu(
           :community="community"
@@ -21,7 +21,6 @@
     .community-page__body
       main.community-page__main
         .community-page__toolbar
-          CommunityJoinButton(:community="community" @changed="handleChanged")
           FilterDropdown(
             :trigger-title="$t(`community.detail.feedSort.${sort}`)"
             :selected="selectedSortOption"
@@ -35,7 +34,14 @@
           Button(@click="reloadFeed") {{ $t('error.tryAgain') }}
         Empty(v-else-if="!items.length" :description="$t('community.detail.feedEmpty')")
         template(v-else)
-          RoomList(:items="items" :is-active-infinite-loading="false" :show-ads="false")
+          .community-page__posts
+            CommunityPostCard(
+              v-for="post in items"
+              :key="post.documentId"
+              :post="post"
+              @report="handleReportPost"
+              @deleted="handlePostDeleted"
+            )
           InfiniteLoading(v-if="hasMore" :identifier="infiniteId" @infinite="handleInfinite")
             template(#no-more) {{ $t('community.list.noMore') }}
             template(#no-results) {{ $t('community.list.noMore') }}
@@ -43,14 +49,12 @@
               span {{ $t('community.error.generic') }}
               Button(size="small" @click="trigger") {{ $t('error.tryAgain') }}
 
-      aside.community-page__side
-        CommunityAboutPanel(:community="community")
-
     MountingPortal(mount-to="body" append)
       CommunityPendingDialog(:is-open.sync="isPendingOpen" :community="community" @changed="handleChanged")
       CommunityMembersDialog(:is-open.sync="isMembersOpen" :community="community" @changed="handleChanged")
       CommunityDeleteDialog(:is-open.sync="isDeleteOpen" :community="community")
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.COMMUNITY" :additional="reportAdditional" @closed="isReportOpen = false")
+      ReportDialog(:is-open="!!reportedPost" :scope="reportTypeEnum.POST" :additional="postReportAdditional" @closed="reportedPost = null")
 </template>
 
 <script>
@@ -88,6 +92,8 @@ export default defineComponent({
     let feedReqId = 0
     let communityReqId = 0
 
+    const reportedPost = ref(null)
+    const postReportAdditional = computed(() => JSON.stringify({ postDocumentId: reportedPost.value?.documentId }))
     const reportAdditional = computed(() => JSON.stringify({ communityDocumentId: community.value?.documentId }))
     const sortOptions = computed(() => SORTS.map(key => ({ key, label: i18n.t(`community.detail.feedSort.${key}`) })))
     const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
@@ -110,10 +116,7 @@ export default defineComponent({
 
       if (error || !data) return { error: true }
 
-      // Task 8 replaces this room-card feed with post cards
-      const rooms = data.items.map(post => post.room)
-
-      items.value = nextPage === 1 ? rooms : [...items.value, ...rooms]
+      items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
       page.value = nextPage
       hasMore.value = data.hasMore
 
@@ -153,6 +156,13 @@ export default defineComponent({
 
       sort.value = key
       reloadFeed()
+    }
+
+    const handleReportPost = post => (reportedPost.value = post)
+
+    const handlePostDeleted = post => {
+      items.value = items.value.filter(item => item.documentId !== post.documentId)
+      community.value = { ...community.value, postCount: Math.max(0, community.value.postCount - 1) }
     }
 
     const handleOpenPending = () => (isPendingOpen.value = true)
@@ -205,6 +215,8 @@ export default defineComponent({
       isMembersOpen,
       isDeleteOpen,
       reportAdditional,
+      reportedPost,
+      postReportAdditional,
       reportTypeEnum,
       sort,
       sortOptions,
@@ -220,6 +232,8 @@ export default defineComponent({
       handleInfinite,
       handleSortSelect,
       handleChanged,
+      handleReportPost,
+      handlePostDeleted,
       handleOpenPending,
       handleOpenMembers,
       handleOpenDelete

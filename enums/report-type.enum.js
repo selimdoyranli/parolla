@@ -4,5 +4,6 @@ export const reportTypeEnum = Object.freeze({
   DRAW_CHAT: 'drawChat',
   REVIEW: 'review',
   COMMENT: 'comment',
-  COMMUNITY: 'community'
+  COMMUNITY: 'community',
+  POST: 'post'
 })
