@@ -11,6 +11,8 @@ export default {
         isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
+        // Guests omit the key so the anonymous create path stays unchanged
+        ...(this.$auth.loggedIn ? { community: form.community || null } : {}),
         title: form.roomTitle,
         description: form.description?.trim() || null,
         quizType: form.quizType,
@@ -83,6 +85,8 @@ export default {
         isVisible: form.isVisible,
         isPublic: form.isListed,
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
+        // Guests omit the key so the anonymous create path stays unchanged
+        ...(this.$auth.loggedIn ? { community: form.community || null } : {}),
         title: form.roomTitle,
         description: form.description?.trim() || null,
         quizType: form.quizType,

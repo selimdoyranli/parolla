@@ -39,6 +39,7 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     moderationNote: props.room?.moderationNote || null,
     moderationSource: props.room?.moderationSource || null,
     isAnon: props.room?.isAnon || false,
+    community: props.room?.community?.documentId || null,
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
     qaList:
