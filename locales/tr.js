@@ -1248,6 +1248,7 @@ export default {
       title: 'Üyeler',
       search: 'Üye ara',
       empty: 'Henüz üye yok.',
+      role: { owner: 'Sahibi', moderator: 'Moderatör' },
       actions: {
         kick: 'Çıkar',
         promote: 'Moderatör yap',

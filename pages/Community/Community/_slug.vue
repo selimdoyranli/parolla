@@ -47,6 +47,9 @@
         CommunityAboutPanel(:community="community")
 
     MountingPortal(mount-to="body" append)
+      CommunityPendingDialog(:is-open.sync="isPendingOpen" :community="community" @changed="handleChanged")
+      CommunityMembersDialog(:is-open.sync="isMembersOpen" :community="community" @changed="handleChanged")
+      CommunityDeleteDialog(:is-open.sync="isDeleteOpen" :community="community")
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.COMMUNITY" :additional="reportAdditional" @closed="isReportOpen = false")
 </template>
 
@@ -71,6 +74,9 @@ export default defineComponent({
     const isNotFound = ref(false)
     const isReportOpen = ref(false)
     const sort = ref('recent')
+    const isPendingOpen = ref(false)
+    const isMembersOpen = ref(false)
+    const isDeleteOpen = ref(false)
 
     const items = ref([])
     const page = ref(1)
@@ -146,10 +152,9 @@ export default defineComponent({
       reloadFeed()
     }
 
-    // task 14 fills these with the pending / members / delete dialogs
-    const handleOpenPending = () => {}
-    const handleOpenMembers = () => {}
-    const handleOpenDelete = () => {}
+    const handleOpenPending = () => (isPendingOpen.value = true)
+    const handleOpenMembers = () => (isMembersOpen.value = true)
+    const handleOpenDelete = () => (isDeleteOpen.value = true)
 
     const isManager = () => [communityViewerRoleEnum.OWNER, communityViewerRoleEnum.MODERATOR].includes(community.value?.viewerRole)
 
@@ -193,6 +198,9 @@ export default defineComponent({
       isLoading,
       isNotFound,
       isReportOpen,
+      isPendingOpen,
+      isMembersOpen,
+      isDeleteOpen,
       reportAdditional,
       reportTypeEnum,
       sort,

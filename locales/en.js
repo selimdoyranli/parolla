@@ -1231,6 +1231,7 @@ export default {
       title: 'Members',
       search: 'Search members',
       empty: 'No members yet.',
+      role: { owner: 'Owner', moderator: 'Moderator' },
       actions: {
         kick: 'Remove',
         promote: 'Make moderator',
