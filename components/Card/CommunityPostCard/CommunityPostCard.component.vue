@@ -13,7 +13,7 @@ article.community-post-card
             nav.community-post-card__menu-nav
               .community-post-card__menu-item(v-if="canReport" dropdown-closer @click="$emit('report', post)")
                 AppIcon(name="tabler:flag" :width="18" :height="18")
-                span {{ $t('community.report') }}
+                span {{ $t('community.post.report') }}
               .community-post-card__menu-item.is-danger(v-if="post.canDelete" dropdown-closer @click="handleDelete")
                 AppIcon(name="tabler:trash" :width="18" :height="18")
                 span {{ $t('community.post.delete') }}
@@ -21,13 +21,19 @@ article.community-post-card
     p.community-post-card__note(v-if="post.note") {{ post.note }}
     p.community-post-card__note.community-post-card__note--default(v-else) {{ sharedText }}
 
-  QuizCard(:room="post.room" :viewer="$auth.user")
+  QuizCard(hide-owner-actions :room="post.room" :viewer="$auth.user")
 
   .community-post-card__footer
-    button.community-post-card__action(type="button" :class="{ 'is-active': liked }" :aria-pressed="liked" @click="handleLike")
+    button.community-post-card__action(
+      type="button"
+      :class="{ 'is-active': liked }"
+      :aria-pressed="liked"
+      :aria-label="$t('community.post.likes', { count: likeCount })"
+      @click="handleLike"
+    )
       AppIcon(:name="liked ? 'tabler:heart-filled' : 'tabler:heart'" :width="18" :height="18")
       span {{ likeCount }}
-    NuxtLink.community-post-card__action(:to="postLink")
+    NuxtLink.community-post-card__action(:to="postLink" :aria-label="$t('community.post.comments', { count: post.commentCount })")
       AppIcon(name="tabler:message-2" :width="18" :height="18")
       span {{ post.commentCount }}
 </template>

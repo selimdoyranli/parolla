@@ -73,7 +73,7 @@ NuxtLink.quiz-card(
           AppIcon.quiz-card__stat-icon(name="tabler:cards" :width="13" :height="13")
           span.quiz-card__stat-value {{ room.flashcardCount }}
 
-      .quiz-card__owner-actions(v-if="viewer && isOwner({ user: room.user })")
+      .quiz-card__owner-actions(v-if="viewer && !hideOwnerActions && isOwner({ user: room.user })")
         button.quiz-card__owner-action.quiz-card__owner-action--edit(
           type="button"
           :title="$t('general.edit')"
@@ -106,6 +106,11 @@ export default defineComponent({
       default: null
     },
     userScoped: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    hideOwnerActions: {
       type: Boolean,
       required: false,
       default: false

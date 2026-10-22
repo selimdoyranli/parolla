@@ -1167,6 +1167,7 @@ export default {
       delete: 'Delete post',
       confirmDelete: 'Delete this post? Its comments and likes are deleted too. The quiz itself is not deleted.',
       deleted: 'Post deleted.',
+      report: 'Report post',
       likes: '{count} likes',
       comments: '{count} comments',
       sharedQuiz: '{user} shared a quiz'

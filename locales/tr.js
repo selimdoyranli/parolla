@@ -1184,6 +1184,7 @@ export default {
       delete: 'Gönderiyi sil',
       confirmDelete: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir. Quiz silinmez.',
       deleted: 'Gönderi silindi.',
+      report: 'Gönderiyi raporla',
       likes: '{count} beğeni',
       comments: '{count} yorum',
       sharedQuiz: '{user} bir quiz paylaştı'
