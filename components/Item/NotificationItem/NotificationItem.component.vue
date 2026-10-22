@@ -7,6 +7,9 @@
   template(v-if="isAnnouncement")
     img.notification-item__avatar.notification-item__avatar--app(src="/img/core/logo.webp" :alt="APP_NAME" width="40" height="40")
   PlayerAvatar.notification-item__avatar(v-else-if="item.actor" :user="item.actor" :size="40")
+  //- community notices without an actor (approved, promoted, kicked, hidden)
+  span.notification-item__avatar.notification-item__avatar--icon(v-else-if="isCommunity")
+    AppIcon(name="tabler:users" :width="22" :height="22")
   .notification-item__body
     template(v-if="isAnnouncement")
       p.notification-item__text
@@ -20,6 +23,7 @@
       p.notification-item__excerpt(v-if="item.meta && item.meta.excerpt") “{{ item.meta.excerpt }}”
     small.notification-item__meta
       span(v-if="item.room") {{ item.room.title }} ·
+      span(v-else-if="isCommunity && item.meta.communityName") {{ item.meta.communityName }} ·
       |
       |
       Timeago(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")
@@ -41,14 +45,23 @@ export default defineComponent({
     const { i18n } = useContext()
 
     const isAnnouncement = computed(() => props.item.type === 'announcement')
+    const isCommunity = computed(() => props.item.type.startsWith('community_'))
     const name = computed(() => props.item.actor?.username || '')
     const actorLabel = computed(() =>
       props.item.actorCount > 1 ? i18n.t('notifications.andOthers', { name: name.value, count: props.item.actorCount - 1 }) : name.value
     )
     // the type string starts with "{actor}"; actor is rendered bold separately, so strip it
-    const text = computed(() => i18n.t(`notifications.types.${props.item.type}`, { actor: '', rating: props.item.meta?.rating }).trim())
+    const text = computed(() =>
+      i18n
+        .t(`notifications.types.${props.item.type}`, {
+          actor: '',
+          rating: props.item.meta?.rating,
+          community: props.item.meta?.communityName
+        })
+        .trim()
+    )
 
-    return { APP_NAME, isAnnouncement, actorLabel, text }
+    return { APP_NAME, isAnnouncement, isCommunity, actorLabel, text }
   }
 })
 </script>

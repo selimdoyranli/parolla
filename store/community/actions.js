@@ -184,12 +184,14 @@ export default {
   },
 
   // GM moderation (api/moderation, GM role only)
-  gmFetchCommunities(_, { page = 1, search = '', hidden = false } = {}) {
-    return this.$appFetch({
+  async gmFetchCommunities(_, { page = 1, search = '', hidden = false } = {}) {
+    const { data, error } = await this.$appFetch({
       path: 'moderation/communities',
       query: { page, ...(search && { search }), ...(hidden && { hidden: 1 }) },
       headers: authHeaders(this)
     })
+
+    return { data: data ? { items: data.data, total: data.meta.total, hasMore: data.meta.hasMore } : null, error }
   },
 
   gmHideCommunity(_, { documentId, note = '' }) {

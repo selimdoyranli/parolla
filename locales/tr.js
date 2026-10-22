@@ -1304,7 +1304,7 @@ export default {
     },
     hiddenBanner: 'Topluluğun moderasyon nedeniyle gizlendi. Yalnızca sen görebilirsin.',
     report: 'Topluluğu raporla',
-    profileTab: { title: 'Topluluklar', empty: 'Henüz bir topluluğa üye değil.' }
+    profileTab: { title: 'Topluluklar', empty: 'Henüz bir topluluğa üye değil.', more: 'Daha fazla' }
   },
   drawLobby: {
     officialRooms: 'Resmi Odalar',
@@ -1436,6 +1436,8 @@ export default {
         tagGenerationHint: 'Public olan ve etiketi olmayan odalara 5 etiket ekler',
         roomModeration: 'Oda moderasyonu',
         roomModerationHint: 'Küfür, NSFW ve özel/kalitesiz içerikli odaları listeden kaldırır',
+        communityModeration: 'Topluluk moderasyonu',
+        communityModerationHint: 'Uygunsuz ad, açıklama ve etiketli toplulukları gizler',
         tagPrompt: 'Etiket sistem promptu',
         moderationPrompt: 'Moderasyon sistem promptu'
       },

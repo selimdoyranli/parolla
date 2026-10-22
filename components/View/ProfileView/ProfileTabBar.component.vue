@@ -37,6 +37,13 @@
         span.profile-tab-bar__tab-label {{ $t('profile.tabs.scores') }}
 
       NuxtLink.profile-tab-bar__tab(
+        role="tab"
+        :to="communitiesPath"
+        :class="{ 'profile-tab-bar__tab--active': activeTab === 'communities' }"
+      )
+        span.profile-tab-bar__tab-label {{ $t('profile.tabs.communities') }}
+
+      NuxtLink.profile-tab-bar__tab(
         v-if="showAchievements"
         role="tab"
         :to="achievementsPath"
@@ -85,6 +92,8 @@ export default defineComponent({
 
       if (/\/(comments|yorumlar|reviews|degerlendirmeler)\/?$/.test(path)) return 'reviews'
 
+      if (/\/(communities|topluluklar)\/?$/.test(path)) return 'communities'
+
       if (/\/(achievements|basarimlar)\/?$/.test(path)) return 'achievements'
 
       if (/\/(scores|skorlar)\/?$/.test(path)) return 'scores'
@@ -96,6 +105,7 @@ export default defineComponent({
     const reviewsPath = computed(() => localePath({ name: 'Profile-username-Reviews', params: { username: props.username } }))
     const scoresPath = computed(() => localePath({ name: 'Profile-username-Scores', params: { username: props.username } }))
 
+    const communitiesPath = computed(() => localePath({ name: 'Profile-username-Communities', params: { username: props.username } }))
     const achievementsPath = computed(() => localePath({ name: 'Profile-username-Achievements', params: { username: props.username } }))
 
     const changeTo = name => {
@@ -107,6 +117,7 @@ export default defineComponent({
       quizzesPath,
       reviewsPath,
       scoresPath,
+      communitiesPath,
       achievementsPath,
       changeTo
     }

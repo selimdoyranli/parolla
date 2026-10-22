@@ -10,11 +10,11 @@
       AppIcon(name="tabler:pencil" :width="14" :height="14")
 
   Tabs.draw-lobby__tabs(v-model="activeTab" :swipeable="false" :line-width="40")
-    Tab(name="official" title="Resmi Odalar")
+    Tab(name="official" :title="$t('drawLobby.officialRooms')")
       SystemRoomList(:system-rooms="systemRooms" :loading="isSocketConnecting" @join="onJoinSystem")
       //- draw_lobby_official
       AppAd.draw-lobby__ad(:data-ad-slot="5407941518")
-    Tab(name="community" title="Topluluk Odaları")
+    Tab(name="community" :title="$t('drawLobby.playerRooms')")
       CommunityRoomList(
         :community-rooms="communityRooms"
         :category-titles="categoryTitleMap"

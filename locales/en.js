@@ -1287,7 +1287,7 @@ export default {
     },
     hiddenBanner: 'Your community was hidden by moderation. Only you can see it.',
     report: 'Report community',
-    profileTab: { title: 'Communities', empty: 'Not a member of any community yet.' }
+    profileTab: { title: 'Communities', empty: 'Not a member of any community yet.', more: 'Load more' }
   },
   drawLobby: {
     officialRooms: 'Official Rooms',
@@ -1419,6 +1419,8 @@ export default {
         tagGenerationHint: 'Adds 5 tags to public rooms that have none',
         roomModeration: 'Room moderation',
         roomModerationHint: 'Removes rooms with profanity, NSFW or private/low-quality content from the list',
+        communityModeration: 'Community moderation',
+        communityModerationHint: 'Hides communities with inappropriate names, descriptions or tags',
         tagPrompt: 'Tag system prompt',
         moderationPrompt: 'Moderation system prompt'
       },

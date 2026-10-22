@@ -97,6 +97,20 @@ export default defineComponent({
     }
 
     const handleSelect = item => {
+      if (item.meta?.communitySlug && !item.room) {
+        state.isOpen = false
+
+        router.push(
+          localePath({
+            name: 'Community-Community-slug',
+            params: { slug: item.meta.communitySlug },
+            query: item.type === 'community_join_requested' ? { panel: 'pending' } : {}
+          })
+        )
+
+        return
+      }
+
       // announcements are read in place; nothing to open
       if (!item.room) return
 
