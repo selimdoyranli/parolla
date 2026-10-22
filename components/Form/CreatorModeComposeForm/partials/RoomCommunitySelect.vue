@@ -1,17 +1,11 @@
 <template lang="pug">
-.room-community-select.creator-mode-compose-form__fields(v-if="isVisible")
-  Field.creator-mode-compose-form__community(
-    name="community"
+.room-community-select(v-if="isVisible")
+  Cell.creator-mode-compose-form__community(
     :value="selectedName"
-    :label="$t('form.creatorModeCompose.room.community.label')"
     is-link
-    readonly
-    :disabled="disabled"
-    @click="isOpen = true"
+    :title="$t('form.creatorModeCompose.room.community.label')"
+    @click="isOpen = !disabled"
   )
-
-  p.creator-mode-compose-form__infoHint(v-if="isNotMember")
-    | {{ $t('form.creatorModeCompose.room.community.notMemberWarning') }}
 
   //- private only gates the community feed; the quiz's own listing still applies
   p.creator-mode-compose-form__infoHint(v-if="isPrivateListed")
@@ -22,13 +16,13 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, useStore, useContext } from '@nuxtjs/composition-api'
-import { Field, Popup, Picker } from 'vant'
+import { defineComponent, computed, ref, onMounted, useStore, useContext } from '@nuxtjs/composition-api'
+import { Cell, Popup, Picker } from 'vant'
 import { communityVisibilityEnum } from '@/enums/community.enum'
 
 export default defineComponent({
   name: 'RoomCommunitySelect',
-  components: { Field, Popup, Picker },
+  components: { Cell, Popup, Picker },
   props: {
     value: {
       type: String,
@@ -42,6 +36,7 @@ export default defineComponent({
       type: Object,
       default: null
     },
+    // the quiz is set to "public": a private community would still see it in the public list
     isListed: {
       type: Boolean,
       default: false
@@ -54,21 +49,14 @@ export default defineComponent({
 
     const isLoggedIn = computed(() => !!store.getters['auth/user'])
     const postable = computed(() => store.getters['auth/postableCommunities'] || [])
-    const linked = computed(() => props.room?.community || null)
 
-    // The saved link may no longer be postable (left/blocked); keep it selectable so the value isn't lost
-    const options = computed(() => {
-      const list = postable.value.map(c => ({ text: c.name, value: c.documentId }))
-
-      if (linked.value && !list.some(o => o.value === linked.value.documentId)) {
-        list.unshift({ text: linked.value.name, value: linked.value.documentId })
-      }
-
-      return [{ text: i18n.t('form.creatorModeCompose.room.community.none'), value: null }, ...list]
-    })
+    const options = computed(() => [
+      { text: i18n.t('form.creatorModeCompose.room.community.none'), value: null },
+      ...postable.value.map(c => ({ text: c.name, value: c.documentId }))
+    ])
 
     const columns = computed(() => options.value.map(o => o.text))
-    const isVisible = computed(() => isLoggedIn.value && (postable.value.length > 0 || !!linked.value))
+    const isVisible = computed(() => isLoggedIn.value && postable.value.length > 0)
     const defaultIndex = computed(() =>
       Math.max(
         0,
@@ -76,24 +64,33 @@ export default defineComponent({
       )
     )
     const selectedName = computed(() => options.value[defaultIndex.value].text)
-    const owned = computed(() => store.getters['auth/ownedCommunities'] || [])
-    const isNotMember = computed(() => !!props.value && ![...postable.value, ...owned.value].some(c => c.documentId === props.value))
-    const selected = computed(() => [...postable.value, linked.value].find(c => c && c.documentId === props.value))
+    const selected = computed(() => postable.value.find(c => c.documentId === props.value))
     const isPrivateListed = computed(() => props.isListed && selected.value?.visibility === communityVisibilityEnum.PRIVATE)
+
+    // edit: preselect the first of my communities that already holds this quiz (re-saving it there is a no-op)
+    onMounted(async () => {
+      if (!isVisible.value || !props.room?.documentId) return
+
+      const { data } = await store.dispatch('community/fetchSharedIn', { roomDocumentId: props.room.documentId })
+      const first = (data?.communityDocumentIds || []).find(id => postable.value.some(c => c.documentId === id))
+
+      // the user may have picked one while this was loading
+      if (first && !props.value) emit('input', first)
+    })
 
     const onConfirm = (_, index) => {
       emit('input', options.value[index].value)
       isOpen.value = false
     }
 
-    return { isOpen, isVisible, columns, defaultIndex, selectedName, isNotMember, isPrivateListed, onConfirm }
+    return { isOpen, isVisible, columns, defaultIndex, selectedName, isPrivateListed, onConfirm }
   }
 })
 </script>
 
 <style lang="scss" scoped>
 .creator-mode-compose-form__infoHint {
-  margin: 8px 16px 0;
+  margin: 8px 16px;
   padding: 8px 12px;
   color: var(--color-info-01);
   font-size: 13px;

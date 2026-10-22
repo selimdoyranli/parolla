@@ -842,11 +842,11 @@ export default {
       clearForm: 'Clear Form',
       room: {
         community: {
-          label: 'Community',
-          none: 'No community',
-          notMemberWarning:
-            "You're no longer a member of this community. Your quiz stays linked, but if you change the community you can't undo it.",
-          privateListedHint: 'This community is private, but your quiz is listed publicly, so it will still appear in the public quiz list.'
+          label: 'Share to community',
+          none: "Don't share",
+          privateListedHint:
+            'This community is private, but your quiz is public, so it will still appear in the public quiz list. Pick "Community only" to keep it inside the community.',
+          shareFailed: 'Quiz saved, but it could not be shared to the community: {reason}'
         },
         roomTitle: {
           label: 'Quiz title',
@@ -876,8 +876,11 @@ export default {
             ai: 'AI'
           }
         },
+        visibility: {
+          label: 'Visibility',
+          needsCommunity: 'Pick a community above first.'
+        },
         isListed: {
-          label: 'Wanna you listing on public quizzes?',
           systemRemoved: 'This quiz was reviewed: it is not suitable for the quiz list and was removed from it.'
         },
         isAnon: {
@@ -1164,6 +1167,7 @@ export default {
       shared: 'Quiz shared.',
       alreadyShared: 'This quiz is already shared in this community.',
       sharedBadge: 'Shared',
+      goToPost: 'Go to post',
       delete: 'Delete post',
       confirmDelete: 'Delete this post? Its comments and likes are deleted too. The quiz itself is not deleted.',
       deleted: 'Post deleted.',
@@ -1302,6 +1306,11 @@ export default {
     error: {
       generic: 'Something went wrong. Please try again.',
       networkFailure: 'Connection error. Check your internet and try again.',
+      notMember: 'You are not a member of this community.',
+      postPermissionDenied: 'Only the owner and moderators can share quizzes here.',
+      hidden: 'This community is unavailable right now.',
+      roomNotShareable: 'This quiz cannot be shared.',
+      alreadyShared: 'This quiz is already shared in this community.',
       ownedLimitReached: 'You can own at most {max} communities.',
       notFound: 'Community not found.'
     },
@@ -1820,6 +1829,7 @@ export default {
   playIntro: {
     play: 'START GAME',
     share: 'Share',
+    shareToCommunity: 'Share to community',
     rate: 'Rate',
     howToPlay: 'How to play?',
     creator: 'Created by',

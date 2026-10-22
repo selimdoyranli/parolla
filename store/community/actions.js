@@ -77,7 +77,7 @@ export default {
 
   async uploadCommunityMedia({ commit }, { documentId, field, file }) {
     const formData = new FormData()
-    formData.append('files', file, `community-${field}-${Date.now()}.jpg`)
+    formData.append('files', file, `community-${field}-${Date.now()}.${file.type === 'image/png' ? 'png' : 'jpg'}`)
 
     const { data, error } = await this.$appFetch({
       path: `communities/${documentId}/media`,

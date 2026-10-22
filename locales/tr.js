@@ -846,10 +846,11 @@ export default {
       uploadingMedia: 'Medya yükleniyor',
       room: {
         community: {
-          label: 'Topluluk',
-          none: 'Topluluk yok',
-          notMemberWarning: 'Bu topluluğa artık üye değilsin, quizin yine de bağlı kalır ama topluluğu değiştirirsen geri alamazsın.',
-          privateListedHint: 'Bu topluluk gizli ama quizin herkese açık listelendiği için genel quiz listesinde de görünecek.'
+          label: 'Toplulukta paylaş',
+          none: 'Paylaşma',
+          privateListedHint:
+            'Bu topluluk gizli ama quizin herkese açık olduğu için genel quiz listesinde de görünecek. Yalnızca toplulukta görünsün istersen "Sadece toplulukta" seç.',
+          shareFailed: 'Quiz kaydedildi ama toplulukta paylaşılamadı: {reason}'
         },
         roomTitle: {
           label: 'Quiz başlığı',
@@ -879,8 +880,11 @@ export default {
             ai: 'Yapay zeka'
           }
         },
+        visibility: {
+          label: 'Görünürlük',
+          needsCommunity: 'Bunun için önce yukarıdan bir topluluk seç.'
+        },
         isListed: {
-          label: 'Quizler listesinde görünsün mü?',
           systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'
         },
         isAnon: {
@@ -1181,6 +1185,7 @@ export default {
       shared: 'Quiz paylaşıldı.',
       alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
       sharedBadge: 'Paylaşıldı',
+      goToPost: 'Gönderiye git',
       delete: 'Gönderiyi sil',
       confirmDelete: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir. Quiz silinmez.',
       deleted: 'Gönderi silindi.',
@@ -1319,6 +1324,11 @@ export default {
     error: {
       generic: 'Bir şeyler ters gitti. Lütfen tekrar dene.',
       networkFailure: 'Bağlantı hatası. İnternetini kontrol edip tekrar dene.',
+      notMember: 'Bu toplulukta üye değilsin.',
+      postPermissionDenied: 'Bu toplulukta yalnızca sahip ve moderatörler quiz paylaşabilir.',
+      hidden: 'Bu topluluk şu an kullanılamıyor.',
+      roomNotShareable: 'Bu quiz paylaşılamaz.',
+      alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
       ownedLimitReached: 'En fazla {max} topluluk kurabilirsin.',
       notFound: 'Topluluk bulunamadı.'
     },
@@ -1841,6 +1851,7 @@ export default {
   playIntro: {
     play: 'OYUNA BAŞLA',
     share: 'Paylaş',
+    shareToCommunity: 'Toplulukta paylaş',
     rate: 'Puan Ver',
     howToPlay: 'Nasıl oynanır?',
     creator: 'Oluşturan',

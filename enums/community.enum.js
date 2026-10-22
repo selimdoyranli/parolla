@@ -20,6 +20,7 @@ export const communityViewerRoleEnum = Object.freeze({
 export const COMMUNITY_NAME_MIN_LENGTH = 3
 export const COMMUNITY_NAME_MAX_LENGTH = 48
 export const COMMUNITY_DESCRIPTION_MAX_LENGTH = 500
+export const COMMUNITY_POST_NOTE_MAX_LENGTH = 500
 export const COMMUNITY_TAGS_MAX_LENGTH = 5
 export const COMMUNITY_TAG_MAX_LENGTH = 64
 export const COMMUNITY_TAG_REGEX = /[^\p{L}\p{N}]/gu

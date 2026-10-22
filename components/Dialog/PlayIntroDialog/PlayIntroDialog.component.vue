@@ -40,6 +40,9 @@ Dialog.dialog.dialog--scene.play-intro(
       Button.play-intro__action(round size="small" @click="shareRoom(room)")
         AppIcon(name="tabler:share" :width="16" :height="16")
         span {{ $t('playIntro.share') }}
+      Button.play-intro__action(v-if="canShareToCommunity" round size="small" @click="communityShareOpen = true")
+        AppIcon(name="tabler:users" :width="16" :height="16")
+        span {{ $t('playIntro.shareToCommunity') }}
       Button.play-intro__action(round size="small" @click="openReviews")
         AppIcon(name="tabler:star" :width="16" :height="16")
         span {{ $t('playIntro.rate') }}
@@ -98,6 +101,7 @@ Dialog.dialog.dialog--scene.play-intro(
         FooterBrandLogo
 
   LazyRoomReviewDialog(v-if="isCreator" :isOpen="reviewDialog.isOpen" @closed="onReviewClosed")
+  LazyCommunityShareDialog(v-if="canShareToCommunity" :is-open.sync="communityShareOpen" :room="room")
 </template>
 
 <script>
@@ -160,6 +164,18 @@ export default defineComponent({
     // owners always receive room.user, anonymous rooms included
     const creatorUser = computed(() => (room.value.isAnon ? null : room.value.user))
     const isCreator = computed(() => props.mode === 'creator')
+    const me = computed(() => store.getters['auth/user'])
+    const communityShareOpen = ref(false)
+    // mirrors the server rule: others' quizzes only when listed publicly (not community-only); moderated quizzes never
+    const canShareToCommunity = computed(
+      () =>
+        isCreator.value &&
+        Boolean(me.value) &&
+        Boolean(room.value.documentId) &&
+        !room.value.isSystemRemovedFromPublic &&
+        (store.getters['auth/postableCommunities'] || []).length > 0 &&
+        (room.value.user?.id === me.value.id || (room.value.isListed && !room.value.isCommunityOnly))
+    )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
     const minutes = computed(() =>
       Math.round((isCreator.value && room.value.gameTimeLimit ? room.value.gameTimeLimit : GAME_TIME_LIMIT) / 60000)
@@ -306,7 +322,9 @@ export default defineComponent({
       reviewsKey,
       openFullScoreboard,
       localePath,
-      shareRoom
+      shareRoom,
+      canShareToCommunity,
+      communityShareOpen
     }
   }
 })

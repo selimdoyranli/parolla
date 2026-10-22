@@ -76,12 +76,20 @@
         small.creator-mode-compose-form__optionalHint
           | {{ $t('form.optionalHint') }}
 
-    Cell.creator-mode-compose-form__.creator-mode-compose-form__isListed
-      template(#title)
-        span {{ $t('form.creatorModeCompose.room.isListed.label') }}
+    RoomCommunitySelect(v-model="form.community" :room="room" :is-listed="form.visibilityMode === 'public'" :disabled="form.isBusy")
 
-      template(#right-icon)
-        VanSwitch(v-model="form.isListed" :size="24")
+    Cell.creator-mode-compose-form__visibilityTitle(:title="$t('form.creatorModeCompose.room.visibility.label')")
+    RadioGroup(v-model="form.visibilityMode" :disabled="form.isBusy")
+      Cell.creator-mode-compose-form__visibility(
+        v-for="mode in visibilityModes"
+        :key="mode"
+        :label="visibilityHint(mode)"
+        :clickable="isVisibilityAllowed(mode)"
+        :title="$t(`community.visibilityMode.${mode}`)"
+        @click="pickVisibility(mode)"
+      )
+        template(#right-icon)
+          Radio(:name="mode" :disabled="!isVisibilityAllowed(mode)")
 
     template(v-if="user")
       Cell.creator-mode-compose-form__isAnon
@@ -136,7 +144,8 @@
 
 <script>
 import { defineComponent, computed, reactive, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { Field, Cell, Switch, Button, Tag, Stepper, Toast } from 'vant'
+import { Field, Cell, Switch, Button, Tag, Stepper, Toast, RadioGroup, Radio } from 'vant'
+import RoomCommunitySelect from './RoomCommunitySelect.vue'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import parollaConfig from '@/system/parolla.config'
 import convertSize from 'convert-size'
@@ -149,7 +158,10 @@ export default defineComponent({
     VanSwitch: Switch,
     Button,
     Tag,
-    Stepper
+    Stepper,
+    RadioGroup,
+    Radio,
+    RoomCommunitySelect
   },
   props: {
     form: {
@@ -157,6 +169,10 @@ export default defineComponent({
       required: true
     },
     user: {
+      type: Object,
+      default: null
+    },
+    room: {
       type: Object,
       default: null
     },
@@ -306,6 +322,20 @@ export default defineComponent({
       coverPhotoState.isDirty = false
     }
 
+    const visibilityModes = ['public', 'communityOnly', 'unlisted']
+    // community-only needs a picked community
+    const isVisibilityAllowed = mode => mode !== 'communityOnly' || Boolean(props.form.community)
+
+    const visibilityHint = mode =>
+      isVisibilityAllowed(mode)
+        ? i18n.t(`community.visibilityMode.${mode}Description`)
+        : i18n.t('form.creatorModeCompose.room.visibility.needsCommunity')
+
+    const pickVisibility = mode => {
+      // eslint-disable-next-line vue/no-mutating-props
+      if (!props.form.isBusy && isVisibilityAllowed(mode)) props.form.visibilityMode = mode
+    }
+
     const onInputTag = val => emit('input-tag', val)
     const onAddTag = () => emit('add-tag')
     const onRemoveTag = tag => emit('remove-tag', tag)
@@ -329,6 +359,10 @@ export default defineComponent({
       generateCoverPhotoBlob,
       coverPhotoIsCommittable,
       markCoverPhotoCommitted,
+      visibilityModes,
+      isVisibilityAllowed,
+      visibilityHint,
+      pickVisibility,
       onInputTag,
       onAddTag,
       onRemoveTag,

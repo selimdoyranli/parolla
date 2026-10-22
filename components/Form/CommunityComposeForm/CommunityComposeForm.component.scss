@@ -38,9 +38,13 @@
     cursor: pointer;
 
     &--avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
+      width: 160px;
+      height: 160px;
+      border-radius: calc(var(--border-radius-01) / 2);
+    }
+
+    &--hasImage {
+      border-style: solid;
     }
 
     &--cover {
@@ -50,10 +54,30 @@
     }
   }
 
-  &__picker-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  /* croppa's root carries this class, so it is a same-element rule */
+  &__croppa {
+    display: block;
+    background-color: light-dark(#f2f2f2, #222);
+
+    canvas {
+      display: block;
+    }
+
+    svg.icon-remove {
+      top: 4px !important;
+      right: 4px !important;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__picker-overlay {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    inset: 0;
   }
 
   &__summary {

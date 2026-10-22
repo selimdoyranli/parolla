@@ -32,6 +32,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     ref="roomBasicInfoRef"
     :form="form"
     :user="user"
+    :room="room"
     :game-time-limit-minutes.sync="gameTimeLimitMinutes"
     @input-tag="handleInputTag"
     @add-tag="addTag"
@@ -130,7 +131,6 @@ import { quizTypeEnum } from '@/enums/quiz.enum'
 import ChoiceList from './partials/ChoiceList.vue'
 import QuestionList from './partials/QuestionList.vue'
 import FlashcardList from './partials/FlashcardList.vue'
-import RoomCommunitySelect from './partials/RoomCommunitySelect.vue'
 
 export default defineComponent({
   components: {
@@ -139,8 +139,7 @@ export default defineComponent({
     NoticeBar,
     ChoiceList,
     QuestionList,
-    FlashcardList,
-    RoomCommunitySelect
+    FlashcardList
   },
   props: {
     room: {
