@@ -132,7 +132,7 @@ export default (community = null) => {
         ? { message: i18n.t(community ? 'community.success.edited' : 'community.success.created'), type: 'success' }
         : { message: i18n.t('community.wizard.mediaUploadFailed'), type: 'warning', duration: 5000 }
     )
-    isBusy.value = false
+    // stays busy through navigation so a second click can't post again
     goToDetail(data.slug)
   }
 
