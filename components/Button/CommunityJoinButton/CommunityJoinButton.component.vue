@@ -12,7 +12,7 @@ Button.community-join-button(
 
 <script>
 import { defineComponent, computed, ref, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
-import { Button, Dialog } from 'vant'
+import { Button, Dialog, Notify } from 'vant'
 import { communityViewerRoleEnum } from '@/enums/community.enum'
 
 export default defineComponent({
@@ -46,11 +46,24 @@ export default defineComponent({
     const call = async action => {
       isLoading.value = true
 
-      const { data, error } = await store.dispatch(`community/${action}`, { documentId: props.community.documentId })
+      try {
+        const { data, error } = await store.dispatch(`community/${action}`, { documentId: props.community.documentId })
 
-      isLoading.value = false
+        if (error) {
+          Notify({
+            message: error.message || i18n.t('community.error.generic'),
+            color: 'var(--color-text-04)',
+            background: 'var(--color-danger-01)',
+            duration: 3000
+          })
 
-      if (!error) emit('changed', { viewerRole: data?.viewerRole ?? communityViewerRoleEnum.NONE })
+          return
+        }
+
+        emit('changed', { viewerRole: data?.viewerRole ?? communityViewerRoleEnum.NONE })
+      } finally {
+        isLoading.value = false
+      }
     }
 
     const confirmThen = (message, action) =>
@@ -63,6 +76,8 @@ export default defineComponent({
         .catch(() => {})
 
     const handleClick = () => {
+      if (!$auth.loggedIn) return store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+
       if (role.value === communityViewerRoleEnum.OWNER) {
         return router.push(app.localePath({ name: 'Community-CommunityEdit-slug', params: { slug: props.community.slug } }))
       }
@@ -70,8 +85,6 @@ export default defineComponent({
       if (role.value === communityViewerRoleEnum.PENDING) return confirmThen('confirmCancel', 'leaveCommunity')
 
       if (role.value !== communityViewerRoleEnum.NONE) return confirmThen('confirmLeave', 'leaveCommunity')
-
-      if (!$auth.loggedIn) return store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
       return call('joinCommunity')
     }
