@@ -36,46 +36,14 @@
     )
 
   template(v-if="filter === 'comments'")
-    RoomCommentItem(
-      :key="`pinned-${pinned.item.documentId}`"
-      v-if="pinned.item"
-      auto-expand-replies
-      :comment="pinned.item"
+    CommentThreadView(
+      :key="room.id"
+      v-if="room.id"
       :room-id="room.id"
-      :highlighted="pinned.targetDocumentId === pinned.item.documentId"
-      :target-document-id="pinned.targetDocumentId"
-      @deleted="pinned.item = null"
+      :target-comment-id="targetCommentId"
+      :inline="commentsOnly"
+      @posted="store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')"
     )
-
-    List(
-      v-model="comments.loading"
-      :finished="comments.finished"
-      :error.sync="comments.error"
-      :error-text="$t('comments.error')"
-      @load="loadComments"
-    )
-      RoomCommentItem(
-        v-for="comment in visibleComments"
-        :key="comment.documentId"
-        :comment="comment"
-        :room-id="room.id"
-        @deleted="handleRootDeleted"
-      )
-      Empty(v-if="comments.finished && !visibleComments.length && !pinned.item" :description="$t('comments.empty')")
-
-    //- single composer pinned to the bottom; a reply target turns it into a reply input
-    .room-review-view__composer
-      RoomCommentComposer(
-        :key="replyTarget ? replyTarget.parent : 'root'"
-        v-if="room.id"
-        ref="composerRef"
-        :room-id="room.id"
-        :parent="replyTarget && replyTarget.parent"
-        :reply-to="replyTarget && replyTarget.username"
-        :autofocus="Boolean(replyTarget)"
-        @posted="handlePosted"
-        @cancel="cancelReply"
-      )
 
   template(v-else)
     List(
@@ -98,18 +66,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  useStore,
-  useContext,
-  ref,
-  reactive,
-  computed,
-  watch,
-  onMounted,
-  provide,
-  nextTick
-} from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useContext, ref, reactive, computed, watch, onMounted, nextTick } from '@nuxtjs/composition-api'
 import { Rate, List, Empty, Toast, Dialog } from 'vant'
 
 export default defineComponent({
@@ -132,37 +89,8 @@ export default defineComponent({
       { label: i18n.t('comments.filter.ratings'), value: 'ratings', icon: 'tabler:star' }
     ])
 
-    const comments = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
     const ratingList = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
     const ratings = reactive({ average: 0, count: 0, mine: null, draft: 0, hover: 0, pending: false })
-    const pinned = reactive({ item: null, targetDocumentId: null })
-
-    // the pinned thread is rendered above the list; don't render it twice
-    const visibleComments = computed(() => comments.items.filter(c => c.documentId !== pinned.item?.documentId))
-
-    const loadComments = async () => {
-      if (!room.value?.id) {
-        comments.loading = false
-
-        return
-      }
-
-      const { data, error } = await store.dispatch('comment/fetchComments', { roomId: room.value.id, page: comments.page + 1 })
-      comments.loading = false
-
-      if (error) {
-        comments.error = true
-
-        return
-      }
-
-      const known = new Set(comments.items.map(c => c.documentId))
-
-      comments.items.push(...data.items.filter(c => !known.has(c.documentId)))
-      comments.page += 1
-      comments.finished = !data.hasMore
-    }
-
     const applyRatingMeta = data => {
       ratings.average = Number(data.average) || 0
       ratings.count = data.count || 0
@@ -254,34 +182,6 @@ export default defineComponent({
       ratingList.finished = false
     }
 
-    const loadPinned = async () => {
-      if (!props.targetCommentId) return
-
-      const { data } = await store.dispatch('comment/fetchThread', { documentId: props.targetCommentId })
-
-      // a stale ?comment from another quiz must not render here
-      if (data && data.roomId === room.value?.id) {
-        pinned.item = data.item
-        pinned.targetDocumentId = data.targetDocumentId
-        setTimeout(
-          () => document.getElementById(`comment-${data.targetDocumentId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-          300
-        )
-        setTimeout(() => (pinned.targetDocumentId = null), 2500)
-      }
-    }
-
-    const handleRootPosted = comment => {
-      comments.items.unshift(comment)
-      store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')
-    }
-
-    // Reply flow shared with every RoomCommentItem: the item asks to reply, the bottom composer posts,
-    // and the root item of the thread picks the new reply up from lastReply.
-    const replyTarget = ref(null)
-    const lastReply = ref(null)
-    const composerRef = ref(null)
-
     const flashElement = (elementId, className) =>
       nextTick(() => {
         const el = document.getElementById(elementId)
@@ -295,8 +195,6 @@ export default defineComponent({
         el.classList.add(className)
         setTimeout(() => el.classList.remove(className), 1600)
       })
-
-    const flash = documentId => flashElement(`comment-${documentId}`, 'room-comment-item--flash')
 
     // rating notification: open Puanlar and page until the rater's row is loaded (max 5 pages)
     const focusRating = async () => {
@@ -321,44 +219,6 @@ export default defineComponent({
       setTimeout(() => flashElement(`rating-${userId}`, 'room-review-view__rating-row--flash'), 150)
     }
 
-    const startReply = target => {
-      replyTarget.value = target
-      // focus first, then scroll: a focus after the smooth scroll starts would cancel it
-      nextTick(() => {
-        composerRef.value?.focus()
-        setTimeout(() => flash(target.parent), 50)
-      })
-    }
-
-    const cancelReply = () => {
-      replyTarget.value = null
-    }
-
-    const handlePosted = comment => {
-      if (!comment.parentDocumentId) {
-        handleRootPosted(comment)
-        setTimeout(() => flash(comment.documentId), 100)
-
-        return
-      }
-
-      lastReply.value = comment
-      cancelReply()
-      setTimeout(() => flash(comment.documentId), 100)
-    }
-
-    provide('commentThread', { replyTarget, lastReply, startReply, cancelReply })
-
-    const handleRootDeleted = (documentId, replyCount) => {
-      // a root with live replies stays as a placeholder, like the server list
-      comments.items = comments.items.flatMap(c => {
-        if (c.documentId !== documentId) return [c]
-
-        return replyCount > 0 ? [{ ...c, isDeleted: true, content: null, user: null }] : []
-      })
-    }
-
-    watch(() => props.targetCommentId, loadPinned)
     watch(() => props.targetRatingUserId, focusRating)
 
     // van-list mounted by the filter switch does not check itself, so kick the first ratings page
@@ -376,8 +236,6 @@ export default defineComponent({
         if (!id) return
 
         loadRatingSummary()
-        loadPinned()
-        Object.assign(comments, { items: [], page: 0, finished: false, error: false })
         Object.assign(ratingList, { items: [], page: 0, finished: false, error: false })
 
         if (props.targetRatingUserId) {
@@ -387,10 +245,7 @@ export default defineComponent({
         }
 
         // van-list only re-checks on loading/finished changes, so load the visible list directly
-        if (filter.value === 'comments') {
-          comments.loading = true
-          loadComments()
-        } else {
+        if (filter.value === 'ratings') {
           ratingList.loading = true
           loadRatings()
         }
@@ -399,7 +254,6 @@ export default defineComponent({
 
     onMounted(() => {
       if (!props.commentsOnly) loadRatingSummary()
-      loadPinned()
       focusRating()
     })
 
@@ -407,21 +261,14 @@ export default defineComponent({
       room,
       filter,
       filterOptions,
-      comments,
-      visibleComments,
       ratingList,
       ratings,
       pinned,
-      loadComments,
       loadRatings,
       submitRating,
       handleRateHover,
       handleRateClick,
-      handleRootDeleted,
-      replyTarget,
-      composerRef,
-      handlePosted,
-      cancelReply
+      store
     }
   }
 })

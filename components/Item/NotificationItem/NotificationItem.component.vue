@@ -23,7 +23,7 @@
       p.notification-item__excerpt(v-if="item.meta && item.meta.excerpt") “{{ item.meta.excerpt }}”
     small.notification-item__meta
       span(v-if="item.room") {{ item.room.title }} ·
-      span(v-else-if="isCommunity && item.meta.communityName") {{ item.meta.communityName }} ·
+      span(v-else-if="item.meta && item.meta.communityName") {{ item.meta.communityName }} ·
       |
       |
       Timeago(:datetime="item.createdAt" :auto-update="60" :locale="$i18n.locale")

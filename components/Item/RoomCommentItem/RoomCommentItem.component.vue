@@ -121,7 +121,7 @@ export default defineComponent({
   components: { Tag, VanDialog: Dialog.Component },
   props: {
     comment: { type: Object, required: true },
-    roomId: { type: Number, required: true },
+    roomId: { type: Number, default: null },
     highlighted: { type: Boolean, default: false },
     autoExpandReplies: { type: Boolean, default: false },
     targetDocumentId: { type: String, default: null }
@@ -235,6 +235,7 @@ export default defineComponent({
     const removeReply = documentId => {
       replies.items = replies.items.filter(r => r.documentId !== documentId)
       state.replyCount = Math.max(0, state.replyCount - 1)
+      thread?.changed?.()
     }
 
     const openReport = () => {

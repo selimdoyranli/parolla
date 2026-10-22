@@ -1,31 +1,88 @@
 <template lang="pug">
 .page.community-post-page
   Loading(v-if="isLoading" type="spinner")
-  // Task 9 builds the post detail UI
-  Empty(v-else-if="!post" image="search" :description="$t('community.error.notFound')")
+  Empty(v-else-if="isLocked" image="network" :description="$t('community.detail.feedLocked')")
+  Empty(v-else-if="isNotFound" image="search" :description="$t('community.error.notFound')")
+  Empty(v-else-if="!post" image="error" :description="$t('community.error.generic')")
+    Button(@click="load") {{ $t('error.tryAgain') }}
+
+  .community-post-page__body(v-else)
+    CommunityPostCard(:post="post" @report="isReportOpen = true" @deleted="handleDeleted")
+    h4.community-post-page__comments-title {{ $t('comments.filter.comments') }}
+      span ({{ post.commentCount }})
+    CommentThreadView(inline :post-id="post.documentId" :target-comment-id="targetCommentId" @changed="refreshCommentCount")
+
+    MountingPortal(mount-to="body" append)
+      ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.POST" :additional="reportAdditional" @closed="isReportOpen = false")
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, useRoute, useStore } from '@nuxtjs/composition-api'
-import { Empty, Loading } from 'vant'
+import { defineComponent, ref, computed, watch, onMounted, useContext, useStore, useMeta, useRouter } from '@nuxtjs/composition-api'
+import { Button, Empty, Loading } from 'vant'
+import { reportTypeEnum } from '@/enums/report-type.enum'
 
 export default defineComponent({
-  components: { Empty, Loading },
+  components: { Button, Empty, Loading },
   layout: 'Default/Default.layout',
   setup() {
     const store = useStore()
-    const route = useRoute()
+    const router = useRouter()
+    const { route, i18n, app } = useContext()
+
     const post = ref(null)
     const isLoading = ref(true)
+    const isNotFound = ref(false)
+    const isLocked = ref(false)
+    const isReportOpen = ref(false)
 
-    onMounted(async () => {
-      const { data } = await store.dispatch('community/fetchPost', { documentId: route.value.params.postId })
+    const targetCommentId = computed(() => route.value.query.comment || null)
+    const reportAdditional = computed(() => JSON.stringify({ postDocumentId: post.value?.documentId }))
+
+    const load = async () => {
+      isLoading.value = true
+      isNotFound.value = false
+      isLocked.value = false
+
+      const { data, error } = await store.dispatch('community/fetchPost', { documentId: route.value.params.postId })
 
       post.value = data
+      isNotFound.value = error?.code === 404
+      isLocked.value = error?.code === 403
       isLoading.value = false
-    })
+    }
 
-    return { post, isLoading }
-  }
+    // the card's comment counter follows comments added or removed below it
+    const refreshCommentCount = async () => {
+      const { data } = await store.dispatch('community/fetchPost', { documentId: route.value.params.postId })
+
+      if (data && post.value) post.value = { ...post.value, commentCount: data.commentCount }
+    }
+
+    const handleDeleted = () => router.push(app.localePath({ name: 'Community-Community-slug', params: { slug: route.value.params.slug } }))
+
+    watch(() => route.value.params.postId, load)
+    onMounted(load)
+
+    useMeta(() => ({
+      title: post.value ? `${post.value.community.name} - ${post.value.room.title}` : i18n.t('seo.main.title')
+    }))
+
+    return {
+      post,
+      isLoading,
+      isNotFound,
+      isLocked,
+      isReportOpen,
+      reportTypeEnum,
+      reportAdditional,
+      targetCommentId,
+      load,
+      refreshCommentCount,
+      handleDeleted
+    }
+  },
+  head: {}
 })
 </script>
+
+<style lang="scss" src="./CommunityPost.page.scss"></style>
