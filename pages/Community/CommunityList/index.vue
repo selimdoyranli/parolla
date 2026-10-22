@@ -55,8 +55,18 @@
 </template>
 
 <script>
-import { defineComponent, useContext, useRouter, useStore, ref, computed, watch, onMounted, useMeta } from '@nuxtjs/composition-api'
-import { useDebounceFn } from '@vueuse/core'
+import {
+  defineComponent,
+  useContext,
+  useRouter,
+  useStore,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  useMeta
+} from '@nuxtjs/composition-api'
 import { Button, Empty, Search } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 
@@ -158,11 +168,18 @@ export default defineComponent({
       const next = { ...route.value.query, ...query }
 
       Object.keys(next).forEach(key => !next[key] && delete next[key])
-      router.replace(localePath({ name: 'Community-CommunityList', query: next }))
+      // same query again (e.g. a repeated tag click) rejects with NavigationDuplicated
+      router.replace(localePath({ name: 'Community-CommunityList', query: next })).catch(() => {})
     }
 
-    const applySearch = useDebounceFn(() => goto({ search: keyword.value.trim() }), 300)
-    const handleSearchInput = () => applySearch()
+    // plain timer so a pending search can be dropped on unmount instead of navigating back here
+    let searchTimer = null
+    const handleSearchInput = () => {
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => goto({ search: keyword.value.trim() }), 300)
+    }
+
+    onBeforeUnmount(() => clearTimeout(searchTimer))
     const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag })
 
     const sortOptions = computed(() => SORTS.map(key => ({ key, label: i18n.t(`community.list.sort.${key}`) })))
