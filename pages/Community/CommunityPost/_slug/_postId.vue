@@ -10,7 +10,13 @@
     CommunityPostCard(:post="post" @report="isReportOpen = true" @deleted="handleDeleted")
     h4.community-post-page__comments-title {{ $t('comments.filter.comments') }}
       span ({{ post.commentCount }})
-    CommentThreadView(inline :post-id="post.documentId" :target-comment-id="targetCommentId" @changed="refreshCommentCount")
+    CommentThreadView(
+      inline
+      :post-id="post.documentId"
+      :community-slug="post.community.slug"
+      :target-comment-id="targetCommentId"
+      @changed="refreshCommentCount"
+    )
 
     MountingPortal(mount-to="body" append)
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.POST" :additional="reportAdditional" @closed="isReportOpen = false")

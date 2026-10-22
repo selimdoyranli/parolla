@@ -159,8 +159,14 @@ export default defineComponent({
     })
 
     const isOwn = computed(() => $auth.loggedIn && props.comment.user && props.comment.user.id === $auth.user?.id)
+    // post comments carry their post so moderators can find the thread
     const reportAdditional = computed(() =>
-      JSON.stringify({ commentDocumentId: props.comment.documentId, roomId: props.roomId, content: props.comment.content })
+      JSON.stringify({
+        commentDocumentId: props.comment.documentId,
+        roomId: props.roomId,
+        content: props.comment.content,
+        ...(thread?.postId?.value && { postDocumentId: thread.postId.value, communitySlug: thread.communitySlug?.value ?? null })
+      })
     )
 
     const openPlayer = user => {

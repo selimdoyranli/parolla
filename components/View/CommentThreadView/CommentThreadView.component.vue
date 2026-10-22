@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { defineComponent, useStore, ref, reactive, computed, watch, onMounted, provide, nextTick } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, ref, reactive, computed, watch, onMounted, provide, nextTick, toRef } from '@nuxtjs/composition-api'
 import { List, Empty } from 'vant'
 
 export default defineComponent({
@@ -52,6 +52,8 @@ export default defineComponent({
     roomId: { type: Number, default: null },
     // documentId of a community post
     postId: { type: String, default: null },
+    // slug of the post's community, for comment reports
+    communitySlug: { type: String, default: null },
     targetCommentId: { type: String, default: null },
     // composer inline at the end of the list instead of pinned to the scroll area bottom
     inline: { type: Boolean, default: false }
@@ -156,7 +158,15 @@ export default defineComponent({
     // RoomCommentItem calls this after removing a reply
     const changed = () => emit('changed')
 
-    provide('commentThread', { replyTarget, lastReply, startReply, cancelReply, changed })
+    provide('commentThread', {
+      replyTarget,
+      lastReply,
+      startReply,
+      cancelReply,
+      changed,
+      postId: toRef(props, 'postId'),
+      communitySlug: toRef(props, 'communitySlug')
+    })
 
     const handleRootDeleted = (documentId, replyCount) => {
       // a root with live replies stays as a placeholder, like the server list
