@@ -139,7 +139,7 @@ export default defineComponent({
     })
 
     const isReply = computed(() => Boolean(props.comment.parentDocumentId))
-    // reply state lives in RoomReviewView, which owns the single bottom composer
+    // reply state lives in CommentThreadView, which owns the single bottom composer
     const thread = inject('commentThread', null)
     const isReplyTarget = computed(() => thread?.replyTarget.value?.parent === props.comment.documentId)
     const isOpenMore = ref(false)

@@ -35,17 +35,18 @@
       @on-select-option="option => (filter = option.value)"
     )
 
-  template(v-if="filter === 'comments'")
-    CommentThreadView(
-      :key="room.id"
-      v-if="room.id"
-      :room-id="room.id"
-      :target-comment-id="targetCommentId"
-      :inline="commentsOnly"
-      @posted="store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')"
-    )
+  //- v-show: switching to Puanlar and back keeps the loaded comments, scroll and pinned thread
+  CommentThreadView(
+    :key="room.id"
+    v-if="room.id"
+    v-show="filter === 'comments'"
+    :room-id="room.id"
+    :target-comment-id="targetCommentId"
+    :inline="commentsOnly"
+    @posted="store.commit('creator/INCREMENT_ROOM_REVIEW_COUNT')"
+  )
 
-  template(v-else)
+  template(v-if="filter === 'ratings'")
     List(
       v-model="ratingList.loading"
       :finished="ratingList.finished"
@@ -263,7 +264,6 @@ export default defineComponent({
       filterOptions,
       ratingList,
       ratings,
-      pinned,
       loadRatings,
       submitRating,
       handleRateHover,
