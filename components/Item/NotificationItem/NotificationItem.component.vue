@@ -7,7 +7,7 @@
   template(v-if="isAnnouncement")
     img.notification-item__avatar.notification-item__avatar--app(src="/img/core/logo.webp" :alt="APP_NAME" width="40" height="40")
   PlayerAvatar.notification-item__avatar(v-else-if="item.actor" :user="item.actor" :size="40")
-  //- community notices without an actor (approved, promoted, kicked, hidden)
+  //- community notices without an actor: community_hidden is a system notice (spec 2.8)
   span.notification-item__avatar.notification-item__avatar--icon(v-else-if="isCommunity")
     AppIcon(name="tabler:users" :width="22" :height="22")
   .notification-item__body
@@ -17,9 +17,9 @@
       p.notification-item__announcement {{ item.meta && item.meta.content }}
     template(v-else)
       p.notification-item__text
-        strong {{ actorLabel }}
+        strong(v-if="actorLabel") {{ actorLabel }}
         Tag.notification-item__owner(v-if="item.isQuizOwnerActor" round) {{ $t('comments.quizOwner') }}
-        | {{ ' ' + text }}
+        | {{ actorLabel ? ' ' + text : text }}
       p.notification-item__excerpt(v-if="item.meta && item.meta.excerpt") “{{ item.meta.excerpt }}”
     small.notification-item__meta
       span(v-if="item.room") {{ item.room.title }} ·

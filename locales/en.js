@@ -1111,9 +1111,9 @@ export default {
       comment_liked: '{actor} liked your comment',
       reply_liked: '{actor} liked your reply',
       community_join_requested: '{actor} wants to join {community}',
-      community_join_approved: 'Your request to join {community} was approved',
-      community_member_promoted: 'You were made a moderator of {community}',
-      community_member_kicked: 'You were removed from {community}',
+      community_join_approved: '{actor} approved your request to join {community}',
+      community_member_promoted: '{actor} made you a moderator of {community}',
+      community_member_kicked: '{actor} removed you from {community}',
       community_hidden: 'Your community {community} was hidden by moderation'
     }
   },

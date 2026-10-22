@@ -1128,9 +1128,9 @@ export default {
       comment_liked: '{actor} yorumunu beğendi',
       reply_liked: '{actor} yanıtını beğendi',
       community_join_requested: '{actor} {community} topluluğuna katılmak istiyor',
-      community_join_approved: '{community} topluluğuna katılma isteğin onaylandı',
-      community_member_promoted: '{community} topluluğunda moderatör yapıldın',
-      community_member_kicked: '{community} topluluğundan çıkarıldın',
+      community_join_approved: '{actor} {community} topluluğuna katılma isteğini onayladı',
+      community_member_promoted: '{actor} seni {community} topluluğunda moderatör yaptı',
+      community_member_kicked: '{actor} seni {community} topluluğundan çıkardı',
       community_hidden: '{community} topluluğun moderasyon nedeniyle gizlendi'
     }
   },
