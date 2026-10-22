@@ -1173,13 +1173,11 @@ export default {
       deleted: 'Post deleted.',
       report: 'Report post',
       likes: '{count} likes',
-      comments: '{count} comments',
-      sharedQuiz: '{user} shared a quiz'
+      comments: '{count} comments'
     },
     detail: {
       aboutTitle: 'About',
       createdAt: 'Founded',
-      createdBy: 'Created by',
       memberCountLabel: 'Members',
       postCountLabel: 'Posts',
       visibility: {

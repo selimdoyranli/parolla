@@ -47,15 +47,8 @@ Dialog.dialog.dialog--scene.play-intro(
         AppIcon(name="tabler:star" :width="16" :height="16")
         span {{ $t('playIntro.rate') }}
 
-    //- label over username, both right of the avatar; anonymous rooms get the anon avatar and no player dialog
     section.play-intro__creator(v-if="isCreator")
-      PlayerAvatar(:user="creatorUser" :size="44" :open-player-dialog-on-click="Boolean(creatorUser)")
-        template(#append)
-          .play-intro__creator-meta
-            small {{ $t('playIntro.creator') }}
-            strong(v-if="creatorUser") {{ creatorUser.username }}
-              span.gm-username-extra(v-if="creatorUser.role?.name === 'GM'") &nbsp;(GM)
-            strong(v-else) {{ $t('playIntro.anon') }}
+      CreatorByline(:user="creatorUser")
 
     hr.play-intro__divider(v-if="isCreator")
 

@@ -16,7 +16,13 @@ NuxtLink.community-card(:to="localePath({ name: 'Community-Community-slug', para
       )
 
     .community-card__tags(v-if="community.tags && community.tags.length")
-      span.community-card__tag(v-for="tag in community.tags.slice(0, 3)" :key="tag") {{ tag }}
+      //- a tag filters the list instead of opening the community
+      button.community-card__tag(
+        v-for="tag in community.tags.slice(0, 3)"
+        :key="tag"
+        type="button"
+        @click.prevent.stop="handleTagClick(tag)"
+      ) \#{{ tag }}
       span.community-card__tag(v-if="community.tags.length > 3") +{{ community.tags.length - 3 }}
 
     .community-card__stats
@@ -29,7 +35,7 @@ NuxtLink.community-card(:to="localePath({ name: 'Community-Community-slug', para
 </template>
 
 <script>
-import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useContext, useRouter } from '@nuxtjs/composition-api'
 import { communityViewerRoleEnum } from '@/enums/community.enum'
 
 const VISIBILITY_ICON = { public: 'tabler:world', restricted: 'tabler:user-check', private: 'tabler:lock' }
@@ -39,8 +45,11 @@ export default defineComponent({
   props: {
     community: { type: Object, required: true }
   },
-  setup(props) {
-    const { i18n } = useContext()
+  // tag-click: tag picked on the card; without a listener the card opens the list filtered by it
+  emits: ['tag-click'],
+  setup(props, { emit, listeners }) {
+    const { i18n, localePath } = useContext()
+    const router = useRouter()
 
     // QuizCover only needs a room-like object for the photo and the placeholder palette
     const coverRoom = computed(() => ({
@@ -64,7 +73,10 @@ export default defineComponent({
       return null
     })
 
-    return { coverRoom, visibilityIcon, roleBadge }
+    const handleTagClick = tag =>
+      listeners['tag-click'] ? emit('tag-click', tag) : router.push(localePath({ name: 'Community-CommunityList', query: { tag } }))
+
+    return { coverRoom, visibilityIcon, roleBadge, handleTagClick }
   }
 })
 </script>

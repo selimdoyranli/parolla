@@ -67,12 +67,19 @@
     gap: 6px;
   }
 
+  // same look as the quizzes page's tags (RoomFeaturedTagList)
   &__tag {
     padding: 2px 8px;
     color: var(--color-text-02);
-    font-size: 12px;
-    background: var(--color-ui-01);
-    border-radius: 999px;
+    font-size: var(--font-size-text-10);
+    background-color: transparent;
+    border: 1px solid light-dark(#ddd, #333);
+    border-radius: var(--border-radius-01);
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   &__stats {

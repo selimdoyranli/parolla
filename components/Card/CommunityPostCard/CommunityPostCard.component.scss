@@ -1,59 +1,142 @@
 .community-post-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  &__quote {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 4px 0 4px 12px;
-    border-inline-start: 3px solid var(--color-brand-02);
-  }
+  gap: 14px;
+  padding: 16px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 20px;
 
   &__head {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
   }
 
+  &__byline {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.3;
+  }
+
+  &__author {
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-size: var(--font-size-text-9);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   &__time {
+    width: fit-content;
     color: var(--color-text-03);
-    font-size: 12px;
+    font-size: var(--font-size-text-10);
   }
 
   &__menu {
-    margin-inline-start: auto;
+    align-self: flex-start;
   }
 
   &__note {
     margin: 0;
     color: var(--color-text-01);
-    font-size: 14px;
+    font-size: var(--font-size-text-9);
     white-space: pre-line;
     overflow-wrap: anywhere;
+  }
 
-    &--default {
-      color: var(--color-text-03);
+  &__quiz {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    padding: 12px;
+    color: inherit;
+    text-decoration: none !important;
+    background: var(--color-ui-03);
+    border-radius: 16px;
+    transition: opacity 0.1s var(--motion-01);
+
+    &:hover {
+      opacity: 0.9;
     }
+  }
+
+  &__thumb.quiz-cover {
+    flex-shrink: 0;
+    width: 104px;
+    height: 104px;
+    border-radius: 12px;
+    aspect-ratio: 1;
+
+    @include media-breakpoint-up(tablet) {
+      width: 128px;
+      height: 128px;
+    }
+  }
+
+  &__quiz-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    min-width: 0;
+    padding-inline-end: 22px; // clear of the external-link icon
+  }
+
+  &__quiz-title {
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: var(--font-size-text-7);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__external {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: var(--color-text-03);
   }
 
   &__footer {
     display: flex;
-    gap: 16px;
+    gap: 10px;
   }
 
-  &__action {
+  &__pill {
     display: inline-flex;
-    gap: 6px;
+    gap: 8px;
     align-items: center;
-    padding: 0;
-    color: var(--color-text-03);
-    font-size: 14px;
-    text-decoration: none;
-    background: none;
+    padding: 8px 16px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    text-decoration: none !important;
+    background: var(--color-ui-03);
     border: 0;
+    border-radius: 999px;
     cursor: pointer;
+
+    &:hover {
+      opacity: 0.85;
+    }
 
     &.is-active {
       color: var(--color-danger-01);

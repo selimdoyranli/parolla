@@ -16,9 +16,12 @@
       Search.community-list-page__search(
         v-model="keyword"
         :placeholder="$t('community.list.search')"
-        :clearable="true"
+        :clearable="false"
         @input="handleSearchInput"
       )
+        template(#right-icon)
+          //- own clear button like RoomList: vant 2's clear icon only listens to touchstart
+          ActionButton(v-if="keyword" icon="tabler:x" :aria-label="$t('general.clear')" @click="clearSearch")
       FilterDropdown(
         :trigger-title="$t(`community.list.sort.${sort}`)"
         :selected="selectedSortOption"
@@ -44,7 +47,7 @@
         .community-list-page__ad(:key="cell.key" v-if="cell.type === 'ad'")
           small.community-list-page__ad-label {{ $t('general.ad') }}
           AppAd(lazy format="rectangle" :data-ad-slot="6048083070")
-        CommunityCard(v-else :key="cell.key" :community="cell.community")
+        CommunityCard(v-else :key="cell.key" :community="cell.community" @tag-click="handleTagClick")
 
     InfiniteLoading(v-if="items.length && hasMore" :identifier="infiniteId" @infinite="handleInfinite")
       template(#no-more) {{ $t('community.list.noMore') }}
@@ -93,7 +96,9 @@ export default defineComponent({
     const sort = computed(() => (SORTS.includes(route.value.query.sort) ? route.value.query.sort : 'recent'))
     const activeTag = computed(() => route.value.query.tag || '')
     const search = computed(() => route.value.query.search || '')
-    const keyword = ref(search.value)
+    // the field mirrors the active tag as "#tag" (like the quizzes page), else the typed search
+    const fieldText = () => (activeTag.value ? `#${activeTag.value}` : search.value)
+    const keyword = ref(fieldText())
 
     const listKey = () => [sort.value, activeTag.value, search.value, i18n.locale].join('|')
 
@@ -176,11 +181,25 @@ export default defineComponent({
     let searchTimer = null
     const handleSearchInput = () => {
       clearTimeout(searchTimer)
-      searchTimer = setTimeout(() => goto({ search: keyword.value.trim() }), 300)
+      searchTimer = setTimeout(() => {
+        const text = keyword.value.trim()
+
+        // still the tag label: nothing changed
+        if (activeTag.value && text === `#${activeTag.value}`) return
+
+        // "#tag" filters by tag; anything else (including an edited tag label) is a plain search
+        goto(text.startsWith('#') ? { tag: text.slice(1), search: '' } : { tag: '', search: text })
+      }, 300)
+    }
+
+    const clearSearch = () => {
+      clearTimeout(searchTimer)
+      keyword.value = ''
+      goto({ tag: '', search: '' })
     }
 
     onBeforeUnmount(() => clearTimeout(searchTimer))
-    const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag })
+    const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag, search: '' })
 
     const sortOptions = computed(() => SORTS.map(key => ({ key, label: i18n.t(`community.list.sort.${key}`) })))
     const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
@@ -224,7 +243,7 @@ export default defineComponent({
 
         if (listKey() === listMemory.key && listMemory.items === items.value) return
 
-        keyword.value = search.value
+        keyword.value = fieldText()
         reload()
       }
     )
@@ -266,6 +285,7 @@ export default defineComponent({
       sortOptions,
       selectedSortOption,
       handleSearchInput,
+      clearSearch,
       handleTagClick,
       handleSortSelect,
       handleInfinite,

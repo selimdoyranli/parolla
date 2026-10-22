@@ -1,30 +1,53 @@
 <template lang="pug">
 article.community-post-card
-  .community-post-card__quote
-    .community-post-card__head
-      PlayerAvatar(with-username open-player-dialog-on-click :size="28" :user="post.author")
+  .community-post-card__head
+    PlayerAvatar(open-player-dialog-on-click :size="40" :user="post.author")
+    .community-post-card__byline
+      strong.community-post-card__author {{ post.author?.username }}
       NuxtLink.community-post-card__time(:to="postLink") {{ relativeTime }}
 
-      .community-post-card__menu.dropdown(v-if="hasMenu")
-        DropdownMenu(withDropdownCloser direction="left" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
-          template(#trigger)
-            Button.community-post-card__menu-trigger(icon="ellipsis" size="mini" round :aria-label="$t('community.detail.menu.label')")
-          template(#body)
-            nav.community-post-card__menu-nav
-              .community-post-card__menu-item(v-if="canReport" dropdown-closer @click="$emit('report', post)")
-                AppIcon(name="tabler:flag" :width="18" :height="18")
-                span {{ $t('community.post.report') }}
-              .community-post-card__menu-item.is-danger(v-if="post.canDelete" dropdown-closer @click="handleDelete")
-                AppIcon(name="tabler:trash" :width="18" :height="18")
-                span {{ $t('community.post.delete') }}
+    .community-post-card__menu.dropdown(v-if="hasMenu")
+      DropdownMenu(withDropdownCloser direction="left" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
+        template(#trigger)
+          Button.community-post-card__menu-trigger(icon="ellipsis" size="mini" round :aria-label="$t('community.detail.menu.label')")
+        template(#body)
+          nav.community-post-card__menu-nav
+            .community-post-card__menu-item(v-if="canReport" dropdown-closer @click="$emit('report', post)")
+              AppIcon(name="tabler:flag" :width="18" :height="18")
+              span {{ $t('community.post.report') }}
+            .community-post-card__menu-item.is-danger(v-if="post.canDelete" dropdown-closer @click="handleDelete")
+              AppIcon(name="tabler:trash" :width="18" :height="18")
+              span {{ $t('community.post.delete') }}
 
-    p.community-post-card__note(v-if="post.note") {{ post.note }}
-    p.community-post-card__note.community-post-card__note--default(v-else) {{ sharedText }}
+  p.community-post-card__note(v-if="post.note") {{ post.note }}
 
-  QuizCard(hide-owner-actions :room="post.room" :viewer="$auth.user")
+  //- the shared quiz: same link and stat icons as QuizCard
+  NuxtLink.community-post-card__quiz(
+    :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
+    :title="room.title"
+  )
+    QuizCover.community-post-card__thumb(:room="room")
+    .community-post-card__quiz-body
+      QuizTypeLabel(:room="room")
+      h3.community-post-card__quiz-title {{ room.title }}
+      CreatorByline(:user="room.isAnon ? null : room.user" :size="32")
+      .community-post-card__stats
+        span.community-post-card__stat
+          AppIcon(name="tabler:player-play-filled" :width="14" :height="14")
+          | {{ formatCount(room.viewCount) }}
+        span.community-post-card__stat(v-if="room.questionCount")
+          AppIcon(name="tabler:help-square-rounded" :width="14" :height="14")
+          | {{ room.questionCount }}
+        span.community-post-card__stat
+          AppIcon(name="tabler:message-2" :width="14" :height="14")
+          | {{ formatCount(room.reviewCount) }}
+        span.community-post-card__stat(v-if="room.rating > 0")
+          AppIcon(name="tabler:star-filled" :width="14" :height="14")
+          | {{ Number(room.rating).toFixed(1) }}
+    AppIcon.community-post-card__external(name="tabler:external-link" :width="18" :height="18")
 
   .community-post-card__footer
-    button.community-post-card__action(
+    button.community-post-card__pill(
       type="button"
       :class="{ 'is-active': liked }"
       :aria-pressed="liked"
@@ -33,7 +56,7 @@ article.community-post-card
     )
       AppIcon(:name="liked ? 'tabler:heart-filled' : 'tabler:heart'" :width="18" :height="18")
       span {{ likeCount }}
-    NuxtLink.community-post-card__action(:to="postLink" :aria-label="$t('community.post.comments', { count: post.commentCount })")
+    NuxtLink.community-post-card__pill(:to="postLink" :aria-label="$t('community.post.comments', { count: post.commentCount })")
       AppIcon(name="tabler:message-2" :width="18" :height="18")
       span {{ post.commentCount }}
 </template>
@@ -93,7 +116,17 @@ export default defineComponent({
       return formatter.format(Math.round(seconds / size), unit)
     })
 
-    const sharedText = computed(() => i18n.t('community.post.sharedQuiz', { user: props.post.author?.username }))
+    const room = computed(() => props.post.room || {})
+
+    const formatCount = count => {
+      const n = Number(count) || 0
+
+      if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+
+      if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}K`
+
+      return String(n)
+    }
 
     const canReport = computed(() => $auth.loggedIn && !props.post.canDelete)
     const hasMenu = computed(() => canReport.value || props.post.canDelete)
@@ -150,7 +183,7 @@ export default defineComponent({
         })
         .catch(() => {})
 
-    return { isMenuOpen, liked, likeCount, postLink, relativeTime, canReport, hasMenu, sharedText, handleLike, handleDelete }
+    return { isMenuOpen, liked, likeCount, postLink, relativeTime, canReport, hasMenu, room, formatCount, handleLike, handleDelete }
   }
 })
 </script>

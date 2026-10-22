@@ -1191,13 +1191,11 @@ export default {
       deleted: 'Gönderi silindi.',
       report: 'Gönderiyi raporla',
       likes: '{count} beğeni',
-      comments: '{count} yorum',
-      sharedQuiz: '{user} bir quiz paylaştı'
+      comments: '{count} yorum'
     },
     detail: {
       aboutTitle: 'Hakkında',
       createdAt: 'Kuruluş',
-      createdBy: 'Kuran',
       memberCountLabel: 'Üye',
       postCountLabel: 'Gönderi',
       visibility: {

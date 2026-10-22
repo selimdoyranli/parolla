@@ -1,26 +1,19 @@
 .community-header {
   position: relative;
+  width: calc(100% - (var(--base-p-x) * 2));
+  max-width: 720px;
+  margin: var(--base-m-y) auto 0;
 
-  &__cover {
-    position: relative;
-    aspect-ratio: 3 / 1;
-    overflow: hidden;
-    background: var(--color-ui-01);
-    border-radius: 0 0 16px 16px;
-
-    &--empty {
-      background: linear-gradient(135deg, var(--color-brand-02), var(--color-warning-01));
-    }
-
-    @include media-breakpoint-up(tablet) {
-      aspect-ratio: 4 / 1;
-    }
+  // compound selector: outranks QuizCover's own aspect ratio wherever its css lands
+  &__cover.quiz-cover {
+    max-height: 240px; // a banner on wide screens, 16:9 on phones
+    border-radius: 16px;
   }
 
-  &__cover-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  &__shade {
+    position: absolute;
+    background: linear-gradient(to top, rgb(0 0 0 / 75%), rgb(0 0 0 / 20%) 55%, transparent);
+    inset: 0;
   }
 
   &__actions {
@@ -31,17 +24,18 @@
     gap: 8px;
   }
 
-  &__info {
-    position: relative; // paint over the cover it overlaps
+  &__identity {
+    position: absolute;
     display: flex;
-    gap: 14px;
-    align-items: flex-end;
-    margin-top: -32px;
-    padding: 0 16px;
+    gap: 12px;
+    align-items: center;
+    color: #fff;
+    inset-block-end: 14px;
+    inset-inline: 14px;
   }
 
   &__avatar {
-    border: 4px solid var(--color-ui-04);
+    border: 3px solid rgb(255 255 255 / 90%);
   }
 
   &__text {
@@ -50,8 +44,6 @@
     flex-direction: column;
     gap: 4px;
     min-width: 0;
-    padding-top: 36px; // sit below the cover the avatar overlaps
-    padding-bottom: 4px;
   }
 
   &__title-row {
@@ -63,32 +55,42 @@
   &__name {
     margin: 0;
     overflow: hidden;
-    font-size: 20px;
+    color: #fff;
+    font-size: var(--font-size-text-6);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   &__visibility {
     flex-shrink: 0;
-    color: var(--color-text-03);
+    opacity: 0.75;
   }
 
-  &__join {
-    align-self: flex-start;
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
   }
 
   &__about {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
-    padding: 0 16px;
+    gap: 12px;
+    padding: 16px 4px 4px;
   }
 
   &__description {
     margin: 0;
     color: var(--color-text-02);
-    font-size: 14px;
+    font-size: var(--font-size-text-9);
     white-space: pre-line;
   }
 
@@ -99,11 +101,16 @@
   }
 
   &__tag {
-    padding: 2px 10px;
+    padding: 4px 10px;
     color: var(--color-text-02);
-    font-size: 12px;
-    background: var(--color-ui-01);
-    border-radius: 999px;
+    font-size: var(--font-size-text-10);
+    text-decoration: none !important;
+    border: 1px solid light-dark(#ddd, #333);
+    border-radius: var(--border-radius-01);
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   &__meta {
@@ -120,17 +127,13 @@
     align-items: center;
   }
 
-  &__stats {
+  &__footer {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
-    color: var(--color-text-03);
-    font-size: 13px;
-  }
-
-  &__stat {
-    display: inline-flex;
-    gap: 4px;
+    gap: 12px;
     align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border-01);
   }
 }
