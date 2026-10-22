@@ -848,7 +848,8 @@ export default {
         community: {
           label: 'Topluluk',
           none: 'Topluluk yok',
-          notMemberWarning: 'Bu topluluğa artık üye değilsin, quizin yine de bağlı kalır ama topluluğu değiştirirsen geri alamazsın.'
+          notMemberWarning: 'Bu topluluğa artık üye değilsin, quizin yine de bağlı kalır ama topluluğu değiştirirsen geri alamazsın.',
+          privateListedHint: 'Bu topluluk gizli ama quizin herkese açık listelendiği için genel quiz listesinde de görünecek.'
         },
         roomTitle: {
           label: 'Quiz başlığı',
@@ -1175,7 +1176,8 @@ export default {
         restricted: 'Onaylı',
         restrictedDescription: 'Herkes görebilir, katılmak için onay gerekir.',
         private: 'Gizli',
-        privateDescription: 'Yalnızca üyeler quizleri ve üyeleri görebilir, katılmak için onay gerekir.'
+        privateDescription:
+          'Topluluk akışını ve üye listesini yalnızca üyeler görebilir, katılmak için onay gerekir. Quizler kendi listeleme ayarına göre görünür.'
       },
       postPermission: {
         everyone: 'Tüm üyeler',

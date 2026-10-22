@@ -13,6 +13,10 @@
   p.creator-mode-compose-form__infoHint(v-if="isNotMember")
     | {{ $t('form.creatorModeCompose.room.community.notMemberWarning') }}
 
+  //- private only gates the community feed; the quiz's own listing still applies
+  p.creator-mode-compose-form__infoHint(v-if="isPrivateListed")
+    | {{ $t('form.creatorModeCompose.room.community.privateListedHint') }}
+
   Popup(v-model="isOpen" position="bottom" round)
     Picker(show-toolbar :columns="columns" :default-index="defaultIndex" @confirm="onConfirm" @cancel="isOpen = false")
 </template>
@@ -20,6 +24,7 @@
 <script>
 import { defineComponent, computed, ref, useStore, useContext } from '@nuxtjs/composition-api'
 import { Field, Popup, Picker } from 'vant'
+import { communityVisibilityEnum } from '@/enums/community.enum'
 
 export default defineComponent({
   name: 'RoomCommunitySelect',
@@ -36,6 +41,10 @@ export default defineComponent({
     room: {
       type: Object,
       default: null
+    },
+    isListed: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { emit }) {
@@ -67,14 +76,17 @@ export default defineComponent({
       )
     )
     const selectedName = computed(() => options.value[defaultIndex.value].text)
-    const isNotMember = computed(() => !!props.value && !postable.value.some(c => c.documentId === props.value))
+    const owned = computed(() => store.getters['auth/ownedCommunities'] || [])
+    const isNotMember = computed(() => !!props.value && ![...postable.value, ...owned.value].some(c => c.documentId === props.value))
+    const selected = computed(() => [...postable.value, linked.value].find(c => c && c.documentId === props.value))
+    const isPrivateListed = computed(() => props.isListed && selected.value?.visibility === communityVisibilityEnum.PRIVATE)
 
     const onConfirm = (_, index) => {
       emit('input', options.value[index].value)
       isOpen.value = false
     }
 
-    return { isOpen, isVisible, columns, defaultIndex, selectedName, isNotMember, onConfirm }
+    return { isOpen, isVisible, columns, defaultIndex, selectedName, isNotMember, isPrivateListed, onConfirm }
   }
 })
 </script>

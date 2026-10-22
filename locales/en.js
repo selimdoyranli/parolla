@@ -845,7 +845,8 @@ export default {
           label: 'Community',
           none: 'No community',
           notMemberWarning:
-            "You're no longer a member of this community. Your quiz stays linked, but if you change the community you can't undo it."
+            "You're no longer a member of this community. Your quiz stays linked, but if you change the community you can't undo it.",
+          privateListedHint: 'This community is private, but your quiz is listed publicly, so it will still appear in the public quiz list.'
         },
         roomTitle: {
           label: 'Quiz title',
@@ -1158,7 +1159,8 @@ export default {
         restricted: 'Approval required',
         restrictedDescription: 'Anyone can see it, joining needs approval.',
         private: 'Private',
-        privateDescription: 'Only members can see quizzes and members, joining needs approval.'
+        privateDescription:
+          'Only members can see the community feed and member list, joining needs approval. Quizzes keep their own listing setting.'
       },
       postPermission: {
         everyone: 'All members',

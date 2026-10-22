@@ -41,7 +41,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     @cover-photo-remove="handleCoverPhotoRemove"
   )
 
-  RoomCommunitySelect(v-model="form.community" :room="room" :disabled="form.isBusy")
+  RoomCommunitySelect(v-model="form.community" :room="room" :is-listed="form.isListed" :disabled="form.isBusy")
 
   ChoiceList(
     v-if="form.quizType === quizTypeEnum.CHOICES"
