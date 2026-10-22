@@ -1,0 +1,10 @@
+.community-join-button {
+  min-width: 96px;
+  font-weight: 700;
+
+  &.van-button--warning {
+    color: #1b1b1b;
+    background: var(--color-warning-01);
+    border-color: var(--color-warning-01);
+  }
+}

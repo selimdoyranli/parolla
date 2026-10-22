@@ -1,0 +1,50 @@
+.community-about {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 16px;
+
+  &__title {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 14px;
+    white-space: pre-line;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__tag {
+    padding: 2px 10px;
+    color: var(--color-text-02);
+    font-size: 12px;
+    background: var(--color-ui-01);
+    border-radius: 999px;
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    small {
+      color: var(--color-text-03);
+    }
+  }
+}
