@@ -1,5 +1,38 @@
 # Changelog
 
+## v3.6.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.5.0...v3.6.0)
+
+
+### 🚀 Enhancements
+
+  - **rating:** Whole-star input, hover preview, confirm before submitting ([a7e36b5](https://github.com/selimdoyranli/parolla/commit/a7e36b5))
+  - **geoguess:** Add GeoGuess mode — Street View location guessing ([09f5f60](https://github.com/selimdoyranli/parolla/commit/09f5f60))
+  - **geoguess:** Glass HUD over the stage, fullscreen toggle, country on reveal ([0be991b](https://github.com/selimdoyranli/parolla/commit/0be991b))
+  - **geoguess:** Immersive animated fullscreen with floating glass header ([23a3c55](https://github.com/selimdoyranli/parolla/commit/23a3c55))
+  - **geoguess:** Intro cover, round timer, mobile mini map, labelled pins ([649cae5](https://github.com/selimdoyranli/parolla/commit/649cae5))
+  - **geoguess:** Open the how-to-play section by default on the intro ([69d2195](https://github.com/selimdoyranli/parolla/commit/69d2195))
+  - **quiz-list:** Keep scroll on return, quiz type filter, search and card polish ([6089c97](https://github.com/selimdoyranli/parolla/commit/6089c97))
+
+### 🩹 Fixes
+
+  - **ads:** Rectangle card ad, cap list ads at 4, hide unfilled slots ([628afba](https://github.com/selimdoyranli/parolla/commit/628afba))
+  - **geoguess:** Mask-based fullscreen transition, softer transition sounds ([5b97a8c](https://github.com/selimdoyranli/parolla/commit/5b97a8c))
+  - **geoguess:** Keep header dialogs centered in immersive fullscreen ([7ce9f16](https://github.com/selimdoyranli/parolla/commit/7ce9f16))
+  - **geoguess:** Blank game screen after the intro ad fills ([e904bc6](https://github.com/selimdoyranli/parolla/commit/e904bc6))
+  - **geoguess:** Crop the Street View address card's shadow too ([2baf1c2](https://github.com/selimdoyranli/parolla/commit/2baf1c2))
+
+### 🏡 Chore
+
+  - **geoguess:** Drop the expand icon on the mobile mini map ([fcc976b](https://github.com/selimdoyranli/parolla/commit/fcc976b))
+  - **geoguess:** Shorter intro card copy, TR head label ([ef8bd05](https://github.com/selimdoyranli/parolla/commit/ef8bd05))
+  - **geoguess:** English head label for the intro card ([2d378dd](https://github.com/selimdoyranli/parolla/commit/2d378dd))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.5.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.4.1...v3.5.0)
