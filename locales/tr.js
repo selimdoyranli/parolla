@@ -1189,7 +1189,12 @@ export default {
       feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
       menu: { label: 'Menü', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
       moderator: 'Moderatör',
-      owner: 'Sahip'
+      owner: 'Sahip',
+      unlinkRoom: {
+        action: 'Topluluktan çıkar',
+        confirm: 'Bu quizi topluluktan çıkarmak istediğine emin misin? Quiz silinmez.',
+        success: 'Quiz topluluktan çıkarıldı.'
+      }
     },
     joinButton: {
       guestJoin: 'Katılmak için giriş yap',

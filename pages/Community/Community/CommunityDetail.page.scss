@@ -43,4 +43,10 @@
     justify-content: space-between;
     margin-bottom: 12px;
   }
+
+  &__card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 12px 8px;
+  }
 }

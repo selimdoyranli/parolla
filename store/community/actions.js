@@ -155,6 +155,17 @@ export default {
     return memberAction(this, documentId, memberDocumentId)
   },
 
+  // detaches the room (every locale) from this community; owner/moderator/GM or the room's author
+  async unlinkCommunityRoom(_, { documentId, roomDocumentId }) {
+    const { data, error } = await this.$appFetch({
+      path: `communities/${documentId}/rooms/${roomDocumentId}`,
+      method: 'DELETE',
+      headers: authHeaders(this)
+    })
+
+    return { data: data?.data?.data ?? null, error }
+  },
+
   // feed = the regular rooms endpoint filtered by community; the server answers 403 for non-members of private ones
   async fetchCommunityRooms(_, { documentId, sort = 'recent', page = 1 }) {
     const { data, error } = await this.$appFetch({

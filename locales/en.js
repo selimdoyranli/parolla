@@ -1172,7 +1172,12 @@ export default {
       feedLocked: 'Join this community to see its quizzes',
       menu: { label: 'Menu', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
       moderator: 'Moderator',
-      owner: 'Owner'
+      owner: 'Owner',
+      unlinkRoom: {
+        action: 'Remove from community',
+        confirm: 'Remove this quiz from the community? The quiz itself is not deleted.',
+        success: 'Quiz removed from the community.'
+      }
     },
     joinButton: {
       guestJoin: 'Log in to join',

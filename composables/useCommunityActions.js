@@ -6,7 +6,8 @@ export default () => {
   const store = useStore()
   const { i18n } = useContext()
 
-  const run = async ({ action, documentId, memberDocumentId, confirmKey, successKey }) => {
+  // payload = the action's params, e.g. { documentId, memberDocumentId } or { documentId, roomDocumentId }
+  const run = async ({ action, confirmKey, successKey, ...payload }) => {
     try {
       await Dialog.confirm({
         message: i18n.t(confirmKey),
@@ -17,7 +18,7 @@ export default () => {
       return false
     }
 
-    const { error } = await store.dispatch(`community/${action}`, { documentId, memberDocumentId })
+    const { error } = await store.dispatch(`community/${action}`, payload)
 
     if (error) {
       Notify({ message: error.message || i18n.t('community.error.generic'), type: 'danger' })
