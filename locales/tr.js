@@ -1156,6 +1156,7 @@ export default {
       search: 'Topluluk ara',
       sort: { recent: 'En yeni', memberCount: 'En çok üyeli', roomCount: 'En çok quizli' },
       createButton: 'Topluluk oluştur',
+      noMore: 'Hepsi bu kadar',
       joined: 'Katıldıklarım',
       pending: 'Bekleyenler',
       owned: 'Benimkiler',

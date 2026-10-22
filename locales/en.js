@@ -1139,6 +1139,7 @@ export default {
       search: 'Search communities',
       sort: { recent: 'Newest', memberCount: 'Most members', roomCount: 'Most quizzes' },
       createButton: 'Create community',
+      noMore: "That's all",
       joined: 'Joined',
       pending: 'Pending',
       owned: 'Mine',

@@ -36,6 +36,8 @@
       ) \#{{ tag }}
 
     Empty(v-if="!items.length && isLoading" :description="$t('general.loading')")
+    Empty(v-else-if="!items.length && hasError" image="error" :description="$t('community.error.generic')")
+      Button(@click="reload") {{ $t('error.tryAgain') }}
     Empty(v-else-if="!items.length" :description="$t('community.list.empty')")
     .community-list-page__grid(v-else)
       template(v-for="cell in cells")
@@ -45,6 +47,11 @@
         CommunityCard(v-else :key="cell.key" :community="cell.community")
 
     InfiniteLoading(v-if="items.length && hasMore" :identifier="infiniteId" @infinite="handleInfinite")
+      template(#no-more) {{ $t('community.list.noMore') }}
+      template(#no-results) {{ $t('community.list.noMore') }}
+      template(#error="{ trigger }")
+        span {{ $t('community.error.generic') }}
+        Button(size="small" @click="trigger") {{ $t('error.tryAgain') }}
 </template>
 
 <script>
@@ -71,7 +78,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const store = useStore()
-    const { i18n, route, localePath } = useContext()
+    const { i18n, route, localePath, getRouteBaseName } = useContext()
 
     const sort = computed(() => (SORTS.includes(route.value.query.sort) ? route.value.query.sort : 'recent'))
     const activeTag = computed(() => route.value.query.tag || '')
@@ -85,6 +92,8 @@ export default defineComponent({
     const hasMore = ref(false)
     const isLoading = ref(false)
     const infiniteId = ref(0)
+    const hasError = ref(false)
+    let reqId = 0
     const knownTags = ref([])
 
     const scroller = () => document.querySelector('.layout__main')
@@ -98,7 +107,7 @@ export default defineComponent({
       })
     }
 
-    const load = async nextPage => {
+    const load = async (nextPage, id) => {
       const { data, error } = await store.dispatch('community/fetchCommunities', {
         sort: sort.value,
         search: search.value || undefined,
@@ -106,6 +115,9 @@ export default defineComponent({
         page: nextPage,
         pageSize: PAGE_SIZE
       })
+
+      // stale: filters changed while this request was in flight
+      if (id !== reqId) return { stale: true }
 
       if (error || !data) return { error: true }
 
@@ -117,15 +129,25 @@ export default defineComponent({
     }
 
     const reload = async () => {
+      const id = ++reqId
+
       isLoading.value = true
+      hasError.value = false
       items.value = []
       infiniteId.value++
-      await load(1)
+
+      const { error } = await load(1, id)
+
+      if (id !== reqId) return
+
+      hasError.value = !!error
       isLoading.value = false
     }
 
     const handleInfinite = async $state => {
-      const { error } = await load(page.value + 1)
+      const { error, stale } = await load(page.value + 1, reqId)
+
+      if (stale) return
 
       if (error) return $state.error()
 
@@ -180,6 +202,9 @@ export default defineComponent({
     watch(
       () => route.value.query,
       () => {
+        // leaving for a community page: the query is gone, nothing to reload
+        if (getRouteBaseName(route.value) !== getRouteBaseName({ name: 'Community-CommunityList' })) return
+
         if (listKey() === listMemory.key && listMemory.items === items.value) return
 
         keyword.value = search.value
@@ -217,6 +242,8 @@ export default defineComponent({
       cells,
       hasMore,
       isLoading,
+      hasError,
+      reload,
       infiniteId,
       tagOptions,
       sortOptions,
