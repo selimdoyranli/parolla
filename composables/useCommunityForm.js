@@ -32,8 +32,8 @@ export default (community = null) => {
     visibility: community?.visibility || communityVisibilityEnum.PUBLIC,
     postPermission: community?.postPermission || communityPostPermissionEnum.EVERYONE
   })
-  // picked images: { file, url } — uploaded only after the text fields are saved
-  const media = reactive({ avatar: null, coverPhoto: null })
+  // picked images: { file, url } — uploaded only after the text fields are saved; flush: MediaPicker's pending-crop waiters
+  const media = reactive({ avatar: null, coverPhoto: null, flush: {} })
 
   const nameLength = () => form.name.trim().length
   const nameError = computed(() => {
@@ -93,6 +93,8 @@ export default (community = null) => {
   // resolves true when every picked image uploaded
   const uploadMedia = async documentId => {
     let allOk = true
+
+    await Promise.allSettled(Object.values(media.flush).map(flush => flush()))
 
     for (const field of ['avatar', 'coverPhoto']) {
       if (!media[field]) continue

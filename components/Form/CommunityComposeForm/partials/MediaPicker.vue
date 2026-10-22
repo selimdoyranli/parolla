@@ -96,28 +96,45 @@ export default defineComponent({
 
     // media is the form's shared reactive picks ({ file, url }, uploaded after the text fields are saved)
     const setPick = value => {
+      const previous = props.media[props.field]?.url
+
       // eslint-disable-next-line vue/no-mutating-props
       props.media[props.field] = value
+
+      if (previous?.startsWith('blob:') && previous !== value?.url) URL.revokeObjectURL(previous)
     }
 
     // re-cut the canvas after each pan/zoom settles; png keeps a transparent avatar transparent, the cover is a photo
     let cutTimer = null
+    let lastCut = Promise.resolve()
     const cutNow = () => {
       clearTimeout(cutTimer)
       cutTimer = null
 
-      if (!isChosen.value || typeof croppa.value.generateBlob !== 'function') return
+      if (!isChosen.value || typeof croppa.value.generateBlob !== 'function') return lastCut
 
-      croppa.value.generateBlob(
-        file => file && setPick({ file, url: URL.createObjectURL(file) }),
-        props.shape === 'avatar' ? 'image/png' : 'image/jpeg',
-        0.9
+      lastCut = new Promise(resolve =>
+        croppa.value.generateBlob(
+          file => {
+            if (file) setPick({ file, url: URL.createObjectURL(file) })
+
+            resolve()
+          },
+          props.shape === 'avatar' ? 'image/png' : 'image/jpeg',
+          0.9
+        )
       )
+
+      return lastCut
     }
     const cut = () => {
       clearTimeout(cutTimer)
       cutTimer = setTimeout(cutNow, 300)
     }
+
+    // the form awaits this before uploading so a crop still in its debounce / toBlob is not lost
+    // eslint-disable-next-line vue/no-mutating-props
+    props.media.flush[props.field] = () => (cutTimer ? cutNow() : lastCut)
 
     onBeforeUnmount(() => {
       resizeObserver?.disconnect()
