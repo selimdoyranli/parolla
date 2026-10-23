@@ -7,7 +7,7 @@ article.community-post-card
       NuxtLink.community-post-card__time(:to="postLink") {{ relativeTime }}
 
     .community-post-card__menu.dropdown(v-if="hasMenu")
-      DropdownMenu(withDropdownCloser direction="left" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
+      DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
         template(#trigger)
           Button.community-post-card__menu-trigger(icon="ellipsis" size="mini" round :aria-label="$t('community.detail.menu.label')")
         template(#body)

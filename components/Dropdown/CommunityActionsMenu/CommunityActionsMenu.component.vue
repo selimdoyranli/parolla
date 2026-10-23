@@ -1,6 +1,6 @@
 <template lang="pug">
 .community-actions-menu.dropdown
-  DropdownMenu(withDropdownCloser direction="left" :overlay="false" :is-open="isOpen" @closed="isOpen = false")
+  DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isOpen" @closed="isOpen = false")
     template(#trigger)
       Button.community-actions-menu__trigger(icon="ellipsis" size="small" round :aria-label="$t('community.detail.menu.label')")
         span.community-actions-menu__dot(v-if="isManager && community.pendingCount > 0")

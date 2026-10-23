@@ -169,6 +169,7 @@
 
   .v-dropdown-menu__container {
     min-width: 180px;
+    max-width: none; // the library caps it at the tiny trigger width
     padding: calc(var(--base-p-y) / 2) calc(var(--base-p-x) / 2);
     color: var(--color-text-02);
     background-color: var(--color-ui-02);
