@@ -42,7 +42,12 @@
     align-items: center;
     padding: 8px 6px;
     white-space: nowrap;
+    border-radius: 8px;
     cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-hover-01);
+    }
 
     &.is-danger {
       color: var(--color-danger-01);
