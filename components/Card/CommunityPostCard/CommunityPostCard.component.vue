@@ -9,7 +9,7 @@ article.community-post-card
     .community-post-card__menu.dropdown(v-if="hasMenu")
       DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
         template(#trigger)
-          Button.community-post-card__menu-trigger(icon="ellipsis" size="mini" round :aria-label="$t('community.detail.menu.label')")
+          ActionButton(:label="$t('community.detail.menu.label')" icon="tabler:dots")
         template(#body)
           nav.community-post-card__menu-nav
             .community-post-card__menu-item(v-if="canReport" dropdown-closer @click="$emit('report', post)")
@@ -28,6 +28,7 @@ article.community-post-card
     :title="room.title"
   )
     QuizCover.community-post-card__thumb(:room="room")
+      span.community-post-card__initials(v-if="!room.coverPhoto?.url") {{ initials }}
     .community-post-card__quiz-body
       QuizTypeLabel(:room="room")
       h3.community-post-card__quiz-title {{ room.title }}
@@ -66,7 +67,8 @@ article.community-post-card
 import { defineComponent, computed, ref, watch, useStore, useContext } from '@nuxtjs/composition-api'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
-import { Button, Dialog, Notify } from 'vant'
+import { Dialog, Notify } from 'vant'
+import { getInitials } from '@/transformers/community.transformer'
 
 const UNITS = [
   ['year', 31536000],
@@ -78,7 +80,7 @@ const UNITS = [
 
 export default defineComponent({
   name: 'CommunityPostCard',
-  components: { DropdownMenu, Button },
+  components: { DropdownMenu },
   props: {
     post: { type: Object, required: true }
   },
@@ -118,6 +120,7 @@ export default defineComponent({
     })
 
     const room = computed(() => props.post.room || {})
+    const initials = computed(() => getInitials(room.value.title))
 
     const formatCount = count => {
       const n = Number(count) || 0
@@ -184,7 +187,20 @@ export default defineComponent({
         })
         .catch(() => {})
 
-    return { isMenuOpen, liked, likeCount, postLink, relativeTime, canReport, hasMenu, room, formatCount, handleLike, handleDelete }
+    return {
+      isMenuOpen,
+      liked,
+      likeCount,
+      postLink,
+      relativeTime,
+      canReport,
+      hasMenu,
+      room,
+      initials,
+      formatCount,
+      handleLike,
+      handleDelete
+    }
   }
 })
 </script>

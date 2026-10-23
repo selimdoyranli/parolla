@@ -71,15 +71,28 @@
 
   &__thumb.quiz-cover {
     flex-shrink: 0;
-    width: 104px;
-    height: 104px;
+    align-self: flex-start;
+    width: 120px;
     border-radius: 12px;
-    aspect-ratio: 1;
+    aspect-ratio: 16 / 9;
 
     @include media-breakpoint-up(tablet) {
-      width: 128px;
-      height: 128px;
+      width: 192px;
     }
+  }
+
+  // sits above the placeholder gradient when the quiz has no cover photo
+  &__initials {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 6px rgb(0 0 0 / 25%);
+    inset: 0;
   }
 
   &__quiz-body {
@@ -147,12 +160,6 @@
     &.is-active {
       color: var(--color-danger-01);
     }
-  }
-
-  &__menu-trigger {
-    color: var(--color-text-02);
-    background-color: var(--color-ui-02);
-    border: 1px solid var(--color-border-02);
   }
 
   &__menu-item {

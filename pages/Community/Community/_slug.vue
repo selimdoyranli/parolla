@@ -8,7 +8,7 @@
   template(v-else)
     .community-page__hidden-banner(v-if="community.isHidden") {{ $t('community.hiddenBanner') }}
 
-    CommunityHeader(:community="community" @changed="handleChanged")
+    CommunityHeader(:community="community" @changed="handleChanged" @open-members="handleOpenMembers")
       template(v-if="$auth.loggedIn" #actions)
         CommunityActionsMenu(
           :community="community"

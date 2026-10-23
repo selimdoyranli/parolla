@@ -2,9 +2,10 @@
   min-width: 96px;
   font-weight: 700;
 
-  &.van-button--warning {
+  // brand-02 is a light coral: dark text keeps the contrast white would lose
+  &.van-button--primary {
     color: #1b1b1b;
-    background: var(--color-warning-01);
-    border-color: var(--color-warning-01);
+    background: var(--color-brand-02);
+    border-color: var(--color-brand-02);
   }
 }

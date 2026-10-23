@@ -18,7 +18,7 @@
             :height="18"
           )
         .community-header__stats
-          span.community-header__stat
+          button.community-header__stat.community-header__stat--button(type="button" @click="$emit('open-members')")
             AppIcon(name="tabler:users" :width="15" :height="15")
             | {{ community.memberCount }} {{ $t('community.detail.memberCountLabel') }}
           span.community-header__stat
@@ -58,6 +58,7 @@ export default defineComponent({
   props: {
     community: { type: Object, required: true }
   },
+  emits: ['changed', 'open-members'],
   setup(props) {
     const { i18n } = useContext()
     const visibilityIcon = computed(() => VISIBILITY_ICON[props.community.visibility] || VISIBILITY_ICON.public)

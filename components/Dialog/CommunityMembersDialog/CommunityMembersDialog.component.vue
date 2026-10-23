@@ -48,8 +48,14 @@ Dialog.dialog.community-members-dialog(
           @click="handle(item, 'kick')"
         )
           | {{ $t('community.members.actions.kick') }}
-    Button(v-if="hasMore" block plain round size="small" native-type="button" :loading="isLoading" @click="loadPage(page + 1)")
-      | {{ $t('general.loadMore') }}
+    InfiniteLoading(v-if="hasMore && items.length" @infinite="handleInfinite")
+      template(#spinner)
+        span {{ $t('general.loading') }}
+      template(#no-more)
+      template(#no-results)
+      template(#error="{ trigger }")
+        span {{ $t('community.error.generic') }}
+        Button(size="small" native-type="button" @click="trigger") {{ $t('error.tryAgain') }}
 </template>
 
 <script>
@@ -109,12 +115,23 @@ export default defineComponent({
       if (error || !data) {
         hasError.value = true
 
-        return
+        return false
       }
 
       items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
       page.value = nextPage
       hasMore.value = data.hasMore
+
+      return true
+    }
+
+    // next pages load as the list scrolls (20 per page)
+    const handleInfinite = async $state => {
+      const ok = await loadPage(page.value + 1)
+
+      if (!ok) return $state.error()
+
+      return hasMore.value ? $state.loaded() : $state.complete()
     }
 
     const handle = async (item, kind) => {
@@ -150,7 +167,7 @@ export default defineComponent({
       { immediate: true }
     )
 
-    return { items, page, hasMore, isLoading, hasError, busyId, loadPage, handle, canKick, canPromote, canDemote }
+    return { items, page, hasMore, isLoading, hasError, busyId, loadPage, handleInfinite, handle, canKick, canPromote, canDemote }
   }
 })
 </script>

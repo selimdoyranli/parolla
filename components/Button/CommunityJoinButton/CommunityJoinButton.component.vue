@@ -37,7 +37,7 @@ export default defineComponent({
       if (role.value === communityViewerRoleEnum.PENDING) return { label: t('pending'), type: 'default' }
 
       if (role.value === communityViewerRoleEnum.NONE) {
-        return { label: $auth.loggedIn ? t('join') : t('guestJoin'), type: 'warning' }
+        return { label: $auth.loggedIn ? t('join') : t('guestJoin'), type: 'primary' }
       }
 
       return { label: t('member'), type: 'default' }
