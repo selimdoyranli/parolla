@@ -7,7 +7,9 @@ Button.community-join-button(
   :loading="isLoading"
   :disabled="config.disabled || isLoading"
   @click.stop.prevent="handleClick"
-) {{ config.label }}
+)
+  AppIcon(v-if="config.icon" :name="config.icon" :width="16" :height="16")
+  | {{ config.label }}
 </template>
 
 <script>
@@ -37,7 +39,7 @@ export default defineComponent({
       if (role.value === communityViewerRoleEnum.PENDING) return { label: t('pending'), type: 'default' }
 
       if (role.value === communityViewerRoleEnum.NONE) {
-        return { label: $auth.loggedIn ? t('join') : t('guestJoin'), type: 'primary' }
+        return { label: $auth.loggedIn ? t('join') : t('guestJoin'), type: 'primary', icon: 'tabler:plus' }
       }
 
       return { label: t('member'), type: 'default' }

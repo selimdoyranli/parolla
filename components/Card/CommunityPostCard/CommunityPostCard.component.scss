@@ -69,16 +69,38 @@
     }
   }
 
-  &__thumb.quiz-cover {
+  &__thumb {
     flex-shrink: 0;
     align-self: flex-start;
-    width: 120px;
+    width: 96px;
     border-radius: 12px;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1;
 
     @include media-breakpoint-up(tablet) {
-      width: 192px;
+      width: 128px;
     }
+
+    &.is-photo {
+      position: relative;
+      overflow: hidden;
+      background: var(--color-ui-02);
+    }
+  }
+
+  &__thumb-blur {
+    position: absolute;
+    background-position: center;
+    background-size: cover;
+    transform: scale(1.1);
+    filter: blur(4px);
+    inset: 0;
+  }
+
+  &__thumb-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   // sits above the placeholder gradient when the quiz has no cover photo

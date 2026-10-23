@@ -1203,7 +1203,7 @@ export default {
       feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
       privateNotice: 'This community is private. Join to see its quizzes.',
       feedLocked: 'Join this community to see its quizzes',
-      menu: { label: 'Menu', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
+      menu: { label: 'More', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
       moderator: 'Moderator',
       owner: 'Owner'
     },

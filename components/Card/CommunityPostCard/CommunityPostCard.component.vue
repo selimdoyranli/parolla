@@ -7,7 +7,14 @@ article.community-post-card
       NuxtLink.community-post-card__time(:to="postLink") {{ relativeTime }}
 
     .community-post-card__menu.dropdown(v-if="hasMenu")
-      DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isMenuOpen" @closed="isMenuOpen = false")
+      DropdownMenu(
+        withDropdownCloser
+        direction="right"
+        :overlay="false"
+        :is-open="isMenuOpen"
+        @opened="isMenuOpen = true"
+        @closed="isMenuOpen = false"
+      )
         template(#trigger)
           ActionButton(:label="$t('community.detail.menu.label')" icon="tabler:dots")
         template(#body)
@@ -27,8 +34,12 @@ article.community-post-card
     :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
     :title="room.title"
   )
-    QuizCover.community-post-card__thumb(:room="room")
-      span.community-post-card__initials(v-if="!room.coverPhoto?.url") {{ initials }}
+    //- covers are 16:9: contain them in the square over a blurred copy of themselves
+    .community-post-card__thumb.is-photo(v-if="room.coverPhoto?.url")
+      .community-post-card__thumb-blur(aria-hidden="true" :style="{ backgroundImage: `url(${room.coverPhoto.url})` }")
+      img.community-post-card__thumb-img(:src="room.coverPhoto.url" loading="lazy" draggable="false" :alt="room.title")
+    QuizCover.community-post-card__thumb(v-else :room="room")
+      span.community-post-card__initials {{ initials }}
     .community-post-card__quiz-body
       QuizTypeLabel(:room="room")
       h3.community-post-card__quiz-title {{ room.title }}
@@ -64,7 +75,7 @@ article.community-post-card
 </template>
 
 <script>
-import { defineComponent, computed, ref, watch, useStore, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, watch, onBeforeUnmount, useStore, useContext } from '@nuxtjs/composition-api'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
 import { Dialog, Notify } from 'vant'
@@ -93,6 +104,11 @@ export default defineComponent({
     const isMenuOpen = ref(false)
     const liked = ref(props.post.viewerLiked)
     const likeCount = ref(props.post.likeCount)
+    // the library has no Escape support; closing the prop closes the menu
+    const closeOnEscape = event => event.key === 'Escape' && (isMenuOpen.value = false)
+
+    watch(isMenuOpen, open => document[`${open ? 'add' : 'remove'}EventListener`]('keydown', closeOnEscape))
+    onBeforeUnmount(() => document.removeEventListener('keydown', closeOnEscape))
     const isLiking = ref(false)
 
     // a refetched post replaces the optimistic state

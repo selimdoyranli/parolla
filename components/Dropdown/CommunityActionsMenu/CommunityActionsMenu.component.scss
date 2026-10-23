@@ -19,23 +19,6 @@
     }
   }
 
-  &__trigger {
-    position: relative;
-    color: var(--color-text-02);
-    background-color: var(--color-ui-02);
-    border: 1px solid var(--color-border-02);
-  }
-
-  &__dot {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    width: 8px;
-    height: 8px;
-    background: var(--color-danger-01);
-    border-radius: 50%;
-  }
-
   &__item {
     display: flex;
     gap: 10px;

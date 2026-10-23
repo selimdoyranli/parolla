@@ -1,9 +1,12 @@
 <template lang="pug">
 .community-actions-menu.dropdown
-  DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isOpen" @closed="isOpen = false")
+  DropdownMenu(withDropdownCloser direction="right" :overlay="false" :is-open="isOpen" @opened="isOpen = true" @closed="isOpen = false")
     template(#trigger)
-      Button.community-actions-menu__trigger(icon="ellipsis" size="small" round :aria-label="$t('community.detail.menu.label')")
-        span.community-actions-menu__dot(v-if="isManager && community.pendingCount > 0")
+      ActionButton.community-actions-menu__trigger(
+        :label="$t('community.detail.menu.label')"
+        icon="tabler:dots"
+        :badge="isManager && community.pendingCount > 0 ? community.pendingCount : null"
+      )
     template(#body)
       nav.community-actions-menu__nav
         .community-actions-menu__item(v-if="isOwner" dropdown-closer @click="goSettings")
@@ -25,15 +28,14 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, onBeforeUnmount, watch, useContext, useRouter } from '@nuxtjs/composition-api'
 import DropdownMenu from 'v-dropdown-menu'
 import 'v-dropdown-menu/dist/v-dropdown-menu.css'
-import { Button } from 'vant'
 import { communityViewerRoleEnum } from '@/enums/community.enum'
 
 export default defineComponent({
   name: 'CommunityActionsMenu',
-  components: { DropdownMenu, Button },
+  components: { DropdownMenu },
   props: {
     community: { type: Object, required: true }
   },
@@ -46,6 +48,12 @@ export default defineComponent({
     const isManager = computed(() => isOwner.value || props.community.viewerRole === communityViewerRoleEnum.MODERATOR)
 
     const goSettings = () => router.push(localePath({ name: 'Community-CommunityEdit-slug', params: { slug: props.community.slug } }))
+
+    // the library has no Escape support; closing the prop closes the menu
+    const closeOnEscape = event => event.key === 'Escape' && (isOpen.value = false)
+
+    watch(isOpen, open => document[`${open ? 'add' : 'remove'}EventListener`]('keydown', closeOnEscape))
+    onBeforeUnmount(() => document.removeEventListener('keydown', closeOnEscape))
 
     return { isOpen, isOwner, isManager, goSettings }
   }
