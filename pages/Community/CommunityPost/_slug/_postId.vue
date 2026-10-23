@@ -70,7 +70,9 @@ export default defineComponent({
     onMounted(load)
 
     useMeta(() => ({
-      title: post.value ? `${post.value.community.name} - ${post.value.room.title}` : i18n.t('seo.main.title')
+      title: post.value
+        ? [post.value.community.name, post.value.room?.title || post.value.author?.username].filter(Boolean).join(' - ')
+        : i18n.t('seo.main.title')
     }))
 
     return {

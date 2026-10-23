@@ -45,6 +45,12 @@
     font-size: var(--font-size-text-9);
     white-space: pre-line;
     overflow-wrap: anywhere;
+
+    &.is-text {
+      font-size: var(--font-size-text-8);
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
   }
 
   &__quiz {

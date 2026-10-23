@@ -19,10 +19,11 @@ article.community-post-card
               AppIcon(name="tabler:trash" :width="18" :height="18")
               span {{ $t('community.post.delete') }}
 
-  p.community-post-card__note(v-if="post.note") {{ post.note }}
+  p.community-post-card__note(v-if="post.note" :class="{ 'is-text': !post.room }") {{ post.note }}
 
-  //- the shared quiz: same link and stat icons as QuizCard
+  //- the shared quiz: same link and stat icons as QuizCard; text posts have none
   NuxtLink.community-post-card__quiz(
+    v-if="post.room"
     :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
     :title="room.title"
   )
@@ -169,7 +170,7 @@ export default defineComponent({
 
     const handleDelete = () =>
       Dialog.confirm({
-        message: i18n.t('community.post.confirmDelete'),
+        message: i18n.t(props.post.room ? 'community.post.confirmDelete' : 'community.post.confirmDeleteText'),
         cancelButtonText: i18n.t('general.cancel'),
         confirmButtonText: i18n.t('general.apply')
       })
