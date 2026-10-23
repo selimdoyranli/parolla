@@ -20,6 +20,7 @@
 
     .community-page__body
       main.community-page__main
+        CommunityPostComposer.community-page__composer(v-if="canPost" :community-document-id="community.documentId" @posted="handlePosted")
         .community-page__toolbar
           FilterDropdown(
             :trigger-title="$t(`community.detail.feedSort.${sort}`)"
@@ -62,7 +63,7 @@ import { defineComponent, useContext, useStore, ref, computed, watch, onMounted,
 import { Button, Empty } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 import { reportTypeEnum } from '@/enums/report-type.enum'
-import { communityViewerRoleEnum } from '@/enums/community.enum'
+import { communityViewerRoleEnum, communityPostPermissionEnum } from '@/enums/community.enum'
 
 const SORTS = ['recent', 'popular', 'oldest']
 
@@ -165,11 +166,26 @@ export default defineComponent({
       community.value = { ...community.value, postCount: Math.max(0, community.value.postCount - 1) }
     }
 
+    const handlePosted = post => {
+      items.value = [post, ...items.value]
+      community.value = { ...community.value, postCount: (community.value.postCount || 0) + 1 }
+    }
+
     const handleOpenPending = () => (isPendingOpen.value = true)
     const handleOpenMembers = () => (isMembersOpen.value = true)
     const handleOpenDelete = () => (isDeleteOpen.value = true)
 
     const isManager = () => [communityViewerRoleEnum.OWNER, communityViewerRoleEnum.MODERATOR].includes(community.value?.viewerRole)
+
+    // mirrors the backend rule: managers always, members when everyone may post; never while hidden
+    const canPost = computed(
+      () =>
+        !!community.value &&
+        !community.value.isHidden &&
+        (isManager() ||
+          (community.value.viewerRole === communityViewerRoleEnum.MEMBER &&
+            community.value.postPermission === communityPostPermissionEnum.EVERYONE))
+    )
 
     // returns false when the community could not be (re)loaded
     const loadCommunity = async () => {
@@ -234,6 +250,8 @@ export default defineComponent({
       handleChanged,
       handleReportPost,
       handlePostDeleted,
+      handlePosted,
+      canPost,
       handleOpenPending,
       handleOpenMembers,
       handleOpenDelete

@@ -169,11 +169,12 @@ export default {
     return { data: data ? communityPostTransformer(data.data) : null, error }
   },
 
-  async createPost(_, { communityDocumentId, roomDocumentId, note = '' }) {
+  // type 'quiz' (default) shares roomDocumentId; type 'text' posts `note` alone
+  async createPost(_, { communityDocumentId, type = 'quiz', roomDocumentId, note = '' }) {
     const { data, error } = await this.$appFetch({
       path: `communities/${communityDocumentId}/posts`,
       method: 'POST',
-      data: { data: { room: roomDocumentId, note } },
+      data: { data: type === 'text' ? { type, note } : { room: roomDocumentId, note } },
       headers: authHeaders(this)
     })
 

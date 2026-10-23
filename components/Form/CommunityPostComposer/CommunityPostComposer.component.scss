@@ -1,0 +1,56 @@
+.community-post-composer {
+  overflow: hidden;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 20px;
+  transition: border-color 0.1s var(--motion-01);
+
+  &:focus-within {
+    border-color: var(--color-brand-02);
+  }
+
+  &__field.van-cell {
+    padding: 14px 16px;
+    font-size: var(--font-size-text-9);
+    background: transparent;
+
+    textarea {
+      min-height: 48px;
+      color: var(--color-text-01);
+      line-height: 1.5;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    border-top: 1px solid var(--color-border-01);
+  }
+
+  &__counter {
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+    font-variant-numeric: tabular-nums;
+
+    &.is-full {
+      color: var(--color-danger-01);
+    }
+  }
+
+  &__submit.van-button {
+    padding: 0 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 12px;
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+  }
+}
