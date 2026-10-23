@@ -78,19 +78,21 @@
 
     .room-choices
       span.room-choices__title {{ $t('form.creatorModeCompose.room.visibility.label') }}
-      button.room-choice(
-        v-for="mode in visibilityModes"
-        :key="mode"
-        type="button"
-        :class="{ 'room-choice--selected': form.visibilityMode === mode }"
-        :disabled="form.isBusy || isVisibilityDisabled(mode)"
-        @click="pickVisibility(mode)"
-      )
-        span.room-choice__icon
-          AppIcon(:name="visibilityIcons[mode]" :width="20" :height="20")
-        span.room-choice__body
-          span.room-choice__name {{ $t(`community.visibilityMode.${mode}`) }}
-          span.room-choice__description {{ visibilityHint(mode) }}
+      //- stacked on phones, a 3-column grid from tablet up
+      .room-choices__grid
+        button.room-choice.room-choice--tile(
+          v-for="mode in visibilityModes"
+          :key="mode"
+          type="button"
+          :class="{ 'room-choice--selected': form.visibilityMode === mode }"
+          :disabled="form.isBusy || isVisibilityDisabled(mode)"
+          @click="pickVisibility(mode)"
+        )
+          span.room-choice__icon
+            AppIcon(:name="visibilityIcons[mode]" :width="20" :height="20")
+          span.room-choice__body
+            span.room-choice__name {{ $t(`community.visibilityMode.${mode}`) }}
+            span.room-choice__description {{ visibilityHint(mode) }}
 
       template(v-if="form.visibilityMode === 'communityOnly'")
         .room-choice(v-if="selectedCommunity")
@@ -553,6 +555,15 @@ export default defineComponent({
   }
 }
 
+// label on its own full-width line so "(isteğe bağlı)" sits right after the word, like the cover photo label
+.creator-mode-compose-form__description.van-field {
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::v-deep .van-field__label {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 .creator-mode-compose-form__optionalHint {
   color: var(--color-text-03);
   font-size: 12px;
@@ -663,6 +674,17 @@ export default defineComponent({
     }
   }
 
+  &__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include media-breakpoint-up(tablet) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   &__change {
     flex-shrink: 0;
     padding: 6px 14px;
@@ -742,6 +764,29 @@ export default defineComponent({
     color: var(--color-text-03);
     font-size: 13px;
     line-height: 1.35;
+  }
+
+  // grid tiles from tablet up: text on top, the icon small in the top-right corner
+  &--tile {
+    @include media-breakpoint-up(tablet) {
+      position: relative;
+      align-items: flex-start;
+      height: 100%;
+      padding-inline-end: 36px;
+
+      .room-choice__icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background: transparent;
+      }
+
+      .room-choice__name {
+        white-space: normal;
+      }
+    }
   }
 
   &--pick {
