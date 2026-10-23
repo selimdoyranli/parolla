@@ -117,7 +117,10 @@ export default defineComponent({
 
       if (error || !data) return { error: true }
 
-      items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
+      // a post prepended by the composer shifts offsets, so the next page may repeat it
+      const seen = new Set(items.value.map(item => item.documentId))
+
+      items.value = nextPage === 1 ? data.items : [...items.value, ...data.items.filter(item => !seen.has(item.documentId))]
       page.value = nextPage
       hasMore.value = data.hasMore
 
@@ -167,8 +170,12 @@ export default defineComponent({
     }
 
     const handlePosted = post => {
-      items.value = [post, ...items.value]
       community.value = { ...community.value, postCount: (community.value.postCount || 0) + 1 }
+
+      // the newest post belongs at the end of an oldest-first feed
+      if (sort.value === 'oldest') return reloadFeed()
+
+      items.value = [post, ...items.value]
     }
 
     const handleOpenPending = () => (isPendingOpen.value = true)
