@@ -69,7 +69,9 @@
     }
   }
 
-  &__thumb {
+  // compound selector: outranks QuizCover's own width/aspect ratio wherever its css lands
+  &__thumb,
+  &__thumb.quiz-cover {
     flex-shrink: 0;
     align-self: flex-start;
     width: 96px;
