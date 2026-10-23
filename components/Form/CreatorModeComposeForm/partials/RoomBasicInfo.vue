@@ -76,37 +76,79 @@
         small.creator-mode-compose-form__optionalHint
           | {{ $t('form.optionalHint') }}
 
-    RoomCommunitySelect(
-      v-if="!form.isAnon"
-      v-model="form.community"
-      :room="room"
-      :is-listed="form.visibilityMode === 'public'"
-      :disabled="form.isBusy"
-    )
-
-    Cell.creator-mode-compose-form__visibilityTitle(:title="$t('form.creatorModeCompose.room.visibility.label')")
-    RadioGroup(v-model="form.visibilityMode" :disabled="form.isBusy")
-      Cell.creator-mode-compose-form__visibility(
+    .room-choices
+      span.room-choices__title {{ $t('form.creatorModeCompose.room.visibility.label') }}
+      button.room-choice(
         v-for="mode in visibilityModes"
         :key="mode"
-        :label="visibilityHint(mode)"
-        :clickable="isVisibilityAllowed(mode)"
-        :title="$t(`community.visibilityMode.${mode}`)"
+        type="button"
+        :class="{ 'room-choice--selected': form.visibilityMode === mode }"
+        :disabled="form.isBusy || isVisibilityDisabled(mode)"
         @click="pickVisibility(mode)"
       )
-        template(#right-icon)
-          Radio(:name="mode" :disabled="!isVisibilityAllowed(mode)")
+        span.room-choice__icon
+          AppIcon(:name="visibilityIcons[mode]" :width="20" :height="20")
+        span.room-choice__body
+          span.room-choice__name {{ $t(`community.visibilityMode.${mode}`) }}
+          span.room-choice__description {{ visibilityHint(mode) }}
 
-    template(v-if="user")
-      Cell.creator-mode-compose-form__isAnon
-        template(#title)
-          span {{ $t('form.creatorModeCompose.room.isAnon.label') }} &nbsp;
-          small(v-if="user")
-            template(v-if="form.isAnon") ({{ $t('general.anon') }})
-            template(v-else) ({{ user.username }})
+      template(v-if="form.visibilityMode === 'communityOnly'")
+        .room-choice(v-if="selectedCommunity")
+          CommunityAvatar.room-choice__avatar(:community="selectedCommunity" :size="40")
+          span.room-choice__body
+            span.room-choice__name {{ selectedCommunity.name }}
+            span.room-choice__description(v-if="selectedCommunity.memberCount != null") {{ communityStats(selectedCommunity) }}
+          button.room-choices__change(type="button" :disabled="form.isBusy" @click="openCommunityDialog")
+            | {{ $t('form.creatorModeCompose.room.community.change') }}
+        button.room-choice.room-choice--pick(v-else type="button" :disabled="form.isBusy" @click="openCommunityDialog")
+          AppIcon(name="tabler:plus" :width="20" :height="20")
+          | {{ $t('form.creatorModeCompose.room.community.pick') }}
 
-        template(#right-icon)
-          VanSwitch(v-model="form.isAnon" :size="24")
+      // guests are always anonymous, so the choice only exists for players
+      template(v-if="user")
+        span.room-choices__title {{ $t('form.creatorModeCompose.room.isAnon.label') }}
+        button.room-choice(
+          v-for="isAnon in [false, true]"
+          :key="String(isAnon)"
+          type="button"
+          :class="{ 'room-choice--selected': form.isAnon === isAnon }"
+          :disabled="form.isBusy"
+          @click="pickCreator(isAnon)"
+        )
+          PlayerAvatar.room-choice__avatar(v-if="!isAnon" :size="40" :user="user")
+          span.room-choice__avatar.room-choice__anonAvatar(v-else) A
+          span.room-choice__body
+            span.room-choice__name {{ isAnon ? $t('form.creatorModeCompose.room.isAnon.anonTitle') : user.username }}
+            span.room-choice__description
+              | {{ $t(`form.creatorModeCompose.room.isAnon.${isAnon ? 'anonDescription' : 'namedDescription'}`) }}
+
+    Dialog.dialog.room-community-dialog(
+      v-model="isCommunityDialogOpen"
+      close-on-click-overlay
+      get-container="body"
+      :title="$t('form.creatorModeCompose.room.community.dialogTitle')"
+      :show-confirm-button="false"
+      :show-cancel-button="false"
+    )
+      .room-community-dialog__content
+        Loading.room-community-dialog__state(v-if="communityList.isLoading" color="var(--color-brand-02)" size="24")
+        .room-community-dialog__state(v-else-if="communityList.error")
+          span {{ $t('form.creatorModeCompose.room.community.loadFailed') }}
+          button.room-choices__change(type="button" @click="loadCommunities") {{ $t('error.tryAgain') }}
+        .room-community-dialog__state(v-else-if="!communityList.items.length")
+          | {{ $t('form.creatorModeCompose.room.community.empty') }}
+        template(v-else)
+          button.room-choice(
+            v-for="community in communityList.items"
+            :key="community.documentId"
+            type="button"
+            :class="{ 'room-choice--selected': form.community === community.documentId }"
+            @click="pickCommunity(community)"
+          )
+            CommunityAvatar.room-choice__avatar(:community="community" :size="40")
+            span.room-choice__body
+              span.room-choice__name {{ community.name }}
+              span.room-choice__description {{ communityStats(community) }}
 
     Field.creator-mode-compose-form__roomTag(
       v-model="form.tag"
@@ -149,9 +191,9 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, ref, useContext, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { Field, Cell, Switch, Button, Tag, Stepper, Toast, RadioGroup, Radio } from 'vant'
-import RoomCommunitySelect from './RoomCommunitySelect.vue'
+import { defineComponent, computed, reactive, ref, useContext, useStore, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { Field, Cell, Button, Tag, Stepper, Toast, Dialog, Loading } from 'vant'
+import { communityTransformer } from '@/transformers'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import parollaConfig from '@/system/parolla.config'
 import convertSize from 'convert-size'
@@ -161,13 +203,11 @@ export default defineComponent({
   components: {
     Field,
     Cell,
-    VanSwitch: Switch,
     Button,
     Tag,
     Stepper,
-    RadioGroup,
-    Radio,
-    RoomCommunitySelect
+    Dialog: Dialog.Component,
+    Loading
   },
   props: {
     form: {
@@ -189,6 +229,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { i18n } = useContext()
+    const store = useStore()
 
     const localGameTimeLimitMinutes = computed({
       get: () => props.gameTimeLimitMinutes,
@@ -328,19 +369,102 @@ export default defineComponent({
       coverPhotoState.isDirty = false
     }
 
-    const visibilityModes = ['public', 'communityOnly', 'unlisted']
-    // community-only needs a picked community
-    const isVisibilityAllowed = mode => mode !== 'communityOnly' || Boolean(props.form.community)
+    // me items are raw: the transformer adds the avatar initials
+    const postableCommunities = computed(() => (store.getters['auth/postableCommunities'] || []).map(communityTransformer))
+    // a quiz already saved as community-only keeps its card even if the user lost posting rights
+    const canUseCommunity = computed(() => postableCommunities.value.length > 0 || props.form.visibilityMode === 'communityOnly')
+
+    const visibilityModes = computed(() => ['public', 'unlisted', ...(props.user && canUseCommunity.value ? ['communityOnly'] : [])])
+    const visibilityIcons = { public: 'tabler:world', unlisted: 'tabler:lock', communityOnly: 'tabler:users' }
+
+    // a post shows its author, so an anonymous quiz can't live in a community
+    const isVisibilityDisabled = mode => mode === 'communityOnly' && props.form.isAnon
 
     const visibilityHint = mode =>
-      isVisibilityAllowed(mode)
-        ? i18n.t(`community.visibilityMode.${mode}Description`)
-        : i18n.t('form.creatorModeCompose.room.visibility.needsCommunity')
+      isVisibilityDisabled(mode)
+        ? i18n.t('form.creatorModeCompose.room.visibility.anonDisabled')
+        : i18n.t(`community.visibilityMode.${mode}Description`)
 
     const pickVisibility = mode => {
       // eslint-disable-next-line vue/no-mutating-props
-      if (!props.form.isBusy && isVisibilityAllowed(mode)) props.form.visibilityMode = mode
+      if (!props.form.isBusy && !isVisibilityDisabled(mode)) props.form.visibilityMode = mode
     }
+
+    const pickCreator = isAnon => {
+      // eslint-disable-next-line vue/no-mutating-props
+      if (!props.form.isBusy) props.form.isAnon = isAnon
+    }
+
+    // the list endpoint carries the counts; the postable getter decides which ones may hold the quiz
+    const communityList = reactive({ items: [], isLoading: false, error: null, isLoaded: false })
+
+    const loadCommunities = async () => {
+      communityList.isLoading = true
+      communityList.error = null
+
+      const results = await Promise.all(
+        [{ owned: 1 }, { joined: 1 }].map(query => store.dispatch('community/fetchCommunities', { ...query, pageSize: 50 }))
+      )
+      const failed = results.find(r => r.error || !r.data)
+
+      communityList.isLoading = false
+
+      if (failed) {
+        communityList.error = failed.error || true
+
+        return
+      }
+
+      const postableIds = postableCommunities.value.map(c => c.documentId)
+
+      communityList.items = results
+        .flatMap(r => r.data.items)
+        .filter((c, i, all) => postableIds.includes(c.documentId) && all.findIndex(o => o.documentId === c.documentId) === i)
+      communityList.isLoaded = true
+    }
+
+    const isCommunityDialogOpen = ref(false)
+
+    const openCommunityDialog = () => {
+      isCommunityDialogOpen.value = true
+
+      if (!communityList.isLoaded) loadCommunities()
+    }
+
+    const pickCommunity = community => {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.form.community = community.documentId
+      isCommunityDialogOpen.value = false
+    }
+
+    // counts come from the fetched list; the getter entry covers the time before it loads
+    const selectedCommunity = computed(() => {
+      const id = props.form.community
+
+      if (!id) return null
+
+      return communityList.items.find(c => c.documentId === id) || postableCommunities.value.find(c => c.documentId === id) || null
+    })
+
+    const communityStats = community =>
+      `${i18n.t('community.list.members', { count: community.memberCount })} · ${i18n.t('community.list.posts', {
+        count: community.postCount
+      })}`
+
+    // edit: preselect the first of my communities that already holds this community-only quiz (re-saving it there is a no-op)
+    onMounted(async () => {
+      if (!props.user || !props.room?.documentId || props.form.visibilityMode !== 'communityOnly' || !postableCommunities.value.length)
+        return
+
+      loadCommunities()
+
+      const { data } = await store.dispatch('community/fetchSharedIn', { roomDocumentId: props.room.documentId })
+      const first = (data?.communityDocumentIds || []).find(id => postableCommunities.value.some(c => c.documentId === id))
+
+      // the user may have picked one while this was loading
+      // eslint-disable-next-line vue/no-mutating-props
+      if (first && !props.form.community) props.form.community = first
+    })
 
     const onInputTag = val => emit('input-tag', val)
     const onAddTag = () => emit('add-tag')
@@ -366,9 +490,18 @@ export default defineComponent({
       coverPhotoIsCommittable,
       markCoverPhotoCommitted,
       visibilityModes,
-      isVisibilityAllowed,
+      visibilityIcons,
+      isVisibilityDisabled,
       visibilityHint,
       pickVisibility,
+      pickCreator,
+      communityList,
+      loadCommunities,
+      isCommunityDialogOpen,
+      openCommunityDialog,
+      pickCommunity,
+      selectedCommunity,
+      communityStats,
       onInputTag,
       onAddTag,
       onRemoveTag,
@@ -508,5 +641,150 @@ export default defineComponent({
 .creator-mode-compose-form__coverPhotoUploaderMeta {
   color: var(--color-text-03);
   font-size: 11px;
+}
+
+.room-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--color-ui-02);
+
+  &__title {
+    margin-block-start: 8px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &:first-child {
+      margin-block-start: 0;
+    }
+  }
+
+  &__change {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    color: var(--color-brand-02);
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    background: transparent;
+    border: 1px solid var(--color-brand-02);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+}
+
+.room-choice {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 14px;
+  color: var(--color-text-02);
+  font: inherit;
+  text-align: left;
+  background-color: var(--color-ui-01);
+  border: 1px solid var(--color-border-02);
+  border-radius: calc(var(--border-radius-01) / 2);
+  cursor: pointer;
+  transition: border-color 0.2s var(--motion-01), background-color 0.2s var(--motion-01);
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  &__icon,
+  &__avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__icon {
+    color: var(--color-text-03);
+    background-color: var(--color-ui-03);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__anonAvatar {
+    color: var(--color-text-04);
+    font-weight: 700;
+    font-size: 16px;
+    background-color: var(--color-text-03);
+    border-radius: 50%;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__name {
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__description {
+    color: var(--color-text-03);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  &--pick {
+    gap: 8px;
+    justify-content: center;
+    color: var(--color-brand-02);
+    font-weight: 600;
+    border-color: var(--color-brand-02);
+    border-style: dashed;
+  }
+
+  &--selected {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 8%, var(--color-ui-01));
+    border-color: var(--color-brand-02);
+
+    .room-choice__name {
+      color: var(--color-brand-02);
+    }
+
+    .room-choice__icon {
+      color: var(--color-brand-02);
+      background-color: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
+    }
+  }
+}
+
+.room-community-dialog__content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 60vh;
+  padding: 0 16px 16px;
+  overflow-y: auto;
+}
+
+.room-community-dialog__state {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  align-self: center;
+  padding: 16px;
+  color: var(--color-text-03);
+  text-align: center;
 }
 </style>

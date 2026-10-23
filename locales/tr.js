@@ -846,10 +846,12 @@ export default {
       uploadingMedia: 'Medya yükleniyor',
       room: {
         community: {
-          label: 'Toplulukta paylaş',
-          none: 'Paylaşma',
-          privateListedHint:
-            'Bu topluluk gizli ama quizin herkese açık olduğu için genel quiz listesinde de görünecek. Yalnızca toplulukta görünsün istersen "Sadece toplulukta" seç.',
+          pick: 'Topluluk seç',
+          change: 'Değiştir',
+          dialogTitle: 'Topluluk seç',
+          empty: 'Quiz paylaşabileceğin bir topluluk yok.',
+          loadFailed: 'Topluluklar yüklenemedi.',
+          required: 'Sadece toplulukta görünecek quiz için bir topluluk seç.',
           shareFailed: 'Quiz kaydedildi ama toplulukta paylaşılamadı: {reason}'
         },
         roomTitle: {
@@ -882,13 +884,16 @@ export default {
         },
         visibility: {
           label: 'Görünürlük',
-          needsCommunity: 'Bunun için önce yukarıdan bir topluluk seç.'
+          anonDisabled: 'Anonim quizler toplulukta paylaşılamaz.'
         },
         isListed: {
           systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'
         },
         isAnon: {
-          label: 'Adın gizlensin mi?'
+          label: 'Oluşturan',
+          namedDescription: 'Quiz profilinde listelenir',
+          anonTitle: 'Anonim',
+          anonDescription: 'Adın hiçbir yerde görünmez'
         },
         tag: {
           label: 'Etiketler',
@@ -1172,11 +1177,11 @@ export default {
     },
     visibilityMode: {
       public: 'Herkese açık',
-      publicDescription: 'Herkese listelenir ve aramada görünür.',
+      publicDescription: 'Quiz listelerinde ve aramalarda görünür.',
       communityOnly: 'Sadece toplulukta',
-      communityOnlyDescription: 'Yalnızca paylaştığın toplulukların içinde görünür, genel listelerde ve aramada çıkmaz.',
+      communityOnlyDescription: 'Yalnızca seçtiğin toplulukta görünür, genel listelerde ve aramada çıkmaz.',
       unlisted: 'Listelenmemiş',
-      unlistedDescription: 'Hiçbir yerde listelenmez, yalnızca bağlantıya sahip olanlar oynayabilir.'
+      unlistedDescription: 'Yalnızca bağlantıya sahip olanlar oynayabilir.'
     },
     post: {
       shareTitle: 'Topluluğa paylaş',

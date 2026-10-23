@@ -40,7 +40,7 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     moderationNote: props.room?.moderationNote || null,
     moderationSource: props.room?.moderationSource || null,
     isAnon: props.room?.isAnon || false,
-    // edit mode: RoomCommunitySelect fills it from where the quiz is already shared
+    // only set under communityOnly; edit mode: RoomBasicInfo fills it from where the quiz is already shared
     community: null,
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
@@ -99,25 +99,19 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isListed: form.visibilityMode === 'public'
   })
 
-  // community-only needs a community to live in; fall back to the closest non-public mode
-  const dropCommunity = () => {
-    form.community = null
-
-    if (form.visibilityMode === 'communityOnly') form.visibilityMode = 'unlisted'
-  }
-
+  // the backend shares to whatever community is sent, so it only travels with communityOnly
   watch(
-    () => form.community,
-    community => {
-      if (!community) dropCommunity()
+    () => form.visibilityMode,
+    mode => {
+      if (mode !== 'communityOnly') form.community = null
     }
   )
 
-  // a post shows its author, so an anonymous quiz is never shared to a community
+  // a post shows its author, so an anonymous quiz is never shared to a community; fall back to the closest non-public mode
   watch(
     () => form.isAnon,
     isAnon => {
-      if (isAnon) dropCommunity()
+      if (isAnon && form.visibilityMode === 'communityOnly') form.visibilityMode = 'unlisted'
     }
   )
 
@@ -497,6 +491,12 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
   }
 
   const handleSubmit = async ({ isDraft = false }) => {
+    if (form.visibilityMode === 'communityOnly' && !form.community) {
+      getErrorNotify({ error: { message: i18n.t('form.creatorModeCompose.room.community.required') } })
+
+      return
+    }
+
     form.isBusy = true
 
     // Stage cover photo blob if the croppa in <RoomBasicInfo> has a

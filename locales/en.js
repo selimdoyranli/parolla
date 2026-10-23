@@ -842,10 +842,12 @@ export default {
       clearForm: 'Clear Form',
       room: {
         community: {
-          label: 'Share to community',
-          none: "Don't share",
-          privateListedHint:
-            'This community is private, but your quiz is public, so it will still appear in the public quiz list. Pick "Community only" to keep it inside the community.',
+          pick: 'Pick a community',
+          change: 'Change',
+          dialogTitle: 'Pick a community',
+          empty: 'There is no community you can share quizzes to.',
+          loadFailed: 'Could not load communities.',
+          required: 'Pick a community for a community-only quiz.',
           shareFailed: 'Quiz saved, but it could not be shared to the community: {reason}'
         },
         roomTitle: {
@@ -878,13 +880,16 @@ export default {
         },
         visibility: {
           label: 'Visibility',
-          needsCommunity: 'Pick a community above first.'
+          anonDisabled: 'Anonymous quizzes cannot be shared to a community.'
         },
         isListed: {
           systemRemoved: 'This quiz was reviewed: it is not suitable for the quiz list and was removed from it.'
         },
         isAnon: {
-          label: 'Hide creator player name?'
+          label: 'Creator',
+          namedDescription: 'Listed on your quiz profile',
+          anonTitle: 'Anonymous',
+          anonDescription: 'Your name is not shown anywhere'
         },
         tag: {
           label: 'Tags',
@@ -1154,11 +1159,11 @@ export default {
     },
     visibilityMode: {
       public: 'Public',
-      publicDescription: 'Listed for everyone and shown in search.',
+      publicDescription: 'Shown in quiz lists and search.',
       communityOnly: 'Community only',
-      communityOnlyDescription: 'Only visible inside the communities you share it in, not in public lists or search.',
+      communityOnlyDescription: 'Only visible inside the community you pick, not in public lists or search.',
       unlisted: 'Unlisted',
-      unlistedDescription: 'Not listed anywhere, only people with the link can play it.'
+      unlistedDescription: 'Only people with the link can play it.'
     },
     post: {
       shareTitle: 'Share to a community',
