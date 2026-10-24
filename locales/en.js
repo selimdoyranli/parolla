@@ -1195,7 +1195,7 @@ export default {
       likeAction: 'Like',
       quizPicker: {
         open: 'Add quiz',
-        placeholder: 'Search a quiz name or ID...',
+        placeholder: 'Search by quiz name...',
         remove: 'Remove quiz',
         empty: 'No quizzes found.',
         notePlaceholder: 'Add a note (optional)'

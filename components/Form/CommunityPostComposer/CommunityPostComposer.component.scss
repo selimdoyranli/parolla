@@ -1,5 +1,5 @@
 .community-post-composer {
-  overflow: hidden;
+  // no overflow clipping: the quiz button's hover tooltip hangs below the box
   background: var(--color-ui-02);
   border: 1px solid var(--color-border-01);
   border-radius: 20px;

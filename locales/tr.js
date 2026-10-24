@@ -1213,7 +1213,7 @@ export default {
       likeAction: 'Beğen',
       quizPicker: {
         open: 'Quiz Ekle',
-        placeholder: 'Quiz adı veya ID ara...',
+        placeholder: 'Quiz adı ile ara...',
         remove: 'Quizi kaldır',
         empty: 'Quiz bulunamadı.',
         notePlaceholder: 'Bir not ekle (isteğe bağlı)'
