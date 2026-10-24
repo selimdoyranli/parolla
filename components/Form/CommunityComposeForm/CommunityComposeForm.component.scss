@@ -272,6 +272,14 @@
     .app-icon {
       flex-shrink: 0;
     }
+
+    strong {
+      color: var(--color-text-02);
+    }
+  }
+
+  &__editNoteBlocked {
+    color: var(--color-danger-01) !important;
   }
 
   &__actions {

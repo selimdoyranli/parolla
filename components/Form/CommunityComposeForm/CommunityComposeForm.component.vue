@@ -13,11 +13,17 @@ Form.community-compose-form(@submit="onSubmit")
 
   p.community-compose-form__editNote(v-if="isEdit")
     AppIcon(name="tabler:info-circle" :width="16" :height="16")
-    | {{ $t('community.edit.limitNote', { limit: COMMUNITY_EDIT_LIMIT }) }}
+    span
+      | {{ $t('community.edit.limitNote', { limit: COMMUNITY_EDIT_LIMIT }) }}
+      //- only the owner gets a quota (GMs aren't limited)
+      template(v-if="quota")
+        | &nbsp;
+        strong(v-if="quota.left") {{ $t('community.edit.limitLeft', { count: quota.left }) }}
+        strong.community-compose-form__editNoteBlocked(v-else) {{ $t('community.edit.limitReached', { date: retryDate }) }}
 
   .community-compose-form__actions
     template(v-if="isEdit")
-      Button(color="var(--color-brand-02)" block round native-type="submit" :loading="isBusy" :disabled="!isValid")
+      Button(color="var(--color-brand-02)" block round native-type="submit" :loading="isBusy" :disabled="!isValid || quota?.left === 0")
         | {{ $t('community.edit.saveButton') }}
     template(v-else)
       Button(v-if="step > 0" plain round native-type="button" :disabled="isBusy" @click="prev") {{ $t('community.wizard.previousButton') }}
@@ -35,7 +41,7 @@ Form.community-compose-form(@submit="onSubmit")
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
 import { Form, Steps, Step, Button } from 'vant'
 import Step1Foundations from './partials/Step1Foundations.vue'
 import Step2Categories from './partials/Step2Categories.vue'
@@ -55,6 +61,13 @@ export default defineComponent({
     const isEdit = props.mode === 'edit'
     const stepKeys = ['foundations', 'settings', 'complete']
     const state = useCommunityForm(isEdit ? props.community : null)
+    const { i18n } = useContext()
+    const quota = computed(() => (isEdit && props.community?.editQuota) || null)
+    const retryDate = computed(() =>
+      quota.value?.retryAt
+        ? new Date(quota.value.retryAt).toLocaleString(i18n.locale, { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })
+        : ''
+    )
 
     // Enter inside a field must not skip steps: only the last step / edit mode submits
     const onSubmit = () => {
@@ -67,6 +80,8 @@ export default defineComponent({
       onSubmit,
       stepKeys,
       COMMUNITY_EDIT_LIMIT,
+      quota,
+      retryDate,
       lastStep: stepKeys.length - 1
     }
   }

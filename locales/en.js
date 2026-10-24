@@ -1282,7 +1282,9 @@ export default {
       saveButton: 'Save',
       slug: 'Address',
       dangerZone: 'Danger zone',
-      limitNote: 'To prevent spam, a community can be updated at most {limit} times in 7 days.'
+      limitNote: 'A community can be updated at most {limit} times in 7 days.',
+      limitLeft: '{count} left this week.',
+      limitReached: 'No updates left this week; you can update it again on {date}.'
     },
     members: {
       title: 'Members',

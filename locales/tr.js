@@ -1300,7 +1300,9 @@ export default {
       saveButton: 'Kaydet',
       slug: 'Adres',
       dangerZone: 'Tehlikeli bölge',
-      limitNote: 'Spamı önlemek için bir topluluk 7 gün içinde en fazla {limit} kez güncellenebilir.'
+      limitNote: 'Bir topluluk 7 gün içinde en fazla {limit} kez güncellenebilir.',
+      limitLeft: 'Bu hafta {count} hakkın kaldı.',
+      limitReached: 'Bu haftaki hakların doldu, {date} tarihinde tekrar güncelleyebilirsin.'
     },
     members: {
       title: 'Üyeler',
