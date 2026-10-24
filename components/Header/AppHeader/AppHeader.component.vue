@@ -164,6 +164,14 @@ export default defineComponent({
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
 
+    // the drawer only lives on home: any navigation (also browser back) closes it, so coming home doesn't reopen it
+    watch(
+      () => route.value.fullPath,
+      () => {
+        dialog.drawer.isOpen = false
+      }
+    )
+
     const isHome = computed(() => getRouteBaseName(route.value) === 'Main')
     const gold = computed(() => store.state.economy.wallet.gold)
     const inventoryDialog = computed(() => store.state.economy.dialog.inventory)
