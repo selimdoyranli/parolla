@@ -53,12 +53,15 @@
   }
 
   &__name {
+    // names run up to 100 characters: wrap, then clamp to two lines
+    display: -webkit-box;
     margin: 0;
     overflow: hidden;
     color: #fff;
     font-size: var(--font-size-text-6);
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   &__visibility {
