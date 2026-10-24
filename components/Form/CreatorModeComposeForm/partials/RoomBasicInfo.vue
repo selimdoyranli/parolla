@@ -94,9 +94,28 @@
             span.room-choice__name {{ $t(`community.visibilityMode.${mode}`) }}
             span.room-choice__description {{ $t(`community.visibilityMode.${mode}Description`) }}
 
-      //- optional with either visibility: public = lists + the community, unlisted = only the community
+      // guests are always anonymous and can't share to a community, so both choices are players-only
       template(v-if="user")
-        span.room-choices__title {{ $t('form.creatorModeCompose.room.community.title') }}
+        span.room-choices__title {{ $t('form.creatorModeCompose.room.isAnon.label') }}
+        .room-choices__grid
+          button.room-choice(
+            v-for="isAnon in [false, true]"
+            :key="String(isAnon)"
+            type="button"
+            :class="{ 'room-choice--selected': form.isAnon === isAnon }"
+            :disabled="form.isBusy"
+            @click="pickCreator(isAnon)"
+          )
+            PlayerAvatar.room-choice__avatar(v-if="!isAnon" :size="40" :user="user")
+            span.room-choice__avatar.room-choice__anonAvatar(v-else) A
+            span.room-choice__body
+              span.room-choice__name {{ isAnon ? $t('form.creatorModeCompose.room.isAnon.anonTitle') : user.username }}
+              span.room-choice__description
+                | {{ $t(`form.creatorModeCompose.room.isAnon.${isAnon ? 'anonDescription' : 'namedDescription'}`) }}
+
+        //- optional with either visibility: public = lists + the community, unlisted = only the community
+        span.room-choices__label {{ $t('form.creatorModeCompose.room.community.title') }} &nbsp;
+          small.creator-mode-compose-form__optionalHint {{ $t('form.optionalHint') }}
         .room-choice(v-if="selectedCommunity")
           CommunityAvatar.room-choice__avatar(:community="selectedCommunity" :size="40")
           span.room-choice__body
@@ -120,25 +139,6 @@
             AppIcon(name="tabler:plus" :width="20" :height="20")
             | {{ $t('form.creatorModeCompose.room.community.pick') }}
           span.room-choices__note(v-if="isCommunityBlocked") {{ $t('form.creatorModeCompose.room.community.anonUnlisted') }}
-
-      // guests are always anonymous, so the choice only exists for players
-      template(v-if="user")
-        span.room-choices__title {{ $t('form.creatorModeCompose.room.isAnon.label') }}
-        .room-choices__grid
-          button.room-choice(
-            v-for="isAnon in [false, true]"
-            :key="String(isAnon)"
-            type="button"
-            :class="{ 'room-choice--selected': form.isAnon === isAnon }"
-            :disabled="form.isBusy"
-            @click="pickCreator(isAnon)"
-          )
-            PlayerAvatar.room-choice__avatar(v-if="!isAnon" :size="40" :user="user")
-            span.room-choice__avatar.room-choice__anonAvatar(v-else) A
-            span.room-choice__body
-              span.room-choice__name {{ isAnon ? $t('form.creatorModeCompose.room.isAnon.anonTitle') : user.username }}
-              span.room-choice__description
-                | {{ $t(`form.creatorModeCompose.room.isAnon.${isAnon ? 'anonDescription' : 'namedDescription'}`) }}
 
     Dialog.dialog.room-community-dialog(
       v-model="isCommunityDialogOpen"
@@ -173,13 +173,16 @@
     Field.creator-mode-compose-form__roomTag(
       v-model="form.tag"
       name="roomTag"
-      :label="$t('form.creatorModeCompose.room.tag.label')"
       :placeholder="$t('form.creatorModeCompose.room.tag.placeholder')"
       maxlength="64"
       show-word-limit
       @input="onInputTag"
       @keydown.enter.prevent="onAddTag"
     )
+      template(#label)
+        span {{ $t('form.creatorModeCompose.room.tag.label') }} &nbsp;
+        small.creator-mode-compose-form__optionalHint
+          | {{ $t('form.optionalHint') }}
       template(#button)
         Button(
           type="info"
@@ -571,7 +574,8 @@ export default defineComponent({
 }
 
 // label on its own full-width line so "(isteğe bağlı)" sits right after the word, like the cover photo label
-.creator-mode-compose-form__description.van-field {
+.creator-mode-compose-form__description.van-field,
+.creator-mode-compose-form__roomTag.van-field {
   /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
   ::v-deep .van-field__label {
     width: 100%;
@@ -675,6 +679,13 @@ export default defineComponent({
   gap: 10px;
   padding: 16px;
   background-color: var(--color-ui-02);
+
+  // same look as the field labels (Etiketler)
+  &__label {
+    margin-block-start: 8px;
+    color: var(--color-text-02);
+    font-size: 14px;
+  }
 
   &__title {
     margin-block-start: 8px;
