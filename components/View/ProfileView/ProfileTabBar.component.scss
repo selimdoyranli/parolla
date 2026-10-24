@@ -5,15 +5,35 @@
   background: var(--color-ui-01);
   border-bottom: 1px solid var(--color-border-01);
 
+  // narrow screens: the tabs scroll sideways; the fade on the right hints there's more
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 32px;
+    background: linear-gradient(to right, transparent, var(--color-ui-01));
+    content: '';
+    pointer-events: none;
+  }
+
   &__list {
     display: flex;
     align-items: stretch;
     padding: 0;
+    padding-inline-end: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__tab {
     position: relative;
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     min-width: 96px;
@@ -22,6 +42,7 @@
     font-weight: 600;
     font-size: 14px;
     font-family: inherit;
+    white-space: nowrap;
     text-decoration: none;
     background: transparent;
     border: 0;
