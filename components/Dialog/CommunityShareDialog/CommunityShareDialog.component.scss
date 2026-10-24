@@ -50,13 +50,6 @@
     padding: 0 16px;
   }
 
-  &__close.van-button {
-    min-width: 96px;
-    color: var(--color-text-02);
-    background: var(--color-ui-03);
-    border-color: var(--color-border-02);
-  }
-
   // brand-02 is a light coral: dark text keeps the contrast white would lose
   &__submit.van-button--primary {
     min-width: 96px;
