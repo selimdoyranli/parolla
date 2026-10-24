@@ -1181,7 +1181,7 @@ export default {
       public: 'Herkese açık',
       publicDescription: 'Quiz listelerinde ve aramalarda görünür.',
       unlisted: 'Listelenmemiş',
-      unlistedDescription: 'Genel listede görünmez, linkle katılabilirler ya da topluluk seçtiysen topluluk quizlerinde görünür.'
+      unlistedDescription: 'Genel listede görünmez; linkle veya topluluk quizleri üzerinden erişilebilir.'
     },
     post: {
       shareTitle: 'Topluluğa paylaş',

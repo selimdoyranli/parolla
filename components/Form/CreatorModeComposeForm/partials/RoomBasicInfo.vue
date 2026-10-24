@@ -687,13 +687,14 @@ export default defineComponent({
     }
   }
 
+  // equal-height rows: stacked on phones, side by side from tablet up
   &__grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
 
     @include media-breakpoint-up(tablet) {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
