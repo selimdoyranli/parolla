@@ -1,5 +1,6 @@
 <template lang="pug">
-form.community-post-composer(@submit.prevent="submit")
+//- guests see the composer as a teaser: any click asks them to sign in
+form.community-post-composer(@click.capture="guardGuest" @submit.prevent="submit")
   Field.community-post-composer__field(
     v-model="content"
     type="textarea"
@@ -8,6 +9,7 @@ form.community-post-composer(@submit.prevent="submit")
     autosize
     :aria-label="$t('community.post.composerLabel')"
     :maxlength="COMMUNITY_POST_NOTE_MAX_LENGTH"
+    :readonly="!$auth.loggedIn"
     :disabled="isBusy"
   )
 
@@ -90,7 +92,15 @@ export default defineComponent({
   emits: ['posted'],
   setup(props, { emit }) {
     const store = useStore()
-    const { i18n } = useContext()
+    const { i18n, $auth } = useContext()
+
+    const guardGuest = event => {
+      if ($auth.loggedIn) return
+
+      event.preventDefault()
+      event.stopPropagation()
+      store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+    }
     const { censorBadwords } = useCensorBadwords()
 
     const content = ref('')
@@ -200,6 +210,7 @@ export default defineComponent({
 
     return {
       COMMUNITY_POST_NOTE_MAX_LENGTH,
+      guardGuest,
       content,
       isBusy,
       canSubmit,

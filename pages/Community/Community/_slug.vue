@@ -20,7 +20,11 @@
 
     .community-page__body
       main.community-page__main
-        CommunityPostComposer.community-page__composer(v-if="canPost" :community-document-id="community.documentId" @posted="handlePosted")
+        CommunityPostComposer.community-page__composer(
+          v-if="canPost || canGuestSeeComposer"
+          :community-document-id="community.documentId"
+          @posted="handlePosted"
+        )
         .community-page__toolbar
           h3.community-page__feed-title
             | {{ $t('community.detail.feedTitle') }}
@@ -83,7 +87,7 @@ export default defineComponent({
   layout: 'Default/Default.layout',
   setup() {
     const store = useStore()
-    const { i18n, route } = useContext()
+    const { i18n, route, $auth } = useContext()
 
     const community = ref(null)
     const isLoading = ref(true)
@@ -207,6 +211,15 @@ export default defineComponent({
             community.value.postPermission === communityPostPermissionEnum.EVERYONE))
     )
 
+    // guests get the composer as a sign-in prompt where members could post
+    const canGuestSeeComposer = computed(
+      () =>
+        !$auth.loggedIn &&
+        !!community.value &&
+        !community.value.isHidden &&
+        community.value.postPermission === communityPostPermissionEnum.EVERYONE
+    )
+
     // returns false when the community could not be (re)loaded
     const loadCommunity = async () => {
       const id = ++communityReqId
@@ -272,6 +285,7 @@ export default defineComponent({
       handlePostDeleted,
       handlePosted,
       canPost,
+      canGuestSeeComposer,
       handleOpenPending,
       handleOpenMembers,
       handleOpenDelete
