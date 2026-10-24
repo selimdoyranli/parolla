@@ -1200,9 +1200,9 @@ export default {
       },
       postPermission: {
         everyone: 'All members',
-        everyoneDescription: 'All members can share quizzes.',
+        everyoneDescription: 'All members can share quizzes and posts.',
         modsOnly: 'Moderators only',
-        modsOnlyDescription: 'Only the owner and moderators can share quizzes.'
+        modsOnlyDescription: 'Only the owner and moderators can share quizzes and posts.'
       },
       feedEmpty: 'No posts in this community yet.',
       feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
@@ -1236,8 +1236,8 @@ export default {
         placeholder: 'Briefly describe your community',
         errorTooLong: 'Description can be at most {max} characters.'
       },
-      avatar: { label: 'Community image', hint: 'Cropped to a square' },
-      coverPhoto: { label: 'Cover photo', hint: 'Cropped to a wide banner' },
+      avatar: { label: 'Community image', uploaderTitle: 'Add an image', hint: 'Click to pick an image, cropped to a square' },
+      coverPhoto: { label: 'Cover photo', uploaderTitle: 'Add a cover photo', hint: 'Click to pick an image, cropped to 16:9' },
       tags: {
         label: 'Tags',
         placeholder: 'Enter a tag',
@@ -1246,7 +1246,7 @@ export default {
         addButton: 'Add tag'
       },
       visibility: { label: 'Visibility' },
-      postPermission: { label: 'Who can share quizzes?' }
+      postPermission: { label: 'Who can post?' }
     },
     wizard: {
       title: 'Create community',

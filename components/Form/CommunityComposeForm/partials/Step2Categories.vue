@@ -1,5 +1,5 @@
 <template lang="pug">
-.community-compose-form__section
+.community-compose-form__fields
   Field(
     name="tag"
     :value="tagInput"
@@ -18,7 +18,7 @@
         :disabled="!tagInput || form.tags.length >= COMMUNITY_TAGS_MAX_LENGTH"
         @click="$emit('add-tag')"
       ) {{ $t('community.form.tags.addButton') }}
-  .community-compose-form__tags
+  .community-compose-form__tags(v-if="form.tags.length")
     Tag(v-for="tag in form.tags" :key="tag" type="primary" closeable @close="$emit('remove-tag', tag)") {{ tag }}
 </template>
 

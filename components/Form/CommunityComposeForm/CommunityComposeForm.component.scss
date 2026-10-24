@@ -3,10 +3,64 @@
   flex-direction: column;
   gap: 16px;
 
+  @import '@/assets/style/scss/shared/_room-choice.scss';
+
+  &__steps {
+    overflow: hidden;
+    border-radius: var(--border-radius-01);
+
+    &.van-steps {
+      background-color: var(--color-ui-02);
+    }
+
+    .van-step {
+      color: var(--color-text-03);
+    }
+
+    .van-step__line,
+    .van-step__circle {
+      background-color: var(--color-border-02);
+    }
+
+    // vant paints a white box behind each step dot
+    &.van-steps .van-step__circle-container {
+      background-color: var(--color-ui-02);
+    }
+  }
+
   &__section {
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+
+  // one rounded card, labels above bordered controls: same look as the quiz compose form
+  &__fields {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-ui-02);
+    border-radius: var(--border-radius-01);
+
+    .van-field {
+      flex-direction: column;
+
+      &__label {
+        width: 100%;
+        max-width: 100%;
+        margin-block-end: $spacer * 2;
+      }
+
+      &__control:not(.van-field__control--custom) {
+        padding: $spacer * 2 $spacer * 4 !important;
+        border: 1px solid var(--color-border-02) !important;
+        border-radius: calc(var(--border-radius-01) / 2) !important;
+      }
+    }
+  }
+
+  &__optionalHint {
+    color: var(--color-text-03);
+    font-size: 12px;
   }
 
   &__tags {
@@ -15,15 +69,26 @@
     gap: 8px;
   }
 
-  &__option-description {
-    display: block;
-    color: var(--color-text-03);
-    font-size: 12px;
+  &__fields &__tags {
+    padding: 0 16px 16px;
   }
 
-  &__media-hint {
-    color: var(--color-text-03);
-    font-size: 12px;
+  &__mediaCell {
+    flex-direction: column;
+    align-items: stretch;
+
+    .van-cell__title,
+    .van-cell__value {
+      flex: none;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .van-cell__value {
+      margin-block-start: 8px;
+      color: var(--color-text-01);
+      text-align: left;
+    }
   }
 
   &__picker {
@@ -32,32 +97,43 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: var(--color-text-02);
-    background-color: light-dark(#f2f2f2, #222);
+    background-color: var(--color-ui-01);
     border: 2px dashed var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
     cursor: pointer;
+    transition: border-color 0.2s var(--motion-01), background-color 0.2s var(--motion-01);
 
-    &--avatar {
-      width: 160px;
-      height: 160px;
-      border-radius: calc(var(--border-radius-01) / 2);
+    &:hover {
+      background-color: var(--color-hover-01);
+      border-color: var(--color-text-03);
     }
 
-    &--hasImage {
-      border-style: solid;
+    &--avatar {
+      width: 200px;
+      height: 200px;
     }
 
     &--cover {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: calc(var(--border-radius-01) / 2);
+    }
+
+    &--hasImage {
+      background-color: transparent;
+      border-style: solid;
+      cursor: default;
+
+      &:hover {
+        background-color: transparent;
+        border-color: var(--color-border-02);
+      }
     }
   }
 
-  /* croppa's root carries this class, so it is a same-element rule */
-  &__croppa {
+  /* croppa's root carries this class: nested under the picker to outrank vue-croppa's .croppa-container grey */
+  &__picker &__croppa {
     display: block;
-    background-color: light-dark(#f2f2f2, #222);
+    background-color: var(--color-ui-01);
 
     canvas {
       display: block;
@@ -71,13 +147,75 @@
     }
   }
 
-  &__picker-overlay {
+  &__pickerOverlay {
     position: absolute;
     display: flex;
+    flex-direction: column;
+    gap: 4px;
     align-items: center;
     justify-content: center;
+    padding: 12px;
+    text-align: center;
     pointer-events: none;
     inset: 0;
+  }
+
+  &__pickerIcon {
+    margin-block-end: 4px;
+    color: var(--color-icon-01);
+  }
+
+  &__pickerTitle {
+    color: var(--color-text-01);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__pickerDescription {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 13px;
+  }
+
+  &__pickerMeta {
+    color: var(--color-text-03);
+    font-size: 11px;
+  }
+
+  &__choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  &__choicesTitle {
+    margin-block-start: 8px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &:first-child {
+      margin-block-start: 0;
+    }
+  }
+
+  // equal-height cards: stacked on phones, side by side from tablet up
+  &__choiceGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+
+    @include media-breakpoint-up(tablet) {
+      grid-auto-rows: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      &--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
   }
 
   &__summary {
@@ -98,5 +236,15 @@
     display: flex;
     gap: 12px;
     justify-content: space-between;
+
+    > .van-button:last-child {
+      margin-inline-start: auto;
+    }
+
+    // vant's plain button keeps its light-theme text colour: unreadable in dark mode
+    > .van-button--plain {
+      color: var(--color-text-02);
+      border-color: var(--color-border-02);
+    }
   }
 }

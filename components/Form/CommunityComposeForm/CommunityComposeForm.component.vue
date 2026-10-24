@@ -1,6 +1,6 @@
 <template lang="pug">
 Form.community-compose-form(@submit="onSubmit")
-  Steps.community-compose-form__steps(v-if="!isEdit" :active="step")
+  Steps.community-compose-form__steps(v-if="!isEdit" active-color="var(--color-brand-02)" :active="step")
     Step(v-for="key in stepKeys" :key="key") {{ $t(`community.wizard.steps.${key}`) }}
 
   template(v-if="isEdit || step === 0")
@@ -14,15 +14,22 @@ Form.community-compose-form(@submit="onSubmit")
 
   .community-compose-form__actions
     template(v-if="isEdit")
-      Button(type="primary" block round native-type="submit" :loading="isBusy" :disabled="!!nameError || !!descriptionError")
+      Button(
+        color="var(--color-brand-02)"
+        block
+        round
+        native-type="submit"
+        :loading="isBusy"
+        :disabled="!!nameError || !!descriptionError"
+      )
         | {{ $t('community.edit.saveButton') }}
     template(v-else)
       Button(v-if="step > 0" plain round native-type="button" :disabled="isBusy" @click="prev") {{ $t('community.wizard.previousButton') }}
-      Button(v-if="step < lastStep" type="primary" round native-type="button" :disabled="!canGoNext" @click="next")
+      Button(v-if="step < lastStep" color="var(--color-brand-02)" round native-type="button" :disabled="!canGoNext" @click="next")
         | {{ $t('community.wizard.nextButton') }}
       Button(
         v-else
-        type="primary"
+        color="var(--color-brand-02)"
         round
         native-type="button"
         :loading-text="$t('community.wizard.creating')"

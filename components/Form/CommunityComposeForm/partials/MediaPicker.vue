@@ -1,6 +1,8 @@
 <template lang="pug">
-.community-compose-form__section
-  label {{ label }}
+Cell.community-compose-form__mediaCell
+  template(#title)
+    | {{ $t(`community.form.${field}.label`) }} &nbsp;
+    small.community-compose-form__optionalHint {{ $t('form.optionalHint') }}
   .community-compose-form__picker(
     ref="wrapperRef"
     :class="[`community-compose-form__picker--${shape}`, { 'community-compose-form__picker--hasImage': hasImage }]"
@@ -29,28 +31,32 @@
         @move="cut"
         @image-remove="onRemove"
       )
-    .community-compose-form__picker-overlay(v-if="!hasImage")
-      AppIcon(name="tabler:upload" :width="28" :height="28")
-  small.community-compose-form__media-hint {{ hint }}
+    .community-compose-form__pickerOverlay(v-if="!hasImage")
+      AppIcon.community-compose-form__pickerIcon(name="tabler:upload" :width="28" :height="28")
+      span.community-compose-form__pickerTitle {{ $t(`community.form.${field}.uploaderTitle`) }}
+      p.community-compose-form__pickerDescription {{ $t(`community.form.${field}.hint`) }}
+      small.community-compose-form__pickerMeta
+        | Max: {{ convertSize(parollaConfig.upload.maxFileSize, { unit: 'mb' }) }} ·
+        | {{ parollaConfig.upload.allowedExtensions.map(ext => `.${ext}`).join(', ') }}
 </template>
 
 <script>
 import { defineComponent, ref, reactive, computed, onMounted, onBeforeUnmount, useContext } from '@nuxtjs/composition-api'
-import { Notify } from 'vant'
+import { Cell, Notify } from 'vant'
+import convertSize from 'convert-size'
 import parollaConfig from '@/system/parolla.config'
 
 // output size of the cropped image: avatar 1:1, cover 16:9
 const OUTPUT_WIDTH = { avatar: 512, cover: 1600 }
-const AVATAR_BOX = 160
+const AVATAR_BOX = 200
 
 export default defineComponent({
   name: 'MediaPicker',
+  components: { Cell },
   props: {
     media: { type: Object, required: true },
     field: { type: String, required: true },
     shape: { type: String, required: true, validator: value => ['avatar', 'cover'].includes(value) },
-    label: { type: String, required: true },
-    hint: { type: String, required: true },
     // already-saved image url (edit mode)
     current: { type: String, default: null }
   },
@@ -159,6 +165,7 @@ export default defineComponent({
     const onOversize = () => Notify({ message: i18n.t('error.mediaError.limitExceeded'), type: 'warning' })
 
     return {
+      convertSize,
       parollaConfig,
       croppa,
       wrapperRef,

@@ -1218,9 +1218,9 @@ export default {
       },
       postPermission: {
         everyone: 'Tüm üyeler',
-        everyoneDescription: 'Tüm üyeler quiz paylaşabilir.',
+        everyoneDescription: 'Tüm üyeler quiz ve gönderi paylaşabilir.',
         modsOnly: 'Yalnızca moderatörler',
-        modsOnlyDescription: 'Yalnızca sahip ve moderatörler quiz paylaşabilir.'
+        modsOnlyDescription: 'Yalnızca sahip ve moderatörler quiz ve gönderi paylaşabilir.'
       },
       feedEmpty: 'Bu toplulukta henüz gönderi yok.',
       feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
@@ -1254,8 +1254,8 @@ export default {
         placeholder: 'Topluluğunu kısaca anlat',
         errorTooLong: 'Açıklama en fazla {max} karakter olabilir.'
       },
-      avatar: { label: 'Topluluk görseli', hint: 'Kare olarak kırpılır' },
-      coverPhoto: { label: 'Kapak fotoğrafı', hint: 'Geniş olarak kırpılır' },
+      avatar: { label: 'Topluluk görseli', uploaderTitle: 'Görsel ekle', hint: 'Tıkla ve görsel seç, kare olarak kırpılır' },
+      coverPhoto: { label: 'Kapak fotoğrafı', uploaderTitle: 'Kapak fotoğrafı ekle', hint: 'Tıkla ve görsel seç, 16:9 oranında kırpılır' },
       tags: {
         label: 'Etiketler',
         placeholder: 'Etiket yaz',
@@ -1264,7 +1264,7 @@ export default {
         addButton: 'Etiket ekle'
       },
       visibility: { label: 'Görünürlük' },
-      postPermission: { label: 'Kim quiz paylaşabilir?' }
+      postPermission: { label: 'Kim paylaşım yapabilir?' }
     },
     wizard: {
       title: 'Topluluk oluştur',

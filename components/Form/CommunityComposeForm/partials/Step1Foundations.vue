@@ -1,5 +1,5 @@
 <template lang="pug">
-.community-compose-form__section
+.community-compose-form__fields
   Field(
     v-model="form.name"
     name="name"
@@ -10,33 +10,21 @@
     :error-message="form.name ? nameError : ''"
   )
   Field(v-if="community" :value="community.slug" :label="$t('community.edit.slug')" readonly disabled)
-  Field(
+  Field.community-compose-form__fullLabel(
     v-model="form.description"
     name="description"
     type="textarea"
-    :label="$t('community.form.description.label')"
     :placeholder="$t('community.form.description.placeholder')"
     autosize
     show-word-limit
     :error-message="descriptionError"
     :maxlength="COMMUNITY_DESCRIPTION_MAX_LENGTH"
   )
-  MediaPicker(
-    :label="$t('community.form.avatar.label')"
-    field="avatar"
-    shape="avatar"
-    :hint="$t('community.form.avatar.hint')"
-    :media="media"
-    :current="community && community.avatar"
-  )
-  MediaPicker(
-    :label="$t('community.form.coverPhoto.label')"
-    field="coverPhoto"
-    shape="cover"
-    :hint="$t('community.form.coverPhoto.hint')"
-    :media="media"
-    :current="community && community.coverPhoto"
-  )
+    template(#label)
+      | {{ $t('community.form.description.label') }} &nbsp;
+      small.community-compose-form__optionalHint {{ $t('form.optionalHint') }}
+  MediaPicker(field="avatar" shape="avatar" :media="media" :current="community && community.avatar")
+  MediaPicker(field="coverPhoto" shape="cover" :media="media" :current="community && community.coverPhoto")
 </template>
 
 <script>
