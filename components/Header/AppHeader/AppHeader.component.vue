@@ -9,10 +9,10 @@
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
     li.app-header-nav__item(v-if="isHome" @click="$router.push(localePath({ name: 'Community-CommunityList' }))")
-      ActionButton(:label="$t('dialog.menu.communities')" icon="streamline-color:user-multiple-group-flat" :icon-size="24")
+      ActionButton(:label="$t('dialog.menu.communities')" icon="tabler:users-group" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
-      ActionButton(:label="$t('dialog.menu.shop')" icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
+      ActionButton(:label="$t('dialog.menu.shop')" icon="tabler:shopping-bag" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" :amount="gold")
 
