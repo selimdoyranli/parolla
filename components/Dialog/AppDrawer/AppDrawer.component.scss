@@ -1,0 +1,35 @@
+.app-drawer {
+  width: 280px;
+  max-width: 80%;
+  height: 100%;
+  padding: var(--base-p-y) 0;
+  background-color: var(--color-ui-01);
+
+  &__title {
+    display: block;
+    padding: var(--base-p-y) var(--base-p-x);
+    padding-top: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-7);
+
+    @include font-weight-semi-bold;
+  }
+
+  [class*='van-hairline']::after {
+    border: 0;
+  }
+
+  &-nav {
+    &__icon {
+      display: flex;
+      align-items: center;
+      margin-inline-end: $spacer * 3;
+    }
+
+    &__item.is-active {
+      .van-cell__title {
+        @include font-weight-semi-bold;
+      }
+    }
+  }
+}

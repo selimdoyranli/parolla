@@ -1,6 +1,9 @@
 <template lang="pug">
 .app-header
   menu.app-header-nav
+    li.app-header-nav__item(v-if="isHome" @click="dialog.drawer.isOpen = true")
+      ActionButton(icon="tabler:menu-2" :icon-size="24" :aria-label="$t('dialog.menu.menu')")
+
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
@@ -71,6 +74,8 @@
     @closed="dialog.menu.isOpen = false"
   )
 
+  // App Drawer (homepage hamburger)
+  LazyAppDrawer(v-if="isHome" :isOpen="dialog.drawer.isOpen" @closed="dialog.drawer.isOpen = false")
   // How To Calculate Stats Dialog
   LazyHowToCalculateStatsDialog(:isOpen="dialog.howToCalculateStats.isOpen" @closed="dialog.howToCalculateStats.isOpen = false")
   // Credits Dialog
@@ -140,6 +145,9 @@ export default defineComponent({
         isOpen: false
       },
       notifications: {
+        isOpen: false
+      },
+      drawer: {
         isOpen: false
       }
     })
@@ -303,7 +311,7 @@ export default defineComponent({
       return {
         'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' })),
         'app-logo--hasBack': isVisibleBackButton.value,
-        'app-logo--hasShop': isHome.value
+        'app-logo--centered': isHome.value
       }
     })
 

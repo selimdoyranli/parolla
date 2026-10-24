@@ -374,6 +374,7 @@ export default {
       activities: 'Aktiviteler',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
+      home: 'Anasayfa',
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',

@@ -64,10 +64,12 @@
       }
     }
 
-    // the homepage shop button + gold pill sits at the start
-    &--hasShop {
+    // homepage: stays centred on every width (hamburger + shop on the left, account on the right)
+    &--centered {
       @include media-breakpoint-down(mobile-l) {
-        inset-inline-start: 100px !important;
+        inset-block-start: 50% !important;
+        inset-inline-start: 50% !important;
+        transform: translate(-50%, -50%) !important;
       }
     }
   }

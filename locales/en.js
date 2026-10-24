@@ -372,6 +372,7 @@ export default {
       activities: 'Activities',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
+      home: 'Home',
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',
