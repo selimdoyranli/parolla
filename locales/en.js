@@ -1293,8 +1293,7 @@ export default {
       title: 'Delete community',
       warning: 'This cannot be undone. The community is deleted, its quizzes are unlinked from it and all memberships end.',
       confirmInput: 'Type the community name to confirm',
-      confirmButton: 'Delete community',
-      cancelButton: 'Cancel'
+      confirmButton: 'Delete community'
     },
     success: {
       created: 'Community created.',

@@ -1,21 +1,34 @@
 <template lang="pug">
 Dialog.dialog.community-delete-dialog(
   :value="isOpen"
+  show-cancel-button
   :title="$t('community.delete.title')"
   :show-confirm-button="false"
-  :show-cancel-button="false"
+  :cancel-button-text="$t('general.cancel')"
   :close-on-click-overlay="!isBusy"
+  width="min(92vw, 440px)"
   @input="$emit('update:isOpen', $event)"
   @closed="confirmation = ''"
 )
   .community-delete-dialog__content
     p.community-delete-dialog__warning {{ $t('community.delete.warning') }}
-    Field(v-model="confirmation" :label="$t('community.delete.confirmInput')" :placeholder="community.name" :disabled="isBusy")
-    .community-delete-dialog__actions
-      Button(plain round native-type="button" :disabled="isBusy" @click="$emit('update:isOpen', false)")
-        | {{ $t('community.delete.cancelButton') }}
-      Button(type="danger" round native-type="button" :loading="isBusy" :disabled="confirmation !== community.name" @click="handleDelete")
-        | {{ $t('community.delete.confirmButton') }}
+    label.community-delete-dialog__label(for="community-delete-confirmation") {{ $t('community.delete.confirmInput') }}
+    Field#community-delete-confirmation.community-delete-dialog__input(
+      v-model="confirmation"
+      :placeholder="community.name"
+      autocomplete="off"
+      :disabled="isBusy"
+    )
+    Button.community-delete-dialog__deleteButton(
+      type="danger"
+      icon="delete-o"
+      block
+      round
+      native-type="button"
+      :loading="isBusy"
+      :disabled="confirmation !== community.name"
+      @click="handleDelete"
+    ) {{ $t('community.delete.confirmButton') }}
 </template>
 
 <script>

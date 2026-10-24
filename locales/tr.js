@@ -1311,8 +1311,7 @@ export default {
       title: 'Topluluğu sil',
       warning: 'Bu işlem geri alınamaz. Topluluk silinir, quizlerin topluluk bağlantısı kalkar ve üyelikler sona erer.',
       confirmInput: 'Onaylamak için topluluk adını yaz',
-      confirmButton: 'Topluluğu sil',
-      cancelButton: 'Vazgeç'
+      confirmButton: 'Topluluğu sil'
     },
     success: {
       created: 'Topluluk oluşturuldu.',
