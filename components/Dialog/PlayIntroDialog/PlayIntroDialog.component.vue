@@ -159,7 +159,7 @@ export default defineComponent({
     const isCreator = computed(() => props.mode === 'creator')
     const me = computed(() => store.getters['auth/user'])
     const communityShareOpen = ref(false)
-    // mirrors the server rule: others' quizzes only when listed publicly (not community-only); moderated and anonymous quizzes never
+    // mirrors the server rule (canShareRoom); moderated quizzes never
     const canShareToCommunity = computed(
       () =>
         isCreator.value &&
@@ -168,7 +168,7 @@ export default defineComponent({
         !room.value.isSystemRemovedFromPublic &&
         (store.getters['auth/postableCommunities'] || []).length > 0 &&
         // a listed quiz is shareable by anyone, even anonymous; an unlisted one only by its owner, and never when anonymous
-        ((room.value.isListed && !room.value.isCommunityOnly) || (!room.value.isAnon && room.value.user?.id === me.value.id))
+        (room.value.isListed || (!room.value.isAnon && room.value.user?.id === me.value.id))
     )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
     const minutes = computed(() =>

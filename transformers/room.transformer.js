@@ -50,7 +50,6 @@ export default model => {
     ratingCount: model.ratingCount,
     rating: model.rating,
     user: model.user,
-    isCommunityOnly: !!model.isCommunityOnly,
     alphabet: model.alphabet,
     hasMedia: model.hasMedia,
     mediaCount: model.mediaCount,
