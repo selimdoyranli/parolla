@@ -527,6 +527,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/scss/shared/_room-choice.scss';
+
 .creator-mode-compose-form__coverPhotoCell {
   flex-direction: column;
   align-items: stretch;
@@ -737,124 +739,6 @@ export default defineComponent({
     color: var(--color-text-03);
     font-size: 12px;
     line-height: 1.35;
-  }
-}
-
-.room-choice {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  width: 100%;
-  padding: 12px 14px;
-  color: var(--color-text-02);
-  font: inherit;
-  text-align: left;
-  background-color: var(--color-ui-01);
-  border: 2px solid var(--color-border-02);
-  border-radius: calc(var(--border-radius-01) / 2);
-  cursor: pointer;
-  transition: border-color 0.2s var(--motion-01), background-color 0.2s var(--motion-01);
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
-  }
-
-  &__icon,
-  &__avatar {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-  }
-
-  &__icon {
-    color: var(--color-text-03);
-    background-color: var(--color-ui-03);
-    border-radius: calc(var(--border-radius-01) / 2);
-  }
-
-  &__anonAvatar {
-    color: var(--color-text-04);
-    font-weight: 700;
-    font-size: 16px;
-    background-color: var(--color-text-03);
-    border-radius: 50%;
-  }
-
-  &__body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  &__name {
-    overflow: hidden;
-    color: var(--color-text-01);
-    font-weight: 600;
-    font-size: 15px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  &__description {
-    color: var(--color-text-03);
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
-  // grid tiles from tablet up: text on top, the icon small in the top-right corner
-  &--tile {
-    @include media-breakpoint-up(tablet) {
-      position: relative;
-      align-items: flex-start;
-      height: 100%;
-      padding-inline-end: 36px;
-
-      .room-choice__icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 24px;
-        height: 24px;
-        background: transparent;
-      }
-
-      .room-choice__name {
-        white-space: normal;
-      }
-    }
-  }
-
-  &--pick {
-    gap: 8px;
-    justify-content: center;
-    color: var(--color-text-02);
-    font-weight: 600;
-    border-color: var(--color-border-02);
-    border-style: dashed;
-
-    &:not(:disabled):hover {
-      background-color: var(--color-hover-01);
-    }
-  }
-
-  &--selected {
-    background-color: color-mix(in sRGB, var(--color-brand-02) 8%, var(--color-ui-01));
-    border-color: var(--color-brand-02);
-
-    .room-choice__name {
-      color: var(--color-brand-02);
-    }
-
-    .room-choice__icon {
-      color: var(--color-brand-02);
-      background-color: color-mix(in sRGB, var(--color-brand-02) 15%, transparent);
-    }
   }
 }
 
