@@ -32,6 +32,7 @@ Form.creator-mode-compose-form(validate-first @keypress.enter.prevent @failed="o
     ref="roomBasicInfoRef"
     :form="form"
     :user="user"
+    :room="room"
     :game-time-limit-minutes.sync="gameTimeLimitMinutes"
     @input-tag="handleInputTag"
     @add-tag="addTag"

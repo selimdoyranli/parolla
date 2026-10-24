@@ -372,9 +372,13 @@ export default {
       activities: 'Activities',
       usernameEdit: 'Change the player name',
       menu: 'Menu',
+      home: 'Home',
+      shop: 'Shop',
+      quizzes: 'Quizzes',
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',
+      communities: 'Communities',
       darkTheme: 'Dark theme',
       soundFx: 'Sound Effects',
       reactionSoundFx: 'Reaction sounds',
@@ -382,7 +386,7 @@ export default {
       gameSceneSoundFx: 'Game scene sounds',
       gameSceneSoundFxDesc: 'For scene sounds like correct, wrong, pass and time',
       wordblockKeyboard: 'Wordblock Keyboard',
-      switchLocale: 'Choose language',
+      switchLocale: 'Change edition',
       suggestQa: 'Do you want to suggest a question?',
       howToPLay: 'How to play?',
       howToCalculateStats: 'How we calculate the score',
@@ -594,7 +598,7 @@ export default {
       title: 'We keep it up with ad support'
     },
     localeSwitch: {
-      title: 'Choose language',
+      title: 'Change edition',
       switching: 'Switching'
     },
     leave: {
@@ -617,8 +621,11 @@ export default {
       title: 'Login',
       login: 'Login',
       register: 'Register',
-      loginWithGoogle: 'Login with Google',
-      loginWithApple: 'Login with Apple'
+      loginOrRegister: 'Log in / Sign up',
+      loginWithGoogle: 'Continue with Google',
+      loginWithApple: 'Continue with Apple',
+      termsNote: 'By continuing you agree to the {link}.',
+      termsLink: 'Terms of Use'
     },
     player: {
       title: 'Profile',
@@ -840,6 +847,18 @@ export default {
       uploadingMedia: 'Uploading media',
       clearForm: 'Clear Form',
       room: {
+        community: {
+          pick: 'Pick a community',
+          change: 'Change',
+          dialogTitle: 'Pick a community',
+          empty: "You're not a member of any community.",
+          loadFailed: 'Could not load communities.',
+          title: 'Share to a community',
+          remove: 'Remove',
+          anonUnlisted: 'An anonymous unlisted quiz cannot be shared to a community.',
+          unlistedNote: "* Your quiz won't appear in public lists, but everyone in the chosen community will see it.",
+          shareFailed: 'Quiz saved, but it could not be shared to the community: {reason}'
+        },
         roomTitle: {
           label: 'Quiz title',
           placeholder: 'Type quiz title'
@@ -868,12 +887,17 @@ export default {
             ai: 'AI'
           }
         },
+        visibility: {
+          label: 'Visibility'
+        },
         isListed: {
-          label: 'Wanna you listing on public quizzes?',
           systemRemoved: 'This quiz was reviewed: it is not suitable for the quiz list and was removed from it.'
         },
         isAnon: {
-          label: 'Hide creator player name?'
+          label: 'Creator',
+          namedDescription: 'Listed on your quiz profile',
+          anonTitle: 'Anonymous',
+          anonDescription: 'Your name is not shown anywhere'
         },
         tag: {
           label: 'Tags',
@@ -1068,6 +1092,7 @@ export default {
     send: 'Send',
     reply: 'Reply',
     loadMoreReplies: 'Load more replies',
+    loadMoreComments: 'Load more comments',
     showReplies: 'Show {n} reply | Show {n} replies',
     deleted: 'This comment was deleted',
     quizOwner: 'Quiz owner',
@@ -1101,7 +1126,14 @@ export default {
       comment_replied: '{actor} replied to your comment',
       reply_replied: '{actor} replied to your reply',
       comment_liked: '{actor} liked your comment',
-      reply_liked: '{actor} liked your reply'
+      reply_liked: '{actor} liked your reply',
+      community_join_requested: '{actor} wants to join {community}',
+      community_join_approved: '{actor} approved your request to join {community}',
+      community_member_promoted: '{actor} made you a moderator of {community}',
+      community_member_kicked: '{actor} removed you from {community}',
+      community_hidden: 'Your community {community} was hidden by moderation',
+      post_commented: '{actor} commented on your post in {community}',
+      post_liked: '{actor} liked your post in {community}'
     }
   },
   ownerStats: {
@@ -1120,7 +1152,250 @@ export default {
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
   },
+  community: {
+    list: {
+      title: 'Communities',
+      description: 'Join communities and meet players who share your interests',
+      empty: 'No communities yet.',
+      emptyJoined: "You haven't joined a community yet.",
+      emptyOwned: "You haven't founded a community yet.",
+      search: 'Search communities',
+      sort: {
+        recent: 'Newest',
+        memberCount: 'Most members',
+        postCount: 'Most posts',
+        joined: 'Joined',
+        owned: 'Founded by me'
+      },
+      createButton: 'Create community',
+      noMore: "That's all",
+      joined: 'Joined',
+      pending: 'Pending',
+      owned: 'Mine',
+      members: '{count} members',
+      posts: '{count} posts'
+    },
+    visibilityMode: {
+      public: 'Public',
+      publicDescription: 'Shown in quiz lists and search.',
+      unlisted: 'Unlisted',
+      unlistedDescription: "Won't appear in public lists; reachable by link or through the community's quizzes."
+    },
+    post: {
+      shareTitle: 'Share to a community',
+      notePlaceholder: 'Add a note (optional)',
+      share: 'Share',
+      shared: 'Quiz shared.',
+      alreadyShared: 'This quiz is already shared in this community.',
+      sharedBadge: 'Shared',
+      goToPost: 'Go to post',
+      delete: 'Delete post',
+      confirmDelete: 'Delete this post? Its comments and likes are deleted too. The quiz itself is not deleted.',
+      confirmDeleteText: 'Delete this post? Its comments and likes are deleted too.',
+      composerPlaceholder: 'Write something...',
+      composerLabel: 'Post to the community',
+      publish: 'Post',
+      deleted: 'Post deleted.',
+      report: 'Report post',
+      likes: '{count} likes',
+      comments: '{count} comments',
+      likeAction: 'Like',
+      quizLocale: { en: 'English quiz: opens in the English edition', tr: 'Turkish quiz: opens in the Turkish edition' },
+      quizPicker: {
+        open: 'Add quiz',
+        placeholder: 'Search by quiz name...',
+        remove: 'Remove quiz',
+        empty: 'No quizzes found.',
+        notePlaceholder: 'Add a note (optional)'
+      },
+      commentAction: 'Comment'
+    },
+    detail: {
+      aboutTitle: 'About',
+      createdAt: 'Founded',
+      memberCountLabel: 'Members',
+      pendingCount: '{count} pending',
+      postCountLabel: 'Posts',
+      visibility: {
+        public: 'Public',
+        publicDescription: 'Anyone can see and join.',
+        restricted: 'Approval required',
+        restrictedDescription: 'Anyone can see it, joining needs approval.',
+        private: 'Private',
+        privateDescription:
+          'Only members can see the community feed and member list, joining needs approval. Quizzes keep their own listing setting.'
+      },
+      postPermission: {
+        everyone: 'All members',
+        everyoneDescription: 'All members can share quizzes and posts.',
+        modsOnly: 'Moderators only',
+        modsOnlyDescription: 'Only the owner and moderators can share quizzes and posts.'
+      },
+      feedEmpty: 'No posts in this community yet.',
+      feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
+      feedTitle: 'Posts',
+      privateNotice: 'This community is private. Join to see its quizzes.',
+      feedLocked: 'Join this community to see its quizzes',
+      menu: { label: 'More', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
+      moderator: 'Moderator',
+      owner: 'Owner'
+    },
+    joinButton: {
+      guestJoin: 'Log in to join',
+      join: 'Join',
+      joining: 'Joining...',
+      pending: 'Request sent',
+      member: 'Joined',
+      owner: 'Manage',
+      confirmLeave: 'Are you sure you want to leave this community?',
+      confirmCancel: 'Are you sure you want to withdraw your join request?'
+    },
+    form: {
+      name: {
+        label: 'Community name',
+        placeholder: 'Enter a community name',
+        errorRequired: 'Community name is required.',
+        errorTooShort: 'Community name must be at least {min} characters.',
+        errorTooLong: 'Community name can be at most {max} characters.',
+        errorTaken: 'This community name is already taken.'
+      },
+      description: {
+        label: 'Description',
+        placeholder: 'Briefly describe your community',
+        errorTooLong: 'Description can be at most {max} characters.'
+      },
+      avatar: { label: 'Community image', uploaderTitle: 'Add an image', hint: 'Click to pick an image, cropped to a square' },
+      coverPhoto: { label: 'Cover photo', uploaderTitle: 'Add a cover photo', hint: 'Click to pick an image, cropped to 16:9' },
+      tags: {
+        label: 'Tags',
+        placeholder: 'Enter a tag',
+        errorTooMany: 'You can add at most {max} tags.',
+        errorInvalid: 'Tags can only contain letters and numbers.',
+        addButton: 'Add tag',
+        hint: 'Adding tags makes your community stand out and easier to find in search.'
+      },
+      visibility: { label: 'Visibility' },
+      postPermission: { label: 'Who can post?' }
+    },
+    wizard: {
+      title: 'Create community',
+      steps: {
+        foundations: 'Basics',
+        settings: 'Settings',
+        complete: 'Finish'
+      },
+      nextButton: 'Next',
+      previousButton: 'Back',
+      submitButton: 'Create community',
+      creating: 'Creating community...',
+      createdSuccess: 'Your community is ready!',
+      mediaUploadFailed: "Community created but the image couldn't be uploaded. You can retry from the edit page.",
+      noTags: 'No tags added'
+    },
+    edit: {
+      title: 'Edit community',
+      saveButton: 'Save',
+      slug: 'Address',
+      dangerZone: 'Danger zone',
+      limitNote: 'A community can be updated at most {limit} times in 7 days.',
+      limitLeft: '{count} left this week.',
+      limitReached: 'No updates left this week; you can update it again on {date}.'
+    },
+    members: {
+      title: 'Members',
+      search: 'Search members',
+      empty: 'No members yet.',
+      role: { owner: 'Owner', moderator: 'Moderator' },
+      actions: {
+        kick: 'Remove',
+        promote: 'Make moderator',
+        demote: 'Remove moderator',
+        confirmKick: 'Are you sure you want to remove this member from the community?',
+        confirmPromote: 'Are you sure you want to make this member a moderator?',
+        confirmDemote: "Are you sure you want to remove this member's moderator role?"
+      }
+    },
+    pending: {
+      title: 'Pending requests',
+      empty: 'No pending requests.',
+      actions: {
+        approve: 'Approve',
+        reject: 'Reject',
+        confirmApprove: 'Are you sure you want to approve this request?',
+        confirmReject: 'Are you sure you want to reject this request?'
+      }
+    },
+    delete: {
+      title: 'Delete community',
+      warning: 'This cannot be undone. The community is deleted, its quizzes are unlinked from it and all memberships end.',
+      confirmInput: 'Type the community name to confirm',
+      confirmButton: 'Delete community'
+    },
+    success: {
+      created: 'Community created.',
+      edited: 'Community updated.',
+      deleted: 'Community deleted.',
+      joined: 'You joined the community.',
+      joinRequested: 'Your join request was sent.',
+      left: 'You left the community.',
+      requestCanceled: 'Your join request was withdrawn.',
+      memberApproved: 'Member approved.',
+      memberRejected: 'Request rejected.',
+      memberKicked: 'Member removed from the community.',
+      memberPromoted: 'Member is now a moderator.',
+      memberDemoted: 'Moderator role removed.'
+    },
+    error: {
+      generic: 'Something went wrong. Please try again.',
+      networkFailure: 'Connection error. Check your internet and try again.',
+      notMember: 'You are not a member of this community.',
+      postPermissionDenied: 'Only the owner and moderators can post here.',
+      hidden: 'This community is unavailable right now.',
+      roomNotShareable: 'This quiz cannot be shared.',
+      anonymousQuiz: "Anonymous quizzes can't be shared to communities.",
+      alreadyShared: 'This quiz is already shared in this community.',
+      ownedLimitReached: 'You can own at most {max} communities.',
+      notFound: 'Community not found.'
+    },
+    notification: {
+      joinRequested: '{actor} wants to join {community}',
+      joinApproved: 'Your request to join {community} was approved',
+      memberPromoted: 'You were made a moderator of {community}',
+      memberKicked: 'You were removed from {community}',
+      hidden: 'Your community {community} was hidden by moderation'
+    },
+    hiddenBanner: 'Your community was hidden by moderation. Only you can see it.',
+    report: 'Report community',
+    profileTab: { title: 'Communities', empty: 'Not a member of any community yet.', more: 'Load more' }
+  },
+  drawLobby: {
+    officialRooms: 'Official Rooms',
+    playerRooms: 'Player Rooms'
+  },
   gmPanel: {
+    communities: {
+      title: 'Communities',
+      description: 'Search, hide, restore or delete communities.',
+      search: 'Search communities',
+      onlyHidden: 'Hidden only',
+      empty: 'No communities found',
+      owner: 'Owner',
+      members: 'Members',
+      reports: 'Reports',
+      hidden: 'Hidden',
+      source: 'Source',
+      note: 'Note',
+      notePlaceholder: 'Moderation note (optional)',
+      hide: 'Hide',
+      unhide: 'Restore',
+      delete: 'Delete',
+      confirmHide: 'Are you sure you want to hide this community?',
+      confirmUnhide: 'Are you sure you want to make this community visible again?',
+      confirmDelete: 'Are you sure you want to permanently delete this community?',
+      hiddenDone: 'Community hidden',
+      unhiddenDone: 'Community restored',
+      deletedDone: 'Community deleted'
+    },
     title: 'GM Panel',
     menu: 'GM Panel',
     date: 'Date',
@@ -1223,6 +1498,8 @@ export default {
         tagGenerationHint: 'Adds 5 tags to public rooms that have none',
         roomModeration: 'Room moderation',
         roomModerationHint: 'Removes rooms with profanity, NSFW or private/low-quality content from the list',
+        communityModeration: 'Community moderation',
+        communityModerationHint: 'Hides communities with inappropriate names, descriptions or tags',
         tagPrompt: 'Tag system prompt',
         moderationPrompt: 'Moderation system prompt'
       },
@@ -1489,6 +1766,11 @@ export default {
       description: 'Create a flashcard quiz for studying',
       keywords: 'flashcards, quiz, study, learning'
     },
+    communityList: {
+      title: 'Communities, share quizzes around shared interests',
+      description: 'Join communities, start your own and share quizzes together',
+      keywords: 'communities, quiz community, share quiz'
+    },
     creatorModeQuizzes: {
       title: 'Quizzes, solve quizzes or create your own quiz',
       description: 'Solve quizzes created by players or create your own quiz',
@@ -1539,7 +1821,8 @@ export default {
       quizzes: 'Quizzes',
       reviews: 'Comments',
       scores: 'Scores',
-      achievements: 'Achievements'
+      achievements: 'Achievements',
+      communities: 'Communities'
     },
     stats: {
       created: 'Created',
@@ -1589,6 +1872,7 @@ export default {
   playIntro: {
     play: 'START GAME',
     share: 'Share',
+    shareToCommunity: 'Share to community',
     rate: 'Rate',
     howToPlay: 'How to play?',
     creator: 'Created by',
@@ -1612,5 +1896,22 @@ export default {
   common: {
     invalidUsername: 'Invalid username',
     guestLabel: '(guest)'
+  },
+  cookieConsent: {
+    text: 'We may use cookies to improve and personalise your experience. You can set your preferences. {link}',
+    link: 'Cookie Policy',
+    reject: 'Reject',
+    manage: 'Manage preferences',
+    accept: 'Accept',
+    menu: 'Cookie preferences',
+    preferences: {
+      title: 'Cookie preferences',
+      necessary: 'Necessary cookies',
+      necessaryDesc: 'Needed for the site to work, such as sign-in, language and theme. Always on.',
+      ads: 'Advertising cookies',
+      adsDesc: 'When on, ads are picked from your interests (Google AdSense cookies). When off you still see ads, just not personalised.',
+      save: 'Save',
+      cancel: 'Cancel'
+    }
   }
 }

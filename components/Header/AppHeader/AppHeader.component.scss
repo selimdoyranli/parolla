@@ -64,10 +64,12 @@
       }
     }
 
-    // the homepage shop button + gold pill sits at the start
-    &--hasShop {
+    // homepage: stays centred on every width (hamburger + shop on the left, account on the right)
+    &--centered {
       @include media-breakpoint-down(mobile-l) {
-        inset-inline-start: 100px !important;
+        inset-block-start: 50% !important;
+        inset-inline-start: 50% !important;
+        transform: translate(-50%, -50%) !important;
       }
     }
   }
@@ -121,6 +123,11 @@
           border-radius: 999px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
           pointer-events: none;
+
+          // narrow phones: the pill would run into the centred logo; the drawer still shows the gold
+          @include media-breakpoint-down(mobile-m) {
+            display: none;
+          }
 
           .gold-amount {
             gap: 2px;

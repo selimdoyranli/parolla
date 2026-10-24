@@ -95,6 +95,7 @@ export default defineComponent({
       fetch,
       fetchState,
       quizTypeEnum,
+      localePath,
       room
     }
   },

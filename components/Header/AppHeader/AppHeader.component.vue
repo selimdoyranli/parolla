@@ -1,12 +1,21 @@
 <template lang="pug">
 .app-header
   menu.app-header-nav
+    li.app-header-nav__item(v-if="isHome" @click="dialog.drawer.isOpen = true")
+      ActionButton(:label="$t('dialog.menu.menu')" icon="tabler:menu-2" :icon-size="24")
+
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
+    li.app-header-nav__item.app-header-nav__item--communities(
+      v-if="isHome"
+      @click="$router.push(localePath({ name: 'Community-CommunityList' }))"
+    )
+      ActionButton(:label="$t('dialog.menu.communities')" icon="iconoir:community" :icon-size="24")
+
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
-      ActionButton(icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
+      ActionButton(:label="$t('dialog.menu.shop')" icon="fluent:building-shop-24-regular" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" :amount="gold")
 
@@ -43,7 +52,7 @@
       )
 
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
-      ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
+      ActionButton(:label="$t('notifications.title')" icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")
@@ -54,8 +63,16 @@
 
   // How To Play Dialog
   LazyHowToPlayDialog(
-    v-if="isVisibleHowToPlay"
+    v-if="isVisibleHowToPlay && activeGameMode !== gameModeKeyEnum.CREATOR"
     :cancel-button-text="$t('general.close')"
+    :isOpen="dialog.howToPlay.isOpen"
+    @closed="dialog.howToPlay.isOpen = false"
+  )
+  // creator quizzes: the quiz intro again (no play button) instead of the generic rules
+  LazyPlayIntroDialog(
+    v-if="activeGameMode === gameModeKeyEnum.CREATOR"
+    mode="creator"
+    in-game
     :isOpen="dialog.howToPlay.isOpen"
     @closed="dialog.howToPlay.isOpen = false"
   )
@@ -71,6 +88,18 @@
     @closed="dialog.menu.isOpen = false"
   )
 
+  // App Drawer (homepage hamburger)
+  LazyAppDrawer(
+    v-if="isHome"
+    :isOpen="dialog.drawer.isOpen"
+    @clickedHowToPlay="toggleHowToPlayDialog"
+    @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
+    @clickedCredits="toggleCreditsDialog"
+    @clickedContact="toggleContactDialog"
+    @clickedSwitchLocale="toggleLocaleSwitchDialog"
+    @clickedReviewRoom="toggleRoomReviewDialog"
+    @closed="dialog.drawer.isOpen = false"
+  )
   // How To Calculate Stats Dialog
   LazyHowToCalculateStatsDialog(:isOpen="dialog.howToCalculateStats.isOpen" @closed="dialog.howToCalculateStats.isOpen = false")
   // Credits Dialog
@@ -100,6 +129,9 @@
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
+
+// module scope: survives the header remounting on a layout switch
+let hasNavigated = false
 
 export default defineComponent({
   setup() {
@@ -141,10 +173,28 @@ export default defineComponent({
       },
       notifications: {
         isOpen: false
+      },
+      drawer: {
+        isOpen: false
       }
     })
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    watch(
+      () => route.value.path,
+      () => {
+        hasNavigated = true
+      }
+    )
+
+    // the drawer only lives on home: any navigation (also browser back) closes it, so coming home doesn't reopen it
+    watch(
+      () => route.value.fullPath,
+      () => {
+        dialog.drawer.isOpen = false
+      }
+    )
 
     const isHome = computed(() => getRouteBaseName(route.value) === 'Main')
     const gold = computed(() => store.state.economy.wallet.gold)
@@ -262,6 +312,15 @@ export default defineComponent({
 
     const handleClickBackButton = () => {
       const triggerRoute = () => {
+        // opened straight from a link (new tab): no in-app page to go back to, so land on the quizzes list for quiz pages, else home
+        if (!hasNavigated) {
+          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode')
+
+          router.push(localePath({ name: isQuiz ? 'CreatorMode-CreatorModeRooms' : 'Main' }))
+
+          return
+        }
+
         router.back()
       }
 
@@ -303,7 +362,7 @@ export default defineComponent({
       return {
         'app-logo--pushedToStart': route.value.name.startsWith(getRouteBaseName({ name: 'CreatorMode-CreatorModeRoom-slug' })),
         'app-logo--hasBack': isVisibleBackButton.value,
-        'app-logo--hasShop': isHome.value
+        'app-logo--centered': isHome.value
       }
     })
 
@@ -328,7 +387,14 @@ export default defineComponent({
         route.value.name.startsWith(getRouteBaseName({ name: 'MusicMode-GuessTheSong-Play' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Profile-username' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Account-AccountEdit' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Activities' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityList' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-Community-slug' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityCompose' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityEdit-slug' })) ||
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityPost-slug-postId' })) ||
+        // legal pages (privacy, cookies, KVKK, terms)
+        route.value.name.startsWith('Page-')
       ) {
         return true
       }

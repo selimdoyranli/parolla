@@ -1,0 +1,213 @@
+.community-post-composer {
+  // no overflow clipping: the quiz button's hover tooltip hangs below the box
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 20px;
+  transition: border-color 0.1s var(--motion-01);
+
+  &:focus-within {
+    border-color: var(--color-brand-02);
+  }
+
+  &__field.van-cell {
+    padding: 14px 16px;
+    font-size: var(--font-size-text-9);
+    background: transparent;
+    // the global .van-cell background is !important and the box no longer clips: round it to the box's corners
+    border-radius: 20px 20px 0 0;
+
+    textarea {
+      min-height: 48px;
+      color: var(--color-text-01);
+      line-height: 1.5;
+    }
+  }
+
+  // picker panel and picked quiz share the inset look
+  &__picker,
+  &__picked {
+    margin: 0 12px 12px;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-01);
+    border-radius: 14px;
+  }
+
+  &__picked {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+  }
+
+  &__search {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+  }
+
+  &__search-field {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+    padding: 0 12px;
+    color: var(--color-text-03);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 10px;
+    cursor: text;
+
+    &:focus-within {
+      border-color: var(--color-brand-02);
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 40px;
+      padding: 0;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-9);
+      background: transparent;
+      border: 0;
+      outline: none;
+    }
+  }
+
+  &__results {
+    max-height: 280px;
+    padding: 0 6px 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__result {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    padding: 8px 6px;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-hover-01);
+    }
+  }
+
+  // square thumb; the compound selector beats QuizCover's own 16:9
+  &__thumb.quiz-cover {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    aspect-ratio: 1;
+    border-radius: 10px;
+  }
+
+  &__initials {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    inset: 0;
+  }
+
+  &__room {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  &__room-title {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-size: var(--font-size-text-9);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__room-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    align-items: center;
+  }
+
+  &__creator {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--color-text-03);
+    font-size: 12px;
+  }
+
+  &__state {
+    margin: 8px 0;
+    color: var(--color-text-03);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  &__retry {
+    margin-inline-start: 6px;
+    padding: 0;
+    color: var(--color-brand-02);
+    font: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__footer {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    border-top: 1px solid var(--color-border-01);
+  }
+
+  &__quiz-toggle {
+    margin-inline-end: auto;
+  }
+
+  &__counter {
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+    font-variant-numeric: tabular-nums;
+
+    &.is-full {
+      color: var(--color-danger-01);
+    }
+  }
+
+  &__submit.van-button {
+    padding: 0 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 12px;
+
+    .van-button__text {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+  }
+}

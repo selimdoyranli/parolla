@@ -12,6 +12,12 @@ export default model => {
     username: model.username,
     role: model.role,
     ...(model.loadout && { loadout: model.loadout }),
+    // /users/me only
+    ...(model.joinedCommunities && {
+      joinedCommunities: model.joinedCommunities,
+      pendingCommunities: model.pendingCommunities,
+      ownedCommunities: model.ownedCommunities
+    }),
     ...(model.diceBear && {
       diceBear: {
         dataImage: model.diceBear.dataImage,

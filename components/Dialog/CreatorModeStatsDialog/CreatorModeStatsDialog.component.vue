@@ -112,7 +112,12 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
         NoticeBar.mb-2.mt-2.cursor-pointer(v-if="!$auth.loggedIn && !$auth.user" auth-control wrapable)
           small(v-html="$t('scoreboard.loginToBeInScoreboard')")
 
-        ScoreboardList(:items="scoreboard.list" :current-player="currentPlayer" @on-infinite-loading="handleInfiniteLoading")
+        ScoreboardList(
+          :items="scoreboard.list"
+          :current-player="currentPlayer"
+          :locked="!isGameOver && !isRoomOwner"
+          @on-infinite-loading="handleInfiniteLoading"
+        )
 
     Tab(name="reviews")
       template(#title)

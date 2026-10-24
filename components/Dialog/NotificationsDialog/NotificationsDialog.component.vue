@@ -97,6 +97,35 @@ export default defineComponent({
     }
 
     const handleSelect = item => {
+      // post comments, replies and likes open the post page (comment-targeted ones highlight the comment)
+      if (item.meta?.postDocumentId && item.meta?.communitySlug) {
+        state.isOpen = false
+
+        router.push(
+          localePath({
+            name: 'Community-CommunityPost-slug-postId',
+            params: { slug: item.meta.communitySlug, postId: item.meta.postDocumentId },
+            query: item.comment ? { comment: item.comment.documentId } : {}
+          })
+        )
+
+        return
+      }
+
+      if (item.meta?.communitySlug && !item.room) {
+        state.isOpen = false
+
+        router.push(
+          localePath({
+            name: 'Community-Community-slug',
+            params: { slug: item.meta.communitySlug },
+            query: item.type === 'community_join_requested' ? { panel: 'pending' } : {}
+          })
+        )
+
+        return
+      }
+
       // announcements are read in place; nothing to open
       if (!item.room) return
 

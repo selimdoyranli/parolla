@@ -1,0 +1,61 @@
+.community-share-dialog {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 70vh;
+    padding: 16px 0;
+    overflow-y: auto;
+  }
+
+  &__loading {
+    align-self: center;
+    padding: 16px;
+  }
+
+  &__list {
+    margin: 0 16px;
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    margin-inline-end: 10px;
+  }
+
+  &__name {
+    font-weight: 600;
+  }
+
+  &__item--shared {
+    opacity: 0.6;
+  }
+
+  &__note {
+    width: auto;
+    margin: 0 16px;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+  }
+
+  &__postLink {
+    align-self: center;
+    color: var(--color-brand-02);
+    font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 0 16px;
+  }
+
+  // brand-02 is a light coral: dark text keeps the contrast white would lose
+  &__submit.van-button--primary {
+    min-width: 96px;
+    color: #1b1b1b;
+    font-weight: 700;
+    background: var(--color-brand-02);
+    border-color: var(--color-brand-02);
+  }
+}

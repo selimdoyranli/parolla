@@ -1,0 +1,47 @@
+.community-delete-dialog {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px 20px;
+  }
+
+  &__warning {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  &__label {
+    margin-block-start: 4px;
+    color: var(--color-text-02);
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  &__input.van-field {
+    padding: 8px 12px;
+    background-color: var(--color-field-01) !important;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+
+    &::after {
+      display: none;
+    }
+  }
+
+  // the global .van-button--danger override paints the text danger-red too: force white on the filled button
+  &__deleteButton.van-button--danger {
+    $danger-strong: color-mix(in sRGB, var(--color-danger-01) 80%, #000);
+
+    color: #fff !important;
+    font-weight: 600;
+    background-color: $danger-strong;
+    border-color: $danger-strong !important;
+
+    &.van-button--disabled {
+      opacity: 0.55;
+    }
+  }
+}

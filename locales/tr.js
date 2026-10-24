@@ -374,9 +374,13 @@ export default {
       activities: 'Aktiviteler',
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
+      home: 'Anasayfa',
+      shop: 'Mağaza',
+      quizzes: 'Quizler',
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',
+      communities: 'Topluluklar',
       darkTheme: 'Koyu tema',
       soundFx: 'Ses Efektleri',
       reactionSoundFx: 'Tepki Sesleri',
@@ -384,7 +388,7 @@ export default {
       gameSceneSoundFx: 'Oyun Sahnesi Sesleri',
       gameSceneSoundFxDesc: 'Doğru, yanlış, pas ve süre gibi sahne sesleri için',
       wordblockKeyboard: 'Kelimeblok Klavyesi',
-      switchLocale: 'Dil değiştir',
+      switchLocale: 'Edisyon değiştir',
       suggestQa: 'Soru önermek ister misin?',
       howToPLay: 'Nasıl oynanır?',
       howToCalculateStats: 'Skoru nasıl hesaplıyoruz',
@@ -598,7 +602,7 @@ export default {
       title: 'Reklam desteğiyle bunu sürdürüyoruz'
     },
     localeSwitch: {
-      title: 'Dil değiştir',
+      title: 'Edisyon değiştir',
       switching: 'Değiştiriliyor'
     },
     leave: {
@@ -621,8 +625,11 @@ export default {
       title: 'Giriş yap',
       login: 'Giriş yap',
       register: 'Kayıt ol',
-      loginWithGoogle: 'Google ile Giriş Yap',
-      loginWithApple: 'Apple ile Giriş Yap'
+      loginOrRegister: 'Giriş Yap / Kaydol',
+      loginWithGoogle: 'Google ile devam et',
+      loginWithApple: 'Apple ile devam et',
+      termsNote: "Devam ederek {link}'nı kabul etmiş olursun.",
+      termsLink: 'Kullanım Koşulları'
     },
     player: {
       title: 'Profil',
@@ -844,6 +851,18 @@ export default {
       updatingQuiz: 'Quiz güncelleniyor...',
       uploadingMedia: 'Medya yükleniyor',
       room: {
+        community: {
+          pick: 'Topluluk seç',
+          change: 'Değiştir',
+          dialogTitle: 'Topluluk seç',
+          empty: 'Hiçbir topluluğun üyesi değilsin.',
+          loadFailed: 'Topluluklar yüklenemedi.',
+          title: 'Toplulukta paylaş',
+          remove: 'Kaldır',
+          anonUnlisted: 'Anonim ve listelenmemiş bir quiz toplulukta paylaşılamaz.',
+          unlistedNote: '* Quizin genel listede görünmez ama seçtiğin toplulukta herkese görünür.',
+          shareFailed: 'Quiz kaydedildi ama toplulukta paylaşılamadı: {reason}'
+        },
         roomTitle: {
           label: 'Quiz başlığı',
           placeholder: 'Quiz başlığı yaz'
@@ -872,12 +891,17 @@ export default {
             ai: 'Yapay zeka'
           }
         },
+        visibility: {
+          label: 'Görünürlük'
+        },
         isListed: {
-          label: 'Quizler listesinde görünsün mü?',
           systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'
         },
         isAnon: {
-          label: 'Adın gizlensin mi?'
+          label: 'Oluşturan',
+          namedDescription: 'Quiz profilinde listelenir',
+          anonTitle: 'Anonim',
+          anonDescription: 'Adın hiçbir yerde görünmez'
         },
         tag: {
           label: 'Etiketler',
@@ -1086,6 +1110,7 @@ export default {
     send: 'Gönder',
     reply: 'Yanıtla',
     loadMoreReplies: 'Daha fazla yanıt yükle',
+    loadMoreComments: 'Daha fazla yorum yükle',
     showReplies: '{n} yanıtı göster',
     deleted: 'Bu yorum silindi',
     quizOwner: 'Quiz sahibi',
@@ -1119,7 +1144,14 @@ export default {
       comment_replied: '{actor} yorumuna yanıt verdi',
       reply_replied: '{actor} yanıtına yanıt verdi',
       comment_liked: '{actor} yorumunu beğendi',
-      reply_liked: '{actor} yanıtını beğendi'
+      reply_liked: '{actor} yanıtını beğendi',
+      community_join_requested: '{actor} {community} topluluğuna katılmak istiyor',
+      community_join_approved: '{actor} {community} topluluğuna katılma isteğini onayladı',
+      community_member_promoted: '{actor} seni {community} topluluğunda moderatör yaptı',
+      community_member_kicked: '{actor} seni {community} topluluğundan çıkardı',
+      community_hidden: '{community} topluluğun moderasyon nedeniyle gizlendi',
+      post_commented: '{actor} {community} topluluğundaki gönderine yorum yaptı',
+      post_liked: '{actor} {community} topluluğundaki gönderini beğendi'
     }
   },
   ownerStats: {
@@ -1138,7 +1170,250 @@ export default {
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
     loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
   },
+  community: {
+    list: {
+      title: 'Topluluklar',
+      description: 'Topluluklara katıl, benzer ilgi alanlarına sahip oyuncularla tanış',
+      empty: 'Henüz topluluk yok.',
+      emptyJoined: 'Henüz bir topluluğa katılmadın.',
+      emptyOwned: 'Henüz bir topluluk kurmadın.',
+      search: 'Topluluk ara',
+      sort: {
+        recent: 'En yeni',
+        memberCount: 'En çok üyeli',
+        postCount: 'En çok gönderili',
+        joined: 'Üyesi olduklarım',
+        owned: 'Kurduklarım'
+      },
+      createButton: 'Topluluk oluştur',
+      noMore: 'Hepsi bu kadar',
+      joined: 'Katıldıklarım',
+      pending: 'Bekleyenler',
+      owned: 'Benimkiler',
+      members: '{count} üye',
+      posts: '{count} gönderi'
+    },
+    visibilityMode: {
+      public: 'Herkese açık',
+      publicDescription: 'Quiz listelerinde ve aramalarda görünür.',
+      unlisted: 'Listelenmemiş',
+      unlistedDescription: 'Genel listede görünmez; linkle veya topluluk quizleri üzerinden erişilebilir.'
+    },
+    post: {
+      shareTitle: 'Topluluğa paylaş',
+      notePlaceholder: 'Bir not ekle (isteğe bağlı)',
+      share: 'Paylaş',
+      shared: 'Quiz paylaşıldı.',
+      alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
+      sharedBadge: 'Paylaşıldı',
+      goToPost: 'Gönderiye git',
+      delete: 'Gönderiyi sil',
+      confirmDelete: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir. Quiz silinmez.',
+      confirmDeleteText: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir.',
+      composerPlaceholder: 'Bir şeyler yazın...',
+      composerLabel: 'Toplulukta paylaş',
+      publish: 'Paylaş',
+      deleted: 'Gönderi silindi.',
+      report: 'Gönderiyi raporla',
+      likes: '{count} beğeni',
+      comments: '{count} yorum',
+      likeAction: 'Beğen',
+      quizLocale: { en: 'İngilizce quiz: İngilizce sürümde açılır', tr: 'Türkçe quiz: Türkçe sürümde açılır' },
+      quizPicker: {
+        open: 'Quiz Ekle',
+        placeholder: 'Quiz adı ile ara...',
+        remove: 'Quizi kaldır',
+        empty: 'Quiz bulunamadı.',
+        notePlaceholder: 'Bir not ekle (isteğe bağlı)'
+      },
+      commentAction: 'Yorum yap'
+    },
+    detail: {
+      aboutTitle: 'Hakkında',
+      createdAt: 'Kuruluş',
+      memberCountLabel: 'Üye',
+      pendingCount: '{count} bekleyen',
+      postCountLabel: 'Gönderi',
+      visibility: {
+        public: 'Herkese açık',
+        publicDescription: 'Herkes görebilir ve katılabilir.',
+        restricted: 'Onaylı',
+        restrictedDescription: 'Herkes görebilir, katılmak için onay gerekir.',
+        private: 'Gizli',
+        privateDescription:
+          'Topluluk akışını ve üye listesini yalnızca üyeler görebilir, katılmak için onay gerekir. Quizler kendi listeleme ayarına göre görünür.'
+      },
+      postPermission: {
+        everyone: 'Tüm üyeler',
+        everyoneDescription: 'Tüm üyeler quiz ve gönderi paylaşabilir.',
+        modsOnly: 'Yalnızca moderatörler',
+        modsOnlyDescription: 'Yalnızca sahip ve moderatörler quiz ve gönderi paylaşabilir.'
+      },
+      feedEmpty: 'Bu toplulukta henüz gönderi yok.',
+      feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
+      feedTitle: 'Gönderiler',
+      privateNotice: 'Bu topluluk gizli. Quizleri görmek için üye olmalısın.',
+      feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
+      menu: { label: 'Daha fazla', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
+      moderator: 'Moderatör',
+      owner: 'Sahip'
+    },
+    joinButton: {
+      guestJoin: 'Katılmak için giriş yap',
+      join: 'Katıl',
+      joining: 'Katılınıyor...',
+      pending: 'İstek gönderildi',
+      member: 'Üyesin',
+      owner: 'Yönet',
+      confirmLeave: 'Topluluktan ayrılmak istediğine emin misin?',
+      confirmCancel: 'Katılma isteğini geri çekmek istediğine emin misin?'
+    },
+    form: {
+      name: {
+        label: 'Topluluk adı',
+        placeholder: 'Topluluk adını yaz',
+        errorRequired: 'Topluluk adı gerekli.',
+        errorTooShort: 'Topluluk adı en az {min} karakter olmalı.',
+        errorTooLong: 'Topluluk adı en fazla {max} karakter olabilir.',
+        errorTaken: 'Bu topluluk adı zaten kullanılıyor.'
+      },
+      description: {
+        label: 'Açıklama',
+        placeholder: 'Topluluğunu kısaca anlat',
+        errorTooLong: 'Açıklama en fazla {max} karakter olabilir.'
+      },
+      avatar: { label: 'Topluluk görseli', uploaderTitle: 'Görsel ekle', hint: 'Tıkla ve görsel seç, kare olarak kırpılır' },
+      coverPhoto: { label: 'Kapak fotoğrafı', uploaderTitle: 'Kapak fotoğrafı ekle', hint: 'Tıkla ve görsel seç, 16:9 oranında kırpılır' },
+      tags: {
+        label: 'Etiketler',
+        placeholder: 'Etiket yaz',
+        errorTooMany: 'En fazla {max} etiket ekleyebilirsin.',
+        errorInvalid: 'Etiketler yalnızca harf ve rakam içerebilir.',
+        addButton: 'Etiket ekle',
+        hint: 'Etiket eklemek topluluğunu öne çıkarır, aramalarda daha kolay bulunur.'
+      },
+      visibility: { label: 'Görünürlük' },
+      postPermission: { label: 'Kim paylaşım yapabilir?' }
+    },
+    wizard: {
+      title: 'Topluluk oluştur',
+      steps: {
+        foundations: 'Temel bilgiler',
+        settings: 'Ayarlar',
+        complete: 'Tamamla'
+      },
+      nextButton: 'İleri',
+      previousButton: 'Geri',
+      submitButton: 'Topluluğu oluştur',
+      creating: 'Topluluk oluşturuluyor...',
+      createdSuccess: 'Topluluğun hazır!',
+      mediaUploadFailed: 'Topluluk oluşturuldu ama görsel yüklenemedi. Düzenleme sayfasından tekrar deneyebilirsin.',
+      noTags: 'Etiket eklenmedi'
+    },
+    edit: {
+      title: 'Topluluğu düzenle',
+      saveButton: 'Kaydet',
+      slug: 'Adres',
+      dangerZone: 'Tehlikeli bölge',
+      limitNote: 'Bir topluluk 7 gün içinde en fazla {limit} kez güncellenebilir.',
+      limitLeft: 'Bu hafta {count} hakkın kaldı.',
+      limitReached: 'Bu haftaki hakların doldu, {date} tarihinde tekrar güncelleyebilirsin.'
+    },
+    members: {
+      title: 'Üyeler',
+      search: 'Üye ara',
+      empty: 'Henüz üye yok.',
+      role: { owner: 'Sahibi', moderator: 'Moderatör' },
+      actions: {
+        kick: 'Çıkar',
+        promote: 'Moderatör yap',
+        demote: 'Moderatörlükten al',
+        confirmKick: 'Bu üyeyi topluluktan çıkarmak istediğine emin misin?',
+        confirmPromote: 'Bu üyeyi moderatör yapmak istediğine emin misin?',
+        confirmDemote: 'Bu üyenin moderatörlüğünü almak istediğine emin misin?'
+      }
+    },
+    pending: {
+      title: 'Bekleyen istekler',
+      empty: 'Bekleyen istek yok.',
+      actions: {
+        approve: 'Onayla',
+        reject: 'Reddet',
+        confirmApprove: 'Bu isteği onaylamak istediğine emin misin?',
+        confirmReject: 'Bu isteği reddetmek istediğine emin misin?'
+      }
+    },
+    delete: {
+      title: 'Topluluğu sil',
+      warning: 'Bu işlem geri alınamaz. Topluluk silinir, quizlerin topluluk bağlantısı kalkar ve üyelikler sona erer.',
+      confirmInput: 'Onaylamak için topluluk adını yaz',
+      confirmButton: 'Topluluğu sil'
+    },
+    success: {
+      created: 'Topluluk oluşturuldu.',
+      edited: 'Topluluk güncellendi.',
+      deleted: 'Topluluk silindi.',
+      joined: 'Topluluğa katıldın.',
+      joinRequested: 'Katılma isteğin gönderildi.',
+      left: 'Topluluktan ayrıldın.',
+      requestCanceled: 'Katılma isteğin geri çekildi.',
+      memberApproved: 'Üye onaylandı.',
+      memberRejected: 'İstek reddedildi.',
+      memberKicked: 'Üye topluluktan çıkarıldı.',
+      memberPromoted: 'Üye moderatör yapıldı.',
+      memberDemoted: 'Moderatörlük alındı.'
+    },
+    error: {
+      generic: 'Bir şeyler ters gitti. Lütfen tekrar dene.',
+      networkFailure: 'Bağlantı hatası. İnternetini kontrol edip tekrar dene.',
+      notMember: 'Bu toplulukta üye değilsin.',
+      postPermissionDenied: 'Bu toplulukta yalnızca sahip ve moderatörler paylaşım yapabilir.',
+      hidden: 'Bu topluluk şu an kullanılamıyor.',
+      roomNotShareable: 'Bu quiz paylaşılamaz.',
+      anonymousQuiz: 'Anonim quizler toplulukta paylaşılamaz.',
+      alreadyShared: 'Bu quiz bu toplulukta zaten paylaşılmış.',
+      ownedLimitReached: 'En fazla {max} topluluk kurabilirsin.',
+      notFound: 'Topluluk bulunamadı.'
+    },
+    notification: {
+      joinRequested: '{actor} {community} topluluğuna katılmak istiyor',
+      joinApproved: '{community} topluluğuna katılma isteğin onaylandı',
+      memberPromoted: '{community} topluluğunda moderatör yapıldın',
+      memberKicked: '{community} topluluğundan çıkarıldın',
+      hidden: '{community} topluluğun moderasyon nedeniyle gizlendi'
+    },
+    hiddenBanner: 'Topluluğun moderasyon nedeniyle gizlendi. Yalnızca sen görebilirsin.',
+    report: 'Topluluğu raporla',
+    profileTab: { title: 'Topluluklar', empty: 'Henüz bir topluluğa üye değil.', more: 'Daha fazla' }
+  },
+  drawLobby: {
+    officialRooms: 'Resmi Odalar',
+    playerRooms: 'Oyuncu Odaları'
+  },
   gmPanel: {
+    communities: {
+      title: 'Topluluklar',
+      description: 'Toplulukları ara, gizle, geri aç ya da sil.',
+      search: 'Topluluk ara',
+      onlyHidden: 'Yalnızca gizlenenler',
+      empty: 'Topluluk bulunamadı',
+      owner: 'Sahip',
+      members: 'Üye',
+      reports: 'Rapor',
+      hidden: 'Gizli',
+      source: 'Kaynak',
+      note: 'Not',
+      notePlaceholder: 'Moderasyon notu (isteğe bağlı)',
+      hide: 'Gizle',
+      unhide: 'Geri aç',
+      delete: 'Sil',
+      confirmHide: 'Bu topluluğu gizlemek istediğine emin misin?',
+      confirmUnhide: 'Bu topluluğu yeniden görünür yapmak istediğine emin misin?',
+      confirmDelete: 'Bu topluluğu kalıcı olarak silmek istediğine emin misin?',
+      hiddenDone: 'Topluluk gizlendi',
+      unhiddenDone: 'Topluluk geri açıldı',
+      deletedDone: 'Topluluk silindi'
+    },
     title: 'GM Paneli',
     menu: 'GM Paneli',
     date: 'Tarih',
@@ -1241,6 +1516,8 @@ export default {
         tagGenerationHint: 'Public olan ve etiketi olmayan odalara 5 etiket ekler',
         roomModeration: 'Oda moderasyonu',
         roomModerationHint: 'Küfür, NSFW ve özel/kalitesiz içerikli odaları listeden kaldırır',
+        communityModeration: 'Topluluk moderasyonu',
+        communityModerationHint: 'Uygunsuz ad, açıklama ve etiketli toplulukları gizler',
         tagPrompt: 'Etiket sistem promptu',
         moderationPrompt: 'Moderasyon sistem promptu'
       },
@@ -1511,6 +1788,11 @@ export default {
       description: 'Çalışma ya da eğlence için flashcards quiz oluştur',
       keywords: 'flashcards, quiz, çalışma, öğrenme'
     },
+    communityList: {
+      title: 'Topluluklar, ortak ilgi alanlarında quiz paylaş',
+      description: 'Topluluklara katıl, kendi topluluğunu kur ve quizleri birlikte paylaş',
+      keywords: 'topluluk, quiz topluluğu, quiz paylaş'
+    },
     creatorModeQuizzes: {
       title: 'Quizler, quiz çöz ya da quiz oluştur',
       description: 'Oyuncuların oluşturduğu quizleri çöz ya da quiz oluştur',
@@ -1561,7 +1843,8 @@ export default {
       quizzes: 'Quizler',
       reviews: 'Yorumlar',
       scores: 'Skorlar',
-      achievements: 'Başarımlar'
+      achievements: 'Başarımlar',
+      communities: 'Topluluklar'
     },
     stats: {
       created: 'Oluşturulan',
@@ -1611,6 +1894,7 @@ export default {
   playIntro: {
     play: 'OYUNA BAŞLA',
     share: 'Paylaş',
+    shareToCommunity: 'Toplulukta paylaş',
     rate: 'Puan Ver',
     howToPlay: 'Nasıl oynanır?',
     creator: 'Oluşturan',
@@ -1634,5 +1918,23 @@ export default {
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',
     guestLabel: '(misafir)'
+  },
+  cookieConsent: {
+    text: 'Deneyimini iyileştirmek ve kişiselleştirmek için çerez kullanabiliriz. Tercihini belirleyebilirsin. {link}',
+    link: 'Çerez Politikası',
+    reject: 'Reddet',
+    manage: 'Tercihleri yönet',
+    accept: 'Kabul et',
+    menu: 'Çerez tercihleri',
+    preferences: {
+      title: 'Çerez tercihleri',
+      necessary: 'Zorunlu çerezler',
+      necessaryDesc: 'Oturum, dil ve tema gibi sitenin çalışması için gerekenler. Kapatılamaz.',
+      ads: 'Reklam çerezleri',
+      adsDesc:
+        'Açarsan reklamlar ilgi alanına göre seçilir (Google AdSense çerezleri). Kapalıyken de reklam görürsün, yalnızca kişiselleştirilmez.',
+      save: 'Kaydet',
+      cancel: 'Vazgeç'
+    }
   }
 }

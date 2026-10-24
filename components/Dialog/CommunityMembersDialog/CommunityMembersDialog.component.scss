@@ -1,0 +1,46 @@
+.community-members-dialog {
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 60vh;
+    padding: 16px 20px 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &__empty {
+    margin: 0;
+    color: var(--color-text-02);
+    text-align: center;
+  }
+
+  // actions drop to their own line when the name and buttons don't fit (phones)
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    margin-inline-start: auto;
+  }
+
+  &__role {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    color: var(--color-text-02);
+    font-size: 12px;
+    background: var(--color-bg-02, rgb(128 128 128 / 15%));
+    border-radius: 10px;
+
+    &--owner {
+      color: var(--color-primary-01, inherit);
+    }
+  }
+}

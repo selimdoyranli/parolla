@@ -37,6 +37,9 @@
 
   // Player Actions ("more") Dialog — opened from live room avatars (tour / draw)
   PlayerActionsDialog
+
+  // Cookie notice, until accepted
+  CookieConsent
 </template>
 
 <script>

@@ -1,0 +1,22 @@
+.community-post-page {
+  position: relative;
+
+  &__body {
+    width: calc(100% - (var(--base-p-x) * 2));
+    max-width: 720px;
+    margin: var(--base-m-y) auto;
+  }
+
+  &__comments-title {
+    margin: 20px 0 8px;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: var(--font-size-text-8);
+
+    span {
+      margin-inline-start: 4px;
+      color: var(--color-text-03);
+      font-weight: 500;
+    }
+  }
+}

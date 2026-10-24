@@ -43,6 +43,9 @@
         Cell(:label="$t('gmPanel.ai.settings.roomModerationHint')" center :title="$t('gmPanel.ai.settings.roomModeration')")
           template(#right-icon)
             VanSwitch(v-model="form.isRoomModerationEnabled" size="22px")
+        Cell(:label="$t('gmPanel.ai.settings.communityModerationHint')" center :title="$t('gmPanel.ai.settings.communityModeration')")
+          template(#right-icon)
+            VanSwitch(v-model="form.isCommunityModerationEnabled" size="22px")
 
       span.gm-panel__itemsTitle {{ $t('gmPanel.ai.settings.tagPrompt') }}
       CellGroup.gm-panel__group(inset)
@@ -121,12 +124,21 @@ export default defineComponent({
           .filter(([, key]) => key.isDirty)
           .map(([provider, key]) => [provider, key.value])
       )
-      const { model, provider, isTagGenerationEnabled, isRoomModerationEnabled, tagSystemPrompt, moderationSystemPrompt } = form.value
+      const {
+        model,
+        provider,
+        isTagGenerationEnabled,
+        isRoomModerationEnabled,
+        isCommunityModerationEnabled,
+        tagSystemPrompt,
+        moderationSystemPrompt
+      } = form.value
       const { data, error } = await store.dispatch('gm/updateAiSettings', {
         model,
         provider,
         isTagGenerationEnabled,
         isRoomModerationEnabled,
+        isCommunityModerationEnabled,
         tagSystemPrompt,
         moderationSystemPrompt,
         apiKeys

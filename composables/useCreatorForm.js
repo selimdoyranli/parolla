@@ -1,4 +1,4 @@
-import { reactive, computed, ref, nextTick, useContext, useStore, onMounted, onUnmounted, useRoute } from '@nuxtjs/composition-api'
+import { reactive, computed, ref, nextTick, watch, useContext, useStore, onMounted, onUnmounted, useRoute } from '@nuxtjs/composition-api'
 import { ROOM_TAG_REGEX, GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum, questionTypeEnum, answerTypeEnum, choiceTypeEnum } from '@/enums/quiz.enum'
 import { roomTransformer } from '@/transformers'
@@ -34,11 +34,15 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isBusy: false,
     isClear: true,
     roomTitle: props.room?.title || '',
-    isListed: props.room?.isListed || false,
+    // public | unlisted
+    // new quizzes start public; an edited quiz keeps its own setting
+    visibilityMode: !props.room || props.room.isListed ? 'public' : 'unlisted',
     isSystemRemovedFromPublic: props.room?.isSystemRemovedFromPublic || false,
     moderationNote: props.room?.moderationNote || null,
     moderationSource: props.room?.moderationSource || null,
     isAnon: props.room?.isAnon || false,
+    // optional, any visibility; edit mode: RoomBasicInfo fills it from where the quiz is already shared
+    community: null,
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
     qaList:
@@ -93,8 +97,16 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     roomId: '',
     questions: [],
     choices: [],
-    isListed: form.isListed
+    isListed: form.visibilityMode === 'public'
   })
+
+  // only its owner could share an anonymous unlisted quiz, which would unmask them (server: anonymousQuiz)
+  watch(
+    () => form.isAnon && form.visibilityMode === 'unlisted',
+    isBlocked => {
+      if (isBlocked) form.community = null
+    }
+  )
 
   const dialog = reactive({
     room: {
@@ -607,7 +619,22 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
       createdRoom.roomId = room.roomId
       createdRoom.questions = room.questions
       createdRoom.choices = room.choices || []
-      createdRoom.isListed = form.isListed
+      createdRoom.isListed = form.visibilityMode === 'public'
+
+      // the quiz is saved either way; only the share to the picked community failed
+      const communityShare = data.meta?.communityShare
+
+      if (communityShare?.ok === false) {
+        const reasonKey = `community.error.${communityShare.key}`
+
+        Notify({
+          message: i18n.t('form.creatorModeCompose.room.community.shareFailed', {
+            reason: i18n.te(reasonKey) ? i18n.t(reasonKey) : i18n.t('community.error.generic')
+          }),
+          type: 'warning',
+          duration: 5000
+        })
+      }
 
       // Upload Media
       let uploadedMediaCount = 0

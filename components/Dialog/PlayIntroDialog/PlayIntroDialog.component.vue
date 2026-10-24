@@ -3,7 +3,8 @@ Dialog.dialog.dialog--scene.play-intro(
   v-model="state.isOpen"
   transition="dialog-scene-bounce"
   :overlay="false"
-  :show-cancel-button="false"
+  :show-cancel-button="inGame"
+  :cancel-button-text="$t('general.close')"
   :show-confirm-button="false"
   :close-on-click-overlay="false"
   :close-on-popstate="false"
@@ -32,7 +33,7 @@ Dialog.dialog.dialog--scene.play-intro(
         AppIcon(:name="stat.icon" :width="16" :height="16")
         span {{ stat.text }}
 
-    Button.play-intro__play(block round @click="play")
+    Button.play-intro__play(v-if="!inGame" block round @click="play")
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
@@ -40,19 +41,15 @@ Dialog.dialog.dialog--scene.play-intro(
       Button.play-intro__action(round size="small" @click="shareRoom(room)")
         AppIcon(name="tabler:share" :width="16" :height="16")
         span {{ $t('playIntro.share') }}
+      Button.play-intro__action(v-if="canShareToCommunity" round size="small" @click="communityShareOpen = true")
+        AppIcon(name="tabler:users" :width="16" :height="16")
+        span {{ $t('playIntro.shareToCommunity') }}
       Button.play-intro__action(round size="small" @click="openReviews")
         AppIcon(name="tabler:star" :width="16" :height="16")
         span {{ $t('playIntro.rate') }}
 
-    //- label over username, both right of the avatar; anonymous rooms get the anon avatar and no player dialog
     section.play-intro__creator(v-if="isCreator")
-      PlayerAvatar(:user="creatorUser" :size="44" :open-player-dialog-on-click="Boolean(creatorUser)")
-        template(#append)
-          .play-intro__creator-meta
-            small {{ $t('playIntro.creator') }}
-            strong(v-if="creatorUser") {{ creatorUser.username }}
-              span.gm-username-extra(v-if="creatorUser.role?.name === 'GM'") &nbsp;(GM)
-            strong(v-else) {{ $t('playIntro.anon') }}
+      CreatorByline(:user="creatorUser")
 
     hr.play-intro__divider(v-if="isCreator")
 
@@ -98,6 +95,7 @@ Dialog.dialog.dialog--scene.play-intro(
         FooterBrandLogo
 
   LazyRoomReviewDialog(v-if="isCreator" :isOpen="reviewDialog.isOpen" @closed="onReviewClosed")
+  LazyCommunityShareDialog(v-if="canShareToCommunity" :is-open.sync="communityShareOpen" :room="room")
 </template>
 
 <script>
@@ -125,6 +123,12 @@ export default defineComponent({
       type: String,
       required: true,
       validator: value => ['creator', 'daily', 'unlimited'].includes(value)
+    },
+    // reopened from the header mid-game: no play button, a close button instead
+    inGame: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: ['closed'],
@@ -147,19 +151,35 @@ export default defineComponent({
       }
     )
 
-    // the header's how-to-play button checks this so it doesn't stack a dialog on the intro
-    watch(
-      () => state.isOpen,
-      value => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', value),
-      { immediate: true }
-    )
+    // the header's how-to-play button checks this so it doesn't stack a dialog on the intro;
+    // the header's own in-game copy must not touch it
+    if (!props.inGame) {
+      watch(
+        () => state.isOpen,
+        value => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', value),
+        { immediate: true }
+      )
 
-    onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
+      onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
+    }
 
     const room = computed(() => store.getters['creator/room'] || {})
     // owners always receive room.user, anonymous rooms included
     const creatorUser = computed(() => (room.value.isAnon ? null : room.value.user))
     const isCreator = computed(() => props.mode === 'creator')
+    const me = computed(() => store.getters['auth/user'])
+    const communityShareOpen = ref(false)
+    // mirrors the server rule (canShareRoom); moderated quizzes never
+    const canShareToCommunity = computed(
+      () =>
+        isCreator.value &&
+        Boolean(me.value) &&
+        Boolean(room.value.documentId) &&
+        !room.value.isSystemRemovedFromPublic &&
+        (store.getters['auth/postableCommunities'] || []).length > 0 &&
+        // a listed quiz is shareable by anyone, even anonymous; an unlisted one only by its owner, and never when anonymous
+        (room.value.isListed || (!room.value.isAnon && room.value.user?.id === me.value.id))
+    )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
     const minutes = computed(() =>
       Math.round((isCreator.value && room.value.gameTimeLimit ? room.value.gameTimeLimit : GAME_TIME_LIMIT) / 60000)
@@ -306,7 +326,9 @@ export default defineComponent({
       reviewsKey,
       openFullScoreboard,
       localePath,
-      shareRoom
+      shareRoom,
+      canShareToCommunity,
+      communityShareOpen
     }
   }
 })

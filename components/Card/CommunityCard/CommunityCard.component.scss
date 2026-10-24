@@ -1,0 +1,159 @@
+.community-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none !important;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-01);
+  border-radius: 20px;
+  isolation: isolate;
+  transition: transform 0.1s var(--motion-01), border-color 0.1s var(--motion-01), box-shadow 0.1s var(--motion-01),
+    background-color 0.1s var(--motion-01);
+
+  // hover lift + brand rim, as on QuizCard
+  &::after {
+    position: absolute;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 120, 120, 0.55), rgba(255, 120, 120, 0) 60%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.1s var(--motion-01);
+    content: '';
+    pointer-events: none;
+    inset: -1px;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  // mouse-only: touch would keep the hover state stuck after a tap
+  @media (pointer: fine) {
+    &:hover {
+      background: var(--color-hover-02);
+      border-color: rgba(255, 120, 120, 0.45);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 22px 40px -22px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 120, 120, 0.18);
+      transform: translateY(-3px);
+
+      &::after {
+        opacity: 1;
+      }
+
+      .quiz-cover__photo {
+        transform: scale(1.04);
+      }
+
+      .community-card__avatar {
+        border-color: var(--color-hover-02);
+      }
+    }
+  }
+
+  &:focus-visible {
+    border-color: rgba(255, 120, 120, 0.45);
+    outline: 2px solid var(--color-brand-02);
+    outline-offset: 3px;
+    transform: translateY(-3px);
+  }
+
+  // a short band of the 16:9 cover (cropped, not squashed); compound selector beats QuizCover's own 16:9
+  &__cover.quiz-cover {
+    aspect-ratio: 10 / 3;
+    width: 100%;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 999px;
+  }
+
+  &__body {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    padding: 36px 14px 14px;
+  }
+
+  &__avatar {
+    position: absolute;
+    top: -28px;
+    left: 14px;
+    border: 2px solid var(--color-ui-02);
+  }
+
+  &__title-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__name {
+    margin: 0;
+    overflow: hidden;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__visibility {
+    flex-shrink: 0;
+    color: var(--color-text-03);
+  }
+
+  &__description {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-text-03);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+  }
+
+  // pinned to the bottom so cards in a row line up
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    align-items: center;
+    margin-block-start: auto;
+    padding-block-start: 6px;
+    color: var(--color-text-03);
+    font-size: 13px;
+  }
+
+  // same look as the quizzes page's tags (RoomFeaturedTagList)
+  &__tag {
+    padding: 2px 8px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    background-color: transparent;
+    border: 1px solid light-dark(#ddd, #333);
+    border-radius: var(--border-radius-01);
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+}

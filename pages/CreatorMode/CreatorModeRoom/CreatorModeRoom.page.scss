@@ -1,3 +1,9 @@
 .creator-mode-room-page {
   position: relative;
+
+  &__community {
+    display: block;
+    margin: 8px 16px;
+    font-size: 13px;
+  }
 }

@@ -27,7 +27,7 @@
       :disabled="$auth.loggedIn && !form.content.trim()"
       @click="submit"
     )
-      AppIcon(:name="$auth.loggedIn ? 'tabler:send' : 'tabler:login-2'")
+      AppIcon(name="tabler:send")
 </template>
 
 <script>
@@ -38,7 +38,9 @@ import { COMMENT_CHAR_LENGTH } from '@/system/constant'
 export default defineComponent({
   components: { Field, Button },
   props: {
-    roomId: { type: Number, required: true },
+    // a comment target is a quiz room (roomId) or a community post (postId = documentId)
+    roomId: { type: Number, default: null },
+    postId: { type: String, default: null },
     parent: { type: String, default: null },
     // username shown in the "replying to" bar; null for a root comment
     replyTo: { type: String, default: null },
@@ -79,6 +81,7 @@ export default defineComponent({
       form.pending = true
       const { data, error } = await store.dispatch('comment/postComment', {
         roomId: props.roomId,
+        postId: props.postId,
         content: censorBadwords(content),
         parent: props.parent
       })

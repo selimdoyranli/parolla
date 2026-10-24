@@ -1,0 +1,326 @@
+<template lang="pug">
+.page.community-list-page
+  .community-list-page__inner
+    .community-list-page__header
+      .community-list-page__heading
+        h2.community-list-page__title
+          AppIcon.community-list-page__title-icon(name="streamline-color:user-multiple-group-flat" :width="28" :height="28")
+          span
+            | {{ $t('community.list.title') }}
+            span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
+        p.community-list-page__description {{ $t('community.list.description') }}
+      Button.community-list-page__create(color="#ff7878" icon="plus" round size="normal" @click="handleCreate")
+        | {{ $t('community.list.createButton') }}
+
+    .community-list-page__filters
+      Search.community-list-page__search(
+        v-model="keyword"
+        :placeholder="$t('community.list.search')"
+        :clearable="false"
+        @input="handleSearchInput"
+      )
+        template(#right-icon)
+          //- own clear button like RoomList: vant 2's clear icon only listens to touchstart
+          ActionButton(v-if="keyword" icon="tabler:x" :aria-label="$t('general.clear')" @click="clearSearch")
+      FilterDropdown(
+        :trigger-title="selectedSortOption.label"
+        :selected="selectedSortOption"
+        :options="sortOptions"
+        @on-select-option="handleSortSelect"
+      )
+
+    .community-list-page__tags(v-if="tagOptions.length")
+      button.community-list-page__tag(
+        v-for="tag in tagOptions"
+        :key="tag"
+        type="button"
+        :class="{ 'is-active': tag === activeTag }"
+        @click="handleTagClick(tag)"
+      ) \#{{ tag }}
+
+    Empty(v-if="!items.length && isLoading" :description="$t('general.loading')")
+    Empty(v-else-if="!items.length && hasError" image="error" :description="$t('community.error.generic')")
+      Button(@click="reload") {{ $t('error.tryAgain') }}
+    Empty(v-else-if="!items.length" :description="$t(`community.list.${emptyKey}`)")
+    .community-list-page__grid(v-else)
+      template(v-for="cell in cells")
+        .community-list-page__ad(:key="cell.key" v-if="cell.type === 'ad'")
+          small.community-list-page__ad-label {{ $t('general.ad') }}
+          AppAd(lazy format="rectangle" :data-ad-slot="6048083070")
+        CommunityCard(v-else :key="cell.key" :community="cell.community" @tag-click="handleTagClick")
+
+    InfiniteLoading(v-if="items.length && hasMore" :identifier="infiniteId" @infinite="handleInfinite")
+      template(#no-more) {{ $t('community.list.noMore') }}
+      template(#no-results) {{ $t('community.list.noMore') }}
+      template(#error="{ trigger }")
+        span {{ $t('community.error.generic') }}
+        Button(size="small" @click="trigger") {{ $t('error.tryAgain') }}
+</template>
+
+<script>
+import {
+  defineComponent,
+  useContext,
+  useRouter,
+  useStore,
+  ref,
+  computed,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  useMeta
+} from '@nuxtjs/composition-api'
+import { Button, Empty, Search } from 'vant'
+import InfiniteLoading from 'vue-infinite-loading'
+import { communityListHead } from '@/helpers/communitySeo'
+
+const PAGE_SIZE = 12
+const MAX_TAGS = 10
+const MAX_ADS = 4
+const SORTS = ['recent', 'memberCount', 'postCount']
+// own lists: "joined" = member but not owner, "owned" = founded by the viewer
+const OWN_LISTS = ['joined', 'owned']
+const ICONS = {
+  recent: 'tabler:clock',
+  memberCount: 'tabler:users',
+  postCount: 'tabler:file-text',
+  joined: 'tabler:user-check',
+  owned: 'tabler:crown'
+}
+
+// outlives the page component: coming back from a community keeps the loaded pages and the scroll spot
+const listMemory = { key: null, items: [], page: 1, hasMore: false, total: null, scrollTop: 0 }
+
+export default defineComponent({
+  components: { Button, Empty, Search, InfiniteLoading },
+  beforeRouteLeave(to, from, next) {
+    this.rememberPosition()
+    next()
+  },
+  layout: 'Default/Default.layout',
+  setup() {
+    const router = useRouter()
+    const store = useStore()
+    const { i18n, route, localePath, getRouteBaseName, $auth } = useContext()
+
+    const sortKeys = computed(() => ($auth.loggedIn ? [...SORTS, ...OWN_LISTS] : SORTS))
+    const sort = computed(() => (sortKeys.value.includes(route.value.query.sort) ? route.value.query.sort : 'recent'))
+    const activeTag = computed(() => route.value.query.tag || '')
+    const search = computed(() => route.value.query.search || '')
+    // the field mirrors the active tag as "#tag" (like the quizzes page), else the typed search
+    const fieldText = () => (activeTag.value ? `#${activeTag.value}` : search.value)
+    const keyword = ref(fieldText())
+
+    const listKey = () => [sort.value, activeTag.value, search.value, i18n.locale].join('|')
+
+    const items = ref([])
+    const page = ref(1)
+    const hasMore = ref(false)
+    const total = ref(null)
+    const isLoading = ref(false)
+    const infiniteId = ref(0)
+    const hasError = ref(false)
+    let reqId = 0
+    const knownTags = ref([])
+
+    const scroller = () => document.querySelector('.layout__main')
+    const rememberPosition = () => {
+      Object.assign(listMemory, {
+        key: listKey(),
+        items: items.value,
+        page: page.value,
+        hasMore: hasMore.value,
+        total: total.value,
+        scrollTop: scroller()?.scrollTop || 0
+      })
+    }
+
+    const load = async (nextPage, id) => {
+      const { data, error } = await store.dispatch('community/fetchCommunities', {
+        ...(OWN_LISTS.includes(sort.value) ? { [sort.value]: 1 } : { sort: sort.value }),
+        search: search.value || undefined,
+        tag: activeTag.value || undefined,
+        page: nextPage,
+        pageSize: PAGE_SIZE
+      })
+
+      // stale: filters changed while this request was in flight
+      if (id !== reqId) return { stale: true }
+
+      if (error || !data) return { error: true }
+
+      items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
+      page.value = nextPage
+      hasMore.value = data.hasMore
+      total.value = data.total
+
+      return { error: false }
+    }
+
+    const reload = async () => {
+      const id = ++reqId
+
+      isLoading.value = true
+      hasError.value = false
+      items.value = []
+      total.value = null
+      infiniteId.value++
+
+      const { error } = await load(1, id)
+
+      if (id !== reqId) return
+
+      hasError.value = !!error
+      isLoading.value = false
+    }
+
+    const handleInfinite = async $state => {
+      const { error, stale } = await load(page.value + 1, reqId)
+
+      if (stale) return
+
+      if (error) return $state.error()
+
+      hasMore.value ? $state.loaded() : $state.complete()
+    }
+
+    const goto = query => {
+      const next = { ...route.value.query, ...query }
+
+      Object.keys(next).forEach(key => !next[key] && delete next[key])
+      // same query again (e.g. a repeated tag click) rejects with NavigationDuplicated
+      router.replace(localePath({ name: 'Community-CommunityList', query: next })).catch(() => {})
+    }
+
+    // plain timer so a pending search can be dropped on unmount instead of navigating back here
+    let searchTimer = null
+    const handleSearchInput = () => {
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => {
+        const text = keyword.value.trim()
+
+        // still the tag label: nothing changed
+        if (activeTag.value && text === `#${activeTag.value}`) return
+
+        // "#tag" filters by tag; anything else (including an edited tag label) is a plain search
+        goto(text.startsWith('#') ? { tag: text.slice(1), search: '' } : { tag: '', search: text })
+      }, 300)
+    }
+
+    const clearSearch = () => {
+      clearTimeout(searchTimer)
+      keyword.value = ''
+      goto({ tag: '', search: '' })
+    }
+
+    onBeforeUnmount(() => clearTimeout(searchTimer))
+    // guests see the button too: it asks them to sign in first
+    const handleCreate = () => {
+      if (!$auth.loggedIn) return store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+
+      router.push(localePath({ name: 'Community-CommunityCompose' }))
+    }
+
+    const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag, search: '' })
+
+    const sortOptions = computed(() => sortKeys.value.map(key => ({ key, icon: ICONS[key], label: i18n.t(`community.list.sort.${key}`) })))
+    const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
+    const emptyKey = computed(() => ({ joined: 'emptyJoined', owned: 'emptyOwned' }[sort.value] || 'empty'))
+    const handleSortSelect = ({ key }) => goto({ sort: key === 'recent' ? '' : key })
+
+    // tags of the loaded communities (no extra endpoint), plus the active one so it can be switched off
+    watch(items, value => {
+      const tags = new Set(knownTags.value)
+
+      value.forEach(community => (community.tags || []).forEach(tag => tags.add(tag)))
+      knownTags.value = [...tags]
+    })
+    const tagOptions = computed(() => {
+      const tags = knownTags.value.slice(0, MAX_TAGS)
+
+      return activeTag.value && !tags.includes(activeTag.value) ? [activeTag.value, ...tags.slice(0, MAX_TAGS - 1)] : tags
+    })
+
+    // a card-sized ad after every 4 communities, capped like RoomList
+    const cells = computed(() => {
+      const result = []
+      let ads = 0
+
+      items.value.forEach((community, index) => {
+        result.push({ type: 'community', community, key: community.documentId })
+
+        if (ads < MAX_ADS && (index + 1) % 4 === 0) {
+          ads++
+          result.push({ type: 'ad', key: `ad-${index}` })
+        }
+      })
+
+      return result
+    })
+
+    watch(
+      () => route.value.query,
+      () => {
+        // leaving for a community page: the query is gone, nothing to reload
+        if (getRouteBaseName(route.value) !== getRouteBaseName({ name: 'Community-CommunityList' })) return
+
+        if (listKey() === listMemory.key && listMemory.items === items.value) return
+
+        keyword.value = fieldText()
+        reload()
+      }
+    )
+
+    onMounted(() => {
+      if (listMemory.key === listKey() && listMemory.items.length) {
+        items.value = listMemory.items
+        page.value = listMemory.page
+        hasMore.value = listMemory.hasMore
+        total.value = listMemory.total
+        setTimeout(() => scroller()?.scrollTo(0, listMemory.scrollTop))
+      } else {
+        reload()
+      }
+    })
+
+    useMeta(() =>
+      communityListHead({
+        locale: i18n.locale,
+        title: `${i18n.t('seo.communityList.title')} - ${i18n.t('seo.main.title')}`,
+        description: i18n.t('seo.communityList.description'),
+        communities: items.value,
+        // searches and the viewer's own lists aren't pages worth indexing
+        filtered: Boolean(search.value) || OWN_LISTS.includes(sort.value)
+      })
+    )
+
+    return {
+      keyword,
+      sort,
+      activeTag,
+      items,
+      cells,
+      hasMore,
+      total,
+      isLoading,
+      hasError,
+      reload,
+      infiniteId,
+      tagOptions,
+      sortOptions,
+      selectedSortOption,
+      emptyKey,
+      handleSearchInput,
+      clearSearch,
+      handleTagClick,
+      handleCreate,
+      handleSortSelect,
+      handleInfinite,
+      rememberPosition
+    }
+  },
+  head: {}
+})
+</script>
+
+<style lang="scss" src="./CommunityList.page.scss"></style>

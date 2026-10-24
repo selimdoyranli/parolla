@@ -1,0 +1,17 @@
+.community-join-button {
+  min-width: 96px;
+  font-weight: 700;
+
+  .van-button__text {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  // brand-02 is a light coral: dark text keeps the contrast white would lose
+  &.van-button--primary {
+    color: #1b1b1b;
+    background: var(--color-brand-02);
+    border-color: var(--color-brand-02);
+  }
+}

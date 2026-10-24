@@ -57,6 +57,9 @@ input:on-input, textarea:on-input { sound: keystroke; }
 /* IntroButton CTA — the "Oyna" play link inside each game-mode card. */
 .play-now-button { sound-on-click: pop; }
 
+/* Header communities button: navigates instead of opening a dialog, so it has no modal sound of its own. */
+.app-header-nav__item--communities { sound-on-click: tick; }
+
 /* Room featured tag filter chips. */
 .room-featured-tag-list-tag { sound-on-click: tick; }
 
@@ -82,6 +85,14 @@ input:on-input, textarea:on-input { sound: keystroke; }
 .room-comment-item__action--like.is-active { sound-on-click: pop; pitch: -2st; volume: 0.6; }
 .room-comment-item__action--reply { sound-on-click: tick; }
 .room-comment-more-dialog__option { sound-on-click: tick; }
+
+/* Option cards — quiz compose visibility + creator, community wizard settings, community picker items. */
+button.room-choice:not(.room-choice--pick) { sound-on-click: tick; }
+
+/* Community posts — same like rise/fall as quiz comments (class reflects state before the click); comment ticks. */
+.community-post-card__pill--like { sound-on-click: pop; pitch: +2st; }
+.community-post-card__pill--like.is-active { sound-on-click: pop; pitch: -2st; volume: 0.6; }
+.community-post-card__pill--comment { sound-on-click: tick; }
 
 /* GeoGuess — region cards tick, mini map opens / sheet closes like a drawer, HUD region chip backs out.
    Pin drop, reveal (success/ding/denied by score), round + fullscreen sine sweeps (page-enter/exit) and finish are played from the scene via useSfx. */

@@ -1,0 +1,93 @@
+.cookie-consent {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom) + 12px);
+  left: 50%;
+  // under vant dialogs/popups (2000+)
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(560px, calc(100% - 32px));
+  padding: 12px 14px;
+  color: var(--color-text-02);
+  background-color: var(--color-ui-02);
+  border: 1px solid var(--color-border-02);
+  border-radius: 16px;
+  box-shadow: var(--box-shadow-01);
+  transform: translateX(-50%);
+
+  &__body {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    color: var(--color-text-01);
+  }
+
+  &__text {
+    margin: 0;
+    font-size: var(--font-size-text-9);
+    line-height: 1.4;
+
+    a {
+      color: var(--color-text-01);
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  // ghost: reject / manage stay quiet next to the green accept
+  &__button.van-button {
+    padding: 0 14px;
+    color: var(--color-text-02);
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  &__button--accept.van-button {
+    color: #fff;
+    background-color: var(--color-success-02);
+    border-color: var(--color-success-02);
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  &-enter,
+  &-leave-to {
+    transform: translate(-50%, 12px);
+    opacity: 0;
+  }
+}
+
+.cookie-preferences {
+  width: min(92vw, 440px);
+
+  &__list {
+    padding: 4px 8px 8px;
+  }
+
+  .van-cell__label {
+    color: var(--color-text-03);
+  }
+
+  .van-cell__value,
+  .van-switch {
+    flex-shrink: 0;
+  }
+
+  [class*='van-hairline']::after {
+    border: 0;
+  }
+}

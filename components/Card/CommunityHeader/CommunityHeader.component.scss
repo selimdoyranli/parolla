@@ -1,0 +1,239 @@
+.community-header {
+  position: relative;
+  width: calc(100% - (var(--base-p-x) * 2));
+  max-width: 720px;
+  margin: var(--base-m-y) auto 0;
+
+  // compound selector: outranks QuizCover's own aspect ratio wherever its css lands
+  &__cover.quiz-cover {
+    max-height: 240px; // a banner on wide screens, 16:9 on phones
+    border-radius: 16px;
+  }
+
+  &__shade {
+    position: absolute;
+    background: linear-gradient(to top, rgb(0 0 0 / 75%), rgb(0 0 0 / 20%) 55%, transparent);
+    inset: 0;
+  }
+
+  &__actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+
+    // readable on any cover: a dark frosted disc, no hover tooltip (the menu says it all)
+    .action-button {
+      color: #fff;
+
+      .action-button__icon {
+        position: relative;
+        margin: 0;
+        padding: 8px;
+
+        // the pending badge sits on the disc's corner, not the small icon's
+        .app-icon {
+          position: static;
+        }
+
+        .app-icon__label {
+          top: -4px;
+          right: -4px;
+        }
+
+        background-color: rgb(0 0 0 / 45%);
+        backdrop-filter: blur(8px);
+      }
+
+      &:hover .action-button__icon {
+        color: #fff;
+        background-color: rgb(0 0 0 / 60%);
+      }
+
+      &.has-label:hover::after {
+        content: none;
+      }
+    }
+  }
+
+  &__identity {
+    position: absolute;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: #fff;
+    inset-block-end: 14px;
+    inset-inline: 14px;
+  }
+
+  &__avatar {
+    border: 3px solid rgb(255 255 255 / 90%);
+
+    &--clickable {
+      cursor: zoom-in;
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__title-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__name {
+    // names run up to 100 characters: wrap, then clamp to two lines
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: #fff;
+    font-size: var(--font-size-text-6);
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  &__visibility {
+    flex-shrink: 0;
+    opacity: 0.75;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  // "(2 bekleyen)" next to the member count, managers only
+  &__pending {
+    margin-inline-start: -8px;
+    padding: 1px 8px;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 11px;
+    background-color: var(--color-danger-01);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__stat {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    opacity: 0.85;
+
+    &--button {
+      padding: 0;
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__about {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 4px 4px;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    white-space: pre-line;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__tag {
+    padding: 4px 10px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    text-decoration: none !important;
+    border: 1px solid light-dark(#ddd, #333);
+    border-radius: var(--border-radius-01);
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: var(--color-text-03);
+    font-size: 13px;
+  }
+
+  &__meta-item {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border-01);
+  }
+}
+
+// same close button as the profile photo preview (portaled to body, so not nested above)
+.community-header-preview__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  pointer-events: auto;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.65);
+  }
+}
+
+// vant puts the cover slot top-left and sized to its content: float the close button top-right
+.community-header-preview .van-image-preview__cover {
+  top: 0;
+  right: 0;
+  left: auto;
+  pointer-events: none;
+}

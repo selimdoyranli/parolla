@@ -2,31 +2,19 @@
   $login-form: '.login-form';
 
   position: relative;
-  padding-inline: var(--base-p-x);
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: auto 1fr;
   gap: calc(var(--base-m-x) * 1.2);
   align-items: center;
-  justify-content: space-between;
-  padding-inline-end: 0;
+  padding-inline: var(--base-p-x);
 
   &--full {
     grid-template-columns: 1fr;
     width: 100%;
     padding: 0;
 
-    #{$login-form} {
-      &__social-buttons {
-        flex-direction: column;
-      }
-
-      &__social-button {
-        width: 100%;
-
-        &-text {
-          display: block;
-        }
-      }
+    #{$login-form}__social-buttons {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -46,11 +34,28 @@
     opacity: 0.2;
   }
 
+  // full-width buttons under the title; side by side from tablet up (a lone Google button still fills the row)
   &__social-buttons {
-    display: inline-flex;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
     gap: calc(var(--base-m-x) / 2);
-    align-items: center;
-    justify-content: flex-end;
+
+    @include media-breakpoint-up(tablet) {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+  }
+
+  &__terms {
+    grid-column: 1 / -1;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+    text-align: center;
+
+    a {
+      color: var(--color-text-02);
+      text-decoration: underline;
+    }
   }
 
   &__social-button {
@@ -59,7 +64,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
+    width: 100%;
     height: 42px;
     border-radius: var(--border-radius-01);
     box-shadow: var(--box-shadow-02);
@@ -81,7 +86,7 @@
 
     &-text {
       position: relative;
-      display: none;
+      display: block;
       margin-inline-start: var(--base-m-x);
       margin-block-start: calc(#{$spacer} / 1.6);
 

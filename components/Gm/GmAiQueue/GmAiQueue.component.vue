@@ -5,9 +5,9 @@
     Cell(v-if="!items.length" icon="passed" :title="$t('gmPanel.ai.queue.empty')")
     Cell(
       v-for="item in items"
-      :key="`${item.documentId}-${item.locale}`"
-      :label="`${item.locale} · ${formatTime(item.enqueuedAt)}`"
-      icon="clock-o"
+      :key="`${item.kind}-${item.documentId}-${item.locale}`"
+      :label="item.locale ? `${item.locale} · ${formatTime(item.enqueuedAt)}` : formatTime(item.enqueuedAt)"
+      :icon="item.kind === 'community' ? 'friends-o' : 'clock-o'"
       center
       :title="item.title || item.documentId"
     )
