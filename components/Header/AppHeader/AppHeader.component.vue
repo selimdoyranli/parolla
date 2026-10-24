@@ -75,7 +75,17 @@
   )
 
   // App Drawer (homepage hamburger)
-  LazyAppDrawer(v-if="isHome" :isOpen="dialog.drawer.isOpen" @closed="dialog.drawer.isOpen = false")
+  LazyAppDrawer(
+    v-if="isHome"
+    :isOpen="dialog.drawer.isOpen"
+    @clickedHowToPlay="toggleHowToPlayDialog"
+    @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
+    @clickedCredits="toggleCreditsDialog"
+    @clickedContact="toggleContactDialog"
+    @clickedSwitchLocale="toggleLocaleSwitchDialog"
+    @clickedReviewRoom="toggleRoomReviewDialog"
+    @closed="dialog.drawer.isOpen = false"
+  )
   // How To Calculate Stats Dialog
   LazyHowToCalculateStatsDialog(:isOpen="dialog.howToCalculateStats.isOpen" @closed="dialog.howToCalculateStats.isOpen = false")
   // Credits Dialog

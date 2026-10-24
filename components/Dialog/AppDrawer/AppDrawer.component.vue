@@ -13,6 +13,17 @@ Popup.app-drawer(v-model="state.isOpen" position="left" @closed="$emit('closed')
     )
       template(#icon)
         AppIcon.app-drawer-nav__icon(:name="item.icon" :width="22" :height="22")
+
+  MenuMoreNav(
+    :with-communities="false"
+    @clickedHowToPlay="$emit('clickedHowToPlay')"
+    @clickedHowToCalculateStats="$emit('clickedHowToCalculateStats')"
+    @clickedCredits="$emit('clickedCredits')"
+    @clickedContact="$emit('clickedContact')"
+    @clickedSwitchLocale="$emit('clickedSwitchLocale')"
+    @clickedReviewRoom="$emit('clickedReviewRoom')"
+    @close="state.isOpen = false"
+  )
 </template>
 
 <script>

@@ -3,7 +3,8 @@
   max-width: 80%;
   height: 100%;
   padding: var(--base-p-y) 0;
-  background-color: var(--color-ui-01);
+  overflow-y: auto;
+  background-color: var(--color-ui-02);
 
   &__title {
     display: block;
@@ -17,6 +18,10 @@
 
   [class*='van-hairline']::after {
     border: 0;
+  }
+
+  .menu-more {
+    margin-block-start: calc(var(--base-m-y) * 2);
   }
 
   &-nav {

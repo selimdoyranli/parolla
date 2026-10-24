@@ -28,19 +28,6 @@
     @include font-weight-semi-bold;
   }
 
-  &__subTitle {
-    display: block;
-    margin-block-start: 8px;
-    padding: 0 var(--base-p-x);
-    padding-block-end: calc(var(--base-p-y) / 2);
-    color: var(--color-text-03);
-    font-size: var(--font-size-text-9);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-
-    @include font-weight-medium;
-  }
-
   .van-cell__label {
     color: var(--color-text-03);
   }
@@ -77,11 +64,5 @@
 
   .login-form {
     margin-block-end: calc(var(--base-m-y) * 2);
-  }
-
-  &-nav__item--wordblockKeyboard {
-    @include media-breakpoint-down(tablet) {
-      display: none;
-    }
   }
 }
