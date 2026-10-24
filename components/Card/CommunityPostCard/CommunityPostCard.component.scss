@@ -136,6 +136,11 @@
     align-items: center;
   }
 
+  // the plain Quiz label shares the quiz block's background; a stronger outline keeps it readable
+  &__labels .quiz-type-label--qa {
+    border-color: var(--color-text-03);
+  }
+
   &__lang {
     display: inline-flex;
     gap: 3px;
@@ -145,7 +150,7 @@
     font-weight: 700;
     font-size: 11px;
     letter-spacing: 0.04em;
-    border: 1px solid var(--color-border-02);
+    border: 1px solid var(--color-text-03);
     border-radius: 6px;
   }
 
