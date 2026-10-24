@@ -145,13 +145,10 @@
     display: inline-flex;
     gap: 3px;
     align-items: center;
-    padding: 2px 6px;
-    color: var(--color-text-02);
+    color: var(--color-text-03);
     font-weight: 700;
     font-size: 11px;
     letter-spacing: 0.04em;
-    border: 1px solid var(--color-text-03);
-    border-radius: 6px;
   }
 
   &__quiz-title {
