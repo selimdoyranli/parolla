@@ -166,9 +166,9 @@ export default defineComponent({
         Boolean(me.value) &&
         Boolean(room.value.documentId) &&
         !room.value.isSystemRemovedFromPublic &&
-        !room.value.isAnon &&
         (store.getters['auth/postableCommunities'] || []).length > 0 &&
-        (room.value.user?.id === me.value.id || (room.value.isListed && !room.value.isCommunityOnly))
+        // a listed quiz is shareable by anyone, even anonymous; an unlisted one only by its owner, and never when anonymous
+        ((room.value.isListed && !room.value.isCommunityOnly) || (!room.value.isAnon && room.value.user?.id === me.value.id))
     )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
     const minutes = computed(() =>
