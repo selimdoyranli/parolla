@@ -38,13 +38,13 @@ import { Popup, CellGroup, Cell } from 'vant'
 // the shop has no route: it opens the inventory dialog on its shop tab
 const ITEMS = [
   { key: 'home', route: 'Main', title: 'dialog.menu.home', icon: 'fluent-emoji-flat:house' },
-  { key: 'shop', title: 'dialog.menu.shop', icon: 'streamline-ultimate-color:shop-sale-1' },
   {
     key: 'communities',
     route: 'Community-CommunityList',
     title: 'dialog.menu.communities',
     icon: 'streamline-color:user-multiple-group-flat'
   },
+  { key: 'shop', title: 'dialog.menu.shop', icon: 'streamline-ultimate-color:shop-sale-1' },
   { key: 'quizzes', route: 'CreatorMode-CreatorModeRooms', title: 'dialog.menu.quizzes', icon: 'twemoji:pencil' }
 ]
 

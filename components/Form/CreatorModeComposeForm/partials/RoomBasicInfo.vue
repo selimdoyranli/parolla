@@ -156,7 +156,8 @@
           span {{ $t('form.creatorModeCompose.room.community.loadFailed') }}
           button.room-choices__change(type="button" @click="loadCommunities") {{ $t('error.tryAgain') }}
         .room-community-dialog__state(v-else-if="!communityList.items.length")
-          | {{ $t('form.creatorModeCompose.room.community.empty') }}
+          AppIcon(name="fluent-color:people-community-16" :width="64" :height="64")
+          span {{ $t('form.creatorModeCompose.room.community.empty') }}
         template(v-else)
           button.room-choice(
             v-for="community in communityList.items"

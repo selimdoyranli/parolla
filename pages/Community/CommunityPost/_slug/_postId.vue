@@ -1,7 +1,9 @@
 <template lang="pug">
 .page.community-post-page
   Loading(v-if="isLoading" type="spinner")
-  Empty(v-else-if="isLocked" image="network" :description="$t('community.detail.feedLocked')")
+  Empty(v-else-if="isLocked" image-size="96" :description="$t('community.detail.feedLocked')")
+    template(#image)
+      AppIcon(name="fluent-emoji-flat:locked" :width="96" :height="96")
   Empty(v-else-if="isNotFound" image="search" :description="$t('community.error.notFound')")
   Empty(v-else-if="!post" image="error" :description="$t('community.error.generic')")
     Button(@click="load") {{ $t('error.tryAgain') }}

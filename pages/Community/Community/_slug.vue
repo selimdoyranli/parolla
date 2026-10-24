@@ -32,7 +32,9 @@
             @on-select-option="handleSortSelect"
           )
 
-        Empty(v-if="isLocked" image="network" :description="$t('community.detail.feedLocked')")
+        Empty(v-if="isLocked" image-size="96" :description="$t('community.detail.feedLocked')")
+          template(#image)
+            AppIcon(name="fluent-emoji-flat:locked" :width="96" :height="96")
         Empty(v-else-if="!items.length && isFeedLoading" :description="$t('general.loading')")
         Empty(v-else-if="!items.length && hasFeedError" image="error" :description="$t('community.error.generic')")
           Button(@click="reloadFeed") {{ $t('error.tryAgain') }}

@@ -2,14 +2,17 @@
 .app-header
   menu.app-header-nav
     li.app-header-nav__item(v-if="isHome" @click="dialog.drawer.isOpen = true")
-      ActionButton(icon="tabler:menu-2" :icon-size="24" :aria-label="$t('dialog.menu.menu')")
+      ActionButton(:label="$t('dialog.menu.menu')" icon="tabler:menu-2" :icon-size="24")
 
     template(v-if="isVisibleBackButton")
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
+    li.app-header-nav__item(v-if="isHome" @click="$router.push(localePath({ name: 'Community-CommunityList' }))")
+      ActionButton(:label="$t('dialog.menu.communities')" icon="streamline-color:user-multiple-group-flat" :icon-size="24")
+
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
-      ActionButton(icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
+      ActionButton(:label="$t('dialog.menu.shop')" icon="streamline-ultimate-color:shop-sale-1" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" :amount="gold")
 
@@ -46,7 +49,7 @@
       )
 
     li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
-      ActionButton(icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
+      ActionButton(:label="$t('notifications.title')" icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
       template(v-if="$auth.loggedIn && $auth.user")
