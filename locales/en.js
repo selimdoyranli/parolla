@@ -622,8 +622,8 @@ export default {
       login: 'Login',
       register: 'Register',
       loginOrRegister: 'Log in / Sign up',
-      loginWithGoogle: 'Login with Google',
-      loginWithApple: 'Login with Apple'
+      loginWithGoogle: 'Continue with Google',
+      loginWithApple: 'Continue with Apple'
     },
     player: {
       title: 'Profile',
