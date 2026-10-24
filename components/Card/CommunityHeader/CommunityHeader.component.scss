@@ -28,8 +28,20 @@
       color: #fff;
 
       .action-button__icon {
+        position: relative;
         margin: 0;
         padding: 8px;
+
+        // the pending badge sits on the disc's corner, not the small icon's
+        .app-icon {
+          position: static;
+        }
+
+        .app-icon__label {
+          top: -4px;
+          right: -4px;
+        }
+
         background-color: rgb(0 0 0 / 45%);
         backdrop-filter: blur(8px);
       }
@@ -95,13 +107,27 @@
     flex-wrap: wrap;
     gap: 14px;
     font-size: 13px;
-    opacity: 0.85;
+  }
+
+  // "(2 bekleyen)" next to the member count, managers only
+  &__pending {
+    margin-inline-start: -8px;
+    padding: 1px 8px;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 11px;
+    background-color: var(--color-danger-01);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
   }
 
   &__stat {
     display: inline-flex;
     gap: 4px;
     align-items: center;
+    opacity: 0.85;
 
     &--button {
       padding: 0;

@@ -1199,6 +1199,7 @@ export default {
       aboutTitle: 'About',
       createdAt: 'Founded',
       memberCountLabel: 'Members',
+      pendingCount: '{count} pending',
       postCountLabel: 'Posts',
       visibility: {
         public: 'Public',

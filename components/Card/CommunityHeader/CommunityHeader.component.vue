@@ -21,6 +21,9 @@
           button.community-header__stat.community-header__stat--button(type="button" @click="$emit('open-members')")
             AppIcon(name="tabler:users" :width="15" :height="15")
             | {{ community.memberCount }} {{ $t('community.detail.memberCountLabel') }}
+          //- only managers get pendingCount
+          button.community-header__pending(v-if="community.pendingCount > 0" type="button" @click="$emit('open-pending')")
+            | {{ $t('community.detail.pendingCount', { count: community.pendingCount }) }}
           span.community-header__stat
             AppIcon(name="tabler:file-text" :width="15" :height="15")
             | {{ community.postCount }} {{ $t('community.detail.postCountLabel') }}
@@ -58,7 +61,7 @@ export default defineComponent({
   props: {
     community: { type: Object, required: true }
   },
-  emits: ['changed', 'open-members'],
+  emits: ['changed', 'open-members', 'open-pending'],
   setup(props) {
     const { i18n } = useContext()
     const visibilityIcon = computed(() => VISIBILITY_ICON[props.community.visibility] || VISIBILITY_ICON.public)

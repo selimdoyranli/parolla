@@ -6,6 +6,7 @@ Dialog.dialog.community-pending-dialog(
   :show-cancel-button="true"
   :show-confirm-button="false"
   :close-on-click-overlay="true"
+  width="min(92vw, 440px)"
   @input="$emit('update:isOpen', $event)"
 )
   .community-pending-dialog__list
@@ -24,7 +25,15 @@ Dialog.dialog.community-pending-dialog(
           @click="handle(item, 'approveMember')"
         )
           | {{ $t('community.pending.actions.approve') }}
-        Button(size="small" plain round native-type="button" :disabled="busyId === item.documentId" @click="handle(item, 'rejectMember')")
+        Button(
+          color="var(--color-danger-01)"
+          size="small"
+          plain
+          round
+          native-type="button"
+          :disabled="busyId === item.documentId"
+          @click="handle(item, 'rejectMember')"
+        )
           | {{ $t('community.pending.actions.reject') }}
     Button(v-if="hasMore" block plain round size="small" native-type="button" :loading="isLoading" @click="loadPage(page + 1)")
       | {{ $t('general.loadMore') }}

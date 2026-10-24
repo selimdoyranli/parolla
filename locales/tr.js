@@ -1217,6 +1217,7 @@ export default {
       aboutTitle: 'Hakkında',
       createdAt: 'Kuruluş',
       memberCountLabel: 'Üye',
+      pendingCount: '{count} bekleyen',
       postCountLabel: 'Gönderi',
       visibility: {
         public: 'Herkese açık',
