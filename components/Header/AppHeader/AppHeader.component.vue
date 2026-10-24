@@ -63,8 +63,16 @@
 
   // How To Play Dialog
   LazyHowToPlayDialog(
-    v-if="isVisibleHowToPlay"
+    v-if="isVisibleHowToPlay && activeGameMode !== gameModeKeyEnum.CREATOR"
     :cancel-button-text="$t('general.close')"
+    :isOpen="dialog.howToPlay.isOpen"
+    @closed="dialog.howToPlay.isOpen = false"
+  )
+  // creator quizzes: the quiz intro again (no play button) instead of the generic rules
+  LazyPlayIntroDialog(
+    v-if="activeGameMode === gameModeKeyEnum.CREATOR"
+    mode="creator"
+    in-game
     :isOpen="dialog.howToPlay.isOpen"
     @closed="dialog.howToPlay.isOpen = false"
   )
@@ -122,6 +130,9 @@ import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reacti
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
 
+// module scope: survives the header remounting on a layout switch
+let hasNavigated = false
+
 export default defineComponent({
   setup() {
     const router = useRouter()
@@ -169,6 +180,13 @@ export default defineComponent({
     })
 
     const unreadCount = computed(() => store.getters['notification/unreadCount'])
+
+    watch(
+      () => route.value.path,
+      () => {
+        hasNavigated = true
+      }
+    )
 
     // the drawer only lives on home: any navigation (also browser back) closes it, so coming home doesn't reopen it
     watch(
@@ -294,6 +312,15 @@ export default defineComponent({
 
     const handleClickBackButton = () => {
       const triggerRoute = () => {
+        // opened straight from a link (new tab): no in-app page to go back to, so land on the quizzes list for quiz pages, else home
+        if (!hasNavigated) {
+          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode')
+
+          router.push(localePath({ name: isQuiz ? 'CreatorMode-CreatorModeRooms' : 'Main' }))
+
+          return
+        }
+
         router.back()
       }
 

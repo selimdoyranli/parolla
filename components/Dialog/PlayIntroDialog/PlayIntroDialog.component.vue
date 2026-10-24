@@ -3,7 +3,8 @@ Dialog.dialog.dialog--scene.play-intro(
   v-model="state.isOpen"
   transition="dialog-scene-bounce"
   :overlay="false"
-  :show-cancel-button="false"
+  :show-cancel-button="inGame"
+  :cancel-button-text="$t('general.close')"
   :show-confirm-button="false"
   :close-on-click-overlay="false"
   :close-on-popstate="false"
@@ -32,7 +33,7 @@ Dialog.dialog.dialog--scene.play-intro(
         AppIcon(:name="stat.icon" :width="16" :height="16")
         span {{ stat.text }}
 
-    Button.play-intro__play(block round @click="play")
+    Button.play-intro__play(v-if="!inGame" block round @click="play")
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
@@ -122,6 +123,12 @@ export default defineComponent({
       type: String,
       required: true,
       validator: value => ['creator', 'daily', 'unlimited'].includes(value)
+    },
+    // reopened from the header mid-game: no play button, a close button instead
+    inGame: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: ['closed'],
@@ -144,14 +151,17 @@ export default defineComponent({
       }
     )
 
-    // the header's how-to-play button checks this so it doesn't stack a dialog on the intro
-    watch(
-      () => state.isOpen,
-      value => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', value),
-      { immediate: true }
-    )
+    // the header's how-to-play button checks this so it doesn't stack a dialog on the intro;
+    // the header's own in-game copy must not touch it
+    if (!props.inGame) {
+      watch(
+        () => state.isOpen,
+        value => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', value),
+        { immediate: true }
+      )
 
-    onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
+      onBeforeUnmount(() => store.commit('app/SET_IS_OPEN_INTRO_HOW_TO_PLAY', false))
+    }
 
     const room = computed(() => store.getters['creator/room'] || {})
     // owners always receive room.user, anonymous rooms included

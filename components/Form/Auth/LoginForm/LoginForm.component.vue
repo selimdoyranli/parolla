@@ -1,7 +1,7 @@
 <template lang="pug">
 .login-form(:class="[loginFormVariantClass]")
   template(v-if="variant === 'default'")
-    span.login-form__title(role="button" @click="handleGoogleLogin") {{ $t('dialog.auth.login') }}
+    span.login-form__title {{ $t('dialog.auth.loginOrRegister') }}
 
     hr.login-form__separator
 

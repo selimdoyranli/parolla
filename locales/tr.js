@@ -625,8 +625,9 @@ export default {
       title: 'Giriş yap',
       login: 'Giriş yap',
       register: 'Kayıt ol',
-      loginWithGoogle: 'Google ile Giriş Yap',
-      loginWithApple: 'Apple ile Giriş Yap'
+      loginOrRegister: 'Giriş Yap / Kaydol',
+      loginWithGoogle: 'Google ile giriş yap',
+      loginWithApple: 'Apple ile giriş yap'
     },
     player: {
       title: 'Profil',

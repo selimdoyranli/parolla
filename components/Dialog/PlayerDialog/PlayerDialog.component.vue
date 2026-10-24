@@ -31,7 +31,7 @@ Dialog.dialog.player-dialog(
 </template>
 
 <script>
-import { defineComponent, useStore, computed, watch, ref, provide } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRoute, computed, watch, ref, provide } from '@nuxtjs/composition-api'
 import { Dialog, Loading, Empty, Button } from 'vant'
 
 export default defineComponent({
@@ -125,6 +125,16 @@ export default defineComponent({
       tourScoreError,
       refetch: refetchShell
     })
+
+    // the dialog lives in the layout: following a link out of it (e.g. a quiz card) must close it
+    const route = useRoute()
+
+    watch(
+      () => route.value.path,
+      () => {
+        if (isOpenPlayerDialog.value) store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', false)
+      }
+    )
 
     const handleDialogInput = value => {
       if (!value) {

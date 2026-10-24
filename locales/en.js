@@ -621,6 +621,7 @@ export default {
       title: 'Login',
       login: 'Login',
       register: 'Register',
+      loginOrRegister: 'Log in / Sign up',
       loginWithGoogle: 'Login with Google',
       loginWithApple: 'Login with Apple'
     },
