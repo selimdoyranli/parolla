@@ -35,7 +35,8 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isClear: true,
     roomTitle: props.room?.title || '',
     // public | unlisted
-    visibilityMode: props.room?.isListed ? 'public' : 'unlisted',
+    // new quizzes start public; an edited quiz keeps its own setting
+    visibilityMode: !props.room || props.room.isListed ? 'public' : 'unlisted',
     isSystemRemovedFromPublic: props.room?.isSystemRemovedFromPublic || false,
     moderationNote: props.room?.moderationNote || null,
     moderationSource: props.room?.moderationSource || null,

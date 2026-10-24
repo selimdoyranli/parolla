@@ -95,7 +95,7 @@
             span.room-choice__description {{ $t(`community.visibilityMode.${mode}Description`) }}
 
       //- optional with either visibility: public = lists + the community, unlisted = only the community
-      template(v-if="user && postableCommunities.length")
+      template(v-if="user")
         span.room-choices__title {{ $t('form.creatorModeCompose.room.community.title') }}
         .room-choice(v-if="selectedCommunity")
           CommunityAvatar.room-choice__avatar(:community="selectedCommunity" :size="40")
@@ -113,7 +113,9 @@
               @click="clearCommunity"
             )
               AppIcon(name="tabler:x" :width="18" :height="18")
-        template(v-else)
+        span.room-choices__note(v-if="selectedCommunity && form.visibilityMode === 'unlisted'")
+          | {{ $t('form.creatorModeCompose.room.community.unlistedNote') }}
+        template(v-else-if="!selectedCommunity")
           button.room-choice.room-choice--pick(type="button" :disabled="form.isBusy || isCommunityBlocked" @click="openCommunityDialog")
             AppIcon(name="tabler:plus" :width="20" :height="20")
             | {{ $t('form.creatorModeCompose.room.community.pick') }}
@@ -122,28 +124,31 @@
       // guests are always anonymous, so the choice only exists for players
       template(v-if="user")
         span.room-choices__title {{ $t('form.creatorModeCompose.room.isAnon.label') }}
-        button.room-choice(
-          v-for="isAnon in [false, true]"
-          :key="String(isAnon)"
-          type="button"
-          :class="{ 'room-choice--selected': form.isAnon === isAnon }"
-          :disabled="form.isBusy"
-          @click="pickCreator(isAnon)"
-        )
-          PlayerAvatar.room-choice__avatar(v-if="!isAnon" :size="40" :user="user")
-          span.room-choice__avatar.room-choice__anonAvatar(v-else) A
-          span.room-choice__body
-            span.room-choice__name {{ isAnon ? $t('form.creatorModeCompose.room.isAnon.anonTitle') : user.username }}
-            span.room-choice__description
-              | {{ $t(`form.creatorModeCompose.room.isAnon.${isAnon ? 'anonDescription' : 'namedDescription'}`) }}
+        .room-choices__grid
+          button.room-choice(
+            v-for="isAnon in [false, true]"
+            :key="String(isAnon)"
+            type="button"
+            :class="{ 'room-choice--selected': form.isAnon === isAnon }"
+            :disabled="form.isBusy"
+            @click="pickCreator(isAnon)"
+          )
+            PlayerAvatar.room-choice__avatar(v-if="!isAnon" :size="40" :user="user")
+            span.room-choice__avatar.room-choice__anonAvatar(v-else) A
+            span.room-choice__body
+              span.room-choice__name {{ isAnon ? $t('form.creatorModeCompose.room.isAnon.anonTitle') : user.username }}
+              span.room-choice__description
+                | {{ $t(`form.creatorModeCompose.room.isAnon.${isAnon ? 'anonDescription' : 'namedDescription'}`) }}
 
     Dialog.dialog.room-community-dialog(
       v-model="isCommunityDialogOpen"
       close-on-click-overlay
       get-container="body"
+      show-cancel-button
       :title="$t('form.creatorModeCompose.room.community.dialogTitle')"
       :show-confirm-button="false"
-      :show-cancel-button="false"
+      :cancel-button-text="$t('general.close')"
+      width="min(92vw, 440px)"
     )
       .room-community-dialog__content
         Loading.room-community-dialog__state(v-if="communityList.isLoading" color="var(--color-brand-02)" size="24")
@@ -853,7 +858,7 @@ export default defineComponent({
   flex-direction: column;
   gap: 10px;
   max-height: 60vh;
-  padding: 0 16px 16px;
+  padding: 16px;
   overflow-y: auto;
 }
 

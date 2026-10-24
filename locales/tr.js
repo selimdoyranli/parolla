@@ -849,11 +849,12 @@ export default {
           pick: 'Topluluk seç',
           change: 'Değiştir',
           dialogTitle: 'Topluluk seç',
-          empty: 'Quiz paylaşabileceğin bir topluluk yok.',
+          empty: 'Hiçbir topluluğun üyesi değilsin.',
           loadFailed: 'Topluluklar yüklenemedi.',
           title: 'Toplulukta paylaş',
           remove: 'Kaldır',
           anonUnlisted: 'Anonim ve listelenmemiş bir quiz toplulukta paylaşılamaz.',
+          unlistedNote: '* Quizin genel listede görünmez ama seçtiğin toplulukta herkese görünür.',
           shareFailed: 'Quiz kaydedildi ama toplulukta paylaşılamadı: {reason}'
         },
         roomTitle: {

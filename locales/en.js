@@ -845,11 +845,12 @@ export default {
           pick: 'Pick a community',
           change: 'Change',
           dialogTitle: 'Pick a community',
-          empty: 'There is no community you can share quizzes to.',
+          empty: "You're not a member of any community.",
           loadFailed: 'Could not load communities.',
           title: 'Share to a community',
           remove: 'Remove',
           anonUnlisted: 'An anonymous unlisted quiz cannot be shared to a community.',
+          unlistedNote: "* Your quiz won't appear in public lists, but everyone in the chosen community will see it.",
           shareFailed: 'Quiz saved, but it could not be shared to the community: {reason}'
         },
         roomTitle: {
