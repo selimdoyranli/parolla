@@ -375,6 +375,8 @@ export default {
       usernameEdit: 'Oyuncu adını değiştir',
       menu: 'Menü',
       home: 'Anasayfa',
+      shop: 'Mağaza',
+      quizzes: 'Quizler',
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',

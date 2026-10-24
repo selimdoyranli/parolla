@@ -373,6 +373,8 @@ export default {
       usernameEdit: 'Change the player name',
       menu: 'Menu',
       home: 'Home',
+      shop: 'Shop',
+      quizzes: 'Quizzes',
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',

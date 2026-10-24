@@ -1,10 +1,14 @@
 .app-drawer {
-  width: 280px;
-  max-width: 80%;
+  // column so the copyright line sits at the bottom when the list is short
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  max-width: 85%;
   height: 100%;
   padding: var(--base-p-y) 0;
   overflow-y: auto;
   background-color: var(--color-ui-02);
+  border-inline-end: 2px solid var(--color-border-02);
 
   &__title {
     display: block;
@@ -24,11 +28,53 @@
     margin-block-start: calc(var(--base-m-y) * 2);
   }
 
+  // vant's cell background is !important globally
+  .van-cell--clickable:hover {
+    background-color: var(--color-ui-03) !important;
+  }
+
+  &__copyright {
+    margin-block-start: auto;
+    padding: calc(var(--base-p-y) * 2) var(--base-p-x) 0;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+  }
+
   &-nav {
     &__icon {
+      position: relative;
       display: flex;
       align-items: center;
       margin-inline-end: $spacer * 3;
+    }
+
+    // same pill as the header's shop button
+    &__gold-badge {
+      position: absolute;
+      // higher than the header's so the pill clears the row title
+      top: -14px;
+      left: calc(100% - 12px);
+      display: flex;
+      height: 16px;
+      padding: 0 4px;
+      color: var(--color-text-01);
+      font-size: 10px;
+      background: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: 999px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+
+      .gold-amount {
+        gap: 2px;
+        font-size: 10px;
+        line-height: 14px;
+      }
+
+      .gold-amount__coin svg {
+        width: 12px;
+        height: 12px;
+      }
     }
 
     &__item.is-active {

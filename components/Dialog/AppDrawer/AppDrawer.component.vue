@@ -4,15 +4,18 @@ Popup.app-drawer(v-model="state.isOpen" position="left" @closed="$emit('closed')
   CellGroup.app-drawer-nav
     Cell.app-drawer-nav__item(
       v-for="item in items"
-      :key="item.route"
+      :key="item.key"
       size="large"
       is-link
       :title="$t(item.title)"
-      :class="{ 'is-active': isActive(item.route) }"
-      @click.native="navigate(item.route)"
+      :class="{ 'is-active': item.route && isActive(item.route) }"
+      @click.native="item.route ? navigate(item.route) : openShop()"
     )
       template(#icon)
-        AppIcon.app-drawer-nav__icon(:name="item.icon" :width="22" :height="22")
+        span.app-drawer-nav__icon
+          AppIcon(:name="item.icon" :width="22" :height="22")
+          span.app-drawer-nav__gold-badge(v-if="!item.route && $auth.loggedIn")
+            GoldAmount(size="sm" :amount="gold")
 
   MenuMoreNav(
     :with-communities="false"
@@ -24,15 +27,25 @@ Popup.app-drawer(v-model="state.isOpen" position="left" @closed="$emit('closed')
     @clickedReviewRoom="$emit('clickedReviewRoom')"
     @close="state.isOpen = false"
   )
+
+  small.app-drawer__copyright &copy; parolla
 </template>
 
 <script>
-import { defineComponent, useRoute, useRouter, useContext, reactive, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter, useContext, useStore, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { Popup, CellGroup, Cell } from 'vant'
 
+// the shop has no route: it opens the inventory dialog on its shop tab
 const ITEMS = [
-  { route: 'Main', title: 'dialog.menu.home', icon: 'fluent-emoji-flat:house' },
-  { route: 'Community-CommunityList', title: 'dialog.menu.communities', icon: 'fluent-emoji-flat:people-hugging' }
+  { key: 'home', route: 'Main', title: 'dialog.menu.home', icon: 'fluent-emoji-flat:house' },
+  { key: 'shop', title: 'dialog.menu.shop', icon: 'streamline-ultimate-color:shop-sale-1' },
+  {
+    key: 'communities',
+    route: 'Community-CommunityList',
+    title: 'dialog.menu.communities',
+    icon: 'streamline-color:user-multiple-group-flat'
+  },
+  { key: 'quizzes', route: 'CreatorMode-CreatorModeRooms', title: 'dialog.menu.quizzes', icon: 'twemoji:pencil' }
 ]
 
 export default defineComponent({
@@ -47,6 +60,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     const { localePath, getRouteBaseName } = useContext()
 
     const state = reactive({ isOpen: props.isOpen })
@@ -66,7 +80,14 @@ export default defineComponent({
       if (!isActive(name)) router.push(localePath({ name }))
     }
 
-    return { items: ITEMS, state, isActive, navigate }
+    const gold = computed(() => store.state.economy.wallet.gold)
+
+    const openShop = () => {
+      state.isOpen = false
+      store.commit('economy/OPEN_INVENTORY_DIALOG', 'shop')
+    }
+
+    return { items: ITEMS, state, gold, isActive, navigate, openShop }
   }
 })
 </script>
