@@ -833,10 +833,14 @@ export default defineComponent({
   &--pick {
     gap: 8px;
     justify-content: center;
-    color: var(--color-brand-02);
+    color: var(--color-text-02);
     font-weight: 600;
-    border-color: var(--color-brand-02);
+    border-color: var(--color-border-02);
     border-style: dashed;
+
+    &:not(:disabled):hover {
+      background-color: var(--color-hover-01);
+    }
   }
 
   &--selected {
