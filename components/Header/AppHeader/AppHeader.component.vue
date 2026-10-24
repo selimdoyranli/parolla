@@ -392,7 +392,9 @@ export default defineComponent({
         route.value.name.startsWith(getRouteBaseName({ name: 'Community-Community-slug' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityCompose' })) ||
         route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityEdit-slug' })) ||
-        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityPost-slug-postId' }))
+        route.value.name.startsWith(getRouteBaseName({ name: 'Community-CommunityPost-slug-postId' })) ||
+        // legal pages (privacy, cookies, KVKK, terms)
+        route.value.name.startsWith('Page-')
       ) {
         return true
       }
