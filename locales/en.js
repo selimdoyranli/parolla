@@ -1149,8 +1149,16 @@ export default {
     list: {
       title: 'Communities',
       empty: 'No communities yet.',
+      emptyJoined: "You haven't joined a community yet.",
+      emptyOwned: "You haven't founded a community yet.",
       search: 'Search communities',
-      sort: { recent: 'Newest', memberCount: 'Most members', postCount: 'Most posts' },
+      sort: {
+        recent: 'Newest',
+        memberCount: 'Most members',
+        postCount: 'Most posts',
+        joined: 'Joined',
+        owned: 'Founded by me'
+      },
       createButton: 'Create community',
       noMore: "That's all",
       joined: 'Joined',

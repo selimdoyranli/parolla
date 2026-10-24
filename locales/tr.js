@@ -1167,8 +1167,16 @@ export default {
     list: {
       title: 'Topluluklar',
       empty: 'Henüz topluluk yok.',
+      emptyJoined: 'Henüz bir topluluğa katılmadın.',
+      emptyOwned: 'Henüz bir topluluk kurmadın.',
       search: 'Topluluk ara',
-      sort: { recent: 'En yeni', memberCount: 'En çok üyeli', postCount: 'En çok gönderili' },
+      sort: {
+        recent: 'En yeni',
+        memberCount: 'En çok üyeli',
+        postCount: 'En çok gönderili',
+        joined: 'Üyesi olduklarım',
+        owned: 'Kurduklarım'
+      },
       createButton: 'Topluluk oluştur',
       noMore: 'Hepsi bu kadar',
       joined: 'Katıldıklarım',

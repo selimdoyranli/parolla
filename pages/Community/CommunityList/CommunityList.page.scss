@@ -20,11 +20,23 @@
     color: var(--color-text-01);
   }
 
+  &__count {
+    color: var(--color-text-03);
+    font-weight: 500;
+  }
+
   &__filters {
     display: flex;
     gap: 8px;
     align-items: center;
     margin-bottom: 12px;
+
+    // as tall and round as the search field next to it
+    .filter-dropdown-trigger-button {
+      height: 54px;
+      padding-inline: 16px;
+      border-radius: var(--border-radius-01);
+    }
   }
 
   &__search {

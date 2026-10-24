@@ -2,7 +2,9 @@
 .page.community-list-page
   .community-list-page__inner
     .community-list-page__header
-      h2.community-list-page__title {{ $t('community.list.title') }}
+      h2.community-list-page__title
+        | {{ $t('community.list.title') }}
+        span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
       Button(
         v-if="$auth.loggedIn"
         color="#ff7878"
@@ -23,7 +25,7 @@
           //- own clear button like RoomList: vant 2's clear icon only listens to touchstart
           ActionButton(v-if="keyword" icon="tabler:x" :aria-label="$t('general.clear')" @click="clearSearch")
       FilterDropdown(
-        :trigger-title="$t(`community.list.sort.${sort}`)"
+        :trigger-title="selectedSortOption.label"
         :selected="selectedSortOption"
         :options="sortOptions"
         @on-select-option="handleSortSelect"
@@ -41,7 +43,7 @@
     Empty(v-if="!items.length && isLoading" :description="$t('general.loading')")
     Empty(v-else-if="!items.length && hasError" image="error" :description="$t('community.error.generic')")
       Button(@click="reload") {{ $t('error.tryAgain') }}
-    Empty(v-else-if="!items.length" :description="$t('community.list.empty')")
+    Empty(v-else-if="!items.length" :description="$t(`community.list.${emptyKey}`)")
     .community-list-page__grid(v-else)
       template(v-for="cell in cells")
         .community-list-page__ad(:key="cell.key" v-if="cell.type === 'ad'")
@@ -77,9 +79,18 @@ const PAGE_SIZE = 12
 const MAX_TAGS = 10
 const MAX_ADS = 4
 const SORTS = ['recent', 'memberCount', 'postCount']
+// own lists: "joined" = member but not owner, "owned" = founded by the viewer
+const OWN_LISTS = ['joined', 'owned']
+const ICONS = {
+  recent: 'tabler:clock',
+  memberCount: 'tabler:users',
+  postCount: 'tabler:file-text',
+  joined: 'tabler:user-check',
+  owned: 'tabler:crown'
+}
 
 // outlives the page component: coming back from a community keeps the loaded pages and the scroll spot
-const listMemory = { key: null, items: [], page: 1, hasMore: false, scrollTop: 0 }
+const listMemory = { key: null, items: [], page: 1, hasMore: false, total: null, scrollTop: 0 }
 
 export default defineComponent({
   components: { Button, Empty, Search, InfiniteLoading },
@@ -91,9 +102,10 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const store = useStore()
-    const { i18n, route, localePath, getRouteBaseName } = useContext()
+    const { i18n, route, localePath, getRouteBaseName, $auth } = useContext()
 
-    const sort = computed(() => (SORTS.includes(route.value.query.sort) ? route.value.query.sort : 'recent'))
+    const sortKeys = computed(() => ($auth.loggedIn ? [...SORTS, ...OWN_LISTS] : SORTS))
+    const sort = computed(() => (sortKeys.value.includes(route.value.query.sort) ? route.value.query.sort : 'recent'))
     const activeTag = computed(() => route.value.query.tag || '')
     const search = computed(() => route.value.query.search || '')
     // the field mirrors the active tag as "#tag" (like the quizzes page), else the typed search
@@ -105,6 +117,7 @@ export default defineComponent({
     const items = ref([])
     const page = ref(1)
     const hasMore = ref(false)
+    const total = ref(null)
     const isLoading = ref(false)
     const infiniteId = ref(0)
     const hasError = ref(false)
@@ -118,13 +131,14 @@ export default defineComponent({
         items: items.value,
         page: page.value,
         hasMore: hasMore.value,
+        total: total.value,
         scrollTop: scroller()?.scrollTop || 0
       })
     }
 
     const load = async (nextPage, id) => {
       const { data, error } = await store.dispatch('community/fetchCommunities', {
-        sort: sort.value,
+        ...(OWN_LISTS.includes(sort.value) ? { [sort.value]: 1 } : { sort: sort.value }),
         search: search.value || undefined,
         tag: activeTag.value || undefined,
         page: nextPage,
@@ -139,6 +153,7 @@ export default defineComponent({
       items.value = nextPage === 1 ? data.items : [...items.value, ...data.items]
       page.value = nextPage
       hasMore.value = data.hasMore
+      total.value = data.total
 
       return { error: false }
     }
@@ -149,6 +164,7 @@ export default defineComponent({
       isLoading.value = true
       hasError.value = false
       items.value = []
+      total.value = null
       infiniteId.value++
 
       const { error } = await load(1, id)
@@ -201,8 +217,9 @@ export default defineComponent({
     onBeforeUnmount(() => clearTimeout(searchTimer))
     const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag, search: '' })
 
-    const sortOptions = computed(() => SORTS.map(key => ({ key, label: i18n.t(`community.list.sort.${key}`) })))
+    const sortOptions = computed(() => sortKeys.value.map(key => ({ key, icon: ICONS[key], label: i18n.t(`community.list.sort.${key}`) })))
     const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
+    const emptyKey = computed(() => ({ joined: 'emptyJoined', owned: 'emptyOwned' }[sort.value] || 'empty'))
     const handleSortSelect = ({ key }) => goto({ sort: key === 'recent' ? '' : key })
 
     // tags of the loaded communities (no extra endpoint), plus the active one so it can be switched off
@@ -253,6 +270,7 @@ export default defineComponent({
         items.value = listMemory.items
         page.value = listMemory.page
         hasMore.value = listMemory.hasMore
+        total.value = listMemory.total
         setTimeout(() => scroller()?.scrollTo(0, listMemory.scrollTop))
       } else {
         reload()
@@ -277,6 +295,7 @@ export default defineComponent({
       items,
       cells,
       hasMore,
+      total,
       isLoading,
       hasError,
       reload,
@@ -284,6 +303,7 @@ export default defineComponent({
       tagOptions,
       sortOptions,
       selectedSortOption,
+      emptyKey,
       handleSearchInput,
       clearSearch,
       handleTagClick,
