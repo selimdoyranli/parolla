@@ -69,6 +69,10 @@
 
   &__avatar {
     border: 3px solid rgb(255 255 255 / 90%);
+
+    &--clickable {
+      cursor: zoom-in;
+    }
   }
 
   &__text {
@@ -199,4 +203,37 @@
     padding-top: 12px;
     border-top: 1px solid var(--color-border-01);
   }
+}
+
+// same close button as the profile photo preview (portaled to body, so not nested above)
+.community-header-preview__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  pointer-events: auto;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.65);
+  }
+}
+
+// vant puts the cover slot top-left and sized to its content: float the close button top-right
+.community-header-preview .van-image-preview__cover {
+  top: 0;
+  right: 0;
+  left: auto;
+  pointer-events: none;
 }

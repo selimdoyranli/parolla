@@ -1,5 +1,17 @@
 <template lang="pug">
 .community-header
+  //- avatar zoom, like the profile page's photo preview
+  MountingPortal(mount-to="body" append)
+    ImagePreview.community-header-preview(
+      v-model="isAvatarPreviewOpen"
+      :images="community.avatar ? [community.avatar] : []"
+      :show-index="false"
+      :close-on-popstate="true"
+    )
+      template(#cover)
+        button.community-header-preview__close(type="button" :aria-label="$t('general.close')" @click="isAvatarPreviewOpen = false")
+          AppIcon(name="ion:md-close" color="#fff" :width="24" :height="24")
+
   //- banner with the identity (avatar, name, counts) overlaid on its bottom gradient
   QuizCover.community-header__cover(:room="coverRoom")
     .community-header__shade
@@ -7,7 +19,12 @@
       slot(name="actions")
 
     .community-header__identity
-      CommunityAvatar.community-header__avatar(:community="community" :size="72")
+      CommunityAvatar.community-header__avatar(
+        :community="community"
+        :size="72"
+        :class="{ 'community-header__avatar--clickable': community.avatar }"
+        @click.native="isAvatarPreviewOpen = !!community.avatar"
+      )
       .community-header__text
         .community-header__title-row
           h1.community-header__name {{ community.name }}
@@ -52,18 +69,21 @@
 </template>
 
 <script>
-import { defineComponent, computed, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, useContext } from '@nuxtjs/composition-api'
+import { ImagePreview } from 'vant'
 
 const VISIBILITY_ICON = { public: 'tabler:world', restricted: 'tabler:user-check', private: 'tabler:lock' }
 
 export default defineComponent({
   name: 'CommunityHeader',
+  components: { ImagePreview: ImagePreview.Component },
   props: {
     community: { type: Object, required: true }
   },
   emits: ['changed', 'open-members', 'open-pending'],
   setup(props) {
     const { i18n } = useContext()
+    const isAvatarPreviewOpen = ref(false)
     const visibilityIcon = computed(() => VISIBILITY_ICON[props.community.visibility] || VISIBILITY_ICON.public)
     const createdAt = computed(() =>
       new Date(props.community.createdAt).toLocaleDateString(i18n.locale, { day: 'numeric', month: 'long', year: 'numeric' })
@@ -75,7 +95,7 @@ export default defineComponent({
       coverPhoto: props.community.coverPhoto ? { url: props.community.coverPhoto } : null
     }))
 
-    return { visibilityIcon, createdAt, coverRoom }
+    return { isAvatarPreviewOpen, visibilityIcon, createdAt, coverRoom }
   }
 })
 </script>
