@@ -750,7 +750,7 @@ export default defineComponent({
   font: inherit;
   text-align: left;
   background-color: var(--color-ui-01);
-  border: 1px solid var(--color-border-02);
+  border: 2px solid var(--color-border-02);
   border-radius: calc(var(--border-radius-01) / 2);
   cursor: pointer;
   transition: border-color 0.2s var(--motion-01), background-color 0.2s var(--motion-01);
