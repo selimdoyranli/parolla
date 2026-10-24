@@ -1896,7 +1896,7 @@ export default {
     guestLabel: '(guest)'
   },
   cookieConsent: {
-    text: 'We may use cookies to improve your experience and personalise ads. You can set your preferences. {link}',
+    text: 'We may use cookies to improve and personalise your experience. You can set your preferences. {link}',
     link: 'Cookie Policy',
     reject: 'Reject',
     manage: 'Manage preferences',

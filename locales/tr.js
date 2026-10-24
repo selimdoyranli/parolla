@@ -1918,7 +1918,7 @@ export default {
     guestLabel: '(misafir)'
   },
   cookieConsent: {
-    text: 'Deneyimini iyileştirmek ve reklamları kişiselleştirmek için çerez kullanabiliriz. Tercihini belirleyebilirsin. {link}',
+    text: 'Deneyimini iyileştirmek ve kişiselleştirmek için çerez kullanabiliriz. Tercihini belirleyebilirsin. {link}',
     link: 'Çerez Politikası',
     reject: 'Reddet',
     manage: 'Tercihleri yönet',

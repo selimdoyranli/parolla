@@ -34,17 +34,18 @@
     justify-content: flex-end;
   }
 
+  // ghost: reject / manage stay quiet next to the green accept
   &__button.van-button {
     padding: 0 14px;
-    color: var(--color-text-01);
-    background-color: var(--color-ui-01);
-    border-color: var(--color-border-02);
+    color: var(--color-text-02);
+    background-color: transparent;
+    border-color: transparent;
   }
 
   &__button--accept.van-button {
     color: #fff;
-    background-color: var(--color-brand-02);
-    border-color: var(--color-brand-02);
+    background-color: var(--color-success-02);
+    border-color: var(--color-success-02);
   }
 
   &-enter-active,
