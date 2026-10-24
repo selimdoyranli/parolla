@@ -5,7 +5,8 @@
   // row from a CSS counter, so prepending would steal the trophy and shift every number.
   Collapse.list.scoreboard-list.scoreboard-list--self(v-if="currentPlayer" v-model="toggledSelfItem" accordion)
     CollapseItem.scoreboard-list-item.scoreboard-list-item--self(
-      :disabled="!currentPlayer.results?.gamersAnswers || !boardQuestions.length"
+      :is-link="canExpand(currentPlayer.results)"
+      :disabled="!canExpand(currentPlayer.results)"
     )
       template(#title)
         .scoreboard-list-item-user(:data-rank="currentPlayer.rank")
@@ -44,7 +45,8 @@
       v-for="(item, index) in items"
       :key="index"
       :class="{ 'scoreboard-list-item--self-inline': isSelfInline(item) }"
-      :disabled="!item.results.gamersAnswers || !boardQuestions.length"
+      :is-link="canExpand(item.results)"
+      :disabled="!canExpand(item.results)"
     )
       template(#title)
         .scoreboard-list-item-user(
@@ -125,12 +127,21 @@ export default defineComponent({
       type: Array,
       required: false,
       default: null
+    },
+    // the viewer hasn't finished the quiz: the breakdown would show them the answers
+    locked: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   setup(props, { emit }) {
     const store = useStore()
 
     const boardQuestions = computed(() => props.questions ?? store.getters['creator/questions'] ?? [])
+
+    // no chevron and no expanding where there is nothing to show yet (or it would spoil the quiz)
+    const canExpand = results => !props.locked && !!results?.gamersAnswers && boardQuestions.value.length > 0
 
     const toggledScoreItem = ref([0])
     const toggledSelfItem = ref([])
@@ -182,6 +193,7 @@ export default defineComponent({
 
     return {
       boardQuestions,
+      canExpand,
       toggledScoreItem,
       toggledSelfItem,
       isSelfInline,
