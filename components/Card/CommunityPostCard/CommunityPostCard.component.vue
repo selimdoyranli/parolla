@@ -60,7 +60,7 @@ article.community-post-card
     AppIcon.community-post-card__external(name="tabler:external-link" :width="18" :height="18")
 
   .community-post-card__footer
-    button.community-post-card__pill(
+    button.community-post-card__pill.community-post-card__pill--like(
       type="button"
       :class="{ 'is-active': liked }"
       :aria-pressed="liked"
@@ -69,7 +69,7 @@ article.community-post-card
     )
       AppIcon(:name="liked ? 'tabler:heart-filled' : 'tabler:heart'" :width="18" :height="18")
       span {{ likeCount || $t('community.post.likeAction') }}
-    button.community-post-card__pill(
+    button.community-post-card__pill.community-post-card__pill--comment(
       v-if="withComments"
       type="button"
       :aria-label="$t('community.post.comments', { count: commentCount })"
@@ -77,7 +77,11 @@ article.community-post-card
     )
       AppIcon(name="tabler:message-2" :width="18" :height="18")
       span {{ commentCount || $t('community.post.commentAction') }}
-    NuxtLink.community-post-card__pill(v-else :to="postLink" :aria-label="$t('community.post.comments', { count: commentCount })")
+    NuxtLink.community-post-card__pill.community-post-card__pill--comment(
+      v-else
+      :to="postLink"
+      :aria-label="$t('community.post.comments', { count: commentCount })"
+    )
       AppIcon(name="tabler:message-2" :width="18" :height="18")
       span {{ commentCount || $t('community.post.commentAction') }}
 

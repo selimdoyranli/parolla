@@ -86,6 +86,11 @@ input:on-input, textarea:on-input { sound: keystroke; }
 /* Option cards — quiz compose visibility + creator, community wizard settings, community picker items. */
 button.room-choice:not(.room-choice--pick) { sound-on-click: tick; }
 
+/* Community posts — same like rise/fall as quiz comments (class reflects state before the click); comment ticks. */
+.community-post-card__pill--like { sound-on-click: pop; pitch: +2st; }
+.community-post-card__pill--like.is-active { sound-on-click: pop; pitch: -2st; volume: 0.6; }
+.community-post-card__pill--comment { sound-on-click: tick; }
+
 /* GeoGuess — region cards tick, mini map opens / sheet closes like a drawer, HUD region chip backs out.
    Pin drop, reveal (success/ding/denied by score), round + fullscreen sine sweeps (page-enter/exit) and finish are played from the scene via useSfx. */
 .geoguess-scene-region { sound-on-click: tick; }
