@@ -6,6 +6,7 @@ Dialog.dialog.community-share-dialog(
   :title="$t('community.post.shareTitle')"
   :show-confirm-button="false"
   :show-cancel-button="false"
+  width="min(92vw, 440px)"
   @input="$emit('update:isOpen', $event)"
   @open="onOpen"
 )
@@ -44,8 +45,16 @@ Dialog.dialog.community-share-dialog(
       | {{ $t('community.post.goToPost') }}
 
     .community-share-dialog__actions
-      Button(plain round native-type="button" :disabled="isBusy" @click="$emit('update:isOpen', false)") {{ $t('general.close') }}
-      Button(type="primary" round native-type="button" :loading="isBusy" :disabled="!selected" @click="share")
+      Button.community-share-dialog__close(round native-type="button" :disabled="isBusy" @click="$emit('update:isOpen', false)")
+        | {{ $t('general.close') }}
+      Button.community-share-dialog__submit(
+        type="primary"
+        round
+        native-type="button"
+        :loading="isBusy"
+        :disabled="!selected"
+        @click="share"
+      )
         | {{ $t('community.post.share') }}
 </template>
 

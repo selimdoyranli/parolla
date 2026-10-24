@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 12px;
     max-height: 70vh;
-    padding: 0 0 16px;
+    padding: 16px 0;
     overflow-y: auto;
   }
 
@@ -48,5 +48,21 @@
     gap: 12px;
     justify-content: flex-end;
     padding: 0 16px;
+  }
+
+  &__close.van-button {
+    min-width: 96px;
+    color: var(--color-text-02);
+    background: var(--color-ui-03);
+    border-color: var(--color-border-02);
+  }
+
+  // brand-02 is a light coral: dark text keeps the contrast white would lose
+  &__submit.van-button--primary {
+    min-width: 96px;
+    color: #1b1b1b;
+    font-weight: 700;
+    background: var(--color-brand-02);
+    border-color: var(--color-brand-02);
   }
 }
