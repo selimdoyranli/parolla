@@ -1906,8 +1906,8 @@ export default {
       title: 'Cookie preferences',
       necessary: 'Necessary cookies',
       necessaryDesc: 'Needed for the site to work, such as sign-in, language and theme. Always on.',
-      ads: 'Advertising cookies',
-      adsDesc: 'Ads personalised to your interests (Google AdSense). When off, non-personalised ads are shown.',
+      ads: 'Personalised ads',
+      adsDesc: 'When on, ads are picked from your interests (Google AdSense cookies). When off you still see ads, just not personalised.',
       save: 'Save',
       cancel: 'Cancel'
     }
