@@ -115,7 +115,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
         ScoreboardList(
           :items="scoreboard.list"
           :current-player="currentPlayer"
-          :locked="!isGameOver"
+          :locked="!isGameOver && !isRoomOwner"
           @on-infinite-loading="handleInfiniteLoading"
         )
 
