@@ -1,4 +1,4 @@
-import { communityTransformer, communityPostTransformer } from '@/transformers'
+import { communityTransformer, communityPostTransformer, roomTransformer } from '@/transformers'
 
 const authHeaders = ctx => (ctx.$auth.loggedIn ? { Authorization: `${ctx.$auth.strategy.token.get()}` } : {})
 
@@ -170,6 +170,27 @@ export default {
   },
 
   // type 'quiz' (default) shares roomDocumentId; type 'text' posts `note` alone
+  // quiz picker of the post composer: title search (or an exact quiz id); unlike creator/fetchRooms it keeps no state
+  async searchRooms(_, { keyword, page = 1, pageSize = 20 }) {
+    const { data, error } = await this.$appFetch({
+      path: 'rooms',
+      query: {
+        'filters[$or][0][title][$containsi]': keyword,
+        'filters[$or][1][roomId][$eq]': keyword,
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
+        sort: 'viewCount:desc',
+        'populate[user][populate][0]': 'diceBear',
+        'populate[user][populate][1]': 'role',
+        locale: this.$i18n.locale
+      },
+      headers: authHeaders(this)
+    })
+    const { page: current, pageCount } = data?.meta?.pagination || {}
+
+    return { data: data ? { items: data.data.map(roomTransformer), hasMore: current < pageCount } : null, error }
+  },
+
   async createPost(_, { communityDocumentId, type = 'quiz', roomDocumentId, note = '' }) {
     const { data, error } = await this.$appFetch({
       path: `communities/${communityDocumentId}/posts`,

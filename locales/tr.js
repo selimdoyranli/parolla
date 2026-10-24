@@ -1211,6 +1211,13 @@ export default {
       likes: '{count} beğeni',
       comments: '{count} yorum',
       likeAction: 'Beğen',
+      quizPicker: {
+        open: 'Quiz Ekle',
+        placeholder: 'Quiz adı veya ID ara...',
+        remove: 'Quizi kaldır',
+        empty: 'Quiz bulunamadı.',
+        notePlaceholder: 'Bir not ekle (isteğe bağlı)'
+      },
       commentAction: 'Yorum yap'
     },
     detail: {

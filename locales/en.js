@@ -1193,6 +1193,13 @@ export default {
       likes: '{count} likes',
       comments: '{count} comments',
       likeAction: 'Like',
+      quizPicker: {
+        open: 'Add quiz',
+        placeholder: 'Search a quiz name or ID...',
+        remove: 'Remove quiz',
+        empty: 'No quizzes found.',
+        notePlaceholder: 'Add a note (optional)'
+      },
       commentAction: 'Comment'
     },
     detail: {
