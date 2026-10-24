@@ -1,5 +1,133 @@
 # Changelog
 
+## v3.7.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.6.0...v3.7.0)
+
+
+### 🚀 Enhancements
+
+  - **community:** Add community store, transformer, locales and routes ([8e28929](https://github.com/selimdoyranli/parolla/commit/8e28929))
+  - **community:** Add community card, header, about panel and join button ([55121c4](https://github.com/selimdoyranli/parolla/commit/55121c4))
+  - **community:** Add communities listing page ([982c990](https://github.com/selimdoyranli/parolla/commit/982c990))
+  - **community:** Add community detail page ([e996ba6](https://github.com/selimdoyranli/parolla/commit/e996ba6))
+  - **community:** Add create wizard, edit page and delete dialog ([73dd54e](https://github.com/selimdoyranli/parolla/commit/73dd54e))
+  - **community:** Add pending and member management dialogs ([7378dfb](https://github.com/selimdoyranli/parolla/commit/7378dfb))
+  - **community:** Let quiz creators link a quiz to a community ([714d0c2](https://github.com/selimdoyranli/parolla/commit/714d0c2))
+  - **community:** Add profile tab, notifications, GM panel and rename draw player rooms ([17e8d6f](https://github.com/selimdoyranli/parolla/commit/17e8d6f))
+  - **community:** Let managers remove a quiz from the community feed ([b69d45c](https://github.com/selimdoyranli/parolla/commit/b69d45c))
+  - **community:** Add post store, transformer, routes and header back button ([bc61a59](https://github.com/selimdoyranli/parolla/commit/bc61a59))
+  - **community:** Single-column community page with post cards ([8fc160e](https://github.com/selimdoyranli/parolla/commit/8fc160e))
+  - **community:** Post detail page with comments ([ac27b52](https://github.com/selimdoyranli/parolla/commit/ac27b52))
+  - **community:** Share quizzes to communities, community-only visibility, cropped media ([273bc4c](https://github.com/selimdoyranli/parolla/commit/273bc4c))
+  - **comments:** Add post and community to post comment reports ([f0eeb72](https://github.com/selimdoyranli/parolla/commit/f0eeb72))
+  - **community:** Redesign header, feed post card and list tags ([9cb09be](https://github.com/selimdoyranli/parolla/commit/9cb09be))
+  - **community:** Add text post composer to the community feed ([4a3816a](https://github.com/selimdoyranli/parolla/commit/4a3816a))
+  - **community:** Tweak join button, quiz thumb, members dialog and post menu ([8cda222](https://github.com/selimdoyranli/parolla/commit/8cda222))
+  - **community:** Action button menus with Esc close, square contained quiz thumb, join plus icon ([f380553](https://github.com/selimdoyranli/parolla/commit/f380553))
+  - **creator:** Card-style visibility and creator pickers with community dialog ([a8ce37f](https://github.com/selimdoyranli/parolla/commit/a8ce37f))
+  - **creator:** Three-column visibility tiles and one-line optional description label ([2243ac3](https://github.com/selimdoyranli/parolla/commit/2243ac3))
+  - **community:** Show share-to-community on listed anonymous quizzes ([729d7ed](https://github.com/selimdoyranli/parolla/commit/729d7ed))
+  - **creator:** Public by default, always-on community picker, unlisted share note ([f55a3c1](https://github.com/selimdoyranli/parolla/commit/f55a3c1))
+  - **community:** Allow names up to 100 characters, wrap long names in the header ([d65afbf](https://github.com/selimdoyranli/parolla/commit/d65afbf))
+  - **community:** Move tags into the first wizard step, tick on option cards ([1335a0a](https://github.com/selimdoyranli/parolla/commit/1335a0a))
+  - **creator:** Community share after creator, optional hints on community and tags ([dea825a](https://github.com/selimdoyranli/parolla/commit/dea825a))
+  - **community:** List count, icon sort menu with joined/owned lists ([37700c5](https://github.com/selimdoyranli/parolla/commit/37700c5))
+  - **community:** Compact card with description, require avatar and cover ([706d44c](https://github.com/selimdoyranli/parolla/commit/706d44c))
+  - **community:** Inline post comments, report quotes, feed header, card polish ([8959a16](https://github.com/selimdoyranli/parolla/commit/8959a16))
+  - **community:** Like/comment action labels when post counts are zero ([16799b6](https://github.com/selimdoyranli/parolla/commit/16799b6))
+  - **community:** Sfx on post like and comment buttons ([49fd346](https://github.com/selimdoyranli/parolla/commit/49fd346))
+  - **community:** Pending label on header, badge on menu disc, roomier pending dialog ([f849fcb](https://github.com/selimdoyranli/parolla/commit/f849fcb))
+  - **community:** Edit limit note on community settings ([158fc8d](https://github.com/selimdoyranli/parolla/commit/158fc8d))
+  - **community:** Show remaining edits this week on community settings ([1a0419f](https://github.com/selimdoyranli/parolla/commit/1a0419f))
+  - **community:** Tag game masters next to usernames, readable member actions ([b4df4c4](https://github.com/selimdoyranli/parolla/commit/b4df4c4))
+  - **community:** Add a quiz from the post composer with search ([c9e67d0](https://github.com/selimdoyranli/parolla/commit/c9e67d0))
+  - **header:** Homepage hamburger drawer and always-centred logo ([8c64201](https://github.com/selimdoyranli/parolla/commit/8c64201))
+  - **header:** Drawer carries the menu dialog's more section ([4d8599c](https://github.com/selimdoyranli/parolla/commit/4d8599c))
+  - **menu:** Dark theme toggle before the sound effects ([87f1a17](https://github.com/selimdoyranli/parolla/commit/87f1a17))
+  - **header:** Drawer shop and quizzes items, hover, copyright, wider panel ([8a4a590](https://github.com/selimdoyranli/parolla/commit/8a4a590))
+  - **header:** Drawer gold badge beside the shop title ([d5efda0](https://github.com/selimdoyranli/parolla/commit/d5efda0))
+  - **header:** Drawer home item reloads when already home ([0c27ca4](https://github.com/selimdoyranli/parolla/commit/0c27ca4))
+  - **header:** Communities button, header tooltips, emoji empty states ([f4cec0b](https://github.com/selimdoyranli/parolla/commit/f4cec0b))
+  - **header:** Tabler icons for the communities and shop buttons ([a049322](https://github.com/selimdoyranli/parolla/commit/a049322))
+  - **header:** Iconoir community and fluent shop icons ([440b042](https://github.com/selimdoyranli/parolla/commit/440b042))
+  - **header:** Click sound on the communities button ([3356af8](https://github.com/selimdoyranli/parolla/commit/3356af8))
+  - **app:** Login block buttons, in-game quiz intro, player dialog and back fixes ([35f40a1](https://github.com/selimdoyranli/parolla/commit/35f40a1))
+  - **auth:** Continue-with wording on the sign-in buttons ([2bab0a8](https://github.com/selimdoyranli/parolla/commit/2bab0a8))
+  - **app:** Terms note under sign-in buttons, cookie notice ([b17227e](https://github.com/selimdoyranli/parolla/commit/b17227e))
+  - **app:** Cookie consent with reject, preferences and non-personalised ads ([cdec1da](https://github.com/selimdoyranli/parolla/commit/cdec1da))
+  - **app:** Shorter cookie text, ghost reject/manage, green accept ([9ad3e8d](https://github.com/selimdoyranli/parolla/commit/9ad3e8d))
+  - **header:** Back button on the legal pages ([aa5a37f](https://github.com/selimdoyranli/parolla/commit/aa5a37f))
+  - **app:** Clearer personalised-ads toggle wording ([3295632](https://github.com/selimdoyranli/parolla/commit/3295632))
+  - **app:** Advertising cookies title on the consent toggle ([f0a8806](https://github.com/selimdoyranli/parolla/commit/f0a8806))
+  - **app:** Cookie icon on the consent banner ([88f9953](https://github.com/selimdoyranli/parolla/commit/88f9953))
+  - **community:** List page description, smaller mobile title ([046f7a7](https://github.com/selimdoyranli/parolla/commit/046f7a7))
+  - **community:** List title icon, create button for guests opens sign-in ([59468a7](https://github.com/selimdoyranli/parolla/commit/59468a7))
+  - **community:** Composer shown to guests as a sign-in prompt ([ad78520](https://github.com/selimdoyranli/parolla/commit/ad78520))
+  - **community:** Brand-colour share button in the composer ([ddf5dd9](https://github.com/selimdoyranli/parolla/commit/ddf5dd9))
+  - **comments:** Send icon on the comment button for guests too ([3e69eac](https://github.com/selimdoyranli/parolla/commit/3e69eac))
+  - **community:** Quiz cards open in the quiz's own edition, with a language tag ([ef3add8](https://github.com/selimdoyranli/parolla/commit/ef3add8))
+  - **i18n:** 'change edition' wording for the locale switch ([6af558e](https://github.com/selimdoyranli/parolla/commit/6af558e))
+  - **community:** Zoom the community avatar on click ([f91bae7](https://github.com/selimdoyranli/parolla/commit/f91bae7))
+  - **community:** Seo heads, json-ld, sitemap route and faq entries ([000d403](https://github.com/selimdoyranli/parolla/commit/000d403))
+
+### 🩹 Fixes
+
+  - **community:** Show join/leave errors and guard guests first ([21b1c18](https://github.com/selimdoyranli/parolla/commit/21b1c18))
+  - **community:** Guard list against stale responses, show load errors ([b25d166](https://github.com/selimdoyranli/parolla/commit/b25d166))
+  - **community:** Use prettier quoting for feedLocked tr copy ([2947189](https://github.com/selimdoyranli/parolla/commit/2947189))
+  - **community:** Keep form busy through navigation after save ([251852a](https://github.com/selimdoyranli/parolla/commit/251852a))
+  - **community:** Stack detail page on mobile and keep avatar over cover ([3c91494](https://github.com/selimdoyranli/parolla/commit/3c91494))
+  - **community:** Skip hidden owned communities when posting a quiz ([fcff845](https://github.com/selimdoyranli/parolla/commit/fcff845))
+  - **community:** Say private hides the feed, not the quizzes ([09b64fb](https://github.com/selimdoyranli/parolla/commit/09b64fb))
+  - **community:** Read community notifications naturally after the actor ([9ac76a1](https://github.com/selimdoyranli/parolla/commit/9ac76a1))
+  - **community:** Drop a pending list search on unmount ([fc977da](https://github.com/selimdoyranli/parolla/commit/fc977da))
+  - **community:** Post card report label, hide dead owner actions, a11y labels ([9d33b63](https://github.com/selimdoyranli/parolla/commit/9d33b63))
+  - **community:** Keep room comment thread alive across filter switch, drop stale pinned return ([249551a](https://github.com/selimdoyranli/parolla/commit/249551a))
+  - **creator:** Keep anonymous quizzes out of communities and fall back to unlisted ([db54fa8](https://github.com/selimdoyranli/parolla/commit/db54fa8))
+  - **community:** Drop hidden joined communities from postable list ([e30ab43](https://github.com/selimdoyranli/parolla/commit/e30ab43))
+  - **community:** Upload the latest crop and revoke stale blob urls ([e54b97f](https://github.com/selimdoyranli/parolla/commit/e54b97f))
+  - **community:** Skip the selected-option icon when the option has none ([6f02c2f](https://github.com/selimdoyranli/parolla/commit/6f02c2f))
+  - **community:** Render posts without a quiz ([60ca225](https://github.com/selimdoyranli/parolla/commit/60ca225))
+  - **community:** Avoid duplicate feed rows after posting ([f558596](https://github.com/selimdoyranli/parolla/commit/f558596))
+  - **community:** Open header and post menus leftward at full width ([276c82f](https://github.com/selimdoyranli/parolla/commit/276c82f))
+  - **community:** Keep menu items on one line ([ad80546](https://github.com/selimdoyranli/parolla/commit/ad80546))
+  - **community:** Hover background on menu items ([3aefcc5](https://github.com/selimdoyranli/parolla/commit/3aefcc5))
+  - **community:** Keep the post quiz thumbnail square over QuizCover styles ([e5001ae](https://github.com/selimdoyranli/parolla/commit/e5001ae))
+  - **community:** Wider share dialog, themed close and brand share buttons ([d022b5d](https://github.com/selimdoyranli/parolla/commit/d022b5d))
+  - **creator:** Shorter unlisted description, equal-height choice tiles on mobile ([29b7c5c](https://github.com/selimdoyranli/parolla/commit/29b7c5c))
+  - **community:** Unclip the composer's quiz tooltip, name-only search hint ([7ff6e9f](https://github.com/selimdoyranli/parolla/commit/7ff6e9f))
+  - **community:** Round the composer field's top corners ([0229e37](https://github.com/selimdoyranli/parolla/commit/0229e37))
+  - **header:** Close the drawer on any route change ([64642df](https://github.com/selimdoyranli/parolla/commit/64642df))
+  - **community:** Readable outline on the plain quiz label in post cards ([ac09ea7](https://github.com/selimdoyranli/parolla/commit/ac09ea7))
+  - **community:** Borderless muted language tag ([7917b92](https://github.com/selimdoyranli/parolla/commit/7917b92))
+  - **scoreboard:** Lock answer breakdown and hide chevrons until the quiz is finished ([c60d993](https://github.com/selimdoyranli/parolla/commit/c60d993))
+  - **scoreboard:** Quiz owner can open the answer breakdown mid-game ([659b6dc](https://github.com/selimdoyranli/parolla/commit/659b6dc))
+  - **profile:** Scrollable tab bar with a right-edge fade on narrow screens ([f88735c](https://github.com/selimdoyranli/parolla/commit/f88735c))
+  - **profile:** Side gutter for the communities tab grid ([83eaafc](https://github.com/selimdoyranli/parolla/commit/83eaafc))
+
+### 💅 Refactors
+
+  - **creator:** Make community share an optional pick for any visibility ([9201077](https://github.com/selimdoyranli/parolla/commit/9201077))
+  - **community:** Drop isCommunityOnly from room transformer and share button ([3b2fbd4](https://github.com/selimdoyranli/parolla/commit/3b2fbd4))
+  - **community:** Use the dialog's own cancel button in the share dialog ([3a2210e](https://github.com/selimdoyranli/parolla/commit/3a2210e))
+  - **style:** Share the room-choice option card styles ([80e5538](https://github.com/selimdoyranli/parolla/commit/80e5538))
+
+### 🏡 Chore
+
+  - **creator:** Clarify the unlisted visibility description ([95aeef4](https://github.com/selimdoyranli/parolla/commit/95aeef4))
+
+### 🎨 Styles
+
+  - **creator:** Neutral colors for the community pick button ([d5263d7](https://github.com/selimdoyranli/parolla/commit/d5263d7))
+  - **creator:** 2px borders on choice cards ([57cf090](https://github.com/selimdoyranli/parolla/commit/57cf090))
+  - **community:** Restyle the create/edit wizard like the quiz compose form ([1991d6a](https://github.com/selimdoyranli/parolla/commit/1991d6a))
+  - **community:** Rework the delete dialog with Vant's footer cancel ([e44fced](https://github.com/selimdoyranli/parolla/commit/e44fced))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.6.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.5.0...v3.6.0)
