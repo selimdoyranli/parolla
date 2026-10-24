@@ -388,7 +388,7 @@ export default {
       gameSceneSoundFx: 'Oyun Sahnesi Sesleri',
       gameSceneSoundFxDesc: 'Doğru, yanlış, pas ve süre gibi sahne sesleri için',
       wordblockKeyboard: 'Kelimeblok Klavyesi',
-      switchLocale: 'Dil değiştir',
+      switchLocale: 'Edisyon değiştir',
       suggestQa: 'Soru önermek ister misin?',
       howToPLay: 'Nasıl oynanır?',
       howToCalculateStats: 'Skoru nasıl hesaplıyoruz',
@@ -602,7 +602,7 @@ export default {
       title: 'Reklam desteğiyle bunu sürdürüyoruz'
     },
     localeSwitch: {
-      title: 'Dil değiştir',
+      title: 'Edisyon değiştir',
       switching: 'Değiştiriliyor'
     },
     leave: {

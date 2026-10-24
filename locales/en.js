@@ -386,7 +386,7 @@ export default {
       gameSceneSoundFx: 'Game scene sounds',
       gameSceneSoundFxDesc: 'For scene sounds like correct, wrong, pass and time',
       wordblockKeyboard: 'Wordblock Keyboard',
-      switchLocale: 'Choose language',
+      switchLocale: 'Change edition',
       suggestQa: 'Do you want to suggest a question?',
       howToPLay: 'How to play?',
       howToCalculateStats: 'How we calculate the score',
@@ -598,7 +598,7 @@ export default {
       title: 'We keep it up with ad support'
     },
     localeSwitch: {
-      title: 'Choose language',
+      title: 'Change edition',
       switching: 'Switching'
     },
     leave: {
