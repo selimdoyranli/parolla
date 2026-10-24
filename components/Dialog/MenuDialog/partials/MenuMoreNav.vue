@@ -2,6 +2,11 @@
 .menu-more
   span.menu-more__title {{ $t('dialog.menu.title') }}
 
+  CellGroup.menu-more-nav
+    Cell.menu-more-nav__item(icon="eye-o" size="large" :title="$t('dialog.menu.darkTheme')")
+      template(#right-icon)
+        SwitchInput(v-model="isDark" size="22px" @change="toggleDarkTheme")
+
   span.menu-more__subTitle {{ $t('dialog.menu.soundFx') }}
   CellGroup.menu-more-nav
     Cell.menu-more-nav__item.menu-more-nav__item--soundFx(
@@ -22,9 +27,6 @@
         SwitchInput(v-model="isActiveGameSceneSoundFx" size="22px" @change="toggleGameSceneSoundFx")
 
   CellGroup.menu-more-nav
-    Cell.menu-more-nav__item(icon="eye-o" size="large" :title="$t('dialog.menu.darkTheme')")
-      template(#right-icon)
-        SwitchInput(v-model="isDark" size="22px" @change="toggleDarkTheme")
     Cell.menu-more-nav__item.menu-more-nav__item--wordblockKeyboard(
       v-if="activeGameMode === gameModeKeyEnum.WORDBLOCK"
       icon="font-o"
