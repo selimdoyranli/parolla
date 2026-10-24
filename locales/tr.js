@@ -1218,6 +1218,7 @@ export default {
       likes: '{count} beğeni',
       comments: '{count} yorum',
       likeAction: 'Beğen',
+      quizLocale: { en: 'İngilizce quiz: İngilizce sürümde açılır', tr: 'Türkçe quiz: Türkçe sürümde açılır' },
       quizPicker: {
         open: 'Quiz Ekle',
         placeholder: 'Quiz adı ile ara...',

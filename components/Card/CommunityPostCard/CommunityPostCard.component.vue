@@ -32,7 +32,7 @@ article.community-post-card
   //- the shared quiz: same link and stat icons as QuizCard; text posts have none
   NuxtLink.community-post-card__quiz(
     v-if="post.room"
-    :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } })"
+    :to="localePath({ name: 'CreatorMode-CreatorModeRoom-slug', params: { slug: room.roomId } }, roomLocale)"
     :title="room.title"
   )
     //- covers are 16:9: contain them in the square over a blurred copy of themselves
@@ -42,7 +42,12 @@ article.community-post-card
     QuizCover.community-post-card__thumb(v-else :room="room")
       span.community-post-card__initials {{ initials }}
     .community-post-card__quiz-body
-      QuizTypeLabel(:room="room")
+      .community-post-card__labels
+        QuizTypeLabel(:room="room")
+        //- a quiz from the other edition opens there; the tag says so before the click
+        span.community-post-card__lang(v-if="roomLocale !== $i18n.locale" :title="$t(`community.post.quizLocale.${roomLocale}`)")
+          AppIcon(name="tabler:world" :width="12" :height="12")
+          | {{ roomLocale.toUpperCase() }}
       h3.community-post-card__quiz-title {{ room.title }}
       CreatorByline(:user="room.isAnon ? null : room.user" :size="32")
       .community-post-card__stats
@@ -176,6 +181,14 @@ export default defineComponent({
     })
 
     const room = computed(() => props.post.room || {})
+    // rooms are stored per edition ('tr-TR' / 'tr' / 'en'); the quiz page only finds them in their own
+    const roomLocale = computed(() => {
+      const locale = room.value.locale
+
+      if (!locale) return i18n.locale
+
+      return locale.startsWith('en') ? 'en' : 'tr'
+    })
     const initials = computed(() => getInitials(room.value.title))
 
     const formatCount = count => {
@@ -254,6 +267,7 @@ export default defineComponent({
       canReport,
       hasMenu,
       room,
+      roomLocale,
       initials,
       formatCount,
       handleLike,

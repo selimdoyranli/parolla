@@ -1200,6 +1200,7 @@ export default {
       likes: '{count} likes',
       comments: '{count} comments',
       likeAction: 'Like',
+      quizLocale: { en: 'English quiz: opens in the English edition', tr: 'Turkish quiz: opens in the Turkish edition' },
       quizPicker: {
         open: 'Add quiz',
         placeholder: 'Search by quiz name...',

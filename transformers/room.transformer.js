@@ -35,6 +35,8 @@ export default model => {
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
     publishedAt: model.publishedAt,
+    // edition the room lives in ('tr-TR' / 'tr' / 'en'): community cards link to it
+    locale: model.locale,
     title: model.title,
     isVisible: model.isVisible,
     isListed: model.isPublic,
