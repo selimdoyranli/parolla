@@ -1104,6 +1104,7 @@ export default {
     send: 'Gönder',
     reply: 'Yanıtla',
     loadMoreReplies: 'Daha fazla yanıt yükle',
+    loadMoreComments: 'Daha fazla yorum yükle',
     showReplies: '{n} yanıtı göster',
     deleted: 'Bu yorum silindi',
     quizOwner: 'Quiz sahibi',
@@ -1232,6 +1233,7 @@ export default {
       },
       feedEmpty: 'Bu toplulukta henüz gönderi yok.',
       feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
+      feedTitle: 'Gönderiler',
       privateNotice: 'Bu topluluk gizli. Quizleri görmek için üye olmalısın.',
       feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
       menu: { label: 'Daha fazla', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
@@ -1269,7 +1271,8 @@ export default {
         placeholder: 'Etiket yaz',
         errorTooMany: 'En fazla {max} etiket ekleyebilirsin.',
         errorInvalid: 'Etiketler yalnızca harf ve rakam içerebilir.',
-        addButton: 'Etiket ekle'
+        addButton: 'Etiket ekle',
+        hint: 'Etiket eklemek topluluğunu öne çıkarır, aramalarda daha kolay bulunur.'
       },
       visibility: { label: 'Görünürlük' },
       postPermission: { label: 'Kim paylaşım yapabilir?' }

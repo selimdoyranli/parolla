@@ -12,7 +12,20 @@
     @deleted="handlePinnedDeleted"
   )
 
+  //- feed cards: the newest comments only, more on demand (like a thread's reply preview)
+  template(v-if="previewCount")
+    RoomCommentItem(
+      v-for="comment in visibleComments.slice(0, previewLimit)"
+      :key="comment.documentId"
+      :comment="comment"
+      :room-id="roomId"
+      @deleted="handleRootDeleted"
+    )
+    button.comment-thread-view__more(v-if="hasMorePreview" type="button" :disabled="comments.loading" @click="showMore")
+      | {{ $t('comments.loadMoreComments') }}
+
   List(
+    v-else
     v-model="comments.loading"
     :finished="comments.finished"
     :error.sync="comments.error"
@@ -56,7 +69,11 @@ export default defineComponent({
     communitySlug: { type: String, default: null },
     targetCommentId: { type: String, default: null },
     // composer inline at the end of the list instead of pinned to the scroll area bottom
-    inline: { type: Boolean, default: false }
+    inline: { type: Boolean, default: false },
+    // > 0: show only this many comments with a "load more" button instead of the infinite list
+    previewCount: { type: Number, default: 0 },
+    // the caller already knows there are no comments: skip the first preview request
+    isEmpty: { type: Boolean, default: false }
   },
   // posted: a root comment was added; changed: any comment was added or removed
   emits: ['posted', 'changed'],
@@ -88,6 +105,24 @@ export default defineComponent({
       comments.items.push(...data.items.filter(c => !known.has(c.documentId)))
       comments.page += 1
       comments.finished = !data.hasMore
+    }
+
+    const previewLimit = ref(props.previewCount)
+    const hasMorePreview = computed(() => previewLimit.value < visibleComments.value.length || (comments.page > 0 && !comments.finished))
+
+    const showMore = async () => {
+      previewLimit.value += 10
+
+      if (previewLimit.value > comments.items.length && !comments.finished && !comments.loading) {
+        comments.loading = true
+        await loadComments()
+      }
+    }
+
+    // feed cards: the comment pill jumps to this composer
+    const focus = () => {
+      composerRef.value?.focus()
+      composerRef.value?.$el.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
 
     const loadPinned = async () => {
@@ -145,6 +180,9 @@ export default defineComponent({
     const handlePosted = comment => {
       if (!comment.parentDocumentId) {
         comments.items.unshift(comment)
+
+        // the new comment joins the preview without pushing one out
+        if (props.previewCount) previewLimit.value += 1
         emit('posted', comment)
       } else {
         lastReply.value = comment
@@ -184,11 +222,23 @@ export default defineComponent({
     }
 
     watch(() => props.targetCommentId, loadPinned)
-    onMounted(loadPinned)
+    onMounted(() => {
+      loadPinned()
+
+      // no van-list here to load the first page
+      if (props.previewCount && !props.isEmpty) {
+        comments.loading = true
+        loadComments()
+      }
+    })
 
     return {
       comments,
       visibleComments,
+      previewLimit,
+      hasMorePreview,
+      showMore,
+      focus,
       pinned,
       loadComments,
       replyTarget,

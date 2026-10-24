@@ -1,4 +1,15 @@
 .comment-thread-view {
+  // same look as a thread's "load more replies" button
+  &__more {
+    padding: 6px 0;
+    color: var(--color-brand-02);
+    font-weight: 600;
+    font-size: 13px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
   &__composer {
     // sticks to the bottom of the dialog's scroll area (cancels the dialog content padding)
     position: sticky;

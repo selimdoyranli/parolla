@@ -70,7 +70,35 @@
   }
 
   &__fields &__tags {
-    padding: 0 16px 16px;
+    padding: 12px 16px 16px;
+  }
+
+  // tag field: same as the quiz compose form's (.creator-mode-compose-form__roomTag / -tags)
+  &__tagField .van-field__word-limit {
+    padding-inline-end: $spacer * 9;
+  }
+
+  &__tag {
+    &::before {
+      position: relative;
+      content: '#';
+    }
+
+    .van-icon {
+      color: #fff;
+      background-color: var(--color-danger-01);
+      margin-inline-start: 4px;
+    }
+  }
+
+  &__tagHint {
+    margin: 12px 16px 16px;
+    padding: 8px 12px;
+    color: var(--color-info-01);
+    font-size: 13px;
+    text-align: left;
+    background-color: color-mix(in sRGB, var(--color-info-01) 10%, transparent);
+    border-radius: calc(var(--border-radius-01) / 2);
   }
 
   &__mediaCell {

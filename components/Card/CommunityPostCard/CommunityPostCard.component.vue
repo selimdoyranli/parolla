@@ -69,9 +69,28 @@ article.community-post-card
     )
       AppIcon(:name="liked ? 'tabler:heart-filled' : 'tabler:heart'" :width="18" :height="18")
       span {{ likeCount }}
-    NuxtLink.community-post-card__pill(:to="postLink" :aria-label="$t('community.post.comments', { count: post.commentCount })")
+    button.community-post-card__pill(
+      v-if="withComments"
+      type="button"
+      :aria-label="$t('community.post.comments', { count: commentCount })"
+      @click="$refs.thread.focus()"
+    )
       AppIcon(name="tabler:message-2" :width="18" :height="18")
-      span {{ post.commentCount }}
+      span {{ commentCount }}
+    NuxtLink.community-post-card__pill(v-else :to="postLink" :aria-label="$t('community.post.comments', { count: commentCount })")
+      AppIcon(name="tabler:message-2" :width="18" :height="18")
+      span {{ commentCount }}
+
+  CommentThreadView.community-post-card__comments(
+    v-if="withComments"
+    ref="thread"
+    inline
+    :preview-count="2"
+    :is-empty="!post.commentCount"
+    :post-id="post.documentId"
+    :community-slug="post.community.slug"
+    @changed="refreshCommentCount"
+  )
 </template>
 
 <script>
@@ -93,7 +112,9 @@ export default defineComponent({
   name: 'CommunityPostCard',
   components: { DropdownMenu },
   props: {
-    post: { type: Object, required: true }
+    post: { type: Object, required: true },
+    // feed: the first comments and a composer inside the card (the post page lists them itself)
+    withComments: { type: Boolean, default: false }
   },
   // report: post to report; deleted: post removed on the server
   emits: ['report', 'deleted'],
@@ -119,6 +140,20 @@ export default defineComponent({
         likeCount.value = count
       }
     )
+
+    const commentCount = ref(props.post.commentCount)
+
+    watch(
+      () => props.post.commentCount,
+      count => (commentCount.value = count)
+    )
+
+    // the server count also covers replies and deletions, so ask it instead of counting here
+    const refreshCommentCount = async () => {
+      const { data } = await store.dispatch('community/fetchPost', { documentId: props.post.documentId })
+
+      if (data) commentCount.value = data.commentCount
+    }
 
     const postLink = computed(() =>
       app.localePath({
@@ -207,6 +242,8 @@ export default defineComponent({
       isMenuOpen,
       liked,
       likeCount,
+      commentCount,
+      refreshCommentCount,
       postLink,
       relativeTime,
       canReport,

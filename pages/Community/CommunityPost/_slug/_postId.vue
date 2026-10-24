@@ -20,6 +20,8 @@
 
     MountingPortal(mount-to="body" append)
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.POST" :additional="reportAdditional" @closed="isReportOpen = false")
+        template(#prepend)
+          ReportQuote(:post="post")
 </template>
 
 <script>

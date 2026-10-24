@@ -19,12 +19,12 @@ NuxtLink.community-card(:to="localePath({ name: 'Community-Community-slug', para
 
     //- counts and tags share the bottom row
     .community-card__footer
-      span.community-card__stat(:title="$t('community.list.members', { count: community.memberCount })")
+      span.community-card__stat
         AppIcon(name="tabler:users" :width="14" :height="14")
-        | {{ community.memberCount }}
-      span.community-card__stat(:title="$t('community.list.posts', { count: community.postCount })")
+        | {{ $t('community.list.members', { count: community.memberCount }) }}
+      span.community-card__stat(v-if="community.postCount")
         AppIcon(name="tabler:file-text" :width="14" :height="14")
-        | {{ community.postCount }}
+        | {{ $t('community.list.posts', { count: community.postCount }) }}
       //- a tag filters the list instead of opening the community
       button.community-card__tag(
         v-for="tag in (community.tags || []).slice(0, 3)"

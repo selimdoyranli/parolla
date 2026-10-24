@@ -22,6 +22,9 @@
       main.community-page__main
         CommunityPostComposer.community-page__composer(v-if="canPost" :community-document-id="community.documentId" @posted="handlePosted")
         .community-page__toolbar
+          h3.community-page__feed-title
+            | {{ $t('community.detail.feedTitle') }}
+            span.community-page__feed-count &nbsp;({{ community.postCount || 0 }})
           FilterDropdown(
             :trigger-title="$t(`community.detail.feedSort.${sort}`)"
             :selected="selectedSortOption"
@@ -39,6 +42,7 @@
             CommunityPostCard(
               v-for="post in items"
               :key="post.documentId"
+              with-comments
               :post="post"
               @report="handleReportPost"
               @deleted="handlePostDeleted"
@@ -55,7 +59,11 @@
       CommunityMembersDialog(:is-open.sync="isMembersOpen" :community="community" @changed="handleChanged")
       CommunityDeleteDialog(:is-open.sync="isDeleteOpen" :community="community")
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.COMMUNITY" :additional="reportAdditional" @closed="isReportOpen = false")
+        template(#prepend)
+          ReportQuote(:community="community")
       ReportDialog(:is-open="!!reportedPost" :scope="reportTypeEnum.POST" :additional="postReportAdditional" @closed="reportedPost = null")
+        template(#prepend)
+          ReportQuote(v-if="reportedPost" :post="reportedPost")
 </template>
 
 <script>
@@ -66,6 +74,7 @@ import { reportTypeEnum } from '@/enums/report-type.enum'
 import { communityViewerRoleEnum, communityPostPermissionEnum } from '@/enums/community.enum'
 
 const SORTS = ['recent', 'popular', 'oldest']
+const SORT_ICONS = { recent: 'tabler:clock', popular: 'tabler:flame', oldest: 'tabler:history' }
 
 export default defineComponent({
   components: { Button, Empty, InfiniteLoading },
@@ -96,7 +105,9 @@ export default defineComponent({
     const reportedPost = ref(null)
     const postReportAdditional = computed(() => JSON.stringify({ postDocumentId: reportedPost.value?.documentId }))
     const reportAdditional = computed(() => JSON.stringify({ communityDocumentId: community.value?.documentId }))
-    const sortOptions = computed(() => SORTS.map(key => ({ key, label: i18n.t(`community.detail.feedSort.${key}`) })))
+    const sortOptions = computed(() =>
+      SORTS.map(key => ({ key, icon: SORT_ICONS[key], label: i18n.t(`community.detail.feedSort.${key}`) }))
+    )
     const selectedSortOption = computed(() => sortOptions.value.find(option => option.key === sort.value))
 
     const loadFeedPage = async (nextPage, id) => {

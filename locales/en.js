@@ -1086,6 +1086,7 @@ export default {
     send: 'Send',
     reply: 'Reply',
     loadMoreReplies: 'Load more replies',
+    loadMoreComments: 'Load more comments',
     showReplies: 'Show {n} reply | Show {n} replies',
     deleted: 'This comment was deleted',
     quizOwner: 'Quiz owner',
@@ -1214,6 +1215,7 @@ export default {
       },
       feedEmpty: 'No posts in this community yet.',
       feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
+      feedTitle: 'Posts',
       privateNotice: 'This community is private. Join to see its quizzes.',
       feedLocked: 'Join this community to see its quizzes',
       menu: { label: 'More', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
@@ -1251,7 +1253,8 @@ export default {
         placeholder: 'Enter a tag',
         errorTooMany: 'You can add at most {max} tags.',
         errorInvalid: 'Tags can only contain letters and numbers.',
-        addButton: 'Add tag'
+        addButton: 'Add tag',
+        hint: 'Adding tags makes your community stand out and easier to find in search.'
       },
       visibility: { label: 'Visibility' },
       postPermission: { label: 'Who can post?' }
