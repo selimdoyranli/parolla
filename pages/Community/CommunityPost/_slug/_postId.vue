@@ -30,6 +30,7 @@
 import { defineComponent, ref, computed, watch, onMounted, useContext, useStore, useMeta, useRouter } from '@nuxtjs/composition-api'
 import { Button, Empty, Loading } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
+import { communityPostHead } from '@/helpers/communitySeo'
 
 export default defineComponent({
   components: { Button, Empty, Loading },
@@ -73,11 +74,12 @@ export default defineComponent({
     watch(() => route.value.params.postId, load)
     onMounted(load)
 
-    useMeta(() => ({
-      title: post.value
-        ? [post.value.community.name, post.value.room?.title || post.value.author?.username].filter(Boolean).join(' - ')
-        : i18n.t('seo.main.title')
-    }))
+    // missing or members-only (403) posts stay out of the index
+    useMeta(() =>
+      post.value
+        ? communityPostHead({ locale: i18n.locale, post: post.value })
+        : { title: i18n.t('seo.main.title'), meta: [{ hid: 'robots', name: 'robots', content: 'noindex,follow' }] }
+    )
 
     return {
       post,

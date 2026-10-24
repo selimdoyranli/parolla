@@ -1,7 +1,7 @@
 ---
 title: "Sık Sorulan Sorular (SSS)"
 description: "parolla hakkında sık sorulan sorular: parolla nedir, ücretsiz mi, üyelik gerekli mi, günlük oyun ne zaman yenilenir, Türkçe Wordle var mı, liderlik tablosu var mı, quiz nasıl oluşturulur?"
-updated: 2026-08-29
+updated: 2026-10-24
 faq:
   - q: "parolla nedir?"
     a: "parolla; günlük A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin oyunu, oyuncuların oluşturduğu quizler ve turnuva modu sunan ücretsiz Türkçe kelime ve bilgi oyunu platformudur. Web'de www.parolla.app adresinden, iOS ve Android uygulamalarından oynanır."
@@ -17,6 +17,12 @@ faq:
     a: "Yaratıcı Mod'da Quiz Oluştur'a girip formatı seçmen yeterli: Soru-Cevap (klasik), O mu bu mu? ya da Flashcards. Sorularını yazıp yayınladığında quizin paylaşabileceğin bir bağlantı alır."
   - q: "Liderlik tablosu var mı?"
     a: "Evet. Günlük Mod, Tur Modu ve KelimeBlok'un liderlik tabloları vardır; günlük, haftalık, aylık ve sezonluk sıralama sunar. KelimeBlok'ta her kelime uzunluğu ve her dil için ayrı tablo tutulur. Tabloya girmek için ücretsiz bir hesapla giriş yapman gerekir."
+  - q: "parolla'da topluluklar nedir?"
+    a: "Topluluklar, aynı ilgi alanını paylaşan oyuncuların bir araya geldiği gruplardır. Bir topluluğa katılıp quiz paylaşabilir, gönderileri beğenip yorum yapabilir ve benzer ilgi alanlarına sahip oyuncularla tanışabilirsin. Tüm topluluklar www.parolla.app/topluluklar adresinde listelenir."
+  - q: "Kendi topluluğumu kurabilir miyim?"
+    a: "Evet. Ücretsiz bir hesapla giriş yaptıktan sonra Topluluklar sayfasındaki Topluluk oluştur butonuyla adını, açıklamasını, avatarını, kapak fotoğrafını ve etiketlerini belirleyerek topluluğunu kurabilirsin. Topluluk herkese açık, onaylı katılımlı ya da gizli olabilir."
+  - q: "Toplulukta neler paylaşılır?"
+    a: "Topluluk üyeleri parolla'daki herhangi bir quizi kısa bir notla paylaşabilir ya da yazılı gönderi yazabilir. Her gönderi beğenilebilir ve yorumlanabilir; paylaşılan quizler doğrudan topluluk sayfasından oynanabilir."
   - q: "parolla hangi platformlarda oynanır?"
     a: "parolla web tarayıcısında www.parolla.app adresinden, ayrıca App Store'daki iOS uygulamasından ve Google Play'deki Android uygulamasından oynanır."
   - q: "İngilizce oynayabilir miyim?"

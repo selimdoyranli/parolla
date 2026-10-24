@@ -45,6 +45,7 @@ const APP_ROUTES = [
   { tr: '/kelimeblok/liderlik', en: '/en/wordblock/leaderboard' },
   { tr: '/muzik', en: '/en/music' },
   { tr: '/muzik/sarki-tahmin-et', en: '/en/music/guess-the-song' },
+  { tr: '/topluluklar', en: '/en/communities' },
   { tr: '/sayfa/gizlilik-politikasi', en: '/en/page/privacy-policy' },
   { tr: '/sayfa/cerez-politikasi', en: '/en/page/cookie-policy' },
   { tr: '/sayfa/kvkk-aydinlatma-metni', en: '/en/page/kvkk-clarification-text' },

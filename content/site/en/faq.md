@@ -1,7 +1,7 @@
 ---
 title: "Frequently Asked Questions (FAQ)"
 description: "Frequently asked questions about parolla: what is parolla, is it free, do I need an account, when does the daily game refresh, is there a Turkish Wordle, which modes are in English, how do I create a quiz?"
-updated: 2026-08-29
+updated: 2026-10-24
 faq:
   - q: "What is parolla?"
     a: "parolla is a free Turkish word and trivia game platform featuring a daily A-to-Z word quiz, a Wordle-style puzzle called Wordblock, a music guessing game, player-created quizzes and a tournament mode. It's playable on the web at www.parolla.app and via the iOS and Android apps."
@@ -17,6 +17,12 @@ faq:
     a: "In Creator Mode, open Create Quiz and pick a format: Question-Answer (classic), This or That, or Flashcards. Write your questions, publish, and your quiz gets a shareable link."
   - q: "Are there leaderboards?"
     a: "Yes. Daily Mode, Tour Mode and Wordblock each have leaderboards with daily, weekly, monthly and season rankings; Wordblock keeps a separate board per word length and per language. You need a free account to appear on them."
+  - q: "What are communities on parolla?"
+    a: "Communities are groups of players who share an interest. Join a community to share quizzes, like and comment on posts, and meet players with similar interests. All communities are listed at www.parolla.app/en/communities."
+  - q: "Can I start my own community?"
+    a: "Yes. Sign in with a free account, then use the Create community button on the Communities page to set its name, description, avatar, cover photo and tags. A community can be public, approval-only or private."
+  - q: "What can be shared in a community?"
+    a: "Members can share any quiz on parolla with a short note, or write a text post. Every post can be liked and commented on, and shared quizzes can be played straight from the community page."
   - q: "Which platforms is parolla available on?"
     a: "parolla runs in the web browser at www.parolla.app, plus the iOS app on the App Store and the Android app on Google Play."
   - q: "Can I play in English?"

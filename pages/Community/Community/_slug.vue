@@ -76,6 +76,7 @@
 import { defineComponent, useContext, useStore, ref, computed, watch, onMounted, useMeta } from '@nuxtjs/composition-api'
 import { Button, Empty } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
+import { communityHead } from '@/helpers/communitySeo'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 import { communityViewerRoleEnum, communityPostPermissionEnum } from '@/enums/community.enum'
 
@@ -253,7 +254,14 @@ export default defineComponent({
     watch(() => route.value.params.slug, init)
     onMounted(init)
 
-    useMeta(() => ({ title: community.value?.name || i18n.t('seo.main.title') }))
+    useMeta(() =>
+      community.value
+        ? communityHead({ locale: i18n.locale, community: community.value, posts: isLocked.value ? [] : items.value })
+        : {
+            title: i18n.t('seo.main.title'),
+            meta: [{ hid: 'robots', name: 'robots', content: isNotFound.value ? 'noindex,follow' : 'index,follow' }]
+          }
+    )
 
     return {
       community,

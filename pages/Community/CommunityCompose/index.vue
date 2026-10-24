@@ -9,7 +9,14 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'Default/Default.layout',
-  middleware: ['auth-control']
+  middleware: ['auth-control'],
+  // a sign-in-only form: nothing to index
+  head() {
+    return {
+      title: `${this.$t('community.list.createButton')} - ${this.$t('seo.main.title')}`,
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex,nofollow' }]
+    }
+  }
 })
 </script>
 

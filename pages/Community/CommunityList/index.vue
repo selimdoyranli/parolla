@@ -72,6 +72,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { Button, Empty, Search } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
+import { communityListHead } from '@/helpers/communitySeo'
 
 const PAGE_SIZE = 12
 const MAX_TAGS = 10
@@ -282,16 +283,16 @@ export default defineComponent({
       }
     })
 
-    useMeta(() => ({
-      title: `${i18n.t('seo.communityList.title')} - ${i18n.t('seo.main.title')}`,
-      meta: [
-        { hid: 'description', name: 'description', content: i18n.t('seo.communityList.description') },
-        { hid: 'og:title', name: 'og:title', content: `${i18n.t('seo.communityList.title')} - ${i18n.t('seo.main.title')}` },
-        { hid: 'twitter:title', name: 'twitter:title', content: `${i18n.t('seo.communityList.title')} - ${i18n.t('seo.main.title')}` },
-        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.communityList.description') },
-        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.communityList.description') }
-      ]
-    }))
+    useMeta(() =>
+      communityListHead({
+        locale: i18n.locale,
+        title: `${i18n.t('seo.communityList.title')} - ${i18n.t('seo.main.title')}`,
+        description: i18n.t('seo.communityList.description'),
+        communities: items.value,
+        // searches and the viewer's own lists aren't pages worth indexing
+        filtered: Boolean(search.value) || OWN_LISTS.includes(sort.value)
+      })
+    )
 
     return {
       keyword,

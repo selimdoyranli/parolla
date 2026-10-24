@@ -45,6 +45,13 @@ export default defineComponent({
     })
 
     return { community, isLoading, isDeleteOpen }
+  },
+  // owner/manager-only settings: nothing to index
+  head() {
+    return {
+      title: `${this.$t('community.edit.title')} - ${this.$t('seo.main.title')}`,
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex,nofollow' }]
+    }
   }
 })
 </script>
