@@ -8,7 +8,10 @@
       li.app-header-nav__item(@click="handleClickBackButton")
         ActionButton(icon="tabler:arrow-left" :icon-size="24")
 
-    li.app-header-nav__item(v-if="isHome" @click="$router.push(localePath({ name: 'Community-CommunityList' }))")
+    li.app-header-nav__item.app-header-nav__item--communities(
+      v-if="isHome"
+      @click="$router.push(localePath({ name: 'Community-CommunityList' }))"
+    )
       ActionButton(:label="$t('dialog.menu.communities')" icon="iconoir:community" :icon-size="24")
 
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")

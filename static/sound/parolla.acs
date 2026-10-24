@@ -57,6 +57,9 @@ input:on-input, textarea:on-input { sound: keystroke; }
 /* IntroButton CTA — the "Oyna" play link inside each game-mode card. */
 .play-now-button { sound-on-click: pop; }
 
+/* Header communities button: navigates instead of opening a dialog, so it has no modal sound of its own. */
+.app-header-nav__item--communities { sound-on-click: tick; }
+
 /* Room featured tag filter chips. */
 .room-featured-tag-list-tag { sound-on-click: tick; }
 
