@@ -27,7 +27,7 @@
       :disabled="$auth.loggedIn && !form.content.trim()"
       @click="submit"
     )
-      AppIcon(:name="$auth.loggedIn ? 'tabler:send' : 'tabler:login-2'")
+      AppIcon(name="tabler:send")
 </template>
 
 <script>
