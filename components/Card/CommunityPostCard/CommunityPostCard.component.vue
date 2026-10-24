@@ -4,6 +4,7 @@ article.community-post-card
     PlayerAvatar(open-player-dialog-on-click :size="40" :user="post.author")
     .community-post-card__byline
       strong.community-post-card__author {{ post.author?.username }}
+        span.gm-username-extra(v-if="post.author?.role?.name === 'GM'") &nbsp;(GM)
       NuxtLink.community-post-card__time(:to="postLink") {{ relativeTime }}
 
     .community-post-card__menu.dropdown(v-if="hasMenu")

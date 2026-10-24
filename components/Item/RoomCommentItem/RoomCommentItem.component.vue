@@ -13,6 +13,7 @@
       .room-comment-item__meta
         button.room-comment-item__username(type="button" :style="usernameStyle" @click="openPlayer(comment.user)")
           | {{ comment.user && comment.user.username }}
+          span.gm-username-extra(v-if="isGm") &nbsp;(GM)
         Tag.room-comment-item__owner(v-if="comment.isQuizOwner" round) {{ $t('comments.quizOwner') }}
         Timeago.room-comment-item__time(:datetime="comment.createdAt" :auto-update="60" :locale="$i18n.locale")
       p.room-comment-item__content
@@ -69,6 +70,7 @@
       PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
       .room-comment-dialog-preview__body
         strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+          span.gm-username-extra(v-if="isGm") &nbsp;(GM)
         p.room-comment-dialog-preview__content {{ comment.content }}
     nav.room-comment-more-dialog__options
       button.room-comment-more-dialog__option.room-comment-more-dialog__option--danger(v-if="isOwn" @click="isOpenDelete = true")
@@ -92,6 +94,7 @@
       PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
       .room-comment-dialog-preview__body
         strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+          span.gm-username-extra(v-if="isGm") &nbsp;(GM)
         p.room-comment-dialog-preview__content {{ comment.content }}
 
   // teleported like the more dialog so it opens on top of it
@@ -108,6 +111,7 @@
         PlayerAvatar(v-if="comment.user" :user="comment.user" :size="32")
         .room-comment-dialog-preview__body
           strong.room-comment-dialog-preview__username {{ comment.user && comment.user.username }}
+            span.gm-username-extra(v-if="isGm") &nbsp;(GM)
           p.room-comment-dialog-preview__content {{ comment.content }}
 </template>
 
@@ -158,6 +162,7 @@ export default defineComponent({
         : props.comment.content
     })
 
+    const isGm = computed(() => props.comment.user?.role?.name === 'GM')
     const isOwn = computed(() => $auth.loggedIn && props.comment.user && props.comment.user.id === $auth.user?.id)
     // post comments carry their post so moderators can find the thread
     const reportAdditional = computed(() =>
@@ -294,6 +299,7 @@ export default defineComponent({
 
     return {
       usernameStyle,
+      isGm,
       reportTypeEnum,
       state,
       isReply,

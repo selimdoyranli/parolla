@@ -4,7 +4,8 @@
     flex-direction: column;
     gap: 12px;
     max-height: 60vh;
-    padding: 0 16px 16px;
+    padding: 16px 20px 20px;
+    overflow-x: hidden;
     overflow-y: auto;
   }
 
@@ -14,8 +15,10 @@
     text-align: center;
   }
 
+  // actions drop to their own line when the name and buttons don't fit (phones)
   &__row {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     align-items: center;
     justify-content: space-between;
@@ -25,6 +28,7 @@
     display: flex;
     flex-shrink: 0;
     gap: 6px;
+    margin-inline-start: auto;
   }
 
   &__role {

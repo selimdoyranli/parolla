@@ -5,6 +5,7 @@ blockquote.report-quote
     PlayerAvatar(v-if="post.author" :user="post.author" :size="32")
     .report-quote__body
       strong.report-quote__title {{ post.author && post.author.username }}
+        span.gm-username-extra(v-if="post.author?.role?.name === 'GM'") &nbsp;(GM)
       p.report-quote__content(v-if="post.note") {{ post.note }}
       span.report-quote__quiz(v-if="post.room")
         AppIcon(name="tabler:help-square-rounded" :width="14" :height="14")

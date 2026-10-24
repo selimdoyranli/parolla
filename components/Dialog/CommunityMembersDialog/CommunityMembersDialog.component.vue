@@ -6,6 +6,7 @@ Dialog.dialog.community-members-dialog(
   :show-cancel-button="true"
   :show-confirm-button="false"
   :close-on-click-overlay="true"
+  width="min(92vw, 480px)"
   @input="$emit('update:isOpen', $event)"
 )
   .community-members-dialog__list
@@ -19,6 +20,7 @@ Dialog.dialog.community-members-dialog(
       .community-members-dialog__actions
         Button(
           v-if="canPromote(item)"
+          color="var(--color-brand-02)"
           size="small"
           plain
           round
@@ -29,6 +31,7 @@ Dialog.dialog.community-members-dialog(
           | {{ $t('community.members.actions.promote') }}
         Button(
           v-if="canDemote(item)"
+          color="var(--color-text-02)"
           size="small"
           plain
           round
