@@ -1928,7 +1928,7 @@ export default {
       title: 'Çerez tercihleri',
       necessary: 'Zorunlu çerezler',
       necessaryDesc: 'Oturum, dil ve tema gibi sitenin çalışması için gerekenler. Kapatılamaz.',
-      ads: 'Kişiselleştirilmiş reklamlar',
+      ads: 'Reklam çerezleri',
       adsDesc:
         'Açarsan reklamlar ilgi alanına göre seçilir (Google AdSense çerezleri). Kapalıyken de reklam görürsün, yalnızca kişiselleştirilmez.',
       save: 'Kaydet',
