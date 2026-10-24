@@ -71,6 +71,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .profile-communities {
+  // same side gutter as the other profile tabs
+  padding: 0 var(--base-p-x) 32px;
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
