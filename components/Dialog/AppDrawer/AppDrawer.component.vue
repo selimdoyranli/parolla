@@ -77,7 +77,10 @@ export default defineComponent({
     const navigate = name => {
       state.isOpen = false
 
-      if (!isActive(name)) router.push(localePath({ name }))
+      // the current page (e.g. home from home) reloads instead of a no-op push
+      if (isActive(name)) return window.location.reload()
+
+      router.push(localePath({ name }))
     }
 
     const gold = computed(() => store.state.economy.wallet.gold)
