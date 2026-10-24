@@ -68,7 +68,7 @@ article.community-post-card
       @click="handleLike"
     )
       AppIcon(:name="liked ? 'tabler:heart-filled' : 'tabler:heart'" :width="18" :height="18")
-      span {{ likeCount }}
+      span {{ likeCount || $t('community.post.likeAction') }}
     button.community-post-card__pill(
       v-if="withComments"
       type="button"
@@ -76,10 +76,10 @@ article.community-post-card
       @click="$refs.thread.focus()"
     )
       AppIcon(name="tabler:message-2" :width="18" :height="18")
-      span {{ commentCount }}
+      span {{ commentCount || $t('community.post.commentAction') }}
     NuxtLink.community-post-card__pill(v-else :to="postLink" :aria-label="$t('community.post.comments', { count: commentCount })")
       AppIcon(name="tabler:message-2" :width="18" :height="18")
-      span {{ commentCount }}
+      span {{ commentCount || $t('community.post.commentAction') }}
 
   CommentThreadView.community-post-card__comments(
     v-if="withComments"

@@ -1209,7 +1209,9 @@ export default {
       deleted: 'Gönderi silindi.',
       report: 'Gönderiyi raporla',
       likes: '{count} beğeni',
-      comments: '{count} yorum'
+      comments: '{count} yorum',
+      likeAction: 'Beğen',
+      commentAction: 'Yorum yap'
     },
     detail: {
       aboutTitle: 'Hakkında',

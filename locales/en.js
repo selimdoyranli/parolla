@@ -1191,7 +1191,9 @@ export default {
       deleted: 'Post deleted.',
       report: 'Report post',
       likes: '{count} likes',
-      comments: '{count} comments'
+      comments: '{count} comments',
+      likeAction: 'Like',
+      commentAction: 'Comment'
     },
     detail: {
       aboutTitle: 'About',
