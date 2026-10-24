@@ -1896,8 +1896,20 @@ export default {
     guestLabel: '(guest)'
   },
   cookieConsent: {
-    text: 'We use cookies to improve your experience. {link}',
+    text: 'We may use cookies to improve your experience and personalise ads. You can set your preferences. {link}',
     link: 'Cookie Policy',
-    accept: 'OK'
+    reject: 'Reject',
+    manage: 'Manage preferences',
+    accept: 'Accept',
+    menu: 'Cookie preferences',
+    preferences: {
+      title: 'Cookie preferences',
+      necessary: 'Necessary cookies',
+      necessaryDesc: 'Needed for the site to work, such as sign-in, language and theme. Always on.',
+      ads: 'Advertising cookies',
+      adsDesc: 'Ads personalised to your interests (Google AdSense). When off, non-personalised ads are shown.',
+      save: 'Save',
+      cancel: 'Cancel'
+    }
   }
 }

@@ -137,6 +137,7 @@
       :title="$t('dialog.menu.termsOfUse')"
       @click.native="navigateAndClose('Page-TermsOfUse')"
     )
+    Cell.menu-more-nav__item(icon="setting-o" size="large" is-link :title="$t('cookieConsent.menu')" @click.native="openCookiePreferences")
 </template>
 
 <script>
@@ -258,6 +259,13 @@ export default defineComponent({
       emit(event)
     }
 
+    const { openPreferences } = useCookieConsent()
+
+    const openCookiePreferences = () => {
+      emit('close')
+      openPreferences()
+    }
+
     const navigateAndClose = name => {
       router.push(localePath({ name }))
 
@@ -280,6 +288,7 @@ export default defineComponent({
       openRoomSharer,
       openAppSharer,
       openDialog,
+      openCookiePreferences,
       navigateAndClose
     }
   }

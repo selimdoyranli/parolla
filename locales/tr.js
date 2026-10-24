@@ -1918,8 +1918,20 @@ export default {
     guestLabel: '(misafir)'
   },
   cookieConsent: {
-    text: 'Deneyimini iyileştirmek için çerez kullanıyoruz. {link}',
+    text: 'Deneyimini iyileştirmek ve reklamları kişiselleştirmek için çerez kullanabiliriz. Tercihini belirleyebilirsin. {link}',
     link: 'Çerez Politikası',
-    accept: 'Tamam'
+    reject: 'Reddet',
+    manage: 'Tercihleri yönet',
+    accept: 'Kabul et',
+    menu: 'Çerez tercihleri',
+    preferences: {
+      title: 'Çerez tercihleri',
+      necessary: 'Zorunlu çerezler',
+      necessaryDesc: 'Oturum, dil ve tema gibi sitenin çalışması için gerekenler. Kapatılamaz.',
+      ads: 'Reklam çerezleri',
+      adsDesc: 'İlgi alanına göre kişiselleştirilmiş reklamlar (Google AdSense). Kapalıyken kişiselleştirilmemiş reklamlar gösterilir.',
+      save: 'Kaydet',
+      cancel: 'Vazgeç'
+    }
   }
 }
