@@ -1155,6 +1155,7 @@ export default {
   community: {
     list: {
       title: 'Communities',
+      description: 'Join communities and meet players who share your interests',
       empty: 'No communities yet.',
       emptyJoined: "You haven't joined a community yet.",
       emptyOwned: "You haven't founded a community yet.",

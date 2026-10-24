@@ -1173,6 +1173,7 @@ export default {
   community: {
     list: {
       title: 'Topluluklar',
+      description: 'Topluluklara katıl, benzer ilgi alanlarına sahip oyuncularla tanış',
       empty: 'Henüz topluluk yok.',
       emptyJoined: 'Henüz bir topluluğa katılmadın.',
       emptyOwned: 'Henüz bir topluluk kurmadın.',

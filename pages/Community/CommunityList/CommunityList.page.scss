@@ -18,6 +18,22 @@
   &__title {
     margin: 0;
     color: var(--color-text-01);
+
+    @include media-breakpoint-down(mobile) {
+      font-size: var(--font-size-text-5);
+    }
+  }
+
+  // the description wraps instead of squeezing the button onto two lines
+  &__create {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  &__description {
+    margin: 4px 0 0;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
   }
 
   &__count {

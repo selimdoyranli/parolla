@@ -2,10 +2,12 @@
 .page.community-list-page
   .community-list-page__inner
     .community-list-page__header
-      h2.community-list-page__title
-        | {{ $t('community.list.title') }}
-        span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
-      Button(
+      .community-list-page__heading
+        h2.community-list-page__title
+          | {{ $t('community.list.title') }}
+          span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
+        p.community-list-page__description {{ $t('community.list.description') }}
+      Button.community-list-page__create(
         v-if="$auth.loggedIn"
         color="#ff7878"
         icon="plus"
