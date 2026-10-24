@@ -11,7 +11,7 @@ import {
   COMMUNITY_TAG_REGEX
 } from '@/enums/community.enum'
 
-const STEP_COUNT = 4
+const STEP_COUNT = 3
 
 /**
  * State + submit flow of the community create wizard / edit page.
@@ -51,7 +51,7 @@ export default (community = null) => {
       : ''
   )
   const isValid = computed(() => !nameError.value && !descriptionError.value)
-  // steps 2-4 have no blocking rules (tags are optional and validated on add)
+  // steps 2-3 have no blocking rules (tags are optional and validated on add)
   const canGoNext = computed(() => (step.value === 0 ? isValid.value : true))
 
   const next = () => {

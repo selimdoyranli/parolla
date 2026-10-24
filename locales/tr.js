@@ -1270,7 +1270,6 @@ export default {
       title: 'Topluluk oluştur',
       steps: {
         foundations: 'Temel bilgiler',
-        categories: 'Etiketler',
         settings: 'Ayarlar',
         complete: 'Tamamla'
       },

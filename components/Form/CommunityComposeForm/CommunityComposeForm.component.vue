@@ -5,11 +5,10 @@ Form.community-compose-form(@submit="onSubmit")
 
   template(v-if="isEdit || step === 0")
     Step1Foundations(:form="form" :media="media" :community="community" :name-error="nameError" :description-error="descriptionError")
+      Step2Categories(:form="form" :tag-input="tagInput" @input-tag="onTagInput" @add-tag="addTag" @remove-tag="removeTag")
   template(v-if="isEdit || step === 1")
-    Step2Categories(:form="form" :tag-input="tagInput" @input-tag="onTagInput" @add-tag="addTag" @remove-tag="removeTag")
-  template(v-if="isEdit || step === 2")
     Step3Settings(:form="form")
-  template(v-if="!isEdit && step === 3")
+  template(v-if="!isEdit && step === 2")
     Step4Complete(:form="form" :media="media")
 
   .community-compose-form__actions
@@ -56,7 +55,7 @@ export default defineComponent({
   },
   setup(props) {
     const isEdit = props.mode === 'edit'
-    const stepKeys = ['foundations', 'categories', 'settings', 'complete']
+    const stepKeys = ['foundations', 'settings', 'complete']
     const state = useCommunityForm(isEdit ? props.community : null)
 
     // Enter inside a field must not skip steps: only the last step / edit mode submits

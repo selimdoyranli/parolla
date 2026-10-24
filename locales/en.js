@@ -1252,7 +1252,6 @@ export default {
       title: 'Create community',
       steps: {
         foundations: 'Basics',
-        categories: 'Tags',
         settings: 'Settings',
         complete: 'Finish'
       },

@@ -1,5 +1,5 @@
 <template lang="pug">
-.community-compose-form__fields
+div
   Field(
     name="tag"
     :value="tagInput"

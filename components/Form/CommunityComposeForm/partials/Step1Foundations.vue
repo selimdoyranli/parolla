@@ -23,6 +23,8 @@
     template(#label)
       | {{ $t('community.form.description.label') }} &nbsp;
       small.community-compose-form__optionalHint {{ $t('form.optionalHint') }}
+  //- tags
+  slot
   MediaPicker(field="avatar" shape="avatar" :media="media" :current="community && community.avatar")
   MediaPicker(field="coverPhoto" shape="cover" :media="media" :current="community && community.coverPhoto")
 </template>
