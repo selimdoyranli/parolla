@@ -71,7 +71,13 @@ form.community-post-composer(@click.capture="guardGuest" @submit.prevent="submit
     )
     span.community-post-composer__counter(:class="{ 'is-full': content.length >= COMMUNITY_POST_NOTE_MAX_LENGTH }")
       | {{ content.length }}/{{ COMMUNITY_POST_NOTE_MAX_LENGTH }}
-    Button.community-post-composer__submit(type="primary" size="small" native-type="submit" :loading="isBusy" :disabled="!canSubmit")
+    Button.community-post-composer__submit(
+      color="var(--color-brand-02)"
+      size="small"
+      native-type="submit"
+      :loading="isBusy"
+      :disabled="!canSubmit"
+    )
       AppIcon(name="tabler:send" :width="16" :height="16")
       span {{ $t('community.post.publish') }}
 </template>
