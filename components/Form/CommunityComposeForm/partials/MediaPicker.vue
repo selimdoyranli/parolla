@@ -1,8 +1,7 @@
 <template lang="pug">
 Cell.community-compose-form__mediaCell
   template(#title)
-    | {{ $t(`community.form.${field}.label`) }} &nbsp;
-    small.community-compose-form__optionalHint {{ $t('form.optionalHint') }}
+    | {{ $t(`community.form.${field}.label`) }}
   .community-compose-form__picker(
     ref="wrapperRef"
     :class="[`community-compose-form__picker--${shape}`, { 'community-compose-form__picker--hasImage': hasImage }]"

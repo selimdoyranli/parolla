@@ -15,23 +15,24 @@ NuxtLink.community-card(:to="localePath({ name: 'Community-Community-slug', para
         :height="16"
       )
 
-    .community-card__tags(v-if="community.tags && community.tags.length")
+    p.community-card__description(v-if="community.description") {{ community.description }}
+
+    //- counts and tags share the bottom row
+    .community-card__footer
+      span.community-card__stat(:title="$t('community.list.members', { count: community.memberCount })")
+        AppIcon(name="tabler:users" :width="14" :height="14")
+        | {{ community.memberCount }}
+      span.community-card__stat(:title="$t('community.list.posts', { count: community.postCount })")
+        AppIcon(name="tabler:file-text" :width="14" :height="14")
+        | {{ community.postCount }}
       //- a tag filters the list instead of opening the community
       button.community-card__tag(
-        v-for="tag in community.tags.slice(0, 3)"
+        v-for="tag in (community.tags || []).slice(0, 3)"
         :key="tag"
         type="button"
         @click.prevent.stop="handleTagClick(tag)"
       ) \#{{ tag }}
-      span.community-card__tag(v-if="community.tags.length > 3") +{{ community.tags.length - 3 }}
-
-    .community-card__stats
-      span.community-card__stat
-        AppIcon(name="tabler:users" :width="14" :height="14")
-        | {{ $t('community.list.members', { count: community.memberCount }) }}
-      span.community-card__stat
-        AppIcon(name="tabler:file-text" :width="14" :height="14")
-        | {{ $t('community.list.posts', { count: community.postCount }) }}
+      span.community-card__tag(v-if="community.tags && community.tags.length > 3") +{{ community.tags.length - 3 }}
 </template>
 
 <script>

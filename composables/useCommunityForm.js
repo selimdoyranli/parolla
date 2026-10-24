@@ -50,7 +50,9 @@ export default (community = null) => {
       ? i18n.t('community.form.description.errorTooLong', { max: COMMUNITY_DESCRIPTION_MAX_LENGTH })
       : ''
   )
-  const isValid = computed(() => !nameError.value && !descriptionError.value)
+  // avatar and cover are required; a saved one counts (edit)
+  const hasMedia = computed(() => ['avatar', 'coverPhoto'].every(field => media[field] || community?.[field]))
+  const isValid = computed(() => !nameError.value && !descriptionError.value && hasMedia.value)
   // steps 2-3 have no blocking rules (tags are optional and validated on add)
   const canGoNext = computed(() => (step.value === 0 ? isValid.value : true))
 
@@ -138,5 +140,21 @@ export default (community = null) => {
     goToDetail(data.slug)
   }
 
-  return { form, media, step, isBusy, tagInput, nameError, descriptionError, canGoNext, next, prev, addTag, removeTag, onTagInput, submit }
+  return {
+    form,
+    media,
+    step,
+    isBusy,
+    tagInput,
+    nameError,
+    descriptionError,
+    isValid,
+    canGoNext,
+    next,
+    prev,
+    addTag,
+    removeTag,
+    onTagInput,
+    submit
+  }
 }

@@ -9,8 +9,9 @@
   border: 1px solid var(--color-border-01);
   border-radius: 20px;
 
-  &__cover {
-    aspect-ratio: 16 / 9;
+  // a short band of the 16:9 cover (cropped, not squashed); compound selector beats QuizCover's own 16:9
+  &__cover.quiz-cover {
+    aspect-ratio: 10 / 3;
     width: 100%;
   }
 
@@ -29,8 +30,9 @@
   &__body {
     position: relative;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     padding: 36px 14px 14px;
   }
 
@@ -38,7 +40,7 @@
     position: absolute;
     top: -28px;
     left: 14px;
-    border: 3px solid var(--color-ui-02);
+    border: 2px solid var(--color-ui-02);
   }
 
   &__title-row {
@@ -61,10 +63,28 @@
     color: var(--color-text-03);
   }
 
-  &__tags {
+  &__description {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-text-03);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+  }
+
+  // pinned to the bottom so cards in a row line up
+  &__footer {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 6px 12px;
+    align-items: center;
+    margin-block-start: auto;
+    padding-block-start: 6px;
+    color: var(--color-text-03);
+    font-size: 13px;
   }
 
   // same look as the quizzes page's tags (RoomFeaturedTagList)
@@ -80,13 +100,6 @@
     &:hover {
       opacity: 0.8;
     }
-  }
-
-  &__stats {
-    display: flex;
-    gap: 14px;
-    color: var(--color-text-03);
-    font-size: 13px;
   }
 
   &__stat {

@@ -13,14 +13,7 @@ Form.community-compose-form(@submit="onSubmit")
 
   .community-compose-form__actions
     template(v-if="isEdit")
-      Button(
-        color="var(--color-brand-02)"
-        block
-        round
-        native-type="submit"
-        :loading="isBusy"
-        :disabled="!!nameError || !!descriptionError"
-      )
+      Button(color="var(--color-brand-02)" block round native-type="submit" :loading="isBusy" :disabled="!isValid")
         | {{ $t('community.edit.saveButton') }}
     template(v-else)
       Button(v-if="step > 0" plain round native-type="button" :disabled="isBusy" @click="prev") {{ $t('community.wizard.previousButton') }}
