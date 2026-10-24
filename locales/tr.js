@@ -1181,7 +1181,7 @@ export default {
       public: 'Herkese açık',
       publicDescription: 'Quiz listelerinde ve aramalarda görünür.',
       unlisted: 'Listelenmemiş',
-      unlistedDescription: 'Yalnızca bağlantıya sahip olanlar oynayabilir.'
+      unlistedDescription: 'Genel listede görünmez, linkle katılabilirler ya da topluluk seçtiysen topluluk quizlerinde görünür.'
     },
     post: {
       shareTitle: 'Topluluğa paylaş',

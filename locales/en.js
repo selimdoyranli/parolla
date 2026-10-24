@@ -1163,7 +1163,8 @@ export default {
       public: 'Public',
       publicDescription: 'Shown in quiz lists and search.',
       unlisted: 'Unlisted',
-      unlistedDescription: 'Only people with the link can play it.'
+      unlistedDescription:
+        "Won't appear in public lists; people can join with the link, or it shows in the community's quizzes if you picked one."
     },
     post: {
       shareTitle: 'Share to a community',
