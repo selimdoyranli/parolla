@@ -42,28 +42,26 @@
 
   &-nav {
     &__icon {
-      position: relative;
       display: flex;
       align-items: center;
       margin-inline-end: $spacer * 3;
     }
 
-    // same pill as the header's shop button
+    // same pill as the header's shop button, after the title
     &__gold-badge {
-      position: absolute;
-      // higher than the header's so the pill clears the row title
-      top: -14px;
-      left: calc(100% - 12px);
-      display: flex;
+      display: inline-flex;
+      align-items: center;
       height: 16px;
       padding: 0 4px;
       color: var(--color-text-01);
       font-size: 10px;
+      vertical-align: middle;
       background: var(--color-ui-02);
       border: 1px solid var(--color-border-02);
       border-radius: 999px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
       pointer-events: none;
+      margin-inline-start: $spacer * 2;
 
       .gold-amount {
         gap: 2px;

@@ -7,15 +7,15 @@ Popup.app-drawer(v-model="state.isOpen" position="left" @closed="$emit('closed')
       :key="item.key"
       size="large"
       is-link
-      :title="$t(item.title)"
       :class="{ 'is-active': item.route && isActive(item.route) }"
       @click.native="item.route ? navigate(item.route) : openShop()"
     )
       template(#icon)
-        span.app-drawer-nav__icon
-          AppIcon(:name="item.icon" :width="22" :height="22")
-          span.app-drawer-nav__gold-badge(v-if="!item.route && $auth.loggedIn")
-            GoldAmount(size="sm" :amount="gold")
+        AppIcon.app-drawer-nav__icon(:name="item.icon" :width="22" :height="22")
+      template(#title)
+        span {{ $t(item.title) }}
+        span.app-drawer-nav__gold-badge(v-if="!item.route && $auth.loggedIn")
+          GoldAmount(size="sm" :amount="gold")
 
   MenuMoreNav(
     :with-communities="false"
