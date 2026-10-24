@@ -2,9 +2,11 @@
 .cookie-consent-root
   transition(name="cookie-consent")
     .cookie-consent(v-if="state.choice === null" role="region" :aria-label="$t('cookieConsent.preferences.title')")
-      i18n.cookie-consent__text(path="cookieConsent.text" tag="p")
-        template(#link)
-          NuxtLink(:to="localePath({ name: 'Page-CookiePolicy' })") {{ $t('cookieConsent.link') }}
+      .cookie-consent__body
+        AppIcon.cookie-consent__icon(name="tabler:cookie" :width="22" :height="22")
+        i18n.cookie-consent__text(path="cookieConsent.text" tag="p")
+          template(#link)
+            NuxtLink(:to="localePath({ name: 'Page-CookiePolicy' })") {{ $t('cookieConsent.link') }}
       .cookie-consent__actions
         Button.cookie-consent__button(round size="small" @click="rejectAll") {{ $t('cookieConsent.reject') }}
         Button.cookie-consent__button(round size="small" @click="openPreferences") {{ $t('cookieConsent.manage') }}

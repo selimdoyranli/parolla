@@ -16,6 +16,17 @@
   box-shadow: var(--box-shadow-01);
   transform: translateX(-50%);
 
+  &__body {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    color: var(--color-text-01);
+  }
+
   &__text {
     margin: 0;
     font-size: var(--font-size-text-9);
