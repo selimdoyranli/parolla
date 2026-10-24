@@ -1,6 +1,7 @@
 <template lang="pug">
 Dialog.dialog.room-review-dialog(
   v-model="state.isOpen"
+  get-container="body"
   :title="$t('dialog.roomReview.title')"
   :cancel-button-text="cancelButtonText || $t('general.close')"
   :show-confirm-button="false"

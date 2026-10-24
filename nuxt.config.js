@@ -122,7 +122,8 @@ module.exports = {
     { src: '~/plugins/vue-croppa', ssr: false }, // https://www.npmjs.com/package/vue-croppa
     { src: '~/plugins/acs', ssr: false }, // https://audiocss.dev — UI sound effects
     { src: '~/plugins/vue-infinite-loading', ssr: false }, // https://www.npmjs.com/package/vue-infinite-loading
-    { src: '~/plugins/economy.client', mode: 'client' }
+    { src: '~/plugins/economy.client', mode: 'client' },
+    { src: '~/plugins/modal-dismiss.client', mode: 'client' }
   ],
 
   /*
