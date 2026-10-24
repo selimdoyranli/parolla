@@ -1211,6 +1211,9 @@ export default {
       confirmDelete: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir. Quiz silinmez.',
       confirmDeleteText: 'Bu gönderiyi silmek istediğine emin misin? Yorumları ve beğenileri de silinir.',
       composerPlaceholder: 'Bir şeyler yazın...',
+      moderatorsOnly: 'Sadece moderatörler paylaşabilir olarak belirlenmiş.',
+      joinToPost: 'Paylaşmak için katıl...',
+      loginToPost: 'Paylaşmak için giriş yap...',
       composerLabel: 'Toplulukta paylaş',
       publish: 'Paylaş',
       deleted: 'Gönderi silindi.',
@@ -1253,7 +1256,7 @@ export default {
       feedSort: { recent: 'En yeni', popular: 'Popüler', oldest: 'En eski' },
       feedTitle: 'Gönderiler',
       privateNotice: 'Bu topluluk gizli. Quizleri görmek için üye olmalısın.',
-      feedLocked: "Bu topluluğun quiz'lerini görmek için üye olmalısın",
+      feedLocked: 'Bu topluluğun gönderilerini görmek için üye olmalısın',
       menu: { label: 'Daha fazla', settings: 'Ayarlar', pending: 'Bekleyenler', members: 'Üyeler', delete: 'Sil' },
       moderator: 'Moderatör',
       owner: 'Sahip'

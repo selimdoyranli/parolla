@@ -4,13 +4,13 @@ form.community-post-composer(@click.capture="guardGuest" @submit.prevent="submit
   Field.community-post-composer__field(
     v-model="content"
     type="textarea"
-    :placeholder="$t(pickedRoom ? 'community.post.quizPicker.notePlaceholder' : 'community.post.composerPlaceholder')"
+    :placeholder="$t(placeholderKey)"
     rows="2"
     autosize
     :aria-label="$t('community.post.composerLabel')"
     :maxlength="COMMUNITY_POST_NOTE_MAX_LENGTH"
     :readonly="!$auth.loggedIn"
-    :disabled="isBusy"
+    :disabled="isBusy || isLocked"
   )
 
   //- the picked quiz turns the post into a quiz share; the text above becomes its note
@@ -66,7 +66,7 @@ form.community-post-composer(@click.capture="guardGuest" @submit.prevent="submit
       :label="$t('community.post.quizPicker.open')"
       icon="tabler:trophy"
       :active="isPickerOpen || !!pickedRoom"
-      :disabled="isBusy"
+      :disabled="isBusy || isLocked"
       @click="togglePicker"
     )
     span.community-post-composer__counter(:class="{ 'is-full': content.length >= COMMUNITY_POST_NOTE_MAX_LENGTH }")
@@ -92,7 +92,9 @@ import { getInitials } from '@/transformers/community.transformer'
 export default defineComponent({
   components: { Field, Button, Loading, InfiniteLoading },
   props: {
-    communityDocumentId: { type: String, required: true }
+    communityDocumentId: { type: String, required: true },
+    // i18n key: shown read-only so viewers learn why they can't post here
+    lockedReason: { type: String, default: null }
   },
   // posted: the created post
   emits: ['posted'],
@@ -124,10 +126,19 @@ export default defineComponent({
 
     const initialsOf = room => getInitials(room.title)
 
+    // guests stay clickable (the field is readonly for them) so any click still opens sign-in
+    const isLocked = computed(() => Boolean(props.lockedReason) && $auth.loggedIn)
+
+    const placeholderKey = computed(() => {
+      if (props.lockedReason) return props.lockedReason
+
+      return pickedRoom.value ? 'community.post.quizPicker.notePlaceholder' : 'community.post.composerPlaceholder'
+    })
+
     const canSubmit = computed(() => {
       const length = content.value.trim().length
 
-      if (isBusy.value || length > COMMUNITY_POST_NOTE_MAX_LENGTH) return false
+      if (isBusy.value || props.lockedReason || length > COMMUNITY_POST_NOTE_MAX_LENGTH) return false
 
       // a quiz share may go without a note; a text post needs text
       return Boolean(pickedRoom.value) || length > 0
@@ -219,6 +230,8 @@ export default defineComponent({
       guardGuest,
       content,
       isBusy,
+      isLocked,
+      placeholderKey,
       canSubmit,
       submit,
       pickedRoom,

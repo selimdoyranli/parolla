@@ -1193,6 +1193,9 @@ export default {
       confirmDelete: 'Delete this post? Its comments and likes are deleted too. The quiz itself is not deleted.',
       confirmDeleteText: 'Delete this post? Its comments and likes are deleted too.',
       composerPlaceholder: 'Write something...',
+      moderatorsOnly: 'Only moderators can post in this community.',
+      joinToPost: 'Join to post...',
+      loginToPost: 'Sign in to post...',
       composerLabel: 'Post to the community',
       publish: 'Post',
       deleted: 'Post deleted.',
@@ -1235,7 +1238,7 @@ export default {
       feedSort: { recent: 'Newest', popular: 'Popular', oldest: 'Oldest' },
       feedTitle: 'Posts',
       privateNotice: 'This community is private. Join to see its quizzes.',
-      feedLocked: 'Join this community to see its quizzes',
+      feedLocked: 'Join this community to see its posts',
       menu: { label: 'More', settings: 'Settings', pending: 'Pending', members: 'Members', delete: 'Delete' },
       moderator: 'Moderator',
       owner: 'Owner'

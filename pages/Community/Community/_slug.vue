@@ -21,8 +21,9 @@
     .community-page__body
       main.community-page__main
         CommunityPostComposer.community-page__composer(
-          v-if="canPost || canGuestSeeComposer"
+          v-if="canPost || composerLockedReason"
           :community-document-id="community.documentId"
+          :locked-reason="composerLockedReason"
           @posted="handlePosted"
         )
         .community-page__toolbar
@@ -212,14 +213,16 @@ export default defineComponent({
             community.value.postPermission === communityPostPermissionEnum.EVERYONE))
     )
 
-    // guests get the composer as a sign-in prompt where members could post
-    const canGuestSeeComposer = computed(
-      () =>
-        !$auth.loggedIn &&
-        !!community.value &&
-        !community.value.isHidden &&
-        community.value.postPermission === communityPostPermissionEnum.EVERYONE
-    )
+    // whoever can't post sees a read-only composer explaining why; guests always get the sign-in prompt
+    const composerLockedReason = computed(() => {
+      if (canPost.value || !community.value || community.value.isHidden) return null
+
+      if (!$auth.loggedIn) return 'community.post.loginToPost'
+
+      if (community.value.postPermission === communityPostPermissionEnum.MODS_ONLY) return 'community.post.moderatorsOnly'
+
+      return 'community.post.joinToPost'
+    })
 
     // returns false when the community could not be (re)loaded
     const loadCommunity = async () => {
@@ -293,7 +296,7 @@ export default defineComponent({
       handlePostDeleted,
       handlePosted,
       canPost,
-      canGuestSeeComposer,
+      composerLockedReason,
       handleOpenPending,
       handleOpenMembers,
       handleOpenDelete

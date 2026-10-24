@@ -223,7 +223,13 @@ export default defineComponent({
         { id: 'c68642', label: 'Light Brown' },
         { id: 'e8c07e', label: 'Yellow' },
         { id: 'ff0000', label: 'Red' },
-        { id: 'ffffff', label: 'White' }
+        { id: 'ffffff', label: 'White' },
+        { id: '8e44ad', label: 'Purple' },
+        { id: 'ff69b4', label: 'Pink' },
+        { id: '2e86de', label: 'Blue' },
+        { id: '27ae60', label: 'Green' },
+        { id: 'ff8c1a', label: 'Orange' },
+        { id: '9e9e9e', label: 'Gray' }
       ],
       earrings: [
         { id: 'none', label: 'None' },
