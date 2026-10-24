@@ -1277,7 +1277,13 @@ export default {
       mediaUploadFailed: "Community created but the image couldn't be uploaded. You can retry from the edit page.",
       noTags: 'No tags added'
     },
-    edit: { title: 'Edit community', saveButton: 'Save', slug: 'Address', dangerZone: 'Danger zone' },
+    edit: {
+      title: 'Edit community',
+      saveButton: 'Save',
+      slug: 'Address',
+      dangerZone: 'Danger zone',
+      limitNote: 'To prevent spam, a community can be updated at most {limit} times in 7 days.'
+    },
     members: {
       title: 'Members',
       search: 'Search members',

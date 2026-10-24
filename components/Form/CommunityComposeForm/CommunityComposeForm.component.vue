@@ -11,6 +11,10 @@ Form.community-compose-form(@submit="onSubmit")
   template(v-if="!isEdit && step === 2")
     Step4Complete(:form="form" :media="media")
 
+  p.community-compose-form__editNote(v-if="isEdit")
+    AppIcon(name="tabler:info-circle" :width="16" :height="16")
+    | {{ $t('community.edit.limitNote', { limit: COMMUNITY_EDIT_LIMIT }) }}
+
   .community-compose-form__actions
     template(v-if="isEdit")
       Button(color="var(--color-brand-02)" block round native-type="submit" :loading="isBusy" :disabled="!isValid")
@@ -37,6 +41,7 @@ import Step1Foundations from './partials/Step1Foundations.vue'
 import Step2Categories from './partials/Step2Categories.vue'
 import Step3Settings from './partials/Step3Settings.vue'
 import Step4Complete from './partials/Step4Complete.vue'
+import { COMMUNITY_EDIT_LIMIT } from '@/enums/community.enum'
 
 export default defineComponent({
   name: 'CommunityComposeForm',
@@ -61,6 +66,7 @@ export default defineComponent({
       isEdit,
       onSubmit,
       stepKeys,
+      COMMUNITY_EDIT_LIMIT,
       lastStep: stepKeys.length - 1
     }
   }

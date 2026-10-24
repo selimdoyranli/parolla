@@ -19,6 +19,8 @@ export const communityViewerRoleEnum = Object.freeze({
 
 export const COMMUNITY_NAME_MIN_LENGTH = 3
 export const COMMUNITY_NAME_MAX_LENGTH = 100
+// mirrors the backend's edit rate limit (sessions per 7 days)
+export const COMMUNITY_EDIT_LIMIT = 3
 export const COMMUNITY_DESCRIPTION_MAX_LENGTH = 500
 export const COMMUNITY_POST_NOTE_MAX_LENGTH = 500
 export const COMMUNITY_TAGS_MAX_LENGTH = 5

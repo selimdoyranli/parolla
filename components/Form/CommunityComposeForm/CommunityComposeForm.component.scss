@@ -260,6 +260,20 @@
     border-radius: calc(var(--border-radius-01) / 2);
   }
 
+  &__editNote {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin: 0 4px 12px;
+    color: var(--color-text-03);
+    font-size: 12px;
+    line-height: 1.4;
+
+    .app-icon {
+      flex-shrink: 0;
+    }
+  }
+
   &__actions {
     display: flex;
     gap: 12px;

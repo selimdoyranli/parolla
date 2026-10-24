@@ -1295,7 +1295,13 @@ export default {
       mediaUploadFailed: 'Topluluk oluşturuldu ama görsel yüklenemedi. Düzenleme sayfasından tekrar deneyebilirsin.',
       noTags: 'Etiket eklenmedi'
     },
-    edit: { title: 'Topluluğu düzenle', saveButton: 'Kaydet', slug: 'Adres', dangerZone: 'Tehlikeli bölge' },
+    edit: {
+      title: 'Topluluğu düzenle',
+      saveButton: 'Kaydet',
+      slug: 'Adres',
+      dangerZone: 'Tehlikeli bölge',
+      limitNote: 'Spamı önlemek için bir topluluk 7 gün içinde en fazla {limit} kez güncellenebilir.'
+    },
     members: {
       title: 'Üyeler',
       search: 'Üye ara',
