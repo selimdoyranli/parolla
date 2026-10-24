@@ -7,8 +7,10 @@
     margin: var(--base-m-y) auto;
   }
 
+  // narrow phones: the create button drops under the heading instead of overflowing
   &__header {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     align-items: center;
     justify-content: space-between;
@@ -16,6 +18,9 @@
   }
 
   &__title {
+    display: flex;
+    gap: 10px;
+    align-items: center;
     margin: 0;
     color: var(--color-text-01);
 
@@ -28,6 +33,10 @@
   &__create {
     flex-shrink: 0;
     white-space: nowrap;
+  }
+
+  &__title-icon {
+    flex-shrink: 0;
   }
 
   &__description {

@@ -4,17 +4,13 @@
     .community-list-page__header
       .community-list-page__heading
         h2.community-list-page__title
-          | {{ $t('community.list.title') }}
-          span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
+          AppIcon.community-list-page__title-icon(name="streamline-color:user-multiple-group-flat" :width="28" :height="28")
+          span
+            | {{ $t('community.list.title') }}
+            span.community-list-page__count(v-if="total != null") &nbsp;({{ total }})
         p.community-list-page__description {{ $t('community.list.description') }}
-      Button.community-list-page__create(
-        v-if="$auth.loggedIn"
-        color="#ff7878"
-        icon="plus"
-        round
-        size="normal"
-        @click="$router.push(localePath({ name: 'Community-CommunityCompose' }))"
-      ) {{ $t('community.list.createButton') }}
+      Button.community-list-page__create(color="#ff7878" icon="plus" round size="normal" @click="handleCreate")
+        | {{ $t('community.list.createButton') }}
 
     .community-list-page__filters
       Search.community-list-page__search(
@@ -217,6 +213,13 @@ export default defineComponent({
     }
 
     onBeforeUnmount(() => clearTimeout(searchTimer))
+    // guests see the button too: it asks them to sign in first
+    const handleCreate = () => {
+      if (!$auth.loggedIn) return store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+
+      router.push(localePath({ name: 'Community-CommunityCompose' }))
+    }
+
     const handleTagClick = tag => goto({ tag: tag === activeTag.value ? '' : tag, search: '' })
 
     const sortOptions = computed(() => sortKeys.value.map(key => ({ key, icon: ICONS[key], label: i18n.t(`community.list.sort.${key}`) })))
@@ -309,6 +312,7 @@ export default defineComponent({
       handleSearchInput,
       clearSearch,
       handleTagClick,
+      handleCreate,
       handleSortSelect,
       handleInfinite,
       rememberPosition
