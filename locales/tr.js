@@ -851,7 +851,9 @@ export default {
           dialogTitle: 'Topluluk seç',
           empty: 'Quiz paylaşabileceğin bir topluluk yok.',
           loadFailed: 'Topluluklar yüklenemedi.',
-          required: 'Sadece toplulukta görünecek quiz için bir topluluk seç.',
+          title: 'Toplulukta paylaş',
+          remove: 'Kaldır',
+          anonUnlisted: 'Anonim ve listelenmemiş bir quiz toplulukta paylaşılamaz.',
           shareFailed: 'Quiz kaydedildi ama toplulukta paylaşılamadı: {reason}'
         },
         roomTitle: {
@@ -883,8 +885,7 @@ export default {
           }
         },
         visibility: {
-          label: 'Görünürlük',
-          anonDisabled: 'Anonim quizler toplulukta paylaşılamaz.'
+          label: 'Görünürlük'
         },
         isListed: {
           systemRemoved: 'Bu quiz gözden geçirildi, quizler listesinde olması uygun değil ve listeden çıkarıldı.'
@@ -1178,8 +1179,6 @@ export default {
     visibilityMode: {
       public: 'Herkese açık',
       publicDescription: 'Quiz listelerinde ve aramalarda görünür.',
-      communityOnly: 'Sadece toplulukta',
-      communityOnlyDescription: 'Yalnızca seçtiğin toplulukta görünür, genel listelerde ve aramada çıkmaz.',
       unlisted: 'Listelenmemiş',
       unlistedDescription: 'Yalnızca bağlantıya sahip olanlar oynayabilir.'
     },

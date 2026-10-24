@@ -78,33 +78,46 @@
 
     .room-choices
       span.room-choices__title {{ $t('form.creatorModeCompose.room.visibility.label') }}
-      //- stacked on phones, a 3-column grid from tablet up
+      //- stacked on phones, side by side from tablet up
       .room-choices__grid
         button.room-choice.room-choice--tile(
-          v-for="mode in visibilityModes"
+          v-for="mode in ['public', 'unlisted']"
           :key="mode"
           type="button"
           :class="{ 'room-choice--selected': form.visibilityMode === mode }"
-          :disabled="form.isBusy || isVisibilityDisabled(mode)"
+          :disabled="form.isBusy"
           @click="pickVisibility(mode)"
         )
           span.room-choice__icon
             AppIcon(:name="visibilityIcons[mode]" :width="20" :height="20")
           span.room-choice__body
             span.room-choice__name {{ $t(`community.visibilityMode.${mode}`) }}
-            span.room-choice__description {{ visibilityHint(mode) }}
+            span.room-choice__description {{ $t(`community.visibilityMode.${mode}Description`) }}
 
-      template(v-if="form.visibilityMode === 'communityOnly'")
+      //- optional with either visibility: public = lists + the community, unlisted = only the community
+      template(v-if="user && postableCommunities.length")
+        span.room-choices__title {{ $t('form.creatorModeCompose.room.community.title') }}
         .room-choice(v-if="selectedCommunity")
           CommunityAvatar.room-choice__avatar(:community="selectedCommunity" :size="40")
           span.room-choice__body
             span.room-choice__name {{ selectedCommunity.name }}
             span.room-choice__description(v-if="selectedCommunity.memberCount != null") {{ communityStats(selectedCommunity) }}
-          button.room-choices__change(type="button" :disabled="form.isBusy" @click="openCommunityDialog")
-            | {{ $t('form.creatorModeCompose.room.community.change') }}
-        button.room-choice.room-choice--pick(v-else type="button" :disabled="form.isBusy" @click="openCommunityDialog")
-          AppIcon(name="tabler:plus" :width="20" :height="20")
-          | {{ $t('form.creatorModeCompose.room.community.pick') }}
+          span.room-choices__actions
+            button.room-choices__change(type="button" :disabled="form.isBusy" @click="openCommunityDialog")
+              | {{ $t('form.creatorModeCompose.room.community.change') }}
+            button.room-choices__remove(
+              type="button"
+              :aria-label="$t('form.creatorModeCompose.room.community.remove')"
+              :title="$t('form.creatorModeCompose.room.community.remove')"
+              :disabled="form.isBusy"
+              @click="clearCommunity"
+            )
+              AppIcon(name="tabler:x" :width="18" :height="18")
+        template(v-else)
+          button.room-choice.room-choice--pick(type="button" :disabled="form.isBusy || isCommunityBlocked" @click="openCommunityDialog")
+            AppIcon(name="tabler:plus" :width="20" :height="20")
+            | {{ $t('form.creatorModeCompose.room.community.pick') }}
+          span.room-choices__note(v-if="isCommunityBlocked") {{ $t('form.creatorModeCompose.room.community.anonUnlisted') }}
 
       // guests are always anonymous, so the choice only exists for players
       template(v-if="user")
@@ -373,23 +386,14 @@ export default defineComponent({
 
     // me items are raw: the transformer adds the avatar initials
     const postableCommunities = computed(() => (store.getters['auth/postableCommunities'] || []).map(communityTransformer))
-    // a quiz already saved as community-only keeps its card even if the user lost posting rights
-    const canUseCommunity = computed(() => postableCommunities.value.length > 0 || props.form.visibilityMode === 'communityOnly')
+    const visibilityIcons = { public: 'tabler:world', unlisted: 'tabler:lock' }
 
-    const visibilityModes = computed(() => ['public', 'unlisted', ...(props.user && canUseCommunity.value ? ['communityOnly'] : [])])
-    const visibilityIcons = { public: 'tabler:world', unlisted: 'tabler:lock', communityOnly: 'tabler:users' }
-
-    // a post shows its author, so an anonymous quiz can't live in a community
-    const isVisibilityDisabled = mode => mode === 'communityOnly' && props.form.isAnon
-
-    const visibilityHint = mode =>
-      isVisibilityDisabled(mode)
-        ? i18n.t('form.creatorModeCompose.room.visibility.anonDisabled')
-        : i18n.t(`community.visibilityMode.${mode}Description`)
+    // only its owner could share an anonymous unlisted quiz, which would unmask them; useCreatorForm clears the pick
+    const isCommunityBlocked = computed(() => props.form.isAnon && props.form.visibilityMode === 'unlisted')
 
     const pickVisibility = mode => {
       // eslint-disable-next-line vue/no-mutating-props
-      if (!props.form.isBusy && !isVisibilityDisabled(mode)) props.form.visibilityMode = mode
+      if (!props.form.isBusy) props.form.visibilityMode = mode
     }
 
     const pickCreator = isAnon => {
@@ -439,6 +443,11 @@ export default defineComponent({
       isCommunityDialogOpen.value = false
     }
 
+    const clearCommunity = () => {
+      // eslint-disable-next-line vue/no-mutating-props
+      props.form.community = null
+    }
+
     // counts come from the fetched list; the getter entry covers the time before it loads
     const selectedCommunity = computed(() => {
       const id = props.form.community
@@ -453,10 +462,9 @@ export default defineComponent({
         count: community.postCount
       })}`
 
-    // edit: preselect the first of my communities that already holds this community-only quiz (re-saving it there is a no-op)
+    // edit: preselect the first of my communities that already holds this quiz (re-saving it there is a no-op)
     onMounted(async () => {
-      if (!props.user || !props.room?.documentId || props.form.visibilityMode !== 'communityOnly' || !postableCommunities.value.length)
-        return
+      if (!props.user || !props.room?.documentId || !postableCommunities.value.length) return
 
       loadCommunities()
 
@@ -491,10 +499,9 @@ export default defineComponent({
       generateCoverPhotoBlob,
       coverPhotoIsCommittable,
       markCoverPhotoCommitted,
-      visibilityModes,
+      postableCommunities,
       visibilityIcons,
-      isVisibilityDisabled,
-      visibilityHint,
+      isCommunityBlocked,
       pickVisibility,
       pickCreator,
       communityList,
@@ -502,6 +509,7 @@ export default defineComponent({
       isCommunityDialogOpen,
       openCommunityDialog,
       pickCommunity,
+      clearCommunity,
       selectedCommunity,
       communityStats,
       onInputTag,
@@ -681,7 +689,7 @@ export default defineComponent({
 
     @include media-breakpoint-up(tablet) {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -696,6 +704,33 @@ export default defineComponent({
     border: 1px solid var(--color-brand-02);
     border-radius: 999px;
     cursor: pointer;
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--color-text-03);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__note {
+    color: var(--color-text-03);
+    font-size: 12px;
+    line-height: 1.35;
   }
 }
 

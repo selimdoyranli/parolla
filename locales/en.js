@@ -847,7 +847,9 @@ export default {
           dialogTitle: 'Pick a community',
           empty: 'There is no community you can share quizzes to.',
           loadFailed: 'Could not load communities.',
-          required: 'Pick a community for a community-only quiz.',
+          title: 'Share to a community',
+          remove: 'Remove',
+          anonUnlisted: 'An anonymous unlisted quiz cannot be shared to a community.',
           shareFailed: 'Quiz saved, but it could not be shared to the community: {reason}'
         },
         roomTitle: {
@@ -879,8 +881,7 @@ export default {
           }
         },
         visibility: {
-          label: 'Visibility',
-          anonDisabled: 'Anonymous quizzes cannot be shared to a community.'
+          label: 'Visibility'
         },
         isListed: {
           systemRemoved: 'This quiz was reviewed: it is not suitable for the quiz list and was removed from it.'
@@ -1160,8 +1161,6 @@ export default {
     visibilityMode: {
       public: 'Public',
       publicDescription: 'Shown in quiz lists and search.',
-      communityOnly: 'Community only',
-      communityOnlyDescription: 'Only visible inside the community you pick, not in public lists or search.',
       unlisted: 'Unlisted',
       unlistedDescription: 'Only people with the link can play it.'
     },

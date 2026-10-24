@@ -34,13 +34,13 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isBusy: false,
     isClear: true,
     roomTitle: props.room?.title || '',
-    // public | communityOnly | unlisted (spec 3.4)
-    visibilityMode: !props.room?.isListed ? 'unlisted' : props.room.isCommunityOnly ? 'communityOnly' : 'public',
+    // public | unlisted
+    visibilityMode: props.room?.isListed ? 'public' : 'unlisted',
     isSystemRemovedFromPublic: props.room?.isSystemRemovedFromPublic || false,
     moderationNote: props.room?.moderationNote || null,
     moderationSource: props.room?.moderationSource || null,
     isAnon: props.room?.isAnon || false,
-    // only set under communityOnly; edit mode: RoomBasicInfo fills it from where the quiz is already shared
+    // optional, any visibility; edit mode: RoomBasicInfo fills it from where the quiz is already shared
     community: null,
     tag: '',
     tags: props.room?.tags.map(tag => tag.title) || [],
@@ -99,19 +99,11 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
     isListed: form.visibilityMode === 'public'
   })
 
-  // the backend shares to whatever community is sent, so it only travels with communityOnly
+  // only its owner could share an anonymous unlisted quiz, which would unmask them (server: anonymousQuiz)
   watch(
-    () => form.visibilityMode,
-    mode => {
-      if (mode !== 'communityOnly') form.community = null
-    }
-  )
-
-  // a post shows its author, so an anonymous quiz is never shared to a community; fall back to the closest non-public mode
-  watch(
-    () => form.isAnon,
-    isAnon => {
-      if (isAnon && form.visibilityMode === 'communityOnly') form.visibilityMode = 'unlisted'
+    () => form.isAnon && form.visibilityMode === 'unlisted',
+    isBlocked => {
+      if (isBlocked) form.community = null
     }
   )
 
@@ -491,12 +483,6 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
   }
 
   const handleSubmit = async ({ isDraft = false }) => {
-    if (form.visibilityMode === 'communityOnly' && !form.community) {
-      getErrorNotify({ error: { message: i18n.t('form.creatorModeCompose.room.community.required') } })
-
-      return
-    }
-
     form.isBusy = true
 
     // Stage cover photo blob if the croppa in <RoomBasicInfo> has a

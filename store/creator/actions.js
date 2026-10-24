@@ -9,8 +9,7 @@ export default {
       return {
         user: this.$auth.user?.id,
         isVisible: form.isVisible,
-        isPublic: form.visibilityMode !== 'unlisted',
-        isCommunityOnly: form.visibilityMode === 'communityOnly',
+        isPublic: form.visibilityMode === 'public',
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         // Guests omit the key so the anonymous create path stays unchanged
         ...(this.$auth.loggedIn ? { community: form.community || null } : {}),
@@ -84,8 +83,7 @@ export default {
       return {
         user: this.$auth.user?.id,
         isVisible: form.isVisible,
-        isPublic: form.visibilityMode !== 'unlisted',
-        isCommunityOnly: form.visibilityMode === 'communityOnly',
+        isPublic: form.visibilityMode === 'public',
         isAnon: !this.$auth.loggedIn && !this.$auth.user ? true : form.isAnon,
         // Guests omit the key so the anonymous create path stays unchanged
         ...(this.$auth.loggedIn ? { community: form.community || null } : {}),
