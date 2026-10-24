@@ -46,6 +46,18 @@
     }
   }
 
+  &__terms {
+    grid-column: 1 / -1;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+    text-align: center;
+
+    a {
+      color: var(--color-text-02);
+      text-decoration: underline;
+    }
+  }
+
   &__social-button {
     $van-button: '.van-button';
 

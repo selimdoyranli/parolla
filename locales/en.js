@@ -623,7 +623,9 @@ export default {
       register: 'Register',
       loginOrRegister: 'Log in / Sign up',
       loginWithGoogle: 'Continue with Google',
-      loginWithApple: 'Continue with Apple'
+      loginWithApple: 'Continue with Apple',
+      termsNote: 'By continuing you agree to the {link}.',
+      termsLink: 'Terms of Use'
     },
     player: {
       title: 'Profile',
@@ -1892,5 +1894,10 @@ export default {
   common: {
     invalidUsername: 'Invalid username',
     guestLabel: '(guest)'
+  },
+  cookieConsent: {
+    text: 'We use cookies to improve your experience. {link}',
+    link: 'Cookie Policy',
+    accept: 'OK'
   }
 }

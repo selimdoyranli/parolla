@@ -627,7 +627,9 @@ export default {
       register: 'Kayıt ol',
       loginOrRegister: 'Giriş Yap / Kaydol',
       loginWithGoogle: 'Google ile devam et',
-      loginWithApple: 'Apple ile devam et'
+      loginWithApple: 'Apple ile devam et',
+      termsNote: "Devam ederek {link}'nı kabul etmiş olursun.",
+      termsLink: 'Kullanım Koşulları'
     },
     player: {
       title: 'Profil',
@@ -1914,5 +1916,10 @@ export default {
   common: {
     invalidUsername: 'Geçersiz kullanıcı adı',
     guestLabel: '(misafir)'
+  },
+  cookieConsent: {
+    text: 'Deneyimini iyileştirmek için çerez kullanıyoruz. {link}',
+    link: 'Çerez Politikası',
+    accept: 'Tamam'
   }
 }

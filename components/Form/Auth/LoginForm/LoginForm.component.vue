@@ -13,6 +13,11 @@
     Button.login-form__social-button.login-form__social-button--apple(v-if="showAppleLogin" native-type="button" @click="handleAppleLogin")
       AppIcon.login-form__social-button-icon(name="devicon:apple" :width="20" :height="20")
       span.login-form__social-button-text {{ $t('dialog.auth.loginWithApple') }}
+
+  //- new tab: following it in place would leave the sign-in dialog behind
+  i18n.login-form__terms(path="dialog.auth.termsNote" tag="small")
+    template(#link)
+      a(rel="noopener" :href="localePath({ name: 'Page-TermsOfUse' })" target="_blank") {{ $t('dialog.auth.termsLink') }}
 </template>
 
 <script>
