@@ -1,5 +1,6 @@
 <template lang="pug">
 .shop-view
+  AdRewardRow
   // Vitrin
   section.shop-view__section(v-if="vitrinCards.length")
     h3.shop-view__heading {{ $t('economy.shop.vitrin') }}

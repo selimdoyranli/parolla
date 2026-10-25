@@ -18,6 +18,7 @@
       ActionButton(:label="$t('dialog.menu.shop')" icon="fluent:building-shop-24-regular" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" :amount="gold")
+      span.app-header-nav__reward-tip(v-if="isRewardTipVisible" role="status") {{ $t('economy.adReward.tip') }}
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
   // Icon-only logo swapped in while the on-screen keyboard is open on mobile
@@ -201,6 +202,29 @@ export default defineComponent({
     const inventoryDialog = computed(() => store.state.economy.dialog.inventory)
     const openInventoryDialog = tab => store.commit('economy/OPEN_INVENTORY_DIALOG', tab)
     const closeInventoryDialog = () => store.commit('economy/SET_IS_OPEN_INVENTORY_DIALOG', false)
+
+    // once a day in the app: a 5 s "claim rewards" tip under the shop button while ads are left to watch
+    const { adsMax, adsWatched, canWatchAd } = useAdReward()
+    const isRewardTipVisible = ref(false)
+    const REWARD_TIP_KEY = 'rewardTipDay'
+
+    watch(
+      () => isHome.value && canWatchAd.value && adsWatched.value < adsMax.value,
+      show => {
+        const today = new Date().toDateString()
+
+        try {
+          if (!show || localStorage.getItem(REWARD_TIP_KEY) === today) return
+          localStorage.setItem(REWARD_TIP_KEY, today)
+        } catch (e) {
+          return
+        }
+
+        isRewardTipVisible.value = true
+        setTimeout(() => (isRewardTipVisible.value = false), 5000)
+      },
+      { immediate: true }
+    )
 
     const toggleNotificationsDialog = () => {
       dialog.notifications.isOpen = !dialog.notifications.isOpen
@@ -437,6 +461,7 @@ export default defineComponent({
       inventoryDialog,
       openInventoryDialog,
       closeInventoryDialog,
+      isRewardTipVisible,
       targetCommentId,
       targetRatingUserId,
       handleRoomReviewClosed,

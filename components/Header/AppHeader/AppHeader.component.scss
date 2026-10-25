@@ -142,6 +142,41 @@
         }
       }
 
+      &--shop .app-header-nav__reward-tip {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 50%;
+        z-index: 10;
+        padding: 6px 10px;
+        color: #111;
+        font-weight: 700;
+        font-size: 13px;
+        white-space: nowrap;
+        background: #ffd43b;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        transform: translateX(-50%);
+        animation: reward-tip-in 0.25s ease-out;
+        pointer-events: none;
+
+        // arrow pointing up at the shop button
+        &::before {
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          border: 6px solid transparent;
+          border-bottom-color: #ffd43b;
+          transform: translateX(-50%);
+          content: '';
+        }
+      }
+
+      @keyframes reward-tip-in {
+        from {
+          opacity: 0;
+        }
+      }
+
       &--tourModeOnline {
         position: relative;
       }

@@ -186,7 +186,8 @@ export default {
       done: 'Done for today',
       earned: 'You earned {gold} gold!',
       notEarned: 'The ad was not watched to the end, no gold this time.',
-      failed: 'No ad available right now, try again a bit later.'
+      failed: 'No ad available right now, try again a bit later.',
+      tip: 'Claim rewards!'
     }
   },
   success: {

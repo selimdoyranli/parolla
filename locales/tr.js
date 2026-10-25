@@ -186,7 +186,8 @@ export default {
       done: 'Bugünlük bitti',
       earned: '{gold} altın kazandın!',
       notEarned: 'Reklam sonuna kadar izlenmedi, altın verilmedi.',
-      failed: 'Şu an reklam bulunamadı, biraz sonra tekrar dene.'
+      failed: 'Şu an reklam bulunamadı, biraz sonra tekrar dene.',
+      tip: 'Ödülleri Al!'
     }
   },
   success: {
