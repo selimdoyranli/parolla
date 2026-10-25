@@ -37,6 +37,9 @@ Dialog.dialog.dialog--scene.play-intro(
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
+    //- right under the play button, where the old how-to-play dialog kept it
+    DialogAd.play-intro__ad(:ad-slot="8953141720")
+
     .play-intro__actions(v-if="isCreator")
       Button.play-intro__action(round size="small" @click="shareRoom(room)")
         AppIcon(name="tabler:share" :width="16" :height="16")
@@ -61,9 +64,6 @@ Dialog.dialog.dialog--scene.play-intro(
       CollapseItem(name="rules" icon="question-o" :title="$t('playIntro.howToPlay')")
         HowToPlayContent
 
-    //- daily / unlimited: the ad sits above the leaderboard, not under it
-    DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
-
     section.play-intro__leaderboard(v-if="isQa || mode === 'daily'")
       h3.play-intro__section-title
         AppIcon(name="tabler:crown" :width="18" :height="18")
@@ -84,10 +84,7 @@ Dialog.dialog.dialog--scene.play-intro(
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
 
-    DialogAd.play-intro__ad(v-if="isCreator" :ad-slot="8953141720")
-
     //- same comments UI as the reviews dialog (likes, replies, composer), without the rating block
-    //- no second ad under the comments: it was rarely scrolled to and only diluted the unit's click rate
     section.play-intro__comments(v-if="isCreator && room.id")
       RoomReviewView(:key="reviewsKey" comments-only)
 
