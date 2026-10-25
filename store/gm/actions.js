@@ -50,11 +50,12 @@ export default {
   },
 
   // Takes the room off the public list (isSystemRemovedFromPublic) with the GM's note
-  unlistRoom(_, { documentId, locale, note }) {
+  // blockOwner also bans the room's owner (resolved on the server, anonymous rooms included)
+  unlistRoom(_, { documentId, locale, note, blockOwner = false }) {
     return this.$appFetch({
       path: `moderation/rooms/${documentId}/unlist`,
       method: 'POST',
-      data: { locale, note },
+      data: { locale, note, blockOwner },
       headers: { Authorization: `${this.$auth.strategy.token.get()}` }
     })
   },

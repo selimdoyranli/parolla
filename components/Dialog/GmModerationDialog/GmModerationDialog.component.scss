@@ -1,0 +1,47 @@
+.gm-moderation-dialog {
+  &__options {
+    margin-block: 8px 12px;
+  }
+
+  &__optionIcon {
+    margin-inline-end: 8px;
+    color: var(--color-danger-01);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px 20px;
+  }
+
+  &__note.van-field {
+    padding: 8px 12px;
+    background-color: var(--color-field-01) !important;
+    border: 1px solid var(--color-border-02);
+    border-radius: calc(var(--border-radius-01) / 2);
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &__ban.van-cell {
+    padding-inline: 0;
+    background-color: transparent;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  // the global .van-button--danger override paints the text danger-red too: force white on the filled button
+  &__send.van-button--danger {
+    $danger-strong: color-mix(in sRGB, var(--color-danger-01) 80%, #000);
+
+    color: #fff !important;
+    font-weight: 600;
+    background-color: $danger-strong;
+    border-color: $danger-strong !important;
+  }
+}
