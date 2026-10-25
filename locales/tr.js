@@ -1537,7 +1537,7 @@ export default {
     },
     daily: {
       title: 'Günlük',
-      description: 'Günlük modu 4 dakikadan uzun sürede 25 veya daha fazla doğruyla bitiren oyuncular.',
+      description: 'Günlük modu 4 dakikadan fazla süre kalmışken 25 veya daha fazla doğruyla bitiren oyuncular.',
       anomaly: '{correct} doğru · {time} sürede bitirdi'
     }
   },

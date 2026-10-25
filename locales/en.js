@@ -1519,7 +1519,7 @@ export default {
     },
     daily: {
       title: 'Daily',
-      description: 'Players who finished the daily mode in more than 4 minutes with 25 or more correct answers.',
+      description: 'Players who finished the daily mode with more than 4 minutes left and 25 or more correct answers.',
       anomaly: '{correct} correct · finished in {time}'
     }
   },
