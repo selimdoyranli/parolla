@@ -17,7 +17,7 @@
     li.app-header-nav__item.app-header-nav__item--shop(v-if="isHome" @click="openInventoryDialog('shop')")
       ActionButton(:label="$t('dialog.menu.shop')" icon="fluent:building-shop-24-regular" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
-        GoldAmount(size="sm" :amount="gold")
+        GoldAmount(size="sm" compact :amount="gold")
       span.app-header-nav__reward-tip(v-if="isRewardTipVisible" role="status") {{ $t('economy.adReward.tip') }}
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
