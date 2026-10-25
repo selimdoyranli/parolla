@@ -246,10 +246,10 @@ export default {
   },
 
   // GM moderation (api/moderation, GM role only)
-  async gmFetchCommunities(_, { page = 1, search = '', hidden = false } = {}) {
+  async gmFetchCommunities(_, { page = 1, search = '', hidden = false, aiFlagged = false } = {}) {
     const { data, error } = await this.$appFetch({
       path: 'moderation/communities',
-      query: { page, ...(search && { search }), ...(hidden && { hidden: 1 }) },
+      query: { page, ...(search && { search }), ...(hidden && { hidden: 1 }), ...(aiFlagged && { aiFlagged: 1 }) },
       headers: authHeaders(this)
     })
 
@@ -268,6 +268,15 @@ export default {
   gmUnhideCommunity(_, { documentId }) {
     return this.$appFetch({
       path: `moderation/communities/${documentId}/unhide`,
+      method: 'POST',
+      data: {},
+      headers: authHeaders(this)
+    })
+  },
+
+  gmDismissCommunityAiFlag(_, { documentId }) {
+    return this.$appFetch({
+      path: `moderation/communities/${documentId}/dismiss-ai-flag`,
       method: 'POST',
       data: {},
       headers: authHeaders(this)

@@ -1399,6 +1399,10 @@ export default {
       description: 'Toplulukları ara, gizle, geri aç ya da sil.',
       search: 'Topluluk ara',
       onlyHidden: 'Yalnızca gizlenenler',
+      onlyAiFlagged: 'Yalnızca AI raporları',
+      aiFlag: 'AI raporu',
+      dismissAiFlag: 'Raporu yoksay',
+      aiFlagDismissed: 'AI raporu yoksayıldı',
       empty: 'Topluluk bulunamadı',
       owner: 'Sahip',
       members: 'Üye',
@@ -1518,11 +1522,13 @@ export default {
         tagGeneration: 'Etiket üretimi',
         tagGenerationHint: 'Public olan ve etiketi olmayan odalara 5 etiket ekler',
         roomModeration: 'Oda moderasyonu',
-        roomModerationHint: 'Küfür, NSFW ve özel/kalitesiz içerikli odaları listeden kaldırır',
+        roomModerationHint: 'Ağır küfürlü ve açık cinsel içerikli odaları listeden kaldırır',
         communityModeration: 'Topluluk moderasyonu',
         communityModerationHint: 'Uygunsuz ad, açıklama ve etiketli toplulukları gizler',
         tagPrompt: 'Etiket sistem promptu',
-        moderationPrompt: 'Moderasyon sistem promptu'
+        moderationPrompt: 'Moderasyon sistem promptu',
+        reportOnly: "Moderasyonu sadece GM'ye raporla",
+        reportOnlyHint: 'AI hiçbir şeyi kendisi kaldırmaz ya da gizlemez; sonucu GM paneline raporlar, kararı GM verir'
       },
       taggedRooms: {
         title: 'Etiketlenenler',
@@ -1533,6 +1539,18 @@ export default {
         title: 'Modere edilenler',
         description: "AI'ın public listeden kaldırdığı odalar ve moderasyon açıklamaları.",
         note: 'Moderasyon açıklaması'
+      },
+      reportedRooms: {
+        title: 'Raporlananlar',
+        description:
+          "AI'ın sadece raporladığı odalar. Listeden kaldırırsan oda public listeden çıkar ve notun moderasyon açıklaması olur; yoksayarsan rapor silinir.",
+        aiFlag: 'AI raporu',
+        unlist: 'Listeden kaldır',
+        dismiss: 'Yoksay',
+        confirmUnlist: 'Bu oda public listeden kaldırılacak.',
+        notePlaceholder: 'Moderasyon açıklaması (isteğe bağlı)',
+        unlistedDone: 'Oda listeden kaldırıldı',
+        dismissedDone: 'AI raporu yoksayıldı'
       }
     },
     daily: {

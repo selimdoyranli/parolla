@@ -47,7 +47,8 @@
       background-color: color-mix(in sRGB, var(--color-info-01) 10%, transparent);
     }
 
-    &--moderated {
+    &--moderated,
+    &--reported {
       color: var(--color-danger-01);
       background-color: color-mix(in sRGB, var(--color-danger-01) 10%, transparent);
     }

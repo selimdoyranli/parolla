@@ -40,11 +40,30 @@ export default {
     })
   },
 
-  // kind: 'tagged' | 'moderated'
+  // kind: 'tagged' | 'moderated' | 'reported'
   fetchAiRooms(_, { kind, page }) {
     return this.$appFetch({
       path: `moderation/ai-${kind}-rooms`,
       query: { page },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  // Takes the room off the public list (isSystemRemovedFromPublic) with the GM's note
+  unlistRoom(_, { documentId, locale, note }) {
+    return this.$appFetch({
+      path: `moderation/rooms/${documentId}/unlist`,
+      method: 'POST',
+      data: { locale, note },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  dismissRoomAiFlag(_, { documentId, locale }) {
+    return this.$appFetch({
+      path: `moderation/rooms/${documentId}/dismiss-ai-flag`,
+      method: 'POST',
+      data: { locale },
       headers: { Authorization: `${this.$auth.strategy.token.get()}` }
     })
   },
