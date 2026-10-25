@@ -5,6 +5,7 @@
     Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
 
   template(v-else)
+    AdRewardRow
     .collection-view__error(v-if="failed")
       p {{ $t('economy.errors.generic') }}
       Button(round :loading="retrying" @click="load") {{ $t('economy.retry') }}
