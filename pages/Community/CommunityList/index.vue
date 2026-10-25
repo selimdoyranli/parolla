@@ -89,7 +89,8 @@ const ICONS = {
 }
 
 // outlives the page component: coming back from a community keeps the loaded pages and the scroll spot
-const listMemory = { key: null, items: [], page: 1, hasMore: false, total: null, scrollTop: 0 }
+// entry = vue-router history key, so only a back/forward to the same entry restores; a fresh visit refetches
+const listMemory = { key: null, entry: null, items: [], page: 1, hasMore: false, total: null, scrollTop: 0 }
 
 export default defineComponent({
   components: { Button, Empty, Search, InfiniteLoading },
@@ -127,6 +128,7 @@ export default defineComponent({
     const rememberPosition = () => {
       Object.assign(listMemory, {
         key: listKey(),
+        entry: window.history.state?.key,
         items: items.value,
         page: page.value,
         hasMore: hasMore.value,
@@ -272,7 +274,7 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      if (listMemory.key === listKey() && listMemory.items.length) {
+      if (listMemory.key === listKey() && listMemory.entry === window.history.state?.key && listMemory.items.length) {
         items.value = listMemory.items
         page.value = listMemory.page
         hasMore.value = listMemory.hasMore

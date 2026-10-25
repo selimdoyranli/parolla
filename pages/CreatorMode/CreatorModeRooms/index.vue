@@ -84,7 +84,8 @@ import {
 import { Button, Empty, Loading } from 'vant'
 
 // outlives the page component: coming back from a quiz keeps the loaded pages and the scroll spot
-const listMemory = { key: null, keyword: '', scrollTop: 0 }
+// entry = vue-router history key, so only a back/forward to the same entry restores; a fresh visit refetches
+const listMemory = { key: null, entry: null, keyword: '', scrollTop: 0 }
 
 export default defineComponent({
   components: {
@@ -118,7 +119,10 @@ export default defineComponent({
       [route.value.query.tags || '', store.state.creator.room.sort, store.state.creator.room.quizKind, i18n.locale].join('|')
 
     // same list still in the store → skip the page-1 refetch and restore the scroll instead
-    let restoreScrollTop = store.getters['creator/rooms'].length > 0 && listMemory.key === listKey() ? listMemory.scrollTop : null
+    let restoreScrollTop =
+      store.getters['creator/rooms'].length > 0 && listMemory.key === listKey() && listMemory.entry === window.history.state?.key
+        ? listMemory.scrollTop
+        : null
 
     const restoreScroll = () => {
       if (restoreScrollTop === null || fetchState.pending) {
@@ -140,6 +144,7 @@ export default defineComponent({
 
     const rememberListPosition = () => {
       listMemory.key = listKey()
+      listMemory.entry = window.history.state?.key
       listMemory.keyword = roomList.value?.form.search.keyword || ''
       listMemory.scrollTop = scroller()?.scrollTop || 0
     }
