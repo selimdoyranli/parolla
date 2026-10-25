@@ -50,7 +50,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
         GoldEarned(mode="room")
 
         // Ad
-        DialogAd
+        DialogAd(:ad-slot="7181602890")
 
       template(v-else)
         Empty.stats-dialog-empty
@@ -93,7 +93,7 @@ Dialog.dialog.stats-dialog.creator-mode-stats-dialog(
                   | &nbsp;{{ myAnswer({ questionIndex: index }).field.toLocaleUpperCase('tr') }}
                 span(v-else) &nbsp;-
         // Ad
-        DialogAd
+        DialogAd(lazy :ad-slot="7077661111")
 
       template(v-else)
         Empty.stats-dialog-empty

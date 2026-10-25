@@ -62,7 +62,7 @@ Dialog.dialog.dialog--scene.play-intro(
         HowToPlayContent
 
     //- daily / unlimited: the ad sits above the leaderboard, not under it
-    DialogAd.play-intro__ad(v-if="!isCreator")
+    DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
 
     section.play-intro__leaderboard(v-if="isQa || mode === 'daily'")
       h3.play-intro__section-title
@@ -84,13 +84,12 @@ Dialog.dialog.dialog--scene.play-intro(
         :to="localePath({ name: 'DailyMode-Leaderboard-period', params: { period: $t('period.daily.slug') } })"
       ) {{ $t('playIntro.dailyLeaderboard') }}
 
-    DialogAd.play-intro__ad(v-if="isCreator")
+    DialogAd.play-intro__ad(v-if="isCreator" :ad-slot="8953141720")
 
     //- same comments UI as the reviews dialog (likes, replies, composer), without the rating block
+    //- no second ad under the comments: it was rarely scrolled to and only diluted the unit's click rate
     section.play-intro__comments(v-if="isCreator && room.id")
       RoomReviewView(:key="reviewsKey" comments-only)
-
-    DialogAd.play-intro__ad(v-if="isCreator")
 
   footer.play-intro__footer
     i18n.d-flex(path="app.copyright")
