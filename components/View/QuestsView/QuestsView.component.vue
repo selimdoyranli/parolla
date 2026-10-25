@@ -1,10 +1,10 @@
 <template lang="pug">
 .quests-view
+  AdRewardRow
   .quests-view__login(v-if="!loggedIn")
     p {{ $t('economy.quests.loginPrompt') }}
     Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
   template(v-else-if="quests")
-    AdRewardRow
     // Streak freeze: one compact row, not a banner
     .quests-view__freeze
       AppIcon.quests-view__freeze-icon(name="emojione:snowflake" :width="22" :height="22")

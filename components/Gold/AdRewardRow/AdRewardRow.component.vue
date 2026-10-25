@@ -35,6 +35,12 @@ export default defineComponent({
 
     // Strapi grants the gold from AdMob's server-side callback, so the wallet is re-read after
     const watchAd = () => {
+      if (!$auth.loggedIn) {
+        store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+
+        return
+      }
+
       if (adBusy.value) return
       adBusy.value = true
 

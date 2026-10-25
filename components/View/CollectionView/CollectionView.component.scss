@@ -1,6 +1,10 @@
 .collection-view {
   color: var(--color-text-01);
 
+  .ad-reward-row {
+    margin-bottom: 16px;
+  }
+
   // same breathing room as a category heading above it
   .inline-ad {
     margin-top: 20px;
