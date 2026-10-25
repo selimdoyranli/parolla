@@ -42,6 +42,12 @@
       :to="localePath({ name: 'GmPanel-Ai-ModeratedRooms' })"
       :title="$t('gmPanel.ai.moderatedRooms.title')"
     )
+    Tab(
+      name="GmPanel-Ai-ReportedRooms"
+      replace
+      :to="localePath({ name: 'GmPanel-Ai-ReportedRooms' })"
+      :title="$t('gmPanel.ai.reportedRooms.title')"
+    )
 
   NoticeBar.gm-panel__description(
     color="var(--color-info-01)"

@@ -6,6 +6,9 @@
       Cell(center :title="$t('gmPanel.communities.onlyHidden')")
         template(#right-icon)
           VanSwitch(v-model="onlyHidden" size="22px")
+      Cell(center :title="$t('gmPanel.communities.onlyAiFlagged')")
+        template(#right-icon)
+          VanSwitch(v-model="onlyAiFlagged" size="22px")
 
     Loading(v-if="isLoading && !items.length" color="var(--color-brand-02)")
     Empty(v-else-if="hasError" image="error" :description="$t('community.error.generic')")
@@ -28,9 +31,11 @@
           :label="`${item.moderationSource || ''} ${item.moderationNote}`.trim()"
           :title="$t('gmPanel.communities.note')"
         )
+        Cell(v-if="item.aiModerationFlag" :label="item.aiModerationFlag" :title="$t('gmPanel.communities.aiFlag')")
         .gm-panel__actions
           Button(v-if="!item.isHidden" v-bind="btn(item)" @click="askHide(item)") {{ $t('gmPanel.communities.hide') }}
           Button(v-else v-bind="btn(item)" @click="unhide(item)") {{ $t('gmPanel.communities.unhide') }}
+          Button(v-if="item.aiModerationFlag" v-bind="btn(item)" @click="dismissAiFlag(item)") {{ $t('gmPanel.communities.dismissAiFlag') }}
           Button(v-bind="btn(item, true)" type="danger" @click="remove(item)") {{ $t('gmPanel.communities.delete') }}
       .gm-panel__actions(v-if="hasMore")
         Button(plain round block :loading="isLoading" @click="load(false)") {{ $t('community.profileTab.more') }}
@@ -69,6 +74,7 @@ export default defineComponent({
 
     const search = ref('')
     const onlyHidden = ref(false)
+    const onlyAiFlagged = ref(false)
     const items = ref([])
     const page = ref(1)
     const hasMore = ref(false)
@@ -79,7 +85,12 @@ export default defineComponent({
     let reqId = 0
 
     const fetchPage = nextPage =>
-      store.dispatch('community/gmFetchCommunities', { page: nextPage, search: search.value.trim(), hidden: onlyHidden.value })
+      store.dispatch('community/gmFetchCommunities', {
+        page: nextPage,
+        search: search.value.trim(),
+        hidden: onlyHidden.value,
+        aiFlagged: onlyAiFlagged.value
+      })
 
     const load = async reset => {
       const id = ++reqId
@@ -125,9 +136,11 @@ export default defineComponent({
       await refresh()
     }
 
-    const askHide = item => Object.assign(hideDialog, { isOpen: true, note: '', item })
+    // An AI-reported community opens with the AI's reason as the note, for the GM to keep or edit
+    const askHide = item => Object.assign(hideDialog, { isOpen: true, note: item.aiModerationFlag || '', item })
     const hide = () => run(hideDialog.item, 'gmHideCommunity', 'gmPanel.communities.hiddenDone', { note: hideDialog.note.trim() })
     const unhide = item => run(item, 'gmUnhideCommunity', 'gmPanel.communities.unhiddenDone')
+    const dismissAiFlag = item => run(item, 'gmDismissCommunityAiFlag', 'gmPanel.communities.aiFlagDismissed')
     const remove = item =>
       Dialog.confirm({ title: item.name, message: i18n.t('gmPanel.communities.confirmDelete') })
         .then(() => run(item, 'gmDeleteCommunity', 'gmPanel.communities.deletedDone'))
@@ -151,11 +164,12 @@ export default defineComponent({
 
     const handleSearch = useDebounceFn(() => load(true), 400)
 
-    watch(onlyHidden, () => load(true), { immediate: true })
+    watch([onlyHidden, onlyAiFlagged], () => load(true), { immediate: true })
 
     return {
       search,
       onlyHidden,
+      onlyAiFlagged,
       items,
       hasMore,
       isLoading,
@@ -166,6 +180,7 @@ export default defineComponent({
       askHide,
       hide,
       unhide,
+      dismissAiFlag,
       remove,
       handleSearch
     }

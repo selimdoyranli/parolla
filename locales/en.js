@@ -1381,6 +1381,10 @@ export default {
       description: 'Search, hide, restore or delete communities.',
       search: 'Search communities',
       onlyHidden: 'Hidden only',
+      onlyAiFlagged: 'AI reports only',
+      aiFlag: 'AI report',
+      dismissAiFlag: 'Dismiss report',
+      aiFlagDismissed: 'AI report dismissed',
       empty: 'No communities found',
       owner: 'Owner',
       members: 'Members',
@@ -1500,11 +1504,13 @@ export default {
         tagGeneration: 'Tag generation',
         tagGenerationHint: 'Adds 5 tags to public rooms that have none',
         roomModeration: 'Room moderation',
-        roomModerationHint: 'Removes rooms with profanity, NSFW or private/low-quality content from the list',
+        roomModerationHint: 'Removes rooms with heavy profanity or explicit sexual content from the list',
         communityModeration: 'Community moderation',
         communityModerationHint: 'Hides communities with inappropriate names, descriptions or tags',
         tagPrompt: 'Tag system prompt',
-        moderationPrompt: 'Moderation system prompt'
+        moderationPrompt: 'Moderation system prompt',
+        reportOnly: 'Only report moderation to GMs',
+        reportOnlyHint: 'The AI never removes or hides anything itself; it reports its verdict to the GM panel and a GM decides'
       },
       taggedRooms: {
         title: 'Tagged',
@@ -1515,6 +1521,18 @@ export default {
         title: 'Moderated',
         description: 'Rooms the AI removed from the public list, with the moderation notes.',
         note: 'Moderation note'
+      },
+      reportedRooms: {
+        title: 'Reported',
+        description:
+          'Rooms the AI only reported. Unlisting takes the room off the public list with your note as the moderation note; dismissing deletes the report.',
+        aiFlag: 'AI report',
+        unlist: 'Unlist',
+        dismiss: 'Dismiss',
+        confirmUnlist: 'This room will be removed from the public list.',
+        notePlaceholder: 'Moderation note (optional)',
+        unlistedDone: 'Room removed from the list',
+        dismissedDone: 'AI report dismissed'
       }
     },
     daily: {
