@@ -1,5 +1,5 @@
 export default () => ({
-  wallet: { gold: 0, dailyStreak: 0, streakFreezes: 0, canClaimDaily: false, nextDailyAmount: 0 },
+  wallet: { gold: 0, dailyStreak: 0, streakFreezes: 0, canClaimDaily: false, nextDailyAmount: 0, adReward: null },
   catalog: { version: null, items: [] },
   quests: null,
   inventory: null,

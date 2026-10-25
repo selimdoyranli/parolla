@@ -4,5 +4,7 @@ export const walletTransformer = model => ({
   dailyStreak: model.dailyStreak || 0,
   streakFreezes: model.streakFreezes || 0,
   canClaimDaily: Boolean(model.canClaimDaily),
-  nextDailyAmount: model.nextDailyAmount || 0
+  nextDailyAmount: model.nextDailyAmount || 0,
+  // { gold, earnedToday, cap } of the app's "watch an ad for gold"; absent on older backends
+  adReward: model.adReward || null
 })

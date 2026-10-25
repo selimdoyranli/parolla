@@ -178,6 +178,15 @@ export default {
         note: 'Bir gün oynamayı kaçırırsan günlük giriş serin bozulmaz. En fazla {max} tane taşıyabilirsin.',
         full: 'Dolu'
       }
+    },
+    adReward: {
+      title: 'Reklam izle, altın kazan',
+      desc: 'Kısa bir reklam izle, {gold} altın hesabına eklensin.',
+      watch: 'İzle',
+      done: 'Bugünlük bitti',
+      earned: '{gold} altın kazandın!',
+      notEarned: 'Reklam sonuna kadar izlenmedi, altın verilmedi.',
+      failed: 'Şu an reklam bulunamadı, biraz sonra tekrar dene.'
     }
   },
   success: {
