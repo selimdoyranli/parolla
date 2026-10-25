@@ -5,6 +5,6 @@ export const walletTransformer = model => ({
   streakFreezes: model.streakFreezes || 0,
   canClaimDaily: Boolean(model.canClaimDaily),
   nextDailyAmount: model.nextDailyAmount || 0,
-  // { gold, earnedToday, cap } of the app's "watch an ad for gold"; absent on older backends
-  adReward: model.adReward || null
+  // { gold, earnedToday, cap } of the app's "watch an ad for gold"; only /economy/me sends it, so /users/me must not clear it
+  ...(model.adReward && { adReward: model.adReward })
 })
