@@ -17,13 +17,21 @@ export default defineComponent({
     strike: { type: Boolean, default: false },
     muted: { type: Boolean, default: false },
     // prefix positive amounts with "+" (history, rewards)
-    signed: { type: Boolean, default: false }
+    signed: { type: Boolean, default: false },
+    // 35802 -> 35.8K, for tight spots like the header badge
+    compact: { type: Boolean, default: false }
   },
   setup(props) {
     const { i18n } = useContext()
 
     const iconSize = computed(() => ICON_SIZE[props.size] || ICON_SIZE.md)
-    const text = computed(() => (props.signed && props.amount > 0 ? '+' : '') + props.amount.toLocaleString(i18n.locale))
+    const text = computed(
+      () =>
+        (props.signed && props.amount > 0 ? '+' : '') +
+        (props.compact
+          ? props.amount.toLocaleString('en', { notation: 'compact', maximumFractionDigits: 1 })
+          : props.amount.toLocaleString(i18n.locale))
+    )
 
     return { iconSize, text }
   }
