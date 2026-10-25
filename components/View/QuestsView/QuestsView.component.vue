@@ -4,6 +4,18 @@
     p {{ $t('economy.quests.loginPrompt') }}
     Button(color="var(--color-brand-02)" round @click="openLogin") {{ $t('economy.collection.login') }}
   template(v-else-if="quests")
+    // Rewarded ad (mobile app only): same compact row as the streak freeze
+    .quests-view__freeze(v-if="canWatchAd")
+      AppIcon.quests-view__freeze-icon(name="noto:television" :width="22" :height="22")
+      .quests-view__freeze-body
+        b {{ $t('economy.adReward.title') }}
+        span {{ $t('economy.adReward.desc', { gold: adReward.gold }) }}
+      span.quests-view__freeze-count {{ adsWatched }}/{{ adsMax }}
+      button.shop-buy.shop-buy--owned(v-if="adsWatched >= adsMax" type="button" disabled)
+        AppIcon(name="tabler:check" :width="14" :height="14")
+        span {{ $t('economy.adReward.done') }}
+      button.shop-buy(v-else type="button" :disabled="adBusy" @click="watchAd")
+        GoldAmount(size="sm" :amount="adReward.gold")
     // Streak freeze: one compact row, not a banner
     .quests-view__freeze
       AppIcon.quests-view__freeze-icon(name="emojione:snowflake" :width="22" :height="22")
@@ -79,6 +91,38 @@ export default defineComponent({
       max: MAX_FREEZES
     }))
     const freezes = computed(() => store.state.economy.wallet.streakFreezes)
+
+    // "Watch an ad for gold": only the mobile app build that announces native rewarded ads can show
+    // one; Strapi grants the gold from AdMob's server-side callback, so the wallet is re-read after.
+    const { postToNative } = useNativeBridge()
+    const adReward = computed(() => store.state.economy.wallet.adReward)
+    const adsMax = computed(() => (adReward.value ? adReward.value.cap / adReward.value.gold : 0))
+    const adsWatched = computed(() => (adReward.value ? Math.floor(adReward.value.earnedToday / adReward.value.gold) : 0))
+    const canWatchAd = computed(() => Boolean(adReward.value && process.client && window.__parollaNativeAds?.rewarded))
+    const adBusy = ref(false)
+
+    const watchAd = () => {
+      if (adBusy.value) return
+      adBusy.value = true
+
+      // the SSV callback can land a moment after the ad closes
+      const refreshWallet = () => [0, 2000, 5000].forEach(ms => setTimeout(() => store.dispatch('economy/fetchWallet'), ms))
+      const timeout = setTimeout(() => (adBusy.value = false), 60000)
+
+      window.__parollaRewardedAdResult = result => {
+        clearTimeout(timeout)
+        adBusy.value = false
+
+        if (result && result.earned) {
+          toast(i18n.t('economy.adReward.earned', { gold: adReward.value.gold }), true)
+          refreshWallet()
+        } else {
+          toast(i18n.t(result && result.error ? 'economy.adReward.failed' : 'economy.adReward.notEarned'), false)
+        }
+      }
+
+      postToNative('rewarded-ad-request', { userId: $auth.user.id })
+    }
     const failed = ref(false)
     const achievementsFailed = ref(false)
     const quests = computed(() => store.state.economy.quests)
@@ -145,6 +189,12 @@ export default defineComponent({
     onMounted(() => loggedIn.value && load())
 
     return {
+      adReward,
+      adsMax,
+      adsWatched,
+      canWatchAd,
+      adBusy,
+      watchAd,
       MAX_FREEZES,
       FREEZE_PRICE,
       freezes,

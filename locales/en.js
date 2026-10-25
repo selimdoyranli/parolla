@@ -178,6 +178,15 @@ export default {
         note: 'If you miss a day, your login streak is kept. You can hold up to {max}.',
         full: 'Full'
       }
+    },
+    adReward: {
+      title: 'Watch an ad, earn gold',
+      desc: 'Watch a short ad and get {gold} gold.',
+      watch: 'Watch',
+      done: 'Done for today',
+      earned: 'You earned {gold} gold!',
+      notEarned: 'The ad was not watched to the end, no gold this time.',
+      failed: 'No ad available right now, try again a bit later.'
     }
   },
   success: {
