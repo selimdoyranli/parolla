@@ -37,8 +37,8 @@ Dialog.dialog.dialog--scene.play-intro(
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
-    //- right under the play button, where the old how-to-play dialog kept it
-    DialogAd.play-intro__ad(:ad-slot="8953141720")
+    //- daily / unlimited: right under the play button, where the old how-to-play dialog kept it
+    DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
 
     .play-intro__actions(v-if="isCreator")
       Button.play-intro__action(round size="small" @click="shareRoom(room)")
@@ -56,6 +56,9 @@ Dialog.dialog.dialog--scene.play-intro(
 
     section.play-intro__creator(v-if="isCreator")
       CreatorByline(:user="creatorUser")
+
+    //- creator quizzes: after the creator byline, clear of the play / share buttons
+    DialogAd.play-intro__ad(v-if="isCreator" :ad-slot="8953141720")
 
     hr.play-intro__divider(v-if="isCreator")
 
