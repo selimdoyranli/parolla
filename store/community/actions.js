@@ -256,11 +256,11 @@ export default {
     return { data: data ? { items: data.data, total: data.meta.total, hasMore: data.meta.hasMore } : null, error }
   },
 
-  gmHideCommunity(_, { documentId, note = '' }) {
+  gmHideCommunity(_, { documentId, note = '', blockOwner = false }) {
     return this.$appFetch({
       path: `moderation/communities/${documentId}/hide`,
       method: 'POST',
-      data: { note },
+      data: { note, blockOwner },
       headers: authHeaders(this)
     })
   },

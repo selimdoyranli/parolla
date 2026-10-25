@@ -1375,6 +1375,16 @@ export default {
     officialRooms: 'Official Rooms',
     playerRooms: 'Player Rooms'
   },
+  gmModeration: {
+    title: 'GM Moderation',
+    unlistRoom: 'Remove from list',
+    hideCommunity: 'Remove from the site',
+    notePlaceholder: 'Moderation note',
+    banOwner: 'Ban the player',
+    send: 'Send',
+    unlistedDone: 'Room removed from the list',
+    hiddenDone: 'Community removed from the site'
+  },
   gmPanel: {
     communities: {
       title: 'Communities',

@@ -1393,6 +1393,16 @@ export default {
     officialRooms: 'Resmi Odalar',
     playerRooms: 'Oyuncu Odaları'
   },
+  gmModeration: {
+    title: 'GM Moderasyonu',
+    unlistRoom: 'Listeden çıkar',
+    hideCommunity: 'Sistemden kaldır',
+    notePlaceholder: 'Moderasyon notu',
+    banOwner: 'Oyuncuyu banla',
+    send: 'Gönder',
+    unlistedDone: 'Oda listeden çıkarıldı',
+    hiddenDone: 'Topluluk sistemden kaldırıldı'
+  },
   gmPanel: {
     communities: {
       title: 'Topluluklar',

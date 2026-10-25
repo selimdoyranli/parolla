@@ -47,6 +47,9 @@ Dialog.dialog.dialog--scene.play-intro(
       Button.play-intro__action(round size="small" @click="openReviews")
         AppIcon(name="tabler:star" :width="16" :height="16")
         span {{ $t('playIntro.rate') }}
+      Button.play-intro__action(v-if="isGm && room.documentId" round size="small" @click="gmModerationOpen = true")
+        AppIcon(name="tabler:shield" :width="16" :height="16")
+        span {{ $t('gmModeration.title') }}
 
     section.play-intro__creator(v-if="isCreator")
       CreatorByline(:user="creatorUser")
@@ -96,6 +99,7 @@ Dialog.dialog.dialog--scene.play-intro(
 
   LazyRoomReviewDialog(v-if="isCreator" :isOpen="reviewDialog.isOpen" @closed="onReviewClosed")
   LazyCommunityShareDialog(v-if="canShareToCommunity" :is-open.sync="communityShareOpen" :room="room")
+  LazyGmModerationDialog(v-if="isGm && room.documentId" :is-open.sync="gmModerationOpen" :item="room" target="room")
 </template>
 
 <script>
@@ -103,6 +107,7 @@ import { defineComponent, reactive, ref, computed, watch, onBeforeUnmount, useSt
 import { Dialog, Button, Collapse, CollapseItem, Loading, Empty } from 'vant'
 import { GAME_TIME_LIMIT } from '@/system/constant'
 import { quizTypeEnum } from '@/enums/quiz.enum'
+import { isGmUser } from '@/helpers/chat-command'
 
 export default defineComponent({
   components: {
@@ -169,6 +174,8 @@ export default defineComponent({
     const isCreator = computed(() => props.mode === 'creator')
     const me = computed(() => store.getters['auth/user'])
     const communityShareOpen = ref(false)
+    const isGm = computed(() => isCreator.value && isGmUser(me.value))
+    const gmModerationOpen = ref(false)
     // mirrors the server rule (canShareRoom); moderated quizzes never
     const canShareToCommunity = computed(
       () =>
@@ -310,6 +317,8 @@ export default defineComponent({
 
     return {
       state,
+      isGm,
+      gmModerationOpen,
       rulesOpen,
       reviewDialog,
       room,

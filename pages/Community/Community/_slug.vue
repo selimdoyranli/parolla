@@ -17,6 +17,7 @@
           @open-delete="handleOpenDelete"
           @open-report="isReportOpen = true"
         )
+        ActionButton(v-if="isGm" :label="$t('gmModeration.title')" icon="tabler:shield" tone="danger" @click="isGmModerationOpen = true")
 
     .community-page__body
       main.community-page__main
@@ -65,6 +66,7 @@
       CommunityPendingDialog(:is-open.sync="isPendingOpen" :community="community" @changed="handleChanged")
       CommunityMembersDialog(:is-open.sync="isMembersOpen" :community="community" @changed="handleChanged")
       CommunityDeleteDialog(:is-open.sync="isDeleteOpen" :community="community")
+      LazyGmModerationDialog(v-if="isGm" :is-open.sync="isGmModerationOpen" :item="community" target="community" @done="handleChanged")
       ReportDialog(:is-open="isReportOpen" :scope="reportTypeEnum.COMMUNITY" :additional="reportAdditional" @closed="isReportOpen = false")
         template(#prepend)
           ReportQuote(:community="community")
@@ -80,6 +82,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import { communityHead } from '@/helpers/communitySeo'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 import { communityViewerRoleEnum, communityPostPermissionEnum } from '@/enums/community.enum'
+import { isGmUser } from '@/helpers/chat-command'
 
 const SORTS = ['recent', 'popular', 'oldest']
 const SORT_ICONS = { recent: 'tabler:clock', popular: 'tabler:flame', oldest: 'tabler:history' }
@@ -250,6 +253,9 @@ export default defineComponent({
     }
 
     // join/leave/approval change counts, role and what the feed may show
+    const isGm = computed(() => isGmUser($auth.user))
+    const isGmModerationOpen = ref(false)
+
     const handleChanged = async () => {
       if (await loadCommunity()) reloadFeed()
     }
@@ -267,6 +273,8 @@ export default defineComponent({
     )
 
     return {
+      isGm,
+      isGmModerationOpen,
       community,
       isLoading,
       isNotFound,
