@@ -44,7 +44,7 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
               | {{ $t('general.share').toLocaleUpperCase($i18n.locale) }}
 
         // Ad
-        DialogAd
+        DialogAd(:ad-slot="7181602890")
 
       Tab(name="answers" :title="$t('gameScene.answerKey')")
         // Answers
@@ -71,7 +71,7 @@ Dialog.dialog.stats-dialog.unlimited-mode-stats-dialog(
                 span(v-else) &nbsp;-
 
         // Ad
-        DialogAd
+        DialogAd(lazy :ad-slot="7077661111")
 
     // Footer
     footer.stats-dialog__footer

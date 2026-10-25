@@ -51,7 +51,7 @@ Dialog.dialog.stats-dialog.daily-mode-stats-dialog(
         GoldEarned(mode="daily")
 
         // Ad
-        DialogAd
+        DialogAd(:ad-slot="7181602890")
 
       Tab(name="answers" :title="$t('gameScene.answerKey')")
         // Answers
@@ -78,7 +78,7 @@ Dialog.dialog.stats-dialog.daily-mode-stats-dialog(
                 span(v-else) &nbsp;-
 
         // Ad
-        DialogAd
+        DialogAd(lazy :ad-slot="7077661111")
 
     // Footer
     footer.stats-dialog__footer

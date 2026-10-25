@@ -12,15 +12,11 @@
   @include media-breakpoint-down(desktop) {
     min-height: 250px;
 
+    // rectangle sizes itself to this width: 300x250 or 336x280, 250x250 on the narrowest phones
     .adsbygoogle {
       display: inline-block !important;
-      width: 300px;
-      height: 250px;
-
-      // a 300px unit doesn't fit a 90vw dialog below 334px
-      @media (max-width: 333px) {
-        width: 250px;
-      }
+      width: 100%;
+      max-width: 336px;
     }
   }
 }
