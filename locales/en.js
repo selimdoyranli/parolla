@@ -1814,7 +1814,7 @@ export default {
     },
     creatorModeQuizzes: {
       title: 'Solve Quizzes – Player-made Quizzes',
-      description: 'Solve thousands of quizzes created by players or create your own quiz.',
+      description: 'Solve quizzes created by players or create your own quiz.',
       keywords: 'quiz game, quiz solve, quiz create'
     },
     creatorModeQuiz: {

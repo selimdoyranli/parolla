@@ -1836,7 +1836,7 @@ export default {
     },
     creatorModeQuizzes: {
       title: 'Quiz Çöz ve Quiz Oluştur',
-      description: 'Oyuncuların oluşturduğu binlerce quizi çöz ya da kendi quizini oluştur.',
+      description: 'Oyuncuların oluşturduğu quizleri çöz ya da kendi quizini oluştur.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     creatorModeQuiz: {

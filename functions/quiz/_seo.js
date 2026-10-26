@@ -28,7 +28,7 @@ const COPY = {
     allQuizzes: 'Tüm quizler',
     listTitle: 'Quiz Çöz ve Quiz Oluştur',
     listHeading: 'Quiz Çöz',
-    listDescription: 'Oyuncuların oluşturduğu binlerce quizi çöz ya da kendi quizini oluştur.',
+    listDescription: 'Oyuncuların oluşturduğu quizleri çöz ya da kendi quizini oluştur.',
     popular: 'Popüler quizler'
   },
   en: {
@@ -45,7 +45,7 @@ const COPY = {
     allQuizzes: 'All quizzes',
     listTitle: 'Solve Quizzes – Player-made Quizzes',
     listHeading: 'Solve Quizzes',
-    listDescription: 'Solve thousands of quizzes created by players or create your own quiz.',
+    listDescription: 'Solve quizzes created by players or create your own quiz.',
     popular: 'Popular quizzes'
   }
 }
