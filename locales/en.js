@@ -1145,6 +1145,7 @@ export default {
   gift: {
     title: 'Send Gift',
     amount: 'Gold',
+    amountRange: 'You can send between {min} and {max} gold',
     notePlaceholder: 'Add a note to your gift (optional)',
     send: 'Send',
     giftIt: 'Gift it',

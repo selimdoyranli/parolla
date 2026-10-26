@@ -1163,6 +1163,7 @@ export default {
   gift: {
     title: 'Hediye Gönder',
     amount: 'Altın',
+    amountRange: 'En az {min}, en fazla {max} altın gönderebilirsin',
     notePlaceholder: 'Hediyene bir not ekle (isteğe bağlı)',
     send: 'Gönder',
     giftIt: 'Hediye et',
