@@ -35,7 +35,7 @@
           AppIcon.guess-the-song-play-scene-counter__icon(name="tabler:music" :width="16" :height="16")
           span {{ roundLabel }}
         .guess-the-song-play-scene-counter
-          span {{ $t(`musicMode.difficulty.${difficulty}`) }}
+          span {{ $t('musicMode.difficulty.title') }}: {{ $t(`musicMode.difficulty.${difficulty}`) }}
         .guess-the-song-play-scene-counter.guess-the-song-play-scene-counter--timer(
           v-if="!isAnswerLocked"
           :class="{ 'is-urgent': isHurryUp }"

@@ -48,7 +48,7 @@
         span.guess-the-song-scene-selected-playlist-text {{ selectedPlaylist.name }}
         button.guess-the-song-scene-selected-artist-remove(type="button" @click="handlePlaylistRemove") ×
 
-    .guess-the-song-scene-difficulty(role="radiogroup" :aria-label="$t('musicMode.difficulty.title')")
+    .guess-the-song-scene-difficulty(v-if="canPlay" role="radiogroup" :aria-label="$t('musicMode.difficulty.title')")
       span.guess-the-song-scene-difficulty__title {{ $t('musicMode.difficulty.title') }}
       .guess-the-song-scene-difficulty__list
         button.guess-the-song-scene-tag(
@@ -59,7 +59,7 @@
           :aria-checked="key === difficulty"
           :class="{ 'guess-the-song-scene-tag--active': key === difficulty }"
           @click="difficulty = key"
-        ) {{ $t(`musicMode.difficulty.${key}`) }}
+        ) {{ $t(`musicMode.difficulty.${key}`) }} ({{ difficultySeconds(key) }}s)
 
     Button.guess-the-song-scene-play-button(type="button" :disabled="!canPlay" @click="handleClickPlayButton")
       AppIcon.guess-the-song-scene-play-button__icon(name="tabler:player-play-filled" :width="20" :height="20")
@@ -165,6 +165,7 @@ export default defineComponent({
     const selectedPlaylist = ref(null)
     const difficultyKeys = Object.keys(MUSIC_DIFFICULTIES)
     const difficulty = ref(MUSIC_DEFAULT_DIFFICULTY)
+    const difficultySeconds = key => MUSIC_DIFFICULTIES[key] / 1000
 
     const featuredTags = computed(() => FEATURED_TAGS[i18n.locale] || FEATURED_TAGS.en)
 
@@ -379,6 +380,7 @@ export default defineComponent({
       canPlay,
       difficultyKeys,
       difficulty,
+      difficultySeconds,
       featuredTags,
       activeTag,
       tagResults,
