@@ -15,6 +15,7 @@ Dialog.dialog.stats-dialog.guess-the-song-stats-dialog(
     .results__score
       span.results__score-label {{ $t('musicMode.guessTheSong.stats.score') }}
       span.results__score-value {{ correctAnswerCount }}/{{ totalAnswerCount }}
+      span.results__score-label(v-if="difficulty") {{ $t('musicMode.difficulty.title') }}: {{ difficultyLabel }}
 
     .results__selected-artists.mb-base(v-if="playlist")
       span.results__selected-artists-title {{ $t('musicMode.guessTheSong.stats.playlist') }}
@@ -91,6 +92,11 @@ export default defineComponent({
       type: Object,
       required: false,
       default: null
+    },
+    difficulty: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   setup(props) {
@@ -113,10 +119,13 @@ export default defineComponent({
 
     const selectedArtistsList = computed(() => props.selectedArtists || [])
 
+    const difficultyLabel = computed(() => (props.difficulty ? i18n.t(`musicMode.difficulty.${props.difficulty}`) : ''))
+
     const shareResults = async () => {
       const shareText = i18n.t('sharer.guessTheSongStats.description', {
         score: `${correctAnswerCount.value}/${totalAnswerCount.value}`,
         artists: props.playlist ? props.playlist.name : selectedArtistsList.value.map(artist => artist.artistName).join(', '),
+        difficulty: difficultyLabel.value,
         url: window.location.href
       })
 
@@ -140,6 +149,7 @@ export default defineComponent({
       shareResults,
       correctAnswerCount,
       totalAnswerCount,
+      difficultyLabel,
       selectedArtistsList
     }
   }

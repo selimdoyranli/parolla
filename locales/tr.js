@@ -751,7 +751,7 @@ export default {
       description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum ({charLength} harf)\n\n{attempts}. deneme / {maxAttempts} tahmin hakkı\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
-      description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
+      description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nMod: {difficulty} \nSkorum: {score} \n \n{url}`
     },
     geoGuessStats: {
       description: `parolla - GeoGuess ({region}) 🌍 \n \nSkorum: {score} \n \n{url}`
@@ -1670,7 +1670,7 @@ export default {
     },
     guessTheSong: {
       title: 'Müzik quiz',
-      subtitle: 'Şarkıları dinle ve tahmin et',
+      subtitle: 'Çalan şarkıyı dinle ve tahmin et',
       pickSong: 'Hangi şarkı çalıyor?',
       stats: {
         score: 'Skorum',
@@ -1681,7 +1681,15 @@ export default {
     },
     nextRound: 'Sonraki tur',
     seeResults: 'Sonuçları gör',
-    appleMusic: 'Apple Music'
+    appleMusic: 'Apple Music',
+    timeLeft: 'Kalan süre',
+    difficulty: {
+      title: 'Mod',
+      easy: 'Kolay',
+      medium: 'Orta',
+      hard: 'Zor',
+      impossible: 'İmkansız'
+    }
   },
   geoGuessMode: {
     title: 'GeoGuess',
@@ -1859,14 +1867,15 @@ export default {
     },
     musicMode: {
       guessTheSong: {
-        title: 'Şarkıları dinle ve tahmin et - Müzik quiz',
-        description: "Müzik quiz'de şarkıları dinle ve tahmin et",
-        keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
+        title: 'Müzik Quiz - Çalan şarkıyı tahmin et',
+        description:
+          'Müzik quiz oyna, çalan şarkıyı bil! Şarkı tahmin etme oyunu: sanatçı ya da çalma listesi seç, şarkıyı 5, 3, 1 ya da 0.5 saniye dinle ve tahmin et.',
+        keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin etme oyunu, şarkı bilme oyunu, şarkı quiz'
       },
       guessTheSongPlay: {
-        title: '{artists} şarkılarını dinle ve tahmin et - Müzik quiz',
-        description: 'Müzik quizde {artists} şarkılarını dinle ve tahmin et',
-        keywords: 'müzik quiz, müzik quiz oyna, şarkıları dinle ve tahmin et'
+        title: '{artists} şarkılarını tahmin et - Müzik Quiz',
+        description: 'Çalan şarkıyı bil! Müzik quizde {artists} şarkılarını dinle ve çalan şarkıyı tahmin et.',
+        keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin oyunu'
       }
     },
     geoGuessMode: {

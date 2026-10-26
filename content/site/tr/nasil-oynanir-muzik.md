@@ -1,33 +1,43 @@
 ---
-title: "Müzik Modu Nasıl Oynanır? | Şarkı Tahmin Oyunu"
-description: "parolla Müzik Modu rehberi: çalan şarkıyı dinle, doğru şarkıyı tahmin et. Online müzik tahmin oyunu web'de ve mobilde ücretsiz."
-updated: 2026-08-29
+title: "Müzik Quiz Nasıl Oynanır? | Çalan Şarkıyı Tahmin Et"
+description: "parolla müzik quiz rehberi: çalan şarkıyı dinle, çalan şarkıyı bil. Kolay, Orta, Zor ve İmkansız modlarıyla ücretsiz şarkı tahmin oyunu."
+updated: 2026-10-26
 steps:
-  - "www.parolla.app/muzik adresine gir."
+  - "www.parolla.app/muzik/sarki-tahmin-et adresine gir."
   - "En fazla üç sanatçı ara ve seç ya da hazır bir çalma listesi seç."
-  - "Şarkı Tahmin Et oyununu başlat ve çalan kısa müzik parçasını dinle."
-  - "Doğru şarkıyı seçenekler arasından tahmin et."
-  - "Skorunu gör ve arkadaşlarınla paylaş."
+  - "Modunu seç: Kolay (5 sn), Orta (3 sn), Zor (1 sn) ya da İmkansız (0.5 sn)."
+  - "Oyna'ya bas, çalan şarkıyı dinle ve 30 saniye içinde seçenekler arasından tahmin et."
+  - "Skorunu ve modunu arkadaşlarınla paylaş."
 ---
 
-**Müzik Modu**, parolla'daki müzik tahmin oyunudur: çalan şarkı parçasını dinler, doğru şarkıyı tahmin etmeye çalışırsın. Müzik bilgisine güvenenler ve arkadaşlarıyla yarışmak isteyenler için eğlenceli bir moddur.
+**Müzik Quiz**, parolla'daki şarkı tahmin oyunudur: çalan şarkıyı dinler, çalan şarkıyı bilmeye çalışırsın. Müzik bilgisine güvenenler ve arkadaşlarıyla yarışmak isteyenler için ücretsiz bir müzik quizdir.
 
-## Şarkı Tahmin Et
+## Çalan Şarkıyı Tahmin Et
 
 - Önce turu sen kurarsın: arama kutusundan **en fazla üç sanatçı** seçersin ya da öne çıkan
   **çalma listelerinden** (tür, dönem, ruh hali) birini seçersin.
-- Oyun, seçtiğin listeden kısa bir müzik parçası dinletir.
-- Görevin, çalan parçanın **hangi şarkı olduğunu** seçenekler arasından doğru bulmaktır.
-- Doğru tahminler skoruna eklenir; oyun sonunda sonucunu paylaşabilirsin.
-- Sanatçıları sen seçtiğin için quiz'in zorluğu tamamen sana bağlıdır.
+- Seçimini yapınca **modunu** seçersin; mod, şarkının ne kadar çalacağını belirler.
+- Oyun, seçtiğin listeden kısa bir parça çalar. Görevin, çalan şarkının **hangi şarkı olduğunu** seçenekler arasından bulmaktır.
+- Her turda **30 saniyen** var. Süre dolarsa doğru cevap açılır ve tur bilinemedi sayılır.
+- Oyun sonunda skorun ve oynadığın mod görünür; sonucunu paylaşabilirsin.
+
+## Modlar
+
+| Mod | Şarkı ne kadar çalar? |
+| --- | --- |
+| Kolay | 5 saniye |
+| Orta | 3 saniye (varsayılan) |
+| Zor | 1 saniye |
+| İmkansız | 0.5 saniye |
 
 ## İpuçları
 
 - Giriş melodileri en ayırt edici kısımdır; ilk saniyelere odaklan.
+- Zor ve İmkansız modda tek bir nota ya da vokal tınısı yeter; parçayı tekrar çalıp dinleyebilirsin.
 - Emin değilsen şarkının ritmini ve vokal karakterini seçeneklerle karşılaştır.
 
 ## Nereden Oynanır?
 
-Müzik Modu'na [www.parolla.app/muzik](https://www.parolla.app/muzik) adresinden, Şarkı Tahmin Et oyununa [www.parolla.app/muzik/sarki-tahmin-et](https://www.parolla.app/muzik/sarki-tahmin-et) sayfasından ulaşabilirsin. Web'de, iOS'ta ve Android'de ücretsizdir.
+Müzik quize [www.parolla.app/muzik/sarki-tahmin-et](https://www.parolla.app/muzik/sarki-tahmin-et) adresinden ulaşabilirsin. Web'de, iOS'ta ve Android'de ücretsizdir.
 
 Diğer modlar için [Nasıl Oynanır rehberine](/nasil-oynanir) dön.

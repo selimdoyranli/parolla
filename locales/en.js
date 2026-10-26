@@ -747,7 +747,7 @@ export default {
       description: `parolla - Word game \n\nMy score in word block mode ({charLength} letters)\n\n{attempts}. attempts / {maxAttempts} guesses\n\n{cells}\n\nTime elapsed: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
-      description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
+      description: `parolla - Music quiz - I guessed the songs of {artists} \n \nMode: {difficulty} \nScore: {score} \n \n{url}`
     },
     geoGuessStats: {
       description: `parolla - GeoGuess ({region}) 🌍 \n \nScore: {score} \n \n{url}`
@@ -1642,7 +1642,7 @@ export default {
     },
     guessTheSong: {
       title: 'Music quiz',
-      subtitle: 'Listen to songs and guess them',
+      subtitle: 'Listen to the song playing and guess it',
       pickSong: 'Which song is playing?',
       stats: {
         score: 'Score',
@@ -1653,7 +1653,15 @@ export default {
     },
     nextRound: 'Next round',
     seeResults: 'See results',
-    appleMusic: 'Apple Music'
+    appleMusic: 'Apple Music',
+    timeLeft: 'Time left',
+    difficulty: {
+      title: 'Mode',
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard',
+      impossible: 'Impossible'
+    }
   },
   wordblockMode: {
     wordblock: 'Wordblock',
@@ -1837,14 +1845,15 @@ export default {
     },
     musicMode: {
       guessTheSong: {
-        title: 'Listen to songs and guess them - Music quiz',
-        description: 'Listen to songs and guess them in the music quiz',
-        keywords: 'music quiz, music quiz play, listen to songs and guess them'
+        title: 'Music Quiz - Guess the song that is playing',
+        description:
+          'Play the music quiz and name the song that is playing! Pick an artist or playlist, hear it for 5, 3, 1 or 0.5 seconds and guess the song. Free.',
+        keywords: 'music quiz, guess the song, name that song, song quiz, guess the song playing, music guessing game'
       },
       guessTheSongPlay: {
-        title: '{artists} songs listen and guess them - Music quiz',
-        description: 'Listen to {artists} songs and guess them in the music quiz',
-        keywords: 'music quiz, music quiz play, listen to songs and guess them'
+        title: 'Guess {artists} songs - Music Quiz',
+        description: 'Name the song that is playing! Listen to {artists} songs in the music quiz and guess them.',
+        keywords: 'music quiz, guess the song, name that song, song quiz'
       }
     },
     geoGuessMode: {

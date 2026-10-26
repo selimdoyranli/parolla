@@ -120,7 +120,8 @@ const putToken = async (env, token) => {
   await env.MUSIC_KV.put(KV_KEY, token, exp - now > 60 ? { expiration: exp } : { expirationTtl: 3600 })
 }
 
-export const getToken = async env => {
+// Env or KV token only, never a scrape: for callers that must stay cheap (the share-link SEO head)
+export const cachedToken = async env => {
   // A static APPLE_MUSIC_TOKEN is trusted only while it is still valid. Apple's
   // web token expires (~monthly), and once past exp it 401s — so fall through to
   // the KV cache / scrape path instead of serving a dead token on every request.
@@ -135,6 +136,16 @@ export const getToken = async env => {
   if (tokenValid(cached)) {
     console.log('[amp] token source: KV cache')
 
+    return cached
+  }
+
+  return null
+}
+
+export const getToken = async env => {
+  const cached = await cachedToken(env)
+
+  if (cached) {
     return cached
   }
 
@@ -165,7 +176,8 @@ export const localeToStrapi = locale => {
 
 const defaultStorefront = env => env.APPLE_MUSIC_STOREFRONT || 'us'
 
-export const ampFetch = async (env, path, storefront, { edge = false } = {}) => {
+// noScrape: fail instead of scraping a fresh token (on a cache miss or a 401)
+export const ampFetch = async (env, path, storefront, { edge = false, noScrape = false } = {}) => {
   const sf = storefront || defaultStorefront(env)
   const base = edge ? AMP_EDGE_BASE : AMP_BASE
   const doFetch = token =>
@@ -177,8 +189,12 @@ export const ampFetch = async (env, path, storefront, { edge = false } = {}) => 
       }
     })
 
-  let token = await getToken(env)
+  let token = noScrape ? await cachedToken(env) : await getToken(env)
   let res
+
+  if (!token) {
+    throw new Error('[amp] no cached token')
+  }
 
   try {
     res = await doFetch(token)
@@ -190,7 +206,7 @@ export const ampFetch = async (env, path, storefront, { edge = false } = {}) => 
   // A 401 means the token we used (env var or KV cache) is dead. Force one fresh
   // scrape + retry — even when APPLE_MUSIC_TOKEN is set — so an expired static
   // token self-heals instead of 401ing every request until it is redeployed.
-  if (res.status === 401) {
+  if (res.status === 401 && !noScrape) {
     if (env.MUSIC_KV) {
       await env.MUSIC_KV.delete(KV_KEY)
     }
