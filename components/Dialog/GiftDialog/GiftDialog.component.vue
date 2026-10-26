@@ -37,7 +37,9 @@ Dialog.dialog.gift-dialog(
         GoldAmount(:amount="cost")
       .gift-dialog__row(v-else)
         span {{ $t('gift.amount') }}
-        Stepper(v-model="amount" integer input-width="64px" :min="GIFT_MIN" :max="GIFT_MAX" :step="10" :disabled="busy")
+        //- a plain digit field: Stepper silently clamped typed values while still showing them
+        Field.gift-dialog__amount(v-model="amount" type="digit" input-align="right" :maxlength="5" :disabled="busy")
+      p.gift-dialog__error(v-if="!target && !isValidAmount") {{ $t('gift.amountRange', { min: GIFT_MIN, max: GIFT_MAX }) }}
       .gift-dialog__row
         span {{ $t('economy.shop.balance') }}
         GoldAmount(:amount="balance")
@@ -63,7 +65,7 @@ Dialog.dialog.gift-dialog(
         GoldAmount(size="sm" :amount="cost - balance")
 
     .gift-dialog__actions
-      button.shop-buy.shop-buy--block(type="button" :disabled="busy || isShort || !recipient" @click="send")
+      button.shop-buy.shop-buy--block(type="button" :disabled="busy || isShort || !recipient || (!target && !isValidAmount)" @click="send")
         Loading(v-if="busy" color="currentColor" size="16")
         template(v-else)
           AppIcon(name="tabler:gift" :width="16" :height="16")
@@ -74,7 +76,7 @@ Dialog.dialog.gift-dialog(
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, useContext, useStore } from '@nuxtjs/composition-api'
-import { Dialog, Stepper, Field, Loading, Notify } from 'vant'
+import { Dialog, Field, Loading, Notify } from 'vant'
 import { newIdempotencyKey, isDefinitiveResponse } from '@/store/economy/actions'
 import { userTransformer } from '@/transformers'
 
@@ -84,7 +86,7 @@ const GIFT_MAX = 5000
 const GIFT_NOTE_MAX = 256
 
 export default defineComponent({
-  components: { Dialog: Dialog.Component, Stepper, Field, Loading },
+  components: { Dialog: Dialog.Component, Field, Loading },
   props: {
     isOpen: { type: Boolean, default: false },
     // fixed recipient (profile); without it the dialog asks for a username
@@ -105,7 +107,8 @@ export default defineComponent({
 
     const balance = computed(() => store.state.economy.wallet.gold)
     const cost = computed(() => (props.target ? props.target.price : Number(amount.value)))
-    const isShort = computed(() => cost.value > balance.value)
+    const isValidAmount = computed(() => Number.isInteger(cost.value) && cost.value >= GIFT_MIN && cost.value <= GIFT_MAX)
+    const isShort = computed(() => isValidAmount.value && cost.value > balance.value)
 
     const recipient = ref(props.player)
     const username = ref('')
@@ -155,7 +158,7 @@ export default defineComponent({
       })
 
     const send = async () => {
-      if (busy.value) return
+      if (busy.value || (!props.target && !isValidAmount.value)) return
       busy.value = true
 
       try {
@@ -211,6 +214,7 @@ export default defineComponent({
       note,
       balance,
       cost,
+      isValidAmount,
       isShort,
       recipient,
       username,

@@ -94,6 +94,20 @@
     border-radius: 10px;
   }
 
+  &__amount {
+    width: 96px;
+    padding: 4px 8px;
+    background: var(--color-ui-02);
+    border-radius: 6px;
+  }
+
+  &__error {
+    margin: 0;
+    color: var(--color-danger-01);
+    font-size: 12px;
+    text-align: end;
+  }
+
   &__negative {
     color: var(--color-danger-01);
   }
