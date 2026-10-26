@@ -11,7 +11,8 @@
       .intro-button__icon
         slot(name="icon")
     AppIcon.intro-button__icon(v-else color="var(--color-text-01)" :name="icon" :width="24" :height="24")
-    span.intro-button-title
+    NuxtLink.intro-button-title(v-if="titleLink" :to="to" :title="title") {{ title }}
+    span.intro-button-title(v-else)
       | {{ title }}
 
     .head-label(v-if="headLabel.title?.length > 0")
@@ -26,7 +27,8 @@
   .intro-button__media(v-if="$slots.media")
     slot(name="media")
 
-  p.intro-button__description(v-if="description?.length > 0") {{ description }}
+  p.intro-button__description(v-if="$slots.description || description?.length > 0")
+    slot(name="description") {{ description }}
 
   .intro-button__footer
     slot(name="actions")
@@ -60,6 +62,12 @@ export default defineComponent({
       type: String,
       required: false,
       default: ''
+    },
+    // renders the title as a crawlable link to `to`, looking like the plain title
+    titleLink: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     description: {
       type: String,

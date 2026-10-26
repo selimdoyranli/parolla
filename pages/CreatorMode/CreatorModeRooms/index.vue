@@ -2,7 +2,7 @@
 .page.creator-mode-rooms-page
   .page.creator-mode-rooms-page__inner
     .creator-mode-rooms-page-header
-      h2.creator-mode-rooms-page__title(align="center") {{ $t('creatorModeRooms.title') }}
+      h1.creator-mode-rooms-page__title.h2(align="center") {{ $t('creatorModeRooms.title') }}
       Button(color="#ff7878" icon="plus" round size="normal" @click="openCreateQuizSelectionDialog")
         | {{ $t('form.creatorModeCompose.title') }}
 
@@ -248,7 +248,7 @@ export default defineComponent({
     })
 
     useMeta(() => ({
-      title: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`,
+      title: `${i18n.t('seo.creatorModeQuizzes.title')} | parolla`,
       meta: [
         {
           hid: 'description',
@@ -257,22 +257,22 @@ export default defineComponent({
         },
         {
           hid: 'og:title',
-          name: 'og:title',
-          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+          property: 'og:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} | parolla`
         },
         {
           hid: 'twitter:title',
-          name: 'twitter:title',
-          content: `${i18n.t('seo.creatorModeQuizzes.title')} - ${i18n.t('seo.main.title')}`
+          property: 'twitter:title',
+          content: `${i18n.t('seo.creatorModeQuizzes.title')} | parolla`
         },
         {
           hid: 'og:description',
-          name: 'og:description',
+          property: 'og:description',
           content: i18n.t('seo.creatorModeQuizzes.description')
         },
         {
           hid: 'twitter:description',
-          name: 'twitter:description',
+          property: 'twitter:description',
           content: i18n.t('seo.creatorModeQuizzes.description')
         },
         {

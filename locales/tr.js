@@ -287,8 +287,11 @@ export default {
         title: 'LİMİTSİZ'
       },
       creator: {
-        title: 'YARATICI',
+        title: 'QUİZLER',
         description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
+        createQuiz: 'Quiz oluştur',
+        or: 'ya da',
+        solveQuiz: 'quiz çöz',
         label: 'Bugün {count} quiz çözüldü',
         todaysQuizLabel: 'Günün quizi',
         playButtonText: 'Tüm Quizler: Oyna'
@@ -1835,13 +1838,14 @@ export default {
       keywords: 'topluluk, quiz topluluğu, quiz paylaş'
     },
     creatorModeQuizzes: {
-      title: 'Quizler, quiz çöz ya da quiz oluştur',
-      description: 'Oyuncuların oluşturduğu quizleri çöz ya da quiz oluştur',
+      title: 'Quiz Çöz ve Quiz Oluştur',
+      description: 'Oyuncuların oluşturduğu quizleri çöz ya da kendi quizini oluştur.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     creatorModeQuiz: {
-      title: '{quizTitle} quiz',
-      description: '{quizTitle} quizini çöz!',
+      title: '{quizTitle} quiz çöz',
+      titleWithQuiz: '{quizTitle} çöz',
+      description: '{quizTitle} quizini çöz! Hemen oyna.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     tourMode: {

@@ -285,8 +285,11 @@ export default {
         title: 'UNLIMITED'
       },
       creator: {
-        title: 'CREATOR',
+        title: 'QUIZZES',
         description: 'Create your own quiz and solve quizzes created by players',
+        createQuiz: 'Create a quiz',
+        or: 'or',
+        solveQuiz: 'solve quizzes',
         label: 'Today {count} quiz solved',
         todaysQuizLabel: `Today's quiz`,
         playButtonText: 'All Quizzes: Play'
@@ -1813,13 +1816,14 @@ export default {
       keywords: 'communities, quiz community, share quiz'
     },
     creatorModeQuizzes: {
-      title: 'Quizzes, solve quizzes or create your own quiz',
-      description: 'Solve quizzes created by players or create your own quiz',
+      title: 'Solve Quizzes – Player-made Quizzes',
+      description: 'Solve quizzes created by players or create your own quiz.',
       keywords: 'quiz game, quiz solve, quiz create'
     },
     creatorModeQuiz: {
-      title: '{quizTitle} quiz',
-      description: 'Solve the "{quizTitle}" quiz!',
+      title: '{quizTitle} Quiz',
+      titleWithQuiz: '{quizTitle}',
+      description: 'Solve the "{quizTitle}" quiz! Play now.',
       keywords: 'quiz game, quiz solve, quiz create'
     },
     tourMode: {

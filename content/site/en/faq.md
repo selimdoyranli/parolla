@@ -1,7 +1,7 @@
 ---
 title: "Frequently Asked Questions (FAQ)"
-description: "Frequently asked questions about parolla: what is parolla, is it free, do I need an account, when does the daily game refresh, is there a Turkish Wordle, which modes are in English, how do I create a quiz?"
-updated: 2026-10-24
+description: "Frequently asked questions about parolla: what is parolla, is it free, do I need an account, when does the daily game refresh, is there a Turkish Wordle, which modes are in English, how do I create a quiz, where can I solve quizzes online?"
+updated: 2026-10-26
 faq:
   - q: "What is parolla?"
     a: "parolla is a free Turkish word and trivia game platform featuring a daily A-to-Z word quiz, a Wordle-style puzzle called Wordblock, a music guessing game, player-created quizzes and a tournament mode. It's playable on the web at www.parolla.app and via the iOS and Android apps."
@@ -14,7 +14,11 @@ faq:
   - q: "Is there a Wordle in Turkish?"
     a: "Yes. Wordblock on parolla is a Wordle-style daily puzzle: find the hidden 5-, 6- or 7-letter word of the day in at most 6 tries. It has a Turkish word list and an English one, with separate boards and leaderboards for each language."
   - q: "How do I create my own quiz?"
-    a: "In Creator Mode, open Create Quiz and pick a format: Question-Answer (classic), This or That, or Flashcards. Write your questions, publish, and your quiz gets a shareable link."
+    a: "Sign in, go to www.parolla.app/en/create-quiz and pick a format: Question-Answer (classic), This or That, or Flashcards. Write your questions, publish, and your quiz gets a shareable link."
+  - q: "Where can I solve quizzes online?"
+    a: "On parolla's Quizzes page (www.parolla.app/en/quizzes) you can solve quizzes created by players: general knowledge, geography, history, science, music, TV and film, football and flag quizzes in Question-Answer, This or That and Flashcards formats. You can filter quizzes by topic, search them and sort by the most played."
+  - q: "Do I need an account to solve quizzes?"
+    a: "No, you can solve quizzes without an account. You need to sign in to create your own quiz."
   - q: "Are there leaderboards?"
     a: "Yes. Daily Mode, Tour Mode and Wordblock each have leaderboards with daily, weekly, monthly and season rankings; Wordblock keeps a separate board per word length and per language. You need a free account to appear on them."
   - q: "What are communities on parolla?"
