@@ -113,8 +113,9 @@
     box-sizing: border-box;
     width: 100%;
     margin: 0;
-    padding: 24px 16px 0;
-    padding: 16px;
+    // bottom gap is a border, not padding: line-clamp clips at the padding edge, so a padding-bottom
+    // would show the top of the 4th line; border-box backgrounds keep the gradient under it
+    padding: 16px 16px 0;
     overflow: hidden;
     color: light-dark(#fff, #ccc);
     font-weight: 700;
@@ -125,14 +126,15 @@
     text-wrap: balance;
     text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.45);
     word-break: break-word;
-    background: linear-gradient(0deg, #000, transparent);
+    background: linear-gradient(0deg, #000, transparent) border-box;
+    border-bottom: 16px solid transparent;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 
   &--hasCoverPhoto &__placeholder-title {
     padding-top: 24px;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 35%, transparent) border-box;
   }
 
   // 16:9 of a fractional card width is a fractional height, so every grid row lands on a different
