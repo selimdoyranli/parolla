@@ -33,6 +33,13 @@
     flex-direction: column;
   }
 
+  &__note {
+    color: var(--color-text-02);
+    font-size: 0.75rem;
+    font-style: italic;
+    word-break: break-word;
+  }
+
   &__info time {
     color: var(--color-text-03);
     font-size: 0.75rem;

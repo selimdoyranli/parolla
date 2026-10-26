@@ -21,6 +21,14 @@
         Tag.notification-item__owner(v-if="item.isQuizOwnerActor" round) {{ $t('comments.quizOwner') }}
         | {{ actorLabel ? ' ' + text : text }}
       p.notification-item__excerpt(v-if="item.meta && item.meta.excerpt") “{{ item.meta.excerpt }}”
+      p.notification-item__excerpt(v-if="isGift && item.meta.note") “{{ item.meta.note }}”
+      button.notification-item__thank(
+        v-if="isGift && !item.meta.thanked"
+        type="button"
+        :disabled="thanking"
+        @click.stop="$emit('thank', item)"
+      )
+        | ❤️ {{ $t('notifications.thank') }}
     small.notification-item__meta
       span(v-if="item.room") {{ item.room.title }} ·
       span(v-else-if="item.meta && item.meta.communityName") {{ item.meta.communityName }} ·
@@ -38,14 +46,16 @@ import { APP_NAME } from '@/system/constant'
 export default defineComponent({
   components: { Tag },
   props: {
-    item: { type: Object, required: true }
+    item: { type: Object, required: true },
+    thanking: { type: Boolean, default: false }
   },
-  emits: ['select'],
+  emits: ['select', 'thank'],
   setup(props) {
     const { i18n } = useContext()
 
     const isAnnouncement = computed(() => props.item.type === 'announcement')
     const isCommunity = computed(() => props.item.type.startsWith('community_'))
+    const isGift = computed(() => props.item.type === 'gift_received' || props.item.type === 'gift_item_received')
     const name = computed(() => props.item.actor?.username || '')
     const actorLabel = computed(() =>
       props.item.actorCount > 1 ? i18n.t('notifications.andOthers', { name: name.value, count: props.item.actorCount - 1 }) : name.value
@@ -56,12 +66,14 @@ export default defineComponent({
         .t(`notifications.types.${props.item.type}`, {
           actor: '',
           rating: props.item.meta?.rating,
-          community: props.item.meta?.communityName
+          community: props.item.meta?.communityName,
+          amount: props.item.meta?.amount,
+          item: props.item.meta?.itemName
         })
         .trim()
     )
 
-    return { APP_NAME, isAnnouncement, isCommunity, actorLabel, text }
+    return { APP_NAME, isAnnouncement, isCommunity, isGift, actorLabel, text }
   }
 })
 </script>

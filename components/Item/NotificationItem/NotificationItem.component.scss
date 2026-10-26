@@ -85,6 +85,25 @@
   border-radius: 50%;
 }
 
+.notification-item__thank {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  margin: 2px 0 4px;
+  padding: 4px 12px;
+  color: var(--color-text-01);
+  font-weight: 600;
+  font-size: var(--font-size-text-10);
+  background-color: color-mix(in sRGB, var(--color-danger-01) 14%, transparent);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
 .notification-item__announcement {
   margin: 2px 0 4px;
   color: var(--color-text-01);

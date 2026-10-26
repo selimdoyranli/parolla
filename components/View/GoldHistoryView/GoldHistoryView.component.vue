@@ -18,7 +18,8 @@
     ul.gold-history-view__list(v-else)
       li.gold-history-view__row(v-for="(row, i) in items" :key="i")
         .gold-history-view__info
-          b {{ reasonLabel(row.reason) }}
+          b {{ reasonLabel(row) }}
+          small.gold-history-view__note(v-if="row.note") “{{ row.note }}”
           time {{ formatDate(row.createdAt) }}
         .gold-history-view__amount(:class="row.amount >= 0 ? 'gold-history-view__amount--plus' : 'gold-history-view__amount--minus'")
           GoldAmount(signed :amount="row.amount")
@@ -47,7 +48,12 @@ export default defineComponent({
     const loaded = ref(false)
     const failed = ref(false)
 
-    const reasonLabel = reason => (i18n.te(`economy.history.reasons.${reason}`) ? i18n.t(`economy.history.reasons.${reason}`) : reason)
+    const reasonLabel = ({ reason, username, itemName }) => {
+      // gift rows name the other player
+      const key = username && i18n.te(`economy.history.reasonsWithUser.${reason}`) ? 'reasonsWithUser' : 'reasons'
+
+      return i18n.te(`economy.history.${key}.${reason}`) ? i18n.t(`economy.history.${key}.${reason}`, { username, item: itemName }) : reason
+    }
     const formatDate = iso =>
       new Date(iso).toLocaleString(i18n.locale === 'en' ? 'en-GB' : 'tr-TR', { dateStyle: 'medium', timeStyle: 'short' })
 

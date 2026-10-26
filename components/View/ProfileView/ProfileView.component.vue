@@ -27,6 +27,9 @@
               .profile-view-actions__item(v-if="!isOnOwnPage" dropdown-closer @click="handleGoToProfile")
                 AppIcon.profile-view-actions__item-icon(name="tabler:user-circle" :width="18" :height="18")
                 span.profile-view-actions__item-title {{ $t('profile.actions.goToProfile') }}
+              .profile-view-actions__item(v-if="me" dropdown-closer @click="handleGift")
+                AppIcon.profile-view-actions__item-icon(name="tabler:gift" :width="18" :height="18")
+                span.profile-view-actions__item-title {{ $t('profile.actions.sendGift') }}
               .profile-view-actions__item(dropdown-closer @click="handleReport")
                 AppIcon.profile-view-actions__item-icon(name="tabler:flag" :width="18" :height="18")
                 span.profile-view-actions__item-title {{ $t('profile.actions.report') }}
@@ -38,6 +41,8 @@
         :additional="reportAdditional"
         @closed="isOpenReportDialog = false"
       )
+
+    GiftDialog(v-if="me && !isSelf" :is-open="isGiftDialogOpen" :player="player" @closed="isGiftDialogOpen = false")
 
     MountingPortal(mount-to="body" append)
       ImagePreview.profile-view-image-preview(
@@ -154,6 +159,7 @@ export default defineComponent({
     const isOpenReportDialog = ref(false)
     const isActionsOpen = ref(false)
     const isImagePreviewOpen = ref(false)
+    const isGiftDialogOpen = ref(false)
 
     const me = computed(() => store.getters['auth/user'])
     const isSelf = computed(() => me.value && props.player && me.value.username === props.player.username)
@@ -272,6 +278,11 @@ export default defineComponent({
       isOpenReportDialog.value = true
     }
 
+    const handleGift = () => {
+      isActionsOpen.value = false
+      isGiftDialogOpen.value = true
+    }
+
     const formatNumber = n => {
       const value = Number(n) || 0
 
@@ -288,6 +299,8 @@ export default defineComponent({
       isOpenReportDialog,
       isActionsOpen,
       isImagePreviewOpen,
+      isGiftDialogOpen,
+      me,
       reportTypeEnum,
       reportAdditional,
       isSelf,
@@ -305,7 +318,8 @@ export default defineComponent({
       handleAvatarClick,
       goToEdit,
       handleGoToProfile,
-      handleReport
+      handleReport,
+      handleGift
     }
   }
 })

@@ -74,6 +74,11 @@ export default {
       'not-ready': 'Henüz hazır değil',
       'unknown-item': 'Ürün bulunamadı',
       'invalid-slot': 'Geçersiz kuşanma yuvası',
+      'invalid-amount': 'Geçersiz altın miktarı',
+      'invalid-note': 'Not en fazla 256 karakter olabilir',
+      'self-gift': 'Kendine hediye gönderemezsin',
+      'recipient-unavailable': 'Bu oyuncuya hediye gönderilemiyor',
+      'recipient-owns': 'Bu oyuncu bu ürüne zaten sahip',
       generic: 'Bir şeyler ters gitti, tekrar dene'
     },
     achievements: {
@@ -137,7 +142,15 @@ export default {
         reroll: 'Görev yenileme',
         streak_freeze: 'Günlük seri dondurucu',
         season: 'Sezon ödülü',
-        admin: 'Yönetici işlemi'
+        admin: 'Yönetici işlemi',
+        gift_sent: 'Gönderilen hediye',
+        gift_received: 'Gelen hediye',
+        gift_purchase: 'Hediye satın alma'
+      },
+      reasonsWithUser: {
+        gift_sent: '{username} adlı oyuncuya hediye',
+        gift_received: '{username} adlı oyuncudan hediye',
+        gift_purchase: '{username} adlı oyuncuya "{item}" hediyesi'
       }
     },
     shop: {
@@ -423,7 +436,8 @@ export default {
     },
     credits: {
       title: 'Yapımcılar',
-      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>',
+      donate: "Bağış yaparak parolla'ya destek ol, sana daha iyi bir oyun sunmak için bu bizi motive ediyor!"
     },
     contact: {
       title: 'Bize ulaşın',
@@ -1146,6 +1160,18 @@ export default {
     alreadyRated: 'Bu quizi zaten puanladın',
     error: 'Bir şeyler ters gitti, tekrar dene'
   },
+  gift: {
+    title: 'Hediye Gönder',
+    amount: 'Altın',
+    notePlaceholder: 'Hediyene bir not ekle (isteğe bağlı)',
+    send: 'Gönder',
+    giftIt: 'Hediye et',
+    find: 'Bul',
+    usernamePlaceholder: 'Oyuncunun kullanıcı adı',
+    userNotFound: 'Oyuncu bulunamadı',
+    success: '{username} adlı oyuncuya hediyen gönderildi 🎁',
+    error: 'Bir şeyler ters gitti, tekrar dene'
+  },
   notifications: {
     title: 'Bildirimler',
     tabs: { all: 'Tümü', quizzes: 'Quizlerim', interactions: 'Etkileşimler' },
@@ -1164,8 +1190,12 @@ export default {
       community_member_kicked: '{actor} seni {community} topluluğundan çıkardı',
       community_hidden: '{community} topluluğun moderasyon nedeniyle gizlendi',
       post_commented: '{actor} {community} topluluğundaki gönderine yorum yaptı',
-      post_liked: '{actor} {community} topluluğundaki gönderini beğendi'
-    }
+      post_liked: '{actor} {community} topluluğundaki gönderini beğendi',
+      gift_received: '{actor} sana {amount} altın hediye etti 🎁',
+      gift_item_received: '{actor} sana "{item}" hediye etti, envanterini kontrol et! 🎁',
+      gift_thanked: '{actor} hediyen için sana teşekkür etti'
+    },
+    thank: 'Teşekkür et'
   },
   ownerStats: {
     views: 'Görüntülenme',
@@ -1911,7 +1941,8 @@ export default {
     },
     actions: {
       goToProfile: 'Profil sayfasına git',
-      report: 'Raporla'
+      report: 'Raporla',
+      sendGift: 'Hediye Gönder'
     },
     editButton: 'Profili düzenle',
     notFound: {

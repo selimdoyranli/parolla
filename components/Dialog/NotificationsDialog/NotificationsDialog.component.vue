@@ -19,13 +19,20 @@ Dialog.dialog.notifications-dialog(
     :error-text="$t('comments.error')"
     @load="load"
   )
-    NotificationItem(v-for="item in list.items" :key="item.ids.join('-')" :item="item" @select="handleSelect")
+    NotificationItem(
+      v-for="item in list.items"
+      :key="item.ids.join('-')"
+      :item="item"
+      :thanking="thankingId === item.ids[0]"
+      @select="handleSelect"
+      @thank="handleThank"
+    )
     Empty(v-if="list.finished && !list.items.length" :description="$t('notifications.empty')")
 </template>
 
 <script>
 import { defineComponent, computed, reactive, ref, watch, nextTick, useContext, useRouter, useStore } from '@nuxtjs/composition-api'
-import { Dialog, Tab, Tabs, List, Empty } from 'vant'
+import { Dialog, Tab, Tabs, List, Empty, Notify } from 'vant'
 
 export default defineComponent({
   components: {
@@ -96,6 +103,24 @@ export default defineComponent({
       if (unreadIds.length) store.dispatch('notification/markRead', { ids: unreadIds })
     }
 
+    const thankingId = ref(null)
+
+    const handleThank = async item => {
+      thankingId.value = item.ids[0]
+
+      const { error } = await store.dispatch('notification/thank', { id: item.ids[0] })
+
+      thankingId.value = null
+
+      if (error) {
+        Notify({ message: i18n.t('gift.error'), color: 'var(--color-text-04)', background: 'var(--color-danger-01)', duration: 3000 })
+
+        return
+      }
+
+      item.meta = { ...item.meta, thanked: true }
+    }
+
     const handleSelect = item => {
       // post comments, replies and likes open the post page (comment-targeted ones highlight the comment)
       if (item.meta?.postDocumentId && item.meta?.communitySlug) {
@@ -145,7 +170,7 @@ export default defineComponent({
       )
     }
 
-    return { state, listRef, activeTab, tabs, list, load, reset, handleSelect }
+    return { state, listRef, activeTab, tabs, list, load, reset, thankingId, handleThank, handleSelect }
   }
 })
 </script>
