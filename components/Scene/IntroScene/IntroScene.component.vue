@@ -89,7 +89,7 @@
         titleLink
         :to="localePath({ name: 'TourMode-TourModeGame' })"
         :headLabel="{ title: $t('introScene.modeList.tour.label'), icon: 'tabler:users', pulse: true }"
-        :title="$t('introScene.modeList.tour.cardTitle')"
+        :title="$t('introScene.modeList.tour.title')"
         :description="$t('introScene.modeList.tour.description')"
         :playerList="tourUserList"
       )

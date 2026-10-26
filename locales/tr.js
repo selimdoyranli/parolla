@@ -298,8 +298,6 @@ export default {
       },
       tour: {
         title: 'TUR',
-        // intro card only; `title` also names the mode on the leaderboard pages
-        cardTitle: 'KELİME OYUNU: TUR',
         description: 'Her tur bir soruyu cevapla, anlık rekabet',
         liveCount: `{count} aktif oyuncu`,
         label: 'CANLI',

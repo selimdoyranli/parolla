@@ -296,8 +296,6 @@ export default {
       },
       tour: {
         title: 'TOUR',
-        // intro card only; `title` also names the mode on the leaderboard pages
-        cardTitle: 'WORD GAME: TOUR',
         description: 'Answer the question in each round, instant competition',
         liveCount: `{count} active player`,
         label: 'LIVE',
