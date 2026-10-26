@@ -1853,9 +1853,9 @@ export default {
       description: 'Her tur bir soruyu cevapla, anlık rekabet'
     },
     wordblockMode: {
-      title: 'Kelimeblok - {charLength} harf',
-      description: '{charLength} harfli günün kelimesini 6 tahminde bul, günlük kelime oyunu',
-      keywords: 'günlük kelime oyunu, wordle türkçe, wordle türkçe uyarlaması, kelime tahmi oyunu'
+      title: 'Wordle Türkçe oyna - Kelimeblok {charLength} harf',
+      description: '{charLength} harfli günün kelimesini 6 tahminde bul. Kelimeblok ile Türkçe Wordle oyna: 5, 6 ve 7 harfli seçenekler.',
+      keywords: 'wordle türkçe, wordle, wordle oyna, kelimeblok, kelime blok'
     },
     musicMode: {
       guessTheSong: {

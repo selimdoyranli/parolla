@@ -12,6 +12,7 @@ const path = require('path')
 const { execSync } = require('child_process')
 const { CONTENT_PAGES } = require('./site.config')
 const { ROOT, LOCALES, renderContentPage, buildLlmsOutputs, buildSitemap, sitemapUrlCount } = require('./render')
+const { writeRouteHeads } = require('./route-heads')
 
 const argIndex = process.argv.indexOf('--out-dir')
 const OUT_DIR = path.resolve(ROOT, argIndex > -1 ? process.argv[argIndex + 1] : 'dist')
@@ -33,7 +34,7 @@ const gitLastMod = src => {
   return fs.statSync(path.join(ROOT, src)).mtime.toISOString()
 }
 
-const run = () => {
+const run = async () => {
   if (!fs.existsSync(OUT_DIR)) fail(`output dir not found: ${OUT_DIR} — run \`nuxt generate\` first`)
 
   const buildDate = new Date().toISOString()
@@ -57,6 +58,15 @@ const run = () => {
       fs.writeFileSync(outFile, rendered.html)
       written.push({ ...rendered, outFile })
     }
+  }
+
+  // app route shells get their own head (title/description/canonical/JSON-LD) instead of the homepage's
+  let routeHeads
+
+  try {
+    routeHeads = await writeRouteHeads(OUT_DIR)
+  } catch (e) {
+    return fail(`route heads: ${e.message}`)
   }
 
   const { llmsTxt, llmsFullTxt } = buildLlmsOutputs(written)
@@ -99,11 +109,21 @@ const run = () => {
 
   if (locCount !== expectedLocs) fail(`sitemap has ${locCount} <loc> entries, expected ${expectedLocs}`)
 
+  for (const { url, file, title } of routeHeads) {
+    const html = fs.readFileSync(file, 'utf8')
+
+    if (!html.includes(`<link rel="canonical" href="https://www.parolla.app${url}">`)) fail(`route head missing canonical: ${url}`)
+
+    if (!html.includes(`<title>${title}</title>`)) fail(`route head title not applied: ${url}`)
+  }
+
   for (const aux of ['llms.txt', 'llms-full.txt']) {
     if (!fs.statSync(path.join(OUT_DIR, aux)).size) fail(`${aux} is empty`)
   }
 
-  console.log(`✅ content-pages: ${written.length} pages + llms.txt + llms-full.txt + sitemap.xml (${locCount} urls) → ${OUT_DIR}`)
+  console.log(
+    `✅ content-pages: ${written.length} pages + ${routeHeads.length} route heads + llms.txt + llms-full.txt + sitemap.xml (${locCount} urls) → ${OUT_DIR}`
+  )
 }
 
 run()

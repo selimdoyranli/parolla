@@ -1831,9 +1831,9 @@ export default {
       description: 'Answer the question in each round, instant competition'
     },
     wordblockMode: {
-      title: 'Wordblock - {charLength} letters',
-      description: `Guess the {charLength} letter word in 6 attempts, daily word game`,
-      keywords: 'daily word game, wordle, like wordle, word guess game'
+      title: 'Play Wordle - Wordblock {charLength} letters',
+      description: `Guess the {charLength} letter word of the day in 6 attempts. Play Wordle with 5, 6 and 7 letter boards.`,
+      keywords: 'wordle, play wordle, wordle online, wordblock'
     },
     musicMode: {
       guessTheSong: {

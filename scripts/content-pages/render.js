@@ -16,6 +16,9 @@ const md = new MarkdownIt({ html: false, linkify: true })
 const ROOT = path.resolve(__dirname, '../..')
 const LOCALES = ['tr', 'en']
 
+// content pages are dist/<url>/index.html, which the host serves at <url>/ (the bare path 308s there)
+const pageUrl = (page, locale) => `${page[locale].url}/`
+
 const SECTION_TITLES = {
   steps: { tr: 'Adım Adım', en: 'Step by Step' },
   faq: { tr: 'Sorular ve Cevaplar', en: 'Questions and Answers' }
@@ -65,11 +68,11 @@ const breadcrumbBlock = (locale, page, fm) => {
   if (page.jsonld === 'howto' && page.key !== 'how-to-play') {
     items.push({
       name: locale === 'tr' ? 'Nasıl Oynanır?' : 'How to Play',
-      url: BASE_URL + hub[locale].url
+      url: BASE_URL + pageUrl(hub, locale)
     })
   }
 
-  items.push({ name: fm.title, url: BASE_URL + page[locale].url })
+  items.push({ name: fm.title, url: BASE_URL + pageUrl(page, locale) })
 
   return {
     '@context': 'https://schema.org',
@@ -92,7 +95,7 @@ const buildJsonld = (locale, page, fm) => {
       '@type': 'WebPage',
       name: fm.title,
       description: fm.description,
-      url: BASE_URL + page[locale].url,
+      url: BASE_URL + pageUrl(page, locale),
       inLanguage: locale
     })
     blocks.push({
@@ -101,7 +104,7 @@ const buildJsonld = (locale, page, fm) => {
       itemListElement: CONTENT_PAGES.filter(p => p.jsonld === 'howto').map((p, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: BASE_URL + p[locale].url
+        url: BASE_URL + pageUrl(p, locale)
       }))
     })
     blocks.push(videoGameBlock(locale))
@@ -169,7 +172,7 @@ const renderContentPage = (page, locale) => {
   const contentHtml = buildContentHtml(locale, page, fm, body)
   const jsonldBlocks = buildJsonld(locale, page, fm)
   const updated = fm.updated instanceof Date ? fm.updated.toISOString().slice(0, 10) : String(fm.updated)
-  const urls = { tr: page.tr.url, en: page.en.url }
+  const urls = { tr: pageUrl(page, 'tr'), en: pageUrl(page, 'en') }
   const html = renderPage({ locale, urls, title: fm.title, description: fm.description, updated, contentHtml, jsonldBlocks })
 
   return {
@@ -188,8 +191,8 @@ const buildLlmsOutputs = rendered => {
   const full = []
 
   for (const item of rendered) {
-    index[item.locale].push(`- [${item.title}](${BASE_URL}${item.url}): ${item.description}`)
-    full.push(`# ${item.title} (${BASE_URL}${item.url})\n\n${item.text}`)
+    index[item.locale].push(`- [${item.title}](${BASE_URL}${item.url}/): ${item.description}`)
+    full.push(`# ${item.title} (${BASE_URL}${item.url}/)\n\n${item.text}`)
   }
 
   const llmsTxt = [
@@ -198,14 +201,14 @@ const buildLlmsOutputs = rendered => {
     `> ${GAME_INFO.descriptions.tr}`,
     `> ${GAME_INFO.descriptions.en}`,
     '',
-    `parolla: ${BASE_URL} (Türkçe) — ${BASE_URL}/en (English)`,
+    `parolla: ${BASE_URL} (Türkçe) — ${BASE_URL}/en/ (English)`,
     '',
     '## Quizler / Quizzes',
     '',
     `- [Quiz Çöz ve Quiz Oluştur](${BASE_URL}/quizler/): Oyuncuların oluşturduğu quizleri çöz ya da kendi quizini oluştur.`,
-    `- [Quiz oluştur](${BASE_URL}/quiz-olustur): Soru-Cevap, O mu bu mu? ya da Flashcards formatında quiz oluştur ve bağlantısını paylaş.`,
+    `- [Quiz oluştur](${BASE_URL}/quiz-olustur/): Soru-Cevap, O mu bu mu? ya da Flashcards formatında quiz oluştur ve bağlantısını paylaş.`,
     `- [Solve Quizzes](${BASE_URL}/en/quizzes/): Solve quizzes created by players or create your own quiz.`,
-    `- [Create a quiz](${BASE_URL}/en/create-quiz): Create a Question-Answer, This or That or Flashcards quiz and share its link.`,
+    `- [Create a quiz](${BASE_URL}/en/create-quiz/): Create a Question-Answer, This or That or Flashcards quiz and share its link.`,
     '',
     '## Türkçe',
     '',
@@ -239,7 +242,7 @@ const sitemapEntry = (urls, lastmod) => {
 /** How many <loc> entries buildSitemap() emits — the generator asserts against this. */
 const sitemapUrlCount = () =>
   APP_ROUTES.reduce((total, urls) => total + localesOf(urls).length, 0) +
-  CONTENT_PAGES.reduce((total, page) => total + localesOf({ tr: page.tr.url, en: page.en.url }).length, 0)
+  CONTENT_PAGES.reduce((total, page) => total + localesOf({ tr: pageUrl(page, 'tr'), en: pageUrl(page, 'en') }).length, 0)
 
 /**
  * @param {object} options
@@ -249,7 +252,7 @@ const sitemapUrlCount = () =>
 const buildSitemap = ({ buildDate, contentLastMod }) => {
   const entries = [
     ...APP_ROUTES.map(urls => sitemapEntry(urls, buildDate)),
-    ...CONTENT_PAGES.map(page => sitemapEntry({ tr: page.tr.url, en: page.en.url }, contentLastMod(page)))
+    ...CONTENT_PAGES.map(page => sitemapEntry({ tr: pageUrl(page, 'tr'), en: pageUrl(page, 'en') }, contentLastMod(page)))
   ]
 
   return [
