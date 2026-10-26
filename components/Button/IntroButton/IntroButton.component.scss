@@ -101,12 +101,6 @@
     @include media-breakpoint-down(mobile) {
       font-size: var(--font-size-text-9);
     }
-
-    // links in the description read as plain description text
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
   }
 
   &__label {
@@ -355,6 +349,15 @@
 
   a {
     color: var(--color-text-02);
+  }
+
+  // linked title and description links read as the plain text around them, hover included
+  a.intro-button-title,
+  a.intro-button-title:hover,
+  &__description a,
+  &__description a:hover {
+    color: inherit;
+    text-decoration: none;
   }
 
   @include font-weight-semi-bold;

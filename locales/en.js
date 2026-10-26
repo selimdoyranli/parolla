@@ -285,7 +285,7 @@ export default {
         title: 'UNLIMITED'
       },
       creator: {
-        title: 'CREATOR',
+        title: 'QUIZZES',
         description: 'Create your own quiz and solve quizzes created by players',
         createQuiz: 'Create a quiz',
         or: 'or',
@@ -296,6 +296,8 @@ export default {
       },
       tour: {
         title: 'TOUR',
+        // intro card only; `title` also names the mode on the leaderboard pages
+        cardTitle: 'WORD GAME: TOUR',
         description: 'Answer the question in each round, instant competition',
         liveCount: `{count} active player`,
         label: 'LIVE',

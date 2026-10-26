@@ -62,6 +62,7 @@
 
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--creator(
         icon="noto:pencil"
+        titleLink
         :to="localePath({ name: 'CreatorMode-CreatorModeRooms' })"
         :title="$t('introScene.modeList.creator.title')"
         :headLabel="{ title: $t('introScene.modeList.creator.label', { count: creatorDailyPlayingCount }) }"
@@ -85,9 +86,10 @@
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
         icon="akar-icons:arrow-cycle"
+        titleLink
         :to="localePath({ name: 'TourMode-TourModeGame' })"
         :headLabel="{ title: $t('introScene.modeList.tour.label'), icon: 'tabler:users', pulse: true }"
-        :title="$t('introScene.modeList.tour.title')"
+        :title="$t('introScene.modeList.tour.cardTitle')"
         :description="$t('introScene.modeList.tour.description')"
         :playerList="tourUserList"
       )
