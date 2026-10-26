@@ -28,15 +28,11 @@
         :style="{ background: dotColor(v) }"
         @click="index = i"
       )
-    button.shop-buy.shop-buy--block.shop-buy--owned(v-if="equipped" type="button" disabled)
+    //- owned items keep the price button: the dialog offers equip and gift (free-event items aren't sold, so equip here)
+    button.shop-buy.shop-buy--block.shop-buy--owned(v-if="free && equipped" type="button" disabled)
       AppIcon(name="tabler:check" :width="14" :height="14")
       span {{ $t('economy.shop.equippedLabel') }}
-    button.shop-buy.shop-buy--block.shop-buy--ghost(
-      v-else-if="owned || free"
-      type="button"
-      :disabled="equipping"
-      @click="$emit('equip', current)"
-    )
+    button.shop-buy.shop-buy--block.shop-buy--ghost(v-else-if="free" type="button" :disabled="equipping" @click="$emit('equip', current)")
       Loading(v-if="equipping" color="currentColor" size="14")
       span(v-else) {{ $t('economy.shop.equip') }}
     button.shop-buy.shop-buy--block(v-else type="button" @click="$emit('buy', { item: current, price, fromVitrin: Boolean(original) })")

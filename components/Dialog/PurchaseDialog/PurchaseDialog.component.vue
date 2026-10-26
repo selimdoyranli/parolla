@@ -29,11 +29,11 @@ Dialog.dialog.purchase-dialog(
       .purchase-dialog__row
         span {{ $t('economy.shop.balance') }}
         GoldAmount(:amount="balance")
-      .purchase-dialog__row(v-if="phase !== 'success'")
+      .purchase-dialog__row(v-if="phase !== 'success' && !owned")
         span {{ $t('economy.shop.balanceAfter') }}
         GoldAmount(:class="{ 'purchase-dialog__negative': missing > 0 }" :amount="balance - target.price")
 
-    i18n.purchase-dialog__message(v-if="isShort" tag="p" path="economy.shop.insufficient")
+    i18n.purchase-dialog__message(v-if="isShort && !owned" tag="p" path="economy.shop.insufficient")
       template(#balance)
         GoldAmount(size="sm" :amount="balance")
       template(#missing)
@@ -42,7 +42,7 @@ Dialog.dialog.purchase-dialog(
     p.purchase-dialog__message.purchase-dialog__message--ok(v-else-if="phase === 'success'")
       AppIcon(name="tabler:circle-check" :width="18" :height="18")
       span {{ $t('economy.shop.purchased') }}
-    p.purchase-dialog__message(v-if="phase === 'success' && equipError") {{ $t('economy.shop.equipFailed') }}
+    p.purchase-dialog__message(v-if="(phase === 'success' || owned) && equipError") {{ $t('economy.shop.equipFailed') }}
 
     .purchase-dialog__actions
       template(v-if="phase === 'success'")
@@ -51,16 +51,35 @@ Dialog.dialog.purchase-dialog(
           span(v-else) {{ $t('economy.shop.equip') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" @click="state.isOpen = false") {{ $t('general.close') }}
       template(v-else)
-        button.shop-buy.shop-buy--block(type="button" :disabled="busy || missing > 0" @click="confirm")
+        //- already owned: no buy, equip instead (gifting stays available)
+        template(v-if="owned")
+          button.shop-buy.shop-buy--block.shop-buy--owned(v-if="equipped" type="button" disabled)
+            AppIcon(name="tabler:check" :width="16" :height="16")
+            span {{ $t('economy.shop.equippedLabel') }}
+          button.shop-buy.shop-buy--block(v-else type="button" :disabled="busy" @click="equip")
+            Loading(v-if="busy" color="currentColor" size="16")
+            span(v-else) {{ $t('economy.shop.equip') }}
+        button.shop-buy.shop-buy--block(v-else type="button" :disabled="busy || missing > 0" @click="confirm")
           Loading(v-if="busy" color="currentColor" size="16")
           template(v-else)
             span {{ $t('economy.shop.confirm') }}
             GoldAmount(size="sm" :amount="target.price")
+        button.shop-buy.shop-buy--neutral.shop-buy--block(v-if="target.item" type="button" :disabled="busy" @click="isGiftOpen = true")
+          AppIcon(name="tabler:gift" :width="16" :height="16")
+          span {{ $t('gift.giftIt') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(v-if="!isFreeze" type="button" :disabled="busy" @click="isPreviewOpen = true")
           AppIcon(name="tabler:eye" :width="16" :height="16")
           span {{ $t('economy.collection.previewOpen') }}
         button.shop-buy.shop-buy--neutral.shop-buy--block(type="button" :disabled="busy" @click="state.isOpen = false") {{ $t('general.cancel') }}
 
+  GiftDialog(
+    v-if="target && target.item"
+    :is-open="isGiftOpen"
+    :target="target"
+    @closed="isGiftOpen = false"
+    @sent="state.isOpen = false"
+    @vitrin-expired="$emit('vitrin-expired')"
+  )
   LazyPreviewDialog(v-if="viewer" :isOpen="isPreviewOpen" :patch="previewPatch" @closed="isPreviewOpen = false")
 </template>
 
@@ -87,12 +106,18 @@ export default defineComponent({
     const errorText = ref('')
     const equipError = ref(false)
     const isPreviewOpen = ref(false)
+    const isGiftOpen = ref(false)
     let attemptKey = null // reused across retries of an ambiguous failure, reset after a definitive response
 
     const balance = computed(() => store.state.economy.wallet.gold)
     const missing = computed(() => (props.target ? Math.max(0, props.target.price - balance.value) : 0))
     const isShort = computed(() => phase.value === 'insufficient' || (phase.value === 'confirm' && missing.value > 0))
     const viewer = computed(() => ($auth.loggedIn ? $auth.user : null))
+    const inventory = computed(() => store.state.economy.inventory || {})
+    const owned = computed(() =>
+      Boolean(props.target && props.target.item && (inventory.value.owned || []).some(o => o.itemKey === props.target.item.key))
+    )
+    const equipped = computed(() => owned.value && Object.values(inventory.value.loadout || {}).includes(props.target.item.key))
     const isFreeze = computed(() => Boolean(props.target && props.target.type === 'freeze'))
     const title = computed(() => (props.target && props.target.item ? props.target.item.name : props.target && props.target.name))
 
@@ -105,6 +130,7 @@ export default defineComponent({
           phase.value = 'confirm'
           errorText.value = ''
           equipError.value = false
+          isGiftOpen.value = false
           attemptKey = null
         }
       }
@@ -197,6 +223,9 @@ export default defineComponent({
       errorText,
       equipError,
       isPreviewOpen,
+      isGiftOpen,
+      owned,
+      equipped,
       previewPatch,
       balance,
       missing,

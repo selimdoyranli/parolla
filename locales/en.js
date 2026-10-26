@@ -74,6 +74,11 @@ export default {
       'not-ready': 'Not ready yet',
       'unknown-item': 'Item not found',
       'invalid-slot': 'Invalid loadout slot',
+      'invalid-amount': 'Invalid gold amount',
+      'invalid-note': 'Note can be at most 256 characters',
+      'self-gift': "You can't send a gift to yourself",
+      'recipient-unavailable': "This player can't receive gifts",
+      'recipient-owns': 'This player already owns this item',
       generic: 'Something went wrong, try again'
     },
     achievements: {
@@ -137,7 +142,15 @@ export default {
         reroll: 'Quest reroll',
         streak_freeze: 'Login streak freeze',
         season: 'Season reward',
-        admin: 'Admin adjustment'
+        admin: 'Admin adjustment',
+        gift_sent: 'Gift sent',
+        gift_received: 'Gift received',
+        gift_purchase: 'Gift purchase'
+      },
+      reasonsWithUser: {
+        gift_sent: 'Gift to {username}',
+        gift_received: 'Gift from {username}',
+        gift_purchase: '"{item}" gifted to {username}'
       }
     },
     shop: {
@@ -421,7 +434,8 @@ export default {
     },
     credits: {
       title: 'Credits',
-      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>',
+      donate: 'Support parolla with a donation, it motivates us to bring you a better game!'
     },
     contact: {
       title: 'Contact',
@@ -1128,6 +1142,18 @@ export default {
     alreadyRated: 'You already rated this quiz',
     error: 'Something went wrong, try again'
   },
+  gift: {
+    title: 'Send Gift',
+    amount: 'Gold',
+    notePlaceholder: 'Add a note to your gift (optional)',
+    send: 'Send',
+    giftIt: 'Gift it',
+    find: 'Find',
+    usernamePlaceholder: 'Player username',
+    userNotFound: 'Player not found',
+    success: 'Your gift was sent to {username} 🎁',
+    error: 'Something went wrong, try again'
+  },
   notifications: {
     title: 'Notifications',
     tabs: { all: 'All', quizzes: 'My quizzes', interactions: 'Interactions' },
@@ -1146,8 +1172,12 @@ export default {
       community_member_kicked: '{actor} removed you from {community}',
       community_hidden: 'Your community {community} was hidden by moderation',
       post_commented: '{actor} commented on your post in {community}',
-      post_liked: '{actor} liked your post in {community}'
-    }
+      post_liked: '{actor} liked your post in {community}',
+      gift_received: '{actor} sent you {amount} gold as a gift 🎁',
+      gift_item_received: '{actor} gifted you "{item}", check your inventory! 🎁',
+      gift_thanked: '{actor} thanked you for your gift'
+    },
+    thank: 'Say thanks'
   },
   ownerStats: {
     views: 'Views',
@@ -1889,7 +1919,8 @@ export default {
     },
     actions: {
       goToProfile: 'Go to profile',
-      report: 'Report'
+      report: 'Report',
+      sendGift: 'Send Gift'
     },
     editButton: 'Edit profile',
     notFound: {

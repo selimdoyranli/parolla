@@ -59,5 +59,9 @@ export default {
     if (!error) await dispatch('refreshUnreadCount')
 
     return { error }
+  },
+
+  thank(_, { id }) {
+    return this.$appFetch({ path: `notifications/${id}/thank`, method: 'POST', headers: authHeaders(this) })
   }
 }

@@ -200,6 +200,14 @@ export default {
     return result
   },
 
+  giftItem(_, { toUserId, itemKey, fromVitrin, note, idempotencyKey }) {
+    return authed(this, { path: 'economy/shop/gift', method: 'POST', data: { toUserId, itemKey, fromVitrin, note, idempotencyKey } })
+  },
+
+  sendGift(_, { toUserId, amount, note, idempotencyKey }) {
+    return authed(this, { path: 'economy/gift', method: 'POST', data: { toUserId, amount, note, idempotencyKey } })
+  },
+
   async fetchFreeEvents({ commit }) {
     const { data, error } = await this.$appFetch({ path: 'economy/free-events/active' })
 
