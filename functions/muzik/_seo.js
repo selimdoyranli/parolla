@@ -27,7 +27,7 @@ const COPY = {
     description: names => `Çalan şarkıyı bil! Müzik quizde ${names} şarkılarını dinle ve çalan şarkıyı tahmin et.`,
     genericTitle: 'Müzik Quiz - Çalan şarkıyı tahmin et',
     genericDescription:
-      'Müzik quiz oyna, çalan şarkıyı bil! Sanatçı ya da çalma listesi seç, şarkıyı 5, 3, 1 ya da 0.5 saniye dinle ve çalan şarkıyı tahmin et. Ücretsiz.',
+      'Müzik quiz oyna, çalan şarkıyı bil! Şarkı tahmin etme oyunu: sanatçı ya da çalma listesi seç, şarkıyı 5, 3, 1 ya da 0.5 saniye dinle ve tahmin et.',
     play: 'Müzik quiz oyna',
     modes:
       'Müzik quizde çalan şarkıyı bil: mod seç ve çalan şarkıyı tahmin et. Kolay modda şarkı 5 saniye, Orta modda 3 saniye, Zor modda 1 saniye, İmkansız modda 0.5 saniye çalar. Her turda tahmin için 30 saniyen var.',

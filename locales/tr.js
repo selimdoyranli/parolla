@@ -1869,8 +1869,8 @@ export default {
       guessTheSong: {
         title: 'Müzik Quiz - Çalan şarkıyı tahmin et',
         description:
-          'Müzik quiz oyna, çalan şarkıyı bil! Sanatçı ya da çalma listesi seç, şarkıyı 5, 3, 1 ya da 0.5 saniye dinle ve çalan şarkıyı tahmin et. Ücretsiz.',
-        keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin oyunu, müzik quiz oyna, şarkıyı bil'
+          'Müzik quiz oyna, çalan şarkıyı bil! Şarkı tahmin etme oyunu: sanatçı ya da çalma listesi seç, şarkıyı 5, 3, 1 ya da 0.5 saniye dinle ve tahmin et.',
+        keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin etme oyunu, şarkı bilme oyunu, şarkı quiz'
       },
       guessTheSongPlay: {
         title: '{artists} şarkılarını tahmin et - Müzik Quiz',
