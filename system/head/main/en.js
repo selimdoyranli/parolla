@@ -38,7 +38,7 @@ export const meta = [
   {
     hid: 'og:image',
     property: 'og:image',
-    content: '/meta/og-main-en.png'
+    content: '/meta/og-main-en.jpg'
   },
   {
     hid: 'twitter:card',
@@ -63,7 +63,7 @@ export const meta = [
   {
     hid: 'twitter:image',
     property: 'twitter:image',
-    content: '/meta/og-main-en.png'
+    content: '/meta/og-main-en.jpg'
   },
   {
     hid: 'twitter:creator',
