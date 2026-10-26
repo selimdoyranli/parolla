@@ -262,7 +262,7 @@ export default defineComponent({
         },
         {
           hid: 'twitter:title',
-          property: 'twitter:title',
+          name: 'twitter:title',
           content: `${i18n.t('seo.creatorModeQuizzes.title')} | parolla`
         },
         {
@@ -272,7 +272,7 @@ export default defineComponent({
         },
         {
           hid: 'twitter:description',
-          property: 'twitter:description',
+          name: 'twitter:description',
           content: i18n.t('seo.creatorModeQuizzes.description')
         },
         {

@@ -42,32 +42,32 @@ export const meta = [
   },
   {
     hid: 'twitter:card',
-    property: 'twitter:card',
+    name: 'twitter:card',
     content: 'summary_large_image'
   },
   {
     hid: 'twitter:title',
-    property: 'twitter:title',
+    name: 'twitter:title',
     content: 'parolla - Kelime oyunu'
   },
   {
     hid: 'twitter:description',
-    property: 'twitter:description',
+    name: 'twitter:description',
     content: 'Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz'
   },
   {
     hid: 'twitter:url',
-    property: 'twitter:url',
+    name: 'twitter:url',
     content: 'https://www.parolla.app'
   },
   {
     hid: 'twitter:image',
-    property: 'twitter:image',
+    name: 'twitter:image',
     content: 'https://www.parolla.app/meta/og-main-tr.jpg'
   },
   {
     hid: 'twitter:creator',
-    property: 'twitter:creator',
+    name: 'twitter:creator',
     content: `@parollaapp`
   }
 ]

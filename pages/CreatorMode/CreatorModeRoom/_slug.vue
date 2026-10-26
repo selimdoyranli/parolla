@@ -86,9 +86,9 @@ export default defineComponent({
         { hid: 'robots', name: 'robots', content: room.value?.title && (isIndexable.value ? 'index,follow' : 'noindex, follow') },
         { hid: 'description', name: 'description', content: seoDescription.value },
         { hid: 'og:title', property: 'og:title', content: seoTitle.value },
-        { hid: 'twitter:title', property: 'twitter:title', content: seoTitle.value },
+        { hid: 'twitter:title', name: 'twitter:title', content: seoTitle.value },
         { hid: 'og:description', property: 'og:description', content: seoDescription.value },
-        { hid: 'twitter:description', property: 'twitter:description', content: seoDescription.value },
+        { hid: 'twitter:description', name: 'twitter:description', content: seoDescription.value },
         {
           hid: 'keywords',
           name: 'keywords',
