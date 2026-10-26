@@ -26,7 +26,7 @@ const COPY = {
     author: name => `Oluşturan: ${name}`,
     tags: 'Etiketler',
     allQuizzes: 'Tüm quizler',
-    listTitle: 'Quiz Çöz – Binlerce Ücretsiz Türkçe Quiz',
+    listTitle: 'Quiz Çöz ve Quiz Oluştur – Ücretsiz Quizler',
     listHeading: 'Quiz Çöz',
     listDescription: 'Oyuncuların oluşturduğu binlerce ücretsiz quizi çöz ya da kendi quizini oluştur.',
     popular: 'Popüler quizler'

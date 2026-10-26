@@ -1835,7 +1835,7 @@ export default {
       keywords: 'topluluk, quiz topluluğu, quiz paylaş'
     },
     creatorModeQuizzes: {
-      title: 'Quiz Çöz – Binlerce Ücretsiz Türkçe Quiz',
+      title: 'Quiz Çöz ve Quiz Oluştur – Ücretsiz Quizler',
       description: 'Oyuncuların oluşturduğu binlerce ücretsiz quizi çöz ya da kendi quizini oluştur.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
