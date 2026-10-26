@@ -1,5 +1,52 @@
 # Changelog
 
+## v3.8.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.7.0...v3.8.0)
+
+
+### 🚀 Enhancements
+
+  - **gm:** Report-only AI moderation toggles and reported rooms page ([c9f06ad](https://github.com/selimdoyranli/parolla/commit/c9f06ad))
+  - **gm:** Add moderation dialog to quiz intro and community detail ([04a1309](https://github.com/selimdoyranli/parolla/commit/04a1309))
+  - **ads:** One intro ad right under the play button ([5bc351a](https://github.com/selimdoyranli/parolla/commit/5bc351a))
+  - **ads:** Creator intro ad after the creator byline ([cd5a5e7](https://github.com/selimdoyranli/parolla/commit/cd5a5e7))
+  - **ads:** App-ads.txt and in-app 'watch an ad for gold' row ([e94a693](https://github.com/selimdoyranli/parolla/commit/e94a693))
+  - **economy:** 'watch an ad for gold' on every inventory tab + daily header tip ([a90b367](https://github.com/selimdoyranli/parolla/commit/a90b367))
+  - **economy:** Show the rewarded-ad row and tip to guests, ask them to log in on tap ([e5e2ea5](https://github.com/selimdoyranli/parolla/commit/e5e2ea5))
+  - **economy:** Compact gold in the header shop badge (35.8K) ([e5f9c4d](https://github.com/selimdoyranli/parolla/commit/e5f9c4d))
+  - **seo:** Edge-rendered quiz meta for non-JS crawlers ([e7c4092](https://github.com/selimdoyranli/parolla/commit/e7c4092))
+  - **seo:** /quizler title targets quiz çöz + quiz oluştur ([5e31011](https://github.com/selimdoyranli/parolla/commit/5e31011))
+  - **seo:** Drop 'ücretsiz' / 'free' from quiz SEO copy ([c3b6745](https://github.com/selimdoyranli/parolla/commit/c3b6745))
+  - **seo:** Drop 'binlerce' / 'thousands' from quiz list copy ([3a527c4](https://github.com/selimdoyranli/parolla/commit/3a527c4))
+  - **seo:** Quiz FAQ entries, llms.txt quiz section, linked creator intro copy ([4da66b0](https://github.com/selimdoyranli/parolla/commit/4da66b0))
+  - **seo:** Linked intro card titles — QUİZLER and KELİME OYUNU: TUR ([d3ca798](https://github.com/selimdoyranli/parolla/commit/d3ca798))
+  - **seo:** Lowercase quiz page title, no repeated quiz ([f9b15a9](https://github.com/selimdoyranli/parolla/commit/f9b15a9))
+  - **seo:** Redesigned og images ([accd1f1](https://github.com/selimdoyranli/parolla/commit/accd1f1))
+  - **seo:** Community pages meta at the edge ([7468e31](https://github.com/selimdoyranli/parolla/commit/7468e31))
+  - **seo:** Og images with the daily game scene ([a9b7f7d](https://github.com/selimdoyranli/parolla/commit/a9b7f7d))
+  - **seo:** Build-time heads for static mode routes, wordle keywords, slash-correct sitemap ([3ddb671](https://github.com/selimdoyranli/parolla/commit/3ddb671))
+
+### 🩹 Fixes
+
+  - **ux:** Locked community composer, modal Esc/overlay dismiss, review dialog overflow ([88620ea](https://github.com/selimdoyranli/parolla/commit/88620ea))
+  - **gm:** Correct daily anomaly description ([fd334a8](https://github.com/selimdoyranli/parolla/commit/fd334a8))
+  - **lists:** Restore quiz/community list memory only on back navigation ([9945976](https://github.com/selimdoyranli/parolla/commit/9945976))
+  - **ads:** Own units per dialog placement, rectangle on phones, drop the under-comments intro ad ([95d8441](https://github.com/selimdoyranli/parolla/commit/95d8441))
+  - **economy:** /users/me wallet no longer clears the app's ad reward ([5941457](https://github.com/selimdoyranli/parolla/commit/5941457))
+  - **seo:** Absolute og:image, cover photo or locale default ([3c910ca](https://github.com/selimdoyranli/parolla/commit/3c910ca))
+  - **seo:** Point EN og/twitter image at the existing og-main-en.jpg ([9c03769](https://github.com/selimdoyranli/parolla/commit/9c03769))
+  - **seo:** Absolute default og/twitter image URLs ([eddd910](https://github.com/selimdoyranli/parolla/commit/eddd910))
+  - **seo:** Twitter card tags use name, not property ([3d8605b](https://github.com/selimdoyranli/parolla/commit/3d8605b))
+
+### 📖 Documentation
+
+  - Community edge SEO note ([6d730b8](https://github.com/selimdoyranli/parolla/commit/6d730b8))
+
+### ❤️  Contributors
+
+- Selimdoyranli <selimdoyranli@gmail.com>
+
 ## v3.7.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.6.0...v3.7.0)
