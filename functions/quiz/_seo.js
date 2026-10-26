@@ -60,7 +60,7 @@ export const jsonLdTag = data => `<script type="application/ld+json">${JSON.stri
 
 export const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text)
 
-const cachedJson = async (context, url, ttl) => {
+export const cachedJson = async (context, url, ttl) => {
   const cache = caches.default
   const key = new Request(`${new URL(context.request.url).origin}/__seo-data?u=${encodeURIComponent(url)}`)
   const hit = await cache.match(key)
@@ -72,7 +72,7 @@ const cachedJson = async (context, url, ttl) => {
   const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
 
   if (!res.ok) {
-    throw new Error(`strapi ${res.status}`)
+    throw Object.assign(new Error(`strapi ${res.status}`), { status: res.status })
   }
 
   const body = await res.text()
@@ -144,7 +144,7 @@ const rewrite = (response, { title, description, canonical, image, jsonLd, body 
 export const isIndexable = room =>
   Boolean(room?.roomId && room.title) && room.isPublic === true && room.isVisible !== false && !room.isSystemRemovedFromPublic
 
-const noindex = response =>
+export const noindex = response =>
   new HTMLRewriter()
     .on('meta[data-hid="robots"]', {
       element(el) {
@@ -153,7 +153,7 @@ const noindex = response =>
     })
     .transform(response)
 
-const isHtml = response => response.ok && (response.headers.get('Content-Type') || '').includes('text/html')
+export const isHtml = response => response.ok && (response.headers.get('Content-Type') || '').includes('text/html')
 
 export const quizPage = locale => async context => {
   const shell = await context.next()

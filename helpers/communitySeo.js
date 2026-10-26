@@ -30,7 +30,8 @@ const langOf = locale => (locale === 'en' ? 'en' : 'tr')
 const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text)
 const ogImage = lang => `${SITE_URL}/meta/og-main-${lang}.jpg`
 
-export const communityListUrl = lang => `${SITE_URL}${PATHS[lang].list}`
+// trailing slash: the static host 308s /topluluklar to /topluluklar/, a canonical must not redirect
+export const communityListUrl = lang => `${SITE_URL}${PATHS[lang].list}/`
 export const communityUrl = (lang, slug) => `${SITE_URL}${PATHS[lang].community}/${encodeURIComponent(slug)}`
 export const communityPostUrl = (lang, slug, postId) => `${communityUrl(lang, slug)}/${PATHS[lang].post}/${encodeURIComponent(postId)}`
 const profileUrl = (lang, username) => `${SITE_URL}${PATHS[lang].profile}/${encodeURIComponent(username)}`
