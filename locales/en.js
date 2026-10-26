@@ -1822,6 +1822,7 @@ export default {
     },
     creatorModeQuiz: {
       title: '{quizTitle} Quiz',
+      titleWithQuiz: '{quizTitle}',
       description: 'Solve the "{quizTitle}" quiz! Play now.',
       keywords: 'quiz game, quiz solve, quiz create'
     },

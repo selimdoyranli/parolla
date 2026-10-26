@@ -18,6 +18,9 @@ import { defineComponent, useFetch, useRoute, useStore, useContext, useMeta, com
 import { quizTypeEnum } from '@/enums/quiz.enum'
 import { Notify, Empty, Button } from 'vant'
 
+// same check as functions/quiz/_seo.js: titles that already say quiz don't get it repeated
+const HAS_QUIZ = /qu[iıİ]z/i
+
 export default defineComponent({
   components: {
     Empty,
@@ -55,7 +58,11 @@ export default defineComponent({
 
     // Keep in step with functions/quiz/_seo.js, which serves the same head to non-JS crawlers
     const seoTitle = computed(
-      () => room.value?.title && `${i18n.t('seo.creatorModeQuiz.title', { quizTitle: room.value.title })} | parolla`
+      () =>
+        room.value?.title &&
+        `${i18n.t(`seo.creatorModeQuiz.${HAS_QUIZ.test(room.value.title) ? 'titleWithQuiz' : 'title'}`, {
+          quizTitle: room.value.title
+        })} | parolla`
     )
 
     const seoDescription = computed(() => {

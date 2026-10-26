@@ -1,6 +1,6 @@
 // Self-check for functions/quiz/_seo.js helpers — run: node scripts/quiz-seo-selfcheck.mjs
 import assert from 'node:assert'
-import { escapeHtml, jsonLdTag, clip, isIndexable } from '../functions/quiz/_seo.js'
+import { escapeHtml, jsonLdTag, clip, isIndexable, HAS_QUIZ } from '../functions/quiz/_seo.js'
 
 assert.strictEqual(escapeHtml('<b>"Tom" & Jerry\'s</b>'), '&lt;b&gt;&quot;Tom&quot; &amp; Jerry&#39;s&lt;/b&gt;')
 assert.strictEqual(escapeHtml(null), '')
@@ -22,3 +22,7 @@ assert.strictEqual(isIndexable({ ...room, isSystemRemovedFromPublic: true }), fa
 assert.strictEqual(isIndexable(undefined), false)
 
 console.log('quiz-seo selfcheck OK')
+
+// quiz titles: no repeated "quiz", Turkish casing included
+assert.ok(['Futbol Quiz', 'FUTBOL QUİZ', 'quiz: başkentler', 'Quız'].every(t => HAS_QUIZ.test(t)))
+assert.ok(!['Başkentler', 'Squad'].some(t => HAS_QUIZ.test(t)))

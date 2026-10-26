@@ -12,6 +12,8 @@ const STRAPI_FALLBACK_BASE = 'https://strapi.parolla.app/api'
 const FETCH_TIMEOUT_MS = 3000
 const DATA_TTL = { quiz: 86400, list: 21600 }
 const LIST_SIZE = 30
+// titles that already say quiz (also Turkish QUİZ / quız) don't get it repeated
+export const HAS_QUIZ = /qu[iıİ]z/i
 
 const COPY = {
   tr: {
@@ -20,7 +22,7 @@ const COPY = {
     listPath: '/quizler/',
     home: 'Anasayfa',
     quizzes: 'Quizler',
-    quizTitle: title => `${title} Quiz Çöz`,
+    quizTitle: title => (HAS_QUIZ.test(title) ? `${title} çöz` : `${title} quiz çöz`),
     quizDescription: title => `${title} quizini çöz! Hemen oyna.`,
     questions: n => `${n} soru`,
     author: name => `Oluşturan: ${name}`,
@@ -37,7 +39,7 @@ const COPY = {
     listPath: '/en/quizzes/',
     home: 'Home',
     quizzes: 'Quizzes',
-    quizTitle: title => `${title} Quiz`,
+    quizTitle: title => (HAS_QUIZ.test(title) ? title : `${title} Quiz`),
     quizDescription: title => `Solve the "${title}" quiz! Play now.`,
     questions: n => `${n} questions`,
     author: name => `Created by ${name}`,

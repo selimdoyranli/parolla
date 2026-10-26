@@ -1843,7 +1843,8 @@ export default {
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     creatorModeQuiz: {
-      title: '{quizTitle} Quiz Çöz',
+      title: '{quizTitle} quiz çöz',
+      titleWithQuiz: '{quizTitle} çöz',
       description: '{quizTitle} quizini çöz! Hemen oyna.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
