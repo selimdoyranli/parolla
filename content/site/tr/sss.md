@@ -1,7 +1,7 @@
 ---
 title: "Sık Sorulan Sorular (SSS)"
-description: "parolla hakkında sık sorulan sorular: parolla nedir, ücretsiz mi, üyelik gerekli mi, günlük oyun ne zaman yenilenir, Türkçe Wordle var mı, liderlik tablosu var mı, quiz nasıl oluşturulur?"
-updated: 2026-10-24
+description: "parolla hakkında sık sorulan sorular: parolla nedir, ücretsiz mi, üyelik gerekli mi, günlük oyun ne zaman yenilenir, Türkçe Wordle var mı, liderlik tablosu var mı, quiz nasıl oluşturulur, online quiz nerede çözülür?"
+updated: 2026-10-26
 faq:
   - q: "parolla nedir?"
     a: "parolla; günlük A'dan Z'ye kelime oyunu, Türkçe Wordle benzeri KelimeBlok, müzik tahmin oyunu, oyuncuların oluşturduğu quizler ve turnuva modu sunan ücretsiz Türkçe kelime ve bilgi oyunu platformudur. Web'de www.parolla.app adresinden, iOS ve Android uygulamalarından oynanır."
@@ -14,7 +14,11 @@ faq:
   - q: "Türkçe Wordle benzeri bir oyun var mı?"
     a: "Evet. parolla'daki KelimeBlok, Türkçe Wordle benzeri günlük bir kelime bulmacadır: 5, 6 veya 7 harfli günün kelimesini en fazla 6 denemede bulmaya çalışırsın. Her tahtanın günlük, haftalık, aylık ve sezonluk liderlik tablosu vardır."
   - q: "Kendi quizimi nasıl oluştururum?"
-    a: "Yaratıcı Mod'da Quiz Oluştur'a girip formatı seçmen yeterli: Soru-Cevap (klasik), O mu bu mu? ya da Flashcards. Sorularını yazıp yayınladığında quizin paylaşabileceğin bir bağlantı alır."
+    a: "Giriş yaptıktan sonra www.parolla.app/quiz-olustur adresinden formatı seçmen yeterli: Soru-Cevap (klasik), O mu bu mu? ya da Flashcards. Sorularını yazıp yayınladığında quizin paylaşabileceğin bir bağlantı alır."
+  - q: "Online quiz nerede çözülür?"
+    a: "parolla'nın Quizler sayfasında (www.parolla.app/quizler) oyuncuların oluşturduğu quizleri çözebilirsin. Genel kültür, coğrafya, tarih, bilim, müzik, dizi-film, futbol ve bayrak bilmece gibi konularda Soru-Cevap, O mu bu mu? ve Flashcards formatında quizler bulunur. Quizleri konuya göre filtreleyebilir, arayabilir ve en çok oynananlara göre sıralayabilirsin."
+  - q: "Quiz çözmek için üye olmam gerekir mi?"
+    a: "Hayır, quizleri üye olmadan çözebilirsin. Kendi quizini oluşturmak için giriş yapman gerekir."
   - q: "Liderlik tablosu var mı?"
     a: "Evet. Günlük Mod, Tur Modu ve KelimeBlok'un liderlik tabloları vardır; günlük, haftalık, aylık ve sezonluk sıralama sunar. KelimeBlok'ta her kelime uzunluğu ve her dil için ayrı tablo tutulur. Tabloya girmek için ücretsiz bir hesapla giriş yapman gerekir."
   - q: "parolla'da topluluklar nedir?"

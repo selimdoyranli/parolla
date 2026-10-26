@@ -26,7 +26,8 @@
   .intro-button__media(v-if="$slots.media")
     slot(name="media")
 
-  p.intro-button__description(v-if="description?.length > 0") {{ description }}
+  p.intro-button__description(v-if="$slots.description || description?.length > 0")
+    slot(name="description") {{ description }}
 
   .intro-button__footer
     slot(name="actions")

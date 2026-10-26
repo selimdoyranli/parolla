@@ -65,9 +65,15 @@
         :to="localePath({ name: 'CreatorMode-CreatorModeRooms' })"
         :title="$t('introScene.modeList.creator.title')"
         :headLabel="{ title: $t('introScene.modeList.creator.label', { count: creatorDailyPlayingCount }) }"
-        :description="$t('introScene.modeList.creator.description')"
         :playButtonText="$t('introScene.modeList.creator.playButtonText')"
       )
+        template(#description)
+          NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeCompose' })" :title="$t('introScene.modeList.creator.createQuiz')")
+            | {{ $t('introScene.modeList.creator.createQuiz') }}
+          | #{ ' ' }{{ $t('introScene.modeList.creator.or') }}#{ ' ' }
+          NuxtLink(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })" :title="$t('introScene.modeList.creator.solveQuiz')")
+            | {{ $t('introScene.modeList.creator.solveQuiz') }}
+
         template(v-if="todaysQuiz && Object.keys(todaysQuiz).length > 0" #body)
           .todaysQuiz
             span {{ $t('introScene.modeList.creator.todaysQuizLabel') }}&nbsp;

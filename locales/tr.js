@@ -289,6 +289,9 @@ export default {
       creator: {
         title: 'YARATICI',
         description: 'Quiz oluştur, oyuncuların oluşturduğu quizleri çöz',
+        createQuiz: 'Quiz oluştur',
+        or: 'ya da',
+        solveQuiz: 'quiz çöz',
         label: 'Bugün {count} quiz çözüldü',
         todaysQuizLabel: 'Günün quizi',
         playButtonText: 'Tüm Quizler: Oyna'

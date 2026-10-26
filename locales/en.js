@@ -287,6 +287,9 @@ export default {
       creator: {
         title: 'CREATOR',
         description: 'Create your own quiz and solve quizzes created by players',
+        createQuiz: 'Create a quiz',
+        or: 'or',
+        solveQuiz: 'solve quizzes',
         label: 'Today {count} quiz solved',
         todaysQuizLabel: `Today's quiz`,
         playButtonText: 'All Quizzes: Play'
