@@ -1,5 +1,33 @@
 # Changelog
 
+## v3.9.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.8.0...v3.9.0)
+
+
+### 🚀 Enhancements
+
+  - **music:** Difficulty modes and 30s round countdown ([d581ba2](https://github.com/selimdoyranli/parolla/commit/d581ba2))
+  - **music:** Show mode picker only after a selection, add preview seconds and Mod label ([292e2dd](https://github.com/selimdoyranli/parolla/commit/292e2dd))
+  - **music:** Seo for the music quiz entry page ([796d0b4](https://github.com/selimdoyranli/parolla/commit/796d0b4))
+  - **music:** Share-link seo head and music og images ([14e7c54](https://github.com/selimdoyranli/parolla/commit/14e7c54))
+  - **music:** Keep top current queries in the music quiz description ([40e2a3b](https://github.com/selimdoyranli/parolla/commit/40e2a3b))
+  - **gift:** Send gold and gift shop items to other players ([cfadeb5](https://github.com/selimdoyranli/parolla/commit/cfadeb5))
+  - **credits:** Add donation note and Buy me a coffee button ([e3b2fab](https://github.com/selimdoyranli/parolla/commit/e3b2fab))
+
+### 🩹 Fixes
+
+  - **quiz-card:** Stop 4th title line leaking under clamped cover title ([9824063](https://github.com/selimdoyranli/parolla/commit/9824063))
+  - **gift:** Validate typed gold amount instead of silently clamping it ([80b574e](https://github.com/selimdoyranli/parolla/commit/80b574e))
+
+### 🎨 Styles
+
+  - **music:** Compact mode picker on mobile ([418f9e2](https://github.com/selimdoyranli/parolla/commit/418f9e2))
+
+### ❤️  Contributors
+
+- Selimdoyranli <selimdoyranli@gmail.com>
+
 ## v3.8.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.7.0...v3.8.0)
