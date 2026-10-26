@@ -111,6 +111,8 @@ Static site generation deployed to Cloudflare Pages (`wrangler.toml`, output dir
 
 **Quiz SEO at the edge (`functions/quiz/_seo.js`).** Pages Functions on `/quiz/:slug`, `/en/quiz/:slug`, `/quizler/` and `/en/quizzes/` rewrite the static SPA shell with HTMLRewriter: quiz-specific title/meta/canonical/JSON-LD plus a hidden text block inside `#__nuxt` for crawlers that don't run JS. Only the Strapi JSON is cached (Cache API), never the HTML (the shell's hashed `/_nuxt` bundles change per deploy). Rooms are looked up with `filters[$and][0][roomId]` because the room controller bumps `viewCount` whenever `filters.roomId` is set. Unlisted (`isPublic` false), hidden or removed quizzes get `noindex`; the client-side `useMeta` in `CreatorModeRoom/_slug.vue` mirrors the same title/description/robots — keep both in step. Self-check: `node scripts/quiz-seo-selfcheck.mjs`.
 
+**Community SEO at the edge (`functions/topluluk/_seo.js`).** Same pattern on `/topluluk/:slug`, `/en/community/:slug`, `/topluluklar/` and `/en/communities/`, but the head comes from the client helper `helpers/communitySeo.js` itself, so edge and SPA can't drift. Private communities get `noindex` and no content; hidden ones 404 in Strapi and get `noindex` too. Post pages are client-only (their payloads are large and they'd multiply cache misses).
+
 ## Mobile WebView Bridge
 
 This web app is embedded inside native WebViews by two mobile shells:
