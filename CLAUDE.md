@@ -109,6 +109,8 @@ GOOGLE_AUTH_REDIRECT_URI # Google OAuth redirect URI
 
 Static site generation deployed to Cloudflare Pages (`wrangler.toml`, output dir `dist`) and Vercel. The `generate` command runs three steps in order: `nuxt generate`, then `content:generate` (the GEO static content layer — see `scripts/content-pages/README.md`), then Cloudflare redirect setup. **The host's build command must be `yarn generate`**, not `nuxt generate`: the middle step is what emits the content pages, `llms.txt` and `sitemap.xml`, and there is no committed `static/sitemap.xml` fallback any more.
 
+**Quiz SEO at the edge (`functions/quiz/_seo.js`).** Pages Functions on `/quiz/:slug`, `/en/quiz/:slug`, `/quizler/` and `/en/quizzes/` rewrite the static SPA shell with HTMLRewriter: quiz-specific title/meta/canonical/JSON-LD plus a hidden text block inside `#__nuxt` for crawlers that don't run JS. Only the Strapi JSON is cached (Cache API), never the HTML (the shell's hashed `/_nuxt` bundles change per deploy). Rooms are looked up with `filters[$and][0][roomId]` because the room controller bumps `viewCount` whenever `filters.roomId` is set. Unlisted (`isPublic` false), hidden or removed quizzes get `noindex`; the client-side `useMeta` in `CreatorModeRoom/_slug.vue` mirrors the same title/description/robots — keep both in step. Self-check: `node scripts/quiz-seo-selfcheck.mjs`.
+
 ## Mobile WebView Bridge
 
 This web app is embedded inside native WebViews by two mobile shells:

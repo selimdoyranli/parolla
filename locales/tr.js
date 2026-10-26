@@ -1835,13 +1835,13 @@ export default {
       keywords: 'topluluk, quiz topluluğu, quiz paylaş'
     },
     creatorModeQuizzes: {
-      title: 'Quizler, quiz çöz ya da quiz oluştur',
-      description: 'Oyuncuların oluşturduğu quizleri çöz ya da quiz oluştur',
+      title: 'Quiz Çöz – Binlerce Ücretsiz Türkçe Quiz',
+      description: 'Oyuncuların oluşturduğu binlerce ücretsiz quizi çöz ya da kendi quizini oluştur.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     creatorModeQuiz: {
-      title: '{quizTitle} quiz',
-      description: '{quizTitle} quizini çöz!',
+      title: '{quizTitle} Quiz Çöz',
+      description: '{quizTitle} quizini çöz! Ücretsiz online quiz, hemen oyna.',
       keywords: 'quiz oyunu, quiz çöz, quiz oluştur'
     },
     tourMode: {
