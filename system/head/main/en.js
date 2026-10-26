@@ -42,32 +42,32 @@ export const meta = [
   },
   {
     hid: 'twitter:card',
-    property: 'twitter:card',
+    name: 'twitter:card',
     content: 'summary_large_image'
   },
   {
     hid: 'twitter:title',
-    property: 'twitter:title',
+    name: 'twitter:title',
     content: 'parolla - Word game'
   },
   {
     hid: 'twitter:description',
-    property: 'twitter:description',
+    name: 'twitter:description',
     content: 'Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players'
   },
   {
     hid: 'twitter:url',
-    property: 'twitter:url',
+    name: 'twitter:url',
     content: 'https://www.parolla.app'
   },
   {
     hid: 'twitter:image',
-    property: 'twitter:image',
+    name: 'twitter:image',
     content: 'https://www.parolla.app/meta/og-main-en.jpg'
   },
   {
     hid: 'twitter:creator',
-    property: 'twitter:creator',
+    name: 'twitter:creator',
     content: `@parollaapp`
   }
 ]
