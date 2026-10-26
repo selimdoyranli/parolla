@@ -235,6 +235,15 @@
       flex-wrap: wrap;
       gap: $spacer * 2;
       justify-content: center;
+
+      @include media-breakpoint-down(mobile) {
+        gap: $spacer;
+
+        .guess-the-song-scene-tag {
+          padding: $spacer * 1.5 $spacer * 2;
+          font-size: var(--font-size-text-10);
+        }
+      }
     }
   }
 
