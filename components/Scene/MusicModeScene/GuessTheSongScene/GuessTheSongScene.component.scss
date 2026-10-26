@@ -217,6 +217,27 @@
     @include font-weight-semi-bold;
   }
 
+  &-difficulty {
+    max-width: var(--mobile);
+    margin: 0 auto;
+    margin-block: $spacer * 4;
+    text-align: center;
+
+    &__title {
+      display: block;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      margin-block-end: $spacer * 2;
+    }
+
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacer * 2;
+      justify-content: center;
+    }
+  }
+
   &-play-hint {
     display: block;
     max-width: var(--mobile);

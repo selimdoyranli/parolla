@@ -48,6 +48,19 @@
         span.guess-the-song-scene-selected-playlist-text {{ selectedPlaylist.name }}
         button.guess-the-song-scene-selected-artist-remove(type="button" @click="handlePlaylistRemove") ×
 
+    .guess-the-song-scene-difficulty(role="radiogroup" :aria-label="$t('musicMode.difficulty.title')")
+      span.guess-the-song-scene-difficulty__title {{ $t('musicMode.difficulty.title') }}
+      .guess-the-song-scene-difficulty__list
+        button.guess-the-song-scene-tag(
+          v-for="key in difficultyKeys"
+          :key="key"
+          type="button"
+          role="radio"
+          :aria-checked="key === difficulty"
+          :class="{ 'guess-the-song-scene-tag--active': key === difficulty }"
+          @click="difficulty = key"
+        ) {{ $t(`musicMode.difficulty.${key}`) }}
+
     Button.guess-the-song-scene-play-button(type="button" :disabled="!canPlay" @click="handleClickPlayButton")
       AppIcon.guess-the-song-scene-play-button__icon(name="tabler:player-play-filled" :width="20" :height="20")
       span.guess-the-song-scene-play-button__text {{ $t('musicMode.play') }}
@@ -123,6 +136,7 @@
 <script>
 import { defineComponent, useContext, useStore, useRouter, useFetch, onMounted, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { Button, Empty, Field } from 'vant'
+import { MUSIC_DIFFICULTIES, MUSIC_DEFAULT_DIFFICULTY } from '@/system/music'
 
 const FEATURED_TAGS = {
   tr: ['Pop', 'Rock', 'Rap', 'Türkçe Pop', 'Metal', 'Elektronik', 'Hip-Hop', "2000'ler", "90'lar", 'Arabesk'],
@@ -149,6 +163,8 @@ export default defineComponent({
     const playlists = ref([])
     const popularArtists = ref([])
     const selectedPlaylist = ref(null)
+    const difficultyKeys = Object.keys(MUSIC_DIFFICULTIES)
+    const difficulty = ref(MUSIC_DEFAULT_DIFFICULTY)
 
     const featuredTags = computed(() => FEATURED_TAGS[i18n.locale] || FEATURED_TAGS.en)
 
@@ -321,7 +337,7 @@ export default defineComponent({
         ? { playlistId: selectedPlaylist.value.playlistId }
         : { artistIds: selectedArtists.value.map(artist => artist.artistId).join(',') }
 
-      router.push(localePath({ name: 'MusicMode-GuessTheSong-Play', query }))
+      router.push(localePath({ name: 'MusicMode-GuessTheSong-Play', query: { ...query, difficulty: difficulty.value } }))
     }
 
     const handleClickPopularArtist = artist => {
@@ -361,6 +377,8 @@ export default defineComponent({
       handlePlaylistRemove,
       selectedKeys,
       canPlay,
+      difficultyKeys,
+      difficulty,
       featuredTags,
       activeTag,
       tagResults,

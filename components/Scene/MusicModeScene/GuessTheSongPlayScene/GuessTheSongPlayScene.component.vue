@@ -30,9 +30,21 @@
             AppIcon.guess-the-song-play-scene-context__avatar-icon(v-else name="tabler:music" :width="22" :height="22")
             span.guess-the-song-play-scene-context__artist-name {{ artist.artistName }}
 
-      .guess-the-song-play-scene-counter(v-if="currentRound")
-        AppIcon.guess-the-song-play-scene-counter__icon(name="tabler:music" :width="16" :height="16")
-        span {{ roundLabel }}
+      .guess-the-song-play-scene-hud(v-if="currentRound")
+        .guess-the-song-play-scene-counter
+          AppIcon.guess-the-song-play-scene-counter__icon(name="tabler:music" :width="16" :height="16")
+          span {{ roundLabel }}
+        .guess-the-song-play-scene-counter
+          span {{ $t(`musicMode.difficulty.${difficulty}`) }}
+        .guess-the-song-play-scene-counter.guess-the-song-play-scene-counter--timer(
+          v-if="!isAnswerLocked"
+          :class="{ 'is-urgent': isHurryUp }"
+          :aria-label="`${$t('musicMode.timeLeft')}: ${roundRemainingLabel}`"
+        )
+          svg.guess-the-song-play-scene-counter__ring(viewBox="0 0 24 24" aria-hidden="true")
+            circle.guess-the-song-play-scene-counter__ringTrack(cx="12" cy="12" r="10")
+            circle.guess-the-song-play-scene-counter__ringFill(cx="12" cy="12" r="10" :style="{ strokeDashoffset: ringOffset }")
+          strong {{ roundRemainingLabel }}
 
       Empty(v-if="!currentRound" :description="$t('gameScene.pendingQuestions')")
 
@@ -78,8 +90,8 @@
           :src="currentRound.previewUrl"
           autoplay
           preload="auto"
-          @play="isAudioPlaying = true"
-          @pause="isAudioPlaying = false"
+          @play="handlePlay"
+          @pause="handlePause"
           @timeupdate="handleTimeUpdate"
           @ended="handleEnded"
         )
@@ -106,6 +118,7 @@
     :stats="stats"
     :selected-artists="selectedArtists"
     :playlist="playlist"
+    :difficulty="difficulty"
     :cancel-button-text="$t('general.playAgain')"
     :confirm-button-text="$t('musicMode.guessTheSong.stats.backToMusicMode')"
     @closed="handleStatsClosed"
@@ -130,6 +143,13 @@ import {
   useMeta
 } from '@nuxtjs/composition-api'
 import { Button, Empty } from 'vant'
+import { MUSIC_DIFFICULTIES, MUSIC_DEFAULT_DIFFICULTY, MUSIC_ROUND_TIME_MS } from '@/system/music'
+
+// Circumference of the round timer ring (r = 10)
+const RING_LENGTH = 2 * Math.PI * 10
+const HURRY_UP_MS = 10 * 1000
+// Locks the round without matching any option, so only the correct one is revealed
+const TIME_UP_OPTION_ID = 'time-up'
 
 export default defineComponent({
   components: {
@@ -157,7 +177,11 @@ export default defineComponent({
 
     const TOTAL_ROUNDS = 10
     const OPTIONS_PER_ROUND = 3
-    const PREVIEW_LIMIT_MS = 5000
+    const difficulty = computed(() =>
+      Object.keys(MUSIC_DIFFICULTIES).includes(route.value.query.difficulty) ? route.value.query.difficulty : MUSIC_DEFAULT_DIFFICULTY
+    )
+    // Read when the round is played, so a query change can't swap the limit mid-preview
+    let PREVIEW_LIMIT_MS = MUSIC_DIFFICULTIES[difficulty.value]
     const songs = ref([])
     const rounds = ref([])
     const roundIndex = ref(0)
@@ -196,6 +220,7 @@ export default defineComponent({
         rounds.value = buildRounds(songs.value, TOTAL_ROUNDS, ids)
       }
 
+      PREVIEW_LIMIT_MS = MUSIC_DIFFICULTIES[difficulty.value]
       roundIndex.value = 0
       selectedOptionId.value = null
       roundResults.value = new Array(TOTAL_ROUNDS).fill('pending')
@@ -407,6 +432,70 @@ export default defineComponent({
       playlist.value ? playlist.value.name : selectedArtists.value.map(artist => artist.artistName).join(',')
     )
 
+    // Round countdown
+    const roundRemainingMs = ref(MUSIC_ROUND_TIME_MS)
+    let roundDeadline = 0
+    let roundTimer = null
+    const isHurryUp = computed(() => roundRemainingMs.value <= HURRY_UP_MS)
+    const ringOffset = computed(() => RING_LENGTH * (1 - roundRemainingMs.value / MUSIC_ROUND_TIME_MS))
+    const roundRemainingLabel = computed(() => `${Math.ceil(roundRemainingMs.value / 1000)}s`)
+
+    const stopRoundTimer = () => {
+      clearInterval(roundTimer)
+      roundTimer = null
+    }
+
+    const startRoundTimer = () => {
+      stopRoundTimer()
+      roundDeadline = Date.now() + MUSIC_ROUND_TIME_MS
+      roundRemainingMs.value = MUSIC_ROUND_TIME_MS
+
+      roundTimer = setInterval(() => {
+        roundRemainingMs.value = Math.max(0, roundDeadline - Date.now())
+
+        if (roundRemainingMs.value === 0) handleSelectOption({ trackId: TIME_UP_OPTION_ID })
+      }, 250)
+    }
+
+    // timeupdate fires only every ~250 ms, too coarse for 0.5 s / 1 s previews, so the cut is scheduled precisely
+    let previewCutTimer = null
+
+    const clearPreviewCut = () => {
+      clearTimeout(previewCutTimer)
+      previewCutTimer = null
+    }
+
+    const cutPreview = () => {
+      clearPreviewCut()
+
+      if (!audioEl.value) return
+
+      audioEl.value.pause()
+      elapsedMs.value = PREVIEW_LIMIT_MS
+      isAudioPlaying.value = false
+      hasPreviewCompleted.value = true
+    }
+
+    // Re-checks the real playback position on fire, since buffering after 'play' delays the audio but not the clock
+    const schedulePreviewCut = () => {
+      clearPreviewCut()
+      const leftMs = PREVIEW_LIMIT_MS - (audioEl.value?.currentTime || 0) * 1000
+
+      if (leftMs <= 15) return cutPreview()
+
+      previewCutTimer = setTimeout(schedulePreviewCut, leftMs)
+    }
+
+    const handlePlay = () => {
+      isAudioPlaying.value = true
+      schedulePreviewCut()
+    }
+
+    const handlePause = () => {
+      isAudioPlaying.value = false
+      clearPreviewCut()
+    }
+
     const statsButtonLabel = computed(() => (isLastRound.value ? finishLabel.value : nextLabel.value))
 
     const stopAudio = (resetElapsed = true) => {
@@ -456,7 +545,7 @@ export default defineComponent({
       if (!audioEl.value || !currentRound.value?.previewUrl) return
 
       if (audioEl.value.paused) {
-        if (elapsedMs.value >= PREVIEW_LIMIT_MS || audioEl.value.currentTime * 1000 >= PREVIEW_LIMIT_MS) {
+        if (hasPreviewCompleted.value || elapsedMs.value >= PREVIEW_LIMIT_MS || audioEl.value.currentTime * 1000 >= PREVIEW_LIMIT_MS) {
           audioEl.value.currentTime = 0
           elapsedMs.value = 0
         }
@@ -474,6 +563,7 @@ export default defineComponent({
     const handleSelectOption = option => {
       if (!currentRound.value || isAnswerLocked.value) return
       selectedOptionId.value = option.trackId
+      stopRoundTimer()
       const isCorrect = option.trackId === currentRound.value.correctTrackId
       const nextResults = [...roundResults.value]
       nextResults[roundIndex.value] = isCorrect ? 'correct' : 'wrong'
@@ -490,17 +580,13 @@ export default defineComponent({
       if (!audioEl.value) return
 
       const ms = audioEl.value.currentTime * 1000
-      elapsedMs.value = Math.min(PREVIEW_LIMIT_MS, ms)
+      elapsedMs.value = hasPreviewCompleted.value ? PREVIEW_LIMIT_MS : Math.min(PREVIEW_LIMIT_MS, ms)
     }
 
     const handleTimeUpdate = () => {
       updateElapsedFromAudio()
 
-      if (elapsedMs.value >= PREVIEW_LIMIT_MS && audioEl.value && !audioEl.value.paused) {
-        audioEl.value.pause()
-        isAudioPlaying.value = false
-        hasPreviewCompleted.value = true
-      }
+      if (elapsedMs.value >= PREVIEW_LIMIT_MS && audioEl.value && !audioEl.value.paused) cutPreview()
     }
 
     const handleEnded = () => {
@@ -534,9 +620,12 @@ export default defineComponent({
 
     watch(
       () => currentRound.value?.roundId,
-      () => {
+      roundId => {
         resetRoundState()
         playCurrentPreview()
+
+        if (roundId) startRoundTimer()
+        else stopRoundTimer()
       }
     )
 
@@ -547,6 +636,8 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
+      stopRoundTimer()
+      clearPreviewCut()
       stopAudio()
     })
 
@@ -641,6 +732,12 @@ export default defineComponent({
       goNextRound,
       isStatsDialogOpen,
       stats,
+      difficulty,
+      isHurryUp,
+      ringOffset,
+      roundRemainingLabel,
+      handlePlay,
+      handlePause,
       selectedArtists,
       playlist,
       statsButtonLabel,

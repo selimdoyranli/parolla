@@ -751,7 +751,7 @@ export default {
       description: `parolla - Kelime oyunu \n\nKelimeblok modunda skorum ({charLength} harf)\n\n{attempts}. deneme / {maxAttempts} tahmin hakkı\n\n{cells}\n\nGeçen Süre: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
-      description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nSkorum: {score} \n \n{url}`
+      description: `parolla - Müzik quiz'de {artists} şarkılarını tahmin ettim \n \nMod: {difficulty} \nSkorum: {score} \n \n{url}`
     },
     geoGuessStats: {
       description: `parolla - GeoGuess ({region}) 🌍 \n \nSkorum: {score} \n \n{url}`
@@ -1681,7 +1681,15 @@ export default {
     },
     nextRound: 'Sonraki tur',
     seeResults: 'Sonuçları gör',
-    appleMusic: 'Apple Music'
+    appleMusic: 'Apple Music',
+    timeLeft: 'Kalan süre',
+    difficulty: {
+      title: 'Mod',
+      easy: 'Kolay',
+      medium: 'Orta',
+      hard: 'Zor',
+      impossible: 'İmkansız'
+    }
   },
   geoGuessMode: {
     title: 'GeoGuess',

@@ -181,13 +181,20 @@
     }
   }
 
+  &-hud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer * 2;
+    justify-content: center;
+    margin-block-start: $spacer * 4;
+  }
+
   &-counter {
     display: flex;
     gap: $spacer;
     align-items: center;
     justify-content: center;
     width: max-content;
-    margin: $spacer * 4 auto 0;
     padding: $spacer $spacer * 3;
     color: var(--color-text-01);
     font-weight: var(--font-weight-semi-bold);
@@ -199,6 +206,36 @@
 
     &__icon {
       color: var(--color-brand-02);
+    }
+
+    &__ring {
+      width: 20px;
+      height: 20px;
+      transform: rotate(-90deg);
+
+      circle {
+        fill: none;
+        stroke-width: 3;
+      }
+    }
+
+    &__ringTrack {
+      stroke: color-mix(in sRGB, var(--color-text-01) 15%, transparent);
+    }
+
+    &__ringFill {
+      transition: stroke-dashoffset 0.25s linear;
+      stroke: var(--color-brand-02);
+      stroke-linecap: round;
+      stroke-dasharray: 62.832;
+
+      .is-urgent & {
+        stroke: var(--color-danger-02);
+      }
+    }
+
+    &--timer.is-urgent {
+      color: var(--color-danger-02);
     }
   }
 

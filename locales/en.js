@@ -747,7 +747,7 @@ export default {
       description: `parolla - Word game \n\nMy score in word block mode ({charLength} letters)\n\n{attempts}. attempts / {maxAttempts} guesses\n\n{cells}\n\nTime elapsed: {elapsedTime} \n \n{url}`
     },
     guessTheSongStats: {
-      description: `parolla - Music quiz - I guessed the songs of {artists} \n \nScore: {score} \n \n{url}`
+      description: `parolla - Music quiz - I guessed the songs of {artists} \n \nMode: {difficulty} \nScore: {score} \n \n{url}`
     },
     geoGuessStats: {
       description: `parolla - GeoGuess ({region}) 🌍 \n \nScore: {score} \n \n{url}`
@@ -1653,7 +1653,15 @@ export default {
     },
     nextRound: 'Next round',
     seeResults: 'See results',
-    appleMusic: 'Apple Music'
+    appleMusic: 'Apple Music',
+    timeLeft: 'Time left',
+    difficulty: {
+      title: 'Mode',
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard',
+      impossible: 'Impossible'
+    }
   },
   wordblockMode: {
     wordblock: 'Wordblock',
