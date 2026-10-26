@@ -94,6 +94,9 @@ const coverUrl = room => {
   return url.startsWith('/') ? `https://strapi.parolla.app${url}` : url
 }
 
+// absolute on purpose: the shell's own og:image is a relative path, which most share previews ignore
+const defaultImage = locale => `${BASE_URL}/meta/og-main-${locale}.jpg`
+
 // Swaps the shell's homepage head for page-specific values and drops the content block into #__nuxt
 const rewrite = (response, { title, description, canonical, image, jsonLd, body }) => {
   const setContent = value => ({
@@ -102,7 +105,7 @@ const rewrite = (response, { title, description, canonical, image, jsonLd, body 
     }
   })
 
-  let rewriter = new HTMLRewriter()
+  return new HTMLRewriter()
     .on('title', {
       element(el) {
         el.setInnerContent(title)
@@ -114,6 +117,8 @@ const rewrite = (response, { title, description, canonical, image, jsonLd, body 
     .on('meta[data-hid="og:description"]', setContent(description))
     .on('meta[data-hid="twitter:description"]', setContent(description))
     .on('meta[data-hid="og:url"]', setContent(canonical))
+    .on('meta[data-hid="og:image"]', setContent(image))
+    .on('meta[data-hid="twitter:image"]', setContent(image))
     .on('meta[data-hid="twitter:url"]', setContent(canonical))
     .on('meta[data-hid="keywords"]', {
       element(el) {
@@ -130,12 +135,7 @@ const rewrite = (response, { title, description, canonical, image, jsonLd, body 
         el.prepend(`<main style="display: none">${body}</main>`, { html: true })
       }
     })
-
-  if (image) {
-    rewriter = rewriter.on('meta[data-hid="og:image"]', setContent(image)).on('meta[data-hid="twitter:image"]', setContent(image))
-  }
-
-  return rewriter.transform(response)
+    .transform(response)
 }
 
 // Strapi already forces isPublic on the listing; checked again so a controller change can't leak unlisted quizzes
@@ -221,7 +221,7 @@ export const quizPage = locale => async context => {
       }
     ]
 
-    return rewrite(shell, { title, description, canonical, image: coverUrl(room), jsonLd, body })
+    return rewrite(shell, { title, description, canonical, image: coverUrl(room) || defaultImage(locale), jsonLd, body })
   } catch (err) {
     console.error('[quiz-seo] quiz page:', String((err && err.message) || err))
 
@@ -275,7 +275,7 @@ export const quizListPage = locale => async context => {
       }
     ]
 
-    return rewrite(shell, { title, description: copy.listDescription, canonical, image: null, jsonLd, body })
+    return rewrite(shell, { title, description: copy.listDescription, canonical, image: defaultImage(locale), jsonLd, body })
   } catch (err) {
     console.error('[quiz-seo] quiz list:', String((err && err.message) || err))
 
