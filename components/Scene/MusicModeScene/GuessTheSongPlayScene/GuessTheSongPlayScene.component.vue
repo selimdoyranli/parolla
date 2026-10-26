@@ -429,7 +429,7 @@ export default defineComponent({
     const selectedArtists = ref([])
 
     const contextLabel = computed(() =>
-      playlist.value ? playlist.value.name : selectedArtists.value.map(artist => artist.artistName).join(',')
+      playlist.value ? playlist.value.name : selectedArtists.value.map(artist => artist.artistName).join(', ')
     )
 
     // Round countdown
@@ -663,8 +663,13 @@ export default defineComponent({
       router.replace(localePath({ name: 'MusicMode-GuessTheSong' }))
     }
 
+    // same title as the share-link head in functions/muzik/_seo.js
+    const playTitle = computed(
+      () => `${i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: contextLabel.value })} - ${i18n.t('seo.main.title')}`
+    )
+
     useMeta(() => ({
-      title: i18n.t('seo.musicMode.guessTheSongPlay.title', { artists: contextLabel.value }),
+      title: playTitle.value,
       meta: [
         {
           hid: 'description',
@@ -676,9 +681,7 @@ export default defineComponent({
         {
           hid: 'og:title',
           name: 'og:title',
-          content: i18n.t('seo.musicMode.guessTheSongPlay.title', {
-            artists: contextLabel.value
-          })
+          content: playTitle.value
         },
         {
           hid: 'og:description',

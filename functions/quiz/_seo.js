@@ -97,10 +97,11 @@ const coverUrl = room => {
 }
 
 // absolute on purpose: the shell's own og:image is a relative path, which most share previews ignore
-const defaultImage = locale => `${BASE_URL}/meta/og-main-${locale}.jpg`
+export const defaultImage = locale => `${BASE_URL}/meta/og-main-${locale}.jpg`
 
-// Swaps the shell's homepage head for page-specific values and drops the content block into #__nuxt
-const rewrite = (response, { title, description, canonical, image, jsonLd, body }) => {
+// Swaps the shell's homepage head for page-specific values and drops the content block into #__nuxt.
+// `url` (og:url/twitter:url) defaults to the canonical; pass the page's own URL when its share preview must stay specific
+export const rewrite = (response, { title, description, canonical, url = canonical, image, jsonLd, body }) => {
   const setContent = value => ({
     element(el) {
       el.setAttribute('content', value)
@@ -118,10 +119,10 @@ const rewrite = (response, { title, description, canonical, image, jsonLd, body 
     .on('meta[data-hid="twitter:title"]', setContent(title))
     .on('meta[data-hid="og:description"]', setContent(description))
     .on('meta[data-hid="twitter:description"]', setContent(description))
-    .on('meta[data-hid="og:url"]', setContent(canonical))
+    .on('meta[data-hid="og:url"]', setContent(url))
     .on('meta[data-hid="og:image"]', setContent(image))
     .on('meta[data-hid="twitter:image"]', setContent(image))
-    .on('meta[data-hid="twitter:url"]', setContent(canonical))
+    .on('meta[data-hid="twitter:url"]', setContent(url))
     .on('meta[data-hid="keywords"]', {
       element(el) {
         el.remove()

@@ -94,6 +94,7 @@ const buildRouteHead = ({ route, locale, seo }) => {
     description,
     canonical,
     keywords: entry.keywords && interpolate(entry.keywords, route.params),
+    image: route.images?.[locale] && BASE_URL + route.images[locale],
     headTags: [`<link rel="canonical" href="${canonical}">`, ...alternates, ...jsonLd.map(jsonLdTag)].join(''),
     body
   }
@@ -110,7 +111,8 @@ const applyRouteHead = (shell, head) => {
     'og:url': head.canonical,
     'twitter:title': head.title,
     'twitter:description': head.description,
-    'twitter:url': head.canonical
+    'twitter:url': head.canonical,
+    ...(head.image && { 'og:image': head.image, 'twitter:image': head.image })
   }
 
   for (const [hid, content] of Object.entries(metas)) {

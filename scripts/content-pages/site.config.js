@@ -63,7 +63,7 @@ const WORDBLOCK_LENGTHS = [
 
 // Static app routes that get their own head at build time (route-heads.js). `seo` is the
 // locales/*.js key the page's useMeta reads, `params` its interpolation values, `howTo` the
-// CONTENT_PAGES key of its guide. Files: "/x/" → dist/x/index.html, "/x/y" → dist/x/y.html.
+// CONTENT_PAGES key of its guide, `images` its own og:image per locale. Files: "/x/" → dist/x/index.html, "/x/y" → dist/x/y.html.
 const ROUTE_HEADS = [
   { seo: 'dailyMode', urls: { tr: '/gunluk/' }, howTo: 'daily' },
   { seo: 'unlimitedMode', urls: { tr: '/limitsiz/' }, howTo: 'unlimited' },
@@ -77,7 +77,13 @@ const ROUTE_HEADS = [
   { seo: 'tourMode', urls: { tr: '/tur/', en: '/en/tour/' }, howTo: 'tour' },
   { seo: 'drawLobby', urls: { tr: '/ciz/', en: '/en/draw/' }, howTo: 'draw' },
   { seo: 'creatorModeCompose', urls: { tr: '/quiz-olustur/', en: '/en/create-quiz/' }, howTo: 'creator' },
-  { seo: 'musicMode.guessTheSong', urls: { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' }, howTo: 'music' }
+  {
+    seo: 'musicMode.guessTheSong',
+    urls: { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' },
+    howTo: 'music',
+    // the play-link Function (functions/muzik/_seo.js) uses the same images
+    images: { tr: '/meta/og-music-tr.jpg', en: '/meta/og-music-en.jpg' }
+  }
 ]
 
 // Static content pages: markdown source ↔ output URL per locale
