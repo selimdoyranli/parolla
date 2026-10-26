@@ -12,6 +12,10 @@ const redirects = `
 /en/profile/:username/reviews  /en/profile/:username/comments  301
 /altin-gecmisi  /aktiviteler/altin-gecmisi  301
 /en/gold-history  /en/activities/gold-history  301
+/muzik  /muzik/sarki-tahmin-et/  301
+/muzik/  /muzik/sarki-tahmin-et/  301
+/en/music  /en/music/guess-the-song/  301
+/en/music/  /en/music/guess-the-song/  301
 `.trim()
 
 const headers = `

@@ -47,7 +47,6 @@ const APP_ROUTES = [
   { tr: '/kelimeblok/6-harf', en: '/en/wordblock/6-letters' },
   { tr: '/kelimeblok/7-harf', en: '/en/wordblock/7-letters' },
   { tr: '/kelimeblok/liderlik/', en: '/en/wordblock/leaderboard/' },
-  { tr: '/muzik/', en: '/en/music/' },
   { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' },
   { tr: '/topluluklar/', en: '/en/communities/' },
   { tr: '/sayfa/gizlilik-politikasi/', en: '/en/page/privacy-policy/' },
