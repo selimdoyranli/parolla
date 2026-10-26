@@ -12,9 +12,9 @@ const LABELS = {
     switchTo: 'English',
     home: '/',
     nav: [
-      { url: '/nasil-oynanir', text: 'Nasıl Oynanır?' },
-      { url: '/sss', text: 'SSS' },
-      { url: '/hakkinda', text: 'Hakkında' }
+      { url: '/nasil-oynanir/', text: 'Nasıl Oynanır?' },
+      { url: '/sss/', text: 'SSS' },
+      { url: '/hakkinda/', text: 'Hakkında' }
     ],
     play: "parolla'yı oyna",
     footerNote: 'parolla — Türkçe kelime ve bilgi oyunu platformu',
@@ -23,11 +23,11 @@ const LABELS = {
   en: {
     langName: 'English',
     switchTo: 'Türkçe',
-    home: '/en',
+    home: '/en/',
     nav: [
-      { url: '/en/how-to-play', text: 'How to Play' },
-      { url: '/en/faq', text: 'FAQ' },
-      { url: '/en/about', text: 'About' }
+      { url: '/en/how-to-play/', text: 'How to Play' },
+      { url: '/en/faq/', text: 'FAQ' },
+      { url: '/en/about/', text: 'About' }
     ],
     play: 'Play parolla',
     footerNote: 'parolla — Turkish word and trivia game platform',

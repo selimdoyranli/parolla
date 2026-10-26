@@ -18,7 +18,12 @@ Spec: `docs/superpowers/specs/2026-08-05-ai-visibility-design.md`
 3. Emits `dist/sitemap.xml` — app routes (build date as lastmod) + content pages
    (git commit date of the markdown source as lastmod), with hreflang alternates.
    The old hand-maintained `static/sitemap.xml` was removed in favor of this.
-4. Self-validates (missing files, invalid JSON-LD, missing hreflang pairs, URL collisions
+4. Rewrites the shells of the static app routes in `ROUTE_HEADS` (`/gunluk/`, `/kelimeblok/`,
+   `/kelimeblok/6-harf`, …) with the title/description their page sets on the client (read from
+   `locales/*.js`), plus canonical, hreflang, JSON-LD and a hidden text block — `route-heads.js`.
+   Routes without their own shell (`/kelimeblok/6-harf`) are written as `6-harf.html`, which the
+   host serves at the bare path. Self-check: `node scripts/route-heads-selfcheck.js`.
+5. Self-validates (missing files, invalid JSON-LD, missing hreflang pairs, URL collisions
    with Vue routes, sitemap URL count) and **fails the build** on any problem.
 
 ## Files

@@ -30,26 +30,55 @@ const GAME_INFO = {
 // so /en/daily and /en/unlimited are dead for every visitor, signed in or not.
 // Auth-gated routes are a different case and stay listed — /quiz-olustur works
 // fine for a signed-in player, which is who goes there.
+// URLs are written the way the host serves them: a generated route is a directory, so the
+// bare path 308s to the trailing-slash one; /kelimeblok/6-harf style routes are .html files.
 const APP_ROUTES = [
-  { tr: '/', en: '/en' },
-  { tr: '/gunluk', en: null },
-  { tr: '/gunluk/liderlik', en: '/en/daily/leaderboard' },
-  { tr: '/limitsiz', en: null },
-  { tr: '/yaratici', en: '/en/creator' },
-  { tr: '/quizler', en: '/en/quizzes' },
-  { tr: '/quiz-olustur', en: '/en/create-quiz' },
-  { tr: '/tur', en: '/en/tour' },
-  { tr: '/tur/liderlik', en: '/en/tour/leaderboard' },
-  { tr: '/ciz', en: '/en/draw' },
-  { tr: '/kelimeblok', en: '/en/wordblock' },
-  { tr: '/kelimeblok/liderlik', en: '/en/wordblock/leaderboard' },
-  { tr: '/muzik', en: '/en/music' },
-  { tr: '/muzik/sarki-tahmin-et', en: '/en/music/guess-the-song' },
-  { tr: '/topluluklar', en: '/en/communities' },
-  { tr: '/sayfa/gizlilik-politikasi', en: '/en/page/privacy-policy' },
-  { tr: '/sayfa/cerez-politikasi', en: '/en/page/cookie-policy' },
-  { tr: '/sayfa/kvkk-aydinlatma-metni', en: '/en/page/kvkk-clarification-text' },
-  { tr: '/sayfa/kullanim-kosullari', en: '/en/page/terms-of-use' }
+  { tr: '/', en: '/en/' },
+  { tr: '/gunluk/', en: null },
+  { tr: '/gunluk/liderlik/', en: '/en/daily/leaderboard/' },
+  { tr: '/limitsiz/', en: null },
+  { tr: '/yaratici/', en: '/en/creator/' },
+  { tr: '/quizler/', en: '/en/quizzes/' },
+  { tr: '/quiz-olustur/', en: '/en/create-quiz/' },
+  { tr: '/tur/', en: '/en/tour/' },
+  { tr: '/tur/liderlik/', en: '/en/tour/leaderboard/' },
+  { tr: '/ciz/', en: '/en/draw/' },
+  { tr: '/kelimeblok/', en: '/en/wordblock/' },
+  { tr: '/kelimeblok/6-harf', en: '/en/wordblock/6-letters' },
+  { tr: '/kelimeblok/7-harf', en: '/en/wordblock/7-letters' },
+  { tr: '/kelimeblok/liderlik/', en: '/en/wordblock/leaderboard/' },
+  { tr: '/muzik/', en: '/en/music/' },
+  { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' },
+  { tr: '/topluluklar/', en: '/en/communities/' },
+  { tr: '/sayfa/gizlilik-politikasi/', en: '/en/page/privacy-policy/' },
+  { tr: '/sayfa/cerez-politikasi/', en: '/en/page/cookie-policy/' },
+  { tr: '/sayfa/kvkk-aydinlatma-metni/', en: '/en/page/kvkk-clarification-text/' },
+  { tr: '/sayfa/kullanim-kosullari/', en: '/en/page/terms-of-use/' }
+]
+
+const WORDBLOCK_LENGTHS = [
+  { urls: { tr: '/kelimeblok/', en: '/en/wordblock/' }, labels: { tr: 'Kelimeblok 5 harf', en: 'Wordblock 5 letters' } },
+  { urls: { tr: '/kelimeblok/6-harf', en: '/en/wordblock/6-letters' }, labels: { tr: 'Kelimeblok 6 harf', en: 'Wordblock 6 letters' } },
+  { urls: { tr: '/kelimeblok/7-harf', en: '/en/wordblock/7-letters' }, labels: { tr: 'Kelimeblok 7 harf', en: 'Wordblock 7 letters' } }
+]
+
+// Static app routes that get their own head at build time (route-heads.js). `seo` is the
+// locales/*.js key the page's useMeta reads, `params` its interpolation values, `howTo` the
+// CONTENT_PAGES key of its guide. Files: "/x/" → dist/x/index.html, "/x/y" → dist/x/y.html.
+const ROUTE_HEADS = [
+  { seo: 'dailyMode', urls: { tr: '/gunluk/' }, howTo: 'daily' },
+  { seo: 'unlimitedMode', urls: { tr: '/limitsiz/' }, howTo: 'unlimited' },
+  ...WORDBLOCK_LENGTHS.map(({ urls }, index) => ({
+    seo: 'wordblockMode',
+    urls,
+    params: { charLength: 5 + index },
+    howTo: 'wordblock',
+    related: WORDBLOCK_LENGTHS.filter((other, otherIndex) => otherIndex !== index)
+  })),
+  { seo: 'tourMode', urls: { tr: '/tur/', en: '/en/tour/' }, howTo: 'tour' },
+  { seo: 'drawLobby', urls: { tr: '/ciz/', en: '/en/draw/' }, howTo: 'draw' },
+  { seo: 'creatorModeCompose', urls: { tr: '/quiz-olustur/', en: '/en/create-quiz/' }, howTo: 'creator' },
+  { seo: 'musicMode.guessTheSong', urls: { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' }, howTo: 'music' }
 ]
 
 // Static content pages: markdown source ↔ output URL per locale
@@ -122,5 +151,6 @@ module.exports = {
   SAME_AS,
   GAME_INFO,
   APP_ROUTES,
+  ROUTE_HEADS,
   CONTENT_PAGES
 }
