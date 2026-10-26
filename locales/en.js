@@ -1813,13 +1813,13 @@ export default {
       keywords: 'communities, quiz community, share quiz'
     },
     creatorModeQuizzes: {
-      title: 'Solve Quizzes – Free Player-made Quizzes',
-      description: 'Solve thousands of free quizzes created by players or create your own quiz.',
+      title: 'Solve Quizzes – Player-made Quizzes',
+      description: 'Solve thousands of quizzes created by players or create your own quiz.',
       keywords: 'quiz game, quiz solve, quiz create'
     },
     creatorModeQuiz: {
       title: '{quizTitle} Quiz',
-      description: 'Solve the "{quizTitle}" quiz! Free online quiz, play now.',
+      description: 'Solve the "{quizTitle}" quiz! Play now.',
       keywords: 'quiz game, quiz solve, quiz create'
     },
     tourMode: {

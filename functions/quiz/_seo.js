@@ -21,14 +21,14 @@ const COPY = {
     home: 'Anasayfa',
     quizzes: 'Quizler',
     quizTitle: title => `${title} Quiz Çöz`,
-    quizDescription: title => `${title} quizini çöz! Ücretsiz online quiz, hemen oyna.`,
+    quizDescription: title => `${title} quizini çöz! Hemen oyna.`,
     questions: n => `${n} soru`,
     author: name => `Oluşturan: ${name}`,
     tags: 'Etiketler',
     allQuizzes: 'Tüm quizler',
-    listTitle: 'Quiz Çöz ve Quiz Oluştur – Ücretsiz Quizler',
+    listTitle: 'Quiz Çöz ve Quiz Oluştur',
     listHeading: 'Quiz Çöz',
-    listDescription: 'Oyuncuların oluşturduğu binlerce ücretsiz quizi çöz ya da kendi quizini oluştur.',
+    listDescription: 'Oyuncuların oluşturduğu binlerce quizi çöz ya da kendi quizini oluştur.',
     popular: 'Popüler quizler'
   },
   en: {
@@ -38,14 +38,14 @@ const COPY = {
     home: 'Home',
     quizzes: 'Quizzes',
     quizTitle: title => `${title} Quiz`,
-    quizDescription: title => `Solve the "${title}" quiz! Free online quiz, play now.`,
+    quizDescription: title => `Solve the "${title}" quiz! Play now.`,
     questions: n => `${n} questions`,
     author: name => `Created by ${name}`,
     tags: 'Tags',
     allQuizzes: 'All quizzes',
-    listTitle: 'Solve Quizzes – Free Player-made Quizzes',
+    listTitle: 'Solve Quizzes – Player-made Quizzes',
     listHeading: 'Solve Quizzes',
-    listDescription: 'Solve thousands of free quizzes created by players or create your own quiz.',
+    listDescription: 'Solve thousands of quizzes created by players or create your own quiz.',
     popular: 'Popular quizzes'
   }
 }
