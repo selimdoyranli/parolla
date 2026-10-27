@@ -32,8 +32,8 @@ const post = {
 
 // list: canonical ignores the query, own lists / searches are noindex
 const list = communityListHead({ locale: 'tr', title: 'T', description: 'D', communities: [community] })
-assert.strictEqual(link(list, 'canonical'), 'https://www.parolla.app/topluluklar')
-assert.strictEqual(link(list, 'alternate-en'), 'https://www.parolla.app/en/communities')
+assert.strictEqual(link(list, 'canonical'), 'https://www.parolla.app/topluluklar/')
+assert.strictEqual(link(list, 'alternate-en'), 'https://www.parolla.app/en/communities/')
 assert.match(meta(list, 'robots'), /^index/)
 assert.strictEqual(graph(list)[0].mainEntity.itemListElement[0].url, 'https://www.parolla.app/topluluk/kelime-avcilari')
 assert.match(meta(communityListHead({ locale: 'en', title: 'T', description: 'D', filtered: true }), 'robots'), /^noindex/)
@@ -56,6 +56,27 @@ assert.strictEqual(posting.sharedContent.url, 'https://www.parolla.app/en/quiz/a
 assert.strictEqual(posting.author.url, 'https://www.parolla.app/profil/ayse')
 assert.strictEqual(posting.commentCount, 2)
 assert.ok(meta(single, 'description').length <= 300)
+assert.ok(!posting.comment, 'no comments → no comment field')
+
+// comments: deleted ones skipped, preview replies nested
+const reply = { documentId: 'c2', content: 'katılıyorum', createdAt: '2026-10-03T00:00:00.000Z', user: { username: 'selim' } }
+const comments = [
+  {
+    documentId: 'c1',
+    content: 'harika',
+    createdAt: '2026-10-02T01:00:00.000Z',
+    user: { username: 'ayse' },
+    likeCount: 1,
+    previewReplies: [reply]
+  },
+  { documentId: 'c3', content: null, isDeleted: true, createdAt: '2026-10-02T02:00:00.000Z', user: null }
+]
+const withComments = graph(communityPostHead({ locale: 'tr', post, comments }))[0]
+assert.strictEqual(withComments.comment.length, 1)
+assert.strictEqual(withComments.comment[0]['@type'], 'Comment')
+assert.strictEqual(withComments.comment[0].text, 'harika')
+assert.strictEqual(withComments.comment[0].url, 'https://www.parolla.app/topluluk/kelime-avcilari/gonderi/p1?comment=c1')
+assert.strictEqual(withComments.comment[0].comment[0].author.url, 'https://www.parolla.app/profil/selim')
 
 // every head is valid JSON for the ld+json script
 for (const head of [list, detail, single]) JSON.parse(JSON.stringify(head.script[0].json))
