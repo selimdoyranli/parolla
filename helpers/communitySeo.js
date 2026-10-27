@@ -184,10 +184,23 @@ export const communityHead = ({ locale, community, posts = [] }) => {
   })
 }
 
+// Google's forum rich result wants the visible comments as `comment` (deep-linked like notifications do)
+const toComment = (lang, canonical, comment) => ({
+  '@type': 'Comment',
+  url: `${canonical}?comment=${encodeURIComponent(comment.documentId)}`,
+  text: comment.content,
+  author: person(lang, comment.user),
+  datePublished: comment.createdAt,
+  interactionStatistic: [counter('LikeAction', comment.likeCount), counter('CommentAction', comment.replyCount)],
+  ...(comment.previewReplies?.length && {
+    comment: comment.previewReplies.filter(reply => !reply.isDeleted).map(reply => toComment(lang, canonical, reply))
+  })
+})
+
 /**
  * One post: Google's DiscussionForumPosting (forum rich result), the shared quiz as its sharedContent.
  */
-export const communityPostHead = ({ locale, post }) => {
+export const communityPostHead = ({ locale, post, comments = [] }) => {
   const lang = langOf(locale)
   const text = TEXT[lang]
   const { community, room, author } = post
@@ -226,6 +239,9 @@ export const communityPostHead = ({ locale, post }) => {
         datePublished: post.createdAt,
         isPartOf: { '@type': 'CollectionPage', url: communityUrl(lang, community.slug), name: community.name },
         commentCount: Number(post.commentCount) || 0,
+        ...(comments.length && {
+          comment: comments.filter(comment => !comment.isDeleted).map(comment => toComment(lang, canonical, comment))
+        }),
         interactionStatistic: [counter('LikeAction', post.likeCount), counter('CommentAction', post.commentCount)],
         ...(room && {
           sharedContent: { '@type': 'Quiz', name: room.title, url: quizUrl, ...(room.coverPhoto?.url && { image: room.coverPhoto.url }) }

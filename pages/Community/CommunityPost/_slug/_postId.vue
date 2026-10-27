@@ -41,6 +41,8 @@ export default defineComponent({
     const { route, i18n, app } = useContext()
 
     const post = ref(null)
+    // first comment page, only for the head's JSON-LD (the thread view loads its own)
+    const seoComments = ref([])
     const isLoading = ref(true)
     const isNotFound = ref(false)
     const isLocked = ref(false)
@@ -54,9 +56,13 @@ export default defineComponent({
       isNotFound.value = false
       isLocked.value = false
 
-      const { data, error } = await store.dispatch('community/fetchPost', { documentId: route.value.params.postId })
+      const [{ data, error }, { data: commentData }] = await Promise.all([
+        store.dispatch('community/fetchPost', { documentId: route.value.params.postId }),
+        store.dispatch('comment/fetchComments', { postId: route.value.params.postId })
+      ])
 
       post.value = data
+      seoComments.value = commentData?.items || []
       isNotFound.value = error?.code === 404
       isLocked.value = error?.code === 403
       isLoading.value = false
@@ -77,7 +83,7 @@ export default defineComponent({
     // missing or members-only (403) posts stay out of the index
     useMeta(() =>
       post.value
-        ? communityPostHead({ locale: i18n.locale, post: post.value })
+        ? communityPostHead({ locale: i18n.locale, post: post.value, comments: seoComments.value })
         : { title: i18n.t('seo.main.title'), meta: [{ hid: 'robots', name: 'robots', content: 'noindex,follow' }] }
     )
 
