@@ -83,6 +83,14 @@
       :title="$t('dialog.menu.communities')"
       @click.native="navigateAndClose('Community-CommunityList')"
     )
+    Cell.menu-more-nav__item.menu-more-nav__item--donate(size="large" is-link @click.native="openDialog('clickedDonate')")
+      template(#icon)
+        AppIcon.menu-more-nav__donate-icon(name="tabler:heart-filled" :width="20" :height="20")
+      template(#title)
+        span.menu-more-nav__donate-title
+          | {{ $t('dialog.menu.donate') }}
+          span.menu-more-nav__donate-sparkle(v-for="n in 3" :key="n" aria-hidden="true" :class="`menu-more-nav__donate-sparkle--${n}`")
+            AppIcon(name="tabler:sparkles" :width="14" :height="14")
     Cell.menu-more-nav__item(icon="smile-comment-o" size="large" is-link :title="$t('dialog.menu.shareApp')" @click.native="openAppSharer")
     Cell.menu-more-nav__item(
       icon="manager-o"

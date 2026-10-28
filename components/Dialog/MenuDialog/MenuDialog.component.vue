@@ -59,6 +59,7 @@ Dialog.dialog.menu-dialog(
     @clickedHowToPlay="$emit('clickedHowToPlay')"
     @clickedHowToCalculateStats="$emit('clickedHowToCalculateStats')"
     @clickedCredits="$emit('clickedCredits')"
+    @clickedDonate="$emit('clickedDonate')"
     @clickedContact="$emit('clickedContact')"
     @clickedSwitchLocale="$emit('clickedSwitchLocale')"
     @clickedReviewRoom="$emit('clickedReviewRoom')"

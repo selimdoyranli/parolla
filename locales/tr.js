@@ -420,6 +420,7 @@ export default {
       howToCalculateStats: 'Skoru nasıl hesaplıyoruz',
       shareRoom: `Quiz'i paylaş`,
       reviewRoom: `Quiz'i değerlendir`,
+      donate: 'Bağış Yap',
       shareApp: `parolla'yı paylaş`,
       credits: 'Yapımcılar',
       contact: 'Bize ulaşın',
@@ -434,10 +435,26 @@ export default {
       description:
         'Cevabın doğru ise doğru sorulara yanlış ise yanlış sorulara eklenir. <br><br> Eğer süren bittiğinde hala paslanmış soruların varsa bunlar da pasladığın sorulara eklenir. <br><br> Ve tüm toplam sonuç oyun bittiğinde istatistik ekranında gösterilir.'
     },
+    donate: {
+      title: 'Bağış Yap',
+      cover: {
+        title: "parolla'ya bir kahve ısmarla",
+        subtitle: 'Daha iyi bir parolla, yeni modlar ve her gün yeni bulmacalar — hepsi senin desteğinle.',
+        wordGame: 'Kelime oyunu',
+        quiz: 'Quiz oluştur & quiz çöz'
+      },
+      cta: 'Bağış yapmak için tıkla',
+      guide: {
+        intro: 'Alttaki butona bastığında Buy Me a Coffee sayfası yeni sekmede açılır. Site İngilizcedir, alanları senin için açıkladık:',
+        amount: 'Bağışlamak istediğin miktarı dolar ($) olarak yaz. +10, +25, +50 ile hızlıca ekleyebilirsin.',
+        name: 'Adını ya da sosyal medya kullanıcı adını yaz. İstersen boş bırakabilirsin.',
+        message: 'Bize güzel bir mesaj bırak (isteğe bağlı).',
+        support: 'Support butonuna bas ve açılan ödeme ekranında bağışını onayla. Teşekkürler!'
+      }
+    },
     credits: {
       title: 'Yapımcılar',
-      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>',
-      donate: "Bağış yaparak parolla'ya destek ol, sana daha iyi bir oyun sunmak için bu bizi motive ediyor!"
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
     },
     contact: {
       title: 'Bize ulaşın',

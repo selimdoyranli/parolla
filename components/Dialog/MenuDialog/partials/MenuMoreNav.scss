@@ -36,3 +36,81 @@
     }
   }
 }
+
+.menu-more-nav {
+  // the global vant override pins every cell background with !important
+  &__item--donate {
+    background-color: color-mix(in sRGB, var(--color-brand-02) 14%, var(--color-ui-02)) !important;
+  }
+
+  &__donate-icon {
+    margin-inline-end: var(--van-cell-icon-margin-right, 8px);
+    color: var(--color-brand-02);
+    animation: donate-heartbeat 1.6s ease-in-out infinite;
+  }
+
+  &__donate-title {
+    position: relative;
+    display: inline-block;
+    padding-inline-end: 22px;
+    color: var(--color-brand-02);
+
+    @include font-weight-bold;
+  }
+
+  &__donate-sparkle {
+    position: absolute;
+    display: flex;
+    color: #f5b942;
+    animation: menu-donate-twinkle 1.8s ease-in-out infinite;
+
+    &--1 {
+      top: -6px;
+      right: 0;
+    }
+
+    &--2 {
+      right: 10px;
+      bottom: -4px;
+      animation-delay: 0.6s;
+    }
+
+    &--3 {
+      top: -4px;
+      left: -10px;
+      animation-delay: 1.2s;
+    }
+  }
+}
+
+@keyframes menu-donate-twinkle {
+  0%,
+  100% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes donate-heartbeat {
+  0%,
+  40%,
+  100% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-more-nav__donate-icon,
+  .menu-more-nav__donate-sparkle {
+    animation: none;
+  }
+}

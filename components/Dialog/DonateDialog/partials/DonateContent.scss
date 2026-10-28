@@ -1,0 +1,262 @@
+.donate-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-m-y);
+
+  // the dialog content box pads by --base-p-y; pull the bar over that padding so nothing peeks below it
+  &__cta {
+    position: sticky;
+    bottom: calc(var(--base-p-y) * -1);
+    z-index: 1;
+    margin-block-end: calc(var(--base-p-y) * -1);
+    padding-block: 8px var(--base-p-y);
+    background: linear-gradient(to bottom, transparent, var(--color-ui-02) 12px);
+  }
+
+  &__button {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 20px;
+    overflow: hidden;
+    color: #fff;
+    font-size: var(--font-size-text-7);
+    text-decoration: none;
+    background: linear-gradient(135deg, #ff9a7a, var(--color-brand-02) 45%, #f25c7a);
+    border-radius: 14px;
+    box-shadow: 0 4px 0 #d9505e, 0 8px 24px rgba(255, 120, 120, 0.35);
+    animation: donate-glow 2.4s ease-in-out infinite;
+
+    @include font-weight-bold;
+
+    // moving sheen across the button
+    &::before {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: donate-sheen 2.8s ease-in-out infinite;
+      content: '';
+    }
+
+    &:hover {
+      color: #fff;
+      filter: brightness(1.05);
+    }
+
+    &:active {
+      box-shadow: 0 1px 0 #d9505e;
+      transform: translateY(3px);
+    }
+  }
+
+  &__sparkle {
+    position: absolute;
+    display: flex;
+    color: #fff6c9;
+    animation: donate-twinkle 1.8s ease-in-out infinite;
+    pointer-events: none;
+
+    &--1 {
+      top: 6px;
+      left: 14%;
+    }
+
+    &--2 {
+      right: 12%;
+      bottom: 6px;
+      animation-delay: 0.6s;
+    }
+
+    &--3 {
+      top: 8px;
+      right: 22%;
+      animation-delay: 1.2s;
+    }
+  }
+}
+
+.donate-content-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 24px 16px;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 20px 20px,
+    radial-gradient(circle at 10% 20%, rgba(255, 120, 120, 0.18), transparent 45%),
+    radial-gradient(circle at 95% 110%, rgba(217, 165, 42, 0.22), transparent 50%), #1c1616;
+  border-radius: 12px;
+
+  &__logo {
+    width: 72px;
+    height: 72px;
+    margin-block-end: 8px;
+    border-radius: 50%;
+    box-shadow: 0 5px 0 var(--color-brand-02);
+  }
+
+  &__title {
+    font-size: var(--font-size-text-6);
+    line-height: 1.15;
+
+    @include font-weight-extra-bold;
+  }
+
+  &__subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--font-size-text-9);
+  }
+
+  &__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-block-start: 4px;
+  }
+
+  &__pill {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+
+    @include font-weight-bold;
+
+    &::before {
+      width: 6px;
+      height: 6px;
+      background: #7fa98a;
+      border-radius: 50%;
+      content: '';
+    }
+
+    &--quiz::before {
+      background: var(--color-brand-02);
+    }
+  }
+}
+
+.donate-content-guide {
+  padding: 14px;
+  background: var(--color-ui-02);
+  border-radius: 12px;
+
+  &__intro {
+    margin: 0 0 12px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  &__number {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    color: #fff;
+    font-size: 12px;
+    background: var(--color-brand-02);
+    border-radius: 50%;
+
+    @include font-weight-bold;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  // mock of the Buy Me a Coffee field, so the supporter recognises it on the English page
+  &__field {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    align-self: flex-start;
+    padding: 4px 10px;
+    color: #6b6b6b;
+    font-size: 13px;
+    background: #ececec;
+    border-radius: 8px;
+
+    &--support {
+      padding: 4px 18px;
+      color: #fff;
+      background: #ff5f5f;
+      border-radius: 999px;
+
+      @include font-weight-semi-bold;
+    }
+  }
+
+  &__text {
+    font-size: var(--font-size-text-9);
+  }
+}
+
+@keyframes donate-sheen {
+  60%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes donate-twinkle {
+  0%,
+  100% {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1) rotate(20deg);
+    opacity: 1;
+  }
+}
+
+@keyframes donate-glow {
+  50% {
+    box-shadow: 0 4px 0 #d9505e, 0 8px 32px rgba(255, 120, 120, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donate-content__button,
+  .donate-content__button::before,
+  .donate-content__sparkle {
+    animation: none;
+  }
+}
