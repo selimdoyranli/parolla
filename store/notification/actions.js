@@ -18,15 +18,22 @@ const getGuestReadIds = () => {
   }
 }
 
-const fetchAnnouncements = (ctx, { page = 1, pageSize = 20 } = {}) =>
+const DAY_MS = 24 * 60 * 60 * 1000
+
+// window start snapped to the day so every client sends the same query and the API can share it
+const announcementWindowStart = () => new Date(Math.floor((Date.now() - ANNOUNCEMENT_WINDOW_MS) / DAY_MS) * DAY_MS).toISOString()
+
+// `fields` trims the response to what the caller reads (the badge poll only needs ids)
+const fetchAnnouncements = (ctx, { page = 1, pageSize = 20, fields } = {}) =>
   ctx.$appFetch({
     path: 'announcements',
     query: {
       locale: ctx.$i18n.locale,
       sort: 'publishedAt:desc',
-      'filters[publishedAt][$gte]': new Date(Date.now() - ANNOUNCEMENT_WINDOW_MS).toISOString(),
+      'filters[publishedAt][$gte]': announcementWindowStart(),
       'pagination[page]': page,
-      'pagination[pageSize]': pageSize
+      'pagination[pageSize]': pageSize,
+      ...(fields ? { 'fields[0]': fields } : {})
     }
   })
 
@@ -34,7 +41,7 @@ export default {
   // Single refresh entry: polling calls it today; a socket event can call it later.
   async refreshUnreadCount({ commit }) {
     if (!this.$auth.loggedIn) {
-      const { data } = await fetchAnnouncements(this)
+      const { data } = await fetchAnnouncements(this, { fields: 'documentId' })
       const readIds = getGuestReadIds()
 
       if (data) commit('SET_UNREAD_COUNT', data.data.filter(a => !readIds.includes(a.documentId)).length)
