@@ -1,8 +1,19 @@
 import { roomTransformer, scoreboardTransformer } from '@/transformers'
 import { choiceTypeEnum } from '@/enums/quiz.enum'
 
+// The API keeps quiz lists and pages at the CDN edge and purges them on writes. For a minute
+// after this user's own quiz write their reads skip the edge, so they never wait on the purge.
+const OWN_WRITE_FRESH_MS = 60 * 1000
+let ownRoomWriteAt = 0
+const markOwnRoomWrite = () => {
+  ownRoomWriteAt = Date.now()
+}
+const justWroteRoom = () => Date.now() - ownRoomWriteAt < OWN_WRITE_FRESH_MS
+
 export default {
   async postRoom({ commit, state }, { form, deviceInfo }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
 
     const transform = form => {
@@ -77,6 +88,8 @@ export default {
   },
 
   async editRoom({ commit, state }, { documentId, form, deviceInfo }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
 
     const transform = form => {
@@ -153,6 +166,8 @@ export default {
   },
 
   async setRoomVisibility({ commit }, { documentId, isVisible }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
 
     const { data, error } = await this.$appFetch({
@@ -179,6 +194,8 @@ export default {
   },
 
   async deleteRoom({ commit }, { documentId }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
 
     const { data, error } = await this.$appFetch({
@@ -226,6 +243,8 @@ export default {
   },
 
   async uploadRoomCoverPhoto({ commit }, { documentId, file }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
     const formData = new FormData()
     formData.append('files', file, `cover-photo-${Date.now()}.jpg`)
@@ -246,6 +265,8 @@ export default {
   },
 
   async deleteRoomCoverPhoto({ commit }, { documentId }) {
+    markOwnRoomWrite()
+
     const token = this.$auth.strategy.token.get()
     const { data, error } = await this.$appFetch({
       path: `rooms/${documentId}/cover-photo`,
@@ -373,6 +394,9 @@ export default {
       }
     }
 
+    // right after their own quiz write: a no-op filter gives a URL no edge copy has
+    if (justWroteRoom()) query['filters[createdAt][$lte]'] = new Date().toISOString()
+
     const token = this.$auth.strategy.token.get()
 
     const { data, error } = await this.$appFetch({
@@ -458,11 +482,15 @@ export default {
     return { data, error }
   },
 
-  async fetchRoom({ commit }, id) {
+  // `owner` (edit form) skips the edge copy and returns the owner's extras, e.g. a moderation note
+  async fetchRoom({ commit }, params) {
+    const { id, owner = false } = typeof params === 'object' ? params : { id: params }
+
     const { data, error } = await this.$appFetch({
       path: `rooms/${id}`,
       query: {
-        locale: this.$i18n.locale
+        locale: this.$i18n.locale,
+        ...(owner || justWroteRoom() ? { owner: 1 } : {})
       }
     })
 
@@ -488,6 +516,15 @@ export default {
       data,
       error
     }
+  },
+
+  // the page itself comes from the CDN edge, so its view is counted with a separate call
+  async countRoomView(_, id) {
+    await this.$appFetch({
+      path: `rooms/${id}/view`,
+      method: 'POST',
+      query: { locale: this.$i18n.locale }
+    })
   },
 
   async fetchRoomScoresByUser({ commit }, { userId, page = 1, limit = 10, isLoadMore = false }) {
