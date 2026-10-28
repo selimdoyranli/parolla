@@ -9,12 +9,8 @@ Dialog.dialog.credits-dialog(
   @closed="$emit('closed')"
   @opened="$emit('opened')"
 )
-  p(v-html="$t('dialog.credits.description')")
-  .credits-dialog__donate
-    p {{ $t('dialog.credits.donate') }}
-    a.credits-dialog__coffee(href="https://www.buymeacoffee.com/parollaapp" rel="noopener" target="_blank")
-      AppIcon(name="tabler:coffee" color="currentColor" :width="20" :height="20")
-      span Buy me a coffee
+  p.credits-dialog__kozmos(v-html="$t('dialog.credits.description')")
+  DonateContent
 </template>
 
 <script>

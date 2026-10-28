@@ -418,6 +418,7 @@ export default {
       howToCalculateStats: 'How we calculate the score',
       shareRoom: 'Share quiz',
       reviewRoom: 'Review quiz',
+      donate: 'Donate',
       shareApp: `Share the parolla`,
       credits: 'Credits',
       contact: 'Contact',
@@ -432,10 +433,26 @@ export default {
       description:
         'If your answer is correct, it is added to the correct questions, if incorrect, to the incorrect questions. <br><br> If you still have rusted questions when your time is up, these will be added to the questions you have passed. <br><br> And all the total results are shown on the statistics screen when the game is over.'
     },
+    donate: {
+      title: 'Donate',
+      cover: {
+        title: 'Buy parolla a coffee',
+        subtitle: 'A better parolla, new modes and fresh puzzles every day — all thanks to you.',
+        wordGame: 'Word game',
+        quiz: 'Create & play quizzes'
+      },
+      cta: 'Tap to donate',
+      guide: {
+        intro: 'The button below opens our Buy Me a Coffee page in a new tab. Here is what each field means:',
+        amount: 'Type the amount you want to give in dollars ($). Use +10, +25, +50 to add quickly.',
+        name: 'Your name or social handle. You can leave it empty.',
+        message: 'Leave us a nice message (optional).',
+        support: 'Press Support and confirm the payment on the next screen. Thank you!'
+      }
+    },
     credits: {
       title: 'Credits',
-      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>',
-      donate: 'Support parolla with a donation, it motivates us to bring you a better game!'
+      description: '<a href="https://kozmos.works" rel="noopener" target="_blank">KOZMOS (kozmos.works)</a>'
     },
     contact: {
       title: 'Contact',

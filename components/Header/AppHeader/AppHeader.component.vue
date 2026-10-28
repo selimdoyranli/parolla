@@ -83,6 +83,7 @@
     @clickedHowToPlay="toggleHowToPlayDialog"
     @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
     @clickedCredits="toggleCreditsDialog"
+    @clickedDonate="toggleDonateDialog"
     @clickedContact="toggleContactDialog"
     @clickedSwitchLocale="toggleLocaleSwitchDialog"
     @clickedReviewRoom="toggleRoomReviewDialog"
@@ -96,6 +97,7 @@
     @clickedHowToPlay="toggleHowToPlayDialog"
     @clickedHowToCalculateStats="toggleHowToCalculateStatsDialog"
     @clickedCredits="toggleCreditsDialog"
+    @clickedDonate="toggleDonateDialog"
     @clickedContact="toggleContactDialog"
     @clickedSwitchLocale="toggleLocaleSwitchDialog"
     @clickedReviewRoom="toggleRoomReviewDialog"
@@ -105,6 +107,8 @@
   LazyHowToCalculateStatsDialog(:isOpen="dialog.howToCalculateStats.isOpen" @closed="dialog.howToCalculateStats.isOpen = false")
   // Credits Dialog
   LazyCreditsDialog(:isOpen="dialog.credits.isOpen" @closed="dialog.credits.isOpen = false")
+  // Donate Dialog
+  LazyDonateDialog(:isOpen="dialog.donate.isOpen" @closed="dialog.donate.isOpen = false")
   // Contact Dialog
   LazyContactDialog(:isOpen="dialog.contact.isOpen" @closed="dialog.contact.isOpen = false")
   // Locale Switch Dialog
@@ -161,6 +165,9 @@ export default defineComponent({
         isOpen: false
       },
       credits: {
+        isOpen: false
+      },
+      donate: {
         isOpen: false
       },
       contact: {
@@ -318,6 +325,10 @@ export default defineComponent({
       dialog.credits.isOpen = !dialog.credits.isOpen
     }
 
+    const toggleDonateDialog = () => {
+      dialog.donate.isOpen = !dialog.donate.isOpen
+    }
+
     const toggleContactDialog = () => {
       dialog.contact.isOpen = !dialog.contact.isOpen
     }
@@ -451,6 +462,7 @@ export default defineComponent({
       toggleMenuDialog,
       toggleHowToCalculateStatsDialog,
       toggleCreditsDialog,
+      toggleDonateDialog,
       toggleContactDialog,
       toggleLocaleSwitchDialog,
       toggleRoomReviewDialog,

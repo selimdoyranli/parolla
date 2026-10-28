@@ -22,6 +22,7 @@ Popup.app-drawer(v-model="state.isOpen" position="left" @closed="$emit('closed')
     @clickedHowToPlay="$emit('clickedHowToPlay')"
     @clickedHowToCalculateStats="$emit('clickedHowToCalculateStats')"
     @clickedCredits="$emit('clickedCredits')"
+    @clickedDonate="$emit('clickedDonate')"
     @clickedContact="$emit('clickedContact')"
     @clickedSwitchLocale="$emit('clickedSwitchLocale')"
     @clickedReviewRoom="$emit('clickedReviewRoom')"
