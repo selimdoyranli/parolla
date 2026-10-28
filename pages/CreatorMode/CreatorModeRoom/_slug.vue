@@ -40,6 +40,9 @@ export default defineComponent({
     const { fetch, fetchState } = useFetch(async () => {
       const { data, error } = await store.dispatch('creator/fetchRoom', route.value.params.slug)
 
+      // the page is served from the CDN edge, so the view is counted separately (not awaited)
+      if (data) store.dispatch('creator/countRoomView', route.value.params.slug)
+
       if (error) {
         Notify({
           message: error.message,
