@@ -18,7 +18,7 @@
       ActionButton(:label="$t('dialog.menu.shop')" icon="fluent:building-shop-24-regular" :icon-size="24")
       span.app-header-nav__gold-badge(v-if="$auth.loggedIn")
         GoldAmount(size="sm" compact :amount="gold")
-      span.app-header-nav__reward-tip(v-if="isRewardTipVisible" role="status") {{ $t('economy.adReward.tip') }}
+      span.app-header-nav__reward-tip(v-if="shopTip" role="status") {{ $t(shopTip) }}
 
   AppLogo(type="title" :class="[logoClasses]" @click.native.prevent.capture="handleClickAppLogo")
   // Icon-only logo swapped in while the on-screen keyboard is open on mobile
@@ -52,7 +52,7 @@
         :class="{ 'me-2': room.reviewCount > 0 }"
       )
 
-    li.app-header-nav__item.app-header-nav__item--notifications(v-if="$auth.loggedIn" @click="toggleNotificationsDialog")
+    li.app-header-nav__item.app-header-nav__item--notifications(@click="toggleNotificationsDialog")
       ActionButton(:label="$t('notifications.title')" icon="tabler:bell" badge-max99 :icon-size="24" :badge="unreadCount")
 
     li.app-header-nav__item.app-header-nav__item--menu(@click="toggleMenuDialog")
@@ -118,7 +118,7 @@
     @closed="dialog.localeSwitch.isOpen = false"
   )
   // Notifications Dialog
-  LazyNotificationsDialog(v-if="$auth.loggedIn" :isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
+  LazyNotificationsDialog(:isOpen="dialog.notifications.isOpen" @closed="dialog.notifications.isOpen = false")
   // Inventory Dialog (inventory / shop / quests)
   LazyInventoryDialog(:isOpen="inventoryDialog.isOpen" @closed="closeInventoryDialog")
   // Room Review Dialog
@@ -210,28 +210,67 @@ export default defineComponent({
     const openInventoryDialog = tab => store.commit('economy/OPEN_INVENTORY_DIALOG', tab)
     const closeInventoryDialog = () => store.commit('economy/SET_IS_OPEN_INVENTORY_DIALOG', false)
 
-    // once a day in the app: a 5 s "claim rewards" tip under the shop button while ads are left to watch
+    // 5 s tips under the shop button; queued so "claim rewards" and "event items" never overlap
+    const shopTip = ref(null)
+    const shopTipQueue = []
+
+    const showShopTip = key => {
+      if (shopTip.value) return shopTipQueue.push(key)
+
+      shopTip.value = key
+      setTimeout(() => {
+        shopTip.value = null
+
+        if (shopTipQueue.length) setTimeout(() => showShopTip(shopTipQueue.shift()), 300)
+      }, 5000)
+    }
+
+    // shows a tip unless localStorage already holds this value under the key
+    const showShopTipOnce = (tip, storageKey, value) => {
+      try {
+        if (localStorage.getItem(storageKey) === value) return
+        localStorage.setItem(storageKey, value)
+      } catch (e) {
+        return
+      }
+
+      showShopTip(tip)
+    }
+
+    // once a day in the app while ads are left to watch
     const { adsMax, adsWatched, canWatchAd } = useAdReward()
-    const isRewardTipVisible = ref(false)
-    const REWARD_TIP_KEY = 'rewardTipDay'
 
     watch(
       () => isHome.value && canWatchAd.value && adsWatched.value < adsMax.value,
-      show => {
-        const today = new Date().toDateString()
+      show => show && showShopTipOnce('economy.adReward.tip', 'rewardTipDay', new Date().toDateString()),
+      { immediate: true }
+    )
+
+    // once per GM free event (a cosmetic set made free for a while); events can overlap, so seen ones are kept as a list
+    const freeEvents = computed(() => store.state.economy.freeEvents)
+
+    watch(
+      () => isHome.value && freeEvents.value.map(e => `${e.series}:${e.startsAt}`),
+      keys => {
+        if (!keys) return
 
         try {
-          if (!show || localStorage.getItem(REWARD_TIP_KEY) === today) return
-          localStorage.setItem(REWARD_TIP_KEY, today)
+          const seen = JSON.parse(localStorage.getItem('freeEventTips')) || []
+          const unseen = keys.filter(key => !seen.includes(key))
+
+          if (!unseen.length) return
+          // only active events are kept, so the list stays small
+          localStorage.setItem('freeEventTips', JSON.stringify(keys))
         } catch (e) {
           return
         }
 
-        isRewardTipVisible.value = true
-        setTimeout(() => (isRewardTipVisible.value = false), 5000)
+        showShopTip('economy.freeEventTip')
       },
       { immediate: true }
     )
+
+    if (process.client) store.dispatch('economy/fetchFreeEvents')
 
     const toggleNotificationsDialog = () => {
       dialog.notifications.isOpen = !dialog.notifications.isOpen
@@ -239,7 +278,11 @@ export default defineComponent({
 
     watch(
       () => $auth.loggedIn,
-      loggedIn => store.dispatch(loggedIn ? 'notification/startPolling' : 'notification/stopPolling'),
+      // guests poll too (announcements only); restart so the badge switches source on login/logout
+      async () => {
+        await store.dispatch('notification/stopPolling')
+        store.dispatch('notification/startPolling')
+      },
       { immediate: true }
     )
 
@@ -473,7 +516,7 @@ export default defineComponent({
       inventoryDialog,
       openInventoryDialog,
       closeInventoryDialog,
-      isRewardTipVisible,
+      shopTip,
       targetCommentId,
       targetRatingUserId,
       handleRoomReviewClosed,

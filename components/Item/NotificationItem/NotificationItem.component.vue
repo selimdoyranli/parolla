@@ -21,7 +21,7 @@
         Tag.notification-item__owner(v-if="item.isQuizOwnerActor" round) {{ $t('comments.quizOwner') }}
         | {{ actorLabel ? ' ' + text : text }}
       p.notification-item__excerpt(v-if="item.meta && item.meta.excerpt") “{{ item.meta.excerpt }}”
-      p.notification-item__excerpt(v-if="isGift && item.meta.note") “{{ item.meta.note }}”
+      p.notification-item__excerpt.notification-item__excerpt--full(v-if="isGift && item.meta.note") “{{ item.meta.note }}”
       button.notification-item__thank(
         v-if="isGift && !item.meta.thanked"
         type="button"

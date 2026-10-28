@@ -192,6 +192,7 @@ export default {
         full: 'Dolu'
       }
     },
+    freeEventTip: 'Etkinlik ürünlerini al!',
     adReward: {
       title: 'Reklam izle, altın kazan',
       desc: 'Kısa bir reklam izle, {gold} altın hesabına eklensin.',

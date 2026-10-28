@@ -192,6 +192,7 @@ export default {
         full: 'Full'
       }
     },
+    freeEventTip: 'Get the event items!',
     adReward: {
       title: 'Watch an ad, earn gold',
       desc: 'Watch a short ad and get {gold} gold.',

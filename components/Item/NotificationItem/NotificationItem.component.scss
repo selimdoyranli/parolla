@@ -50,6 +50,12 @@
     color: var(--color-text-03);
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    // gift notes are short personal messages; show them whole
+    &--full {
+      white-space: pre-line;
+      word-break: break-word;
+    }
   }
 
   &__meta {
