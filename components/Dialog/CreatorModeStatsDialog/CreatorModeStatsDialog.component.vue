@@ -303,7 +303,7 @@ export default defineComponent({
 
       // The board and the reader's own standing are independent queries, so run them
       // together rather than making the tab wait for two round trips
-      await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId }), fetchScoreboardUserRank()])
+      await Promise.all([store.dispatch('creator/fetchScoreboard', { roomId: room.value.roomId, fresh: true }), fetchScoreboardUserRank()])
 
       pendingScoreboard.value = false
     }
@@ -364,7 +364,8 @@ export default defineComponent({
       const { data, error } = await store.dispatch('creator/fetchScoreboard', {
         isLoadMore: true,
         page: page + 1,
-        roomId: room.value.roomId
+        roomId: room.value.roomId,
+        fresh: true
       })
 
       if (error) {

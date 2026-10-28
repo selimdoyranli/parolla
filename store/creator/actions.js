@@ -564,7 +564,7 @@ export default {
   },
 
   async fetchScoreboard({ commit, state }, params) {
-    const { isLoadMore = false, limit, roomId, page, sort, locale } = params
+    const { isLoadMore = false, limit, roomId, page, sort, locale, fresh = false } = params
 
     const queryDefault = {
       perPage: 50,
@@ -581,6 +581,10 @@ export default {
       populate: 'user',
       locale: locale || queryDefault.locale
     }
+
+    // the board is kept at the CDN edge for a few seconds; right after a game the player must see
+    // their own score, so this no-op filter gives the request a URL no cached copy has
+    if (fresh) query['filters[createdAt][$lte]'] = new Date().toISOString()
 
     const { data, error } = await this.$appFetch({
       path: `room-scores`,
