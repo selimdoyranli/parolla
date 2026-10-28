@@ -660,11 +660,14 @@ export default {
   /**
    * Quizzes for the home block's cover art showcase.
    *
-   * Strapi cannot sort randomly, so this pulls the newest `poolSize` quizzes that actually
-   * have a cover photo and shuffles them here — one request, a different set every visit.
+   * Strapi cannot sort randomly, so this picks one random `limit`-sized page among the newest
+   * `poolSize` quizzes that have a cover photo and shuffles it — a different set most visits,
+   * without making the API build cards for the whole pool.
    */
   async fetchRandomRooms({ commit }, { limit = 10, poolSize = 50 } = {}) {
-    const query = {
+    const page = 1 + Math.floor(Math.random() * Math.ceil(poolSize / limit))
+
+    const query = page => ({
       'filters[isVisible][$eq]': true,
       'filters[isPublic][$eq]': true,
       'filters[coverPhoto][id][$notNull]': true,
@@ -673,14 +676,17 @@ export default {
       'populate[user][populate][0]': 'diceBear',
       'populate[user][populate][1]': 'role',
       'sort[0]': 'createdAt:desc',
-      'pagination[pageSize]': poolSize,
+      'pagination[page]': page,
+      'pagination[pageSize]': limit,
       locale: this.$i18n.locale
-    }
-
-    const { data, error } = await this.$appFetch({
-      path: 'rooms',
-      query: query
     })
+
+    let { data, error } = await this.$appFetch({ path: 'rooms', query: query(page) })
+
+    // a locale with fewer covered quizzes than the pool can land past the last page
+    if (page > 1 && data && data.data.length === 0) {
+      ;({ data, error } = await this.$appFetch({ path: 'rooms', query: query(1) }))
+    }
 
     if (data?.data?.length > 0) {
       const rooms = data.data.map(room => roomTransformer(room))
