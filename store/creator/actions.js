@@ -286,6 +286,17 @@ export default {
     }
   },
 
+  // win-rate stats of a finished this-or-that run, guests included
+  async recordChoiceDuels(_, { roomDocumentId, duels }) {
+    const { data, error } = await this.$appFetch({
+      path: 'room-choices/duels',
+      method: 'POST',
+      data: { roomDocumentId, duels }
+    })
+
+    return { data, error }
+  },
+
   async fetchRooms({ commit, state }, params) {
     const { isVisible, isLoadMore = false, page, limit, keyword, tags, user, locale } = params
 

@@ -764,6 +764,10 @@ export default {
     }
   },
   sharer: {
+    choices: {
+      description: `parolla - O mu, bu mu? \n\n"{roomTitle}" quizinde benim kazananım: {winner} 🏆 \n\nSen kimi seçerdin? \n{url}`,
+      descriptionNoWinner: `parolla - O mu, bu mu? \n\n"{roomTitle}" quizini oynadım 🏆 \n\nSen kimi seçerdin? \n{url}`
+    },
     app: {
       description: `parolla - Kelime oyunu\n\n\Günlük soruları çöz ve rekabete katıl. Quiz oluştur, oyuncuların oluşturduğu quizleri çöz \n\nhttps://www.parolla.app`
     },
@@ -871,12 +875,16 @@ export default {
     }
   },
   choices: {
-    remainingChoices: '{count} seçim kaldı',
-    lastChoice: 'Son seçim',
     winner: {
-      title: 'KAZANAN SEÇİM',
+      title: 'Kazanan',
+      rate: {
+        title: 'Puan ver',
+        hint: 'Bu quizi ne kadar beğendin? 5 üzerinden puanla'
+      },
       winnerChoices: {
-        title: 'En çok seçilenler'
+        title: 'Kazanan Seçimler',
+        championRate: 'Şampiyonluk oranı',
+        winRate: 'Kazanma oranı'
       }
     }
   },

@@ -760,6 +760,10 @@ export default {
     }
   },
   sharer: {
+    choices: {
+      description: `parolla - This or that? \n\nMy winner in the "{roomTitle}" quiz: {winner} 🏆 \n\nWho would you pick? \n{url}`,
+      descriptionNoWinner: `parolla - This or that? \n\nI played the "{roomTitle}" quiz 🏆 \n\nWho would you pick? \n{url}`
+    },
     app: {
       description: `parolla - Word game\n\n\Solve daily questions and join the competition. Create your own quiz and solve quizzes created by players \n\nhttps://www.parolla.app`
     },
@@ -867,12 +871,16 @@ export default {
     }
   },
   choices: {
-    remainingChoices: '{count} choices left',
-    lastChoice: 'Last choice',
     winner: {
-      title: 'WINNER CHOICE',
+      title: 'Winner',
+      rate: {
+        title: 'Rate',
+        hint: 'How much did you like this quiz? Rate it out of 5'
+      },
       winnerChoices: {
-        title: 'Most chosen'
+        title: 'Winning Choices',
+        championRate: 'Championship rate',
+        winRate: 'Win rate'
       }
     }
   },

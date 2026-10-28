@@ -24,7 +24,7 @@
             :disabled="ratings.pending"
           )
 
-  .room-review-view__filter
+  .room-review-view__filter(v-if="!ratingOnly")
     h4.room-review-view__filter-title
       | {{ filter === 'comments' ? $t('comments.filter.comments') : $t('comments.filter.ratings') }}
       span.room-review-view__filter-count ({{ filter === 'comments' ? room.reviewCount || 0 : ratings.count }})
@@ -38,7 +38,7 @@
   //- v-show: switching to Puanlar and back keeps the loaded comments, scroll and pinned thread
   CommentThreadView(
     :key="room.id"
-    v-if="room.id"
+    v-if="room.id && !ratingOnly"
     v-show="filter === 'comments'"
     :room-id="room.id"
     :target-comment-id="targetCommentId"
@@ -76,7 +76,9 @@ export default defineComponent({
     targetCommentId: { type: String, default: null },
     targetRatingUserId: { type: [String, Number], default: null },
     // comments list + composer only (play intro): no rating block, no comments/ratings filter
-    commentsOnly: { type: Boolean, default: false }
+    commentsOnly: { type: Boolean, default: false },
+    // rating block only (this-or-that result card)
+    ratingOnly: { type: Boolean, default: false }
   },
   setup(props) {
     const store = useStore()

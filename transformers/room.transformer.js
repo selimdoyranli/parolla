@@ -7,6 +7,8 @@ const choiceItemTransformer = model => {
     text: model.text,
     youtubeUrl: model.youtubeUrl,
     voteCount: model.voteCount,
+    championRate: model.championRate,
+    winRate: model.winRate,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
     publishedAt: model.publishedAt,
