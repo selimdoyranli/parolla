@@ -1,5 +1,7 @@
 <template lang="pug">
 .choice-card
+  //- versus scene: the choice's own image, blurred behind it
+  .choice-card__backdrop(v-if="backdrop && choice.media?.url" :style="{ backgroundImage: `url(${choice.media.url})` }")
   .choice-card__content
     // Image
     template(v-if="choice && choice.choiceType === choiceTypeEnum.MEDIA")
@@ -31,6 +33,10 @@ export default defineComponent({
     choice: {
       type: Object,
       required: true
+    },
+    backdrop: {
+      type: Boolean,
+      default: false
     }
   },
   setup() {

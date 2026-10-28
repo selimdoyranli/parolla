@@ -1,7 +1,12 @@
 @import '@/assets/style/scss/shared/_game-scene.scss';
 
 .choices-game-scene {
-  --room-info-height: 60px;
+  --room-info-height: 36px;
+  --scene-height: calc(100vh - var(--header-height) - var(--room-info-height));
+
+  @include media-breakpoint-down(tablet) {
+    --scene-height: calc(100vh - var(--header-height) - var(--room-info-height) - max(34px, env(safe-area-inset-bottom)));
+  }
 
   position: relative;
   width: 100%;
@@ -16,37 +21,41 @@
 
   .room-info {
     position: fixed;
-    z-index: 1;
+    z-index: 6;
     display: flex;
-    flex-direction: column;
+    gap: $spacer * 3;
     align-items: center;
-    justify-content: center;
-    width: var(--layout-max-width);
+    width: min(var(--layout-max-width), 100%);
     height: var(--room-info-height);
+    padding-inline: $spacer * 4;
     background-color: var(--color-ui-02);
-    border-bottom: 1px solid var(--color-border-03);
+    border-bottom: 1px solid var(--color-border-02);
     transform: translateX(-50%);
     inset-block-start: var(--header-height);
     inset-inline-start: 50%;
 
     &__title {
-      width: 100%;
+      flex: 1;
+      min-width: 0;
       overflow: hidden;
       color: var(--color-brand-02);
-      font-size: var(--font-size-7);
+      font-size: var(--font-size-text-9);
       white-space: nowrap;
-      text-align: center;
       text-overflow: ellipsis;
-      padding-inline: $spacer;
-      padding-block-end: $spacer;
 
-      @include font-weight-semi-bold;
+      @include font-weight-bold;
     }
 
-    .remaining-choices {
+    &__round {
+      display: flex;
+      flex: none;
+      gap: $spacer;
+      align-items: center;
       color: var(--color-text-02);
-      font-size: var(--font-size-8);
-      text-align: center;
+      font-size: var(--font-size-text-10);
+      font-variant-numeric: tabular-nums;
+
+      @include font-weight-bold;
     }
   }
 
@@ -55,62 +64,262 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: calc(100vh - var(--header-height) - var(--room-info-height));
+    height: var(--scene-height);
 
-    @include media-breakpoint-down(tablet) {
-      height: calc(100vh - var(--header-height) - var(--room-info-height) - max(34px, env(safe-area-inset-bottom)));
-    }
-  }
+    .choice-card {
+      --choice-accent: var(--color-danger-02);
+      --choice-tint: rgba(244, 67, 54, 0.22);
 
-  .versus-icon {
-    position: absolute;
+      background: linear-gradient(180deg, var(--choice-tint), transparent 70%);
 
-    @include center(true, true);
+      &--right {
+        --choice-accent: var(--color-info-01);
+        --choice-tint: rgba(77, 132, 250, 0.22);
 
-    img {
-      display: inline-block;
+        background: linear-gradient(0deg, var(--choice-tint), transparent 70%);
+      }
 
-      @include media-breakpoint-down(mobile) {
-        width: 32px;
-        height: 32px;
+      &--left {
+        border: none;
+      }
+
+      &__content {
+        gap: $spacer * 2;
+      }
+
+      &__image,
+      &__video,
+      &__text {
+        border-color: var(--choice-accent);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      &__note {
+        color: #fff;
+        background-color: var(--choice-accent);
+        border-radius: 999px;
       }
     }
   }
 
-  .winner-layout {
+  .versus-divider {
+    position: absolute;
+    z-index: 4;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: $spacer * 4;
-    text-align: center;
+    height: 0;
+    border-top: 1px solid var(--color-border-02);
+    // reappear once the cards have mostly slid back (ChoiceCard flex transition: 0.5s, ease-out)
+    transition: opacity 0.15s 0.3s;
+    pointer-events: none;
+    inset-inline: 0;
+    inset-block-start: 50%;
 
-    &__title {
-      color: var(--color-text-01);
-      font-size: var(--font-size-text-2);
-      margin-block-end: $spacer * 10;
-
-      @include font-weight-bold;
+    &.is-hidden {
+      opacity: 0;
+      transition: none;
     }
 
-    &__actions {
-      margin-block-start: $spacer * 6;
-      margin-block-end: $spacer * 8;
+    &__badge {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      background-color: var(--color-warning-01);
+      border: 3px solid var(--color-ui-01);
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      transform: rotate(45deg);
+      place-items: center;
+
+      span {
+        color: #1a1a1a;
+        font-size: var(--font-size-text-10);
+        transform: rotate(-45deg);
+
+        @include font-weight-extra-bold;
+      }
     }
 
-    .choice-card--winner {
-      flex: none;
-      width: 100%;
-      max-width: var(--mobile);
-      height: auto;
-      cursor: default;
-      pointer-events: none;
+    &__brand {
+      position: absolute;
+      display: flex;
+      gap: $spacer;
+      align-items: center;
+      height: 20px;
+      padding-inline: $spacer * 2;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      letter-spacing: 0.08em;
+      background-color: var(--color-ui-01);
+      border-radius: 999px;
+      transform: translateY(-50%);
+      inset-inline-end: $spacer * 3;
+      inset-block-start: 0;
+
+      @include font-weight-extra-bold;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 
-  .winner-choice-list {
-    margin-block-start: $spacer * 4;
+  // Results: scrolls on its own, the scene keeps the window pinned to the top
+  .winner-layout {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer * 4;
+    align-items: center;
+    width: 100%;
+    height: var(--scene-height);
+    padding: $spacer * 5 $spacer * 4 $spacer * 10;
+    overflow-y: auto;
+    text-align: center;
+
+    > * {
+      flex: none;
+      width: 100%;
+      max-width: 560px;
+    }
+  }
+
+  .winner-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__room {
+      margin: 0 0 $spacer * 3;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-6);
+      line-height: 1.3;
+
+      @include font-weight-bold;
+
+      @include media-breakpoint-down(tablet) {
+        font-size: var(--font-size-text-8);
+      }
+    }
+
+    &__kicker {
+      order: 1;
+      margin-block-start: $spacer * 3;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-8);
+    }
+
+    .choice-card--winner {
+      display: contents;
+      cursor: default;
+      pointer-events: none;
+
+      .choice-card__content {
+        display: contents;
+      }
+
+      .choice-card__image,
+      .choice-card__video {
+        max-height: 280px;
+        border-width: 3px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+
+        @include media-breakpoint-down(tablet) {
+          max-height: 180px;
+        }
+      }
+
+      .choice-card__video {
+        width: 100%;
+        height: auto;
+      }
+
+      .choice-card__note,
+      .choice-card__text {
+        display: block;
+        order: 2;
+        padding: 0;
+        color: var(--color-brand-02);
+        font-size: var(--font-size-text-5);
+        background: none;
+        border: none;
+        box-shadow: none;
+
+        @include font-weight-extra-bold;
+
+        @include media-breakpoint-down(tablet) {
+          font-size: var(--font-size-text-7);
+        }
+      }
+    }
+  }
+
+  .winner-panel {
+    padding: $spacer * 3;
+    text-align: start;
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 16px;
+
+    &__title {
+      margin: 0 0 $spacer * 2;
+      color: var(--color-brand-02);
+      font-size: var(--font-size-text-9);
+      letter-spacing: 0.06em;
+      text-align: center;
+      text-transform: uppercase;
+
+      @include font-weight-extra-bold;
+    }
+  }
+
+  .winner-rate {
+    text-align: center;
+
+    .room-review-view__rating {
+      flex-direction: column;
+      padding: 0;
+      background: none;
+    }
+
+    // the stars to give are enough here, the average lives in the comments' rating tab
+    .room-review-view__rating-summary {
+      display: none;
+    }
+
+    &__hint {
+      display: block;
+      margin-block-start: $spacer * 2;
+      color: var(--color-text-03);
+    }
+  }
+
+  .winner-layout__replay,
+  .winner-layout__share {
+    width: auto;
+    min-width: 220px;
+    height: 48px;
+    color: #fff;
+    font-size: var(--font-size-text-8);
+    letter-spacing: 0.04em;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s;
+
+    @include font-weight-extra-bold;
+  }
+
+  .winner-layout__replay {
+    background: linear-gradient(135deg, var(--color-brand-02), var(--color-warning-02));
+  }
+
+  .winner-layout__share {
+    background-color: var(--color-success-01);
+  }
+
+  .winner-layout__replay:active,
+  .winner-layout__share:active {
+    transform: scale(0.97);
   }
 }

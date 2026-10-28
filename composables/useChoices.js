@@ -12,6 +12,8 @@ export default () => {
   const selectedSide = ref(null)
   const ultimateWinner = ref(null)
   const selectedChoiceIds = ref([])
+  // [winnerDocumentId, loserDocumentId] per duel, posted when the run ends
+  const duels = ref([])
 
   const initGame = choicesArray => {
     if (!choicesArray || choicesArray.length === 0) return
@@ -25,6 +27,7 @@ export default () => {
     selectedSide.value = null
     ultimateWinner.value = null
     selectedChoiceIds.value = []
+    duels.value = []
   }
 
   const selectChoice = async side => {
@@ -34,6 +37,12 @@ export default () => {
 
     if (selectedChoice?.documentId && !selectedChoiceIds.value.includes(selectedChoice.documentId)) {
       selectedChoiceIds.value.push(selectedChoice.documentId)
+    }
+
+    const loserChoice = side === 'left' ? choiceSecond.value : choiceFirst.value
+
+    if (selectedChoice?.documentId && loserChoice?.documentId) {
+      duels.value.push([selectedChoice.documentId, loserChoice.documentId])
     }
 
     selectedSide.value = side
@@ -61,6 +70,12 @@ export default () => {
     () => ultimateWinner.value,
     async () => {
       if (ultimateWinner.value) {
+        const roomDocumentId = store.getters['creator/room']?.documentId
+
+        if (roomDocumentId && duels.value.length) {
+          store.dispatch('creator/recordChoiceDuels', { roomDocumentId, duels: duels.value })
+        }
+
         if ($auth.loggedIn && $auth.user) {
           await store.dispatch('creator/upvoteChoice', { choiceDocumentId: ultimateWinner.value.documentId })
         }
