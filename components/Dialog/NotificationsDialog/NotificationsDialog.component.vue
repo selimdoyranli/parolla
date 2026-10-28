@@ -8,7 +8,7 @@ Dialog.dialog.notifications-dialog(
   :close-on-click-overlay="false"
   @closed="$emit('closed')"
 )
-  Tabs(v-model="activeTab" color="var(--color-brand-02)" animated @change="reset")
+  Tabs(v-model="activeTab" color="var(--color-brand-02)" animated :before-change="beforeTabChange" @change="reset")
     Tab(v-for="tab in tabs" :key="tab.key" :name="tab.key" :title="tab.title")
   List(
     v-if="state.isOpen"
@@ -52,13 +52,22 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     const router = useRouter()
-    const { i18n, localePath } = useContext()
+    const { i18n, localePath, $auth } = useContext()
 
     const state = reactive({ isOpen: props.isOpen })
     const activeTab = ref('all')
     const tabs = computed(() => ['all', 'quizzes', 'interactions'].map(key => ({ key, title: i18n.t(`notifications.tabs.${key}`) })))
     const listRef = ref(null)
     const list = reactive({ items: [], page: 0, loading: false, finished: false, error: false })
+
+    // guests only get the announcements in "Tümü"; the other tabs ask them to sign in
+    const beforeTabChange = name => {
+      if ($auth.loggedIn || name === 'all') return true
+
+      store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
+
+      return false
+    }
 
     const reset = () => {
       Object.assign(list, { items: [], page: 0, loading: false, finished: false, error: false })
@@ -170,7 +179,7 @@ export default defineComponent({
       )
     }
 
-    return { state, listRef, activeTab, tabs, list, load, reset, thankingId, handleThank, handleSelect }
+    return { state, listRef, activeTab, tabs, list, load, beforeTabChange, reset, thankingId, handleThank, handleSelect }
   }
 })
 </script>
