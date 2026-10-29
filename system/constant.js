@@ -108,3 +108,5 @@ export const ROOM_FEATURED_TAGS = [
     icon: 'flag:tr-4x3'
   }
 ]
+export const APP_STORE_URL = 'https://apps.apple.com/tr/app/parolla-kelime-oyunu/id6448075358'
+export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.parolla'

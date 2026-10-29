@@ -27,6 +27,13 @@ export default {
     flashcardListLength: 'Flashcard list must have at least {min} and at most {max} cards',
     rateLimited: 'You are going too fast.\n Please try again in {seconds} seconds.'
   },
+  download: {
+    title: 'parolla in your pocket',
+    subtitle: 'Get the app for free for the word game, quizzes and daily questions.',
+    hint: 'Download now',
+    banner: 'Log in on the mobile app, claim your rewards!',
+    cta: 'Download'
+  },
   economy: {
     retry: 'Retry',
     earned: {
@@ -1912,6 +1919,11 @@ export default {
         description: 'Name the song that is playing! Listen to {artists} songs in the music quiz and guess them.',
         keywords: 'music quiz, guess the song, name that song, song quiz'
       }
+    },
+    download: {
+      title: 'Download the App',
+      description: 'Download the parolla mobile app for iOS and Android for free. Word game, quizzes and daily questions in your pocket.',
+      keywords: 'parolla download, parolla app, word game app, parolla ios, parolla android'
     },
     geoGuessMode: {
       title: 'GeoGuess - Guess the location from street view',

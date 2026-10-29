@@ -49,6 +49,7 @@ const APP_ROUTES = [
   { tr: '/kelimeblok/liderlik/', en: '/en/wordblock/leaderboard/' },
   { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' },
   { tr: '/topluluklar/', en: '/en/communities/' },
+  { tr: '/indir/', en: '/en/download/' },
   { tr: '/sayfa/gizlilik-politikasi/', en: '/en/page/privacy-policy/' },
   { tr: '/sayfa/cerez-politikasi/', en: '/en/page/cookie-policy/' },
   { tr: '/sayfa/kvkk-aydinlatma-metni/', en: '/en/page/kvkk-clarification-text/' },
@@ -75,6 +76,7 @@ const ROUTE_HEADS = [
     related: WORDBLOCK_LENGTHS.filter((other, otherIndex) => otherIndex !== index)
   })),
   { seo: 'tourMode', urls: { tr: '/tur/', en: '/en/tour/' }, howTo: 'tour' },
+  { seo: 'download', urls: { tr: '/indir/', en: '/en/download/' } },
   { seo: 'drawLobby', urls: { tr: '/ciz/', en: '/en/draw/' }, howTo: 'draw' },
   { seo: 'creatorModeCompose', urls: { tr: '/quiz-olustur/', en: '/en/create-quiz/' }, howTo: 'creator' },
   {

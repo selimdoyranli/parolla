@@ -27,6 +27,13 @@ export default {
     flashcardListLength: 'Kart listesi en az {min}, en fazla {max} kart olmalıdır',
     rateLimited: 'Çok hızlı işlem yapıyorsunuz.\n {seconds} saniye sonra tekrar deneyin.'
   },
+  download: {
+    title: 'parolla cebinde',
+    subtitle: 'Kelime oyunu, quizler ve günlük sorular için uygulamayı ücretsiz indir.',
+    hint: 'Şimdi indir',
+    banner: 'Mobil uygulamadan giriş yap, ödülleri al!',
+    cta: 'İndir'
+  },
   economy: {
     retry: 'Tekrar dene',
     earned: {
@@ -1934,6 +1941,11 @@ export default {
         description: 'Çalan şarkıyı bil! Müzik quizde {artists} şarkılarını dinle ve çalan şarkıyı tahmin et.',
         keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin oyunu'
       }
+    },
+    download: {
+      title: 'Uygulamayı İndir',
+      description: 'parolla mobil uygulamasını iOS ve Android için ücretsiz indir. Kelime oyunu, quizler ve günlük sorular cebinde.',
+      keywords: 'parolla indir, parolla uygulama, kelime oyunu indir, parolla ios, parolla android'
     },
     geoGuessMode: {
       title: 'GeoGuess - Sokak görünümünden konumu tahmin et',

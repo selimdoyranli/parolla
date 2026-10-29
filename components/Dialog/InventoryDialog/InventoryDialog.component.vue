@@ -32,6 +32,7 @@ Dialog.dialog.inventory-dialog(
 
     .inventory-dialog__body
       template(v-if="state.alive")
+        AppDownloadBanner
         // a tab mounts on first visit and then stays, so its loaded state survives a tab switch
         CollectionView(v-if="seen.inventory" v-show="tab === 'inventory'")
         ShopView(v-if="seen.shop" v-show="tab === 'shop'")

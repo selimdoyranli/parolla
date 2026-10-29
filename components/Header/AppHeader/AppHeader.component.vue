@@ -237,11 +237,11 @@ export default defineComponent({
       showShopTip(tip)
     }
 
-    // once a day in the app while ads are left to watch
-    const { adsMax, adsWatched, canWatchAd } = useAdReward()
+    // once a day while ads are left to watch; on the web too, so the shop (and its app download banner) gets the tap
+    const { adsMax, adsWatched } = useAdReward()
 
     watch(
-      () => isHome.value && canWatchAd.value && adsWatched.value < adsMax.value,
+      () => isHome.value && adsWatched.value < adsMax.value,
       show => show && showShopTipOnce('economy.adReward.tip', 'rewardTipDay', new Date().toDateString()),
       { immediate: true }
     )
