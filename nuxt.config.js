@@ -368,6 +368,10 @@ module.exports = {
             tr: '/ciz/oda/:code',
             en: '/draw/room/:code'
           },
+          'Download/index': {
+            tr: '/indir',
+            en: '/download'
+          },
           'GeoGuessMode/index': {
             tr: '/geoguess',
             en: '/geoguess'

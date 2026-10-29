@@ -1,0 +1,49 @@
+.app-download-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  color: var(--color-text-01);
+  background: var(--color-ui-01);
+  border: 1px solid var(--color-border-02);
+  border-radius: 10px;
+
+  &__icon {
+    flex: none;
+    color: var(--color-brand-02);
+  }
+
+  &__text {
+    flex: 1;
+    min-width: 160px;
+    margin: 0;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__button {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 12px;
+    color: #050505;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    text-decoration: none;
+    background: #fff;
+    border-radius: 999px;
+
+    &:hover {
+      color: #050505;
+      opacity: 0.85;
+    }
+  }
+}
