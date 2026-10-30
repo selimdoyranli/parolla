@@ -109,3 +109,6 @@ data_output
 .wrangler
 .dev.vars
 .dev.vars.*
+
+# brainstorm mockups (local only)
+.superpowers/
