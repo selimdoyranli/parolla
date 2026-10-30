@@ -2197,6 +2197,20 @@ export default {
       option: 'Option {n}',
       nextRound: 'Next round'
     },
+    lobbyIn: 'Back to the lobby',
+    final: {
+      title: 'Game over',
+      rank: 'You finished #{n}',
+      hidden: 'Rankings are hidden in this room',
+      eliminated: 'Elimination order'
+    },
+    cancelled: {
+      title: 'GAME CANCELLED',
+      text: 'The host cancelled the game. No points were given for this game.'
+    },
+    emoji: {
+      open: 'Send a reaction'
+    },
     closed: {
       kicked: 'You were removed from the room',
       empty: 'The room was closed',

@@ -4,13 +4,17 @@
   CreateGuestDrawerDialog(v-else-if="needsGuest && !guestReady" no-socket :title="$t('party.guest.title')" @close="guestReady = true")
   //- the socket-using child only mounts once identity is settled (guests send it in the connect URL)
   PartyRoomSession(v-else-if="!needsGuest || guestReady" :code="code" :quiz="quiz")
-    //- phase switch: QA game | choices game | lobby. Final / cancelled overlays: Task 13
+    //- phase switch: QA game | choices game | lobby. Final / cancelled never read `round` (a reconnect there gets none)
     .party-game(v-if="isGame" :class="{ 'party-game--choices': isChoicesGame }")
-      CreatorModeGameScene(v-if="isQaGame && round" party)
-      //- choices shows its round result inside the scene, under the cards
-      ChoicesGameScene(v-else-if="isChoicesGame && round" party)
-      //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
-      PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
+      PartyCancelled(v-if="cancelled")
+      PartyFinalResults(v-else-if="final")
+      template(v-else)
+        CreatorModeGameScene(v-if="isQaGame && round" party)
+        //- choices shows its round result inside the scene, under the cards
+        ChoicesGameScene(v-else-if="isChoicesGame && round" party)
+        //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
+        PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
+      PartyEmojiReactions
       button.party-game__settings(v-if="isHost" type="button" :aria-label="$t('party.game.settings')" @click="isHostSheetOpen = true")
         AppIcon(name="tabler:settings" :width="18" :height="18")
       PartyHostSheet(v-if="isHost" v-model="isHostSheetOpen")
@@ -62,6 +66,8 @@ export default defineComponent({
     const game = computed(() => store.getters['party/game'])
     const round = computed(() => store.state.party.round)
     const roundEnd = computed(() => store.state.party.roundEnd)
+    const final = computed(() => store.state.party.final)
+    const cancelled = computed(() => store.state.party.cancelled)
     const isQaGame = computed(() => game.value?.quizType === quizTypeEnum.QA)
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
@@ -129,6 +135,8 @@ export default defineComponent({
       isHostSheetOpen,
       round,
       roundEnd,
+      final,
+      cancelled,
       isQaGame,
       isChoicesGame,
       isGame

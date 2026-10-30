@@ -2220,6 +2220,20 @@ export default {
       option: 'Seçenek {n}',
       nextRound: 'Sıradaki tur'
     },
+    lobbyIn: 'Lobiye dönülüyor',
+    final: {
+      title: 'Oyun bitti',
+      rank: '{n}. oldun',
+      hidden: 'Bu odada sıralama gizli',
+      eliminated: 'Elenme sırası'
+    },
+    cancelled: {
+      title: 'OYUN İPTAL EDİLDİ',
+      text: 'Kurucu oyunu iptal etti. Bu oyun için puan verilmedi.'
+    },
+    emoji: {
+      open: 'Tepki gönder'
+    },
     closed: {
       kicked: 'Odadan çıkarıldın',
       empty: 'Oda kapandı',

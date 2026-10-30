@@ -5,7 +5,7 @@
     // Info header
     .room-info(:class="{ 'room-info--hostGear': party && isPartyHost }")
       .room-info__title {{ party ? partyGame.title : room.title }}
-      span.room-info__round(v-if="party && !partyChampion")
+      span.room-info__round(v-if="party")
         AppIcon(name="tabler:users" :width="14" :height="14")
         span {{ partyTally.voters }}/{{ partyTally.total }}
       .room-info__round
@@ -13,14 +13,14 @@
         span(v-if="party") {{ partyRound.index + 1 }}/{{ partyRound.total }}
         span(v-else) {{ currentRound }}/{{ totalRounds }}
       //- party: per-round time left
-      span.room-info__ring(v-if="party && !partyChampion")
+      span.room-info__ring(v-if="party")
         svg(viewBox="0 0 36 36" aria-hidden="true")
           circle.room-info__ring-track(cx="18" cy="18" r="16")
           circle.room-info__ring-fill(cx="18" cy="18" r="16" pathLength="100" :stroke-dashoffset="100 - partyRemainFraction * 100")
         strong.room-info__ring-text {{ partyRemainSec }}
 
     // Party round: everyone votes, the majority decides (tie / no votes keep the champion)
-    .versus-set.versus-set--party(v-if="party && !partyChampion" :class="{ 'is-result': partyRoundEnd }")
+    .versus-set.versus-set--party(v-if="party" :class="{ 'is-result': partyRoundEnd }")
       //- presentation mode: the cards are on the presenter's screen, players get two compact buttons
       .party-vote-buttons(v-if="isPartyCompact")
         button.party-vote-button(
@@ -88,13 +88,6 @@
             strong {{ $t('party.choices.pick') }}
             span {{ $t('party.choices.pickSub') }}
         span.party-lock__count {{ $t('party.choices.voted', partyTally) }}
-
-    // Winner Layout (party: the room's champion only, no rating / replay / share)
-    .winner-layout(v-else-if="party")
-      .winner-hero
-        h1.winner-hero__room {{ partyGame.title }}
-        .winner-hero__kicker 🎉 {{ $t('choices.winner.title') }} 🎉
-        ChoiceCard.choice-card--winner(:choice="partyChampion")
 
     // Game Layout
     .versus-set(v-else-if="!ultimateWinner")
@@ -223,7 +216,6 @@ export default defineComponent({
     const partyGame = computed(() => store.getters['party/game'] || {})
     const partyRound = computed(() => store.state.party.round || { index: 0, total: 0, durationMs: 1, remainingMs: 0 })
     const partyRoundEnd = computed(() => (props.party ? store.state.party.roundEnd : null))
-    const partyChampion = computed(() => (props.party ? store.state.party.final?.champion || null : null))
     const isPartyHost = computed(() => store.getters['party/isHost'])
     const isPartyPresenter = computed(() => props.party && store.getters['party/isPresenter'])
     const isPartyCompact = computed(() => Boolean(partyGame.value.presenterId) && !isPartyPresenter.value)
@@ -402,7 +394,6 @@ export default defineComponent({
       partyGame,
       partyRound,
       partyRoundEnd,
-      partyChampion,
       isPartyHost,
       isPartyPresenter,
       isPartyCompact,

@@ -5,6 +5,7 @@
   p.party-room-session__label(v-else) {{ $t('party.room.connecting') }}
 
   PartyHostLeftDialog(v-if="closedReason === 'no_host'")
+  SocketStatusBanner(:status="reconnectStatus" @reconnect="open")
 
   EnterPasswordDialog(:key="passwordTry" v-if="askPassword" @submit="submitPassword" @close="leave")
 </template>
@@ -24,7 +25,7 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const { i18n, localePath } = useContext()
-    const { send } = usePartySocket()
+    const { send, open, reconnectStatus } = usePartySocket()
     const room = computed(() => store.state.party.room)
     const closedReason = computed(() => store.state.party.closedReason)
     const askPassword = ref(false)
@@ -85,7 +86,7 @@ export default defineComponent({
       store.commit('party/RESET')
     })
 
-    return { room, closedReason, askPassword, passwordTry, submitPassword, leave }
+    return { room, closedReason, reconnectStatus, open, askPassword, passwordTry, submitPassword, leave }
   }
 })
 </script>
