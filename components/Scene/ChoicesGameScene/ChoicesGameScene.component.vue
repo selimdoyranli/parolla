@@ -236,10 +236,21 @@ export default defineComponent({
       ]
     })
 
-    // the vote just clicked shows at once; the server's echo (`mine`) covers reconnects
+    // the vote just clicked shows at once; the server's echo (`mine`) covers reconnects.
+    // After the round only the server counts (a late click it dropped must not show)
     const partyLocalVote = ref(null)
     const partyVoteChanged = ref(false)
-    const partyMySide = computed(() => partyLocalVote.value || store.state.party.votes?.mine || null)
+    const partyMySide = computed(() => {
+      const end = partyRoundEnd.value
+
+      if (end) {
+        if (end.mineWon === null || end.mineWon === undefined) return null
+
+        return end.mineWon ? end.winnerSide : end.winnerSide === 'left' ? 'right' : 'left'
+      }
+
+      return partyLocalVote.value || store.state.party.votes?.mine || null
+    })
 
     // no votes frame until someone votes: count who can vote from the room until then
     const partyTally = computed(() => {

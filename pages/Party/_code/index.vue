@@ -9,7 +9,8 @@
       CreatorModeGameScene(v-if="isQaGame && round" party)
       //- choices shows its round result inside the scene, under the cards
       ChoicesGameScene(v-else-if="isChoicesGame && round" party)
-      PartyRoundResult(v-if="isQaGame && roundEnd")
+      //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
+      PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
       button.party-game__settings(v-if="isHost" type="button" :aria-label="$t('party.game.settings')" @click="isHostSheetOpen = true")
         AppIcon(name="tabler:settings" :width="18" :height="18")
       PartyHostSheet(v-if="isHost" v-model="isHostSheetOpen")
