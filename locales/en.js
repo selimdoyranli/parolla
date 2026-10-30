@@ -2040,5 +2040,18 @@ export default {
       save: 'Save',
       cancel: 'Cancel'
     }
+  },
+  party: {
+    title: 'Party',
+    errors: {
+      room_not_found: 'Room not found',
+      bad_password: 'Wrong password',
+      room_full: 'The room is full',
+      room_locked: 'The room is locked',
+      login_required: 'You need to log in for this',
+      already_in_room: 'You are already in this room',
+      quiz_unsupported: 'This quiz cannot be played in party mode',
+      not_host: 'Only the host can do this'
+    }
   }
 }

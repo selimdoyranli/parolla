@@ -368,6 +368,18 @@ module.exports = {
             tr: '/ciz/oda/:code',
             en: '/draw/room/:code'
           },
+          'Party/index': {
+            tr: '/party',
+            en: '/party'
+          },
+          'Party/_code/index': {
+            tr: '/party/:code',
+            en: '/party/:code'
+          },
+          'Party/_code/remote': {
+            tr: '/party/:code/remote',
+            en: '/party/:code/remote'
+          },
           'Download/index': {
             tr: '/indir',
             en: '/download'

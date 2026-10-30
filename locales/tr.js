@@ -2063,5 +2063,18 @@ export default {
       save: 'Kaydet',
       cancel: 'Vazgeç'
     }
+  },
+  party: {
+    title: 'Parti',
+    errors: {
+      room_not_found: 'Oda bulunamadı',
+      bad_password: 'Şifre yanlış',
+      room_full: 'Oda dolu',
+      room_locked: 'Oda kilitli',
+      login_required: 'Bu işlem için giriş yapmalısın',
+      already_in_room: 'Zaten bu odadasın',
+      quiz_unsupported: 'Bu quiz parti modunda oynanamaz',
+      not_host: 'Bu işlemi sadece oda sahibi yapabilir'
+    }
   }
 }
