@@ -1828,6 +1828,9 @@ export default {
       leaderSorting: `This season's leaderboard`
     },
     pending: 'Leaderboard is being fetched',
+    // Upper bounds of the API's edge + in-memory board caches (parolla-strapi edge-cache.ts, board-cache.ts)
+    cacheNote: 'Checked by the system, this table updates after {cacheTime}',
+    cacheTime: { daily: '10 seconds', weekly: '40 seconds', monthly: '1 minute', season: '5 minutes' },
     // The row pinned above the list, showing the reader their own place on the board
     yourRank: {
       label: 'Your Rank',
