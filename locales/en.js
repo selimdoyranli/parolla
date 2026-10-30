@@ -2051,7 +2051,9 @@ export default {
     },
     intro: {
       title: 'Start a party',
-      sub: 'Create a room and play live with your friends'
+      sub: 'Create a room and play live with your friends',
+      password: 'Password-protected room',
+      create: 'Create the room'
     },
     gate: {
       notice: 'You need to log in to create a party room. Your friends can join your room without an account.',

@@ -2074,7 +2074,9 @@ export default {
     },
     intro: {
       title: 'Party kur',
-      sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna'
+      sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna',
+      password: 'Şifreli oda',
+      create: 'Odayı kur'
     },
     gate: {
       notice: 'Parti odası oluşturmak için giriş yapman gerekiyor. Arkadaşların hesapları olmadan da odana katılabilir.',

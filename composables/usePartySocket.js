@@ -20,7 +20,8 @@ let joinFrame = null
 let sharedRemote = false
 const JOIN_DEAD_CODES = ['room_not_found', 'bad_password', 'room_full', 'room_locked', 'login_required']
 
-export const usePartySocket = ({ remote = false } = {}) => {
+// lazy: count as a consumer (keeps a live socket alive) but open only when the caller calls open()
+export const usePartySocket = ({ remote = false, lazy = false } = {}) => {
   const vm = getCurrentInstance().proxy
   const $auth = vm.$auth
   const $store = vm.$store
@@ -195,7 +196,7 @@ export const usePartySocket = ({ remote = false } = {}) => {
       closeTimer = null
     }
 
-    open()
+    if (!lazy) open()
   })
 
   onBeforeUnmount(() => {
