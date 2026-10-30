@@ -197,6 +197,7 @@ export default defineComponent({
     const rootRef = ref(null)
 
     const partySend = inject('partySend', null)
+    let partySent = false
     const isPartyPresenter = computed(() => props.party && store.getters['party/isPresenter'])
 
     const {
@@ -237,7 +238,13 @@ export default defineComponent({
         ? {
             party: {
               // locked = the server already took this round's answer (it would ignore a second one anyway)
-              submit: text => !isPartyLocked.value && partySend(wsTypeEnum.PARTY_ANSWER, { text }),
+              submit: text => {
+                if (isPartyLocked.value || partySent) return
+
+                // one frame per try: cleared by a retry or a new round, the ack locks the field
+                partySent = true
+                partySend(wsTypeEnum.PARTY_ANSWER, { text })
+              },
               // the presenter's screen is the big one everybody reads
               fitMax: () => (isPartyPresenter.value ? 72 : 30)
             }
@@ -295,6 +302,7 @@ export default defineComponent({
       watch(
         () => store.state.party.round,
         async () => {
+          partySent = false
           resetAnswerField()
           await nextTick()
           questionFitText()
@@ -304,7 +312,12 @@ export default defineComponent({
       // the server only re-asks when the client check let a wrong letter through; same hint as solo
       watch(
         () => store.state.party.retry,
-        retry => retry && handleNotStartsWithActiveChar({ activeChar: retry.letter })
+        retry => {
+          if (!retry) return
+
+          partySent = false
+          handleNotStartsWithActiveChar({ activeChar: retry.letter })
+        }
       )
 
       // round over: drop the keyboard so the result card gets the screen

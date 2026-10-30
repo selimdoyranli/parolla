@@ -77,6 +77,8 @@ export default defineComponent({
           quizType: quizTypeEnum.QA,
           hasMedia: question.questionType === questionTypeEnum.MEDIA
         })
+        // a finished solo quiz leaves isGameOver true, which makes handleAnswer drop every party answer
+        store.commit('creator/SET_IS_GAME_OVER', { isGameOver: false })
         store.commit('creator/SET_QUESTIONS', { questions: Array.from({ length: total }, (_, i) => (i === index ? question : {})) })
         store.commit(
           'creator/SET_ALPHABET_ITEMS',
