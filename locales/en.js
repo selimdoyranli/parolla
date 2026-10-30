@@ -2164,6 +2164,7 @@ export default {
       login_required: 'You need to log in for this',
       already_in_room: 'You are already in this room',
       quiz_unsupported: 'This quiz cannot be played in party mode',
+      queue_full: 'Queue is full (max 20 games)',
       not_host: 'Only the host can do this'
     }
   }

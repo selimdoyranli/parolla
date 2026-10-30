@@ -2187,6 +2187,7 @@ export default {
       login_required: 'Bu işlem için giriş yapmalısın',
       already_in_room: 'Zaten bu odadasın',
       quiz_unsupported: 'Bu quiz parti modunda oynanamaz',
+      queue_full: 'Kuyruk dolu (en fazla 20 oyun)',
       not_host: 'Bu işlemi sadece oda sahibi yapabilir'
     }
   }

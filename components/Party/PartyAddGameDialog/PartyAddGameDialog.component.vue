@@ -94,32 +94,57 @@ export default defineComponent({
 
       if (text) query['filters[title][$containsi]'] = text
 
-      const { data } = await app.$appFetch({
-        method: 'GET',
-        path: 'rooms',
-        query,
-        headers: { Authorization: `${app.$auth.strategy.token.get()}` }
-      })
+      try {
+        const { data } = await app.$appFetch({
+          method: 'GET',
+          path: 'rooms',
+          query,
+          headers: { Authorization: `${app.$auth.strategy.token.get()}` }
+        })
 
-      if (mine !== seq) return
+        // a late response from a tab/keyword that is no longer current
+        if (mine !== seq || !data) return
 
-      loading.value = false
-
-      if (!data) return
-
-      const next = data.data.map(room => roomTransformer(room))
-      rooms.value = more ? rooms.value.concat(next) : next
-      hasMore.value = page.value < data.meta.pagination.pageCount
+        const next = data.data.map(room => roomTransformer(room))
+        rooms.value = more ? rooms.value.concat(next) : next
+        hasMore.value = page.value < data.meta.pagination.pageCount
+      } catch {
+        // keeps what is on screen; the empty state / load more stay usable
+      } finally {
+        if (mine === seq) loading.value = false
+      }
     }
 
     const onSearch = useDebounceFn(() => load(false), 500)
 
-    watch(type, () => load(false))
+    watch(type, () => {
+      rooms.value = []
+      hasMore.value = false
+      load(false)
+    })
     // lazy first load; reopening keeps the list
     watch(
       () => props.value,
       open => open && !rooms.value.length && load(false),
       { immediate: true }
+    )
+
+    // success is only claimed once the server's room state shows the entry; failures arrive as party_error toasts
+    let pendingTitle = null
+    let pendingTimer = null
+    const settle = () => {
+      clearTimeout(pendingTimer)
+      pendingTitle = null
+    }
+
+    watch(
+      () => queue.value.length,
+      (now, before) => {
+        if (pendingTitle && now > before) {
+          Notify({ message: i18n.t('party.add.addedToast', { title: pendingTitle }), type: 'success', duration: 1500 })
+          settle()
+        }
+      }
     )
 
     const add = room => {
@@ -130,8 +155,10 @@ export default defineComponent({
       }
 
       // the server loads the quiz itself, so only the id and locale travel
+      settle()
+      pendingTitle = room.title
+      pendingTimer = setTimeout(settle, 4000)
       send(wsTypeEnum.PARTY_QUEUE_ADD, { roomId: room.roomId, locale: i18n.locale })
-      Notify({ message: i18n.t('party.add.addedToast', { title: room.title }), type: 'success', duration: 1500 })
     }
 
     return { TABS, queue, addedIds, type, keyword, rooms, hasMore, loading, load, onSearch, add }
