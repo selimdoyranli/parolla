@@ -58,6 +58,9 @@ export default {
     s.closedReason = reason || 'empty'
   },
   PUSH_CHAT(s, msg) {
+    // server replays history on every (re)join
+    if (s.chat.some(c => c.timestamp === msg.timestamp && c.playerId === msg.playerId && c.message === msg.message)) return
+
     s.chat = [...s.chat, msg].slice(-CHAT_CAP)
   },
   PUSH_EMOJI(s, msg) {

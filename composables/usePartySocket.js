@@ -17,7 +17,8 @@ let reconnectTimer = null
 let closingOnPurpose = false
 // Last join frame, replayed after an auto-reconnect so the server restores the seat
 let joinFrame = null
-let hasConnected = false
+let sharedRemote = false
+const JOIN_DEAD_CODES = ['room_not_found', 'bad_password', 'room_full', 'room_locked']
 
 export const usePartySocket = ({ remote = false } = {}) => {
   const vm = getCurrentInstance().proxy
@@ -26,7 +27,12 @@ export const usePartySocket = ({ remote = false } = {}) => {
   const wsBase = process.env.WS_URL || 'wss://0.0.0.0:1881'
 
   const open = () => {
-    if (sharedSocket && (sharedSocket.readyState === 1 || sharedSocket.readyState === 0)) return
+    if (sharedSocket && (sharedSocket.readyState === 1 || sharedSocket.readyState === 0)) {
+      if (sharedRemote === remote) return
+
+      // Page switched player <-> remote inside the close-defer window: reconnect in the new mode
+      detach()
+    }
 
     const isGuest = !($auth && $auth.loggedIn)
     const params = { channel: 'party' }
@@ -43,11 +49,14 @@ export const usePartySocket = ({ remote = false } = {}) => {
     if (remote) params.remote = '1'
 
     sharedStatus.value = 'connecting'
+    sharedRemote = remote
     closingOnPurpose = false
     const sock = new WebSocket(`${wsBase}?${new URLSearchParams(params).toString()}`)
     sharedSocket = sock
 
     sock.onclose = event => {
+      if (sharedSocket !== sock) return
+
       sharedStatus.value = 'disconnected'
       sharedSocket = null
       serverReady = false
@@ -70,6 +79,8 @@ export const usePartySocket = ({ remote = false } = {}) => {
       console.error('[party ws]', e)
     }
     sock.onmessage = evt => {
+      if (sharedSocket !== sock) return
+
       let data = null
       try {
         data = JSON.parse(evt.data)
@@ -81,6 +92,11 @@ export const usePartySocket = ({ remote = false } = {}) => {
 
       if (data.type === 'server_restarting') reconnectStatus.value = 'restarting'
 
+      // A dead join must not be replayed after a later drop
+      if (data.type === wsTypeEnum.PARTY_CLOSED || (data.type === wsTypeEnum.PARTY_ERROR && JOIN_DEAD_CODES.includes(data.code))) {
+        joinFrame = null
+      }
+
       if (data.type === 'connected') {
         if (data.playerId) $store.commit('party/SET_MY_ID', data.playerId)
         reconnectStatus.value = null
@@ -91,9 +107,14 @@ export const usePartySocket = ({ remote = false } = {}) => {
           sharedStatus.value = 'connected'
           $store.commit('party/SET_STATUS', 'connected')
 
-          // First connect: the join is already queued. Reconnect: queue was dropped, replay it.
-          if (hasConnected && joinFrame) pendingMessages.unshift(joinFrame)
-          hasConnected = true
+          // Replay the join (first connect failed or reconnect); drop a queued copy so it isn't sent twice
+          if (joinFrame) {
+            const dup = pendingMessages.indexOf(joinFrame)
+
+            if (dup !== -1) pendingMessages.splice(dup, 1)
+
+            pendingMessages.unshift(joinFrame)
+          }
 
           while (pendingMessages.length) {
             try {
@@ -125,12 +146,13 @@ export const usePartySocket = ({ remote = false } = {}) => {
     if (pendingMessages.length < 32) pendingMessages.push(msg)
   }
 
-  const close = () => {
+  // Close the live socket on purpose; its late onclose/onmessage are ignored by the guards above
+  const detach = () => {
     closingOnPurpose = true
     clearTimeout(reconnectTimer)
     reconnectStatus.value = null
-    joinFrame = null
-    hasConnected = false
+    serverReady = false
+    pendingMessages.length = 0
 
     if (sharedSocket) {
       try {
@@ -140,6 +162,13 @@ export const usePartySocket = ({ remote = false } = {}) => {
       }
       sharedSocket = null
     }
+  }
+
+  const close = () => {
+    joinFrame = null
+    detach()
+    sharedStatus.value = 'disconnected'
+    $store.commit('party/SET_STATUS', 'disconnected')
   }
 
   onMounted(() => {
