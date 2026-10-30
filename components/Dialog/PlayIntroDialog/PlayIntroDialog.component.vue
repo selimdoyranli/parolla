@@ -37,6 +37,14 @@ Dialog.dialog.dialog--scene.play-intro(
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
+    NuxtLink.play-intro__party(v-if="canParty" :to="partyLink")
+      span.play-intro__party-icon
+        AppIcon(name="tabler:confetti" :width="22" :height="22")
+      span.play-intro__party-text
+        strong {{ $t('party.intro.title') }}
+        small {{ $t('party.intro.sub') }}
+      AppIcon(name="tabler:chevron-right" :width="18" :height="18")
+
     //- daily / unlimited: right under the play button, where the old how-to-play dialog kept it
     DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
 
@@ -187,6 +195,11 @@ export default defineComponent({
         (room.value.isListed || (!room.value.isAnon && room.value.user?.id === me.value.id))
     )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
+    // party supports QA and Choices; flashcards never
+    const canParty = computed(
+      () => isCreator.value && !props.inGame && [quizTypeEnum.QA, quizTypeEnum.CHOICES].includes(room.value.quizType || quizTypeEnum.QA)
+    )
+    const partyLink = computed(() => localePath({ name: 'Party-code', params: { code: 'new' }, query: { quiz: room.value.roomId } }))
     const minutes = computed(() =>
       Math.round((isCreator.value && room.value.gameTimeLimit ? room.value.gameTimeLimit : GAME_TIME_LIMIT) / 60000)
     )
@@ -323,6 +336,8 @@ export default defineComponent({
       room,
       isCreator,
       isQa,
+      canParty,
+      partyLink,
       coverLabel,
       coverSublabel,
       stats,

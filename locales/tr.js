@@ -2066,6 +2066,23 @@ export default {
   },
   party: {
     title: 'Parti',
+    entry: {
+      title: 'Partiye katıl',
+      hint: 'Arkadaşının paylaştığı 6 haneli oda kodunu gir',
+      placeholder: '000 000',
+      join: 'Katıl'
+    },
+    intro: {
+      title: 'Party kur',
+      sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna'
+    },
+    gate: {
+      notice: 'Parti odası oluşturmak için giriş yapman gerekiyor. Arkadaşların hesapları olmadan da odana katılabilir.',
+      login: 'GİRİŞ YAP',
+      password: 'Şifre ile koru'
+    },
+    guest: { title: 'Partiye katıl' },
+    room: { code: 'Oda kodu', players: 'Oyuncular', connecting: 'Bağlanılıyor...' },
     errors: {
       room_not_found: 'Oda bulunamadı',
       bad_password: 'Şifre yanlış',

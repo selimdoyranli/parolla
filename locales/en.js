@@ -2043,6 +2043,23 @@ export default {
   },
   party: {
     title: 'Party',
+    entry: {
+      title: 'Join a party',
+      hint: 'Enter the 6-digit room code your friend shared',
+      placeholder: '000 000',
+      join: 'Join'
+    },
+    intro: {
+      title: 'Start a party',
+      sub: 'Create a room and play live with your friends'
+    },
+    gate: {
+      notice: 'You need to log in to create a party room. Your friends can join your room without an account.',
+      login: 'LOG IN',
+      password: 'Protect with a password'
+    },
+    guest: { title: 'Join the party' },
+    room: { code: 'Room code', players: 'Players', connecting: 'Connecting...' },
     errors: {
       room_not_found: 'Room not found',
       bad_password: 'Wrong password',

@@ -8,7 +8,7 @@ Dialog.create-guest-drawer-dialog(
 )
   .create-guest-drawer-dialog__inner
     header.create-guest-drawer-dialog__head
-      h3.create-guest-drawer-dialog__title {{ $t('dialog.guestDrawer.title') }}
+      h3.create-guest-drawer-dialog__title {{ title || $t('dialog.guestDrawer.title') }}
 
     .create-guest-drawer-dialog__avatar-block
       PlayerAvatar.create-guest-drawer-dialog__avatar(:user="avatarUser" :size="96")
@@ -37,12 +37,17 @@ export default defineComponent({
     Field,
     Button
   },
+  props: {
+    title: { type: String, default: '' },
+    // party mode: no draw socket (it would open one just for this dialog)
+    noSocket: { type: Boolean, default: false }
+  },
   emits: ['close'],
-  setup() {
+  setup(props) {
     const visible = ref(true)
 
     const { ensureIdentity, identity, regenerateName, regenerateAvatar, setName } = useDrawGuestIdentity()
-    const { send } = useDrawSocket()
+    const { send } = props.noSocket ? { send: () => {} } : useDrawSocket()
 
     const inputName = ref('')
     const errorMsg = ref(null)
