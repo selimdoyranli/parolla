@@ -1851,7 +1851,7 @@ export default {
     },
     pending: 'Sıralama getiriliyor',
     // Upper bounds of the API's edge + in-memory board caches (parolla-strapi edge-cache.ts, board-cache.ts)
-    cacheNote: 'Sistemde kontrol edilip {cacheTime} sonra bu tablo güncellenir',
+    cacheNote: 'Yeni skorlar sistemde kontrol edilir, bu tablo en fazla {cacheTime} gecikmeyle güncellenir.',
     cacheTime: { daily: '10 saniye', weekly: '40 saniye', monthly: '1 dakika', season: '5 dakika' },
     // The row pinned above the list, showing the reader their own place on the board
     yourRank: {

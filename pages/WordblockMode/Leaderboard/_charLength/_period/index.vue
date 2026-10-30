@@ -34,7 +34,7 @@
   template(v-else)
     template(v-if="leaderboard.items.length > 0")
       p.mb-base
-        small.leaderboard-page__cache-note {{ $t('leaderboard.cacheNote', { cacheTime: $t('leaderboard.cacheTime.daily') }) }}
+        small.leaderboard-page__cache-note {{ $t('leaderboard.cacheNote', { cacheTime: $t(`leaderboard.cacheTime.${activePeriodKey}`) }) }}
       Leaderboard(:scorers="leaderboard.items" :current-player="currentPlayer")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
@@ -176,6 +176,7 @@ export default defineComponent({
       charLength,
       availableCharLengths: WORDBLOCK_AVAILABLE_LENGTHS,
       periodOptions,
+      activePeriodKey,
       leaderboard,
       currentPlayer,
       pageDescription,
