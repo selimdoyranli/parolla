@@ -55,13 +55,14 @@ Pages use Nuxt file-based routing in `pages/`. Each game mode has its own direct
 - `WordblockMode/` → `/kelimeblok`, `/wordblock`
 - `MusicMode/` → `/muzik`, `/music`
 - `GeoGuessMode/` → `/geoguess` (both locales). GeoGuessr-style: Google Street View panorama → pin on a map → distance-based score, 5 rounds, regions in `system/geoguess.js`. No API key: `services/streetView.service.js` finds official panoramas through the endpoint Google's Maps JS client uses (CORS-open) and embeds them keylessly (`output=svembed`); the map is Leaflet on keyless Google tiles. Map/panorama pieces are generic for reuse in creator-quiz location questions: `components/Geo/GeoMap` (v-model pick + `pairs` reveal) and `components/Geo/StreetViewPanorama`; distance/score math in `helpers/geo.js` (self-check: `node scripts/geo-selfcheck.mjs`).
+- `Party/` → `/party`, `/party/:code`, `/party/:code/remote` (same path in both locales). Real-time rooms for creator QA and choices quizzes (never flashcards) over the parolla-ws `party` channel; join by 6-digit code or link only, guests allowed, host must be logged in. Nothing is persisted: no scores, stats, coins or localStorage. `components/Party/PartyRoomSession` owns the socket (`composables/usePartySocket.js`, singleton, player or `remote` mode) and provides `partySend`; state lives in `store/party`. Rounds reuse the solo scenes through a `party` prop: `CreatorModeGameScene` (with `useGameScene({ party })`, which skips pass/endGame/economy and sends answers to the server) and `ChoicesGameScene` (skips `useGameScene`/`useChoices` side effects, votes via `party_vote`). Answer checking and scoring run on the server. Leaving a party resets the creator store so solo play starts clean.
 - `Page/` → legal pages (`/sayfa/gizlilik-politikasi` | `/page/privacy-policy`, cookie policy, KVKK, terms of use). Content lives in `content/legal/<locale>/*.md`, compiled at build time by `frontmatter-markdown-loader` (see `build.extend`) and rendered by `LegalDocument` — NOT @nuxt/content (its content API doesn't exist on a static SPA deploy). Each page imports both locales' md and picks by `i18n.locale`; links to them sit in `MenuDialog`'s "Legal" group.
 
 Localized route mappings are defined in `nuxt.config.js` under the i18n `pages` option.
 
 ### Vuex Store
 
-Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `draw/`, `comment/` (ratings, comments, replies, likes, thread), `notification/` (list, unread count, 60 s polling). Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
+Modular store in `store/` with one module per feature: `app/`, `auth/`, `daily/`, `unlimited/`, `creator/`, `tour/`, `wordblock/`, `music/`, `profile/`, `preloader/`, `draw/`, `comment/` (ratings, comments, replies, likes, thread), `notification/` (list, unread count, 60 s polling), `party/` (party room, round and result state; not persisted). Root store (`store/index.js`) runs `nuxtClientInit` for auth setup on client load.
 
 ### Composables
 
