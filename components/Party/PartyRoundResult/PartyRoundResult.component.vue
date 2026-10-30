@@ -1,9 +1,23 @@
 <template lang="pug">
-.party-round-result
+.party-round-result(:class="{ 'party-round-result--inline': inline }")
   .party-round-result__inner
     .party-round-result__main
+      //- choices: the room's verdict on this duel (mineWon null = didn't vote / presenter)
+      .party-round-result__card(v-if="isChoices" :class="{ 'party-round-result__card--correct': roundEnd.mineWon }")
+        .party-round-result__verdict
+          span.party-round-result__icon
+            AppIcon(:name="roundEnd.mineWon ? 'tabler:check' : 'tabler:trophy'" :width="20" :height="20")
+          div
+            h3.party-round-result__title {{ choicesTitle }}
+            p.party-round-result__answer
+              b {{ winnerLabel }}
+        p.party-round-result__chip
+          AppIcon(:name="isTie ? 'tabler:crown' : 'tabler:trophy'" :width="12" :height="12")
+          | {{ isTie ? $t('party.choices.tie') : $t('party.choices.byVotes') }}
+          span {{ $tc('party.choices.votes', roundEnd.left + roundEnd.right) }}
+
       //- own card; the presenter (me: null) only gets the answer
-      .party-round-result__card(:class="cardClass")
+      .party-round-result__card(v-else :class="cardClass")
         span.party-round-result__points(v-if="me && me.correct") {{ $t('party.game.points', { n: me.points }) }}
         .party-round-result__verdict
           span.party-round-result__icon(v-if="me")
@@ -28,7 +42,7 @@
         .party-round-result__next-row
           span
             AppIcon(name="tabler:stopwatch" :width="14" :height="14")
-            | {{ isLastRound ? $t('party.game.toResults') : $t('party.game.nextQuestion') }}
+            | {{ isLastRound ? $t('party.game.toResults') : isChoices ? $t('party.choices.nextRound') : $t('party.game.nextQuestion') }}
           b {{ nextLeftSec }}s
         .party-round-result__bar
           i(:style="{ width: `${nextFraction * 100}%` }")
@@ -62,13 +76,20 @@
 import { defineComponent, ref, computed, watch, inject, onUnmounted, useStore, useContext } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
-import { answerTypeEnum } from '@/enums/quiz.enum'
+import { answerTypeEnum, choiceTypeEnum } from '@/enums/quiz.enum'
 
 const AUTO_NEXT_MS = 5000
 
-// QA round result over the scene: own verdict + points, leaderboard (when the room shows it), next-round countdown
+// QA round result over the scene: own verdict + points, leaderboard (when the room shows it), next-round countdown.
+// Choices (inline, inside ChoicesGameScene): the duel verdict + the same next-round countdown
 export default defineComponent({
   components: { Button },
+  props: {
+    inline: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore()
     const { i18n } = useContext()
@@ -102,6 +123,24 @@ export default defineComponent({
       if (!me.value) return i18n.t('party.game.correctAnswer')
 
       return me.value.correct ? i18n.t('party.game.correct') : i18n.t('party.game.wrong')
+    })
+
+    const isChoices = computed(() => Boolean(roundEnd.value.winnerSide))
+    // tie or no votes: the server keeps the champion (left)
+    const isTie = computed(() => roundEnd.value.left === roundEnd.value.right)
+    const choicesTitle = computed(() => {
+      const won = roundEnd.value.mineWon
+
+      if (won === null || won === undefined) return i18n.t('party.choices.roundWinner')
+
+      return won ? i18n.t('party.choices.won') : i18n.t('party.choices.lost')
+    })
+    const winnerLabel = computed(() => {
+      const w = roundEnd.value.winner
+
+      if (w?.choiceType === choiceTypeEnum.TEXT && w.text) return w.text
+
+      return w?.mediaNote || i18n.t('party.choices.option', { n: roundEnd.value.winnerSide === 'left' ? 1 : 2 })
     })
 
     const cardClass = computed(() => {
@@ -148,6 +187,11 @@ export default defineComponent({
     })
 
     return {
+      roundEnd,
+      isChoices,
+      isTie,
+      choicesTitle,
+      winnerLabel,
       me,
       leaderboard,
       myId,

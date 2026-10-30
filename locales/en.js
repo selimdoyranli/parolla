@@ -2176,6 +2176,27 @@ export default {
       cancelYes: 'Cancel game',
       close: 'Close'
     },
+    choices: {
+      champion: 'Champion',
+      challenger: 'Challenger',
+      mine: 'Your vote',
+      winner: 'Winner',
+      votes: '0 VOTES | 1 VOTE | {n} VOTES',
+      voted: '{voters}/{total} voted',
+      pick: 'Make your pick',
+      pickSub: 'You can change your vote until time runs out',
+      locked: 'Vote cast',
+      changed: 'Vote changed',
+      canChange: 'you can still change it',
+      live: 'Voting in progress',
+      won: 'Your pick won!',
+      lost: 'The room decided otherwise',
+      roundWinner: 'Round winner',
+      byVotes: 'Decided by votes',
+      tie: 'Tie · champion stays',
+      option: 'Option {n}',
+      nextRound: 'Next round'
+    },
     closed: {
       kicked: 'You were removed from the room',
       empty: 'The room was closed',

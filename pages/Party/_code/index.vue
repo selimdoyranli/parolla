@@ -1,13 +1,15 @@
 <template lang="pug">
-.page.party-page(:class="{ 'party-page--game': isQaGame }")
+.page.party-page(:class="{ 'party-page--game': isGame }")
   PartyLoginGate(v-if="isNew && !loggedIn")
   CreateGuestDrawerDialog(v-else-if="needsGuest && !guestReady" no-socket :title="$t('party.guest.title')" @close="guestReady = true")
   //- the socket-using child only mounts once identity is settled (guests send it in the connect URL)
   PartyRoomSession(v-else-if="!needsGuest || guestReady" :code="code" :quiz="quiz")
-    //- phase switch: QA game (this task) | choices game (Task 12) | lobby. Final / cancelled overlays: Task 13
-    .party-game(v-if="isQaGame")
-      CreatorModeGameScene(v-if="round" party)
-      PartyRoundResult(v-if="roundEnd")
+    //- phase switch: QA game | choices game | lobby. Final / cancelled overlays: Task 13
+    .party-game(v-if="isGame" :class="{ 'party-game--choices': isChoicesGame }")
+      CreatorModeGameScene(v-if="isQaGame && round" party)
+      //- choices shows its round result inside the scene, under the cards
+      ChoicesGameScene(v-else-if="isChoicesGame && round" party)
+      PartyRoundResult(v-if="isQaGame && roundEnd")
       button.party-game__settings(v-if="isHost" type="button" :aria-label="$t('party.game.settings')" @click="isHostSheetOpen = true")
         AppIcon(name="tabler:settings" :width="18" :height="18")
       PartyHostSheet(v-if="isHost" v-model="isHostSheetOpen")
@@ -60,6 +62,8 @@ export default defineComponent({
     const round = computed(() => store.state.party.round)
     const roundEnd = computed(() => store.state.party.roundEnd)
     const isQaGame = computed(() => game.value?.quizType === quizTypeEnum.QA)
+    const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
+    const isGame = computed(() => isQaGame.value || isChoicesGame.value)
 
     // CreatorModeGameScene reads the creator store: give it this round's question at its index (no answer in it;
     // the server checks), the round letter for the letter rule and placeholder, and the quiz meta it styles by
@@ -102,7 +106,7 @@ export default defineComponent({
       creatorFed = false
     }
 
-    watch(isQaGame, value => {
+    watch(isGame, value => {
       if (value) return
 
       resetCreator()
@@ -124,7 +128,9 @@ export default defineComponent({
       isHostSheetOpen,
       round,
       roundEnd,
-      isQaGame
+      isQaGame,
+      isChoicesGame,
+      isGame
     }
   }
 })
@@ -167,6 +173,13 @@ export default defineComponent({
     border-radius: 50%;
     cursor: pointer;
     place-items: center;
+  }
+
+  // choices: the gear sits inside the scene's info bar
+  &--choices &__settings {
+    top: 2px;
+    width: 32px;
+    height: 32px;
   }
 }
 

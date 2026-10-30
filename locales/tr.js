@@ -2199,6 +2199,27 @@ export default {
       cancelYes: 'İptal et',
       close: 'Kapat'
     },
+    choices: {
+      champion: 'Şampiyon',
+      challenger: 'Meydan okuyan',
+      mine: 'Senin oyun',
+      winner: 'Kazanan',
+      votes: '{n} OY',
+      voted: '{voters}/{total} oy verdi',
+      pick: 'Seçimini yap',
+      pickSub: 'Süre bitene kadar oyunu değiştirebilirsin',
+      locked: 'Oyun verildi',
+      changed: 'Oyun değişti',
+      canChange: 'hâlâ değiştirebilirsin',
+      live: 'Oylama sürüyor',
+      won: 'Seçimin kazandı!',
+      lost: 'Oda başka karar verdi',
+      roundWinner: 'Turu kazanan',
+      byVotes: 'Oylarla karar verildi',
+      tie: 'Berabere · şampiyon kaldı',
+      option: 'Seçenek {n}',
+      nextRound: 'Sıradaki tur'
+    },
     closed: {
       kicked: 'Odadan çıkarıldın',
       empty: 'Oda kapandı',
