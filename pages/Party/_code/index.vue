@@ -18,7 +18,8 @@
       .party-lobby__dock
         PartyChat(compact)
         PartyStartButton(v-if="isHost")
-      //- isAddGameOpen -> "Oyun ekle" dialog (Task 10), isRemoteOpen -> remote dialog (Task 14)
+      PartyAddGameDialog(v-if="isHost" v-model="isAddGameOpen")
+      //- isRemoteOpen -> remote dialog (Task 14)
 </template>
 
 <script>

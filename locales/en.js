@@ -2060,6 +2060,16 @@ export default {
     },
     guest: { title: 'Join the party' },
     room: { code: 'Room code', players: 'Players', connecting: 'Connecting...' },
+    add: {
+      title: 'Add game',
+      inQueue: '{count} in queue',
+      search: { qa: 'Search Q&A quizzes…', choices: 'Search This or That quizzes…' },
+      empty: 'No quizzes found',
+      more: 'Load more',
+      added: 'In queue',
+      addedToast: '{title} added to the queue',
+      full: 'Queue is full (max 20 games)'
+    },
     lobby: {
       eyebrow: 'PARTY LOBBY',
       roomOf: "{name}'s room",

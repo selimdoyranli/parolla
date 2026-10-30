@@ -1,0 +1,101 @@
+.party-add {
+  background: var(--color-ui-02);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    padding: 14px 12px 0;
+  }
+
+  &__head {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-7);
+  }
+
+  &__close {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--color-text-02);
+    background: var(--color-ui-01);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--color-ui-01);
+    border-radius: 12px;
+  }
+
+  &__tab {
+    flex: 1;
+    padding: 8px;
+    color: var(--color-text-02);
+    font-weight: 700;
+    background: transparent;
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+
+    &--active {
+      color: var(--color-text-04);
+      background: var(--color-brand-02);
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+
+  &__loading {
+    display: grid;
+    place-items: center;
+    padding: 40px 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__added {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 8px;
+    color: var(--color-text-04);
+    font-weight: 700;
+    font-size: var(--font-size-text-3);
+    background: var(--color-success-01);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+}

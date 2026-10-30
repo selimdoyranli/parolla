@@ -2083,6 +2083,16 @@ export default {
     },
     guest: { title: 'Partiye katıl' },
     room: { code: 'Oda kodu', players: 'Oyuncular', connecting: 'Bağlanılıyor...' },
+    add: {
+      title: 'Oyun ekle',
+      inQueue: 'Kuyrukta {count} oyun',
+      search: { qa: 'Soru-Cevap quizlerinde ara…', choices: 'Bu mu O mu quizlerinde ara…' },
+      empty: 'Quiz bulunamadı',
+      more: 'Daha fazla',
+      added: 'Kuyrukta',
+      addedToast: '{title} kuyruğa eklendi',
+      full: 'Kuyruk dolu (en fazla 20 oyun)'
+    },
     lobby: {
       eyebrow: 'PARTİ LOBİSİ',
       roomOf: "{name}'{suffix} odası",
