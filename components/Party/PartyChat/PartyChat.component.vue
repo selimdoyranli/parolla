@@ -13,7 +13,7 @@ mixin panel
         strong {{ $t('party.lobby.chat.empty') }}
         small {{ $t('party.lobby.chat.emptySub') }}
       .party-chat__msg(v-for="m in chat" :key="`${m.timestamp}-${m.playerId}`" :class="{ 'party-chat__msg--system': m.isSystem }")
-        template(v-if="m.isSystem") {{ m.message }}
+        template(v-if="m.isSystem") {{ systemText(m) }}
         template(v-else)
           PlayerAvatar.party-chat__avatar(:user="avatarFor(m)" :size="22")
           .party-chat__body
@@ -70,12 +70,15 @@ export default defineComponent({
     const enabled = computed(() => store.getters['party/settings'].chat !== false)
     const unread = computed(() => (props.compact && !isSheetOpen.value ? Math.max(0, chat.value.length - seen.value) : 0))
 
+    // server sends a key + name for system lines; plain `message` is the older format
+    const systemText = m => (m.system ? i18n.t(`party.lobby.chat.system.${m.system}`, { name: m.name }) : m.message)
+
     const preview = computed(() => {
       const last = chat.value[chat.value.length - 1]
 
       if (!last) return enabled.value ? i18n.t('party.lobby.chat.placeholder') : i18n.t('party.lobby.chat.off')
 
-      return last.isSystem ? last.message : `${last.playerName}: ${censorBadwords(last.message)}`
+      return last.isSystem ? systemText(last) : `${last.playerName}: ${censorBadwords(last.message)}`
     })
 
     const avatarFor = m => {
@@ -107,7 +110,7 @@ export default defineComponent({
       text.value = ''
     }
 
-    return { text, logRef, isSheetOpen, chat, myId, enabled, unread, preview, avatarFor, scrollToEnd, submit, censorBadwords }
+    return { text, logRef, isSheetOpen, chat, myId, enabled, unread, preview, avatarFor, scrollToEnd, submit, censorBadwords, systemText }
   }
 })
 </script>

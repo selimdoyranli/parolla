@@ -2169,7 +2169,8 @@ export default {
         emptySub: 'Herkes toplanırken bir merhaba de.',
         placeholder: 'Mesaj yaz...',
         off: 'Sohbet kapalı',
-        send: 'Gönder'
+        send: 'Gönder',
+        system: { host_changed: '{name} artık kurucu' }
       }
     },
     game: {

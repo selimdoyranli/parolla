@@ -108,7 +108,8 @@ export default defineComponent({
     // text answers keep their comma alternatives in one string; trivia answers may contain commas themselves
     const correctAnswer = computed(() => {
       const raw = String(roundEnd.value.correctAnswer || '')
-      const isTrivia = store.state.party.round?.question?.answerType === answerTypeEnum.TRIVIA
+      // round_end carries answerType: `round` is null after a reconnect during the result
+      const isTrivia = (roundEnd.value.answerType || store.state.party.round?.question?.answerType) === answerTypeEnum.TRIVIA
 
       return isTrivia
         ? raw

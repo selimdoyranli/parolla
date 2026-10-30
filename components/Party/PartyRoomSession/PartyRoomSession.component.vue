@@ -16,6 +16,8 @@ import { usePartySocket } from '@/composables/usePartySocket'
 import { showToast } from '@/helpers/toast'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
+const REJOIN_DEAD_CODES = ['room_not_found', 'room_locked', 'room_full', 'bad_password']
+
 export default defineComponent({
   props: {
     code: { type: String, required: true },
@@ -31,7 +33,12 @@ export default defineComponent({
     const askPassword = ref(false)
     const passwordTry = ref(0)
 
-    const leave = () => router.replace(localePath({ name: 'Party' }))
+    // set on every way out where we hold no seat any more: no PARTY_LEAVE on unmount (it would toast room_not_found)
+    let gone = false
+    const leave = () => {
+      gone = true
+      router.replace(localePath({ name: 'Party' }))
+    }
 
     provide('partySend', send)
 
@@ -72,7 +79,11 @@ export default defineComponent({
           return
         }
 
-        if (!room.value) leave()
+        // a rejoin (reconnect) that can't take the seat back: the room is gone for us, the store toast already says why
+        if (!room.value || REJOIN_DEAD_CODES.includes(err.code)) {
+          store.commit('party/RESET')
+          leave()
+        }
       }
     )
 
@@ -83,7 +94,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       // going to the host remote of this room in the same tab: the seat must survive
-      if (!router.currentRoute.path.endsWith('/remote')) send(wsTypeEnum.PARTY_LEAVE)
+      if (!gone && !closedReason.value && !router.currentRoute.path.endsWith('/remote')) send(wsTypeEnum.PARTY_LEAVE)
 
       store.commit('party/RESET')
     })

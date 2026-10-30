@@ -2146,7 +2146,8 @@ export default {
         emptySub: 'Say hi while everyone gathers.',
         placeholder: 'Write a message...',
         off: 'Chat is off',
-        send: 'Send'
+        send: 'Send',
+        system: { host_changed: '{name} is now the host' }
       }
     },
     game: {

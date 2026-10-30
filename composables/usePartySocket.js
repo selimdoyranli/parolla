@@ -1,5 +1,5 @@
 import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from '@nuxtjs/composition-api'
-import { reconnectDelay, WS_CLOSE_SERVICE_RESTART } from '@/helpers/ws-reconnect'
+import { reconnectDelay, WS_CLOSE_SERVICE_RESTART, WS_CLOSE_VOTE_KICKED } from '@/helpers/ws-reconnect'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 // Same lifecycle as useDrawSocket (module singleton, queue until `connected`).
@@ -65,6 +65,13 @@ export const usePartySocket = ({ remote = false } = {}) => {
 
       if (closingOnPurpose || consumers === 0) return
 
+      // 4003 = don't reconnect (party: login_required); the error frame already told the page
+      if (event.code === WS_CLOSE_VOTE_KICKED) {
+        reconnectStatus.value = null
+
+        return
+      }
+
       if (event.code === WS_CLOSE_SERVICE_RESTART) {
         reconnectStatus.value = 'restarting'
       } else if (reconnectStatus.value !== 'restarting') {
@@ -93,8 +100,17 @@ export const usePartySocket = ({ remote = false } = {}) => {
       if (data.type === 'server_restarting') reconnectStatus.value = 'restarting'
 
       // A dead join must not be replayed after a later drop
-      if (data.type === wsTypeEnum.PARTY_CLOSED || (data.type === wsTypeEnum.PARTY_ERROR && JOIN_DEAD_CODES.includes(data.code))) {
+      if (
+        data.type === wsTypeEnum.PARTY_CLOSED ||
+        (data.type === wsTypeEnum.PARTY_ERROR && (JOIN_DEAD_CODES.includes(data.code) || (sharedRemote && data.code === 'not_host')))
+      ) {
         joinFrame = null
+      }
+
+      // Seated (the host got here via PARTY_CREATE): a reconnect rejoins by code; seated members skip the password.
+      // Same string as the page's own join frame, so the replay dedupe still drops a queued copy.
+      if (data.type === wsTypeEnum.PARTY_ROOM_STATE && data.room && !sharedRemote) {
+        joinFrame = JSON.stringify({ type: wsTypeEnum.PARTY_JOIN, code: data.room.code })
       }
 
       if (data.type === 'connected') {

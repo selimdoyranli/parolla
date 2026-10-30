@@ -57,12 +57,13 @@ export default defineComponent({
     const autoAdvance = computed(() => Boolean(store.getters['party/settings'].autoAdvance))
     const closedReason = computed(() => store.state.party.closedReason)
     const prettyCode = computed(() => `${props.code.slice(0, 3)} ${props.code.slice(3)}`)
-    // login_required / not_host / room_not_found, anything else is a toast only
+    // login_required / not_host / room_not_found, anything else is a toast only. Also while a room is held:
+    // not_host = host handed off, room_not_found = failed rejoin; both leave the remote with stale controls.
     const errorKey = computed(() => {
       const code = store.state.party.error && store.state.party.error.code
       const map = { login_required: 'loginNotice', not_host: 'notHost', room_not_found: 'notFound' }
 
-      return !room.value && map[code] ? `party.remote.${map[code]}` : ''
+      return map[code] ? `party.remote.${map[code]}` : ''
     })
     const phaseLabel = computed(() => {
       const g = game.value
@@ -89,7 +90,11 @@ export default defineComponent({
         .catch(() => {})
     }
 
-    const back = () => router.replace(localePath({ name: 'Party-code', params: { code: route.value.params.code } }))
+    // drop the remote's room first: the player page skips its join while a room for this code is held
+    const back = () => {
+      store.commit('party/RESET')
+      router.replace(localePath({ name: 'Party-code', params: { code: route.value.params.code } }))
+    }
 
     onBeforeUnmount(() => store.commit('party/RESET'))
 
