@@ -33,6 +33,8 @@
 
   template(v-else)
     template(v-if="leaderboard.items.length > 0")
+      p.mb-base
+        small.leaderboard-page__cache-note {{ $t('leaderboard.cacheNote', { cacheTime: $t('leaderboard.cacheTime.daily') }) }}
       Leaderboard(:scorers="leaderboard.items" :current-player="currentPlayer")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
@@ -139,7 +141,7 @@ export default defineComponent({
 
     const pageTitle = computed(
       () =>
-        `${i18n.t(`leaderboard.${activePeriodKey.value}.full`)} - ${i18n.t('wordblockMode.title', {
+        `${i18n.t(`leaderboard.${activePeriodKey.value}.full`, { seasonYear: seasonYear.value })} - ${i18n.t('wordblockMode.title', {
           charLength: charLength.value
         })} - ${i18n.t('leaderboard.modeTitle', { mode: i18n.t('introScene.modeList.wordblock.title') })} - ${i18n.t('seo.main.title')}`
     )

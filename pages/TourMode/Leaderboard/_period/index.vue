@@ -30,6 +30,8 @@
 
   template(v-else)
     template(v-if="leaderboard.items.length > 0")
+      p.mb-base
+        small.leaderboard-page__cache-note {{ $t('leaderboard.cacheNote', { cacheTime: $t(`leaderboard.cacheTime.${apiPeriod}`) }) }}
       Leaderboard(:scorers="leaderboard.items" :current-player="currentPlayer")
     template(v-else)
       Empty(:description="$t('leaderboard.empty.description')")
@@ -89,6 +91,8 @@ export default defineComponent({
       await Promise.all([store.dispatch('tour/fetchLeaderboard', { period: mapPeriod(period.value), limit: 100 }), fetchUserRank()])
     })
 
+    const apiPeriod = computed(() => mapPeriod(period.value))
+
     const leaderboard = computed(() => store.getters['tour/leaderboard'])
 
     // The pinned row carries what the rows below it carry: the player's tour points
@@ -115,24 +119,25 @@ export default defineComponent({
       })
     })
 
+    const pageTitle = computed(
+      () =>
+        `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`, { seasonYear: seasonYear.value })} - ${i18n.t('leaderboard.modeTitle', {
+          mode: i18n.t('introScene.modeList.tour.title')
+        })} - ${i18n.t('seo.main.title')}`
+    )
+
     useMeta(() => ({
-      title: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
-        mode: i18n.t('introScene.modeList.tour.title')
-      })} - ${i18n.t('seo.main.title')}`,
+      title: pageTitle.value,
       meta: [
         {
           hid: 'og:title',
           name: 'og:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
-            mode: i18n.t('introScene.modeList.tour.title')
-          })} - ${i18n.t('seo.main.title')}`
+          content: pageTitle.value
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: `${i18n.t(`leaderboard.${mapPeriod(period.value)}.full`)} - ${i18n.t('leaderboard.modeTitle', {
-            mode: i18n.t('introScene.modeList.tour.title')
-          })} - ${i18n.t('seo.main.title')}`
+          content: pageTitle.value
         }
       ]
     }))
@@ -144,6 +149,7 @@ export default defineComponent({
       leaderboard,
       currentPlayer,
       pageDescription,
+      apiPeriod,
       seasonYear
     }
   },
