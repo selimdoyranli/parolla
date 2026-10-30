@@ -6,7 +6,7 @@
     Button.party-login-gate__login(round size="small" @click="login") {{ $t('party.gate.login') }}
   .party-login-gate__setting
     span {{ $t('party.gate.password') }}
-    Switch(:value="false" disabled size="20")
+    VanSwitch(:value="false" disabled size="20px")
 </template>
 
 <script>
@@ -14,7 +14,7 @@ import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { Button, Switch } from 'vant'
 
 export default defineComponent({
-  components: { Button, Switch },
+  components: { Button, VanSwitch: Switch },
   setup() {
     const store = useStore()
     const login = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)

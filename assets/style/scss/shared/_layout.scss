@@ -99,4 +99,19 @@
     height: calc(var(--layout-height) - var(--header-height));
     overflow: auto;
   }
+
+  // party pages: no side ad columns, a wide centred column instead
+  &--wide {
+    display: block;
+
+    .layout__ad {
+      display: none;
+    }
+
+    .layout__inner {
+      @include media-breakpoint-up(desktop) {
+        max-width: 1280px;
+      }
+    }
+  }
 }

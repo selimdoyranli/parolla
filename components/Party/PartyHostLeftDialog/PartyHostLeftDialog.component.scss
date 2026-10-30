@@ -1,0 +1,34 @@
+.party-host-left {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 14%, transparent);
+    border-radius: 50%;
+  }
+
+  &__title {
+    margin: 0;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-7);
+  }
+
+  &__text {
+    margin: 0 0 6px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    line-height: 1.45;
+  }
+}

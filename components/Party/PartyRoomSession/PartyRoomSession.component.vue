@@ -1,19 +1,16 @@
 <template lang="pug">
 .party-room-session
-  //- placeholder lobby, replaced by the real one
-  template(v-if="room")
-    span.party-room-session__label {{ $t('party.room.code') }}
-    strong.party-room-session__code {{ room.code }}
-    h3.party-room-session__label {{ $t('party.room.players') }}
-    ul.party-room-session__players
-      li(v-for="player in players" :key="player.id") {{ player.name }}
+  //- seated: the page lays the room out; its components inject `partySend`
+  slot(v-if="room")
   p.party-room-session__label(v-else) {{ $t('party.room.connecting') }}
+
+  PartyHostLeftDialog(v-if="closedReason === 'no_host'")
 
   EnterPasswordDialog(:key="passwordTry" v-if="askPassword" @submit="submitPassword" @close="leave")
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onBeforeUnmount, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, watch, onBeforeUnmount, provide, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
 import { usePartySocket } from '@/composables/usePartySocket'
 import { showToast } from '@/helpers/toast'
 import { wsTypeEnum } from '@/enums/wsType.enum'
@@ -29,11 +26,21 @@ export default defineComponent({
     const { i18n, localePath } = useContext()
     const { send } = usePartySocket()
     const room = computed(() => store.state.party.room)
-    const players = computed(() => store.getters['party/players'])
+    const closedReason = computed(() => store.state.party.closedReason)
     const askPassword = ref(false)
     const passwordTry = ref(0)
 
     const leave = () => router.replace(localePath({ name: 'Party' }))
+
+    provide('partySend', send)
+
+    // no_host keeps the page under a blocking dialog; kicked / empty go back to the entry page
+    watch(closedReason, reason => {
+      if (!reason || reason === 'no_host') return
+
+      showToast.fail(i18n.t(`party.closed.${reason === 'kicked' ? 'kicked' : 'empty'}`))
+      leave()
+    })
 
     // already seated (the page instance survives /party/new -> /party/<code>): nothing to send
     if (!room.value || room.value.code !== props.code) {
@@ -78,7 +85,7 @@ export default defineComponent({
       store.commit('party/RESET')
     })
 
-    return { room, players, askPassword, passwordTry, submitPassword, leave }
+    return { room, closedReason, askPassword, passwordTry, submitPassword, leave }
   }
 })
 </script>

@@ -1,0 +1,154 @@
+.party-next-game {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-02);
+  border-radius: 14px;
+
+  @include media-breakpoint-up(desktop) {
+    flex-flow: row wrap;
+    align-items: center;
+  }
+
+  &__row,
+  &__empty {
+    display: flex;
+    flex: 1;
+    gap: 12px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  &__cover.quiz-cover {
+    flex: none;
+    width: 64px;
+    border-radius: 12px;
+    aspect-ratio: 1;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__eyebrow {
+    color: var(--color-brand-02);
+    font-weight: 700;
+    font-size: var(--font-size-text-11);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-8);
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  &__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  &__empty,
+  &__waiting {
+    color: var(--color-text-03);
+
+    strong {
+      display: block;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-9);
+    }
+
+    small {
+      font-size: var(--font-size-text-10);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+
+    // mobile: the bottom dock carries the start button, only the remote link stays here
+    @include media-breakpoint-down(desktop) {
+      align-items: flex-start;
+    }
+
+    @include media-breakpoint-up(desktop) {
+      width: 220px;
+    }
+  }
+
+  &__start.van-button {
+    @include media-breakpoint-down(desktop) {
+      display: none;
+    }
+  }
+
+  &__remote {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 4px;
+    color: var(--color-text-03);
+    font: inherit;
+    font-weight: 600;
+    font-size: var(--font-size-text-10);
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-brand-02);
+    }
+  }
+
+  &__waiting {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--color-ui-01);
+    border-radius: 12px;
+
+    @include media-breakpoint-up(desktop) {
+      width: 220px;
+    }
+  }
+
+  &__hourglass {
+    color: var(--color-brand-02);
+  }
+
+  &__notice {
+    display: flex;
+    flex-basis: 100%;
+    gap: 8px;
+    align-items: flex-start;
+    margin: 0;
+    padding: 8px 10px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    line-height: 1.4;
+    background: color-mix(in sRGB, var(--color-brand-02) 8%, transparent);
+    border: 1px solid color-mix(in sRGB, var(--color-brand-02) 30%, transparent);
+    border-radius: 10px;
+
+    .app-icon {
+      flex: none;
+      color: var(--color-brand-02);
+    }
+  }
+}

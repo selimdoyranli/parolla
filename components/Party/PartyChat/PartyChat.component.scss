@@ -1,0 +1,178 @@
+.party-chat {
+  height: 100%;
+  min-height: 0;
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    color: var(--color-text-01);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+  }
+
+  // the app column is centred on tablets; keep the sheet inside it
+  &__sheet {
+    @include media-breakpoint-up(tablet) {
+      left: calc(50% - var(--layout-max-width) / 2);
+      max-width: var(--layout-max-width);
+    }
+  }
+
+  &__sheet &__panel {
+    height: 70vh;
+    border: 0;
+  }
+
+  &__head {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border-02);
+  }
+
+  &__log {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    padding: 12px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin: auto;
+    color: var(--color-text-03);
+    text-align: center;
+
+    strong {
+      margin-top: 4px;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+    }
+
+    small {
+      max-width: 200px;
+      font-size: var(--font-size-text-10);
+    }
+  }
+
+  &__msg {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+
+    &--system {
+      justify-content: center;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      font-style: italic;
+    }
+  }
+
+  &__avatar {
+    flex: none;
+  }
+
+  &__body {
+    min-width: 0;
+    font-size: var(--font-size-text-9);
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  &__name {
+    margin-right: 6px;
+    color: var(--color-text-02);
+
+    &--me {
+      color: var(--color-brand-02);
+    }
+  }
+
+  &__text {
+    color: var(--color-text-01);
+  }
+
+  &__input {
+    display: flex;
+    gap: 6px;
+    padding: 10px;
+    border-top: 1px solid var(--color-border-02);
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 14px;
+    color: var(--color-text-01);
+    font: inherit;
+    // 16px keeps iOS from zooming into the field
+    font-size: var(--font-size-text-8);
+    background: var(--color-field-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+    outline: 0;
+
+    &:focus {
+      border-color: var(--color-brand-02);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  &__send {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    color: #fff;
+    background: var(--color-brand-02);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.4;
+    }
+  }
+
+  // mobile dock: a single tappable line
+  &__bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    color: var(--color-text-03);
+    font: inherit;
+    text-align: left;
+    background: var(--color-ui-03);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__preview {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,13 +1,16 @@
 <template lang="pug">
-.layout.default-layout(:style="`--vh: ${visualViewport.current.height}px; --init-vh: ${visualViewport.initialize.height}px`")
+.layout.default-layout(
+  :class="{ 'layout--wide': isPartyPage }"
+  :style="`--vh: ${visualViewport.current.height}px; --init-vh: ${visualViewport.initialize.height}px`"
+)
   // Preloader
   AppPreloader
 
   .layout__ad.layout__ad--left
     // image_vertical_flex_left
-    AppAd(v-if="!isGmPage" :data-ad-slot="2717771834")
+    AppAd(v-if="showSideAds" :data-ad-slot="2717771834")
     // image_square_left_bottom — fills the gap under the first unit on tall screens
-    AppAd.layout__ad-second(v-if="!isGmPage" :data-ad-slot="7758597672")
+    AppAd.layout__ad-second(v-if="showSideAds" :data-ad-slot="7758597672")
     a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
       img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
@@ -23,9 +26,9 @@
 
   .layout__ad.layout__ad--right
     // image_vertical_flex_right
-    AppAd(v-if="!isGmPage" :data-ad-slot="8500032812")
+    AppAd(v-if="showSideAds" :data-ad-slot="8500032812")
     // image_square_right_bottom — fills the gap under the first unit on tall screens
-    AppAd.layout__ad-second(v-if="!isGmPage" :data-ad-slot="6226024154")
+    AppAd.layout__ad-second(v-if="showSideAds" :data-ad-slot="6226024154")
     a.layout__ad-banner(href="https://discball3d.com" rel="noopener" title="multiplayer soccer" target="_blank")
       img(src="/img/elements/discball3d_block.jpeg" alt="multiplayer soccer" title="multiplayer soccer")
 
@@ -52,6 +55,9 @@ export default defineComponent({
 
     // No ad slots on the GM panel: it shows moderation data and AI settings
     const isGmPage = computed(() => getRouteBaseName(route.value)?.startsWith('GmPanel'))
+    // party: no ads, and the lobby needs the full width for its three desktop columns
+    const isPartyPage = computed(() => getRouteBaseName(route.value)?.startsWith('Party'))
+    const showSideAds = computed(() => !isGmPage.value && !isPartyPage.value)
 
     const visualViewport = reactive({
       initialize: {
@@ -96,7 +102,8 @@ export default defineComponent({
 
     return {
       visualViewport,
-      isGmPage
+      isPartyPage,
+      showSideAds
     }
   }
 })
