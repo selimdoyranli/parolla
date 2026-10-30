@@ -34,7 +34,7 @@
         PartyChat(compact)
         PartyStartButton(v-if="isHost")
       PartyAddGameDialog(v-if="isHost" v-model="isAddGameOpen")
-      //- isRemoteOpen -> remote dialog (Task 14)
+      PartyRemoteDialog(v-if="isHost" v-model="isRemoteOpen")
 </template>
 
 <script>

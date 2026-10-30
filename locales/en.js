@@ -2197,6 +2197,21 @@ export default {
       option: 'Option {n}',
       nextRound: 'Next round'
     },
+    remote: {
+      title: 'Host remote',
+      dialogText: 'Scan the QR code to run the game from your phone. You must be signed in with the same account.',
+      loginNotice: 'Sign in with the room host account to use the remote.',
+      notHost: 'You are not the host of this room. Open the remote with the host account.',
+      notFound: 'Room not found or already closed.',
+      back: 'Back to party',
+      room: 'Room {code}',
+      round: 'Round {n}/{total}',
+      result: 'Round result · {n}/{total}',
+      final: 'Game over',
+      lobby: 'Waiting in the lobby',
+      queue: 'Up next',
+      empty: 'No games in the queue'
+    },
     lobbyIn: 'Back to the lobby',
     final: {
       title: 'Game over',

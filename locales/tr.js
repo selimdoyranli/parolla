@@ -2220,6 +2220,21 @@ export default {
       option: 'Seçenek {n}',
       nextRound: 'Sıradaki tur'
     },
+    remote: {
+      title: 'Host kumandası',
+      dialogText: 'Oyunu telefondan yönetmek için QR kodu okut. Aynı hesapla giriş yapmalısın.',
+      loginNotice: 'Kumandayı kullanmak için oda sahibi hesabıyla giriş yapmalısın.',
+      notHost: 'Bu odanın kurucusu değilsin. Kumandayı kurucu hesabıyla aç.',
+      notFound: 'Oda bulunamadı veya kapandı.',
+      back: 'Partiye dön',
+      room: 'Oda {code}',
+      round: 'Tur {n}/{total}',
+      result: 'Tur sonucu · {n}/{total}',
+      final: 'Oyun bitti',
+      lobby: 'Lobide bekleniyor',
+      queue: 'Sıradaki oyunlar',
+      empty: 'Kuyrukta oyun yok'
+    },
     lobbyIn: 'Lobiye dönülüyor',
     final: {
       title: 'Oyun bitti',
