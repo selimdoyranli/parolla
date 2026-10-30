@@ -2149,6 +2149,33 @@ export default {
         send: 'Send'
       }
     },
+    game: {
+      answered: '{answered}/{total} answered',
+      sent: 'Answer sent · waiting for the others',
+      onScreen: 'Question is on the screen',
+      onScreenSub: 'Look at the big screen, type your answer here',
+      correct: 'CORRECT!',
+      wrong: 'WRONG!',
+      answer: 'Answer',
+      yourAnswer: 'Your answer',
+      correctAnswer: 'Correct answer',
+      points: '+{n}',
+      leaderboard: 'Leaderboard',
+      top: 'Top {n}',
+      score: 'Your score',
+      correctCount: '{n} correct',
+      nextQuestion: 'Next question',
+      toResults: 'Results coming up',
+      waitingNext: 'The host will start the next round',
+      settings: 'Settings',
+      autoAdvance: 'Auto advance',
+      autoAdvanceSub: 'Continues on its own 5 seconds after each result.',
+      next: 'Next round',
+      cancel: 'Cancel game',
+      cancelConfirm: 'Cancel the game? No points are kept for it.',
+      cancelYes: 'Cancel game',
+      close: 'Close'
+    },
     closed: {
       kicked: 'You were removed from the room',
       empty: 'The room was closed',

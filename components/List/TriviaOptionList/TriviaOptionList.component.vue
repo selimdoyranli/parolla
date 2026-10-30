@@ -1,7 +1,10 @@
 <template lang="pug">
 .trivia-option-list
   template(v-for="option in options")
-    .trivia-option-list-item(@click="handleOptionClick(option)")
+    .trivia-option-list-item(
+      :class="{ 'trivia-option-list-item--selected': selected !== null && String(option.text).trim() === selected }"
+      @click="handleOptionClick(option)"
+    )
       span.trivia-option-list-item__text {{ option.text }}
 </template>
 
@@ -14,6 +17,11 @@ export default defineComponent({
     options: {
       type: Array,
       required: true
+    },
+    // party: the option this player already sent
+    selected: {
+      type: String,
+      default: null
     }
   },
   setup(props, { emit }) {

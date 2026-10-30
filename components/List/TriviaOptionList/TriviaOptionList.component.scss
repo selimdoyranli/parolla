@@ -41,6 +41,12 @@
       font-size: var(--font-size-text-10);
     }
 
+    &--selected {
+      color: var(--color-text-04);
+      background-color: var(--color-success-01);
+      border-color: var(--color-success-01);
+    }
+
     &__text {
       display: block;
       text-align: center;

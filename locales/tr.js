@@ -2172,6 +2172,33 @@ export default {
         send: 'Gönder'
       }
     },
+    game: {
+      answered: '{answered}/{total} cevapladı',
+      sent: 'Cevabın gönderildi · diğerleri bekleniyor',
+      onScreen: 'Soru ekranda',
+      onScreenSub: 'Büyük ekrana bak, cevabını buraya yaz',
+      correct: 'DOĞRU!',
+      wrong: 'YANLIŞ!',
+      answer: 'Cevap',
+      yourAnswer: 'Senin cevabın',
+      correctAnswer: 'Doğru cevap',
+      points: '+{n}',
+      leaderboard: 'Liderlik tablosu',
+      top: 'İlk {n}',
+      score: 'Puanın',
+      correctCount: '{n} doğru',
+      nextQuestion: 'Sıradaki soru',
+      toResults: 'Sonuçlar geliyor',
+      waitingNext: 'Kurucu sonraki turu başlatacak',
+      settings: 'Ayarlar',
+      autoAdvance: 'Oto ilerleme',
+      autoAdvanceSub: 'Her sonuçtan 5 saniye sonra kendiliğinden devam eder.',
+      next: 'Sonraki tur',
+      cancel: 'Oyunu iptal et',
+      cancelConfirm: 'Oyun iptal edilsin mi? Bu oyun için puan verilmez.',
+      cancelYes: 'İptal et',
+      close: 'Kapat'
+    },
     closed: {
       kicked: 'Odadan çıkarıldın',
       empty: 'Oda kapandı',

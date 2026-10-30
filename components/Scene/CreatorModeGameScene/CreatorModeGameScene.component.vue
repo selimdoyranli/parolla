@@ -3,13 +3,25 @@
   // Scene Inner
   .scene__inner.game-scene__inner
     // Alphabet
-    .alphabet.value.swiper.alphabet-carousel
+    .alphabet.value.swiper.alphabet-carousel(v-if="!party")
       .alphabet__inner.swiper-wrapper
         .swiper-slide(v-for="(item, index) in alphabet.items")
           .alphabet__item(:class="[alphabetItemClasses(item, index)]") {{ alphabetItemLetter(item, index) }}
 
+    //- party: round progress, answered count and a per-round ring instead of the game clock
+    .countdown.game-scene__countdown.countdown--party(v-if="party")
+      span.countdown__progress {{ partyRound.index + 1 }}/{{ partyRound.total }}
+      span.countdown__answered
+        AppIcon(name="tabler:users" :width="14" :height="14")
+        | {{ $t('party.game.answered', partyAnswered) }}
+      span.countdown__ring
+        svg(viewBox="0 0 36 36" aria-hidden="true")
+          circle.countdown__ring-track(cx="18" cy="18" r="16")
+          circle.countdown__ring-fill(cx="18" cy="18" r="16" pathLength="100" :stroke-dashoffset="100 - partyRemainFraction * 100")
+        strong.countdown__ring-text {{ partyRemainSec }}
+
     // Countdown
-    .countdown.game-scene__countdown(:class="{ 'd-none': !questions }")
+    .countdown.game-scene__countdown(v-else :class="{ 'd-none': !questions }")
       // Compact mode replaces the hidden alphabet with a progress chip
       span.countdown__progress {{ alphabet.activeIndex + 1 }}/{{ alphabet.items.length }}
       AppIcon.countdown__icon(name="tabler:clock" color="var(--color-icon-01)")
@@ -23,8 +35,14 @@
       )
 
     template
+      //- presentation mode: players answer here, the question is on the presenter's screen
+      .party-on-screen(v-if="isPartyAnswerOnly")
+        AppIcon(name="tabler:presentation" color="var(--color-brand-02)" :width="40" :height="40")
+        strong.party-on-screen__title {{ $t('party.game.onScreen') }}
+        span.party-on-screen__sub {{ $t('party.game.onScreenSub') }}
+
       // Questions
-      .questions(:class="{ 'questions--hidden': isQuestionHidden }")
+      .questions(v-else :class="{ 'questions--hidden': isQuestionHidden }")
         StartCountdown(:value="startCountdown")
         .question(v-for="(question, index) in questions" v-show="index === alphabet.activeIndex" :class="questionClasses(index)")
           strong.question__title(v-if="question.question?.length > 0 && question.questionType !== questionTypeEnum.MEDIA") {{ question.question }}
@@ -37,26 +55,37 @@
 
       // Field Section
       section.game-scene__fieldSection.game-scene__fieldSection--withStats(
+        v-if="!isPartyPresenter"
         :class="{ 'game-scene__fieldSection--disabled': !isGameStarted }"
       )
         // Answer Field
         .answer-field(v-if="getActiveQuestionAnswerType() === answerTypeEnum.TEXT_FIELD")
           input.answer-field__input(
             type="text"
-            :value="answer.field"
+            :value="isPartyLocked ? partyMyAnswer : answer.field"
             :placeholder="answerFieldPlaceholder || $t('gameScene.answerField.placeholder')"
             tabindex="-1"
             spellcheck="false"
             autocomplete="off"
             :maxlength="ANSWER_CHAR_LENGTH"
+            :disabled="isPartyLocked"
             @input="handleAnswerField"
             @focus="answer.isFocused = true"
             @blur="answer.isFocused = false"
             @keypress.enter="handleAnswer"
             @keydown.tab.prevent="pass"
           )
+          //- party: no pass, the send button is always there; it turns into a check once the answer is in
+          Button.answer-field__button.answer-field__button--send.do-not-hide-keyboard.do-not-hide-keyboard--send(
+            v-if="party"
+            :color="isPartyLocked ? 'var(--color-success-01)' : 'var(--color-brand-02)'"
+            :icon="isPartyLocked ? 'success' : 'guide-o'"
+            :disabled="isPartyLocked"
+            @click="handleAnswer"
+          ) {{ $t('gameScene.answerField.submit') }}
+
           // Optional action buttons
-          template(v-if="answer.field.length > 0")
+          template(v-else-if="answer.field.length > 0")
             Button.answer-field__button.answer-field__button--send.do-not-hide-keyboard.do-not-hide-keyboard--send(
               color="var(--color-brand-02)"
               icon="guide-o"
@@ -73,17 +102,31 @@
         //- trivia options stay out of sight until the countdown is over, like the question
         .answer-field(
           v-if="getActiveQuestionAnswerType() === answerTypeEnum.TRIVIA"
-          :class="{ 'answer-field--pending': isQuestionHidden }"
+          :class="{ 'answer-field--pending': isQuestionHidden, 'answer-field--locked': isPartyLocked }"
         )
           Button.answer-field__button.answer-field__button--pass.do-not-hide-keyboard.do-not-hide-keyboard--pass(
+            v-if="!party"
             color="var(--color-warning-01)"
             icon="arrow"
             @click.stop="pass"
           ) {{ $t('gameScene.answerField.pass') }}
-          TriviaOptionList(:options="getActiveQuestion().triviaOptions" @on-option-select="handleTriviaOptionSelect")
+          TriviaOptionList(
+            :options="getActiveQuestion().triviaOptions"
+            :selected="partyMyAnswer"
+            @on-option-select="handleTriviaOptionSelect"
+          )
+
+        //- party: the stats row's slot carries the round state instead (same height, so nothing jumps)
+        .game-scene__fieldSection-stats.game-scene__fieldSection-stats--party(v-if="party")
+          span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--correct(v-if="isPartyLocked")
+            AppIcon(name="tabler:check" color="var(--color-success-01)" :width="14" :height="14")
+            span {{ $t('party.game.sent') }}
+          span.game-scene__fieldSection-stats__item(v-else)
+            AppIcon(name="tabler:users" :width="14" :height="14")
+            span {{ $t('party.game.answered', partyAnswered) }}
 
         // Stats
-        .game-scene__fieldSection-stats
+        .game-scene__fieldSection-stats(v-else)
           span.game-scene__fieldSection-stats__item.game-scene__fieldSection-stats__item--correct
             AppIcon(name="tabler:check" color="var(--color-success-01)" :width="14" :height="14")
             strong {{ alphabet.items.filter(i => i.isCorrect).length }}
@@ -101,9 +144,10 @@
     QuizIntroSplash(v-if="isIntroSplashVisible && room" :room="room" :playing="isIntroSplash")
 
   // How To Play Dialog
-  PlayIntroDialog(v-if="!isGameOver" mode="creator" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
+  PlayIntroDialog(v-if="!isGameOver && !party" mode="creator" :isOpen="dialog.howToPlay.isOpen" @closed="startGame")
   // Stats Dialog
   LazyCreatorModeStatsDialog(
+    v-if="!party"
     :cancelButtonText="$t('general.close')"
     :confirmButtonText="$t('general.playAgain')"
     :isOpen="creatorDialog.stats.isOpen"
@@ -111,14 +155,26 @@
     @onConfirm="resetGame"
   )
   // Interstital Ad Dialog
-  InterstitialAdDialog(:cancelButtonText="$t('gameScene.skipAdShowScore')" :isOpen="dialog.interstitialAd.isOpen")
+  InterstitialAdDialog(v-if="!party" :cancelButtonText="$t('gameScene.skipAdShowScore')" :isOpen="dialog.interstitialAd.isOpen")
 </template>
 
 <script>
-import { defineComponent, useStore, useContext, ref, onMounted, onUnmounted, computed, watch, nextTick } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useStore,
+  useContext,
+  ref,
+  onMounted,
+  onUnmounted,
+  computed,
+  watch,
+  nextTick,
+  inject
+} from '@nuxtjs/composition-api'
 import { ANSWER_CHAR_LENGTH } from '@/system/constant'
 import { questionTypeEnum, answerTypeEnum } from '@/enums/quiz.enum'
 import { Button, Field, Empty, CountDown } from 'vant'
+import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
   components: {
@@ -127,11 +183,21 @@ export default defineComponent({
     Empty,
     CountDown
   },
-  setup() {
+  props: {
+    // party room round (pages/Party/_code feeds the creator store); everything party-only hangs off this
+    party: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(props) {
     const store = useStore()
     const { $ua, i18n } = useContext()
 
     const rootRef = ref(null)
+
+    const partySend = inject('partySend', null)
+    const isPartyPresenter = computed(() => props.party && store.getters['party/isPresenter'])
 
     const {
       setRootRef,
@@ -149,6 +215,8 @@ export default defineComponent({
       countdownTimerRef,
       handleAnswer,
       handleAnswerField,
+      handleNotStartsWithActiveChar,
+      resetAnswerField,
       handleTabKey,
       handleAnswerFieldAutoFocus,
       pass,
@@ -164,7 +232,18 @@ export default defineComponent({
       isTouchEnabled,
       handleDontHideKeyboard,
       checkUnsupportedHeight
-    } = useGameScene({ inlineCountdown: true, introSplash: true })
+    } = useGameScene(
+      props.party
+        ? {
+            party: {
+              // locked = the server already took this round's answer (it would ignore a second one anyway)
+              submit: text => !isPartyLocked.value && partySend(wsTypeEnum.PARTY_ANSWER, { text }),
+              // the presenter's screen is the big one everybody reads
+              fitMax: () => (isPartyPresenter.value ? 72 : 30)
+            }
+          }
+        : { inlineCountdown: true, introSplash: true }
+    )
 
     const creatorDialog = computed(() => store.getters['creator/dialog'])
 
@@ -184,9 +263,61 @@ export default defineComponent({
     watch(
       () => room.value,
       () => {
-        resetGame()
+        if (!props.party) resetGame()
       }
     )
+
+    // Party round state (store/party); the page has already put the question into the creator store
+    const partyRound = computed(() => store.state.party.round || { index: 0, total: 0, durationMs: 1, remainingMs: 0 })
+    // no progress frame until the first answer comes in: count who can answer from the room until then
+    const partyAnswered = computed(() => {
+      const { answered, total } = store.state.party.answered
+      const presenterId = store.getters['party/game']?.presenterId
+
+      return { answered, total: total || store.getters['party/players'].filter(p => p.connected && p.id !== presenterId).length }
+    })
+    const partyMyAnswer = computed(() => (props.party ? store.state.party.myAnswer : null))
+    const isPartyLocked = computed(() => Boolean(partyMyAnswer.value))
+    const isPartyAnswerOnly = computed(() => props.party && Boolean(store.getters['party/game']?.presenterId) && !isPartyPresenter.value)
+    const partyNow = ref(Date.now())
+    let partyTicker = null
+
+    const partyRemainMs = computed(() => {
+      const round = partyRound.value
+
+      return Math.max(0, round.remainingMs - (partyNow.value - (round.receivedAt || partyNow.value)))
+    })
+    const partyRemainSec = computed(() => Math.ceil(partyRemainMs.value / 1000))
+    const partyRemainFraction = computed(() => Math.min(1, partyRemainMs.value / (partyRound.value.durationMs || 1)))
+
+    if (props.party) {
+      // new round (or reconnect snapshot): fresh field, refit the new question
+      watch(
+        () => store.state.party.round,
+        async () => {
+          resetAnswerField()
+          await nextTick()
+          questionFitText()
+        }
+      )
+
+      // the server only re-asks when the client check let a wrong letter through; same hint as solo
+      watch(
+        () => store.state.party.retry,
+        retry => retry && handleNotStartsWithActiveChar({ activeChar: retry.letter })
+      )
+
+      // round over: drop the keyboard so the result card gets the screen
+      watch(
+        () => store.state.party.roundEnd,
+        roundEnd => {
+          if (!roundEnd) return
+
+          document.activeElement?.blur()
+          answer.isFocused = false
+        }
+      )
+    }
 
     const getActiveQuestion = () => {
       return questions.value[alphabet.value.activeIndex]
@@ -209,6 +340,8 @@ export default defineComponent({
     }
 
     const handleTriviaOptionSelect = option => {
+      if (isPartyLocked.value) return
+
       handleAnswer(option.text)
     }
 
@@ -225,20 +358,32 @@ export default defineComponent({
       return `${letter}... (${i18n.t('gameScene.answerField.placeholder')})`
     })
 
+    // named, so unmount can remove them (a party room mounts this scene once per game)
+    const handleKeyup = event => {
+      handleTabKey(event)
+      handleAnswerFieldAutoFocus(event)
+    }
+
     onMounted(() => {
       setRootRef(rootRef.value)
-      resetGame()
 
-      initCarousels()
+      if (props.party) {
+        // no intro / 3-2-1: the round is already running on the server
+        isGameStarted.value = true
+        partyTicker = setInterval(() => (partyNow.value = Date.now()), 250)
+        nextTick(questionFitText)
+      } else {
+        resetGame()
+        initCarousels()
+      }
 
-      window.addEventListener('keyup', event => handleTabKey(event))
-      window.addEventListener('keyup', event => handleAnswerFieldAutoFocus(event))
+      window.addEventListener('keyup', handleKeyup)
 
       window.addEventListener('resize', questionFitText)
       window.visualViewport?.addEventListener('resize', refitQuestionOnViewportResize)
       window.addEventListener('resize', fitMediaQuestion)
       window.visualViewport?.addEventListener('resize', fitMediaQuestion)
-      window.addEventListener('beforeunload', event => handleBeforeUnload(event))
+      window.addEventListener('beforeunload', handleBeforeUnload)
 
       window.addEventListener('scroll', scrollTop)
 
@@ -260,6 +405,11 @@ export default defineComponent({
       window.visualViewport?.removeEventListener('resize', fitMediaQuestion)
       document.documentElement.classList.remove('creator-compact-header')
       window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('keyup', handleKeyup)
+      clearInterval(partyTicker)
+
+      // the party room goes back to its lobby with this scene gone; don't leave the keyboard class behind
+      if (props.party) document.documentElement.classList.remove('osk')
 
       window.removeEventListener('scroll', scrollTop)
 
@@ -335,7 +485,10 @@ export default defineComponent({
         'game-scene--hasMedia': room.value.hasMedia,
         'game-scene--activeQuestionTypeText': questions.value[alphabet.value.activeIndex]?.questionType === questionTypeEnum.TEXT,
         'game-scene--activeAnswerTypeTextField': getActiveQuestionAnswerType?.() === answerTypeEnum.TEXT_FIELD,
-        'game-scene--activeAnswerTypeTrivia': getActiveQuestionAnswerType?.() === answerTypeEnum.TRIVIA
+        'game-scene--activeAnswerTypeTrivia': getActiveQuestionAnswerType?.() === answerTypeEnum.TRIVIA,
+        'game-scene--party': props.party,
+        'game-scene--partyPresenter': isPartyPresenter.value,
+        'game-scene--partyAnswerOnly': isPartyAnswerOnly.value
       }
     })
 
@@ -350,6 +503,14 @@ export default defineComponent({
       questionTypeEnum,
       answerTypeEnum,
       rootRef,
+      isPartyPresenter,
+      isPartyAnswerOnly,
+      isPartyLocked,
+      partyRound,
+      partyAnswered,
+      partyMyAnswer,
+      partyRemainSec,
+      partyRemainFraction,
       ANSWER_CHAR_LENGTH,
       isGameStarted,
       startCountdown,
