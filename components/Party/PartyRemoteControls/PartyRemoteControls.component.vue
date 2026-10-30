@@ -15,7 +15,7 @@
 
     Button(v-if="!game" icon="arrow" round block :disabled="!queue.length" @click="send('party_start')") {{ $t('party.lobby.start') }}
     template(v-else)
-      Button(icon="arrow" round block :disabled="game.phase !== 'result'" @click="send('party_next')") {{ $t('party.game.next') }}
+      Button.party-remote__next(icon="arrow" round block :disabled="game.phase !== 'result'" @click="send('party_next')") {{ $t('party.game.next') }}
       .party-remote__row
         .party-remote__text
           strong {{ $t('party.game.autoAdvance') }}

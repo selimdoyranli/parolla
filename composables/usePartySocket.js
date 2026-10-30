@@ -18,7 +18,7 @@ let closingOnPurpose = false
 // Last join frame, replayed after an auto-reconnect so the server restores the seat
 let joinFrame = null
 let sharedRemote = false
-const JOIN_DEAD_CODES = ['room_not_found', 'bad_password', 'room_full', 'room_locked']
+const JOIN_DEAD_CODES = ['room_not_found', 'bad_password', 'room_full', 'room_locked', 'login_required']
 
 export const usePartySocket = ({ remote = false } = {}) => {
   const vm = getCurrentInstance().proxy

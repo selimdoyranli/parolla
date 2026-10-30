@@ -82,7 +82,9 @@ export default defineComponent({
     }
 
     onBeforeUnmount(() => {
-      send(wsTypeEnum.PARTY_LEAVE)
+      // going to the host remote of this room in the same tab: the seat must survive
+      if (!router.currentRoute.path.endsWith('/remote')) send(wsTypeEnum.PARTY_LEAVE)
+
       store.commit('party/RESET')
     })
 

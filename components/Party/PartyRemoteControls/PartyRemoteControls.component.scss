@@ -66,6 +66,20 @@
     }
   }
 
+  // explicit CTA colours: the default Vant button is white in dark mode
+  &__next.van-button {
+    color: #fff;
+    font-weight: 800;
+    background: var(--color-brand-02);
+    border: 0;
+
+    &.van-button--disabled {
+      color: var(--color-text-03);
+      background: var(--color-ui-03);
+      opacity: 0.7;
+    }
+  }
+
   &__cancel {
     display: inline-flex;
     gap: 6px;
