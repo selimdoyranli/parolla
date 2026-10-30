@@ -15,6 +15,7 @@
 <script>
 import { defineComponent, ref, computed, watch, onBeforeUnmount, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
 import { usePartySocket } from '@/composables/usePartySocket'
+import { showToast } from '@/helpers/toast'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
@@ -54,6 +55,9 @@ export default defineComponent({
         if (!err) return
 
         if (err.code === 'bad_password' && !room.value) {
+          // passwordTry > 0: a password was already sent, so this one was wrong
+          if (passwordTry.value > 0) showToast.fail(i18n.t('party.errors.bad_password'))
+
           askPassword.value = true
           passwordTry.value++
 

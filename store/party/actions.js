@@ -45,6 +45,12 @@ export default {
       case wsTypeEnum.PARTY_ERROR: {
         commit('SET_ERROR', { code: m.code, message: m.message })
         const key = `party.errors.${m.code}`
+
+        // bad_password is handled by the join flow: only a wrong retry is worth a toast
+        if (m.code === 'bad_password') {
+          break
+        }
+
         showToast.fail(this.$i18n.te(key) ? this.$i18n.t(key) : m.message || m.code)
         break
       }
