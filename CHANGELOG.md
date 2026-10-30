@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.10.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.9.0...v3.10.0)
+
+
+### 🚀 Enhancements
+
+  - **donate:** Add donate dialog with Buy Me a Coffee guide ([6cdfdcc8](https://github.com/selimdoyranli/parolla/commit/6cdfdcc8))
+  - **notifications:** Guest announcements, event-items shop tip, full gift notes ([506e056f](https://github.com/selimdoyranli/parolla/commit/506e056f))
+  - **choices:** Redesign this-or-that game and result screens ([18443fa5](https://github.com/selimdoyranli/parolla/commit/18443fa5))
+  - **app:** Add /indir download page and app download banner in inventory dialog ([69ae61b1](https://github.com/selimdoyranli/parolla/commit/69ae61b1))
+
+### 🔥 Performance
+
+  - **notifications:** Send one shared announcements query and poll ids only ([c49e2273](https://github.com/selimdoyranli/parolla/commit/c49e2273))
+  - **home:** Fetch one random showcase page instead of the 50-quiz pool ([32c2b7b4](https://github.com/selimdoyranli/parolla/commit/32c2b7b4))
+  - **creator:** Count quiz views separately and skip the edge after own writes ([29b6b5ca](https://github.com/selimdoyranli/parolla/commit/29b6b5ca))
+
+### 🩹 Fixes
+
+  - **seo:** Add comment list to community post DiscussionForumPosting ([#182](https://github.com/selimdoyranli/parolla/pull/182))
+  - **creator:** Show the player's new score on the post-game scoreboard ([c2ffe248](https://github.com/selimdoyranli/parolla/commit/c2ffe248))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.9.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.8.0...v3.9.0)
