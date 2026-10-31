@@ -43,7 +43,18 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, onBeforeUnmount, useContext, useRouter, useRoute, useStore } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onBeforeUnmount,
+  useContext,
+  useRouter,
+  useRoute,
+  useStore,
+  useMeta
+} from '@nuxtjs/composition-api'
 import { Howl } from 'howler'
 import { quizTypeEnum, questionTypeEnum } from '@/enums/quiz.enum'
 
@@ -52,7 +63,19 @@ export default defineComponent({
   key: 'party-room',
   layout: 'Default/Default.layout',
   setup() {
-    const { app, localePath } = useContext()
+    const { app, i18n, localePath } = useContext()
+    // private rooms: never indexed (the /party landing is the page that ranks)
+    useMeta(() => ({
+      title: `${i18n.t('seo.partyRoom.title')} - ${i18n.t('seo.main.title')}`,
+      meta: [
+        { hid: 'description', name: 'description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'og:title', name: 'og:title', content: `${i18n.t('seo.partyRoom.title')} - ${i18n.t('seo.main.title')}` },
+        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'robots', name: 'robots', content: 'noindex,nofollow' }
+      ]
+    }))
+
     const router = useRouter()
     const route = useRoute()
     const store = useStore()
@@ -221,7 +244,8 @@ export default defineComponent({
       isRevealPlaying,
       revealRoom
     }
-  }
+  },
+  head: {}
 })
 </script>
 

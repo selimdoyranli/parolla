@@ -39,7 +39,7 @@ export default defineComponent({
   },
   props: {
     title: { type: String, default: '' },
-    // party mode: no draw socket (it would open one just for this dialog)
+    // party: no draw socket (it would open one just for this dialog)
     noSocket: { type: Boolean, default: false }
   },
   emits: ['close'],

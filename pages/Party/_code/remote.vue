@@ -8,14 +8,26 @@
 </template>
 
 <script>
-import { defineComponent, computed, useContext, useRoute, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useContext, useRoute, useStore, useMeta } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 
 export default defineComponent({
   components: { Button },
   layout: 'Default/Default.layout',
   setup() {
-    const { app } = useContext()
+    const { app, i18n } = useContext()
+    // private rooms: never indexed (the /party landing is the page that ranks)
+    useMeta(() => ({
+      title: `${i18n.t('seo.partyRoom.title')} - ${i18n.t('seo.main.title')}`,
+      meta: [
+        { hid: 'description', name: 'description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'og:title', name: 'og:title', content: `${i18n.t('seo.partyRoom.title')} - ${i18n.t('seo.main.title')}` },
+        { hid: 'og:description', name: 'og:description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'twitter:description', name: 'twitter:description', content: i18n.t('seo.partyRoom.description') },
+        { hid: 'robots', name: 'robots', content: 'noindex,nofollow' }
+      ]
+    }))
+
     const route = useRoute()
     const store = useStore()
     const code = computed(() => route.value.params.code)
@@ -23,7 +35,8 @@ export default defineComponent({
     const login = () => store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true)
 
     return { code, loggedIn, login }
-  }
+  },
+  head: {}
 })
 </script>
 

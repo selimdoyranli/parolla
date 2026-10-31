@@ -1946,10 +1946,15 @@ export default {
       }
     },
     party: {
-      title: 'Parti modu - Arkadaşlarınla canlı quiz oyna',
+      title: 'Parti - Arkadaşlarla Quiz Oyna',
       description:
-        'parolla parti modu: oda kur, 6 haneli kodu paylaş ve 10 kişiye kadar arkadaşınla aynı anda quiz çöz. Katılmak için üyelik gerekmez.',
-      keywords: 'parti quiz, arkadaşlarla quiz, canlı quiz oyunu, çok oyunculu quiz, quiz gecesi, oda kodu ile quiz'
+        'Arkadaşlarınla canlı quiz oyna: parti odası kur, 6 haneli kodu paylaş, 10 kişiye kadar aynı anda yarışın. Sunum modu ve telefondan kumanda var, katılmak için üyelik gerekmez.',
+      keywords:
+        'parti, parti oyunu, arkadaşlarla quiz oyna, arkadaşlarla oynanacak oyunlar, online parti oyunu, canlı quiz, çok oyunculu quiz, quiz gecesi, sınıfta quiz, oda kodu ile quiz'
+    },
+    partyRoom: {
+      title: 'Parti odası',
+      description: 'Parti odasına katıl ve arkadaşlarınla canlı quiz oyna.'
     },
     download: {
       title: 'Uygulamayı İndir',
@@ -2087,7 +2092,7 @@ export default {
       create: 'Odayı kur'
     },
     landing: {
-      eyebrow: 'Parti modu',
+      eyebrow: 'Parti',
       title: 'Quizleri arkadaşlarınla aynı anda çöz',
       sub: 'Bir oda kur, kodu paylaş; sorular herkese aynı anda gelir. Hızlı ve doğru olan kazanır.',
       facts: {
@@ -2307,7 +2312,7 @@ export default {
       room_locked: 'Oda kilitli',
       login_required: 'Bu işlem için giriş yapmalısın',
       already_in_room: 'Zaten bu odadasın',
-      quiz_unsupported: 'Bu quiz parti modunda oynanamaz',
+      quiz_unsupported: 'Bu quiz partide oynanamaz',
       queue_full: 'Kuyruk dolu (en fazla 20 oyun)',
       not_host: 'Bu işlemi sadece oda sahibi yapabilir'
     }

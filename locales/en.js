@@ -1924,10 +1924,15 @@ export default {
       }
     },
     party: {
-      title: 'Party mode - Play live quizzes with friends',
+      title: 'Party - Play Quizzes with Friends',
       description:
-        'parolla party mode: create a room, share the 6-digit code and play quizzes live with up to 10 friends. No sign-up needed to join.',
-      keywords: 'party quiz, quiz with friends, live quiz game, multiplayer quiz, quiz night, quiz room code'
+        'Play live quizzes with friends: open a party room, share the 6-digit code and compete with up to 10 people at once. Presentation mode and phone remote included, no sign-up needed to join.',
+      keywords:
+        'party, party game, play quizzes with friends, games to play with friends, online party game, live quiz, multiplayer quiz, quiz night, classroom quiz, quiz room code'
+    },
+    partyRoom: {
+      title: 'Party room',
+      description: 'Join the party room and play live quizzes with friends.'
     },
     download: {
       title: 'Download the App',
@@ -2064,7 +2069,7 @@ export default {
       create: 'Create the room'
     },
     landing: {
-      eyebrow: 'Party mode',
+      eyebrow: 'Party',
       title: 'Play quizzes live with your friends',
       sub: 'Create a room and share the code; everyone gets the same question at the same time. Fast and right wins.',
       facts: {
@@ -2287,7 +2292,7 @@ export default {
       room_locked: 'The room is locked',
       login_required: 'You need to log in for this',
       already_in_room: 'You are already in this room',
-      quiz_unsupported: 'This quiz cannot be played in party mode',
+      quiz_unsupported: 'This quiz cannot be played in a party',
       queue_full: 'Queue is full (max 20 games)',
       not_host: 'Only the host can do this'
     }
