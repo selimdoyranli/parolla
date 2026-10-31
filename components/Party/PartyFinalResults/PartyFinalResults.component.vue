@@ -21,10 +21,10 @@
             img.party-final-results__thumb(v-if="choice.media && choice.media.url" :src="choice.media.url" alt)
             span.party-final-results__name {{ choiceLabel(choice) }}
 
-    //- qa: the leaderboard routes' board (podium + the next two); my own row pinned when I'm not in the top 5.
+    //- qa: the leaderboard routes' podium (top 3 only: the scoreboard below lists everyone).
     //- Own score only when the board is hidden ("never" / presenter)
     template(v-else)
-      Leaderboard.party-final-results__board(v-if="scorers.length" :scorers="scorers" :current-player="pinnedMe")
+      Leaderboard.party-final-results__board(v-if="podium.length" :scorers="podium")
 
       .party-final-results__mine(v-else-if="final.me")
         span(v-if="final.me.rank") {{ $t('party.final.rank', { n: final.me.rank }) }}
@@ -50,9 +50,6 @@ import { choiceTypeEnum } from '@/enums/quiz.enum'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { usePartyUser } from '@/composables/usePartyUser'
 
-// same as the leaderboard routes' first screen: podium + two rows
-const BOARD_SIZE = 5
-
 export default defineComponent({
   components: { Button },
   setup() {
@@ -61,7 +58,6 @@ export default defineComponent({
     const isHost = computed(() => store.getters['party/isHost'])
     const final = computed(() => store.state.party.final)
     const review = computed(() => final.value.review || [])
-    const myId = computed(() => store.state.party.myId)
     const title = computed(() => store.getters['party/game']?.title || '')
     const isChoices = computed(() => Boolean(final.value.champion))
     const eliminated = computed(() => final.value.eliminated || [])
@@ -71,8 +67,7 @@ export default defineComponent({
 
     // Leaderboard's scorer shape: the app user + score and rank
     const ranked = computed(() => (leaderboard.value || []).map((row, i) => ({ ...toUser(row), score: row.score, rank: i + 1 })))
-    const scorers = computed(() => ranked.value.slice(0, BOARD_SIZE))
-    const pinnedMe = computed(() => ranked.value.slice(BOARD_SIZE).find(row => row.id === myId.value) || null)
+    const podium = computed(() => ranked.value.slice(0, 3))
 
     // media without a note is identified by its thumbnail
     const choiceLabel = choice => (choice.choiceType === choiceTypeEnum.TEXT ? choice.text : choice.mediaNote) || ''
@@ -84,13 +79,11 @@ export default defineComponent({
       review,
       backToLobby,
       final,
-      myId,
       title,
       isChoices,
       eliminated,
       leaderboard,
-      scorers,
-      pinnedMe,
+      podium,
       choiceLabel
     }
   }
