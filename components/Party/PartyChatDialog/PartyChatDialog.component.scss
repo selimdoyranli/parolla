@@ -43,10 +43,20 @@
     position: relative;
   }
 
-  // same height as the chat so switching tabs doesn't resize the dialog
+  // same height as the chat so switching tabs doesn't resize the dialog; the tab scrolls, not the list
   &__tab {
     height: calc(50vh + 66px);
     overflow-y: auto;
+
+    // PlayerList's own 50vh box + fade (meant for the page background) would end mid-dialog in a band
+    .player-list {
+      max-height: none;
+      overflow-y: visible;
+
+      &::after {
+        display: none;
+      }
+    }
   }
 
   // tour hides the list's rank numbers for answers (they are in answer order, not a ranking)
