@@ -43,6 +43,13 @@ export default {
   },
   SET_VOTES(s, msg) {
     s.votes = msg
+
+    // the server cuts the round short once everyone has voted: resync the countdown in place
+    // (a new round object would make the choices scene reset the player's local vote)
+    if (s.round && typeof msg.remainingMs === 'number') {
+      s.round.remainingMs = msg.remainingMs
+      s.round.receivedAt = Date.now()
+    }
   },
   ROUND_END(s, msg) {
     s.roundEnd = msg
