@@ -15,7 +15,7 @@
         //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
         PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
       PartyEmojiReactions
-      //- host's "chat during the game": like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
+      //- chat on: like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
       //- too when it fits beside the game column
       template(v-if="isGameChat")
         ChatPanel.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
