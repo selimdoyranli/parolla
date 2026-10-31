@@ -51,10 +51,11 @@
 <script>
 import { defineComponent, ref, computed, onMounted, onBeforeUnmount, useContext } from '@nuxtjs/composition-api'
 
+// seeds picked so each DiceBear face fits the name (long hair for Selin / Ece, short for the others)
 const ROSTER = [
-  { name: 'Selin', seed: 'selin-demo', isHost: true },
-  { name: 'Mert', seed: 'mert-demo' },
-  { name: 'Ece', seed: 'ece-demo' },
+  { name: 'Selin', seed: 'selin-1', isHost: true },
+  { name: 'Mert', seed: 'mert-6' },
+  { name: 'Ece', seed: 'ece-1' },
   { name: 'Can', seed: 'can-demo' },
   { name: 'Deniz', seed: 'deniz-demo' }
 ]
