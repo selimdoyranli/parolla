@@ -7,7 +7,7 @@
   border: 1px solid var(--color-border-02);
   border-radius: 14px;
 
-  @include media-breakpoint-up(desktop) {
+  @include media-breakpoint-up(tablet) {
     flex-flow: row wrap;
     align-items: center;
   }
@@ -81,18 +81,18 @@
     gap: 6px;
     align-items: center;
 
-    // mobile: the bottom dock carries the start button, only the remote link stays here
-    @include media-breakpoint-down(desktop) {
+    // mobile: the bottom dock carries the start button (the card is full column width from tablet up), only the remote link stays here
+    @include media-breakpoint-down(tablet) {
       align-items: flex-start;
     }
 
-    @include media-breakpoint-up(desktop) {
+    @include media-breakpoint-up(tablet) {
       width: 220px;
     }
   }
 
   &__start.van-button {
-    @include media-breakpoint-down(desktop) {
+    @include media-breakpoint-down(tablet) {
       display: none;
     }
   }
@@ -123,7 +123,7 @@
     background: var(--color-ui-01);
     border-radius: 12px;
 
-    @include media-breakpoint-up(desktop) {
+    @include media-breakpoint-up(tablet) {
       width: 220px;
     }
   }

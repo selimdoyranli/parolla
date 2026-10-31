@@ -21,18 +21,18 @@
         AppIcon(name="tabler:settings" :width="18" :height="18")
       PartyHostSheet(v-if="isHost" v-model="isHostSheetOpen")
 
-    //- mobile: one column in reading order (main/side wrappers are display: contents); desktop: main / side, chat fixed like tour
+    //- mobile: one column in reading order (the row wrapper is display: contents); tablet up: full-width cards,
+    //- settings + players side by side, chat in tour's fixed ChatPanel
     .party-lobby(v-else)
       PartyHeader.party-lobby__header
-      .party-lobby__main
-        PartyCodeCard.party-lobby__code
-        PartyNextGameCard.party-lobby__next(@open-remote="isRemoteOpen = true")
-        PartyQueue.party-lobby__queue(@add-game="isAddGameOpen = true")
+      PartyNextGameCard.party-lobby__next(@open-remote="isRemoteOpen = true")
+      PartyQueue.party-lobby__queue(@add-game="isAddGameOpen = true")
+      PartyCodeCard.party-lobby__code
+      .party-lobby__row
         PartySettings.party-lobby__settings(v-if="isHost")
-      .party-lobby__side
         PartyPlayerList.party-lobby__players
-      ChatPanel.party-lobby__chat(:title="$t('party.lobby.chat.title')")
-        PartyChat(headless)
+      ChatPanel.party-lobby__chat(:title="`${$t('chat.chat')} (${playerCount})`")
+        PartyChat
       .party-lobby__dock
         PartyChat(compact)
         PartyStartButton(v-if="isHost")
@@ -63,6 +63,7 @@ export default defineComponent({
     const isRemoteOpen = ref(false)
     const isHost = computed(() => store.getters['party/isHost'])
     const isHostSheetOpen = ref(false)
+    const playerCount = computed(() => store.getters['party/players'].length)
 
     if (isNew.value && !quiz.value) router.replace(localePath({ name: 'Party' }))
 
@@ -166,6 +167,7 @@ export default defineComponent({
       isRemoteOpen,
       isHost,
       isHostSheetOpen,
+      playerCount,
       round,
       roundEnd,
       final,
@@ -229,8 +231,7 @@ export default defineComponent({
   gap: 10px;
 
   // mobile reading order: header, code, next game, players, queue, settings
-  &__main,
-  &__side {
+  &__row {
     display: contents;
   }
 
@@ -258,14 +259,11 @@ export default defineComponent({
     order: 5;
   }
 
-  // tour's ChatPanel, sized to the right ad rail it sits over; narrower screens use the dock's chat bar
+  // tour's ChatPanel as is (same width, place and breakpoint); phones use the dock's chat bar
   &__chat {
-    @include media-breakpoint-down(wide) {
+    @include media-breakpoint-down(tablet) {
       display: none;
     }
-
-    right: 8px;
-    width: calc((100vw - var(--layout-max-width)) / 2 - 16px);
   }
 
   &__dock {
@@ -282,49 +280,40 @@ export default defineComponent({
     border-top: 1px solid var(--color-border-02);
   }
 
-  @include media-breakpoint-up(desktop) {
-    display: grid;
-    grid-template-areas:
-      'header header'
-      'main side';
-    grid-template-columns: minmax(0, 1fr) 260px;
+  // tablet up: cards in DOM order at full column width, settings + players share a row (wrapping when narrow)
+  @include media-breakpoint-up(tablet) {
     gap: 12px;
-    align-items: start;
+    // room for the collapsed chat bar over the last row
+    padding-bottom: 42px;
 
-    &__header {
-      grid-area: header;
+    &__header,
+    &__code,
+    &__next,
+    &__players,
+    &__queue,
+    &__settings {
+      order: 0;
     }
 
-    &__main,
-    &__side {
+    &__row {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 12px;
+      align-items: flex-start;
     }
 
-    &__main {
-      grid-area: main;
+    &__settings {
+      flex: 1 1 340px;
+      min-width: 0;
     }
 
-    &__side {
-      grid-area: side;
+    &__players {
+      flex: 1 1 260px;
+      min-width: 0;
     }
 
     &__dock {
       display: none;
-    }
-  }
-
-  // between desktop and wide there is no rail for the chat panel: keep the dock, only for its chat bar
-  @include media-breakpoint-between(desktop, wide) {
-    &__dock {
-      display: flex;
-      grid-column: 1 / -1;
-      margin: 0 -16px;
-
-      .party-start-button {
-        display: none;
-      }
     }
   }
 }
