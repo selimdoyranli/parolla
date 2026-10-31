@@ -669,7 +669,8 @@ export default {
       title: 'Daha fazla ({username})',
       showProfile: 'Profili Göster',
       report: 'Raporla',
-      voteKick: 'Odadan atmak için oyla'
+      voteKick: 'Odadan atmak için oyla',
+      kick: 'Odadan at'
     },
     tourModeOnline: {
       title: 'Tur'
@@ -2234,7 +2235,9 @@ export default {
           host_changed: '{name} artık kurucu',
           joined: '{name} odaya katıldı',
           left: '{name} odadan ayrıldı',
-          kicked: '{name} odadan çıkarıldı'
+          kicked: '{name} kurucu tarafından odadan atıldı',
+          vote_kick: '{name} için atılma oyu verildi ({count}/{total})',
+          vote_kicked: '{name} oylama sonucu odadan atıldı'
         }
       }
     },
@@ -2325,6 +2328,7 @@ export default {
     },
     closed: {
       kicked: 'Odadan çıkarıldın',
+      vote_kicked: 'Oylama sonucu odadan atıldın',
       empty: 'Oda kapandı',
       noHostTitle: 'Kurucu ayrıldı',
       noHostText: 'Odada kurucu olabilecek giriş yapmış bir oyuncu kalmadı, bu parti devam edemez.',
@@ -2334,6 +2338,9 @@ export default {
       room_not_found: 'Oda bulunamadı',
       bad_password: 'Şifre yanlış',
       room_full: 'Oda dolu',
+      vote_self: 'Kendin için oy veremezsin',
+      vote_already_voted: 'Bu oyuncu için zaten oy verdin',
+      vote_target_missing: 'Oyuncu odada bulunamadı',
       not_enough_players: 'Oyunu başlatmak için en az 2 kişi gerekli',
       rate_limited: 'Çok hızlı mesaj gönderiyorsun. {seconds} saniye sonra tekrar dene.',
       room_locked: 'Oda kilitli',

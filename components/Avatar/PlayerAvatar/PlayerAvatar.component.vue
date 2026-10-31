@@ -104,7 +104,8 @@ export default defineComponent({
     const openPlayerActions = () => {
       const { id, username, diceBear, isGuest } = props.user
       // A guest's own avatar has nothing to offer (no profile, can't report or vote self)
-      const isSelfGuest = isGuest && props.playerActionsContext === 'draw' && String(id) === String(store.state.draw.myId)
+      const myId = { draw: store.state.draw.myId, party: store.state.party.myId }[props.playerActionsContext]
+      const isSelfGuest = isGuest && myId != null && String(id) === String(myId)
 
       if (isSelfGuest) return
 

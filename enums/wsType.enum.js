@@ -74,6 +74,7 @@ export const wsTypeEnum = Object.freeze({
   PARTY_NEXT: 'party_next',
   PARTY_CANCEL: 'party_cancel',
   PARTY_LOBBY: 'party_lobby',
+  PARTY_VOTE_KICK: 'party_vote_kick',
   PARTY_ANSWER: 'party_answer',
   PARTY_VOTE: 'party_vote',
   PARTY_CHAT: 'party_chat',

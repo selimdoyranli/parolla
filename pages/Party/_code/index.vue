@@ -4,6 +4,8 @@
   CreateGuestDrawerDialog(v-else-if="needsGuest && !guestReady" no-socket :title="$t('party.guest.title')" @close="guestReady = true")
   //- the socket-using child only mounts once identity is settled (guests send it in the connect URL)
   PartyRoomSession(v-else-if="!needsGuest || guestReady" :code="code" :quiz="quiz")
+    //- the AppHeader chat button's dialog, in the lobby and (chat on) in games
+    PartyChatDialog
     //- phase switch: QA game | choices game | lobby. Final / cancelled never read `round` (a reconnect there gets none)
     .party-game(v-if="isGame" :class="{ 'party-game--choices': isChoicesGame }")
       PartyCancelled(v-if="cancelled")
@@ -23,12 +25,11 @@
           template(#content-prepend)
             .section-title {{ $t('tourMode.lastAnswers.title') }}
             .last-answers
-              PlayerList(:items="lastAnswers")
+              PlayerList(:items="lastAnswers" player-actions-context="party")
                 template(#empty)
                   Empty(:description="$t('tourMode.lastAnswers.empty.description')")
             .section-title {{ $t('chat.chat') }}
           PartyChat
-        PartyChatDialog
       //- before each game's first round: the solo creator reveal, then 3-2-1-GO (the server holds the round for both)
       transition(name="quiz-intro-splash-fade")
         QuizIntroSplash(v-if="isRevealVisible" :room="revealRoom" :playing="isRevealPlaying")
@@ -236,12 +237,13 @@ export default defineComponent({
     watch(isGame, value => {
       // lobby chat was read in the lobby: the header badge only counts what comes during the game
       store.commit('party/SET_CHAT_SEEN', store.state.party.chat.length)
+      // the game screen starts clean (and with chat off there is no chat button to close it)
+      store.commit('party/SET_CHAT_DIALOG_OPEN', false)
 
       if (value) return
 
       resetCreator()
       isHostSheetOpen.value = false
-      store.commit('party/SET_CHAT_DIALOG_OPEN', false)
     })
 
     onBeforeUnmount(() => {

@@ -1,5 +1,5 @@
 <template lang="pug">
-//- in-game chat, opened from the AppHeader chat button: tour's online dialog (chat, online players, last answers)
+//- party room chat (lobby and game), opened from the AppHeader chat button: tour's online dialog (chat, online players, last answers)
 Dialog.stats-dialog.dialog.party-chat-dialog(
   :value="isOpen"
   show-cancel-button
@@ -26,7 +26,7 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
           AppIcon.stats-dialog-tab-title__icon(name="tabler:users-group" :width="20" :height="20")
           span.stats-dialog-tab-title__value {{ $t('tourMode.onlineUsers') }} ({{ onlinePlayers.length }})
       .party-chat-dialog__tab
-        PlayerList(:items="onlinePlayers")
+        PlayerList(:items="onlinePlayers" player-actions-context="party")
 
     Tab(name="last-answers")
       template(#title)
@@ -35,7 +35,7 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
           span.stats-dialog-tab-title__value {{ $t('tourMode.lastAnswers.title') }}
       .party-chat-dialog__tab.party-chat-dialog__tab--answers
         //- tour's colours: green right, red wrong (the answer itself stays hidden)
-        PlayerList(:items="lastAnswers")
+        PlayerList(:items="lastAnswers" player-actions-context="party")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")
 </template>

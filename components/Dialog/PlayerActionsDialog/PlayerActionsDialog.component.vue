@@ -24,6 +24,12 @@ Dialog.dialog.player-actions-dialog(
         AppIcon(name="tabler:user-x" :width="20" :height="20")
         span {{ $t('dialog.playerActions.voteKick') }}
 
+    //- party host: straight out, announced in the chat
+    Cell.player-actions-dialog__item.player-actions-dialog__item--danger(v-if="canHostKick && !isSelf" clickable @click="hostKick")
+      template(#title)
+        AppIcon(name="tabler:door-exit" :width="20" :height="20")
+        span {{ $t('dialog.playerActions.kick') }}
+
   MountingPortal(mount-to="body" append)
     ReportDialog(
       :is-open="isOpenReportDialog"
@@ -39,10 +45,11 @@ import { Dialog, CellGroup, Cell } from 'vant'
 import { reportTypeEnum } from '@/enums/report-type.enum'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { getDrawSocket, isDrawSocketReady } from '@/composables/useDrawSocket'
+import { partySend } from '@/composables/usePartySocket'
 
 // Global "more" menu (mounted once in the default layout) for a player in a live room.
 // Opened via profile/SET_PLAYER_ACTIONS_DIALOG from tour chat / online / last answers
-// and draw chat / scoreboard; `context` decides which socket carries the vote kick.
+// draw chat / scoreboard and party chat / online / last answers; `context` decides which socket carries the vote kick.
 export default defineComponent({
   components: {
     Dialog: Dialog.Component,
@@ -56,12 +63,26 @@ export default defineComponent({
     const dialog = computed(() => store.getters['profile/playerActionsDialog'])
     const player = computed(() => dialog.value.player)
     const isDraw = computed(() => dialog.value.context === 'draw')
+    const isParty = computed(() => dialog.value.context === 'party')
 
-    const myId = computed(() => (isDraw.value ? store.state.draw.myId : store.getters['auth/user']?.id))
+    const myId = computed(() => {
+      if (isDraw.value) return store.state.draw.myId
+
+      if (isParty.value) return store.state.party.myId
+
+      return store.getters['auth/user']?.id
+    })
     const isSelf = computed(() => myId.value != null && player.value && String(player.value.id) === String(myId.value))
 
-    // Tour viewers (logged out) can't vote; draw guests can, but only from inside a room
-    const canVoteKick = computed(() => (isDraw.value ? Boolean(store.state.draw.room) : $auth.loggedIn))
+    // Tour viewers (logged out) can't vote; draw / party guests can, but only from inside a room
+    const canVoteKick = computed(() => {
+      if (isDraw.value) return Boolean(store.state.draw.room)
+
+      if (isParty.value) return Boolean(store.state.party.room)
+
+      return $auth.loggedIn
+    })
+    const canHostKick = computed(() => isParty.value && store.getters['party/isHost'])
 
     const isOpenReportDialog = ref(false)
 
@@ -101,6 +122,8 @@ export default defineComponent({
 
       if (isDraw.value) {
         if (isDrawSocketReady()) getDrawSocket().send(JSON.stringify({ type: wsTypeEnum.DRAW_VOTE_KICK, targetId }))
+      } else if (isParty.value) {
+        partySend(wsTypeEnum.PARTY_VOTE_KICK, { targetId })
       } else {
         const ws = store.getters['app/ws']
 
@@ -110,11 +133,18 @@ export default defineComponent({
       close()
     }
 
+    const hostKick = () => {
+      partySend(wsTypeEnum.PARTY_KICK, { playerId: player.value.id })
+      close()
+    }
+
     return {
       dialog,
       player,
       isSelf,
       canVoteKick,
+      canHostKick,
+      hostKick,
       isOpenReportDialog,
       reportAdditional,
       reportTypeEnum,

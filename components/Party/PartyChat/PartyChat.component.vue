@@ -44,7 +44,8 @@ export default defineComponent({
     const title = computed(() => `${i18n.t('chat.chat')} (${players.value.length})`)
 
     // server sends a key + name for system lines; plain `message` is the older format
-    const systemText = m => (m.system ? i18n.t(`party.lobby.chat.system.${m.system}`, { name: m.name }) : m.message)
+    const systemText = m =>
+      m.system ? i18n.t(`party.lobby.chat.system.${m.system}`, { name: m.name, count: m.count, total: m.total }) : m.message
 
     // Chat reads tour's message shape: system lines carry their text, avatars come from the player list
     const messages = computed(() =>
@@ -63,8 +64,9 @@ export default defineComponent({
       messages: messages.value,
       disabled: !enabled.value,
       placeholder: enabled.value ? null : i18n.t('party.lobby.chat.off'),
-      playerActionsContext: null,
-      openPlayerDialogOnClick: true
+      // tour's player menu (profile, report, vote kick; the host also gets a direct kick) and report flag
+      playerActionsContext: 'party',
+      reportable: true
     }))
 
     const preview = computed(() => {

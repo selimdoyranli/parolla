@@ -23,7 +23,7 @@
             | &nbsp;&nbsp;: &nbsp;{{ message.message }}
           .chat__message-text(v-else v-longpress="() => openReport(message)")
             | : {{ censorBadwords(message.message) }}
-            span.chat__message-report(v-if="!messages" auth-control @click="openReport(message)")
+            span.chat__message-report(v-if="!messages || reportable" auth-control @click="openReport(message)")
               AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="12" :height="12")
 
     template(v-else)
@@ -123,8 +123,10 @@ export default defineComponent({
     placeholder: { type: String, default: null },
     disabled: { type: Boolean, default: false },
     playerActionsContext: { type: String, default: 'tour' },
-    // without player actions (party): a tap on a sender opens their player dialog
-    openPlayerDialogOnClick: { type: Boolean, default: false }
+    // without player actions: a tap on a sender opens their player dialog
+    openPlayerDialogOnClick: { type: Boolean, default: false },
+    // an outside feed whose messages can still be reported (party), like the tour chat
+    reportable: { type: Boolean, default: false }
   },
   setup(props, { emit }) {
     const { $auth } = useContext()
@@ -307,7 +309,7 @@ export default defineComponent({
     const reportAdditional = ref(null)
 
     const openReport = message => {
-      if (props.messages || (!$auth.loggedIn && !$auth.user)) {
+      if ((props.messages && !props.reportable) || (!$auth.loggedIn && !$auth.user)) {
         return
       }
 
@@ -343,7 +345,8 @@ export default defineComponent({
       profilePhoto: message.profilePhoto,
       avatarSource: message.avatarSource,
       loadout: message.loadout,
-      role: message.role
+      role: message.role,
+      isGuest: message.isGuest
     })
 
     const handleFocus = () => {

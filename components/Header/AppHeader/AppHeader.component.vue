@@ -35,8 +35,8 @@
         :badge="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)"
       )
 
-    //- party game with chat on: same spot and look as tour's online button
-    li.app-header-nav__item.app-header-nav__item--partyChat.me-3(v-if="isPartyRoom && isPartyGameChat" @click="openPartyChatDialog")
+    //- party room (lobby, or a game with chat on): same spot and look as tour's online button
+    li.app-header-nav__item.app-header-nav__item--partyChat.me-3(v-if="isPartyRoom && isPartyChatButton" @click="openPartyChatDialog")
       ActionButton(icon="tabler:message" :icon-size="24" :badge="partyChatUnread || null")
 
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
@@ -395,8 +395,9 @@ export default defineComponent({
     }
 
     const isPartyRoom = computed(() => getRouteBaseName(route.value) === 'Party-code')
-    const isPartyGameChat = computed(() => store.getters['party/gameChat'])
-    const partyChatUnread = computed(() => store.getters['party/chatUnread'])
+    // the lobby has its own chat on screen: the badge only counts during games
+    const isPartyChatButton = computed(() => store.state.party.room?.state === 'lobby' || store.getters['party/gameChat'])
+    const partyChatUnread = computed(() => (store.getters['party/game'] ? store.getters['party/chatUnread'] : 0))
 
     const openPartyChatDialog = () => store.commit('party/SET_CHAT_DIALOG_OPEN', true)
 
@@ -543,7 +544,7 @@ export default defineComponent({
       handleRoomReviewClosed,
       openTourModeOnlineDialog,
       isPartyRoom,
-      isPartyGameChat,
+      isPartyChatButton,
       partyChatUnread,
       openPartyChatDialog,
       handleClickBackButton,

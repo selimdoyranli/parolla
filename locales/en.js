@@ -665,7 +665,8 @@ export default {
       title: 'More ({username})',
       showProfile: 'Show Profile',
       report: 'Report',
-      voteKick: 'Vote to kick from room'
+      voteKick: 'Vote to kick from room',
+      kick: 'Kick from the room'
     },
     tourModeOnline: {
       title: 'Tour'
@@ -2217,7 +2218,9 @@ export default {
           host_changed: '{name} is now the host',
           joined: '{name} joined the room',
           left: '{name} left the room',
-          kicked: '{name} was removed from the room'
+          kicked: '{name} was kicked by the host',
+          vote_kick: 'Vote to kick {name} ({count}/{total})',
+          vote_kicked: '{name} was voted out of the room'
         }
       }
     },
@@ -2308,6 +2311,7 @@ export default {
     },
     closed: {
       kicked: 'You were removed from the room',
+      vote_kicked: 'You were voted out of the room',
       empty: 'The room was closed',
       noHostTitle: 'The host left',
       noHostText: 'No logged-in player is left to take over as host, so this party cannot continue.',
@@ -2317,6 +2321,9 @@ export default {
       room_not_found: 'Room not found',
       bad_password: 'Wrong password',
       room_full: 'The room is full',
+      vote_self: "You can't vote for yourself",
+      vote_already_voted: 'You already voted for this player',
+      vote_target_missing: 'Player not found in the room',
       not_enough_players: 'At least 2 players are needed to start',
       rate_limited: 'You are sending messages too fast. Try again in {seconds} seconds.',
       room_locked: 'The room is locked',

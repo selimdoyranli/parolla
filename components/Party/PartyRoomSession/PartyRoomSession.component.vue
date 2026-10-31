@@ -46,7 +46,7 @@ export default defineComponent({
     watch(closedReason, reason => {
       if (!reason || reason === 'no_host') return
 
-      showToast.fail(i18n.t(`party.closed.${reason === 'kicked' ? 'kicked' : 'empty'}`))
+      showToast.fail(i18n.t(`party.closed.${['kicked', 'vote_kicked'].includes(reason) ? reason : 'empty'}`))
       leave()
     })
 
