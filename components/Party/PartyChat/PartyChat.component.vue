@@ -1,11 +1,8 @@
 <template lang="pug">
 //- party feed through tour's Chat (same list + input); compact = the mobile dock bar that opens it in a sheet
 .party-chat(ref="rootRef")
-  template(v-if="compact || fab")
-    button.party-chat__fab(v-if="fab" type="button" :aria-label="title" @click="isSheetOpen = true")
-      AppIcon(name="tabler:message" :width="20" :height="20")
-      span.party-pill.party-pill--brand.party-chat__badge(v-if="unread") {{ unread }}
-    button.party-chat__bar(v-else type="button" @click="isSheetOpen = true")
+  template(v-if="compact")
+    button.party-chat__bar(type="button" @click="isSheetOpen = true")
       AppIcon(name="tabler:message" :width="18" :height="18")
       span.party-chat__preview {{ preview }}
       span.party-pill.party-pill--brand(v-if="unread") {{ unread }}
@@ -15,7 +12,7 @@
         AppIcon(name="tabler:message" color="var(--color-icon-02)")
         | {{ title }}
       Chat(v-bind="chatProps" ref="chatRef" @on-send="submit")
-  Chat(v-else v-bind="chatProps" @on-send="submit")
+  Chat(v-else v-bind="chatProps" ref="chatRef" @on-send="submit")
 </template>
 
 <script>
@@ -26,9 +23,7 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 export default defineComponent({
   components: { Popup },
   props: {
-    compact: { type: Boolean, default: false },
-    // in-game: a round button next to the emoji toggle, opening the same sheet
-    fab: { type: Boolean, default: false }
+    compact: { type: Boolean, default: false }
   },
   setup(props) {
     const store = useStore()
@@ -43,13 +38,12 @@ export default defineComponent({
 
     const chat = computed(() => store.state.party.chat)
     const players = computed(() => store.getters['party/players'])
-    const folded = computed(() => props.compact || props.fab)
     const enabled = computed(() => {
       const s = store.getters['party/settings']
 
       return s.chat !== false && (store.state.party.room?.state === 'lobby' || s.gameChat !== false)
     })
-    const unread = computed(() => (folded.value && !isSheetOpen.value ? Math.max(0, chat.value.length - seen.value) : 0))
+    const unread = computed(() => (props.compact && !isSheetOpen.value ? Math.max(0, chat.value.length - seen.value) : 0))
     const title = computed(() => `${i18n.t('chat.chat')} (${players.value.length})`)
 
     // server sends a key + name for system lines; plain `message` is the older format
@@ -88,7 +82,7 @@ export default defineComponent({
 
     // everything up to now counts as read while the sheet is open (and when it closes)
     watch([isSheetOpen, () => chat.value.length], () => {
-      if (isSheetOpen.value || !folded.value) seen.value = chat.value.length
+      if (isSheetOpen.value || !props.compact) seen.value = chat.value.length
     })
 
     // a soft cue for someone else's message while this chat is visible but folded (the dock bar / the collapsed panel);
@@ -102,7 +96,8 @@ export default defineComponent({
 
         if (!el || !el.getClientRects().length) return
 
-        if (folded.value ? !isSheetOpen.value : !el.closest('.chat-panel--expanded')) sfx.play('mention', { volume: 0.4 })
+        if (props.compact ? !isSheetOpen.value : !el.closest('.chat-panel--expanded, .party-chat-dialog'))
+          sfx.play('mention', { volume: 0.4 })
       }
     )
 

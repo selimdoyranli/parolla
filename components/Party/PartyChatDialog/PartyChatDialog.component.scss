@@ -1,0 +1,31 @@
+// same frame as tour's online dialog
+.party-chat-dialog {
+  width: 90%;
+  max-width: var(--mobile);
+  margin-block-start: calc(var(--base-m-y) * 2);
+
+  &.chat-osk {
+    @include media-breakpoint-down(mobile) {
+      top: 0;
+    }
+  }
+
+  .party-chat {
+    height: auto;
+  }
+
+  .chat {
+    &__messages {
+      position: relative;
+      display: block;
+      flex: none;
+      height: 50vh;
+      padding: var(--base-p-y) $spacer * 3;
+      overflow: auto;
+    }
+
+    &__input {
+      padding-inline: $spacer * 3;
+    }
+  }
+}

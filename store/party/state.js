@@ -13,5 +13,7 @@ export default () => ({
   closedReason: null,
   chat: [],
   emojis: [],
+  chatDialogOpen: false, // in-game chat (AppHeader button), like tour's online dialog
+  chatSeen: 0, // chat length when last read in that dialog
   error: null
 })

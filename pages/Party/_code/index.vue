@@ -15,11 +15,12 @@
         //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
         PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
       PartyEmojiReactions
-      //- host's "chat during the game": tour's fixed panel when it fits beside the game column, else a round button by the emoji toggle
+      //- host's "chat during the game": like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
+      //- too when it fits beside the game column
       template(v-if="isGameChat")
         ChatPanel.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
           PartyChat
-        PartyChat.party-game__chat-fab(fab)
+        PartyChatDialog
       //- before each game's first round: the solo creator reveal, then 3-2-1-GO (the server holds the round for both)
       transition(name="quiz-intro-splash-fade")
         QuizIntroSplash(v-if="isRevealVisible" :room="revealRoom" :playing="isRevealPlaying")
@@ -105,11 +106,7 @@ export default defineComponent({
     const isQaGame = computed(() => game.value?.quizType === quizTypeEnum.QA)
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
-    const isGameChat = computed(() => {
-      const s = store.getters['party/settings']
-
-      return Boolean(s.chat && s.gameChat) && !cancelled.value
-    })
+    const isGameChat = computed(() => store.getters['party/gameChat'])
 
     // same reveal, steps, timings and sounds as the solo creator start (useGameScene: 200 ms + 2800 ms reveal, then
     // 3-2-1-GO); the server's START_MS holds round 1 for all of it
@@ -226,10 +223,14 @@ export default defineComponent({
     }
 
     watch(isGame, value => {
+      // lobby chat was read in the lobby: the header badge only counts what comes during the game
+      store.commit('party/SET_CHAT_SEEN', store.state.party.chat.length)
+
       if (value) return
 
       resetCreator()
       isHostSheetOpen.value = false
+      store.commit('party/SET_CHAT_DIALOG_OPEN', false)
     })
 
     onBeforeUnmount(() => {
@@ -304,19 +305,6 @@ $party-side-chat-min: 1652px;
     border-radius: 50%;
     cursor: pointer;
     place-items: center;
-  }
-
-  // left of the emoji toggle (same row, same column edge)
-  &__chat-fab {
-    position: fixed;
-    right: max(64px, calc((100% - var(--layout-max-width)) / 2 + 64px));
-    bottom: calc(96px + env(safe-area-inset-bottom));
-    z-index: 21;
-    height: auto;
-
-    @media (min-width: $party-side-chat-min) {
-      display: none;
-    }
   }
 
   // narrower, the panel would cover the scene's answer bar

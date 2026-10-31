@@ -76,6 +76,12 @@ export default {
   PUSH_EMOJI(s, msg) {
     s.emojis = [...s.emojis, { ...msg, key: ++emojiSeq }].slice(-EMOJI_CAP)
   },
+  SET_CHAT_DIALOG_OPEN(s, open) {
+    s.chatDialogOpen = open
+  },
+  SET_CHAT_SEEN(s, n) {
+    s.chatSeen = n
+  },
   REMOVE_EMOJI(s, key) {
     s.emojis = s.emojis.filter(e => e.key !== key)
   },

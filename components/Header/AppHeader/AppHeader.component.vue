@@ -35,6 +35,10 @@
         :badge="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)"
       )
 
+    //- party game with chat on: same spot and look as tour's online button
+    li.app-header-nav__item.app-header-nav__item--partyChat.me-3(v-if="isPartyRoom && isPartyGameChat" @click="openPartyChatDialog")
+      ActionButton(icon="tabler:message" :icon-size="24" :badge="partyChatUnread || null")
+
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
       ActionButton(icon="tabler:info-circle" :icon-size="24")
 
@@ -391,6 +395,10 @@ export default defineComponent({
     }
 
     const isPartyRoom = computed(() => getRouteBaseName(route.value) === 'Party-code')
+    const isPartyGameChat = computed(() => store.getters['party/gameChat'])
+    const partyChatUnread = computed(() => store.getters['party/chatUnread'])
+
+    const openPartyChatDialog = () => store.commit('party/SET_CHAT_DIALOG_OPEN', true)
 
     const handleClickBackButton = () => {
       const triggerRoute = () => {
@@ -534,6 +542,10 @@ export default defineComponent({
       targetRatingUserId,
       handleRoomReviewClosed,
       openTourModeOnlineDialog,
+      isPartyRoom,
+      isPartyGameChat,
+      partyChatUnread,
+      openPartyChatDialog,
       handleClickBackButton,
       handleClickAppLogo,
       logoClasses,
