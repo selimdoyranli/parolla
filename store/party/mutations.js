@@ -45,8 +45,11 @@ export default {
     s.votes = msg
 
     // the server cuts the round short once everyone has voted: resync the countdown in place
-    // (a new round object would make the choices scene reset the player's local vote)
-    if (s.round && typeof msg.remainingMs === 'number') {
+    // (a new round object would make the choices scene reset the player's local vote). Only on a real cut:
+    // every vote carries remainingMs, and touching receivedAt re-arms the last-5 s tick-tock
+    const localMs = s.round ? s.round.remainingMs - (Date.now() - s.round.receivedAt) : 0
+
+    if (s.round && typeof msg.remainingMs === 'number' && msg.remainingMs < localMs - 1000) {
       s.round.remainingMs = msg.remainingMs
       s.round.receivedAt = Date.now()
     }

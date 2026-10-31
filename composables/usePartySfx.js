@@ -85,18 +85,6 @@ export const usePartySfx = () => {
     }
   )
 
-  // everyone has voted: the server cuts the round to its last seconds
-  watch(
-    () => {
-      const v = party.votes
-
-      return Boolean(v && v.total > 0 && v.voters >= v.total && typeof v.remainingMs === 'number')
-    },
-    allIn => {
-      if (allIn && live() && isRoomScreen()) sfx.play('swoosh', { volume: 0.5 })
-    }
-  )
-
   // a new round (question / duel) arrives: tour mode's start sound. Round 1 follows the 3-2-1 GO, which has its own
   // sound; the countdown resync keeps the same round object, so only a real ROUND_START fires this
   watch(

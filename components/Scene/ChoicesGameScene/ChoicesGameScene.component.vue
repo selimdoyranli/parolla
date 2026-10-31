@@ -50,9 +50,9 @@
           .party-choice__badges
             span.party-badge.party-badge--num {{ i + 1 }}
             //- round 1 has no winner yet, so nobody is champion
-            span.party-badge(v-if="partyRound.index > 0" :class="{ 'party-badge--champion': item.side === 'left' }")
-              AppIcon(:name="item.side === 'left' ? 'tabler:crown' : 'tabler:swords'" :width="12" :height="12")
-              | {{ item.side === 'left' ? $t('party.choices.champion') : $t('party.choices.challenger') }}
+            span.party-badge(v-if="partyRound.index > 0" :class="{ 'party-badge--champion': item.isChampion }")
+              AppIcon(:name="item.isChampion ? 'tabler:crown' : 'tabler:swords'" :width="12" :height="12")
+              | {{ item.isChampion ? $t('party.choices.champion') : $t('party.choices.challenger') }}
             span.party-badge.party-badge--winner(v-if="partyRoundEnd && partyRoundEnd.winnerSide === item.side")
               AppIcon(name="tabler:trophy" :width="12" :height="12")
               | {{ $t('party.choices.winner') }}
@@ -212,7 +212,7 @@ export default defineComponent({
     const totalRounds = computed(() => Math.max((choices.value?.length || 0) - 1, 0))
     const currentRound = computed(() => totalRounds.value - (choicesQueue?.value.length || 0))
 
-    // Party: left = champion, right = challenger (party_round_start duel)
+    // Party: the champion stays on the side it won from (duel.championSide); the challenger takes the other
     const partySend = inject('partySend', null)
     const partyGame = computed(() => store.getters['party/game'] || {})
     const partyRound = computed(() => store.state.party.round || { index: 0, total: 0, durationMs: 1, remainingMs: 0 })
@@ -223,9 +223,11 @@ export default defineComponent({
     const partySides = computed(() => {
       const duel = partyRound.value.duel || {}
 
+      const champLeft = (duel.championSide || 'left') === 'left'
+
       return [
-        { side: 'left', choice: duel.champion },
-        { side: 'right', choice: duel.challenger }
+        { side: 'left', choice: champLeft ? duel.champion : duel.challenger, isChampion: champLeft },
+        { side: 'right', choice: champLeft ? duel.challenger : duel.champion, isChampion: !champLeft }
       ]
     })
 

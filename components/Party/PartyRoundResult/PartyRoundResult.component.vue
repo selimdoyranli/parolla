@@ -127,7 +127,7 @@ export default defineComponent({
     })
 
     const isChoices = computed(() => Boolean(roundEnd.value.winnerSide))
-    // tie or no votes: the server keeps the champion (left)
+    // tie or no votes: the server keeps the champion on its side
     const isTie = computed(() => roundEnd.value.left === roundEnd.value.right)
     // round 1 had no champion yet: a tie keeps the first option
     const isFirstRound = computed(() => game.value?.index === 0)
