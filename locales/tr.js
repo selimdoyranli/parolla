@@ -2230,7 +2230,12 @@ export default {
         placeholder: 'Mesaj yaz...',
         off: 'Sohbet kapalı',
         send: 'Gönder',
-        system: { host_changed: '{name} artık kurucu' }
+        system: {
+          host_changed: '{name} artık kurucu',
+          joined: '{name} odaya katıldı',
+          left: '{name} odadan ayrıldı',
+          kicked: '{name} odadan çıkarıldı'
+        }
       }
     },
     game: {

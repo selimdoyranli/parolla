@@ -2213,7 +2213,12 @@ export default {
         placeholder: 'Write a message...',
         off: 'Chat is off',
         send: 'Send',
-        system: { host_changed: '{name} is now the host' }
+        system: {
+          host_changed: '{name} is now the host',
+          joined: '{name} joined the room',
+          left: '{name} left the room',
+          kicked: '{name} was removed from the room'
+        }
       }
     },
     game: {

@@ -71,7 +71,15 @@ export default {
   },
   PUSH_CHAT(s, msg) {
     // server replays history on every (re)join
-    if (s.chat.some(c => c.timestamp === msg.timestamp && c.playerId === msg.playerId && c.message === msg.message)) return
+    // system lines carry their key + name (a leave and a host change can share a timestamp)
+    const same = c =>
+      c.timestamp === msg.timestamp &&
+      c.playerId === msg.playerId &&
+      c.message === msg.message &&
+      c.system === msg.system &&
+      c.name === msg.name
+
+    if (s.chat.some(same)) return
 
     s.chat = [...s.chat, msg].slice(-CHAT_CAP)
   },
