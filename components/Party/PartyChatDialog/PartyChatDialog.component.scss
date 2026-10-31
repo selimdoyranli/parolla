@@ -25,6 +25,7 @@
     }
 
     &__input {
+      padding-block-start: $spacer * 2;
       padding-inline: $spacer * 3;
     }
   }
