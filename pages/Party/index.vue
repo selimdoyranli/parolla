@@ -224,7 +224,6 @@ export default defineComponent({
   gap: 6px;
   width: 100%;
   max-width: 420px;
-  margin-top: 6px;
   padding: 14px;
   text-align: left;
   background: var(--color-ui-02);
@@ -423,6 +422,7 @@ export default defineComponent({
   &__sub {
     margin: 0;
     font-size: var(--font-size-text-9);
+    text-wrap-style: balance;
     opacity: 0.9;
   }
 
