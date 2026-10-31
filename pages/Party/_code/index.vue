@@ -15,7 +15,9 @@
         //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
         PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
       PartyEmojiReactions
-      //- 3-2-1-GO before each game's first round (the server holds the round for it)
+      //- before each game's first round: the solo creator reveal, then 3-2-1-GO (the server holds the round for both)
+      transition(name="quiz-intro-splash-fade")
+        QuizIntroSplash(v-if="isRevealVisible" :room="revealRoom" :playing="isRevealPlaying")
       StartCountdown(:value="startCountdown")
       button.party-game__settings(v-if="isHost" type="button" :aria-label="$t('party.game.settings')" @click="isHostSheetOpen = true")
         AppIcon(name="tabler:settings" :width="18" :height="18")
@@ -42,6 +44,7 @@
 
 <script>
 import { defineComponent, ref, computed, watch, onBeforeUnmount, useContext, useRouter, useRoute, useStore } from '@nuxtjs/composition-api'
+import { Howl } from 'howler'
 import { quizTypeEnum, questionTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
@@ -76,29 +79,66 @@ export default defineComponent({
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
 
-    // same steps and sounds as the solo start countdown (useGameScene)
+    // same reveal, steps, timings and sounds as the solo creator start (useGameScene: 200 ms + 2800 ms reveal, then
+    // 3-2-1-GO); the server's START_MS holds round 1 for all of it
     const sfx = useSfx()
     const startCountdown = ref(null)
+    const isRevealVisible = ref(false)
+    const isRevealPlaying = ref(false)
     let startTimer = null
+    let revealTimers = []
+    let revealSound = null
+
+    const revealRoom = computed(() => {
+      const g = game.value || {}
+
+      return { roomId: g.roomId, title: g.title, description: g.description, coverPhoto: g.coverPhoto, user: g.creator, isAnon: !g.creator }
+    })
+
+    const stopStart = () => {
+      clearInterval(startTimer)
+      revealTimers.forEach(clearTimeout)
+      revealTimers = []
+      startCountdown.value = null
+      isRevealVisible.value = false
+      isRevealPlaying.value = false
+    }
+
+    const runCountdown = () => {
+      const steps = [3, 2, 1, 'GO']
+      const showStep = () => {
+        startCountdown.value = steps.shift() || null
+
+        if (startCountdown.value) sfx.play(startCountdown.value === 'GO' ? 'success' : 'ping')
+        else clearInterval(startTimer)
+      }
+
+      showStep()
+      startTimer = setInterval(showStep, 1000)
+    }
 
     watch(
       () => game.value?.phase === 'countdown',
       on => {
-        clearInterval(startTimer)
-        startCountdown.value = null
+        stopStart()
 
-        if (!on) return
+        if (!on || process.server) return
 
-        const steps = [3, 2, 1, 'GO']
-        const showStep = () => {
-          startCountdown.value = steps.shift() || null
+        if (!revealSound) revealSound = new Howl({ src: ['/sound/fx/quiz-intro.wav'] })
 
-          if (startCountdown.value) sfx.play(startCountdown.value === 'GO' ? 'success' : 'ping')
-          else clearInterval(startTimer)
-        }
-
-        showStep()
-        startTimer = setInterval(showStep, 1000)
+        revealSound.mute(!store.getters['app/isActiveGameSceneSoundFx'])
+        isRevealVisible.value = true
+        revealTimers = [
+          setTimeout(() => {
+            isRevealPlaying.value = true
+            revealSound.play()
+          }, 200),
+          setTimeout(() => {
+            isRevealVisible.value = false
+            isRevealPlaying.value = false
+            runCountdown()
+          }, 3000)
+        ]
       },
       { immediate: true }
     )
@@ -153,7 +193,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       resetCreator()
-      clearInterval(startTimer)
+      stopStart()
     })
 
     return {
@@ -175,7 +215,10 @@ export default defineComponent({
       isQaGame,
       isChoicesGame,
       isGame,
-      startCountdown
+      startCountdown,
+      isRevealVisible,
+      isRevealPlaying,
+      revealRoom
     }
   }
 })

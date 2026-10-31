@@ -20,8 +20,8 @@ Popup.party-host-sheet(:value="value" position="bottom" round get-container="bod
 </template>
 
 <script>
-import { defineComponent, computed, inject, useStore, useContext } from '@nuxtjs/composition-api'
-import { Popup, Switch, Button, Dialog } from 'vant'
+import { defineComponent, computed, inject, useStore } from '@nuxtjs/composition-api'
+import { Popup, Switch, Button } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 // In-game host controls (Ayarlar): auto advance, next round, cancel. Same frames the remote sends.
@@ -30,7 +30,6 @@ export default defineComponent({
   props: { value: { type: Boolean, default: false } },
   setup(props, { emit }) {
     const store = useStore()
-    const { i18n } = useContext()
     const send = inject('partySend')
 
     const autoAdvance = computed(() => Boolean(store.getters['party/settings'].autoAdvance))
@@ -44,19 +43,15 @@ export default defineComponent({
       emit('input', false)
     }
 
-    const cancel = () => {
-      Dialog.confirm({
-        message: i18n.t('party.game.cancelConfirm'),
-        confirmButtonText: i18n.t('party.game.cancelYes'),
-        cancelButtonText: i18n.t('party.lobby.cancel'),
-        getContainer: 'body'
-      })
-        .then(() => {
+    const { openPartyCancelDialog } = useDialog()
+
+    const cancel = () =>
+      openPartyCancelDialog({
+        confirm: () => {
           send(wsTypeEnum.PARTY_CANCEL)
           emit('input', false)
-        })
-        .catch(() => {})
-    }
+        }
+      })
 
     return { autoAdvance, canNext, setAuto, next, cancel }
   }

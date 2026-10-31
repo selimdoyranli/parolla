@@ -12,8 +12,8 @@
             p.party-round-result__answer
               b {{ winnerLabel }}
         p.party-round-result__chip
-          AppIcon(:name="isTie ? 'tabler:crown' : 'tabler:trophy'" :width="12" :height="12")
-          | {{ isTie ? $t('party.choices.tie') : $t('party.choices.byVotes') }}
+          AppIcon(:name="isTie && !isFirstRound ? 'tabler:crown' : 'tabler:trophy'" :width="12" :height="12")
+          | {{ isTie ? $t(isFirstRound ? 'party.choices.tieFirst' : 'party.choices.tie') : $t('party.choices.byVotes') }}
           span {{ $tc('party.choices.votes', roundEnd.left + roundEnd.right) }}
 
       //- own card; the presenter (me: null) only gets the answer
@@ -129,6 +129,8 @@ export default defineComponent({
     const isChoices = computed(() => Boolean(roundEnd.value.winnerSide))
     // tie or no votes: the server keeps the champion (left)
     const isTie = computed(() => roundEnd.value.left === roundEnd.value.right)
+    // round 1 had no champion yet: a tie keeps the first option
+    const isFirstRound = computed(() => game.value?.index === 0)
     const choicesTitle = computed(() => {
       const won = roundEnd.value.mineWon
 
@@ -191,6 +193,7 @@ export default defineComponent({
       roundEnd,
       isChoices,
       isTie,
+      isFirstRound,
       choicesTitle,
       winnerLabel,
       me,

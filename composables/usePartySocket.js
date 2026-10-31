@@ -20,6 +20,23 @@ let joinFrame = null
 let sharedRemote = false
 const JOIN_DEAD_CODES = ['room_not_found', 'bad_password', 'room_full', 'room_locked', 'login_required']
 
+// module level: the app header (outside the room page, so no `partySend` inject) sends on the page's socket too
+export const partySend = (type, payload = {}) => {
+  const msg = JSON.stringify({ type, ...payload })
+
+  if (type === wsTypeEnum.PARTY_JOIN || type === wsTypeEnum.PARTY_REMOTE_JOIN) joinFrame = msg
+
+  if (type === wsTypeEnum.PARTY_LEAVE) joinFrame = null
+
+  if (sharedSocket && sharedSocket.readyState === 1 && serverReady) {
+    sharedSocket.send(msg)
+
+    return
+  }
+
+  if (pendingMessages.length < 32) pendingMessages.push(msg)
+}
+
 // lazy: count as a consumer (keeps a live socket alive) but open only when the caller calls open()
 export const usePartySocket = ({ remote = false, lazy = false } = {}) => {
   const vm = getCurrentInstance().proxy
@@ -147,22 +164,6 @@ export const usePartySocket = ({ remote = false, lazy = false } = {}) => {
     }
   }
 
-  const send = (type, payload = {}) => {
-    const msg = JSON.stringify({ type, ...payload })
-
-    if (type === wsTypeEnum.PARTY_JOIN || type === wsTypeEnum.PARTY_REMOTE_JOIN) joinFrame = msg
-
-    if (type === wsTypeEnum.PARTY_LEAVE) joinFrame = null
-
-    if (sharedSocket && sharedSocket.readyState === 1 && serverReady) {
-      sharedSocket.send(msg)
-
-      return
-    }
-
-    if (pendingMessages.length < 32) pendingMessages.push(msg)
-  }
-
   // Close the live socket on purpose; its late onclose/onmessage are ignored by the guards above
   const detach = () => {
     closingOnPurpose = true
@@ -213,5 +214,5 @@ export const usePartySocket = ({ remote = false, lazy = false } = {}) => {
     }, CLOSE_DEFER_MS)
   })
 
-  return { status: sharedStatus, reconnectStatus, open, close, send }
+  return { status: sharedStatus, reconnectStatus, open, close, send: partySend }
 }

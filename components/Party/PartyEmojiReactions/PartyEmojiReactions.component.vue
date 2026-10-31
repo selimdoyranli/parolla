@@ -7,7 +7,9 @@
       :key="item.key"
       :style="{ left: `${item.left}%` }"
       @animationend="remove(item.key)"
-    ) {{ item.emoji }}
+    )
+      | {{ item.emoji }}
+      small.party-emoji-reactions__name(v-if="item.name") {{ item.name }}
 
   .party-emoji-reactions__dock(v-if="canSend")
     .party-emoji-reactions__picker(v-if="isOpen")
@@ -40,8 +42,10 @@ export default defineComponent({
       () => Boolean(store.getters['party/settings'].chat) && store.getters['party/game']?.phase !== 'final' && !store.state.party.cancelled
     )
 
+    // the sender's nickname from the room (a player who left meanwhile just gets no label)
+    const nameOf = id => store.getters['party/players'].find(p => p.id === id)?.name || ''
     const floats = computed(() =>
-      store.state.party.emojis.filter(e => e.key > startKey).map(e => ({ ...e, left: 8 + ((e.key * 37) % 84) }))
+      store.state.party.emojis.filter(e => e.key > startKey).map(e => ({ ...e, name: nameOf(e.playerId), left: 8 + ((e.key * 37) % 84) }))
     )
 
     const remove = key => store.commit('party/REMOVE_EMOJI', key)

@@ -1923,6 +1923,12 @@ export default {
         keywords: 'music quiz, guess the song, name that song, song quiz'
       }
     },
+    party: {
+      title: 'Party mode - Play live quizzes with friends',
+      description:
+        'parolla party mode: create a room, share the 6-digit code and play quizzes live with up to 10 friends. No sign-up needed to join.',
+      keywords: 'party quiz, quiz with friends, live quiz game, multiplayer quiz, quiz night, quiz room code'
+    },
     download: {
       title: 'Download the App',
       description: 'Download the parolla mobile app for iOS and Android for free. Word game, quizzes and daily questions in your pocket.',
@@ -2053,7 +2059,42 @@ export default {
       title: 'Start a party',
       sub: 'Create a room and play live with your friends',
       password: 'Password-protected room',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
       create: 'Create the room'
+    },
+    landing: {
+      eyebrow: 'Party mode',
+      title: 'Play quizzes live with your friends',
+      sub: 'Create a room and share the code; everyone gets the same question at the same time. Fast and right wins.',
+      facts: {
+        players: 'Up to 10 players',
+        live: 'Real time',
+        noSignup: 'No sign-up to join'
+      },
+      stepsTitle: 'Party in 3 steps',
+      steps: {
+        pick: { title: 'Pick a quiz', text: 'Open a Q&A or This or That quiz.' },
+        setup: {
+          title: 'Create the room',
+          text: 'Tap “Start a party”, add a password if you like. Round time and leaderboard are set in the lobby.'
+        },
+        share: { title: 'Share the code', text: 'Send the 6-digit code, the link or the QR code, then start once everyone is in.' }
+      },
+      featuresTitle: 'Ready for game night',
+      features: {
+        presentation: { title: 'Presentation mode', text: 'Questions on your screen, players answer from their phones.' },
+        remote: { title: 'Host remote', text: 'Scan the QR code and run the game from your phone.' },
+        choices: { title: 'This or That voting', text: 'Everyone votes, the majority picks the champion.' },
+        guests: { title: 'Guests welcome', text: 'Friends join with a nickname, no account needed.' },
+        leaderboard: { title: 'Live ranking', text: 'Points for speed and accuracy, a leaderboard after every round.' },
+        queue: { title: 'Game queue', text: 'Queue up quizzes to play back to back.' },
+        chat: { title: 'Chat and emoji', text: 'Chat in the lobby, react with emoji during the game.' },
+        password: { title: 'Private room', text: 'Optionally open your room only to those with the code and password.' }
+      },
+      ctaTitle: 'Host the party',
+      ctaSub: 'Just sign in to create a room. Pick a quiz and tap “Start a party”.',
+      cta: 'Pick a quiz'
     },
     gate: {
       notice: 'You need to log in to create a party room. Your friends can join your room without an account.',
@@ -2199,6 +2240,7 @@ export default {
       roundWinner: 'Round winner',
       byVotes: 'Decided by votes',
       tie: 'Tie · champion stays',
+      tieFirst: 'Tie · first option goes on',
       option: 'Option {n}',
       nextRound: 'Next round'
     },

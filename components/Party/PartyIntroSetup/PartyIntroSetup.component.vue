@@ -6,41 +6,23 @@
       AppIcon.party-intro-setup__icon(name="tabler:key" :width="18" :height="18")
       strong.party-intro-setup__label {{ $t('party.intro.password') }}
       VanSwitch(v-model="passwordOn" size="20px" active-color="var(--color-brand-02)" :disabled="loading")
-    input.party-intro-setup__input(
-      v-if="passwordOn"
-      v-model="password"
-      type="text"
-      :placeholder="$t('party.lobby.settings.passwordPlaceholder')"
-      maxlength="32"
-      autocomplete="off"
-      :disabled="loading"
-    )
-    .party-intro-setup__row.party-intro-setup__row--stack
-      .party-intro-setup__head
-        AppIcon.party-intro-setup__icon(name="tabler:clock" :width="18" :height="18")
-        strong.party-intro-setup__label {{ $t('party.lobby.settings.duration') }}
-      .party-chips
-        button.party-chip(
-          v-for="sec in durations"
-          :key="sec"
-          type="button"
-          :class="{ 'party-chip--active': roundDurationSec === sec }"
-          :disabled="loading"
-          @click="roundDurationSec = sec"
-        ) {{ $t('party.lobby.settings.seconds', { n: sec }) }}
-    .party-intro-setup__row.party-intro-setup__row--stack
-      .party-intro-setup__head
-        AppIcon.party-intro-setup__icon(name="tabler:trophy" :width="18" :height="18")
-        strong.party-intro-setup__label {{ $t('party.lobby.settings.leaderboard') }}
-      .party-chips
-        button.party-chip(
-          v-for="mode in boardModes"
-          :key="mode"
-          type="button"
-          :class="{ 'party-chip--active': leaderboard === mode }"
-          :disabled="loading"
-          @click="leaderboard = mode"
-        ) {{ $t(`party.lobby.settings.board.${mode}`) }}
+    //- masked by default; the eye toggles it (round duration and leaderboard are set in the lobby)
+    .party-intro-setup__field(v-if="passwordOn")
+      input.party-intro-setup__input(
+        v-model="password"
+        :type="isPasswordVisible ? 'text' : 'password'"
+        :placeholder="$t('party.lobby.settings.passwordPlaceholder')"
+        maxlength="32"
+        autocomplete="new-password"
+        :disabled="loading"
+      )
+      ActionButton.party-intro-setup__eye(
+        :label="isPasswordVisible ? $t('party.intro.hidePassword') : $t('party.intro.showPassword')"
+        :icon="isPasswordVisible ? 'tabler:eye-off' : 'tabler:eye'"
+        :icon-size="18"
+        :aria-pressed="String(isPasswordVisible)"
+        @click="isPasswordVisible = !isPasswordVisible"
+      )
     Button.party-intro-setup__submit(block round native-type="submit" :loading="loading" :disabled="!canSubmit") {{ $t('party.intro.create') }}
 </template>
 
@@ -49,9 +31,6 @@ import { defineComponent, ref, computed, watch, useStore, useContext, useRouter 
 import { Switch, Button } from 'vant'
 import { usePartySocket } from '@/composables/usePartySocket'
 import { wsTypeEnum } from '@/enums/wsType.enum'
-
-const DURATIONS = [15, 30, 45, 60, 90, 120]
-const BOARD_MODES = ['always', 'end', 'never']
 
 export default defineComponent({
   components: { VanSwitch: Switch, Button },
@@ -66,8 +45,7 @@ export default defineComponent({
     const { send, open } = usePartySocket({ lazy: true })
     const passwordOn = ref(false)
     const password = ref('')
-    const roundDurationSec = ref(30)
-    const leaderboard = ref('always')
+    const isPasswordVisible = ref(false)
     const loading = ref(false)
     const canSubmit = computed(() => !passwordOn.value || Boolean(password.value.trim()))
 
@@ -79,11 +57,7 @@ export default defineComponent({
       send(wsTypeEnum.PARTY_CREATE, {
         roomId: props.roomId,
         locale: i18n.locale,
-        settings: {
-          roundDurationSec: roundDurationSec.value,
-          leaderboard: leaderboard.value,
-          password: passwordOn.value ? password.value.trim() : null
-        }
+        settings: { password: passwordOn.value ? password.value.trim() : null }
       })
     }
 
@@ -104,12 +78,9 @@ export default defineComponent({
     )
 
     return {
-      durations: DURATIONS,
-      boardModes: BOARD_MODES,
       passwordOn,
       password,
-      roundDurationSec,
-      leaderboard,
+      isPasswordVisible,
       loading,
       canSubmit,
       create

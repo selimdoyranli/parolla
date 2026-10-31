@@ -9,6 +9,7 @@ declare global {
   const countFinalGreenLetters: typeof import('./composables/useWordblock.js')['countFinalGreenLetters']
   const getDrawSocket: typeof import('./composables/useDrawSocket.js')['getDrawSocket']
   const isDrawSocketReady: typeof import('./composables/useDrawSocket.js')['isDrawSocketReady']
+  const partySend: typeof import('./composables/usePartySocket.js')['partySend']
   const useAdReward: typeof import('./composables/useAdReward.js')['useAdReward']
   const useAppleSignIn: typeof import('./composables/useAppleSignIn.js')['useAppleSignIn']
   const useAuth: typeof import('./composables/useAuth.js')['default']

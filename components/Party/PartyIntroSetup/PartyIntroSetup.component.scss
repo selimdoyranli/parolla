@@ -15,18 +15,11 @@
     display: flex;
     gap: 10px;
     align-items: center;
-
-    &--stack {
-      flex-direction: column;
-      gap: 6px;
-      align-items: stretch;
-    }
   }
 
-  &__head {
+  &__field {
+    position: relative;
     display: flex;
-    gap: 10px;
-    align-items: center;
   }
 
   &__icon {
@@ -41,7 +34,9 @@
   }
 
   &__input {
-    padding: 7px 12px;
+    flex: 1;
+    min-width: 0;
+    padding: 7px 44px 7px 12px;
     color: var(--color-text-01);
     font: inherit;
     font-size: var(--font-size-text-9);
@@ -53,6 +48,14 @@
     &:focus {
       border-color: var(--color-brand-02);
     }
+  }
+
+  // inside the input's right end
+  &__eye {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
   }
 
   &__submit.van-button {

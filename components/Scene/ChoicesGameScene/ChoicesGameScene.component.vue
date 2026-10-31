@@ -49,7 +49,8 @@
           )
           .party-choice__badges
             span.party-badge.party-badge--num {{ i + 1 }}
-            span.party-badge(:class="{ 'party-badge--champion': item.side === 'left' }")
+            //- round 1 has no winner yet, so nobody is champion
+            span.party-badge(v-if="partyRound.index > 0" :class="{ 'party-badge--champion': item.side === 'left' }")
               AppIcon(:name="item.side === 'left' ? 'tabler:crown' : 'tabler:swords'" :width="12" :height="12")
               | {{ item.side === 'left' ? $t('party.choices.champion') : $t('party.choices.challenger') }}
             span.party-badge.party-badge--winner(v-if="partyRoundEnd && partyRoundEnd.winnerSide === item.side")

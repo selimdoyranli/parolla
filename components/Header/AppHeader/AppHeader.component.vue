@@ -134,6 +134,8 @@
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
+import { wsTypeEnum } from '@/enums/wsType.enum'
+import { partySend } from '@/composables/usePartySocket'
 
 // module scope: survives the header remounting on a layout switch
 let hasNavigated = false
@@ -148,7 +150,7 @@ export default defineComponent({
     const { formatMillions } = useFormatter()
 
     const { activeGameMode } = useGameMode()
-    const { openLeaveDialog, openPartyLeaveDialog } = useDialog()
+    const { openLeaveDialog, openPartyLeaveDialog, openPartyCancelDialog } = useDialog()
 
     const user = computed(() => store.getters['auth/user'])
     const room = computed(() => store.getters['creator/room'])
@@ -404,7 +406,12 @@ export default defineComponent({
         router.back()
       }
 
-      if (isPartyRoom.value) {
+      // the host mid-game gets the cancel-game confirm (same as the host sheet); everyone else the leave confirm
+      const partyGame = store.getters['party/game']
+
+      if (isPartyRoom.value && store.getters['party/isHost'] && partyGame && partyGame.phase !== 'final' && !store.state.party.cancelled) {
+        openPartyCancelDialog({ confirm: () => partySend(wsTypeEnum.PARTY_CANCEL) })
+      } else if (isPartyRoom.value) {
         openPartyLeaveDialog({ confirm: triggerRoute })
       } else if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||

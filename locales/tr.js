@@ -1945,6 +1945,12 @@ export default {
         keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin oyunu'
       }
     },
+    party: {
+      title: 'Parti modu - Arkadaşlarınla canlı quiz oyna',
+      description:
+        'parolla parti modu: oda kur, 6 haneli kodu paylaş ve 10 kişiye kadar arkadaşınla aynı anda quiz çöz. Katılmak için üyelik gerekmez.',
+      keywords: 'parti quiz, arkadaşlarla quiz, canlı quiz oyunu, çok oyunculu quiz, quiz gecesi, oda kodu ile quiz'
+    },
     download: {
       title: 'Uygulamayı İndir',
       description: 'parolla mobil uygulamasını iOS ve Android için ücretsiz indir. Kelime oyunu, quizler ve günlük sorular cebinde.',
@@ -2076,7 +2082,39 @@ export default {
       title: 'Party kur',
       sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna',
       password: 'Şifreli oda',
+      showPassword: 'Şifreyi göster',
+      hidePassword: 'Şifreyi gizle',
       create: 'Odayı kur'
+    },
+    landing: {
+      eyebrow: 'Parti modu',
+      title: 'Quizleri arkadaşlarınla aynı anda çöz',
+      sub: 'Bir oda kur, kodu paylaş; sorular herkese aynı anda gelir. Hızlı ve doğru olan kazanır.',
+      facts: {
+        players: '10 kişiye kadar',
+        live: 'Gerçek zamanlı',
+        noSignup: 'Katılmak için üyelik yok'
+      },
+      stepsTitle: '3 adımda parti',
+      steps: {
+        pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da Bu mu O mu quizlerinden birini aç.' },
+        setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Süre ve liderlik tablosunu lobide ayarlarsın.' },
+        share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; herkes toplanınca başlat.' }
+      },
+      featuresTitle: 'Oyun gecesi için hazır',
+      features: {
+        presentation: { title: 'Sunum modu', text: 'Sorular senin ekranında, oyuncular telefonlarından cevaplar.' },
+        remote: { title: 'Host kumandası', text: 'QR kodu okut, oyunu telefonundan yönet.' },
+        choices: { title: 'Bu mu O mu oylaması', text: 'Herkes oy verir, çoğunluk şampiyonu seçer.' },
+        guests: { title: 'Misafirler de gelir', text: 'Arkadaşların hesap açmadan bir takma adla katılır.' },
+        leaderboard: { title: 'Canlı sıralama', text: 'Hız ve doğruluk puanı, her turdan sonra liderlik tablosu.' },
+        queue: { title: 'Oyun kuyruğu', text: 'Arka arkaya oynamak için kuyruğa quiz ekle.' },
+        chat: { title: 'Sohbet ve emoji', text: 'Lobide sohbet et, oyunda emojiyle tepki ver.' },
+        password: { title: 'Şifreli oda', text: 'İstersen odanı yalnızca kodu ve şifreyi bilenlere aç.' }
+      },
+      ctaTitle: 'Partiyi sen başlat',
+      ctaSub: 'Oda kurmak için giriş yapman yeterli. Bir quiz seç ve “Party kur”a dokun.',
+      cta: 'Quiz seç'
     },
     gate: {
       notice: 'Parti odası oluşturmak için giriş yapman gerekiyor. Arkadaşların hesapları olmadan da odana katılabilir.',
@@ -2222,6 +2260,7 @@ export default {
       roundWinner: 'Turu kazanan',
       byVotes: 'Oylarla karar verildi',
       tie: 'Berabere · şampiyon kaldı',
+      tieFirst: 'Berabere · ilk seçenek devam ediyor',
       option: 'Seçenek {n}',
       nextRound: 'Sıradaki tur'
     },
