@@ -21,10 +21,10 @@
             img.party-final-results__thumb(v-if="choice.media && choice.media.url" :src="choice.media.url" alt)
             span.party-final-results__name {{ choiceLabel(choice) }}
 
-    //- qa: the leaderboard routes' podium (top 3 only: the scoreboard below lists everyone).
+    //- qa: the leaderboard routes' podium + my own row pinned under it (top 3 only: the scoreboard below lists everyone).
     //- Own score only when the board is hidden ("never" / presenter)
     template(v-else)
-      Leaderboard.party-final-results__board(v-if="podium.length" :scorers="podium")
+      Leaderboard.party-final-results__board(v-if="podium.length" :scorers="podium" :current-player="me")
 
       .party-final-results__mine(v-else-if="final.me")
         span(v-if="final.me.rank") {{ $t('party.final.rank', { n: final.me.rank }) }}
@@ -68,6 +68,8 @@ export default defineComponent({
     // Leaderboard's scorer shape: the app user + score and rank
     const ranked = computed(() => (leaderboard.value || []).map((row, i) => ({ ...toUser(row), score: row.score, rank: i + 1 })))
     const podium = computed(() => ranked.value.slice(0, 3))
+    // like the routes' user rank: always pinned, whatever the rank (the presenter isn't on the board)
+    const me = computed(() => ranked.value.find(row => row.id === store.state.party.myId) || null)
 
     // media without a note is identified by its thumbnail
     const choiceLabel = choice => (choice.choiceType === choiceTypeEnum.TEXT ? choice.text : choice.mediaNote) || ''
@@ -84,6 +86,7 @@ export default defineComponent({
       eliminated,
       leaderboard,
       podium,
+      me,
       choiceLabel
     }
   }
