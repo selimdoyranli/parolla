@@ -12,7 +12,7 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
   @input="setOpen"
   @opened="scrollToEnd"
 )
-  Tabs.stats-dialog__tabs(v-model="activeTab" :ellipsis="false")
+  Tabs.stats-dialog__tabs(v-model="activeTab")
     Tab(name="chat")
       template(#title)
         .stats-dialog-tab-title

@@ -1,8 +1,37 @@
-// same frame as tour's online dialog
+// same frame as tour's online dialog. Tour's stats-dialog rules live under .game-scene (its dialog renders inside the
+// scene); this one is mounted on body, so the width and tab bar are repeated here
 .party-chat-dialog {
   width: 90%;
-  max-width: var(--mobile);
+  max-width: var(--tablet);
   margin-block-start: calc(var(--base-m-y) * 2);
+
+  .van-tabs__wrap {
+    height: 36px;
+  }
+
+  .van-tabs__line {
+    background-color: var(--color-highlight-01);
+  }
+
+  .van-tab__text {
+    display: flex;
+    align-items: center;
+  }
+
+  .van-tab .app-icon {
+    margin-right: calc(var(--base-m-x) / 4);
+  }
+
+  .stats-dialog-tab-title {
+    display: flex;
+
+    // phones: icons only, like tour
+    &__value {
+      @include media-breakpoint-down(mobile) {
+        display: none;
+      }
+    }
+  }
 
   &.chat-osk {
     @include media-breakpoint-down(mobile) {
