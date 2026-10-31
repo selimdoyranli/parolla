@@ -464,6 +464,7 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.DRAW ||
         activeGameMode.value === gameModeKeyEnum.GEOGUESS ||
         isPartyRoom.value ||
+        getRouteBaseName(route.value) === 'Party' ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
