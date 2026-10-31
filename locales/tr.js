@@ -315,7 +315,8 @@ export default {
         solveQuiz: 'quiz çöz',
         label: 'Bugün {count} quiz çözüldü',
         todaysQuizLabel: 'Günün quizi',
-        playButtonText: 'Tüm Quizler: Oyna'
+        playButtonText: 'Tüm Quizler: Oyna',
+        party: 'Parti'
       },
       tour: {
         title: 'TUR',

@@ -20,7 +20,8 @@
               span.scoreboard-list-item-user__label-text.scoreboard-list-item-user__label-text--short {{ $t('leaderboard.yourRank.short') }}
 
         .scoreboard-list-item-result(v-if="currentPlayer.results")
-          strong.scoreboard-list-item-result__item(v-if="currentPlayer.score != null") {{ $t('scoreboard.points', { score: currentPlayer.score }) }}
+          strong.scoreboard-list-item-result__item.scoreboard-list-item-result__item--score(v-if="currentPlayer.score != null")
+            | {{ $t('scoreboard.points', { score: currentPlayer.score }) }}
           strong.scoreboard-list-item-result__item(v-if="currentPlayer.results.remainTime")
             template {{ currentPlayer.results.remainTime.minutes }}:{{ currentPlayer.results.remainTime.seconds }}
               sup .{{ currentPlayer.results.remainTime.milliseconds }}
@@ -65,7 +66,8 @@
 
         //- party boards: score, no time / passes
         .scoreboard-list-item-result
-          strong.scoreboard-list-item-result__item(v-if="item.score != null") {{ $t('scoreboard.points', { score: item.score }) }}
+          strong.scoreboard-list-item-result__item.scoreboard-list-item-result__item--score(v-if="item.score != null")
+            | {{ $t('scoreboard.points', { score: item.score }) }}
           strong.scoreboard-list-item-result__item(v-if="item.results.remainTime")
             template {{ item.results.remainTime.minutes }}:{{ item.results.remainTime.seconds }}
               sup .{{ item.results.remainTime.milliseconds }}

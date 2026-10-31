@@ -313,7 +313,8 @@ export default {
         solveQuiz: 'solve quizzes',
         label: 'Today {count} quiz solved',
         todaysQuizLabel: `Today's quiz`,
-        playButtonText: 'All Quizzes: Play'
+        playButtonText: 'All Quizzes: Play',
+        party: 'Party'
       },
       tour: {
         title: 'TOUR',

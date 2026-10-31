@@ -83,6 +83,28 @@
         template(v-if="creatorRandomRooms.length > 0" #media)
           QuizCarousel(:rooms="creatorRandomRooms")
 
+        //- same pair as the daily block: all quizzes, and party rooms to play them together
+        template(#actions)
+          .play-actions
+            NuxtLink.play-now-button.play-now-button--primary(
+              role="button"
+              :to="localePath({ name: 'CreatorMode-CreatorModeRooms' })"
+              :title="$t('introScene.modeList.creator.playButtonText')"
+              :aria-label="$t('introScene.modeList.creator.playButtonText')"
+            )
+              AppIcon(name="tabler:list-search" :width="18" :height="18")
+              | {{ $t('introScene.modeList.creator.playButtonText') }}
+              AppIcon.play-actions__arrow(name="tabler:arrow-right" :width="16" :height="16")
+
+            NuxtLink.play-now-button.play-now-button--secondary(
+              role="button"
+              :to="localePath({ name: 'Party' })"
+              :title="$t('introScene.modeList.creator.party')"
+              :aria-label="$t('introScene.modeList.creator.party')"
+            )
+              AppIcon(name="tabler:confetti" :width="18" :height="18")
+              | {{ $t('introScene.modeList.creator.party') }}
+
       IntroButton.intro-scene-mode-list-item.intro-scene-mode-list-item--tour(
         v-if="$i18n.locale === $i18n.defaultLocale"
         icon="akar-icons:arrow-cycle"
