@@ -82,74 +82,6 @@
     font-size: var(--font-size-text-8);
   }
 
-  &__podium {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    align-items: end;
-  }
-
-  &__step {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: center;
-    min-width: 0;
-    color: var(--color-text-01);
-    text-align: center;
-
-    &-name {
-      max-width: 100%;
-      overflow: hidden;
-      font-weight: 700;
-      font-size: var(--font-size-text-9);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    &-score {
-      font-size: var(--font-size-text-7);
-      font-variant-numeric: tabular-nums;
-    }
-
-    &-sub {
-      color: var(--color-text-03);
-      font-size: var(--font-size-text-11);
-    }
-
-    &--me &-name {
-      color: var(--color-brand-02);
-    }
-  }
-
-  &__block {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    margin-top: 4px;
-    color: var(--color-text-02);
-    font-weight: 800;
-    font-size: var(--font-size-text-6);
-    background: var(--color-ui-02);
-    border: 1px solid var(--color-border-02);
-    border-radius: 12px 12px 4px 4px;
-  }
-
-  &__step--1 &__block {
-    height: 96px;
-    color: var(--color-text-04);
-    background: var(--color-brand-02);
-    border-color: transparent;
-  }
-
-  &__step--2 &__block {
-    height: 72px;
-  }
-
-  &__step--3 &__block {
-    height: 52px;
-  }
-
   &__board-head {
     margin-bottom: 8px;
   }
@@ -199,21 +131,6 @@
     text-overflow: ellipsis;
   }
 
-  &__correct {
-    flex: none;
-    margin-left: auto;
-    color: var(--color-text-03);
-    font-size: var(--font-size-text-11);
-  }
-
-  &__score {
-    flex: none;
-    min-width: 40px;
-    color: var(--color-text-01);
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-  }
-
   &__mine {
     display: flex;
     gap: 8px;
@@ -249,6 +166,11 @@
     background: var(--color-ui-02);
     border: 1px solid var(--color-border-02);
     border-radius: 999px;
+  }
+
+  // the leaderboard routes' board on the overlay's background
+  &__board {
+    width: 100%;
   }
 
   &__hidden {

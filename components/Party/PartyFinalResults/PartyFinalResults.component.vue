@@ -21,40 +21,12 @@
             img.party-final-results__thumb(v-if="choice.media && choice.media.url" :src="choice.media.url" alt)
             span.party-final-results__name {{ choiceLabel(choice) }}
 
-    //- qa: podium + the rest, or own score only (leaderboard "never" / presenter)
+    //- qa: the leaderboard routes' board (podium + the next two); my own row pinned when I'm not in the top 5.
+    //- Own score only when the board is hidden ("never" / presenter)
     template(v-else)
-      .party-final-results__podium(v-if="podium.length")
-        .party-final-results__step(
-          v-for="row in podium"
-          :key="row.playerId"
-          :class="[`party-final-results__step--${row.rank}`, { 'party-final-results__step--me': row.playerId === myId }]"
-        )
-          PlayerAvatar(:user="toUser(row)" :size="row.rank === 1 ? 56 : 44" :open-player-dialog-on-click="!isGuest(row)")
-          span.party-final-results__step-name.party-user-name(:class="{ 'is-link': !isGuest(row) }" @click="openPlayer(row)")
-            | {{ row.name }}
-            span.gm-username-extra(v-if="isGm(row)") &nbsp;(GM)
-          b.party-final-results__step-score {{ row.score }}
-          span.party-final-results__step-sub {{ $t('party.game.correctCount', { n: row.correctCount }) }}
-          .party-final-results__block
-            AppIcon(v-if="row.rank === 1" name="tabler:crown" :width="18" :height="18")
-            span(v-else) {{ row.rank }}
+      Leaderboard.party-final-results__board(v-if="scorers.length" :scorers="scorers" :current-player="pinnedMe")
 
-      section.party-card(v-if="rest.length")
-        ol.party-final-results__rows
-          li.party-final-results__row(
-            v-for="row in rest"
-            :key="row.playerId"
-            :class="{ 'party-final-results__row--me': row.playerId === myId }"
-          )
-            span.party-final-results__rank {{ row.rank }}
-            PlayerAvatar(:user="toUser(row)" :size="24" :open-player-dialog-on-click="!isGuest(row)")
-            span.party-final-results__name.party-user-name(:class="{ 'is-link': !isGuest(row) }" @click="openPlayer(row)")
-              | {{ row.name }}
-              span.gm-username-extra(v-if="isGm(row)") &nbsp;(GM)
-            span.party-final-results__correct {{ $t('party.game.correctCount', { n: row.correctCount }) }}
-            b.party-final-results__score {{ row.score }}
-
-      .party-final-results__mine(v-if="final.me")
+      .party-final-results__mine(v-else-if="final.me")
         span(v-if="final.me.rank") {{ $t('party.final.rank', { n: final.me.rank }) }}
         span(v-else) {{ $t('party.game.score') }}
         b {{ final.me.score }}
@@ -78,6 +50,9 @@ import { choiceTypeEnum } from '@/enums/quiz.enum'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { usePartyUser } from '@/composables/usePartyUser'
 
+// same as the leaderboard routes' first screen: podium + two rows
+const BOARD_SIZE = 5
+
 export default defineComponent({
   components: { Button },
   setup() {
@@ -92,15 +67,15 @@ export default defineComponent({
     const eliminated = computed(() => final.value.eliminated || [])
     // the server sends the board already ranked
     const leaderboard = computed(() => final.value.leaderboard)
-    const ranked = computed(() => (leaderboard.value || []).map((row, i) => ({ ...row, rank: i + 1 })))
-    // 2 · 1 · 3 on screen, like a real podium
-    const podium = computed(() => [ranked.value[1], ranked.value[0], ranked.value[2]].filter(Boolean))
-    const rest = computed(() => ranked.value.slice(3))
+    const { toUser } = usePartyUser()
+
+    // Leaderboard's scorer shape: the app user + score and rank
+    const ranked = computed(() => (leaderboard.value || []).map((row, i) => ({ ...toUser(row), score: row.score, rank: i + 1 })))
+    const scorers = computed(() => ranked.value.slice(0, BOARD_SIZE))
+    const pinnedMe = computed(() => ranked.value.slice(BOARD_SIZE).find(row => row.id === myId.value) || null)
 
     // media without a note is identified by its thumbnail
     const choiceLabel = choice => (choice.choiceType === choiceTypeEnum.TEXT ? choice.text : choice.mediaNote) || ''
-
-    const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
 
     const backToLobby = () => send(wsTypeEnum.PARTY_LOBBY)
 
@@ -114,13 +89,9 @@ export default defineComponent({
       isChoices,
       eliminated,
       leaderboard,
-      podium,
-      rest,
-      choiceLabel,
-      toUser,
-      isGuest,
-      isGm,
-      openPlayer
+      scorers,
+      pinnedMe,
+      choiceLabel
     }
   }
 })
