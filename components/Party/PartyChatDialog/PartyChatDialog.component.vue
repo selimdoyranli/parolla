@@ -57,15 +57,7 @@ export default defineComponent({
     const isOpen = computed(() => store.state.party.chatDialogOpen)
     const players = computed(() => store.getters['party/players'])
     const onlinePlayers = computed(() => players.value.filter(p => p.connected).map(toUser))
-    const lastAnswers = computed(() =>
-      store.state.party.recentAnswers
-        .map(r => {
-          const p = players.value.find(x => x.id === r.playerId)
-
-          return p && { ...toUser(p), isCorrect: r.correct }
-        })
-        .filter(Boolean)
-    )
+    const lastAnswers = computed(() => store.getters['party/lastAnswers'])
 
     const setOpen = open => store.commit('party/SET_CHAT_DIALOG_OPEN', open)
     const scrollToEnd = () => partyChatRef.value?.scrollToEnd()

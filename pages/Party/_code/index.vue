@@ -18,7 +18,15 @@
       //- chat on: like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
       //- too when it fits beside the game column
       template(v-if="isGameChat")
-        ChatPanel.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
+        //- tour's split panel: this round's answers (green / red) on top, the chat below
+        ChatPanel.chat-panel--split.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
+          template(#content-prepend)
+            .section-title {{ $t('tourMode.lastAnswers.title') }}
+            .last-answers
+              PlayerList(:items="lastAnswers")
+                template(#empty)
+                  Empty(:description="$t('tourMode.lastAnswers.empty.description')")
+            .section-title {{ $t('chat.chat') }}
           PartyChat
         PartyChatDialog
       //- before each game's first round: the solo creator reveal, then 3-2-1-GO (the server holds the round for both)
@@ -61,11 +69,13 @@ import {
   useMeta
 } from '@nuxtjs/composition-api'
 import { Howl } from 'howler'
+import { Empty } from 'vant'
 import { quizTypeEnum, questionTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   // keep the same instance when `/party/new` is replaced by the real code, so the socket/room survive
   key: 'party-room',
+  components: { Empty },
   layout: 'Default/Default.layout',
   setup() {
     const { app, i18n, localePath } = useContext()
@@ -107,6 +117,7 @@ export default defineComponent({
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
     const isGameChat = computed(() => store.getters['party/gameChat'])
+    const lastAnswers = computed(() => store.getters['party/lastAnswers'])
 
     // same reveal, steps, timings and sounds as the solo creator start (useGameScene: 200 ms + 2800 ms reveal, then
     // 3-2-1-GO); the server's START_MS holds round 1 for all of it
@@ -258,6 +269,7 @@ export default defineComponent({
       isChoicesGame,
       isGame,
       isGameChat,
+      lastAnswers,
       startCountdown,
       isRevealVisible,
       isRevealPlaying,

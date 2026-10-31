@@ -11,6 +11,7 @@ declare global {
   const isDrawSocketReady: typeof import('./composables/useDrawSocket.js')['isDrawSocketReady']
   const isPartySfxQuiet: typeof import('./composables/usePartySfx.js')['isPartySfxQuiet']
   const partySend: typeof import('./composables/usePartySocket.js')['partySend']
+  const partyToUser: typeof import('./composables/usePartyUser.js')['partyToUser']
   const useAdReward: typeof import('./composables/useAdReward.js')['useAdReward']
   const useAppleSignIn: typeof import('./composables/useAppleSignIn.js')['useAppleSignIn']
   const useAuth: typeof import('./composables/useAuth.js')['default']
