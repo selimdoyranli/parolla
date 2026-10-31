@@ -363,7 +363,6 @@ export default defineComponent({
   }
 
   &__sub {
-    max-width: 420px;
     margin: 0;
     font-size: var(--font-size-text-9);
     opacity: 0.9;
