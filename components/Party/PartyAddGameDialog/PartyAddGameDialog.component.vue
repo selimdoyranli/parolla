@@ -7,7 +7,7 @@ Dialog.dialog.party-add(
   :title="$t('party.add.title')"
   :show-confirm-button="false"
   :cancel-button-text="$t('general.close')"
-  width="min(94vw, 960px)"
+  width="min(92vw, var(--layout-max-width))"
   @input="$emit('input', $event)"
 )
   .party-add__toolbar
