@@ -1,11 +1,12 @@
-// Covers the game wrapper (above the last round result) until the server sends everyone back to the lobby
+// Covers the game wrapper (above the last round result) until the host takes everyone back to the lobby
 .party-final-results {
   position: absolute;
   inset: 0;
   z-index: 7;
   display: flex;
   justify-content: center;
-  padding: 24px 16px;
+  // bottom: clear of the emoji / chat buttons
+  padding: 24px 16px 156px;
   overflow-y: auto;
   background: var(--color-ui-01);
 
@@ -234,6 +235,20 @@
       margin-left: auto;
       color: var(--color-text-03);
     }
+  }
+
+  &__waiting {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 12px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
   }
 
   &__hidden {

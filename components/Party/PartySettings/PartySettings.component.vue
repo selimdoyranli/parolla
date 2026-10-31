@@ -86,6 +86,18 @@ section.party-card.party-settings
           :disabled="inGame"
           @input="patch({ chat: $event })"
         )
+      .party-settings__row
+        AppIcon.party-settings__icon(name="tabler:messages" :width="18" :height="18")
+        .party-settings__text
+          strong {{ $t('party.lobby.settings.gameChat') }}
+          small {{ $t('party.lobby.settings.gameChatSub') }}
+        VanSwitch(
+          :value="settings.chat && settings.gameChat"
+          size="20px"
+          active-color="var(--color-brand-02)"
+          :disabled="inGame || !settings.chat"
+          @input="patch({ gameChat: $event })"
+        )
       .party-settings__row.party-settings__row--stack
         AppIcon.party-settings__icon(name="tabler:trophy" :width="18" :height="18")
         .party-settings__text

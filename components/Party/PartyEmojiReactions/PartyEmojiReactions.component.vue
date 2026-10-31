@@ -39,10 +39,8 @@ export default defineComponent({
     const isOpen = ref(false)
     // reactions sent in the lobby would otherwise all float at once when the game starts
     const startKey = Math.max(0, ...store.state.party.emojis.map(e => e.key))
-    // the server drops emojis while chat is off; the final / cancelled screens need the corner for their own content
-    const canSend = computed(
-      () => Boolean(store.getters['party/settings'].chat) && store.getters['party/game']?.phase !== 'final' && !store.state.party.cancelled
-    )
+    // always on (chat setting or not); the short cancelled screen needs the corner for its own content
+    const canSend = computed(() => !store.state.party.cancelled)
 
     // the sender's nickname from the room (a player who left meanwhile just gets no label)
     const playerOf = id => store.getters['party/players'].find(p => p.id === id)

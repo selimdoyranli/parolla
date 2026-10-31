@@ -62,4 +62,26 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  // in-game: same round button as the emoji toggle
+  &__fab {
+    position: relative;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--color-text-02);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 50%;
+    box-shadow: var(--box-shadow-01);
+    cursor: pointer;
+    place-items: center;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
 }

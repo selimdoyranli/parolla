@@ -1,5 +1,6 @@
 <template lang="pug">
-//- end of a game: reads only store.final (+ room game title), never `round` (a reconnect in the final phase gets no round)
+//- end of a game: reads only store.final (+ room game title), never `round` (a reconnect in the final phase gets no round).
+//- Stays up until the host takes everyone back to the lobby
 .party-final-results
   .party-final-results__inner
     header.party-final-results__head
@@ -60,18 +61,31 @@
         span.party-final-results__mine-sub {{ $t('party.game.correctCount', { n: final.me.correctCount }) }}
       p.party-final-results__hidden(v-else-if="!leaderboard") {{ $t('party.final.hidden') }}
 
-    PartyLobbyCountdown(:lobby-in-ms="final.lobbyInMs")
+    .party-final-results__lobby
+      Button(v-if="isHost" color="var(--color-brand-02)" icon="wap-home-o" round block @click="backToLobby") {{ $t('party.final.backToLobby') }}
+      p.party-final-results__waiting(v-else)
+        AppIcon(name="tabler:home" :width="14" :height="14")
+        | {{ $t('party.final.waitingHost') }}
+
+    //- qa: what everyone wrote, per question
+    PartyAnswerReview(v-if="review.length" :review="review" :leaderboard="leaderboard")
 </template>
 
 <script>
-import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, inject, useStore } from '@nuxtjs/composition-api'
+import { Button } from 'vant'
 import { choiceTypeEnum } from '@/enums/quiz.enum'
+import { wsTypeEnum } from '@/enums/wsType.enum'
 import { usePartyUser } from '@/composables/usePartyUser'
 
 export default defineComponent({
+  components: { Button },
   setup() {
     const store = useStore()
+    const send = inject('partySend')
+    const isHost = computed(() => store.getters['party/isHost'])
     const final = computed(() => store.state.party.final)
+    const review = computed(() => final.value.review || [])
     const myId = computed(() => store.state.party.myId)
     const title = computed(() => store.getters['party/game']?.title || '')
     const isChoices = computed(() => Boolean(final.value.champion))
@@ -88,7 +102,12 @@ export default defineComponent({
 
     const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
 
+    const backToLobby = () => send(wsTypeEnum.PARTY_LOBBY)
+
     return {
+      isHost,
+      review,
+      backToLobby,
       final,
       myId,
       title,

@@ -1,0 +1,175 @@
+.party-answer-review {
+  padding-bottom: 4px;
+
+  &__list {
+    margin: 0 -12px;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-cell {
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      color: var(--color-text-01);
+      background: transparent;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-cell__title {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-cell__value {
+      flex: none;
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-collapse-item + .van-collapse-item {
+      border-top: 1px solid var(--color-border-02);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .van-collapse-item__content {
+      padding: 0 12px 12px;
+      background: transparent;
+    }
+  }
+
+  &__q {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+  }
+
+  // question number (or letter); tinted by how I did on it
+  &__no {
+    display: grid;
+    flex: none;
+    place-items: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 4px;
+    color: var(--color-text-02);
+    font-weight: 800;
+    font-size: var(--font-size-text-11);
+    background: var(--color-ui-03);
+    border-radius: 8px;
+
+    &--correct {
+      color: var(--color-text-04);
+      background: var(--color-success-01);
+    }
+
+    &--wrong,
+    &--none {
+      color: var(--color-text-04);
+      background: var(--color-danger-01);
+    }
+  }
+
+  &__text {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--font-size-text-10);
+    line-height: 1.35;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  &__count {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-11);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__correct {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: baseline;
+    margin: 0 0 8px;
+    padding: 8px 10px;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-11);
+    background: color-mix(in sRGB, var(--color-success-01) 14%, transparent);
+    border-radius: 10px;
+
+    b {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-10);
+    }
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    font-size: var(--font-size-text-10);
+  }
+
+  &__name {
+    flex: 0 1 auto;
+    max-width: 40%;
+    overflow: hidden;
+    color: var(--color-text-02);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__answer {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 700;
+    white-space: nowrap;
+    text-align: right;
+    text-overflow: ellipsis;
+  }
+
+  &__row--me &__name {
+    color: var(--color-brand-02);
+    font-weight: 700;
+  }
+
+  &__row--none &__answer {
+    color: var(--color-text-03);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  &__points {
+    flex: none;
+    color: var(--color-success-01);
+    font-size: var(--font-size-text-11);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__mark {
+    flex: none;
+    color: var(--color-text-03);
+  }
+
+  &__row--correct &__mark {
+    color: var(--color-success-01);
+  }
+
+  &__row--wrong &__mark {
+    color: var(--color-danger-01);
+  }
+}

@@ -14,6 +14,7 @@
       small(v-if="game") {{ game.title }}
 
     Button(v-if="!game" icon="arrow" round block :disabled="!queue.length" @click="send('party_start')") {{ $t('party.lobby.start') }}
+    Button(v-else-if="game.phase === 'final'" icon="wap-home-o" round block @click="send('party_lobby')") {{ $t('party.final.backToLobby') }}
     template(v-else)
       Button.party-remote__next(icon="arrow" round block :disabled="game.phase !== 'result'" @click="send('party_next')") {{ $t('party.game.next') }}
       .party-remote__row

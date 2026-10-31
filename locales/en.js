@@ -2186,7 +2186,9 @@ export default {
         lock: 'Lock the room',
         lockSub: 'Until the game starts anyone with the code or link can join; the room locks itself once the game starts.',
         chat: 'Chat',
-        chatSub: 'Players can chat in the lobby and send emoji reactions during the game.',
+        chatSub: 'Players can chat in the lobby.',
+        gameChat: 'Chat during the game',
+        gameChatSub: 'The chat stays open on the game screen too.',
         duration: 'Round time',
         durationSub: 'How long everyone has to answer each question.',
         seconds: '{n}s',
@@ -2284,7 +2286,14 @@ export default {
       title: 'Game over',
       rank: 'You finished #{n}',
       hidden: 'Rankings are hidden in this room',
-      eliminated: 'Elimination order'
+      eliminated: 'Elimination order',
+      backToLobby: 'Back to the lobby',
+      waitingHost: 'A new game starts once the host goes back to the lobby',
+      answers: 'Answers',
+      answersSub: 'Who wrote what for each question',
+      correctAnswer: 'Correct answer',
+      question: 'Question {n}',
+      noAnswer: 'No answer'
     },
     cancelled: {
       title: 'GAME CANCELLED',

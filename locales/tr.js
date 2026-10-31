@@ -2203,7 +2203,9 @@ export default {
         lock: 'Odayı kilitle',
         lockSub: 'Oyun başlayana kadar kodu veya bağlantısı olan herkes katılabilir; oyun başlayınca oda kendiliğinden kilitlenir.',
         chat: 'Sohbet',
-        chatSub: 'Oyuncular lobide yazışabilir, oyun sırasında emoji tepkisi gönderebilir.',
+        chatSub: 'Oyuncular lobide yazışabilir.',
+        gameChat: 'Oyun sırasında sohbet',
+        gameChatSub: 'Sohbet oyun ekranında da açık kalır.',
         duration: 'Tur süresi',
         durationSub: 'Herkesin her soruya cevap vermek için sahip olduğu süre.',
         seconds: '{n}sn',
@@ -2301,7 +2303,14 @@ export default {
       title: 'Oyun bitti',
       rank: '{n}. oldun',
       hidden: 'Bu odada sıralama gizli',
-      eliminated: 'Elenme sırası'
+      eliminated: 'Elenme sırası',
+      backToLobby: 'Lobiye dön',
+      waitingHost: 'Kurucu lobiye dönünce yeni oyun başlar',
+      answers: 'Cevaplar',
+      answersSub: 'Kim hangi soruya ne yazdı',
+      correctAnswer: 'Doğru cevap',
+      question: '{n}. soru',
+      noAnswer: 'Cevap yok'
     },
     cancelled: {
       title: 'OYUN İPTAL EDİLDİ',

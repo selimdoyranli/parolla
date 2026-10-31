@@ -17,7 +17,7 @@ It is purely for fun: **nothing is recorded anywhere**.
 - Logged-in users join as themselves; guests join through a guest dialog (random name + DiceBear avatar, editable) — the Draw mode pattern.
 - Lobby: next-game card + start button, game queue with "Oyun ekle" picker, room settings, player list, code/QR card, chat.
 - Round-based play for **QA/Trivia** (scored, leaderboard) and **Bu mu O mu** (majority vote decides the duel winner).
-- Final results screen, then automatic return to the lobby; next "Oyunu başlat" plays the next quiz in the queue.
+- Final results screen (QA also lists every player's answer per question, folded per question); the host takes everyone back to the lobby; next "Oyunu başlat" plays the next quiz in the queue.
 - Presentation mode and Host remote ("Kumanda") in the first release.
 - Reuse the existing game scenes so their fit-text / media-fit / compact work is kept.
 
@@ -49,7 +49,7 @@ It is purely for fun: **nothing is recorded anywhere**.
 | Pass | No pass. Round waits for an answer; time-out = no answer for that round. |
 | Round timer | Per round, chosen by host in lobby (chips: 15/30/45/60/90/120 sn). |
 | Bu mu O mu | Same king-of-the-hill flow as solo (`useChoices`). Each round everyone votes within the host's round time and may change their vote until time runs out; the majority choice wins and goes on to the next round. Live vote bar, "Senin oyun", Şampiyon/Meydan okuyan badges, "Seçimin kazandı!" result card. |
-| Final results | Shown at the end of both types (Trivia: ranking; Choices: room's champion), then everyone returns to the lobby. |
+| Final results | Shown at the end of both types (Trivia: ranking; Choices: room's champion), then the host takes everyone back to the lobby (`party_lobby`). |
 | Queue | Host adds quizzes via "Oyun ekle" modal (type tabs + search + trending grid). After final results → lobby; "Oyunu başlat" plays the next queued quiz. |
 | Join | Code or link/QR only. Guests allowed via a guest dialog with random DiceBear avatar + name, editable (Draw mode logic). |
 | Persistence | None. Fun only. |
@@ -65,7 +65,7 @@ It is purely for fun: **nothing is recorded anywhere**.
 2. Host shares code / link / QR. Joiner opens link (or types code on the party entry page). Logged in → straight in. Guest → guest dialog → "Katıl".
 3. Lobby. Host edits settings, manages queue, starts. Players see "Kurucu bekleniyor", the queue (read-only), players, chat.
 4. **Oyunu başlat** → game for the queue head starts for everyone. Room locks automatically while a game runs (anyone with the code can join until start).
-5. Rounds (below) → final results → "Lobiye dönülüyor" countdown → lobby. Finished quiz leaves the queue.
+5. Rounds (below) → final results → host's "Lobiye dön" → lobby. Finished quiz leaves the queue.
 6. Host cancels mid-game → "Oyun iptal edildi · Kurucu oyunu iptal etti. Bu oyun için puan verilmedi." → lobby countdown.
 
 ### QA / Trivia round
@@ -124,7 +124,7 @@ Reuse Draw mode's guest identity (`store/draw/guest`, `helpers/guest-identity`, 
 ### Settings, chat, moderation
 
 - Max 10 players (fixed). Optional room password (Draw's `EnterPasswordDialog`).
-- Chat in lobby; during a game only emoji reactions (floating). Host can turn chat off. Messages pass through the existing bad-word censoring.
+- Chat in lobby, and during games too when the host leaves "Oyun sırasında sohbet" on (tour's fixed panel on wide screens, a round button on phones). Emoji reactions are always on. Host can turn chat off. Messages pass through the existing bad-word censoring.
 - Host can kick.
 - **Host leaves** (user decision): host passes to another **logged-in** player in the room (longest-present logged-in player — my call on the order). Everything that shows the host updates reactively for everyone: crown/"Kurucu" label, "<host>'un odası" room title, host-only controls (start, queue, settings, remote). Guests never become host.
   - No logged-in player left to take over → every remaining player gets a blocking dialog warning that the host left and the party can't continue, with a single **Quizlere dön** button that sends them to the quiz list. The room closes.
