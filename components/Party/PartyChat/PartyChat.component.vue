@@ -38,7 +38,8 @@ export default defineComponent({
 
     const chat = computed(() => store.state.party.chat)
     const players = computed(() => store.getters['party/players'])
-    const enabled = computed(() => store.getters['party/settings'].chat !== false)
+    // the lobby always chats; the chat setting is the host's switch for chat during games
+    const enabled = computed(() => store.state.party.room?.state === 'lobby' || store.getters['party/settings'].chat !== false)
     const unread = computed(() => (props.compact && !isSheetOpen.value ? Math.max(0, chat.value.length - seen.value) : 0))
     const title = computed(() => `${i18n.t('chat.chat')} (${players.value.length})`)
 

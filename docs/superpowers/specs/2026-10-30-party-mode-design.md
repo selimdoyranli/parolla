@@ -124,7 +124,7 @@ Reuse Draw mode's guest identity (`store/draw/guest`, `helpers/guest-identity`, 
 ### Settings, chat, moderation
 
 - Max 10 players (fixed). Optional room password (Draw's `EnterPasswordDialog`).
-- Chat in lobby and during games (tour's fixed panel on wide screens, a round button on phones). Emoji reactions are always on. Host can turn chat off. Messages pass through the existing bad-word censoring.
+- Chat in the lobby (always on) and during games when the host's "Oyun sırasında sohbet" setting is on (AppHeader chat button + dialog like tour; tour's fixed panel too when it fits beside the game column). Emoji reactions are always on. Messages pass through the existing bad-word censoring.
 - Host can kick.
 - **Host leaves** (user decision): host passes to another **logged-in** player in the room (longest-present logged-in player — my call on the order). Everything that shows the host updates reactively for everyone: crown/"Kurucu" label, "<host>'un odası" room title, host-only controls (start, queue, settings, remote). Guests never become host.
   - No logged-in player left to take over → every remaining player gets a blocking dialog warning that the host left and the party can't continue, with a single **Quizlere dön** button that sends them to the quiz list. The room closes.

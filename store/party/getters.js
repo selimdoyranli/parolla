@@ -5,7 +5,7 @@ export default {
   queue: s => (s.room && s.room.queue) || [],
   settings: s => (s.room && s.room.settings) || {},
   game: s => (s.room && s.room.game) || null,
-  // chat on: the game screen gets the header chat button
+  // in-game chat on (the host's setting; the lobby always chats): the game screen gets the header chat button
   gameChat: s => {
     const r = s.room
 
