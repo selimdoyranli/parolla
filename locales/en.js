@@ -2122,9 +2122,8 @@ export default {
     add: {
       title: 'Add game',
       inQueue: '{count} in queue',
-      search: { qa: 'Search Q&A quizzes…', choices: 'Search This or That quizzes…' },
+      search: 'Search quizzes…',
       empty: 'No quizzes found',
-      typeLabel: 'Quiz type:',
       added: 'In queue',
       addedToast: '{title} added to the queue',
       full: 'Queue is full (max 20 games)',

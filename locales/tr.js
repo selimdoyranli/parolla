@@ -2085,7 +2085,7 @@ export default {
       join: 'Katıl'
     },
     intro: {
-      title: 'Party kur',
+      title: 'Parti kur',
       sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna',
       password: 'Şifreli oda',
       showPassword: 'Şifreyi göster',
@@ -2103,7 +2103,7 @@ export default {
       },
       steps: {
         pick: { title: 'Oyunları seç', text: 'Lobide Günlük, Limitsiz, Soru-Cevap ya da O mu bu mu? oyunlarını kuyruğa ekle.' },
-        setup: { title: 'Odayı kur', text: '“Parti Başlat”a dokun ya da bir oyunun girişinden “Party kur”u kullan.' },
+        setup: { title: 'Odayı kur', text: '“Parti Başlat”a dokun ya da bir oyunun girişinden “Parti kur”u kullan.' },
         share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; en az 2 kişi toplanınca başlat.' }
       },
       featuresTitle: 'Quiz night için hazır',
@@ -2139,9 +2139,8 @@ export default {
     add: {
       title: 'Oyun ekle',
       inQueue: 'Kuyrukta {count} oyun',
-      search: { qa: 'Soru-Cevap quizlerinde ara…', choices: 'O mu bu mu? quizlerinde ara…' },
+      search: 'Quizlerde ara…',
       empty: 'Quiz bulunamadı',
-      typeLabel: 'Quiz Türü:',
       added: 'Kuyrukta',
       addedToast: '{title} kuyruğa eklendi',
       full: 'Kuyruk dolu (en fazla 20 oyun)',

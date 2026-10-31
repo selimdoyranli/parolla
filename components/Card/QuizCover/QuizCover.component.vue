@@ -48,7 +48,9 @@ export default defineComponent({
 
     const coverStyle = computed(() => {
       const key = props.room?.roomId || props.room?.documentId || props.room?.title || props.seed
-      const palette = PLACEHOLDER_PALETTES[hashSeed(key) % PLACEHOLDER_PALETTES.length]
+      // party's daily / unlimited games (room id = mode) wear the brand pink
+      const isMode = ['daily', 'unlimited'].includes(props.room?.roomId)
+      const palette = isMode ? PLACEHOLDER_PALETTES[0] : PLACEHOLDER_PALETTES[hashSeed(key) % PLACEHOLDER_PALETTES.length]
 
       return {
         '--quiz-card-from': palette.from,

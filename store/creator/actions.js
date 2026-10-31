@@ -1,5 +1,6 @@
 import { roomTransformer, scoreboardTransformer } from '@/transformers'
 import { choiceTypeEnum } from '@/enums/quiz.enum'
+import { roomSortParam, applyQuizKindFilter } from '@/helpers/roomListQuery'
 
 // The API keeps quiz lists and pages at the CDN edge and purges them on writes. For a minute
 // after this user's own quiz write their reads skip the edge, so they never wait on the purge.
@@ -321,18 +322,6 @@ export default {
   async fetchRooms({ commit, state }, params) {
     const { isVisible, isLoadMore = false, page, limit, keyword, tags, user, locale } = params
 
-    const getSort = _sort => {
-      if (_sort === 'oldest') {
-        return 'createdAt:asc'
-      }
-
-      if (_sort === 'byViewCount') {
-        return 'viewCount:desc'
-      }
-
-      return 'createdAt:desc'
-    }
-
     const queryDefault = {
       isVisible: null,
       page: 1,
@@ -349,7 +338,7 @@ export default {
       'filters[isVisible][$eq]': isVisible || queryDefault.isVisible,
       'pagination[page]': page || queryDefault.page,
       'pagination[pageSize]': limit || queryDefault.perPage,
-      sort: getSort(state.room.sort) || queryDefault.sort,
+      sort: roomSortParam(state.room.sort) || queryDefault.sort,
       'populate[user][populate][0]': 'diceBear',
       'populate[user][populate][1]': 'role',
       populate: 'roomTags',
@@ -379,20 +368,7 @@ export default {
       })
     }
 
-    // same split as QuizTypeLabel; old rows have no quizType and count as plain qa quizzes
-    const quizKind = state.room.quizKind
-
-    if (quizKind === 'choices' || quizKind === 'flashcards') {
-      query['filters[quizType][$eq]'] = quizKind
-    } else if (quizKind) {
-      query['filters[$or][0][quizType][$eq]'] = 'qa'
-      query['filters[$or][1][quizType][$null]'] = true
-      query['filters[questionTypeDominance][$eq]'] = quizKind === 'media' ? 'media' : 'text'
-
-      if (quizKind !== 'media') {
-        query['filters[answerTypeDominance][$eq]'] = quizKind === 'trivia' ? 'trivia' : 'textField'
-      }
-    }
+    applyQuizKindFilter(query, state.room.quizKind)
 
     // right after their own quiz write: a no-op filter gives a URL no edge copy has
     if (justWroteRoom()) query['filters[createdAt][$lte]'] = new Date().toISOString()

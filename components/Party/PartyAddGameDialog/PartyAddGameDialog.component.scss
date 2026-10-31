@@ -16,20 +16,6 @@
     }
   }
 
-  &__type-label {
-    color: var(--color-text-02);
-    font-weight: 700;
-    font-size: var(--font-size-text-9);
-    white-space: nowrap;
-  }
-
-  // the QuizTypeLabel pill is the visible control; the trigger's own outline only doubled it
-  &__type .filter-dropdown-trigger-button {
-    padding-inline: 0 8px;
-    background: transparent;
-    border: 0;
-  }
-
   &__modes {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -139,10 +125,10 @@
     display: flex;
     gap: 4px;
     align-items: center;
-    padding: 2px 8px;
-    color: var(--color-text-04);
+    padding: 3px 8px;
+    color: #fff;
     font-weight: 700;
-    font-size: var(--font-size-text-3);
+    font-size: var(--font-size-text-11);
     background: var(--color-success-01);
     border-radius: 999px;
     pointer-events: none;

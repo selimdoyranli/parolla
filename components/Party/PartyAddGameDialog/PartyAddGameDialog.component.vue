@@ -7,21 +7,10 @@ Dialog.dialog.party-add(
   :title="$t('party.add.title')"
   :show-confirm-button="false"
   :cancel-button-text="$t('general.close')"
-  width="min(92vw, 640px)"
+  width="min(94vw, 960px)"
   @input="$emit('input', $event)"
 )
   .party-add__toolbar
-    span.party-add__type-label {{ $t('party.add.typeLabel') }}
-    FilterDropdown.party-add__type(
-      direction="left"
-      :options="typeOptions"
-      :selected="typeOptions.find(o => o.key === type)"
-      @on-select-option="o => (type = o.key)"
-    )
-      template(#selected="{ option }")
-        QuizTypeLabel(:kind="option.key")
-      template(#option="{ option }")
-        QuizTypeLabel(:kind="option.key")
     span.party-pill {{ $t('party.add.inQueue', { count: queue.length }) }}
 
   //- the word-game sets (daily / unlimited) sit above the quiz list; the server loads them by these ids
@@ -39,13 +28,10 @@ Dialog.dialog.party-add(
         small {{ $t(`party.add.modes.${mode.id}.text`) }}
       AppIcon.party-add__mode-plus(name="tabler:plus" :width="18" :height="18")
 
-  Search.party-add__search(
-    v-model="keyword"
-    :placeholder="$t(`party.add.search.${type}`)"
-    shape="round"
-    :clearable="false"
-    @input="onSearch"
-  )
+  //- same head as the quizzes page (no flashcards: the party engine only runs qa + choices)
+  RoomListHead.party-add__head(:total="total" :kinds="kinds" :kind="kind" @refresh="reload" @kind="setKind" @sort="setSort")
+
+  Search.party-add__search(v-model="keyword" :placeholder="$t('party.add.search')" shape="round" :clearable="false" @input="onSearch")
 
   //- infinite-wrapper: the dialog body scrolls, not the page
   .party-add__body(infinite-wrapper)
@@ -81,13 +67,13 @@ import InfiniteLoading from 'vue-infinite-loading'
 import { useDebounceFn } from '@vueuse/core'
 import { roomTransformer } from '@/transformers'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { roomSortParam, applyQuizKindFilter } from '@/helpers/roomListQuery'
 
 const MODES = [
   { id: 'daily', icon: 'tabler:calendar-event' },
   { id: 'unlimited', icon: 'tabler:infinity' }
 ]
-// flashcards are deliberately absent: the party engine only runs qa + choices; QuizTypeLabel draws each option
-const TYPES = ['qa', 'choices']
+const KINDS = ['qa', 'media', 'choices', 'trivia']
 const PAGE_SIZE = 12
 
 export default defineComponent({
@@ -101,8 +87,10 @@ export default defineComponent({
     const queue = computed(() => store.getters['party/queue'])
     const addedIds = computed(() => new Set(queue.value.map(item => String(item.roomId))))
 
-    const typeOptions = TYPES.map(key => ({ key }))
-    const type = ref(TYPES[0])
+    // same defaults as the quizzes page: every kind, newest first
+    const kind = ref(null)
+    const sort = ref('recently')
+    const total = ref(0)
     const keyword = ref('')
     const rooms = ref([])
     const page = ref(1)
@@ -123,18 +111,18 @@ export default defineComponent({
         'filters[isVisible][$eq]': true,
         'pagination[page]': page.value,
         'pagination[pageSize]': PAGE_SIZE,
-        sort: 'viewCount:desc',
+        sort: roomSortParam(sort.value),
         'populate[user][populate][0]': 'diceBear',
         'populate[user][populate][1]': 'role',
         populate: 'roomTags',
         locale: i18n.locale
       }
 
-      if (type.value === 'choices') {
-        query['filters[quizType][$eq]'] = 'choices'
+      if (kind.value) {
+        applyQuizKindFilter(query, kind.value)
       } else {
-        // old rows have no quizType and count as plain qa quizzes
-        query['filters[$or][0][quizType][$eq]'] = 'qa'
+        // "all" = everything but flashcards; old rows have no quizType and count as plain qa quizzes
+        query['filters[$or][0][quizType][$ne]'] = 'flashcards'
         query['filters[$or][1][quizType][$null]'] = true
       }
 
@@ -156,6 +144,7 @@ export default defineComponent({
         const next = data.data.map(room => roomTransformer(room))
         rooms.value = more ? rooms.value.concat(next) : next
         hasMore.value = page.value < data.meta.pagination.pageCount
+        total.value = data.meta.pagination.total
 
         return true
       } catch {
@@ -182,11 +171,21 @@ export default defineComponent({
 
     const onSearch = useDebounceFn(() => load(false), 500)
 
-    watch(type, () => {
+    const reload = () => {
       rooms.value = []
       hasMore.value = false
       load(false)
-    })
+    }
+
+    const setKind = key => {
+      kind.value = key
+      reload()
+    }
+
+    const setSort = key => {
+      sort.value = key
+      reload()
+    }
     // lazy first load; reopening keeps the list
     watch(
       () => props.value,
@@ -227,7 +226,25 @@ export default defineComponent({
       emit('input', false)
     }
 
-    return { modes: MODES, typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, seqId, loadMore, onSearch, add }
+    return {
+      modes: MODES,
+      kinds: KINDS,
+      kind,
+      total,
+      queue,
+      addedIds,
+      keyword,
+      rooms,
+      hasMore,
+      loading,
+      seqId,
+      loadMore,
+      onSearch,
+      reload,
+      setKind,
+      setSort,
+      add
+    }
   }
 })
 </script>

@@ -369,15 +369,15 @@ module.exports = {
             en: '/draw/room/:code'
           },
           'Party/index': {
-            tr: '/party',
+            tr: '/parti',
             en: '/party'
           },
           'Party/_code/index': {
-            tr: '/party/:code',
+            tr: '/parti/:code',
             en: '/party/:code'
           },
           'Party/_code/remote': {
-            tr: '/party/:code/remote',
+            tr: '/parti/:code/remote',
             en: '/party/:code/remote'
           },
           'Download/index': {
