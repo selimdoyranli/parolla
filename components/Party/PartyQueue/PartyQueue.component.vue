@@ -16,6 +16,7 @@ section.party-card.party-queue
     )
       span.party-queue__index {{ index + 1 }}
       QuizCover.party-queue__cover(:room="item")
+        span.party-queue__initials(v-if="!hasPhoto(item)") {{ initialsOf(item) }}
       .party-queue__info
         strong.party-queue__title {{ item.title }}
         .party-queue__pills
@@ -58,6 +59,7 @@ section.party-card.party-queue
 import { defineComponent, computed, inject, useStore } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { getInitials } from '@/transformers/community.transformer'
 
 export default defineComponent({
   components: { Button },
@@ -74,7 +76,10 @@ export default defineComponent({
     const remove = index => send(wsTypeEnum.PARTY_QUEUE_REMOVE, { index })
     const play = index => send(wsTypeEnum.PARTY_QUEUE_PLAY, { index })
 
-    return { queue, isHost, locked, move, remove, play }
+    const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
+    const initialsOf = room => getInitials(room.title)
+
+    return { queue, isHost, locked, move, remove, play, hasPhoto, initialsOf }
   }
 })
 </script>

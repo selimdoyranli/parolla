@@ -1,4 +1,29 @@
 .party-player-list {
+  &__manage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 60vh;
+    padding: 12px 20px 16px;
+    overflow-y: auto;
+  }
+
+  &__manage-hint {
+    margin: 0 0 4px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    text-align: center;
+  }
+
+  &__manage-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 10px;
+    background: var(--color-ui-01);
+    border-radius: 12px;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;

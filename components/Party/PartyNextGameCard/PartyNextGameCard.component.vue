@@ -2,6 +2,7 @@
 section.party-next-game
   .party-next-game__row(v-if="next")
     QuizCover.party-next-game__cover(:room="next")
+      span.party-next-game__initials(v-if="!hasPhoto(next)") {{ initialsOf(next) }}
     .party-next-game__info
       span.party-next-game__eyebrow {{ $t('party.lobby.next') }}
       strong.party-next-game__title {{ next.title }}
@@ -35,6 +36,7 @@ section.party-next-game
 
 <script>
 import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
+import { getInitials } from '@/transformers/community.transformer'
 
 export default defineComponent({
   emits: ['open-remote'],
@@ -44,7 +46,10 @@ export default defineComponent({
     const settings = computed(() => store.getters['party/settings'])
     const next = computed(() => store.getters['party/queue'][0] || null)
 
-    return { isHost, settings, next }
+    const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
+    const initialsOf = room => getInitials(room.title)
+
+    return { isHost, settings, next, hasPhoto, initialsOf }
   }
 })
 </script>

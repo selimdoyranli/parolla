@@ -2090,7 +2090,7 @@ export default {
       inQueue: 'Kuyrukta {count} oyun',
       search: { qa: 'Soru-Cevap quizlerinde ara…', choices: 'Bu mu O mu quizlerinde ara…' },
       empty: 'Quiz bulunamadı',
-      more: 'Daha fazla',
+      typeLabel: 'Quiz Türü:',
       added: 'Kuyrukta',
       addedToast: '{title} kuyruğa eklendi',
       full: 'Kuyruk dolu (en fazla 20 oyun)'

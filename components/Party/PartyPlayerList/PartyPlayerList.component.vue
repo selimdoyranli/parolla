@@ -31,24 +31,32 @@ section.party-card.party-player-list
   Button.party-player-list__manage(v-if="isHost" icon="manager-o" round block size="small" @click="isManageOpen = true")
     | {{ $t('party.lobby.manage') }}
 
-  ActionSheet(
+  Dialog.dialog.party-player-list__manage-dialog(
     v-model="isManageOpen"
-    close-on-click-action
+    show-cancel-button
+    close-on-click-overlay
     get-container="body"
-    :actions="kickActions"
-    :description="kickActions.length ? $t('party.lobby.kickHint') : $t('party.lobby.noOthers')"
-    :cancel-text="$t('party.lobby.cancel')"
-    @select="confirmKick"
+    :title="$t('party.lobby.manage')"
+    :show-confirm-button="false"
+    :cancel-button-text="$t('party.lobby.cancel')"
+    width="min(92vw, 420px)"
   )
+    .party-player-list__manage-body
+      p.party-player-list__manage-hint {{ others.length ? $t('party.lobby.kickHint') : $t('party.lobby.noOthers') }}
+      .party-player-list__manage-row(v-for="player in others" :key="player.id")
+        PlayerAvatar(:user="toUser(player)" :size="32")
+        span.party-player-list__name {{ player.name }}
+        Button(type="danger" size="small" plain round native-type="button" @click="confirmKick(player)")
+          | {{ $t('party.lobby.kick') }}
 </template>
 
 <script>
 import { defineComponent, ref, computed, inject, useStore, useContext } from '@nuxtjs/composition-api'
-import { Button, ActionSheet, Dialog } from 'vant'
+import { Button, Dialog } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 export default defineComponent({
-  components: { Button, ActionSheet },
+  components: { Button, Dialog: Dialog.Component },
   setup() {
     const store = useStore()
     const { i18n } = useContext()
@@ -70,11 +78,7 @@ export default defineComponent({
       return settings && settings.presentation ? hostId : null
     })
 
-    const kickActions = computed(() =>
-      players.value
-        .filter(p => p.id !== myId.value)
-        .map(p => ({ name: p.name, subname: i18n.t('party.lobby.kick'), color: 'var(--color-danger-01)', playerId: p.id }))
-    )
+    const others = computed(() => players.value.filter(p => p.id !== myId.value))
 
     const toUser = p => ({
       id: p.id,
@@ -85,18 +89,18 @@ export default defineComponent({
       isGuest: p.isGuest
     })
 
-    const confirmKick = action => {
+    const confirmKick = player => {
       Dialog.confirm({
-        message: i18n.t('party.lobby.kickConfirm', { name: action.name }),
+        message: i18n.t('party.lobby.kickConfirm', { name: player.name }),
         confirmButtonText: i18n.t('party.lobby.kick'),
         cancelButtonText: i18n.t('party.lobby.cancel'),
         getContainer: 'body'
       })
-        .then(() => send(wsTypeEnum.PARTY_KICK, { playerId: action.playerId }))
+        .then(() => send(wsTypeEnum.PARTY_KICK, { playerId: player.id }))
         .catch(() => {})
     }
 
-    return { isManageOpen, players, myId, isHost, capacity, emptySlots, presenterId, kickActions, toUser, confirmKick }
+    return { isManageOpen, players, myId, isHost, capacity, emptySlots, presenterId, others, toUser, confirmKick }
   }
 })
 </script>

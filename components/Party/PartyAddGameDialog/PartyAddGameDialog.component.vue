@@ -11,7 +11,8 @@ Dialog.dialog.party-add(
   @input="$emit('input', $event)"
 )
   .party-add__toolbar
-    FilterDropdown(
+    span.party-add__type-label {{ $t('party.add.typeLabel') }}
+    FilterDropdown.party-add__type(
       direction="left"
       :options="typeOptions"
       :selected="typeOptions.find(o => o.key === type)"
@@ -23,9 +24,16 @@ Dialog.dialog.party-add(
         QuizTypeLabel(:kind="option.key")
     span.party-pill {{ $t('party.add.inQueue', { count: queue.length }) }}
 
-  Search.party-add__search(v-model="keyword" :placeholder="$t(`party.add.search.${type}`)" :clearable="false" @input="onSearch")
+  Search.party-add__search(
+    v-model="keyword"
+    :placeholder="$t(`party.add.search.${type}`)"
+    shape="round"
+    :clearable="false"
+    @input="onSearch"
+  )
 
-  .party-add__body
+  //- infinite-wrapper: the dialog body scrolls, not the page
+  .party-add__body(infinite-wrapper)
     .party-add__loading(v-if="loading && !rooms.length")
       Loading(color="var(--color-brand-02)")
     Empty(v-else-if="!rooms.length" :description="$t('party.add.empty')")
@@ -38,12 +46,23 @@ Dialog.dialog.party-add(
           span.party-add__added(v-if="addedIds.has(String(room.roomId))")
             AppIcon(name="tabler:check" :width="14" :height="14")
             | {{ $t('party.add.added') }}
-      Button.party-add__more(v-if="hasMore" round block :loading="loading" @click="load(true)") {{ $t('party.add.more') }}
+      //- identifier resets the loader on a new tab/search (same pattern as the post composer picker)
+      InfiniteLoading(v-if="hasMore" force-use-infinite-wrapper :identifier="seqId" @infinite="loadMore")
+        template(#spinner)
+          .party-add__loading
+            Loading(color="var(--color-brand-02)" size="20")
+        template(#no-more)
+          span
+        template(#no-results)
+          span
+        template(#error="{ trigger }")
+          Button(size="small" round native-type="button" @click="trigger") {{ $t('error.tryAgain') }}
 </template>
 
 <script>
 import { defineComponent, ref, computed, watch, inject, useContext, useStore } from '@nuxtjs/composition-api'
 import { Dialog, Search, Loading, Empty, Button, Notify } from 'vant'
+import InfiniteLoading from 'vue-infinite-loading'
 import { useDebounceFn } from '@vueuse/core'
 import { roomTransformer } from '@/transformers'
 import { wsTypeEnum } from '@/enums/wsType.enum'
@@ -53,7 +72,7 @@ const TYPES = ['qa', 'choices']
 const PAGE_SIZE = 12
 
 export default defineComponent({
-  components: { Dialog: Dialog.Component, Search, Loading, Empty, Button },
+  components: { Dialog: Dialog.Component, Search, Loading, Empty, Button, InfiniteLoading },
   props: { value: { type: Boolean, default: false } },
   emits: ['input'],
   setup(props, { emit }) {
@@ -71,10 +90,13 @@ export default defineComponent({
     const hasMore = ref(false)
     const loading = ref(false)
     let seq = 0 // drops late responses from a tab/keyword that is no longer current
+    const seqId = ref(0)
 
     // calls the API directly: creator/fetchRooms would overwrite the /quizler list in the store
     const load = async more => {
       const mine = ++seq
+
+      if (!more) seqId.value = mine
       loading.value = true
       page.value = more ? page.value + 1 : 1
 
@@ -110,16 +132,33 @@ export default defineComponent({
         })
 
         // a late response from a tab/keyword that is no longer current
-        if (mine !== seq || !data) return
+        if (mine !== seq || !data) return false
 
         const next = data.data.map(room => roomTransformer(room))
         rooms.value = more ? rooms.value.concat(next) : next
         hasMore.value = page.value < data.meta.pagination.pageCount
+
+        return true
       } catch {
-        // keeps what is on screen; the empty state / load more stay usable
+        // keeps what is on screen; the infinite loader shows its retry
+        if (more) page.value -= 1
+
+        return false
       } finally {
         if (mine === seq) loading.value = false
       }
+    }
+
+    const loadMore = async $state => {
+      const mine = seq + 1
+      const ok = await load(true)
+
+      // a newer tab/search took over; its own loader instance carries on
+      if (mine !== seq) return
+
+      if (!ok) return $state.error()
+
+      return hasMore.value ? $state.loaded() : $state.complete()
     }
 
     const onSearch = useDebounceFn(() => load(false), 500)
@@ -168,7 +207,7 @@ export default defineComponent({
       send(wsTypeEnum.PARTY_QUEUE_ADD, { roomId: room.roomId, locale: i18n.locale })
     }
 
-    return { typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, load, onSearch, add }
+    return { typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, seqId, loadMore, onSearch, add }
   }
 })
 </script>

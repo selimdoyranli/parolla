@@ -3,7 +3,7 @@
 .party-cancelled(role="alertdialog" aria-live="assertive")
   .party-cancelled__inner
     span.party-cancelled__icon
-      AppIcon(name="tabler:player-stop" :width="26" :height="26")
+      AppIcon(name="tabler:x" :width="26" :height="26")
     h2.party-cancelled__title {{ $t('party.cancelled.title') }}
     p.party-cancelled__text {{ $t('party.cancelled.text') }}
     PartyLobbyCountdown(:lobby-in-ms="lobbyInMs")
