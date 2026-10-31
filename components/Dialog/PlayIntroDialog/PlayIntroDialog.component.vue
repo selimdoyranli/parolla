@@ -38,7 +38,7 @@ Dialog.dialog.dialog--scene.play-intro(
       span {{ $t('playIntro.play') }}
 
     template(v-if="canParty")
-      button.play-intro__party(type="button" :aria-expanded="String(partyOpen)" @click="partyOpen = !partyOpen")
+      button.play-intro__party(type="button" :aria-expanded="String(partyOpen)" @click="toggleParty")
         span.play-intro__party-icon
           AppIcon(name="tabler:confetti" :width="22" :height="22")
         span.play-intro__party-text
@@ -203,6 +203,12 @@ export default defineComponent({
       () => isCreator.value && !props.inGame && [quizTypeEnum.QA, quizTypeEnum.CHOICES].includes(room.value.quizType || quizTypeEnum.QA)
     )
     const partyOpen = ref(false)
+    const sfx = useSfx()
+    // ACS drawer sounds, like the app's drawers opening / closing
+    const toggleParty = () => {
+      partyOpen.value = !partyOpen.value
+      sfx.play(partyOpen.value ? 'drawer-open' : 'drawer-close')
+    }
     const minutes = computed(() =>
       Math.round((isCreator.value && room.value.gameTimeLimit ? room.value.gameTimeLimit : GAME_TIME_LIMIT) / 60000)
     )
@@ -341,6 +347,7 @@ export default defineComponent({
       isQa,
       canParty,
       partyOpen,
+      toggleParty,
       coverLabel,
       coverSublabel,
       stats,
