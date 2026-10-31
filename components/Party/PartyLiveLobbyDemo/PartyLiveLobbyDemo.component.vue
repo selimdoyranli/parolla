@@ -56,10 +56,8 @@ const ROSTER = [
   { name: 'Mert', seed: 'mert-demo' },
   { name: 'Ece', seed: 'ece-demo' },
   { name: 'Can', seed: 'can-demo' },
-  { name: 'Deniz', seed: 'deniz-demo' },
-  { name: 'Zeynep', seed: 'zeynep-demo' }
+  { name: 'Deniz', seed: 'deniz-demo' }
 ]
-const START_PLAYERS = 4
 const EMOJIS = ['👏', '😂', '🔥', '😮', '❤️']
 const ROUND_SEC = 20
 const pick = list => list[Math.floor(Math.random() * list.length)]
@@ -68,7 +66,7 @@ export default defineComponent({
   setup() {
     const { i18n } = useContext()
     const capacity = 10
-    const fresh = () => ROSTER.slice(0, START_PLAYERS).map(p => ({ ...p, score: 0 }))
+    const fresh = () => ROSTER.map(p => ({ ...p, score: 0 }))
     const players = ref(fresh())
     const ranked = computed(() => [...players.value].sort((a, b) => b.score - a.score))
     const timer = ref(ROUND_SEC)
@@ -90,14 +88,6 @@ export default defineComponent({
       // a new round starts the demo over so scores stay readable
       if (tick % 60 === 0) {
         players.value = fresh()
-
-        return
-      }
-
-      if (tick % 7 === 0 && players.value.length < ROSTER.length) {
-        const next = ROSTER[players.value.length]
-        players.value.push({ ...next, score: 0 })
-        say(i18n.t('party.landing.demo.joined', { name: next.name }))
 
         return
       }

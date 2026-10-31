@@ -8,26 +8,27 @@
     h1.party-hero__title {{ $t('party.landing.title') }}
     p.party-hero__sub {{ $t('party.landing.sub') }}
 
-    form.party-entry(@submit.prevent="join")
-      label.party-entry__label(for="party-code") {{ $t('party.entry.title') }}
-      p.party-entry__hint {{ $t('party.entry.hint') }}
-      .party-entry__row
-        input#party-code.party-entry__input(
-          v-model="code"
-          :placeholder="$t('party.entry.placeholder')"
-          inputmode="numeric"
-          autocomplete="off"
-          maxlength="7"
-          @input="format"
-        )
-        Button.party-entry__join(type="primary" round native-type="submit" :disabled="digits.length !== 6") {{ $t('party.entry.join') }}
+    .party-hero__grid
+      .party-hero__join
+        form.party-entry(@submit.prevent="join")
+          label.party-entry__label(for="party-code") {{ $t('party.entry.title') }}
+          p.party-entry__hint {{ $t('party.entry.hint') }}
+          .party-entry__row
+            input#party-code.party-entry__input(
+              v-model="code"
+              :placeholder="$t('party.entry.placeholder')"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="7"
+              @input="format"
+            )
+            Button.party-entry__join(type="primary" round native-type="submit" :disabled="digits.length !== 6") {{ $t('party.entry.join') }}
 
-    ul.party-hero__facts
-      li(v-for="fact in facts" :key="fact.key")
-        AppIcon(:name="fact.icon" :width="16" :height="16")
-        | {{ $t(`party.landing.facts.${fact.key}`) }}
-
-    PartyLiveLobbyDemo
+        ul.party-hero__facts
+          li(v-for="fact in facts" :key="fact.key")
+            AppIcon(:name="fact.icon" :width="16" :height="16")
+            | {{ $t(`party.landing.facts.${fact.key}`) }}
+      PartyLiveLobbyDemo
 
   section.party-section
     ol.party-steps
@@ -155,6 +156,27 @@ export default defineComponent({
     color: var(--color-text-02);
     font-size: var(--font-size-text-8);
     line-height: 1.5;
+  }
+
+  // mobile: entry then demo; tablet+: entry left, live lobby demo right
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+
+    @include media-breakpoint-up(tablet) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: center;
+    }
+  }
+
+  &__join {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
   }
 
   &__facts {
