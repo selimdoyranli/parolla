@@ -2145,7 +2145,7 @@ export default {
       copy: 'Copy link',
       copied: 'Link copied',
       share: 'Share',
-      shareText: 'Join my parolla party! Room code: {code} {url}',
+      shareText: "Join the parolla party, let's solve quizzes together! {url}",
       qrHint: 'Scan with your camera to join',
       close: 'Close',
       next: 'Next game',

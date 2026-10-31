@@ -2162,7 +2162,7 @@ export default {
       copy: 'Bağlantıyı kopyala',
       copied: 'Bağlantı kopyalandı',
       share: 'Paylaş',
-      shareText: 'parolla partisine katıl! Oda kodu: {code} {url}',
+      shareText: 'parolla partisine katıl birlikte quiz çözelim! {url}',
       qrHint: 'Kamerayla tara, partiye katıl',
       close: 'Kapat',
       next: 'Sıradaki oyun',

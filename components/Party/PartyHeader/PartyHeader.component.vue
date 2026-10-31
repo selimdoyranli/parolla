@@ -1,15 +1,18 @@
 <template lang="pug">
+//- one block: whose room + help / leave on top, the join code (QR, copy, share) under it
 header.party-header
-  .party-header__badge
-    AppIcon(name="tabler:confetti" :width="22" :height="22")
-  .party-header__text
-    span.party-header__eyebrow {{ $t('party.lobby.eyebrow') }}
-    strong.party-header__title {{ title }}
-  button.party-header__icon(type="button" :aria-label="$t('party.lobby.help')" @click="showHelp")
-    AppIcon(name="tabler:help" :width="18" :height="18")
-  button.party-header__leave(type="button" @click="leave")
-    AppIcon(name="tabler:logout" :width="16" :height="16")
-    span {{ $t('party.lobby.leave') }}
+  .party-header__top
+    .party-header__badge
+      AppIcon(name="tabler:confetti" :width="22" :height="22")
+    .party-header__text
+      span.party-header__eyebrow {{ $t('party.lobby.eyebrow') }}
+      strong.party-header__title {{ title }}
+    button.party-header__icon(type="button" :aria-label="$t('party.lobby.help')" @click="showHelp")
+      AppIcon(name="tabler:help" :width="18" :height="18")
+    button.party-header__leave(type="button" @click="leave")
+      AppIcon(name="tabler:logout" :width="16" :height="16")
+      span {{ $t('party.lobby.leave') }}
+  PartyCodeCard.party-header__code
 </template>
 
 <script>

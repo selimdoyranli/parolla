@@ -23,16 +23,16 @@ section.party-card.party-settings
         @input="patch({ locked: $event })"
       )
     .party-settings__row
-      AppIcon.party-settings__icon(name="tabler:message-circle" :width="18" :height="18")
+      AppIcon.party-settings__icon(name="tabler:presentation" :width="18" :height="18")
       .party-settings__text
-        strong {{ $t('party.lobby.settings.chat') }}
-        small {{ $t('party.lobby.settings.chatSub') }}
+        strong {{ $t('party.lobby.settings.presentation') }}
+        small {{ $t('party.lobby.settings.presentationSub') }}
       VanSwitch(
-        :value="settings.chat"
+        :value="settings.presentation"
         size="20px"
         active-color="var(--color-brand-02)"
         :disabled="inGame"
-        @input="patch({ chat: $event })"
+        @input="patch({ presentation: $event })"
       )
     .party-settings__row.party-settings__row--stack
       AppIcon.party-settings__icon(name="tabler:clock" :width="18" :height="18")
@@ -75,16 +75,16 @@ section.party-card.party-settings
         //- the only setting the server still takes during a game
         VanSwitch(:value="settings.autoAdvance" size="20px" active-color="var(--color-brand-02)" @input="patch({ autoAdvance: $event })")
       .party-settings__row
-        AppIcon.party-settings__icon(name="tabler:presentation" :width="18" :height="18")
+        AppIcon.party-settings__icon(name="tabler:message-circle" :width="18" :height="18")
         .party-settings__text
-          strong {{ $t('party.lobby.settings.presentation') }}
-          small {{ $t('party.lobby.settings.presentationSub') }}
+          strong {{ $t('party.lobby.settings.chat') }}
+          small {{ $t('party.lobby.settings.chatSub') }}
         VanSwitch(
-          :value="settings.presentation"
+          :value="settings.chat"
           size="20px"
           active-color="var(--color-brand-02)"
           :disabled="inGame"
-          @input="patch({ presentation: $event })"
+          @input="patch({ chat: $event })"
         )
       .party-settings__row.party-settings__row--stack
         AppIcon.party-settings__icon(name="tabler:trophy" :width="18" :height="18")

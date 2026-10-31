@@ -29,7 +29,6 @@
       PartyHeader.party-lobby__header
       PartyNextGameCard.party-lobby__next(@open-remote="isRemoteOpen = true")
       PartyQueue.party-lobby__queue(@add-game="isAddGameOpen = true")
-      PartyCodeCard.party-lobby__code
       .party-lobby__row
         PartySettings.party-lobby__settings(v-if="isHost")
         PartyPlayerList.party-lobby__players
