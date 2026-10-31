@@ -411,6 +411,7 @@ export default {
       home: 'Anasayfa',
       shop: 'Mağaza',
       quizzes: 'Quizler',
+      party: 'Parti',
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',
@@ -2101,9 +2102,9 @@ export default {
         noSignup: 'Katılmak için üyelik yok'
       },
       steps: {
-        pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da O mu bu mu? quizlerinden birini aç.' },
-        setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Oda ayarlarını lobide ayarla.' },
-        share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; herkes toplanınca başlat.' }
+        pick: { title: 'Oyunları seç', text: 'Lobide Günlük, Limitsiz, Soru-Cevap ya da O mu bu mu? oyunlarını kuyruğa ekle.' },
+        setup: { title: 'Odayı kur', text: '“Parti Başlat”a dokun ya da bir oyunun girişinden “Party kur”u kullan.' },
+        share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; en az 2 kişi toplanınca başlat.' }
       },
       featuresTitle: 'Quiz night için hazır',
       features: {
@@ -2112,7 +2113,7 @@ export default {
         choices: { title: 'O mu bu mu? oylaması', text: 'Herkes oy verir, çoğunluk şampiyonu seçer.' },
         guests: { title: 'Misafirler de gelir', text: 'Arkadaşların hesap açmadan bir takma adla katılır.' },
         leaderboard: { title: 'Canlı sıralama', text: 'Hız ve doğruluk puanı, her turdan sonra liderlik tablosu.' },
-        queue: { title: 'Oyun kuyruğu', text: 'Arka arkaya oynamak için kuyruğa quiz ekle.' },
+        queue: { title: 'Oyun kuyruğu', text: 'Günlük, Limitsiz ve quizleri kuyruğa ekle, arka arkaya oyna.' },
         chat: { title: 'Sohbet ve emoji', text: 'Lobide sohbet et, oyunda emojiyle tepki ver.' },
         password: { title: 'Şifreli oda', text: 'İstersen odanı yalnızca kodu ve şifreyi bilenlere aç.' }
       },
@@ -2125,8 +2126,8 @@ export default {
         correct: '{name} doğru bildi · +{points}'
       },
       ctaTitle: 'Partiyi sen başlat',
-      ctaSub: 'Oda kurmak için giriş yapman yeterli. Bir quiz seç ve “Party kur”a dokun.',
-      cta: 'Quiz seç'
+      ctaSub: 'Giriş yap, odanı kur, oyunları lobide seç.',
+      cta: 'Parti Başlat'
     },
     gate: {
       notice: 'Parti odası oluşturmak için giriş yapman gerekiyor. Arkadaşların hesapları olmadan da odana katılabilir.',
@@ -2167,6 +2168,7 @@ export default {
       close: 'Kapat',
       next: 'Sıradaki oyun',
       start: 'Oyunu başlat',
+      minPlayers: 'Oyunu başlatmak için en az 2 kişi gerekli',
       remote: 'Kumanda',
       waitingHost: 'Kurucu bekleniyor',
       waitingHostSub: 'Oyun başlayınca otomatik geçeceksin',
@@ -2320,6 +2322,7 @@ export default {
       room_not_found: 'Oda bulunamadı',
       bad_password: 'Şifre yanlış',
       room_full: 'Oda dolu',
+      not_enough_players: 'Oyunu başlatmak için en az 2 kişi gerekli',
       room_locked: 'Oda kilitli',
       login_required: 'Bu işlem için giriş yapmalısın',
       already_in_room: 'Zaten bu odadasın',

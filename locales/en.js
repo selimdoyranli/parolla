@@ -409,6 +409,7 @@ export default {
       home: 'Home',
       shop: 'Shop',
       quizzes: 'Quizzes',
+      party: 'Party',
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',
@@ -2078,12 +2079,15 @@ export default {
         noSignup: 'No sign-up to join'
       },
       steps: {
-        pick: { title: 'Pick a quiz', text: 'Open a Q&A or This or That quiz.' },
+        pick: { title: 'Pick the games', text: 'In the lobby, queue Daily, Unlimited, Q&A or This or That games.' },
         setup: {
           title: 'Create the room',
-          text: 'Tap “Start a party”, add a password if you like. Set the room settings in the lobby.'
+          text: 'Tap “Start a party” or use “Start a party” on any game’s intro.'
         },
-        share: { title: 'Share the code', text: 'Send the 6-digit code, the link or the QR code, then start once everyone is in.' }
+        share: {
+          title: 'Share the code',
+          text: 'Send the 6-digit code, the link or the QR code, then start once at least 2 players are in.'
+        }
       },
       featuresTitle: 'Ready for quiz night',
       features: {
@@ -2092,7 +2096,7 @@ export default {
         choices: { title: 'This or That voting', text: 'Everyone votes, the majority picks the champion.' },
         guests: { title: 'Guests welcome', text: 'Friends join with a nickname, no account needed.' },
         leaderboard: { title: 'Live ranking', text: 'Points for speed and accuracy, a leaderboard after every round.' },
-        queue: { title: 'Game queue', text: 'Queue up quizzes to play back to back.' },
+        queue: { title: 'Game queue', text: 'Queue Daily, Unlimited and quizzes, play them back to back.' },
         chat: { title: 'Chat and emoji', text: 'Chat in the lobby, react with emoji during the game.' },
         password: { title: 'Private room', text: 'Optionally open your room only to those with the code and password.' }
       },
@@ -2105,8 +2109,8 @@ export default {
         correct: '{name} got it right · +{points}'
       },
       ctaTitle: 'Host the party',
-      ctaSub: 'Just sign in to create a room. Pick a quiz and tap “Start a party”.',
-      cta: 'Pick a quiz'
+      ctaSub: 'Sign in, create your room, pick the games in the lobby.',
+      cta: 'Start a party'
     },
     gate: {
       notice: 'You need to log in to create a party room. Your friends can join your room without an account.',
@@ -2147,6 +2151,7 @@ export default {
       close: 'Close',
       next: 'Next game',
       start: 'Start game',
+      minPlayers: 'At least 2 players are needed to start',
       remote: 'Remote',
       waitingHost: 'Waiting for the host',
       waitingHostSub: 'You will move on automatically when the game starts',
@@ -2300,6 +2305,7 @@ export default {
       room_not_found: 'Room not found',
       bad_password: 'Wrong password',
       room_full: 'The room is full',
+      not_enough_players: 'At least 2 players are needed to start',
       room_locked: 'The room is locked',
       login_required: 'You need to log in for this',
       already_in_room: 'You are already in this room',

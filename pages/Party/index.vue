@@ -34,8 +34,9 @@
             AppIcon(v-for="deco in ctaDecor" :key="deco.icon" :name="deco.icon" :style="deco.style" :width="deco.size" :height="deco.size")
           h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
           p.party-cta__sub {{ $t('party.landing.ctaSub') }}
-          nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
-            AppIcon(name="tabler:list-search" :width="18" :height="18")
+          //- an empty lobby: games get queued there
+          button.party-cta__button(type="button" :disabled="loading" @click="startParty")
+            AppIcon(name="tabler:confetti" :width="18" :height="18")
             | {{ $t('party.landing.cta') }}
       PartyLiveLobbyDemo
 
@@ -58,8 +59,9 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, useContext, useRouter, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useContext, useRouter, useStore, useMeta } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
+import { usePartyCreate } from '@/composables/usePartyCreate'
 
 // only what party rooms actually do (parolla-ws src/channels/party)
 const FACTS = [
@@ -67,7 +69,7 @@ const FACTS = [
   { key: 'live', icon: 'tabler:bolt' },
   { key: 'noSignup', icon: 'tabler:user-check' }
 ]
-const STEPS = ['pick', 'setup', 'share']
+const STEPS = ['setup', 'pick', 'share']
 const CTA_DECOR = [
   { icon: 'tabler:confetti', size: 56, style: { top: '-8px', left: '-6px', transform: 'rotate(-18deg)' } },
   { icon: 'tabler:trophy', size: 44, style: { top: '14px', right: '8px', transform: 'rotate(14deg)' } },
@@ -90,8 +92,10 @@ export default defineComponent({
   components: { Button },
   layout: 'Default/Default.layout',
   setup() {
-    const { i18n, localePath } = useContext()
+    const { i18n, localePath, $auth } = useContext()
+    const store = useStore()
     const router = useRouter()
+    const { loading, create } = usePartyCreate()
     const code = ref('')
     const digits = computed(() => code.value.replace(/\D/g, ''))
 
@@ -116,7 +120,10 @@ export default defineComponent({
       if (digits.value.length === 6) router.push(localePath({ name: 'Party-code', params: { code: digits.value } }))
     }
 
-    return { code, digits, format, join, facts: FACTS, steps: STEPS, ctaDecor: CTA_DECOR, features: FEATURES }
+    // only logged-in users host; the server rejects guests too
+    const startParty = () => ($auth.loggedIn ? create() : store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true))
+
+    return { code, digits, format, join, loading, startParty, facts: FACTS, steps: STEPS, ctaDecor: CTA_DECOR, features: FEATURES }
   },
   head: {}
 })
@@ -436,9 +443,12 @@ export default defineComponent({
     font-weight: 800;
     text-decoration: none;
     background: #fff;
+    border: 0;
     border-radius: 999px;
+    cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:disabled {
       color: var(--color-brand-02);
       opacity: 0.9;
     }

@@ -27,10 +27,9 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watch, useStore, useContext, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
 import { Switch, Button } from 'vant'
-import { usePartySocket } from '@/composables/usePartySocket'
-import { wsTypeEnum } from '@/enums/wsType.enum'
+import { usePartyCreate } from '@/composables/usePartyCreate'
 
 export default defineComponent({
   components: { VanSwitch: Switch, Button },
@@ -38,44 +37,17 @@ export default defineComponent({
     roomId: { type: String, required: true }
   },
   setup(props) {
-    const store = useStore()
-    const router = useRouter()
-    const { i18n, localePath } = useContext()
-    // lazy: the socket opens on "Odayı kur", not when the panel expands; the room page picks up the same socket
-    const { send, open } = usePartySocket({ lazy: true })
+    const { loading, create: createRoom } = usePartyCreate()
     const passwordOn = ref(false)
     const password = ref('')
     const isPasswordVisible = ref(false)
-    const loading = ref(false)
     const canSubmit = computed(() => !passwordOn.value || Boolean(password.value.trim()))
 
     const create = () => {
-      if (loading.value || !canSubmit.value) return
+      if (!canSubmit.value) return
 
-      loading.value = true
-      open()
-      send(wsTypeEnum.PARTY_CREATE, {
-        roomId: props.roomId,
-        locale: i18n.locale,
-        settings: { password: passwordOn.value ? password.value.trim() : null }
-      })
+      createRoom({ roomId: props.roomId, settings: { password: passwordOn.value ? password.value.trim() : null } })
     }
-
-    // seated: the room page sees the room already in the store and sends no create / join of its own
-    watch(
-      () => store.state.party.room && store.state.party.room.code,
-      code => {
-        if (code && loading.value) router.push(localePath({ name: 'Party-code', params: { code } }))
-      }
-    )
-
-    // the store already toasts the error; a dropped socket would never answer
-    watch(
-      () => [store.state.party.error, store.state.party.status],
-      ([err, status]) => {
-        if (loading.value && !store.state.party.room && (err || status === 'disconnected')) loading.value = false
-      }
-    )
 
     return {
       passwordOn,

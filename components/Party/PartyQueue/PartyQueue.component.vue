@@ -16,7 +16,9 @@ section.party-card.party-queue
     )
       span.party-queue__index {{ index + 1 }}
       QuizCover.party-queue__cover(:room="item")
-        span.party-queue__initials(v-if="!hasPhoto(item)") {{ initialsOf(item) }}
+        span.party-queue__initials(v-if="!hasPhoto(item)")
+          AppIcon(v-if="modeIcon(item)" :name="modeIcon(item)" :width="22" :height="22")
+          template(v-else) {{ initialsOf(item) }}
       .party-queue__info
         strong.party-queue__title {{ item.title }}
         .party-queue__pills
@@ -78,10 +80,12 @@ export default defineComponent({
 
     const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
     const initialsOf = room => getInitials(room.title)
+    // daily / unlimited sets have no cover: show their mode icon instead of initials
+    const modeIcon = room => ({ daily: 'tabler:calendar-event', unlimited: 'tabler:infinity' }[room.roomId])
     // daily / unlimited sets travel as qa quizzes; label them by their mode id
     const typeOf = room => (['daily', 'unlimited'].includes(room.roomId) ? room.roomId : room.quizType)
 
-    return { queue, isHost, locked, move, remove, play, hasPhoto, initialsOf, typeOf }
+    return { queue, isHost, locked, move, remove, play, hasPhoto, initialsOf, typeOf, modeIcon }
   }
 })
 </script>

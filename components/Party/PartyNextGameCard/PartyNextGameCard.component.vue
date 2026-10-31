@@ -2,7 +2,9 @@
 section.party-next-game
   .party-next-game__row(v-if="next")
     QuizCover.party-next-game__cover(:room="next")
-      span.party-next-game__initials(v-if="!hasPhoto(next)") {{ initialsOf(next) }}
+      span.party-next-game__initials(v-if="!hasPhoto(next)")
+        AppIcon(v-if="modeIcon(next)" :name="modeIcon(next)" :width="40" :height="40")
+        template(v-else) {{ initialsOf(next) }}
     .party-next-game__info
       span.party-next-game__eyebrow {{ $t('party.lobby.next') }}
       strong.party-next-game__title {{ next.title }}
@@ -48,10 +50,12 @@ export default defineComponent({
 
     const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
     const initialsOf = room => getInitials(room.title)
+    // daily / unlimited sets have no cover: show their mode icon instead of initials
+    const modeIcon = room => ({ daily: 'tabler:calendar-event', unlimited: 'tabler:infinity' }[room.roomId])
     // daily / unlimited sets travel as qa quizzes; label them by their mode id
     const typeOf = room => (['daily', 'unlimited'].includes(room.roomId) ? room.roomId : room.quizType)
 
-    return { isHost, settings, next, hasPhoto, initialsOf, typeOf }
+    return { isHost, settings, next, hasPhoto, initialsOf, typeOf, modeIcon }
   }
 })
 </script>
