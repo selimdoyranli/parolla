@@ -2208,6 +2208,7 @@ export default {
         title: 'Oda ayarları',
         inGame: 'Oyun sürerken sadece oto mod değiştirilebilir.',
         listed: 'Listede göster',
+        presentationListed: 'Listede gösterilen odalarda sunum modu kullanılamaz.',
         listedSub: 'Arkadaşın yoksa üzülme, bu parti odası herkese listelenir ve biri seninle oynamak için katılabilir',
         lock: 'Odayı kilitle',
         lockSub: 'Oyun başlayana kadar kodu veya bağlantısı olan herkes katılabilir; oyun başlayınca oda kendiliğinden kilitlenir.',

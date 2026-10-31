@@ -34,6 +34,16 @@
     color: var(--color-icon-01);
   }
 
+  // why a switch is off and can't be turned on (beats the row's `small` colour)
+  &__text &__note {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 2px;
+    color: var(--color-brand-02);
+    font-weight: 600;
+  }
+
   &__text {
     display: flex;
     flex: 1;

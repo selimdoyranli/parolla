@@ -40,11 +40,15 @@ section.party-card.party-settings
       .party-settings__text
         strong {{ $t('party.lobby.settings.presentation') }}
         small {{ $t('party.lobby.settings.presentationSub') }}
+        //- listed rooms are for strangers; the server keeps presentation off for them too
+        small.party-settings__note(v-if="settings.listed")
+          AppIcon(name="tabler:info-circle" :width="12" :height="12")
+          | {{ $t('party.lobby.settings.presentationListed') }}
       VanSwitch(
-        :value="settings.presentation"
+        :value="settings.presentation && !settings.listed"
         size="20px"
         active-color="var(--color-brand-02)"
-        :disabled="inGame"
+        :disabled="inGame || settings.listed"
         @input="patch({ presentation: $event })"
       )
     .party-settings__row.party-settings__row--stack

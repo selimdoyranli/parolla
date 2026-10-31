@@ -2191,6 +2191,7 @@ export default {
         title: 'Room settings',
         inGame: 'While a game is running only auto mode can be changed.',
         listed: 'Show in the list',
+        presentationListed: "Presentation mode isn't available in listed rooms.",
         listedSub: 'No friends around? No worries, this party room is listed for everyone and someone can join to play with you',
         lock: 'Lock the room',
         lockSub: 'Until the game starts anyone with the code or link can join; the room locks itself once the game starts.',

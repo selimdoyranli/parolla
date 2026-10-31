@@ -19,10 +19,11 @@ section.party-next-game
       strong {{ $t('party.lobby.emptyQueue') }}
       small(v-if="isHost") {{ $t('party.lobby.emptyQueueHint') }}
 
-  //- host: start + remote; the start button moves to the bottom dock on mobile
+  //- host: start + remote (presentation only: the phone drives the big screen); the start button moves to the
+  //- bottom dock on mobile
   .party-next-game__actions(v-if="isHost")
     PartyStartButton.party-next-game__start
-    button.party-next-game__remote(type="button" @click="$emit('open-remote')")
+    button.party-next-game__remote(v-if="settings.presentation" type="button" @click="$emit('open-remote')")
       AppIcon(name="tabler:device-mobile" :width="16" :height="16")
       span {{ $t('party.lobby.remote') }}
   .party-next-game__waiting(v-else)
