@@ -97,6 +97,15 @@ export const usePartySfx = () => {
     }
   )
 
+  // a new round (question / duel) arrives: tour mode's start sound. Round 1 follows the 3-2-1 GO, which has its own
+  // sound; the countdown resync keeps the same round object, so only a real ROUND_START fires this
+  watch(
+    () => party.round,
+    (round, prev) => {
+      if (round && round !== prev && round.index > 0 && live() && isRoomScreen()) playGame('start')
+    }
+  )
+
   // last 5 s of a round: the solo tick-tock, once (re-armed when the server resyncs the countdown)
   let tickTimer = null
 
