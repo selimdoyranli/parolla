@@ -2102,7 +2102,7 @@ export default {
       },
       stepsTitle: '3 adımda parti',
       steps: {
-        pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da Bu mu O mu quizlerinden birini aç.' },
+        pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da O mu bu mu? quizlerinden birini aç.' },
         setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Oda ayarlarını lobide ayarla.' },
         share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; herkes toplanınca başlat.' }
       },
@@ -2110,7 +2110,7 @@ export default {
       features: {
         presentation: { title: 'Sunum modu', text: 'Sorular senin ekranında, oyuncular telefonlarından cevaplar.' },
         remote: { title: 'Host kumandası', text: 'QR kodu okut, oyunu telefonundan yönet.' },
-        choices: { title: 'Bu mu O mu oylaması', text: 'Herkes oy verir, çoğunluk şampiyonu seçer.' },
+        choices: { title: 'O mu bu mu? oylaması', text: 'Herkes oy verir, çoğunluk şampiyonu seçer.' },
         guests: { title: 'Misafirler de gelir', text: 'Arkadaşların hesap açmadan bir takma adla katılır.' },
         leaderboard: { title: 'Canlı sıralama', text: 'Hız ve doğruluk puanı, her turdan sonra liderlik tablosu.' },
         queue: { title: 'Oyun kuyruğu', text: 'Arka arkaya oynamak için kuyruğa quiz ekle.' },
@@ -2131,7 +2131,7 @@ export default {
     add: {
       title: 'Oyun ekle',
       inQueue: 'Kuyrukta {count} oyun',
-      search: { qa: 'Soru-Cevap quizlerinde ara…', choices: 'Bu mu O mu quizlerinde ara…' },
+      search: { qa: 'Soru-Cevap quizlerinde ara…', choices: 'O mu bu mu? quizlerinde ara…' },
       empty: 'Quiz bulunamadı',
       typeLabel: 'Quiz Türü:',
       added: 'Kuyrukta',
@@ -2163,7 +2163,7 @@ export default {
       presentationHost: 'Sunum modu: sorular senin ekranında görünür, oyuncular kendi cihazından cevaplar.',
       emptyQueue: 'Kuyrukta oyun yok',
       emptyQueueHint: 'Başlamak için kuyruğa bir oyun ekle',
-      types: { qa: 'Soru-Cevap', choices: 'Bu mu O mu' },
+      types: { qa: 'Soru-Cevap', choices: 'O mu bu mu?' },
       host: 'Kurucu',
       presenting: 'Sunuyor',
       you: 'Sen',
