@@ -29,6 +29,9 @@
             AppIcon(:name="fact.icon" :width="16" :height="16")
             | {{ $t(`party.landing.facts.${fact.key}`) }}
         section.party-cta
+          //- decorative icon pattern behind the copy
+          .party-cta__pattern(aria-hidden="true")
+            AppIcon(v-for="deco in ctaDecor" :key="deco.icon" :name="deco.icon" :style="deco.style" :width="deco.size" :height="deco.size")
           h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
           p.party-cta__sub {{ $t('party.landing.ctaSub') }}
           nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
@@ -65,6 +68,13 @@ const FACTS = [
   { key: 'noSignup', icon: 'tabler:user-check' }
 ]
 const STEPS = ['pick', 'setup', 'share']
+const CTA_DECOR = [
+  { icon: 'tabler:confetti', size: 56, style: { top: '-8px', left: '-6px', transform: 'rotate(-18deg)' } },
+  { icon: 'tabler:trophy', size: 44, style: { top: '14px', right: '8px', transform: 'rotate(14deg)' } },
+  { icon: 'tabler:bolt', size: 36, style: { bottom: '18px', left: '14px', transform: 'rotate(10deg)' } },
+  { icon: 'tabler:mood-smile', size: 52, style: { right: '-8px', bottom: '-10px', transform: 'rotate(-12deg)' } },
+  { icon: 'tabler:sparkles', size: 26, style: { top: '4px', left: '42%', transform: 'rotate(12deg)' } }
+]
 const FEATURES = [
   { key: 'presentation', icon: 'tabler:presentation' },
   { key: 'remote', icon: 'tabler:device-mobile' },
@@ -106,7 +116,7 @@ export default defineComponent({
       if (digits.value.length === 6) router.push(localePath({ name: 'Party-code', params: { code: digits.value } }))
     }
 
-    return { code, digits, format, join, facts: FACTS, steps: STEPS, features: FEATURES }
+    return { code, digits, format, join, facts: FACTS, steps: STEPS, ctaDecor: CTA_DECOR, features: FEATURES }
   },
   head: {}
 })
@@ -185,14 +195,15 @@ export default defineComponent({
 
   &__facts {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
+    flex-wrap: nowrap; // one line, even in the narrow left column
+    gap: 10px;
     justify-content: center;
     margin: 4px 0 0;
     padding: 0;
     color: var(--color-text-02);
     font-weight: 600;
-    font-size: var(--font-size-text-10);
+    font-size: var(--font-size-text-11);
+    white-space: nowrap;
     list-style: none;
 
     li {
@@ -371,6 +382,7 @@ export default defineComponent({
 }
 
 .party-cta {
+  position: relative;
   display: flex;
   flex: 1; // fills the left column so it ends level with the demo card
   flex-direction: column;
@@ -379,10 +391,28 @@ export default defineComponent({
   justify-content: center;
   width: 100%;
   padding: 20px 16px;
+  overflow: hidden;
   color: #fff;
   text-align: center;
-  background: linear-gradient(135deg, var(--color-brand-02), #c83a5a);
+  background: radial-gradient(rgba(#fff, 0.16) 1.2px, transparent 1.4px) 0 0 / 14px 14px,
+    linear-gradient(135deg, var(--color-brand-02), #c83a5a);
   border-radius: 18px;
+
+  > :not(.party-cta__pattern) {
+    position: relative;
+  }
+
+  &__pattern {
+    position: absolute;
+    color: #fff;
+    opacity: 0.18;
+    pointer-events: none;
+    inset: 0;
+
+    > * {
+      position: absolute;
+    }
+  }
 
   &__title {
     margin: 0;
