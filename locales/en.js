@@ -1228,7 +1228,8 @@ export default {
     scoreboard: 'Scoreboard',
     pendingScoreboard: 'Fetching scores',
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
-    loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
+    loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score',
+    points: '{score} points'
   },
   community: {
     list: {
@@ -2288,7 +2289,7 @@ export default {
       backToLobby: 'Back to the lobby',
       waitingHost: 'A new game starts once the host goes back to the lobby',
       answers: 'Answers',
-      answersSub: 'Who wrote what for each question',
+      answersSub: 'Tap a player to see their answers',
       correctAnswer: 'Correct answer',
       question: 'Question {n}',
       noAnswer: 'No answer'

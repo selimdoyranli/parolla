@@ -13,18 +13,20 @@
           strong.scoreboard-list-item-user__username
             PlayerAvatar(:size="20" :user="currentPlayer.user")
             span.scoreboard-list-item-user__name {{ currentPlayer.user.username }}
+              span.gm-username-extra(v-if="currentPlayer.user.role?.name === 'GM'") &nbsp;(GM)
             span.scoreboard-list-item-user__label
               AppIcon.scoreboard-list-item-user__label-icon(name="tabler:target" :width="12" :height="12")
               span.scoreboard-list-item-user__label-text {{ $t('leaderboard.yourRank.label') }}
               span.scoreboard-list-item-user__label-text.scoreboard-list-item-user__label-text--short {{ $t('leaderboard.yourRank.short') }}
 
         .scoreboard-list-item-result(v-if="currentPlayer.results")
-          strong.scoreboard-list-item-result__item
+          strong.scoreboard-list-item-result__item(v-if="currentPlayer.score != null") {{ $t('scoreboard.points', { score: currentPlayer.score }) }}
+          strong.scoreboard-list-item-result__item(v-if="currentPlayer.results.remainTime")
             template {{ currentPlayer.results.remainTime.minutes }}:{{ currentPlayer.results.remainTime.seconds }}
               sup .{{ currentPlayer.results.remainTime.milliseconds }}
           strong.scoreboard-list-item-result__item 🟩 {{ currentPlayer.results.correctAnswers.length }}
           strong.scoreboard-list-item-result__item 🟥 {{ currentPlayer.results.wrongAnswers.length }}
-          strong.scoreboard-list-item-result__item 🟨 {{ currentPlayer.results.passedAnswers.length }}
+          strong.scoreboard-list-item-result__item(v-if="currentPlayer.results.passedAnswers") 🟨 {{ currentPlayer.results.passedAnswers.length }}
 
       ul.scoreboard-list-gamerAnswers(v-if="currentPlayer.results?.gamersAnswers")
         li.scoreboard-list-gamerAnswers-item(
@@ -59,14 +61,17 @@
           strong.scoreboard-list-item-user__username
             PlayerAvatar(:size="20" :user="item.user")
             span.scoreboard-list-item-user__name {{ item.user.username }}
+              span.gm-username-extra(v-if="item.user.role?.name === 'GM'") &nbsp;(GM)
 
+        //- party boards: score, no time / passes
         .scoreboard-list-item-result
-          strong.scoreboard-list-item-result__item
+          strong.scoreboard-list-item-result__item(v-if="item.score != null") {{ $t('scoreboard.points', { score: item.score }) }}
+          strong.scoreboard-list-item-result__item(v-if="item.results.remainTime")
             template {{ item.results.remainTime.minutes }}:{{ item.results.remainTime.seconds }}
               sup .{{ item.results.remainTime.milliseconds }}
           strong.scoreboard-list-item-result__item 🟩 {{ item.results.correctAnswers.length }}
           strong.scoreboard-list-item-result__item 🟥 {{ item.results.wrongAnswers.length }}
-          strong.scoreboard-list-item-result__item 🟨 {{ item.results.passedAnswers.length }}
+          strong.scoreboard-list-item-result__item(v-if="item.results.passedAnswers") 🟨 {{ item.results.passedAnswers.length }}
 
       // Gamer answers
       ul.scoreboard-list-gamerAnswers(v-if="item.results.gamersAnswers")
@@ -155,7 +160,8 @@ export default defineComponent({
     }
 
     const handleClickUser = user => {
-      if (!user?.id) return
+      // party guests have no profile
+      if (!user?.id || user.isGuest) return
       store.commit('profile/SET_PLAYER_ID', user.id)
       store.commit('profile/SET_PLAYER_USERNAME', user.username)
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)

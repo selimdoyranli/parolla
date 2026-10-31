@@ -1246,7 +1246,8 @@ export default {
     scoreboard: 'Skor tablosu',
     pendingScoreboard: 'Skorlar getiriliyor',
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
-    loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
+    loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin',
+    points: '{score} puan'
   },
   community: {
     list: {
@@ -2305,7 +2306,7 @@ export default {
       backToLobby: 'Lobiye dön',
       waitingHost: 'Kurucu lobiye dönünce yeni oyun başlar',
       answers: 'Cevaplar',
-      answersSub: 'Kim hangi soruya ne yazdı',
+      answersSub: 'Oyuncuya dokun, cevaplarını gör',
       correctAnswer: 'Doğru cevap',
       question: '{n}. soru',
       noAnswer: 'Cevap yok'
