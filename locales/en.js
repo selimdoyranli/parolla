@@ -1230,7 +1230,12 @@ export default {
     pendingScoreboard: 'Fetching scores',
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
     loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score',
-    points: '{score} points'
+    points: '{score} points',
+    answerTime: {
+      short: '{s} s',
+      title: 'Answer time',
+      info: 'Shows how long it took to answer.'
+    }
   },
   community: {
     list: {
@@ -2308,6 +2313,7 @@ export default {
         title: 'Ranking and answers as a file',
         json: 'Download JSON',
         excel: 'Download Excel',
+        seconds: '{s} s',
         sheets: { ranking: 'Ranking', answers: 'Answers', questions: 'Questions', result: 'Result' },
         cols: {
           rank: 'Rank',

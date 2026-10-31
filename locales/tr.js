@@ -1248,7 +1248,12 @@ export default {
     pendingScoreboard: 'Skorlar getiriliyor',
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
     loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin',
-    points: '{score} puan'
+    points: '{score} puan',
+    answerTime: {
+      short: '{s} sn',
+      title: 'Cevap süresi',
+      info: 'Ne kadar sürede cevap verdiğini gösterir.'
+    }
   },
   community: {
     list: {
@@ -2325,6 +2330,7 @@ export default {
         title: 'Sıralama ve cevaplar dosya olarak',
         json: 'JSON indir',
         excel: 'Excel indir',
+        seconds: '{s} sn',
         sheets: { ranking: 'Sıralama', answers: 'Cevaplar', questions: 'Sorular', result: 'Sonuç' },
         cols: {
           rank: 'Sıra',

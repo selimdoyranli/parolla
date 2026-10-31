@@ -47,7 +47,7 @@ export default defineComponent({
         const gamersAnswers = props.review.map((q, index) => {
           const a = q.answers.find(x => x.playerId === p.playerId)
 
-          return { index, field: a ? a.answer : '', isCorrect: Boolean(a?.correct), isWrong: !a?.correct }
+          return { index, field: a ? a.answer : '', isCorrect: Boolean(a?.correct), isWrong: !a?.correct, ms: a ? a.ms : null }
         })
 
         return {

@@ -86,6 +86,14 @@
             span(v-if="getGamerAnswer({ item, question, questionIndex })?.isPassed") {{ $t('gameScene.pass').toLocaleUpperCase('tr') }}
             span(v-else-if="getGamerAnswer({ item, question, questionIndex })?.field?.length > 0")
               | {{ getGamerAnswer({ item, question, questionIndex })?.field?.toLocaleUpperCase('tr') }}
+              //- party boards: how long into the round the answer came (tap: what the number means)
+              button.scoreboard-list-gamerAnswers-item__time(
+                v-if="getGamerAnswer({ item, question, questionIndex }).ms != null"
+                type="button"
+                @click.stop="showAnswerTimeInfo"
+              )
+                AppIcon(name="tabler:clock" :width="12" :height="12")
+                | {{ formatAnswerTime(getGamerAnswer({ item, question, questionIndex }).ms) }}
             span(v-else) -
 
       template(v-else)
@@ -100,8 +108,8 @@
 </template>
 
 <script>
-import { defineComponent, useStore, ref, computed } from '@nuxtjs/composition-api'
-import { Collapse, CollapseItem, Empty, Button, Loading } from 'vant'
+import { defineComponent, useStore, useContext, ref, computed } from '@nuxtjs/composition-api'
+import { Collapse, CollapseItem, Empty, Button, Loading, Dialog } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default defineComponent({
@@ -142,6 +150,22 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
+    const { i18n } = useContext()
+
+    // ms into the round → "4,2 sn"
+    const formatAnswerTime = ms =>
+      i18n.t('scoreboard.answerTime.short', {
+        s: (ms / 1000).toLocaleString(i18n.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+      })
+
+    const showAnswerTimeInfo = () =>
+      Dialog.alert({
+        title: i18n.t('scoreboard.answerTime.title'),
+        message: i18n.t('scoreboard.answerTime.info'),
+        confirmButtonText: i18n.t('general.close'),
+        confirmButtonColor: 'var(--color-brand-02)',
+        getContainer: 'body'
+      }).catch(() => {})
 
     const boardQuestions = computed(() => props.questions ?? store.getters['creator/questions'] ?? [])
 
@@ -206,7 +230,9 @@ export default defineComponent({
       handleInfiniteLoading,
       handleClickUser,
       getGamerAnswer,
-      getGamerAnswerClasses
+      getGamerAnswerClasses,
+      formatAnswerTime,
+      showAnswerTimeInfo
     }
   }
 })

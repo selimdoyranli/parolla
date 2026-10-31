@@ -193,6 +193,25 @@
           width: 50%;
         }
       }
+
+      // party: answer time chip after the answer
+      &__time {
+        display: inline-flex;
+        gap: 3px;
+        align-items: center;
+        margin-inline-start: 6px;
+        padding: 1px 7px;
+        color: var(--color-text-02);
+        font: inherit;
+        font-size: var(--font-size-text-11);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        vertical-align: middle;
+        background: var(--color-ui-03);
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+      }
     }
   }
 

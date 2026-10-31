@@ -65,7 +65,10 @@ export default defineComponent({
             name: a.name || nameOf(a.playerId),
             answer: a.answer,
             correct: a.correct,
-            points: a.points
+            points: a.points,
+            // how long into the round they answered
+            responseMs: a.ms ?? null,
+            responseSeconds: a.ms == null ? null : Math.round(a.ms / 100) / 10
           }))
         })),
         ...(isChoices && {
@@ -90,7 +93,14 @@ export default defineComponent({
       const cell = (q, playerId) => {
         const a = q.answers.find(x => x.playerId === playerId)
 
-        return a ? `${a.answer} ${a.correct ? '✓' : '✗'}` : '-'
+        if (!a) return '-'
+
+        const time =
+          a.responseSeconds == null
+            ? ''
+            : ` · ${i18n.t('party.final.download.seconds', { s: a.responseSeconds.toLocaleString(i18n.locale) })}`
+
+        return `${a.answer} ${a.correct ? '✓' : '✗'}${time}`
       }
 
       const out = []
