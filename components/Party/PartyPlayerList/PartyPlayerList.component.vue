@@ -14,8 +14,10 @@ section.party-card.party-player-list
       :key="player.id"
       :class="{ 'party-player-list__item--me': player.id === myId, 'party-player-list__item--offline': !player.connected }"
     )
-      PlayerAvatar(:user="toUser(player)" :size="30")
-      span.party-player-list__name {{ player.name }}
+      PlayerAvatar(:user="toUser(player)" :size="30" :open-player-dialog-on-click="!isGuest(player)")
+      span.party-player-list__name.party-user-name(:class="{ 'is-link': !isGuest(player) }" @click="openPlayer(player)")
+        | {{ player.name }}
+        span.gm-username-extra(v-if="isGm(player)") &nbsp;(GM)
       span.party-pill.party-pill--brand(v-if="player.isHost")
         AppIcon(name="tabler:crown" :width="12" :height="12")
         | {{ $t('party.lobby.host') }}
@@ -44,8 +46,10 @@ section.party-card.party-player-list
     .party-player-list__manage-body
       p.party-player-list__manage-hint {{ others.length ? $t('party.lobby.kickHint') : $t('party.lobby.noOthers') }}
       .party-player-list__manage-row(v-for="player in others" :key="player.id")
-        PlayerAvatar(:user="toUser(player)" :size="32")
-        span.party-player-list__name {{ player.name }}
+        PlayerAvatar(:user="toUser(player)" :size="32" :open-player-dialog-on-click="!isGuest(player)")
+        span.party-player-list__name.party-user-name(:class="{ 'is-link': !isGuest(player) }" @click="openPlayer(player)")
+          | {{ player.name }}
+          span.gm-username-extra(v-if="isGm(player)") &nbsp;(GM)
         Button(type="danger" size="small" plain round native-type="button" @click="confirmKick(player)")
           | {{ $t('party.lobby.kick') }}
 </template>
@@ -54,6 +58,7 @@ section.party-card.party-player-list
 import { defineComponent, ref, computed, inject, useStore, useContext } from '@nuxtjs/composition-api'
 import { Button, Dialog } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
+import { usePartyUser } from '@/composables/usePartyUser'
 
 export default defineComponent({
   components: { Button, Dialog: Dialog.Component },
@@ -80,14 +85,7 @@ export default defineComponent({
 
     const others = computed(() => players.value.filter(p => p.id !== myId.value))
 
-    const toUser = p => ({
-      id: p.id,
-      username: p.name,
-      diceBear: p.diceBear,
-      profilePhoto: p.profilePhoto,
-      avatarSource: p.avatarSource,
-      isGuest: p.isGuest
-    })
+    const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
 
     const confirmKick = player => {
       Dialog.confirm({
@@ -100,7 +98,21 @@ export default defineComponent({
         .catch(() => {})
     }
 
-    return { isManageOpen, players, myId, isHost, capacity, emptySlots, presenterId, others, toUser, confirmKick }
+    return {
+      isManageOpen,
+      players,
+      myId,
+      isHost,
+      capacity,
+      emptySlots,
+      presenterId,
+      others,
+      toUser,
+      isGuest,
+      isGm,
+      openPlayer,
+      confirmKick
+    }
   }
 })
 </script>

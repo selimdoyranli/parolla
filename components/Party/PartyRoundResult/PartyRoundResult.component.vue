@@ -62,8 +62,10 @@
           :class="{ 'party-round-result__row--me': row.playerId === myId }"
         )
           span.party-round-result__rank {{ index + 1 }}
-          PlayerAvatar(:user="toUser(row)" :size="24")
-          span.party-round-result__name {{ row.name }}
+          PlayerAvatar(:user="toUser(row)" :size="24" :open-player-dialog-on-click="!isGuest(row)")
+          span.party-round-result__name.party-user-name(:class="{ 'is-link': !isGuest(row) }" @click="openPlayer(row)")
+            | {{ row.name }}
+            span.gm-username-extra(v-if="isGm(row)") &nbsp;(GM)
           span.party-pill.party-pill--brand(v-if="row.playerId === myId") {{ $t('party.lobby.you') }}
           span.party-round-result__delta(v-if="row.rankDelta" :class="row.rankDelta > 0 ? 'is-up' : 'is-down'")
             | {{ row.rankDelta > 0 ? '▲' : '▼' }}{{ Math.abs(row.rankDelta) }}
@@ -77,6 +79,7 @@ import { defineComponent, ref, computed, watch, inject, onUnmounted, useStore, u
 import { Button } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { answerTypeEnum, choiceTypeEnum } from '@/enums/quiz.enum'
+import { usePartyUser } from '@/composables/usePartyUser'
 
 const AUTO_NEXT_MS = 5000
 
@@ -181,13 +184,7 @@ export default defineComponent({
 
     const next = () => send(wsTypeEnum.PARTY_NEXT)
 
-    const toUser = row => ({
-      id: row.playerId,
-      username: row.name,
-      diceBear: row.diceBear,
-      profilePhoto: row.profilePhoto,
-      avatarSource: row.avatarSource
-    })
+    const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
 
     return {
       roundEnd,
@@ -209,7 +206,10 @@ export default defineComponent({
       nextLeftSec,
       nextFraction,
       next,
-      toUser
+      toUser,
+      isGuest,
+      isGm,
+      openPlayer
     }
   }
 })

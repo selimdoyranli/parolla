@@ -48,6 +48,15 @@
   }
 }
 
+// a party user's name: opens their player dialog (guests have no profile)
+.party-user-name.is-link {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .party-pill {
   display: inline-flex;
   gap: 4px;

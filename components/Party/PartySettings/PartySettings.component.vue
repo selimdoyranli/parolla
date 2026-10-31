@@ -115,7 +115,7 @@ import { defineComponent, ref, computed, inject, useStore } from '@nuxtjs/compos
 import { Switch, Button, Collapse, CollapseItem } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
-const DURATIONS = [15, 30, 45, 60, 90, 120]
+const DURATIONS = [30, 45, 60, 90, 120] // same list as parolla-ws roomManager (30 s minimum)
 const BOARD_MODES = ['always', 'end', 'never']
 
 export default defineComponent({

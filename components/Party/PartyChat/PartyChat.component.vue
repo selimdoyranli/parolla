@@ -52,7 +52,9 @@ export default defineComponent({
 
         const p = players.value.find(x => x.id === m.playerId)
 
-        return p ? { ...m, diceBear: p.diceBear, profilePhoto: p.profilePhoto, avatarSource: p.avatarSource } : m
+        return p
+          ? { ...m, diceBear: p.diceBear, profilePhoto: p.profilePhoto, avatarSource: p.avatarSource, role: p.role, loadout: p.loadout }
+          : m
       })
     )
 
@@ -60,7 +62,8 @@ export default defineComponent({
       messages: messages.value,
       disabled: !enabled.value,
       placeholder: enabled.value ? null : i18n.t('party.lobby.chat.off'),
-      playerActionsContext: null
+      playerActionsContext: null,
+      openPlayerDialogOnClick: true
     }))
 
     const preview = computed(() => {

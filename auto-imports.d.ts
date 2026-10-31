@@ -39,6 +39,7 @@ declare global {
   const usePartyCreate: typeof import('./composables/usePartyCreate.js')['usePartyCreate']
   const usePartySfx: typeof import('./composables/usePartySfx.js')['usePartySfx']
   const usePartySocket: typeof import('./composables/usePartySocket.js')['usePartySocket']
+  const usePartyUser: typeof import('./composables/usePartyUser.js')['usePartyUser']
   const useRoomShare: typeof import('./composables/useRoomShare.js')['useRoomShare']
   const useScroll: typeof import('./composables/useScroll.js')['default']
   const useSfx: typeof import('./composables/useSfx.js')['useSfx']

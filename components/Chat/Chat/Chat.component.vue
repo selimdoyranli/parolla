@@ -11,6 +11,7 @@
           v-if="!message.isSystem"
           with-username
           :player-actions-context="playerActionsContext"
+          :open-player-dialog-on-click="openPlayerDialogOnClick"
           :user="buildAvatarUser(message)"
           :size="24"
         )
@@ -121,7 +122,9 @@ export default defineComponent({
     messages: { type: Array, default: null },
     placeholder: { type: String, default: null },
     disabled: { type: Boolean, default: false },
-    playerActionsContext: { type: String, default: 'tour' }
+    playerActionsContext: { type: String, default: 'tour' },
+    // without player actions (party): a tap on a sender opens their player dialog
+    openPlayerDialogOnClick: { type: Boolean, default: false }
   },
   setup(props, { emit }) {
     const { $auth } = useContext()

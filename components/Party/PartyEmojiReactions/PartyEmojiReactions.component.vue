@@ -9,7 +9,9 @@
       @animationend="remove(item.key)"
     )
       | {{ item.emoji }}
-      small.party-emoji-reactions__name(v-if="item.name") {{ item.name }}
+      small.party-emoji-reactions__name(v-if="item.name")
+        | {{ item.name }}
+        span.gm-username-extra(v-if="item.isGm") &nbsp;(GM)
 
   .party-emoji-reactions__dock(v-if="canSend")
     .party-emoji-reactions__picker(v-if="isOpen")
@@ -43,9 +45,15 @@ export default defineComponent({
     )
 
     // the sender's nickname from the room (a player who left meanwhile just gets no label)
-    const nameOf = id => store.getters['party/players'].find(p => p.id === id)?.name || ''
+    const playerOf = id => store.getters['party/players'].find(p => p.id === id)
     const floats = computed(() =>
-      store.state.party.emojis.filter(e => e.key > startKey).map(e => ({ ...e, name: nameOf(e.playerId), left: 8 + ((e.key * 37) % 84) }))
+      store.state.party.emojis
+        .filter(e => e.key > startKey)
+        .map(e => {
+          const p = playerOf(e.playerId)
+
+          return { ...e, name: p?.name || '', isGm: p?.role?.name === 'GM', left: 8 + ((e.key * 37) % 84) }
+        })
     )
 
     const remove = key => store.commit('party/REMOVE_EMOJI', key)

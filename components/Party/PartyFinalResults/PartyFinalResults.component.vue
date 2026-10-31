@@ -28,8 +28,10 @@
           :key="row.playerId"
           :class="[`party-final-results__step--${row.rank}`, { 'party-final-results__step--me': row.playerId === myId }]"
         )
-          PlayerAvatar(:user="toUser(row)" :size="row.rank === 1 ? 56 : 44")
-          span.party-final-results__step-name {{ row.name }}
+          PlayerAvatar(:user="toUser(row)" :size="row.rank === 1 ? 56 : 44" :open-player-dialog-on-click="!isGuest(row)")
+          span.party-final-results__step-name.party-user-name(:class="{ 'is-link': !isGuest(row) }" @click="openPlayer(row)")
+            | {{ row.name }}
+            span.gm-username-extra(v-if="isGm(row)") &nbsp;(GM)
           b.party-final-results__step-score {{ row.score }}
           span.party-final-results__step-sub {{ $t('party.game.correctCount', { n: row.correctCount }) }}
           .party-final-results__block
@@ -44,8 +46,10 @@
             :class="{ 'party-final-results__row--me': row.playerId === myId }"
           )
             span.party-final-results__rank {{ row.rank }}
-            PlayerAvatar(:user="toUser(row)" :size="24")
-            span.party-final-results__name {{ row.name }}
+            PlayerAvatar(:user="toUser(row)" :size="24" :open-player-dialog-on-click="!isGuest(row)")
+            span.party-final-results__name.party-user-name(:class="{ 'is-link': !isGuest(row) }" @click="openPlayer(row)")
+              | {{ row.name }}
+              span.gm-username-extra(v-if="isGm(row)") &nbsp;(GM)
             span.party-final-results__correct {{ $t('party.game.correctCount', { n: row.correctCount }) }}
             b.party-final-results__score {{ row.score }}
 
@@ -62,6 +66,7 @@
 <script>
 import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
 import { choiceTypeEnum } from '@/enums/quiz.enum'
+import { usePartyUser } from '@/composables/usePartyUser'
 
 export default defineComponent({
   setup() {
@@ -81,13 +86,7 @@ export default defineComponent({
     // media without a note is identified by its thumbnail
     const choiceLabel = choice => (choice.choiceType === choiceTypeEnum.TEXT ? choice.text : choice.mediaNote) || ''
 
-    const toUser = row => ({
-      id: row.playerId,
-      username: row.name,
-      diceBear: row.diceBear,
-      profilePhoto: row.profilePhoto,
-      avatarSource: row.avatarSource
-    })
+    const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
 
     return {
       final,
@@ -99,7 +98,10 @@ export default defineComponent({
       podium,
       rest,
       choiceLabel,
-      toUser
+      toUser,
+      isGuest,
+      isGm,
+      openPlayer
     }
   }
 })

@@ -93,6 +93,9 @@ export default defineComponent({
     const { generateAvatarConfigByUsername } = useAvatar()
 
     const openPlayerDialog = async () => {
+      // guests (draw / party) have no profile
+      if (props.user?.isGuest) return
+
       store.commit('profile/SET_PLAYER_ID', props.user.id)
       store.commit('profile/SET_PLAYER_USERNAME', props.user.username)
       store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
