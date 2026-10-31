@@ -34,7 +34,7 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
           AppIcon.stats-dialog-tab-title__icon(name="tabler:pencil-question" :width="20" :height="20")
           span.stats-dialog-tab-title__value {{ $t('tourMode.lastAnswers.title') }}
       .party-chat-dialog__tab.party-chat-dialog__tab--answers
-        //- tour's colours: green right, red wrong (the answer itself stays hidden)
+        //- who has answered this round (never what or whether right, until the round ends)
         PlayerList(:items="lastAnswers" player-actions-context="party")
           template(#empty)
             Empty(:description="$t('tourMode.lastAnswers.empty.description')")

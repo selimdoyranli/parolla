@@ -13,13 +13,14 @@ export default {
 
     return !!r && !!r.game && !!r.settings && !!r.settings.chat && !s.cancelled
   },
-  // tour's "son cevaplar" rows: this round's answerers, newest first, green / red (PlayerList's isCorrect)
+  // "son cevaplar" rows: this round's answerers, newest first. No right / wrong colour: the server only says who
+  // answered, so nobody learns the answer before the round ends
   lastAnswers: s =>
     s.recentAnswers
       .map(r => {
         const p = ((s.room && s.room.players) || []).find(x => x.id === r.playerId)
 
-        return p && { ...partyToUser(p), isCorrect: r.correct }
+        return p && partyToUser(p)
       })
       .filter(Boolean),
   chatUnread: s => Math.max(0, s.chat.length - s.chatSeen),

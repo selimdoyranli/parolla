@@ -20,7 +20,7 @@
       //- chat on: like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
       //- too when it fits beside the game column
       template(v-if="isGameChat")
-        //- tour's split panel: this round's answers (green / red) on top, the chat below
+        //- tour's split panel: who has answered this round on top, the chat below
         ChatPanel.chat-panel--split.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
           template(#content-prepend)
             .section-title {{ $t('tourMode.lastAnswers.title') }}
