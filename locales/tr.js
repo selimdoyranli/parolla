@@ -2329,6 +2329,7 @@ export default {
       bad_password: 'Şifre yanlış',
       room_full: 'Oda dolu',
       not_enough_players: 'Oyunu başlatmak için en az 2 kişi gerekli',
+      rate_limited: 'Çok hızlı mesaj gönderiyorsun. {seconds} saniye sonra tekrar dene.',
       room_locked: 'Oda kilitli',
       login_required: 'Bu işlem için giriş yapmalısın',
       already_in_room: 'Zaten bu odadasın',

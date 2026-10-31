@@ -14,19 +14,33 @@
         span.gm-username-extra(v-if="item.isGm") &nbsp;(GM)
 
   .party-emoji-reactions__dock(v-if="canSend")
+    //- after a burst the server holds reactions for a while: every button shows the time left as a draining ring
     .party-emoji-reactions__picker(v-if="isOpen")
-      button.party-emoji-reactions__pick(v-for="emoji in emojis" :key="emoji" type="button" @click="sendEmoji(emoji)") {{ emoji }}
+      button.party-emoji-reactions__pick(
+        v-for="emoji in emojis"
+        :key="emoji"
+        type="button"
+        :class="{ 'is-cooling': cooling }"
+        :disabled="cooling"
+        @click="sendEmoji(emoji)"
+      )
+        | {{ emoji }}
+        svg.party-emoji-reactions__ring(v-if="cooling" viewBox="0 0 36 36" aria-hidden="true")
+          circle(cx="18" cy="18" r="16" pathLength="100" :stroke-dashoffset="100 - left * 100")
     button.party-emoji-reactions__toggle(
       type="button"
+      :class="{ 'is-cooling': cooling }"
       :aria-label="$t('party.emoji.open')"
       :aria-expanded="String(isOpen)"
       @click="isOpen = !isOpen"
     )
       AppIcon(:name="isOpen ? 'tabler:x' : 'tabler:mood-smile'" :width="20" :height="20")
+      svg.party-emoji-reactions__ring(v-if="cooling" viewBox="0 0 36 36" aria-hidden="true")
+        circle(cx="18" cy="18" r="16" pathLength="100" :stroke-dashoffset="100 - left * 100")
 </template>
 
 <script>
-import { defineComponent, ref, computed, inject, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, watch, inject, onBeforeUnmount, useStore } from '@nuxtjs/composition-api'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
 // same list the server accepts (parolla-ws messageHandler PARTY_EMOJIS)
@@ -56,9 +70,41 @@ export default defineComponent({
 
     const remove = key => store.commit('party/REMOVE_EMOJI', key)
 
-    const sendEmoji = emoji => send(wsTypeEnum.PARTY_EMOJI, { emoji })
+    // server cooldown (party_error emoji_cooldown): `left` runs 1 → 0 while it lasts
+    const cooldown = computed(() => store.state.party.emojiCooldown)
+    const now = ref(Date.now())
+    let ticker = null
 
-    return { emojis: PARTY_EMOJIS, isOpen, canSend, floats, remove, sendEmoji }
+    const left = computed(() => (cooldown.value ? Math.max(0, cooldown.value.until - now.value) / cooldown.value.ms : 0))
+    const cooling = computed(() => left.value > 0)
+
+    watch(
+      cooldown,
+      value => {
+        clearInterval(ticker)
+        now.value = Date.now()
+
+        if (!value) return
+
+        ticker = setInterval(() => {
+          now.value = Date.now()
+
+          if (now.value >= value.until) {
+            clearInterval(ticker)
+            store.commit('party/SET_EMOJI_COOLDOWN', null)
+          }
+        }, 100)
+      },
+      { immediate: true }
+    )
+
+    onBeforeUnmount(() => clearInterval(ticker))
+
+    const sendEmoji = emoji => {
+      if (!cooling.value) send(wsTypeEnum.PARTY_EMOJI, { emoji })
+    }
+
+    return { emojis: PARTY_EMOJIS, isOpen, canSend, floats, remove, cooling, left, sendEmoji }
   }
 })
 </script>

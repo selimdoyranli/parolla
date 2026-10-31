@@ -82,6 +82,9 @@ export default {
   SET_CHAT_SEEN(s, n) {
     s.chatSeen = n
   },
+  SET_EMOJI_COOLDOWN(s, cooldown) {
+    s.emojiCooldown = cooldown
+  },
   REMOVE_EMOJI(s, key) {
     s.emojis = s.emojis.filter(e => e.key !== key)
   },

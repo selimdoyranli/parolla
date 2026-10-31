@@ -2312,6 +2312,7 @@ export default {
       bad_password: 'Wrong password',
       room_full: 'The room is full',
       not_enough_players: 'At least 2 players are needed to start',
+      rate_limited: 'You are sending messages too fast. Try again in {seconds} seconds.',
       room_locked: 'The room is locked',
       login_required: 'You need to log in for this',
       already_in_room: 'You are already in this room',

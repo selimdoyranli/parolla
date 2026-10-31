@@ -53,6 +53,7 @@
 
   &__toggle,
   &__pick {
+    position: relative;
     display: grid;
     padding: 0;
     background: var(--color-ui-02);
@@ -80,8 +81,32 @@
     height: 40px;
     font-size: 22px;
 
-    &:active {
+    &:active:not(:disabled) {
       transform: scale(0.9);
+    }
+
+    &.is-cooling {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  // draining ring over a button while reactions cool down
+  &__ring {
+    position: absolute;
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    transform: rotate(-90deg);
+    pointer-events: none;
+
+    circle {
+      transition: stroke-dashoffset 0.1s linear;
+      fill: none;
+      stroke: var(--color-brand-02);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 100;
     }
   }
 }

@@ -43,6 +43,12 @@ export default {
         commit('PUSH_EMOJI', m)
         break
       case wsTypeEnum.PARTY_ERROR: {
+        // not an error state, no toast: the emoji buttons show the wait as a ring
+        if (m.code === 'emoji_cooldown') {
+          commit('SET_EMOJI_COOLDOWN', { until: Date.now() + m.retryAfterMs, ms: m.retryAfterMs })
+          break
+        }
+
         commit('SET_ERROR', { code: m.code, message: m.message })
         const key = `party.errors.${m.code}`
 
@@ -51,7 +57,10 @@ export default {
           break
         }
 
-        showToast.fail(this.$i18n.te(key) ? this.$i18n.t(key) : m.message || m.code)
+        const text = this.$i18n.te(key) ? this.$i18n.t(key, { seconds: m.retryAfterSeconds }) : m.message || m.code
+
+        // chat spam: tour's rate-limit toast
+        showToast.fail(text, m.code === 'rate_limited' ? { duration: 3000, className: 'rate-limit-toast' } : undefined)
         break
       }
       default:
