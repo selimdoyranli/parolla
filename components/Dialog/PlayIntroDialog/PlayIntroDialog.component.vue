@@ -46,7 +46,7 @@ Dialog.dialog.dialog--scene.play-intro(
           small {{ $t('party.intro.sub') }}
         AppIcon(:name="partyOpen ? 'tabler:chevron-up' : 'tabler:chevron-down'" :width="18" :height="18")
       //- set up in place; /party/new stays only as a deep-link fallback
-      PartyIntroSetup(v-if="partyOpen" :room-id="room.roomId")
+      PartyIntroSetup(v-if="partyOpen" :room-id="isCreator ? room.roomId : mode")
 
     //- daily / unlimited: right under the play button, where the old how-to-play dialog kept it
     DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
@@ -198,9 +198,12 @@ export default defineComponent({
         (room.value.isListed || (!room.value.isAnon && room.value.user?.id === me.value.id))
     )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
-    // party supports QA and Choices; flashcards never
+    // party supports QA and Choices quizzes (never flashcards) and the daily / unlimited word-game sets (party room id = mode)
     const canParty = computed(
-      () => isCreator.value && !props.inGame && [quizTypeEnum.QA, quizTypeEnum.CHOICES].includes(room.value.quizType || quizTypeEnum.QA)
+      () =>
+        !props.inGame &&
+        (['daily', 'unlimited'].includes(props.mode) ||
+          (isCreator.value && [quizTypeEnum.QA, quizTypeEnum.CHOICES].includes(room.value.quizType || quizTypeEnum.QA)))
     )
     const partyOpen = ref(false)
     const sfx = useSfx()

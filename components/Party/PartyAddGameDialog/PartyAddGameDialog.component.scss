@@ -30,6 +30,62 @@
     border: 0;
   }
 
+  &__modes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  &__mode {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    color: var(--color-text-01);
+    text-align: left;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  &__mode-icon {
+    display: grid;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 14%, transparent);
+    border-radius: 10px;
+    place-items: center;
+  }
+
+  &__mode-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-size: var(--font-size-text-9);
+    }
+
+    small {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-11);
+      line-height: 1.3;
+    }
+  }
+
+  &__mode-plus {
+    flex: none;
+    margin-left: auto;
+    color: var(--color-text-03);
+  }
+
   // RoomList's search look
   &__search {
     padding: 0;

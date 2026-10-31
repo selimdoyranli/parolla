@@ -7,7 +7,7 @@ section.party-next-game
       span.party-next-game__eyebrow {{ $t('party.lobby.next') }}
       strong.party-next-game__title {{ next.title }}
       .party-next-game__pills
-        span.party-pill {{ $t(`party.lobby.types.${next.quizType}`) }}
+        span.party-pill {{ $t(`party.lobby.types.${typeOf(next)}`) }}
         span.party-pill(v-if="next.quizType === 'choices'") {{ $t('playIntro.choices', { count: next.choiceCount }) }}
         span.party-pill(v-else) {{ $t('playIntro.questions', { count: next.questionCount }) }}
         span.party-pill(v-if="next.quizType !== 'choices'") {{ $t('party.lobby.settings.seconds', { n: settings.roundDurationSec }) }}
@@ -48,8 +48,10 @@ export default defineComponent({
 
     const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
     const initialsOf = room => getInitials(room.title)
+    // daily / unlimited sets travel as qa quizzes; label them by their mode id
+    const typeOf = room => (['daily', 'unlimited'].includes(room.roomId) ? room.roomId : room.quizType)
 
-    return { isHost, settings, next, hasPhoto, initialsOf }
+    return { isHost, settings, next, hasPhoto, initialsOf, typeOf }
   }
 })
 </script>

@@ -2143,7 +2143,11 @@ export default {
       typeLabel: 'Quiz Türü:',
       added: 'Kuyrukta',
       addedToast: '{title} kuyruğa eklendi',
-      full: 'Kuyruk dolu (en fazla 20 oyun)'
+      full: 'Kuyruk dolu (en fazla 20 oyun)',
+      modes: {
+        daily: { title: 'Günlük', text: 'Bugünün soru seti' },
+        unlimited: { title: 'Limitsiz', text: 'Her seferinde yeni set' }
+      }
     },
     lobby: {
       eyebrow: 'PARTİ LOBİSİ',
@@ -2170,7 +2174,7 @@ export default {
       presentationHost: 'Sunum modu: sorular senin ekranında görünür, oyuncular kendi cihazından cevaplar.',
       emptyQueue: 'Kuyrukta oyun yok',
       emptyQueueHint: 'Başlamak için kuyruğa bir oyun ekle',
-      types: { qa: 'Soru-Cevap', choices: 'O mu bu mu?' },
+      types: { qa: 'Soru-Cevap', choices: 'O mu bu mu?', daily: 'Günlük', unlimited: 'Limitsiz' },
       host: 'Kurucu',
       presenting: 'Sunuyor',
       you: 'Sen',

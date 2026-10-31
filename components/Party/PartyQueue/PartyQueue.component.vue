@@ -20,7 +20,7 @@ section.party-card.party-queue
       .party-queue__info
         strong.party-queue__title {{ item.title }}
         .party-queue__pills
-          span.party-pill {{ $t(`party.lobby.types.${item.quizType}`) }}
+          span.party-pill {{ $t(`party.lobby.types.${typeOf(item)}`) }}
           span.party-pill.party-pill--brand(v-if="index === 0") {{ $t('party.lobby.nextBadge') }}
       .party-queue__controls(v-if="isHost")
         button.party-queue__icon(
@@ -78,8 +78,10 @@ export default defineComponent({
 
     const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
     const initialsOf = room => getInitials(room.title)
+    // daily / unlimited sets travel as qa quizzes; label them by their mode id
+    const typeOf = room => (['daily', 'unlimited'].includes(room.roomId) ? room.roomId : room.quizType)
 
-    return { queue, isHost, locked, move, remove, play, hasPhoto, initialsOf }
+    return { queue, isHost, locked, move, remove, play, hasPhoto, initialsOf, typeOf }
   }
 })
 </script>

@@ -116,7 +116,15 @@ export default defineComponent({
     const revealRoom = computed(() => {
       const g = game.value || {}
 
-      return { roomId: g.roomId, title: g.title, description: g.description, coverPhoto: g.coverPhoto, user: g.creator, isAnon: !g.creator }
+      return {
+        roomId: g.roomId,
+        title: g.title,
+        description: g.description,
+        coverPhoto: g.coverPhoto,
+        user: g.creator,
+        isAnon: !g.creator,
+        noCreator: ['daily', 'unlimited'].includes(g.roomId)
+      }
     })
 
     const stopStart = () => {

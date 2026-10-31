@@ -24,6 +24,21 @@ Dialog.dialog.party-add(
         QuizTypeLabel(:kind="option.key")
     span.party-pill {{ $t('party.add.inQueue', { count: queue.length }) }}
 
+  //- the word-game sets (daily / unlimited) sit above the quiz list; the server loads them by these ids
+  .party-add__modes
+    button.party-add__mode(
+      v-for="mode in modes"
+      :key="mode.id"
+      type="button"
+      @click="add({ roomId: mode.id, title: $t(`party.add.modes.${mode.id}.title`) })"
+    )
+      span.party-add__mode-icon
+        AppIcon(:name="mode.icon" :width="20" :height="20")
+      span.party-add__mode-text
+        strong {{ $t(`party.add.modes.${mode.id}.title`) }}
+        small {{ $t(`party.add.modes.${mode.id}.text`) }}
+      AppIcon.party-add__mode-plus(name="tabler:plus" :width="18" :height="18")
+
   Search.party-add__search(
     v-model="keyword"
     :placeholder="$t(`party.add.search.${type}`)"
@@ -67,6 +82,10 @@ import { useDebounceFn } from '@vueuse/core'
 import { roomTransformer } from '@/transformers'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
+const MODES = [
+  { id: 'daily', icon: 'tabler:calendar-event' },
+  { id: 'unlimited', icon: 'tabler:infinity' }
+]
 // flashcards are deliberately absent: the party engine only runs qa + choices; QuizTypeLabel draws each option
 const TYPES = ['qa', 'choices']
 const PAGE_SIZE = 12
@@ -208,7 +227,7 @@ export default defineComponent({
       emit('input', false)
     }
 
-    return { typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, seqId, loadMore, onSearch, add }
+    return { modes: MODES, typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, seqId, loadMore, onSearch, add }
   }
 })
 </script>

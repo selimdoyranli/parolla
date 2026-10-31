@@ -2123,7 +2123,11 @@ export default {
       typeLabel: 'Quiz type:',
       added: 'In queue',
       addedToast: '{title} added to the queue',
-      full: 'Queue is full (max 20 games)'
+      full: 'Queue is full (max 20 games)',
+      modes: {
+        daily: { title: 'Daily', text: "Today's question set" },
+        unlimited: { title: 'Unlimited', text: 'A new set every time' }
+      }
     },
     lobby: {
       eyebrow: 'PARTY LOBBY',
@@ -2150,7 +2154,7 @@ export default {
       presentationHost: 'Presentation mode: questions appear on your screen, players answer on their own devices.',
       emptyQueue: 'No games in the queue',
       emptyQueueHint: 'Add a game to the queue to start',
-      types: { qa: 'Q&A', choices: 'This or That' },
+      types: { qa: 'Q&A', choices: 'This or That', daily: 'Daily', unlimited: 'Unlimited' },
       host: 'Host',
       presenting: 'Presenting',
       you: 'You',
