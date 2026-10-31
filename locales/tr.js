@@ -2114,7 +2114,7 @@ export default {
         guests: { title: 'Misafirler de gelir', text: 'Arkadaşların hesap açmadan bir takma adla katılır.' },
         leaderboard: { title: 'Canlı sıralama', text: 'Hız ve doğruluk puanı, her turdan sonra liderlik tablosu.' },
         queue: { title: 'Oyun kuyruğu', text: 'Günlük, Limitsiz ve quizleri kuyruğa ekle, arka arkaya oyna.' },
-        chat: { title: 'Sohbet ve emoji', text: 'Lobide sohbet et, oyunda emojiyle tepki ver.' },
+        chat: { title: 'Sohbet ve emoji', text: 'Lobide ve oyun boyunca sohbet et, her an emojiyle tepki ver.' },
         password: { title: 'Şifreli oda', text: 'İstersen odanı yalnızca kodu ve şifreyi bilenlere aç.' }
       },
       demo: {

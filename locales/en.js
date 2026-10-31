@@ -2097,7 +2097,7 @@ export default {
         guests: { title: 'Guests welcome', text: 'Friends join with a nickname, no account needed.' },
         leaderboard: { title: 'Live ranking', text: 'Points for speed and accuracy, a leaderboard after every round.' },
         queue: { title: 'Game queue', text: 'Queue Daily, Unlimited and quizzes, play them back to back.' },
-        chat: { title: 'Chat and emoji', text: 'Chat in the lobby, react with emoji during the game.' },
+        chat: { title: 'Chat and emoji', text: 'Chat in the lobby and during the game, react with emoji any time.' },
         password: { title: 'Private room', text: 'Optionally open your room only to those with the code and password.' }
       },
       demo: {
