@@ -2077,7 +2077,6 @@ export default {
         live: 'Real time',
         noSignup: 'No sign-up to join'
       },
-      stepsTitle: 'Party in 3 steps',
       steps: {
         pick: { title: 'Pick a quiz', text: 'Open a Q&A or This or That quiz.' },
         setup: {
@@ -2086,7 +2085,7 @@ export default {
         },
         share: { title: 'Share the code', text: 'Send the 6-digit code, the link or the QR code, then start once everyone is in.' }
       },
-      featuresTitle: 'Ready for game night',
+      featuresTitle: 'Ready for quiz night',
       features: {
         presentation: { title: 'Presentation mode', text: 'Questions on your screen, players answer from their phones.' },
         remote: { title: 'Host remote', text: 'Scan the QR code and run the game from your phone.' },
@@ -2096,6 +2095,14 @@ export default {
         queue: { title: 'Game queue', text: 'Queue up quizzes to play back to back.' },
         chat: { title: 'Chat and emoji', text: 'Chat in the lobby, react with emoji during the game.' },
         password: { title: 'Private room', text: 'Optionally open your room only to those with the code and password.' }
+      },
+      demo: {
+        badge: 'Real time',
+        live: 'Live lobby',
+        quiz: 'World capitals',
+        waiting: 'Waiting for friends · {count} / {capacity}',
+        joined: '{name} joined the room',
+        correct: '{name} got it right · +{points}'
       },
       ctaTitle: 'Host the party',
       ctaSub: 'Just sign in to create a room. Pick a quiz and tap “Start a party”.',

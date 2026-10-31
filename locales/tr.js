@@ -2100,13 +2100,12 @@ export default {
         live: 'Gerçek zamanlı',
         noSignup: 'Katılmak için üyelik yok'
       },
-      stepsTitle: '3 adımda parti',
       steps: {
         pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da O mu bu mu? quizlerinden birini aç.' },
         setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Oda ayarlarını lobide ayarla.' },
         share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; herkes toplanınca başlat.' }
       },
-      featuresTitle: 'Oyun gecesi için hazır',
+      featuresTitle: 'Quiz night için hazır',
       features: {
         presentation: { title: 'Sunum modu', text: 'Sorular senin ekranında, oyuncular telefonlarından cevaplar.' },
         remote: { title: 'Host kumandası', text: 'QR kodu okut, oyunu telefonundan yönet.' },
@@ -2116,6 +2115,14 @@ export default {
         queue: { title: 'Oyun kuyruğu', text: 'Arka arkaya oynamak için kuyruğa quiz ekle.' },
         chat: { title: 'Sohbet ve emoji', text: 'Lobide sohbet et, oyunda emojiyle tepki ver.' },
         password: { title: 'Şifreli oda', text: 'İstersen odanı yalnızca kodu ve şifreyi bilenlere aç.' }
+      },
+      demo: {
+        badge: 'Gerçek zamanlı',
+        live: 'Canlı lobi',
+        quiz: 'Dünya başkentleri',
+        waiting: 'Arkadaşlar bekleniyor · {count} / {capacity}',
+        joined: '{name} odaya katıldı',
+        correct: '{name} doğru bildi · +{points}'
       },
       ctaTitle: 'Partiyi sen başlat',
       ctaSub: 'Oda kurmak için giriş yapman yeterli. Bir quiz seç ve “Party kur”a dokun.',

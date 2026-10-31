@@ -27,14 +27,22 @@
         AppIcon(:name="fact.icon" :width="16" :height="16")
         | {{ $t(`party.landing.facts.${fact.key}`) }}
 
+    PartyLiveLobbyDemo
+
   section.party-section
-    h2.party-section__title {{ $t('party.landing.stepsTitle') }}
     ol.party-steps
       li.party-steps__item(v-for="(step, index) in steps" :key="step")
         span.party-steps__num {{ index + 1 }}
         div
           strong {{ $t(`party.landing.steps.${step}.title`) }}
           p {{ $t(`party.landing.steps.${step}.text`) }}
+
+  section.party-cta
+    h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
+    p.party-cta__sub {{ $t('party.landing.ctaSub') }}
+    nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
+      AppIcon(name="tabler:list-search" :width="18" :height="18")
+      | {{ $t('party.landing.cta') }}
 
   section.party-section
     h2.party-section__title {{ $t('party.landing.featuresTitle') }}
@@ -44,13 +52,6 @@
           AppIcon(:name="feature.icon" :width="20" :height="20")
         strong {{ $t(`party.landing.features.${feature.key}.title`) }}
         p {{ $t(`party.landing.features.${feature.key}.text`) }}
-
-  section.party-cta
-    h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
-    p.party-cta__sub {{ $t('party.landing.ctaSub') }}
-    nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
-      AppIcon(name="tabler:list-search" :width="18" :height="18")
-      | {{ $t('party.landing.cta') }}
 </template>
 
 <script>
