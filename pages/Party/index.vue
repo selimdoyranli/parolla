@@ -28,6 +28,12 @@
           li(v-for="fact in facts" :key="fact.key")
             AppIcon(:name="fact.icon" :width="16" :height="16")
             | {{ $t(`party.landing.facts.${fact.key}`) }}
+        section.party-cta
+          h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
+          p.party-cta__sub {{ $t('party.landing.ctaSub') }}
+          nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
+            AppIcon(name="tabler:list-search" :width="18" :height="18")
+            | {{ $t('party.landing.cta') }}
       PartyLiveLobbyDemo
 
   section.party-section
@@ -37,13 +43,6 @@
         div
           strong {{ $t(`party.landing.steps.${step}.title`) }}
           p {{ $t(`party.landing.steps.${step}.text`) }}
-
-  section.party-cta
-    h2.party-cta__title {{ $t('party.landing.ctaTitle') }}
-    p.party-cta__sub {{ $t('party.landing.ctaSub') }}
-    nuxt-link.party-cta__button(:to="localePath({ name: 'CreatorMode-CreatorModeRooms' })")
-      AppIcon(name="tabler:list-search" :width="18" :height="18")
-      | {{ $t('party.landing.cta') }}
 
   section.party-section
     h2.party-section__title {{ $t('party.landing.featuresTitle') }}
@@ -168,7 +167,7 @@ export default defineComponent({
     @include media-breakpoint-up(tablet) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
-      align-items: center;
+      align-items: stretch;
     }
   }
 
@@ -177,6 +176,11 @@ export default defineComponent({
     flex-direction: column;
     gap: 10px;
     align-items: center;
+
+    // line up with the demo card, which leaves room above for its badge
+    @include media-breakpoint-up(tablet) {
+      padding-top: 18px;
+    }
   }
 
   &__facts {
@@ -368,9 +372,12 @@ export default defineComponent({
 
 .party-cta {
   display: flex;
+  flex: 1; // fills the left column so it ends level with the demo card
   flex-direction: column;
   gap: 8px;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: 20px 16px;
   color: #fff;
   text-align: center;
