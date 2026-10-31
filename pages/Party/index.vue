@@ -142,7 +142,6 @@ export default defineComponent({
   }
 
   &__title {
-    max-width: 520px;
     margin: 0;
     font-weight: 800;
     font-size: clamp(26px, 6vw, 36px);
@@ -151,7 +150,6 @@ export default defineComponent({
   }
 
   &__sub {
-    max-width: 460px;
     margin: 0;
     color: var(--color-text-02);
     font-size: var(--font-size-text-8);
