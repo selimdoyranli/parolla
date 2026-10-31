@@ -7,6 +7,7 @@ let emojiSeq = 0
 const resetGame = s => {
   s.round = null
   s.answered = { answered: 0, total: 0 }
+  s.recentAnswers = []
   s.votes = null
   s.myAnswer = null
   s.retry = null
@@ -40,6 +41,7 @@ export default {
   },
   SET_PROGRESS(s, msg) {
     s.answered = { answered: msg.answered, total: msg.total }
+    s.recentAnswers = msg.recent || []
   },
   SET_VOTES(s, msg) {
     s.votes = msg

@@ -10,6 +10,21 @@
     }
   }
 
+  .van-tabs__content {
+    position: relative;
+  }
+
+  // same height as the chat so switching tabs doesn't resize the dialog
+  &__tab {
+    height: calc(50vh + 66px);
+    overflow-y: auto;
+  }
+
+  // tour hides the list's rank numbers for answers (they are in answer order, not a ranking)
+  &__tab--answers .player-list-item-user::before {
+    display: none;
+  }
+
   .party-chat {
     height: auto;
   }
