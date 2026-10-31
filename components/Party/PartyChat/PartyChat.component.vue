@@ -1,6 +1,6 @@
 <template lang="pug">
 //- party feed through tour's Chat (same list + input); compact = the mobile dock bar that opens it in a sheet
-.party-chat
+.party-chat(ref="rootRef")
   template(v-if="compact")
     button.party-chat__bar(type="button" @click="isSheetOpen = true")
       AppIcon(name="tabler:message" :width="18" :height="18")
@@ -31,6 +31,8 @@ export default defineComponent({
     const send = inject('partySend')
     const { censorBadwords } = useCensorBadwords()
     const chatRef = ref(null)
+    const rootRef = ref(null)
+    const sfx = useSfx()
     const isSheetOpen = ref(false)
     const seen = ref(store.state.party.chat.length)
 
@@ -76,11 +78,26 @@ export default defineComponent({
       if (isSheetOpen.value || !props.compact) seen.value = chat.value.length
     })
 
+    // a soft cue for someone else's message while this chat is visible but folded (the dock bar / the collapsed panel);
+    // the hidden copy (the other breakpoint's) has no layout box, so only one instance plays
+    watch(
+      () => chat.value[chat.value.length - 1],
+      last => {
+        const el = rootRef.value
+
+        if (!last || last.isSystem || last.playerId === store.state.party.myId || isPartySfxQuiet()) return
+
+        if (!el || !el.getClientRects().length) return
+
+        if (props.compact ? !isSheetOpen.value : !el.closest('.chat-panel--expanded')) sfx.play('mention', { volume: 0.4 })
+      }
+    )
+
     const submit = message => {
       if (enabled.value) send(wsTypeEnum.PARTY_CHAT, { message })
     }
 
-    return { chatRef, isSheetOpen, unread, title, chatProps, preview, scrollToEnd, submit }
+    return { rootRef, chatRef, isSheetOpen, unread, title, chatProps, preview, scrollToEnd, submit }
   }
 })
 </script>

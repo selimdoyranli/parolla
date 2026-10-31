@@ -2098,7 +2098,7 @@ export default {
       stepsTitle: '3 adımda parti',
       steps: {
         pick: { title: 'Quizini seç', text: 'Soru-Cevap ya da Bu mu O mu quizlerinden birini aç.' },
-        setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Süre ve liderlik tablosunu lobide ayarlarsın.' },
+        setup: { title: 'Odayı kur', text: '“Party kur”a dokun, istersen şifre koy. Oda ayarlarını lobide ayarla.' },
         share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; herkes toplanınca başlat.' }
       },
       featuresTitle: 'Oyun gecesi için hazır',

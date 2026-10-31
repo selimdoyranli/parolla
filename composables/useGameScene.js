@@ -199,6 +199,9 @@ export default ({ inlineCountdown = false, introSplash = false, party = null } =
   }
 
   const handleNotStartsWithActiveChar = ({ activeChar }) => {
+    // party: the letter miss (client check or server retry) gets a cue; solo keeps its silent hint
+    if (party) sfx.play('denied')
+
     Notify({
       message: i18n.t('gameScene.error.notStartsWithActiveChar', { activeChar }),
       color: 'var(--color-text-04)',

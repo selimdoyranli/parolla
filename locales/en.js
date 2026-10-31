@@ -2077,7 +2077,7 @@ export default {
         pick: { title: 'Pick a quiz', text: 'Open a Q&A or This or That quiz.' },
         setup: {
           title: 'Create the room',
-          text: 'Tap “Start a party”, add a password if you like. Round time and leaderboard are set in the lobby.'
+          text: 'Tap “Start a party”, add a password if you like. Set the room settings in the lobby.'
         },
         share: { title: 'Share the code', text: 'Send the 6-digit code, the link or the QR code, then start once everyone is in.' }
       },

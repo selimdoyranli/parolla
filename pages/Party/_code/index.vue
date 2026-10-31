@@ -82,6 +82,7 @@ export default defineComponent({
     // same reveal, steps, timings and sounds as the solo creator start (useGameScene: 200 ms + 2800 ms reveal, then
     // 3-2-1-GO); the server's START_MS holds round 1 for all of it
     const sfx = useSfx()
+    usePartySfx()
     const startCountdown = ref(null)
     const isRevealVisible = ref(false)
     const isRevealPlaying = ref(false)
