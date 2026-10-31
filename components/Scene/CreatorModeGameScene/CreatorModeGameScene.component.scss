@@ -331,7 +331,8 @@
   // Party room round (prop `party`)
   .countdown--party {
     gap: $spacer * 2;
-    margin-block: $spacer * 2 0;
+    // padding, not margin: the shared .game-scene__countdown rule unsets margins with !important
+    padding-top: $spacer * 4;
 
     .countdown__progress,
     .countdown__answered {

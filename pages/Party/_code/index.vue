@@ -15,21 +15,24 @@
         //- choices shows it inline; a reconnect during the result gets no round, so it falls back to the overlay
         PartyRoundResult(v-if="roundEnd && (isQaGame || !round)")
       PartyEmojiReactions
+      //- 3-2-1-GO before each game's first round (the server holds the round for it)
+      StartCountdown(:value="startCountdown")
       button.party-game__settings(v-if="isHost" type="button" :aria-label="$t('party.game.settings')" @click="isHostSheetOpen = true")
         AppIcon(name="tabler:settings" :width="18" :height="18")
       PartyHostSheet(v-if="isHost" v-model="isHostSheetOpen")
 
-    //- mobile: one column in reading order (main/side wrappers are display: contents); desktop: main / side / chat
+    //- mobile: one column in reading order (main/side wrappers are display: contents); desktop: main / side, chat fixed like tour
     .party-lobby(v-else)
       PartyHeader.party-lobby__header
       .party-lobby__main
+        PartyCodeCard.party-lobby__code
         PartyNextGameCard.party-lobby__next(@open-remote="isRemoteOpen = true")
         PartyQueue.party-lobby__queue(@add-game="isAddGameOpen = true")
         PartySettings.party-lobby__settings(v-if="isHost")
       .party-lobby__side
-        PartyCodeCard.party-lobby__code
         PartyPlayerList.party-lobby__players
-      PartyChat.party-lobby__chat
+      ChatPanel.party-lobby__chat(:title="$t('party.lobby.chat.title')")
+        PartyChat(headless)
       .party-lobby__dock
         PartyChat(compact)
         PartyStartButton(v-if="isHost")
@@ -71,6 +74,33 @@ export default defineComponent({
     const isQaGame = computed(() => game.value?.quizType === quizTypeEnum.QA)
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
+
+    // same steps and sounds as the solo start countdown (useGameScene)
+    const sfx = useSfx()
+    const startCountdown = ref(null)
+    let startTimer = null
+
+    watch(
+      () => game.value?.phase === 'countdown',
+      on => {
+        clearInterval(startTimer)
+        startCountdown.value = null
+
+        if (!on) return
+
+        const steps = [3, 2, 1, 'GO']
+        const showStep = () => {
+          startCountdown.value = steps.shift() || null
+
+          if (startCountdown.value) sfx.play(startCountdown.value === 'GO' ? 'success' : 'ping')
+          else clearInterval(startTimer)
+        }
+
+        showStep()
+        startTimer = setInterval(showStep, 1000)
+      },
+      { immediate: true }
+    )
 
     // CreatorModeGameScene reads the creator store: give it this round's question at its index (no answer in it;
     // the server checks), the round letter for the letter rule and placeholder, and the quiz meta it styles by
@@ -120,7 +150,10 @@ export default defineComponent({
       isHostSheetOpen.value = false
     })
 
-    onBeforeUnmount(resetCreator)
+    onBeforeUnmount(() => {
+      resetCreator()
+      clearInterval(startTimer)
+    })
 
     return {
       code,
@@ -139,7 +172,8 @@ export default defineComponent({
       cancelled,
       isQaGame,
       isChoicesGame,
-      isGame
+      isGame,
+      startCountdown
     }
   }
 })
@@ -162,10 +196,7 @@ export default defineComponent({
 
 .party-game {
   position: relative;
-  // solo column width, also inside the wide party layout
-  max-width: var(--layout-max-width);
   min-height: calc(var(--layout-height) - var(--header-height));
-  margin: 0 auto;
 
   &__settings {
     position: absolute;
@@ -227,8 +258,14 @@ export default defineComponent({
     order: 5;
   }
 
+  // tour's ChatPanel, sized to the right ad rail it sits over; narrower screens use the dock's chat bar
   &__chat {
-    display: none;
+    @include media-breakpoint-down(wide) {
+      display: none;
+    }
+
+    right: 8px;
+    width: calc((100vw - var(--layout-max-width)) / 2 - 16px);
   }
 
   &__dock {
@@ -248,11 +285,10 @@ export default defineComponent({
   @include media-breakpoint-up(desktop) {
     display: grid;
     grid-template-areas:
-      'header header chat'
-      'main side chat';
-    grid-template-rows: auto 1fr;
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px) minmax(260px, 320px);
-    gap: 16px;
+      'header header'
+      'main side';
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 12px;
     align-items: start;
 
     &__header {
@@ -263,7 +299,7 @@ export default defineComponent({
     &__side {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
     &__main {
@@ -274,16 +310,21 @@ export default defineComponent({
       grid-area: side;
     }
 
-    &__chat {
-      position: sticky;
-      top: 0;
-      display: block;
-      grid-area: chat;
-      height: calc(var(--layout-height) - var(--header-height) - 32px);
-    }
-
     &__dock {
       display: none;
+    }
+  }
+
+  // between desktop and wide there is no rail for the chat panel: keep the dock, only for its chat bar
+  @include media-breakpoint-between(desktop, wide) {
+    &__dock {
+      display: flex;
+      grid-column: 1 / -1;
+      margin: 0 -16px;
+
+      .party-start-button {
+        display: none;
+      }
     }
   }
 }

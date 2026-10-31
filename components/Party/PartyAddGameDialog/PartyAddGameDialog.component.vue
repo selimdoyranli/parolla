@@ -1,53 +1,59 @@
 <template lang="pug">
-Popup.party-add(:value="value" position="bottom" round get-container="body" :style="{ height: '88%' }" @input="$emit('input', $event)")
-  .party-add__inner
-    header.party-add__head
-      h3.party-add__title {{ $t('party.add.title') }}
-      span.party-pill {{ $t('party.add.inQueue', { count: queue.length }) }}
-      button.party-add__close(type="button" :aria-label="$t('general.close')" @click="$emit('input', false)")
-        AppIcon(name="tabler:x" :width="18" :height="18")
+Dialog.dialog.party-add(
+  :value="value"
+  show-cancel-button
+  close-on-click-overlay
+  get-container="body"
+  :title="$t('party.add.title')"
+  :show-confirm-button="false"
+  :cancel-button-text="$t('general.close')"
+  width="min(92vw, 640px)"
+  @input="$emit('input', $event)"
+)
+  .party-add__toolbar
+    FilterDropdown(
+      direction="left"
+      :options="typeOptions"
+      :selected="typeOptions.find(o => o.key === type)"
+      @on-select-option="o => (type = o.key)"
+    )
+      template(#selected="{ option }")
+        QuizTypeLabel(:kind="option.key")
+      template(#option="{ option }")
+        QuizTypeLabel(:kind="option.key")
+    span.party-pill {{ $t('party.add.inQueue', { count: queue.length }) }}
 
-    .party-add__tabs(role="tablist")
-      button.party-add__tab(
-        v-for="tab in TABS"
-        :key="tab"
-        type="button"
-        role="tab"
-        :aria-selected="String(type === tab)"
-        :class="{ 'party-add__tab--active': type === tab }"
-        @click="type = tab"
-      ) {{ $t(`party.lobby.types.${tab}`) }}
+  Search.party-add__search(v-model="keyword" :placeholder="$t(`party.add.search.${type}`)" :clearable="false" @input="onSearch")
 
-    Search.party-add__search(v-model="keyword" :placeholder="$t(`party.add.search.${type}`)" :clearable="false" @input="onSearch")
-
-    .party-add__body
-      .party-add__loading(v-if="loading && !rooms.length")
-        Loading(color="var(--color-brand-02)")
-      Empty(v-else-if="!rooms.length" :description="$t('party.add.empty')")
-      template(v-else)
-        .party-add__grid
-          .party-add__item(v-for="room in rooms" :key="room.documentId || room.roomId")
-            //- the card is a router link: swallow the navigation, the click picks the quiz
-            QuizCard(hide-owner-actions :room="room" @click.native.prevent="add(room)")
-            span.party-add__added(v-if="addedIds.has(String(room.roomId))")
-              AppIcon(name="tabler:check" :width="14" :height="14")
-              | {{ $t('party.add.added') }}
-        Button.party-add__more(v-if="hasMore" round block plain :loading="loading" @click="load(true)") {{ $t('party.add.more') }}
+  .party-add__body
+    .party-add__loading(v-if="loading && !rooms.length")
+      Loading(color="var(--color-brand-02)")
+    Empty(v-else-if="!rooms.length" :description="$t('party.add.empty')")
+    template(v-else)
+      //- same grid as the quiz list (RoomList)
+      .party-add__grid
+        .party-add__item(v-for="room in rooms" :key="room.documentId || room.roomId")
+          //- the card is a router link: swallow the navigation, the click picks the quiz
+          QuizCard(hide-owner-actions :room="room" @click.native.prevent="add(room)")
+          span.party-add__added(v-if="addedIds.has(String(room.roomId))")
+            AppIcon(name="tabler:check" :width="14" :height="14")
+            | {{ $t('party.add.added') }}
+      Button.party-add__more(v-if="hasMore" round block :loading="loading" @click="load(true)") {{ $t('party.add.more') }}
 </template>
 
 <script>
 import { defineComponent, ref, computed, watch, inject, useContext, useStore } from '@nuxtjs/composition-api'
-import { Popup, Search, Loading, Empty, Button, Notify } from 'vant'
+import { Dialog, Search, Loading, Empty, Button, Notify } from 'vant'
 import { useDebounceFn } from '@vueuse/core'
 import { roomTransformer } from '@/transformers'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 
-// flashcards are deliberately absent: the party engine only runs qa + choices
-const TABS = ['qa', 'choices']
+// flashcards are deliberately absent: the party engine only runs qa + choices; QuizTypeLabel draws each option
+const TYPES = ['qa', 'choices']
 const PAGE_SIZE = 12
 
 export default defineComponent({
-  components: { Popup, Search, Loading, Empty, Button },
+  components: { Dialog: Dialog.Component, Search, Loading, Empty, Button },
   props: { value: { type: Boolean, default: false } },
   emits: ['input'],
   setup(props, { emit }) {
@@ -57,7 +63,8 @@ export default defineComponent({
     const queue = computed(() => store.getters['party/queue'])
     const addedIds = computed(() => new Set(queue.value.map(item => String(item.roomId))))
 
-    const type = ref(TABS[0])
+    const typeOptions = TYPES.map(key => ({ key }))
+    const type = ref(TYPES[0])
     const keyword = ref('')
     const rooms = ref([])
     const page = ref(1)
@@ -161,9 +168,9 @@ export default defineComponent({
       send(wsTypeEnum.PARTY_QUEUE_ADD, { roomId: room.roomId, locale: i18n.locale })
     }
 
-    return { TABS, queue, addedIds, type, keyword, rooms, hasMore, loading, load, onSearch, add }
+    return { typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, load, onSearch, add }
   }
 })
 </script>
 
-<style lang="scss" src="./PartyAddGameDialog.component.scss" scoped></style>
+<style lang="scss" src="./PartyAddGameDialog.component.scss"></style>

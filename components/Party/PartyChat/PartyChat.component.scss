@@ -21,6 +21,11 @@
     }
   }
 
+  &--headless &__panel {
+    border: 0;
+    border-radius: 0;
+  }
+
   &__sheet &__panel {
     height: 70vh;
     border: 0;

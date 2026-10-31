@@ -72,7 +72,7 @@ export default defineComponent({
 
       if (g.phase === 'final') return i18n.t('party.remote.final')
 
-      return i18n.t(`party.remote.${g.phase === 'result' ? 'result' : 'round'}`, { n: g.index + 1, total: g.total })
+      return i18n.t(`party.remote.${g.phase === 'result' ? 'result' : 'round'}`, { n: Math.max(g.index, 0) + 1, total: g.total })
     })
 
     send(wsTypeEnum.PARTY_REMOTE_JOIN, { code: props.code })

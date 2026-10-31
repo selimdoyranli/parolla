@@ -1,7 +1,7 @@
 <template lang="pug">
 mixin panel
   .party-chat__panel
-    header.party-chat__head
+    header.party-chat__head(v-if="!headless")
       .party-card__head-icon
         AppIcon(name="tabler:message-circle" :width="18" :height="18")
       .party-card__head-text
@@ -32,7 +32,7 @@ mixin panel
       button.party-chat__send(type="submit" :aria-label="$t('party.lobby.chat.send')" :disabled="!enabled || !text.trim()")
         AppIcon(name="tabler:send" :width="18" :height="18")
 
-.party-chat(:class="{ 'party-chat--compact': compact }")
+.party-chat(:class="{ 'party-chat--compact': compact, 'party-chat--headless': headless }")
   template(v-if="compact")
     //- mobile: one line with the last message, opens the full chat as a sheet
     button.party-chat__bar(type="button" @click="isSheetOpen = true")
@@ -53,7 +53,9 @@ import { wsTypeEnum } from '@/enums/wsType.enum'
 export default defineComponent({
   components: { Popup },
   props: {
-    compact: { type: Boolean, default: false }
+    compact: { type: Boolean, default: false },
+    // inside a ChatPanel, which has its own title bar
+    headless: { type: Boolean, default: false }
   },
   setup(props) {
     const store = useStore()

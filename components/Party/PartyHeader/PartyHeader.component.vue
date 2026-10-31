@@ -41,12 +41,22 @@ export default defineComponent({
     })
 
     const showHelp = () =>
-      Dialog.alert({ title: i18n.t('party.lobby.help'), message: i18n.t('party.lobby.helpText'), getContainer: 'body' })
+      Dialog.alert({
+        title: i18n.t('party.lobby.help'),
+        message: i18n.t('party.lobby.helpText'),
+        confirmButtonText: i18n.t('general.ok'),
+        getContainer: 'body'
+      })
 
-    const leave = () => {
-      send(wsTypeEnum.PARTY_LEAVE)
-      router.replace(localePath({ name: 'Party' }))
-    }
+    const { openPartyLeaveDialog } = useDialog()
+
+    const leave = () =>
+      openPartyLeaveDialog({
+        confirm: () => {
+          send(wsTypeEnum.PARTY_LEAVE)
+          router.replace(localePath({ name: 'Party' }))
+        }
+      })
 
     return { title, showHelp, leave }
   }

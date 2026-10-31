@@ -148,7 +148,7 @@ export default defineComponent({
     const { formatMillions } = useFormatter()
 
     const { activeGameMode } = useGameMode()
-    const { openLeaveDialog } = useDialog()
+    const { openLeaveDialog, openPartyLeaveDialog } = useDialog()
 
     const user = computed(() => store.getters['auth/user'])
     const room = computed(() => store.getters['creator/room'])
@@ -388,11 +388,13 @@ export default defineComponent({
       store.commit('tour/SET_IS_OPEN_TOUR_MODE_ONLINE_DIALOG', true)
     }
 
+    const isPartyRoom = computed(() => getRouteBaseName(route.value) === 'Party-code')
+
     const handleClickBackButton = () => {
       const triggerRoute = () => {
         // opened straight from a link (new tab): no in-app page to go back to, so land on the quizzes list for quiz pages, else home
         if (!hasNavigated) {
-          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode')
+          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode') || isPartyRoom.value
 
           router.push(localePath({ name: isQuiz ? 'CreatorMode-CreatorModeRooms' : 'Main' }))
 
@@ -402,7 +404,9 @@ export default defineComponent({
         router.back()
       }
 
-      if (
+      if (isPartyRoom.value) {
+        openPartyLeaveDialog({ confirm: triggerRoute })
+      } else if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
@@ -452,6 +456,7 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
         activeGameMode.value === gameModeKeyEnum.DRAW ||
         activeGameMode.value === gameModeKeyEnum.GEOGUESS ||
+        isPartyRoom.value ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||

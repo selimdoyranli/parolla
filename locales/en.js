@@ -2079,6 +2079,8 @@ export default {
       helpText:
         'Share the code or link with your friends. Once everyone is in, the host starts the game; questions reach everyone at the same time and fast, correct answers score more.',
       leave: 'Leave',
+      leaveConfirm: 'Are you sure you want to leave the room?',
+      leaveYes: 'Leave',
       lobby: 'Lobby',
       copy: 'Copy link',
       copied: 'Link copied',

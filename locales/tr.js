@@ -2102,6 +2102,8 @@ export default {
       helpText:
         'Kodu ya da bağlantıyı arkadaşlarınla paylaş. Herkes toplanınca kurucu oyunu başlatır; sorular herkese aynı anda gelir, doğru ve hızlı cevap daha çok puan kazandırır.',
       leave: 'Çıkış',
+      leaveConfirm: 'Odadan çıkmak istediğine emin misin?',
+      leaveYes: 'Çık',
       lobby: 'Lobi',
       copy: 'Bağlantıyı kopyala',
       copied: 'Bağlantı kopyalandı',
