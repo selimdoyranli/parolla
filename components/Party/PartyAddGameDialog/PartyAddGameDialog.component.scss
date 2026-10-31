@@ -112,9 +112,16 @@
     }
   }
 
+  // the wrapper is the grid cell: stretch the card inside it so a row's cards share one height (as on the quizzes page)
   &__item {
     position: relative;
+    display: flex;
+    flex-direction: column;
     min-width: 0;
+
+    > .quiz-card {
+      flex: 1;
+    }
   }
 
   &__added {
