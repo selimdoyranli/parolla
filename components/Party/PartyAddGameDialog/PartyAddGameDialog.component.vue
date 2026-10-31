@@ -40,9 +40,9 @@ Dialog.dialog.party-add(
     template(v-else)
       //- same grid as the quiz list (RoomList)
       .party-add__grid
-        .party-add__item(v-for="room in rooms" :key="room.documentId || room.roomId")
-          //- the card is a router link: swallow the navigation, the click picks the quiz
-          QuizCard(hide-owner-actions :room="room" @click.native.prevent="add(room)")
+        //- the card is a router link whose own handler runs first: stop the click in the capture phase so it never navigates
+        .party-add__item(v-for="room in rooms" :key="room.documentId || room.roomId" @click.capture.prevent.stop="add(room)")
+          QuizCard(hide-owner-actions :room="room")
           span.party-add__added(v-if="addedIds.has(String(room.roomId))")
             AppIcon(name="tabler:check" :width="14" :height="14")
             | {{ $t('party.add.added') }}
@@ -205,6 +205,7 @@ export default defineComponent({
       pendingTitle = room.title
       pendingTimer = setTimeout(settle, 4000)
       send(wsTypeEnum.PARTY_QUEUE_ADD, { roomId: room.roomId, locale: i18n.locale })
+      emit('input', false)
     }
 
     return { typeOptions, queue, addedIds, type, keyword, rooms, hasMore, loading, seqId, loadMore, onSearch, add }
