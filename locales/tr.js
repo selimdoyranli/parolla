@@ -2319,7 +2319,26 @@ export default {
       answersSub: 'Oyuncuya dokun, cevaplarını gör',
       correctAnswer: 'Doğru cevap',
       question: '{n}. soru',
-      noAnswer: 'Cevap yok'
+      noAnswer: 'Cevap yok',
+      download: {
+        eyebrow: 'Sonuçları indir',
+        title: 'Sıralama ve cevaplar dosya olarak',
+        json: 'JSON indir',
+        excel: 'Excel indir',
+        sheets: { ranking: 'Sıralama', answers: 'Cevaplar', questions: 'Sorular', result: 'Sonuç' },
+        cols: {
+          rank: 'Sıra',
+          player: 'Oyuncu',
+          score: 'Puan',
+          correct: 'Doğru',
+          wrong: 'Yanlış',
+          no: 'No',
+          letter: 'Harf',
+          question: 'Soru',
+          correctAnswer: 'Doğru cevap',
+          choice: 'Seçenek'
+        }
+      }
     },
     rooms: {
       open: 'Parti odalarını gör',

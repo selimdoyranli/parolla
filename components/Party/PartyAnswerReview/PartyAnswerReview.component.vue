@@ -13,7 +13,7 @@ section.party-card.party-answer-review
 
 <script>
 import { defineComponent, computed, useStore } from '@nuxtjs/composition-api'
-import { answerTypeEnum } from '@/enums/quiz.enum'
+import { formatCorrectAnswer } from '@/helpers/partyAnswer'
 import { usePartyUser } from '@/composables/usePartyUser'
 
 export default defineComponent({
@@ -27,21 +27,10 @@ export default defineComponent({
     const store = useStore()
     const { toUser } = usePartyUser()
 
-    // same as the round result: text answers keep their comma alternatives in one string, trivia may contain commas
-    const formatAnswer = q => {
-      const raw = String(q.correctAnswer || '')
-
-      return q.answerType === answerTypeEnum.TRIVIA
-        ? raw
-        : raw
-            .split(',')
-            .map(a => a.trim())
-            .filter(Boolean)
-            .join(' / ')
-    }
-
     // ScoreboardList matches answers to questions by position
-    const questions = computed(() => props.review.map((q, i) => ({ letter: q.letter || String(i + 1), answer: formatAnswer(q) })))
+    const questions = computed(() =>
+      props.review.map((q, i) => ({ letter: q.letter || String(i + 1), answer: formatCorrectAnswer(q.correctAnswer, q.answerType) }))
+    )
 
     // score order from the board; without it (hidden) the room's answering members
     const players = computed(() => {

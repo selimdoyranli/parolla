@@ -2302,7 +2302,26 @@ export default {
       answersSub: 'Tap a player to see their answers',
       correctAnswer: 'Correct answer',
       question: 'Question {n}',
-      noAnswer: 'No answer'
+      noAnswer: 'No answer',
+      download: {
+        eyebrow: 'Download results',
+        title: 'Ranking and answers as a file',
+        json: 'Download JSON',
+        excel: 'Download Excel',
+        sheets: { ranking: 'Ranking', answers: 'Answers', questions: 'Questions', result: 'Result' },
+        cols: {
+          rank: 'Rank',
+          player: 'Player',
+          score: 'Score',
+          correct: 'Correct',
+          wrong: 'Wrong',
+          no: 'No',
+          letter: 'Letter',
+          question: 'Question',
+          correctAnswer: 'Correct answer',
+          choice: 'Choice'
+        }
+      }
     },
     rooms: {
       open: 'See party rooms',

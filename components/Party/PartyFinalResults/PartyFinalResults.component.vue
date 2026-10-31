@@ -41,6 +41,7 @@
 
     //- qa: what everyone wrote, per question
     PartyAnswerReview(v-if="review.length" :review="review" :leaderboard="leaderboard")
+    PartyResultsDownload
 </template>
 
 <script>
