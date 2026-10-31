@@ -9,33 +9,13 @@
     br
 
     .creator-mode-rooms-page-rooms
-      .creator-mode-rooms-page-rooms-head
-        .creator-mode-rooms-page__title.creator-mode-rooms-page__title--rooms
-          h3 {{ $t('creatorModeRooms.rooms.selectFromList') }} ({{ roomTotal }})
-        .creator-mode-rooms-page-rooms-head__actions
-          Button.creator-mode-rooms-page-rooms__refetchButton.me-1(icon="replay" size="small" round @click="fetch")
-            | {{ $t('creatorModeRooms.rooms.refresh') }}
-          FilterDropdown.creator-mode-rooms-page-rooms__kindFilter(
-            :trigger-title="$t('creatorModeRooms.rooms.quizKind.title')"
-            :selected="selectedQuizKindOption"
-            :options="quizKindOptions"
-            @on-select-option="handleQuizKindSelect"
-          )
-            template(#selected="{ option }")
-              QuizTypeLabel(v-if="option.key" :kind="option.key")
-              template(v-else)
-                AppIcon.filter-dropdown-trigger-button__icon(:name="option.icon")
-                span.filter-dropdown-trigger-button__title {{ option.label }}
-            template(#option="{ option }")
-              QuizTypeLabel(v-if="option.key" :kind="option.key")
-              template(v-else)
-                AppIcon.filter-dropdown-nav-item__icon(:name="option.icon" :width="20" :height="20")
-                span.filter-dropdown-nav-item__title {{ option.label }}
-          FilterDropdown.creator-mode-rooms-page-rooms__sortFilter.ms-1(
-            :trigger-title="$t('creatorModeRooms.rooms.filters.title')"
-            :options="filterOptions"
-            @on-select-option="handleFilterOptionSelect"
-          )
+      RoomListHead(
+        :total="roomTotal"
+        :kind="$store.state.creator.room.quizKind"
+        @refresh="fetch"
+        @kind="handleQuizKindSelect"
+        @sort="handleSortSelect"
+      )
 
       template(v-if="fetchState.pending")
         Empty(:description="$t('creatorModeRooms.rooms.pendingRooms')")
@@ -181,28 +161,8 @@ export default defineComponent({
     const rooms = computed(() => store.getters['creator/rooms'])
     const roomTotal = computed(() => store.getters['creator/roomTotal'])
 
-    const filterOptions = computed(() => {
-      return [
-        {
-          key: 'recently',
-          label: i18n.t('creatorModeRooms.rooms.filters.recently'),
-          icon: 'tabler:clock-up'
-        },
-        {
-          key: 'byViewCount',
-          label: i18n.t('creatorModeRooms.rooms.filters.byViewCount'),
-          icon: 'tabler:chevrons-up'
-        },
-        {
-          key: 'oldest',
-          label: i18n.t('creatorModeRooms.rooms.filters.oldest'),
-          icon: 'tabler:clock-down'
-        }
-      ]
-    })
-
-    const handleFilterOptionSelect = option => {
-      store.commit('creator/SET_ROOMS_SORT', option.key)
+    const handleSortSelect = key => {
+      store.commit('creator/SET_ROOMS_SORT', key)
 
       fetch()
     }
@@ -224,15 +184,7 @@ export default defineComponent({
       await reloadRooms({ tags: tagsFilter ? tagsFilter.split(',') : [] })
     }
 
-    const quizKindOptions = computed(() => [
-      { key: null, label: i18n.t('creatorModeRooms.rooms.quizKind.all'), icon: 'tabler:category' },
-      ...['qa', 'media', 'choices', 'trivia', 'flashcards'].map(key => ({ key }))
-    ])
-
-    // always an option (null kind → "all"): with no selection FilterDropdown falls back to the first pick it saw
-    const selectedQuizKindOption = computed(() => quizKindOptions.value.find(option => option.key === store.state.creator.room.quizKind))
-
-    const handleQuizKindSelect = async ({ key }) => {
+    const handleQuizKindSelect = async key => {
       store.commit('creator/SET_ROOMS_QUIZ_KIND', key)
 
       const tags = route.value.query.tags
@@ -293,14 +245,11 @@ export default defineComponent({
       fetchState,
       rooms,
       roomTotal,
-      filterOptions,
-      handleFilterOptionSelect,
+      handleSortSelect,
       isListLoading,
       isToTopVisible,
       scrollToTop,
       handleFeaturedTagClick,
-      quizKindOptions,
-      selectedQuizKindOption,
       handleQuizKindSelect,
       isEmptyRoomList
     }

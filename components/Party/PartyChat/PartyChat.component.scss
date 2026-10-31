@@ -1,0 +1,65 @@
+.party-chat {
+  height: 100%;
+  min-height: 0;
+
+  // the app column is centred on tablets; keep the sheet inside it
+  &__sheet {
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+    background-color: var(--color-ui-02);
+
+    @include media-breakpoint-up(tablet) {
+      left: calc(50% - var(--layout-max-width) / 2);
+      max-width: var(--layout-max-width);
+    }
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .chat {
+      flex: 1;
+      min-height: 0;
+
+      &__input {
+        margin-block-end: calc(#{$spacer * 4} + env(safe-area-inset-bottom));
+        padding-inline: $spacer * 3;
+      }
+    }
+  }
+
+  &__sheet-head {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    align-items: center;
+    height: 42px;
+    padding: 0 16px;
+    color: var(--color-text-02);
+    font-weight: 500;
+  }
+
+  // mobile dock: a single tappable line
+  &__bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 8px 12px;
+    color: var(--color-text-03);
+    font: inherit;
+    text-align: left;
+    background: var(--color-ui-03);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__preview {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

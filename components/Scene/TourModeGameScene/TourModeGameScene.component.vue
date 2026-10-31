@@ -75,7 +75,11 @@
   LazyTourModeOnlineDialog(:isOpen="isTourModeOnlineDialogOpen" :tour="tour" @closed="closeTourModeOnlineDialog")
 
   // Chat Panel
-  ChatPanel(:title="`${$t('chat.chat')} (${userList.totalPlayers})`" @on-focus="handleChatFocus" @on-blur="handleChatBlur")
+  ChatPanel.chat-panel--split(
+    :title="`${$t('chat.chat')} (${userList.totalPlayers})`"
+    @on-focus="handleChatFocus"
+    @on-blur="handleChatBlur"
+  )
     template(#content-prepend)
       .section-title {{ $t('tourMode.lastAnswers.title') }}
       .last-answers

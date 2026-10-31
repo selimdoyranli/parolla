@@ -1,0 +1,10 @@
+.party-room-session {
+  color: var(--color-text-01);
+
+  &__label {
+    margin: 24px 0;
+    color: var(--color-text-02);
+    font-size: 13px;
+    text-align: center;
+  }
+}

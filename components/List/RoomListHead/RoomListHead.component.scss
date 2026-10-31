@@ -1,0 +1,61 @@
+.room-list-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include media-breakpoint-down(mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__title {
+    color: var(--color-text-01);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+
+    @include media-breakpoint-down(mobile) {
+      margin-block-end: var(--base-m-y);
+    }
+
+    .filter-dropdown .v-dropdown-menu__container {
+      @include media-breakpoint-down(mobile) {
+        right: auto;
+        left: 0;
+      }
+    }
+
+    // the sort filter sits on the right of the row: open its menu leftwards so it stays on screen
+    .room-list-head__sortFilter .v-dropdown-menu__container {
+      @include media-breakpoint-down(mobile) {
+        right: 0;
+        left: auto;
+      }
+    }
+  }
+
+  &__refresh {
+    color: var(--color-text-02);
+    background-color: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+
+    // same as the filter triggers: the caps label sits high, nudge it onto the icon's centre line
+    .van-button__text {
+      transform: translateY(1px);
+    }
+  }
+
+  // the trigger shows the picked type's coloured icon + text without the card pill's frame
+  &__kindFilter .filter-dropdown-trigger-button .quiz-type-label {
+    padding: 0;
+    font-size: inherit;
+    background: none;
+    border: 0;
+  }
+}

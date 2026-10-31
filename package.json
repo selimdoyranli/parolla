@@ -76,6 +76,7 @@
     "nuxt-client-init-module": "^0.3.0",
     "nuxt-user-agent": "^1.2.2",
     "portal-vue": "2",
+    "qrcode": "^1.5.4",
     "simple-keyboard": "^3.4.65",
     "swiper": "^8.0.6",
     "textfit": "^2.4.0",

@@ -1,0 +1,135 @@
+.party-emoji-reactions {
+  // floats and dock stay inside the centred app column: on wide screens the viewport edges are the ad rails
+  &__floats {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    z-index: 20;
+    width: min(100%, var(--layout-max-width));
+    overflow: hidden;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  &__float {
+    position: absolute;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 32px;
+    line-height: 1;
+    animation: party-emoji-float 2.6s ease-out forwards;
+  }
+
+  &__name {
+    max-width: 96px;
+    margin-top: 2px;
+    padding: 1px 6px;
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+  }
+
+  // sits above the scene's answer bar, bottom right of the app column
+  &__dock {
+    position: fixed;
+    right: max(12px, calc((100% - var(--layout-max-width)) / 2 + 12px));
+    bottom: calc(96px + env(safe-area-inset-bottom));
+    z-index: 21;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  &__toggle,
+  &__pick {
+    position: relative;
+    display: grid;
+    padding: 0;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 50%;
+    cursor: pointer;
+    place-items: center;
+  }
+
+  &__toggle {
+    width: 44px;
+    height: 44px;
+    color: var(--color-text-02);
+    box-shadow: var(--box-shadow-01);
+  }
+
+  &__picker {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__pick {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+
+    &:active:not(:disabled) {
+      transform: scale(0.9);
+    }
+
+    &.is-cooling {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  // draining ring over a button while reactions cool down
+  &__ring {
+    position: absolute;
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    transform: rotate(-90deg);
+    pointer-events: none;
+
+    circle {
+      transition: stroke-dashoffset 0.1s linear;
+      fill: none;
+      stroke: var(--color-brand-02);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 100;
+    }
+  }
+}
+
+@keyframes party-emoji-float {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+
+  15% {
+    transform: translateY(-30px) scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-55vh) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .party-emoji-reactions__float {
+    animation-duration: 1.2s;
+  }
+}

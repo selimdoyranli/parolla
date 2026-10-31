@@ -1,0 +1,49 @@
+.party-server-pause {
+  position: fixed;
+  inset: 0;
+  // above the game scene, emoji dock and chat panel; below vant's toasts
+  z-index: 1900;
+  display: grid;
+  padding: 24px;
+  background: color-mix(in sRGB, var(--color-ui-01) 82%, transparent);
+  backdrop-filter: blur(6px);
+  place-items: center;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: min(100%, 340px);
+    padding: 24px 20px;
+    color: var(--color-text-01);
+    text-align: center;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 18px;
+    box-shadow: var(--box-shadow-03);
+  }
+
+  &__title {
+    font-weight: 800;
+    font-size: var(--font-size-text-7);
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+}
+
+.party-server-pause-fade-enter-active,
+.party-server-pause-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.party-server-pause-fade-enter,
+.party-server-pause-fade-leave-to {
+  opacity: 0;
+}

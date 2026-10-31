@@ -1,0 +1,8 @@
+.party-answer-review {
+  padding-bottom: 4px;
+
+  // the list sits flush with the card edges, like in the stats dialog
+  &__list {
+    margin: 0 -12px;
+  }
+}

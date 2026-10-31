@@ -41,6 +41,31 @@
       font-size: var(--font-size-text-10);
     }
 
+    // party: locked in, not judged yet; a neutral dark "chosen" (green would read as correct)
+    &--selected {
+      color: #fff;
+      background-color: light-dark(#3a3d46, #4a4d57);
+      border-color: light-dark(#3a3d46, #6a6d78);
+    }
+
+    // solo: the second after a pick
+    &--correct {
+      color: var(--color-text-04);
+      background-color: var(--color-success-01);
+      border-color: var(--color-success-01);
+    }
+
+    &--wrong {
+      color: var(--color-text-04);
+      background-color: var(--color-danger-01);
+      border-color: var(--color-danger-01);
+    }
+
+    &--revealing {
+      cursor: default;
+      pointer-events: none;
+    }
+
     &__text {
       display: block;
       text-align: center;

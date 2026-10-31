@@ -313,7 +313,8 @@ export default {
         solveQuiz: 'solve quizzes',
         label: 'Today {count} quiz solved',
         todaysQuizLabel: `Today's quiz`,
-        playButtonText: 'All Quizzes: Play'
+        playButtonText: 'All Quizzes: Play',
+        party: 'Party'
       },
       tour: {
         title: 'TOUR',
@@ -409,6 +410,7 @@ export default {
       home: 'Home',
       shop: 'Shop',
       quizzes: 'Quizzes',
+      party: 'Party',
       profileEdit: 'Edit profile',
       profileView: 'View profile',
       myQuizzes: 'My quizzes',
@@ -664,7 +666,8 @@ export default {
       title: 'More ({username})',
       showProfile: 'Show Profile',
       report: 'Report',
-      voteKick: 'Vote to kick from room'
+      voteKick: 'Vote to kick from room',
+      kick: 'Kick from the room'
     },
     tourModeOnline: {
       title: 'Tour'
@@ -1227,7 +1230,13 @@ export default {
     scoreboard: 'Scoreboard',
     pendingScoreboard: 'Fetching scores',
     loginToBeInScoreboard: 'If you play after <u>logging in</u>, you will be in the quiz scoreboard',
-    loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score'
+    loginToBeInScoreboardExtra: 'If you play without logging in, you will only see your score',
+    points: '{score} points',
+    answerTime: {
+      short: '{s} s',
+      title: 'Answer time',
+      info: 'Shows how long it took to answer.'
+    }
   },
   community: {
     list: {
@@ -1923,6 +1932,17 @@ export default {
         keywords: 'music quiz, guess the song, name that song, song quiz'
       }
     },
+    party: {
+      title: 'Party - Play Quizzes with Friends',
+      description:
+        'Play live quizzes with friends: open a party room, share the 6-digit code and compete with up to 10 people at once. Presentation mode and phone remote included, no sign-up needed to join.',
+      keywords:
+        'party, party game, play quizzes with friends, games to play with friends, online party game, live quiz, multiplayer quiz, quiz night, classroom quiz, quiz room code'
+    },
+    partyRoom: {
+      title: 'Party room',
+      description: 'Join the party room and play live quizzes with friends.'
+    },
     download: {
       title: 'Download the App',
       description: 'Download the parolla mobile app for iOS and Android for free. Word game, quizzes and daily questions in your pocket.',
@@ -2039,6 +2059,331 @@ export default {
       adsDesc: 'When on, ads are picked from your interests (Google AdSense cookies). When off you still see ads, just not personalised.',
       save: 'Save',
       cancel: 'Cancel'
+    }
+  },
+  party: {
+    title: 'Party',
+    entry: {
+      title: 'Join a party',
+      hint: 'Enter the 6-digit room code your friend shared',
+      placeholder: '000 000',
+      join: 'Join'
+    },
+    intro: {
+      title: 'Start a party',
+      sub: 'Create a room and play live with your friends',
+      password: 'Password-protected room',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
+      create: 'Create the room'
+    },
+    landing: {
+      eyebrow: 'Party',
+      title: 'Play quizzes live with your friends',
+      sub: 'Create a room and share the code; everyone gets the same question at the same time. Fast and right wins.',
+      facts: {
+        players: 'Up to 10 players',
+        live: 'Real time',
+        noSignup: 'No sign-up to join'
+      },
+      steps: {
+        pick: { title: 'Pick the games', text: 'In the lobby, queue Daily, Unlimited, Q&A or This or That games.' },
+        setup: {
+          title: 'Create the room',
+          text: 'Tap “Start a party” or use “Start a party” on any game’s intro.'
+        },
+        share: {
+          title: 'Share the code',
+          text: 'Send the 6-digit code, the link or the QR code, then start once at least 2 players are in.'
+        }
+      },
+      featuresTitle: 'Ready for quiz night',
+      features: {
+        presentation: { title: 'Presentation mode', text: 'Questions on your screen, players answer from their phones.' },
+        remote: { title: 'Host remote', text: 'Scan the QR code and run the game from your phone.' },
+        choices: { title: 'This or That voting', text: 'Everyone votes, the majority picks the champion.' },
+        guests: { title: 'Guests welcome', text: 'Friends join with a nickname, no account needed.' },
+        leaderboard: { title: 'Live ranking', text: 'Points for speed and accuracy, a leaderboard after every round.' },
+        queue: { title: 'Game queue', text: 'Queue Daily, Unlimited and quizzes, play them back to back.' },
+        chat: { title: 'Chat and emoji', text: 'Chat in the lobby and during the game, react with emoji any time.' },
+        password: { title: 'Private room', text: 'Optionally open your room only to those with the code and password.' }
+      },
+      demo: {
+        badge: 'Real time',
+        live: 'Live lobby',
+        quiz: 'World capitals',
+        waiting: 'Waiting for friends · {count} / {capacity}',
+        joined: '{name} joined the room',
+        correct: '{name} got it right · +{points}'
+      },
+      ctaTitle: 'Host the party',
+      ctaSub: 'Sign in, create your room, pick the games in the lobby.',
+      cta: 'Start a party'
+    },
+    gate: {
+      notice: 'You need to log in to create a party room. Your friends can join your room without an account.',
+      login: 'LOG IN',
+      password: 'Protect with a password'
+    },
+    guest: { title: 'Join the party' },
+    room: { code: 'Room code', players: 'Players', connecting: 'Connecting...' },
+    add: {
+      title: 'Add game',
+      inQueue: '{count} in queue',
+      search: 'Search quizzes…',
+      empty: 'No quizzes found',
+      added: 'In queue',
+      addedToast: '{title} added to the queue',
+      full: 'Queue is full (max 20 games)',
+      modes: {
+        daily: { title: 'Daily', text: "Today's question set" },
+        unlimited: { title: 'Unlimited', text: 'A new set every time' }
+      }
+    },
+    lobby: {
+      eyebrow: 'PARTY LOBBY',
+      roomOf: "{name}'s room",
+      help: 'How to play?',
+      helpText:
+        'Share the code or link with your friends. Once everyone is in, the host starts the game; questions reach everyone at the same time and fast, correct answers score more.',
+      leave: 'Leave',
+      leaveConfirm: 'Are you sure you want to leave the room?',
+      leaveYes: 'Leave',
+      lobby: 'Lobby',
+      copy: 'Copy link',
+      copied: 'Link copied',
+      share: 'Share',
+      shareText: "Join the parolla party, let's solve quizzes together! {url}",
+      qrHint: 'Scan with your camera to join',
+      close: 'Close',
+      next: 'Next game',
+      start: 'Start game',
+      minPlayers: 'At least 2 players are needed to start',
+      remote: 'Remote',
+      waitingHost: 'Waiting for the host',
+      waitingHostSub: 'You will move on automatically when the game starts',
+      presentationNotice: "Presentation mode: questions appear on the host's screen, you answer on your own device.",
+      presentationHost: 'Presentation mode: questions appear on your screen, players answer on their own devices.',
+      emptyQueue: 'No games in the queue',
+      emptyQueueHint: 'Add a game to the queue to start',
+      types: { qa: 'Q&A', choices: 'This or That', daily: 'Daily', unlimited: 'Unlimited' },
+      host: 'Host',
+      presenting: 'Presenting',
+      you: 'You',
+      offline: 'Disconnected',
+      emptySlots: '{count} open seats, waiting for players.',
+      manage: 'Manage players',
+      kick: 'Remove from room',
+      kickHint: 'Pick the player to remove',
+      kickConfirm: 'Remove {name} from the room?',
+      noOthers: 'No other players in the room',
+      cancel: 'Cancel',
+      queueEyebrow: 'Up next',
+      queue: 'Game queue',
+      nextBadge: 'Next',
+      play: 'Play',
+      moveUp: 'Move up',
+      moveDown: 'Move down',
+      remove: 'Remove',
+      addGame: 'Add game',
+      addGameSub: "Add the room's next game to the queue",
+      settings: {
+        eyebrow: 'Setup',
+        title: 'Room settings',
+        inGame: 'While a game is running only auto mode can be changed.',
+        listed: 'Show in the list',
+        presentationListed: "Presentation mode isn't available in listed rooms.",
+        listedSub: 'No friends around? No worries, this party room is listed for everyone and someone can join to play with you',
+        lock: 'Lock the room',
+        lockSub: 'Until the game starts anyone with the code or link can join; the room locks itself once the game starts.',
+        chat: 'Chat during the game',
+        chatSub: 'The lobby chat is always on; this turns the chat on the game screen on or off.',
+        duration: 'Round time',
+        durationSub: 'How long everyone has to answer each question.',
+        seconds: '{n}s',
+        passwordSub: 'Players need the password to join.',
+        passwordPlaceholder: 'Set a password',
+        save: 'Save',
+        advanced: 'Advanced',
+        auto: 'Auto mode',
+        autoSub: 'Moves to the next round automatically after 5 seconds.',
+        presentation: 'Presentation mode',
+        presentationSub: 'Questions appear on your screen, players answer on their own devices.',
+        leaderboard: 'Leaderboard',
+        leaderboardSub: 'When players see the ranking.',
+        board: { always: 'Always', end: 'At the end', never: 'Never' },
+        capacity: '{n} players',
+        protected: 'Password'
+      },
+      chat: {
+        eyebrow: 'Room',
+        title: 'Chat',
+        empty: 'No messages yet',
+        emptySub: 'Say hi while everyone gathers.',
+        placeholder: 'Write a message...',
+        off: 'Chat is off',
+        send: 'Send',
+        system: {
+          host_changed: '{name} is now the host',
+          joined: '{name} joined the room',
+          left: '{name} left the room',
+          kicked: '{name} was kicked by the host',
+          vote_kick: 'Vote to kick {name} ({count}/{total})',
+          vote_kicked: '{name} was voted out of the room'
+        }
+      }
+    },
+    game: {
+      answered: '{answered}/{total} answered',
+      sent: 'Answer sent · waiting for the others',
+      onScreen: 'Question is on the screen',
+      onScreenSub: 'Look at the big screen, type your answer here',
+      correct: 'CORRECT!',
+      wrong: 'WRONG!',
+      answer: 'Answer',
+      yourAnswer: 'Your answer',
+      correctAnswer: 'Correct answer',
+      points: '+{n}',
+      leaderboard: 'Leaderboard',
+      top: 'Top {n}',
+      score: 'Your score',
+      correctCount: '{n} correct',
+      nextQuestion: 'Next question',
+      toResults: 'Results coming up',
+      waitingNext: 'The host will start the next round',
+      settings: 'Settings',
+      autoAdvance: 'Auto advance',
+      autoAdvanceSub: 'Continues on its own 5 seconds after each result.',
+      next: 'Next round',
+      cancel: 'Cancel game',
+      cancelConfirm: 'Cancel the game? No points are kept for it.',
+      cancelYes: 'Cancel game',
+      close: 'Close'
+    },
+    choices: {
+      champion: 'Champion',
+      challenger: 'Challenger',
+      mine: 'Your vote',
+      winner: 'Winner',
+      votes: '0 VOTES | 1 VOTE | {n} VOTES',
+      voted: '{voters}/{total} voted',
+      pick: 'Make your pick',
+      pickSub: 'You can change your vote until time runs out',
+      locked: 'Vote cast',
+      changed: 'Vote changed',
+      canChange: 'you can still change it',
+      live: 'Voting in progress',
+      won: 'Your pick won!',
+      lost: 'The room decided otherwise',
+      roundWinner: 'Round winner',
+      byVotes: 'Decided by votes',
+      tie: 'Tie · champion stays',
+      tieFirst: 'Tie · first option goes on',
+      option: 'Option {n}',
+      nextRound: 'Next round'
+    },
+    remote: {
+      title: 'Host remote',
+      dialogText: 'Scan the QR code to run the game from your phone. You must be signed in with the same account.',
+      loginNotice: 'Sign in with the room host account to use the remote.',
+      notHost: 'You are not the host of this room. Open the remote with the host account.',
+      notFound: 'Room not found or already closed.',
+      back: 'Back to party',
+      room: 'Room {code}',
+      round: 'Round {n}/{total}',
+      result: 'Round result · {n}/{total}',
+      final: 'Game over',
+      lobby: 'Waiting in the lobby',
+      queue: 'Up next',
+      empty: 'No games in the queue'
+    },
+    lobbyIn: 'Back to the lobby',
+    final: {
+      title: 'Game over',
+      rank: 'You finished #{n}',
+      hidden: 'Rankings are hidden in this room',
+      eliminated: 'Elimination order',
+      backToLobby: 'Back to the lobby',
+      waitingHost: 'A new game starts once the host goes back to the lobby',
+      answers: 'Answers',
+      answersSub: 'Tap a player to see their answers',
+      correctAnswer: 'Correct answer',
+      question: 'Question {n}',
+      noAnswer: 'No answer',
+      download: {
+        eyebrow: 'Download results',
+        title: 'Ranking and answers as a file',
+        json: 'Download JSON',
+        excel: 'Download Excel',
+        seconds: '{s} s',
+        sheets: { ranking: 'Ranking', answers: 'Answers', questions: 'Questions', result: 'Result' },
+        cols: {
+          rank: 'Rank',
+          player: 'Player',
+          score: 'Score',
+          correct: 'Correct',
+          wrong: 'Wrong',
+          no: 'No',
+          letter: 'Letter',
+          question: 'Question',
+          correctAnswer: 'Correct answer',
+          choice: 'Choice'
+        }
+      }
+    },
+    rooms: {
+      open: 'See party rooms',
+      openSub: 'Join a public room',
+      title: 'Party rooms',
+      live: 'Live',
+      count: '{n} open rooms',
+      noGame: 'No game picked yet',
+      inLobby: 'In lobby',
+      inGame: 'Playing',
+      emptyTitle: 'No listed rooms right now',
+      emptyText: 'Start your own room and turn on "Show in the list" in its settings so someone can join you.',
+      failed: "Rooms can't be loaded right now, retrying shortly.",
+      blocked: {
+        inGame: 'Opens after the game',
+        locked: 'Room locked',
+        full: 'Room full'
+      }
+    },
+    serverPause: {
+      title: 'Server maintenance in progress',
+      game: 'Hang on, the game will continue right where it stopped.',
+      lobby: 'Hang on, the room will be back in a moment.'
+    },
+    cancelled: {
+      title: 'GAME CANCELLED',
+      text: 'The host cancelled the game. No points were given for this game.'
+    },
+    emoji: {
+      open: 'Send a reaction'
+    },
+    closed: {
+      kicked: 'You were removed from the room',
+      vote_kicked: 'You were voted out of the room',
+      empty: 'The room was closed',
+      noHostTitle: 'The host left',
+      noHostText: 'No logged-in player is left to take over as host, so this party cannot continue.',
+      backToQuizzes: 'Back to quizzes'
+    },
+    errors: {
+      room_not_found: 'Room not found',
+      bad_password: 'Wrong password',
+      room_full: 'The room is full',
+      vote_self: "You can't vote for yourself",
+      vote_already_voted: 'You already voted for this player',
+      vote_target_missing: 'Player not found in the room',
+      not_enough_players: 'At least 2 players are needed to start',
+      rate_limited: 'You are sending messages too fast. Try again in {seconds} seconds.',
+      room_locked: 'The room is locked',
+      login_required: 'You need to log in for this',
+      already_in_room: 'You are already in this room',
+      quiz_unsupported: 'This quiz cannot be played in a party',
+      queue_full: 'Queue is full (max 20 games)',
+      not_host: 'Only the host can do this'
     }
   }
 }

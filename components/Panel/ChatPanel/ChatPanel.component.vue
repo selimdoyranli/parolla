@@ -8,7 +8,9 @@
 
   .chat-panel__content
     slot(name="content-prepend")
-    Chat(@on-focus="handleFocus" @on-blur="handleBlur")
+    //- default: the tour chat; party passes its own
+    slot
+      Chat(@on-focus="handleFocus" @on-blur="handleBlur")
     slot(name="content-append")
 </template>
 

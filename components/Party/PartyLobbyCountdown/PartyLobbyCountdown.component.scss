@@ -1,0 +1,45 @@
+.party-lobby-countdown {
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-text-01);
+    font-weight: 700;
+    font-size: var(--font-size-text-9);
+
+    span {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+
+      svg {
+        color: var(--color-brand-02);
+      }
+    }
+
+    b {
+      color: var(--color-brand-02);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__bar {
+    height: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+    background: var(--color-ui-03);
+    border-radius: 999px;
+
+    i {
+      display: block;
+      height: 100%;
+      background: var(--color-brand-02);
+      border-radius: inherit;
+      transition: width 0.2s linear;
+    }
+  }
+}

@@ -1,0 +1,193 @@
+// Covers the game wrapper (above the last round result) until the host takes everyone back to the lobby
+.party-final-results {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  justify-content: center;
+  // bottom: clear of the emoji / chat buttons
+  padding: 24px 16px 156px;
+  overflow-y: auto;
+  background: var(--color-ui-01);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: auto 0;
+  }
+
+  &__head {
+    text-align: center;
+  }
+
+  &__quiz {
+    margin: 4px 0 0;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-6);
+    line-height: 1.3;
+  }
+
+  // same look as the solo choices winner hero
+  &__champion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .choice-card--winner {
+      display: contents;
+      pointer-events: none;
+
+      .choice-card__content {
+        display: contents;
+      }
+
+      .choice-card__image,
+      .choice-card__video {
+        max-height: 220px;
+        border-width: 3px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+      }
+
+      .choice-card__video {
+        width: 100%;
+        height: auto;
+      }
+
+      .choice-card__note,
+      .choice-card__text {
+        display: block;
+        order: 2;
+        margin-top: 12px;
+        padding: 0;
+        color: var(--color-brand-02);
+        font-weight: 800;
+        font-size: var(--font-size-text-6);
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  &__kicker {
+    order: 1;
+    margin-top: 10px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-8);
+  }
+
+  &__board-head {
+    margin-bottom: 8px;
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    font-size: var(--font-size-text-9);
+
+    &--me {
+      color: var(--color-brand-02);
+      font-weight: 700;
+    }
+  }
+
+  &__rank {
+    flex: none;
+    width: 16px;
+    color: var(--color-text-03);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  &__thumb {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  &__name {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__mine {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 12px 16px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+
+    b {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-6);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &-sub {
+      margin-left: auto;
+      color: var(--color-text-03);
+    }
+  }
+
+  &__waiting {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 12px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 999px;
+  }
+
+  // the leaderboard routes' board on the overlay's background
+  &__board {
+    width: 100%;
+
+    // only the pinned "your rank" row lives here: no scroll box, scrollbar or fade
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .player-list {
+      max-height: none;
+      overflow: visible;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  &__hidden {
+    margin: 0;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+    text-align: center;
+  }
+}

@@ -8,11 +8,14 @@
     h1.quiz-intro-splash__title {{ room.title }}
     p.quiz-intro-splash__description(v-if="room.description") {{ room.description }}
 
-    .quiz-intro-splash__creator
+    //- the daily / unlimited word-game sets have no author
+    .quiz-intro-splash__creator(v-if="!room.noCreator")
       PlayerAvatar(:user="creatorUser" :size="40")
       .quiz-intro-splash__creator-meta
         small {{ $t('playIntro.creator') }}
-        strong {{ creatorUser ? creatorUser.username : $t('playIntro.anon') }}
+        strong
+          | {{ creatorUser ? creatorUser.username : $t('playIntro.anon') }}
+          span.gm-username-extra(v-if="creatorUser && creatorUser.role && creatorUser.role.name === 'GM'") &nbsp;(GM)
 
   AppLogo.quiz-intro-splash__brand(v-if="playing" type="title")
 </template>

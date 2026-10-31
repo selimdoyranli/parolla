@@ -322,4 +322,364 @@
   .winner-layout__share:active {
     transform: scale(0.97);
   }
+
+  // ---- Party (room rounds) ----
+  // PartyHostSheet's gear sits at the bar's end
+  .room-info--hostGear {
+    padding-inline-end: 52px;
+  }
+
+  .room-info__ring {
+    position: relative;
+    display: grid;
+    flex: none;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+
+    svg {
+      position: absolute;
+      transform: rotate(-90deg);
+      inset: 0;
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 3;
+    }
+
+    &-track {
+      stroke: var(--color-border-02);
+    }
+
+    &-fill {
+      transition: stroke-dashoffset 0.25s linear;
+      stroke: var(--color-brand-02);
+      stroke-dasharray: 100;
+      stroke-linecap: round;
+    }
+
+    &-text {
+      position: relative;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-10);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .versus-set--party {
+    gap: $spacer * 2;
+    padding: $spacer * 2 $spacer * 3 $spacer * 3;
+    overflow-y: auto;
+
+    .versus-set__cards {
+      position: relative;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: $spacer * 2;
+      min-height: 0;
+    }
+
+    .versus-divider {
+      border: none;
+    }
+
+    // no grow / hide animation: the vote can change until the deadline
+    .choice-card {
+      border: none;
+
+      &.is-selected,
+      &.is-loser {
+        flex: 1;
+        height: auto;
+        opacity: 1;
+      }
+
+      .choice-card__content {
+        height: 70%;
+      }
+    }
+  }
+
+  .party-choice {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    border: 2px solid var(--color-border-02);
+    border-radius: 16px;
+    transition: opacity 0.3s, filter 0.3s, border-color 0.2s;
+
+    &.is-mine {
+      border-color: var(--color-text-01);
+    }
+
+    &.is-winner {
+      border-color: var(--color-warning-01);
+    }
+
+    &.is-out {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    &__badges {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-width: calc(100% - 52px);
+      pointer-events: none;
+      inset-block-start: 8px;
+      inset-inline-start: 8px;
+    }
+
+    &__count {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      min-width: 28px;
+      height: 28px;
+      padding-inline: 6px;
+      color: var(--color-text-04);
+      font-size: var(--font-size-text-9);
+      font-variant-numeric: tabular-nums;
+      background: rgba(0, 0, 0, 0.55);
+      border-radius: 999px;
+      place-items: center;
+      inset-block-start: 8px;
+      inset-inline-end: 8px;
+
+      @include font-weight-extra-bold;
+    }
+  }
+
+  .party-badge {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    height: 22px;
+    padding-inline: 8px;
+    color: var(--color-text-04);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 999px;
+
+    @include font-weight-extra-bold;
+
+    &--num {
+      justify-content: center;
+      width: 22px;
+      padding: 0;
+      color: var(--color-text-01);
+      background: var(--color-ui-01);
+      box-shadow: 0 0 0 1px var(--color-border-02);
+    }
+
+    &--champion,
+    &--winner {
+      color: #1a1a1a;
+      background: var(--color-warning-01);
+    }
+
+    &--mine {
+      color: #1a1a1a;
+      background: #fff;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .party-vote-buttons {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $spacer * 3;
+    justify-content: center;
+  }
+
+  .party-vote-button {
+    display: flex;
+    gap: $spacer * 3;
+    align-items: center;
+    min-height: 88px;
+    padding: $spacer * 3 $spacer * 4;
+    color: var(--color-text-04);
+    font-size: var(--font-size-text-8);
+    text-align: start;
+    background: var(--color-danger-02);
+    border: 3px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s, filter 0.3s, border-color 0.2s;
+
+    @include font-weight-bold;
+
+    &:last-child {
+      background: var(--color-info-01);
+    }
+
+    &.is-mine {
+      border-color: var(--color-text-01);
+    }
+
+    &.is-winner {
+      border-color: var(--color-warning-01);
+    }
+
+    &.is-out {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    &__num {
+      display: grid;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-7);
+      background: var(--color-ui-01);
+      border-radius: 10px;
+      place-items: center;
+
+      @include font-weight-extra-bold;
+    }
+
+    &__text {
+      flex: 1;
+      min-width: 0;
+      word-break: break-word;
+    }
+  }
+
+  .party-votes {
+    flex: none;
+
+    &__row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-block-end: 6px;
+      font-size: var(--font-size-text-9);
+      font-variant-numeric: tabular-nums;
+
+      @include font-weight-extra-bold;
+    }
+
+    &__side--left {
+      color: var(--color-danger-02);
+    }
+
+    &__side--right {
+      color: var(--color-info-01);
+    }
+
+    &__total {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      text-transform: uppercase;
+    }
+
+    &__bar {
+      position: relative;
+      display: flex;
+      height: 10px;
+      overflow: hidden;
+      background: var(--color-ui-03);
+      border-radius: 999px;
+    }
+
+    &__fill {
+      height: 100%;
+      transition: width 0.3s;
+
+      &--left {
+        background: var(--color-danger-02);
+      }
+
+      &--right {
+        margin-inline-start: auto;
+        background: var(--color-info-01);
+      }
+    }
+  }
+
+  .party-lock {
+    display: flex;
+    flex: none;
+    gap: $spacer * 3;
+    align-items: center;
+    padding: $spacer * 3;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+
+    &__icon {
+      display: grid;
+      flex: none;
+      width: 36px;
+      height: 36px;
+      color: var(--color-brand-02);
+      background: var(--color-ui-01);
+      border-radius: 10px;
+      place-items: center;
+    }
+
+    &--voted .party-lock__icon {
+      color: var(--color-warning-01);
+    }
+
+    &__text {
+      flex: 1;
+      min-width: 0;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-9);
+      line-height: 1.35;
+
+      strong {
+        margin-inline-end: 4px;
+        color: var(--color-text-01);
+      }
+    }
+
+    &__count {
+      flex: none;
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-10);
+      font-variant-numeric: tabular-nums;
+
+      @include font-weight-bold;
+    }
+  }
+
+  // presenter: a big screen everybody reads
+  &--partyPresenter {
+    .party-badge {
+      height: 30px;
+      font-size: var(--font-size-text-9);
+
+      &--num {
+        width: 30px;
+      }
+    }
+
+    .party-choice__count {
+      min-width: 40px;
+      height: 40px;
+      font-size: var(--font-size-text-7);
+    }
+
+    .party-votes__row {
+      font-size: var(--font-size-text-7);
+    }
+
+    .party-votes__bar {
+      height: 16px;
+    }
+  }
 }

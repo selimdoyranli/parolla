@@ -145,6 +145,12 @@
         sup {
           color: var(--color-text-03);
         }
+
+        // party score ("1500 puan"): wider than the time slot it takes (after :first-child, same specificity)
+        &--score:first-child {
+          width: auto;
+          margin-inline-end: 10px;
+        }
       }
     }
   }
@@ -152,8 +158,11 @@
   &-gamerAnswers {
     position: relative;
 
+    // letter, correct answer and the player's answer share one centre line (the answer may carry a time chip)
     &-item {
       position: relative;
+      display: flex;
+      align-items: center;
       margin-block-end: calc(var(--base-m-y) / 2);
 
       &.answer--correct {
@@ -169,17 +178,16 @@
       }
 
       &__letter {
-        position: relative;
-        top: 2px;
-        display: inline-block;
-        float: left;
+        flex: none;
         width: calc(var(--base-m-x) * 1.5);
         color: var(--color-text-02);
       }
 
       &__value {
         display: flex;
-        vertical-align: text-top;
+        flex: 1;
+        align-items: center;
+        min-width: 0;
 
         kbd {
           display: inline-block;
@@ -189,9 +197,30 @@
         }
 
         span {
-          display: inline-block;
+          display: inline-flex;
+          flex-wrap: wrap;
+          gap: 4px 6px;
+          align-items: center;
           width: 50%;
         }
+      }
+
+      // party: answer time chip after the answer
+      &__time {
+        display: inline-flex;
+        gap: 3px;
+        align-items: center;
+        padding: 1px 7px;
+        color: var(--color-text-02);
+        font: inherit;
+        font-size: var(--font-size-text-11);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        vertical-align: middle;
+        background: var(--color-ui-03);
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
       }
     }
   }

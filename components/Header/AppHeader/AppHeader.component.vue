@@ -35,6 +35,10 @@
         :badge="formatMillions(tourUserList.totalPlayers + tourUserList.totalViewers)"
       )
 
+    //- party room (lobby, or a game with chat on): same spot and look as tour's online button
+    li.app-header-nav__item.app-header-nav__item--partyChat.me-3(v-if="isPartyRoom && isPartyChatButton" @click="openPartyChatDialog")
+      ActionButton(icon="tabler:message" :icon-size="24" :badge="partyChatUnread || null")
+
     li.app-header-nav__item(v-if="isVisibleHowToPlay" @click="toggleHowToPlayDialog")
       ActionButton(icon="tabler:info-circle" :icon-size="24")
 
@@ -134,6 +138,8 @@
 import { defineComponent, useRouter, useRoute, useContext, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { gameModeKeyEnum } from '@/enums/gameModeKey.enum'
 import { quizTypeEnum } from '@/enums/quiz.enum'
+import { wsTypeEnum } from '@/enums/wsType.enum'
+import { partySend } from '@/composables/usePartySocket'
 
 // module scope: survives the header remounting on a layout switch
 let hasNavigated = false
@@ -148,7 +154,7 @@ export default defineComponent({
     const { formatMillions } = useFormatter()
 
     const { activeGameMode } = useGameMode()
-    const { openLeaveDialog } = useDialog()
+    const { openLeaveDialog, openPartyLeaveDialog, openPartyCancelDialog } = useDialog()
 
     const user = computed(() => store.getters['auth/user'])
     const room = computed(() => store.getters['creator/room'])
@@ -388,11 +394,18 @@ export default defineComponent({
       store.commit('tour/SET_IS_OPEN_TOUR_MODE_ONLINE_DIALOG', true)
     }
 
+    const isPartyRoom = computed(() => getRouteBaseName(route.value) === 'Party-code')
+    // the lobby has its own chat on screen: the badge only counts during games
+    const isPartyChatButton = computed(() => store.state.party.room?.state === 'lobby' || store.getters['party/gameChat'])
+    const partyChatUnread = computed(() => (store.getters['party/game'] ? store.getters['party/chatUnread'] : 0))
+
+    const openPartyChatDialog = () => store.commit('party/SET_CHAT_DIALOG_OPEN', true)
+
     const handleClickBackButton = () => {
       const triggerRoute = () => {
         // opened straight from a link (new tab): no in-app page to go back to, so land on the quizzes list for quiz pages, else home
         if (!hasNavigated) {
-          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode')
+          const isQuiz = activeGameMode.value === gameModeKeyEnum.CREATOR || route.value.name.startsWith('CreatorMode') || isPartyRoom.value
 
           router.push(localePath({ name: isQuiz ? 'CreatorMode-CreatorModeRooms' : 'Main' }))
 
@@ -402,7 +415,14 @@ export default defineComponent({
         router.back()
       }
 
-      if (
+      // the host mid-game gets the cancel-game confirm (same as the host sheet); everyone else the leave confirm
+      const partyGame = store.getters['party/game']
+
+      if (isPartyRoom.value && store.getters['party/isHost'] && partyGame && partyGame.phase !== 'final' && !store.state.party.cancelled) {
+        openPartyCancelDialog({ confirm: () => partySend(wsTypeEnum.PARTY_CANCEL) })
+      } else if (isPartyRoom.value) {
+        openPartyLeaveDialog({ confirm: triggerRoute })
+      } else if (
         (activeGameMode.value && activeGameMode.value.length > 0) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
@@ -452,6 +472,8 @@ export default defineComponent({
         activeGameMode.value === gameModeKeyEnum.WORDBLOCK ||
         activeGameMode.value === gameModeKeyEnum.DRAW ||
         activeGameMode.value === gameModeKeyEnum.GEOGUESS ||
+        isPartyRoom.value ||
+        getRouteBaseName(route.value) === 'Party' ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeRooms' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose' }) ||
         route.value.path === localePath({ name: 'CreatorMode-CreatorModeCompose-Choices' }) ||
@@ -521,6 +543,10 @@ export default defineComponent({
       targetRatingUserId,
       handleRoomReviewClosed,
       openTourModeOnlineDialog,
+      isPartyRoom,
+      isPartyChatButton,
+      partyChatUnread,
+      openPartyChatDialog,
       handleClickBackButton,
       handleClickAppLogo,
       logoClasses,

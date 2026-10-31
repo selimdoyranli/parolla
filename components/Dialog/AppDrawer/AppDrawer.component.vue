@@ -46,7 +46,8 @@ const ITEMS = [
     icon: 'streamline-color:user-multiple-group-flat'
   },
   { key: 'shop', title: 'dialog.menu.shop', icon: 'streamline-ultimate-color:shop-sale-1' },
-  { key: 'quizzes', route: 'CreatorMode-CreatorModeRooms', title: 'dialog.menu.quizzes', icon: 'twemoji:pencil' }
+  { key: 'quizzes', route: 'CreatorMode-CreatorModeRooms', title: 'dialog.menu.quizzes', icon: 'twemoji:pencil' },
+  { key: 'party', route: 'Party', title: 'dialog.menu.party', icon: 'fluent-emoji-flat:party-popper' }
 ]
 
 export default defineComponent({

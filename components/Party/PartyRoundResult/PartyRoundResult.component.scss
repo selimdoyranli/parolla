@@ -1,0 +1,282 @@
+// Covers the scene (absolute in the party game wrapper) between rounds
+.party-round-result {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 16px 16px;
+  overflow-y: auto;
+  background: var(--color-ui-01);
+
+  &__chip {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    margin: 10px 0 0;
+    padding: 3px 10px;
+    font-weight: 800;
+    font-size: var(--font-size-text-10);
+    text-transform: uppercase;
+    background: color-mix(in sRGB, var(--color-ui-01) 25%, transparent);
+    border-radius: 999px;
+
+    span {
+      opacity: 0.75;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+    margin: auto 0;
+
+    @include media-breakpoint-up(desktop) {
+      flex-direction: row;
+      align-items: flex-start;
+      max-width: 920px;
+
+      > * {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__card {
+    position: relative;
+    padding: 16px;
+    color: var(--color-text-01);
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+
+    &--correct,
+    &--wrong {
+      color: var(--color-text-04);
+      border-color: transparent;
+    }
+
+    &--correct {
+      background: var(--color-success-01);
+    }
+
+    &--wrong {
+      background: var(--color-danger-01);
+    }
+  }
+
+  &__points {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-weight: 800;
+    font-size: var(--font-size-text-6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__verdict {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    background: color-mix(in sRGB, var(--color-ui-01) 25%, transparent);
+    border-radius: 50%;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 800;
+    font-size: var(--font-size-text-4);
+    letter-spacing: 0.02em;
+  }
+
+  &__answer {
+    margin: 8px 0 0;
+    font-size: var(--font-size-text-9);
+    word-break: break-word;
+  }
+
+  &__mine {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 12px 16px;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-9);
+    background: var(--color-ui-02);
+    border-radius: 14px;
+
+    b {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-6);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &-sub {
+      margin-left: auto;
+      color: var(--color-text-03);
+    }
+  }
+
+  &__next-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-text-02);
+    font-weight: 700;
+    font-size: var(--font-size-text-9);
+
+    span {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    b {
+      color: var(--color-brand-02);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__bar {
+    height: 6px;
+    margin-top: 6px;
+    overflow: hidden;
+    background: var(--color-ui-03);
+    border-radius: 999px;
+
+    i {
+      display: block;
+      height: 100%;
+      background: var(--color-brand-02);
+      border-radius: inherit;
+      transition: width 0.2s linear;
+    }
+
+    &--row {
+      flex-basis: 100%;
+      height: 4px;
+      margin-top: 2px;
+
+      i {
+        transition: width 0.6s ease;
+      }
+    }
+  }
+
+  &__wait {
+    margin: 0;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-9);
+    text-align: center;
+  }
+
+  &__board-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: var(--font-size-text-9);
+
+    &--me {
+      color: var(--color-brand-02);
+      font-weight: 700;
+    }
+  }
+
+  &__rank {
+    width: 16px;
+    color: var(--color-text-03);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  &__name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__delta {
+    font-size: var(--font-size-text-11);
+
+    &.is-up {
+      color: var(--color-success-01);
+    }
+
+    &.is-down {
+      color: var(--color-danger-01);
+    }
+  }
+
+  &__score {
+    margin-left: auto;
+    color: var(--color-text-01);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // choices: sits under the vote bar inside the scene, not over it
+  &--inline {
+    position: static;
+    z-index: auto;
+    display: block;
+    padding: 0;
+    overflow: visible;
+    background: none;
+
+    .party-round-result__inner {
+      max-width: none;
+      margin: 0;
+    }
+
+    .party-round-result__main {
+      gap: 8px;
+    }
+
+    .party-round-result__card {
+      padding: 12px 14px;
+    }
+
+    .party-round-result__title {
+      font-size: var(--font-size-text-7);
+      text-transform: uppercase;
+    }
+
+    .party-round-result__answer {
+      margin: 2px 0 0;
+    }
+  }
+}

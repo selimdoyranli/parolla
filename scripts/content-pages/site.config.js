@@ -50,6 +50,7 @@ const APP_ROUTES = [
   { tr: '/muzik/sarki-tahmin-et/', en: '/en/music/guess-the-song/' },
   { tr: '/topluluklar/', en: '/en/communities/' },
   { tr: '/indir/', en: '/en/download/' },
+  { tr: '/parti/', en: '/en/party/' },
   { tr: '/sayfa/gizlilik-politikasi/', en: '/en/page/privacy-policy/' },
   { tr: '/sayfa/cerez-politikasi/', en: '/en/page/cookie-policy/' },
   { tr: '/sayfa/kvkk-aydinlatma-metni/', en: '/en/page/kvkk-clarification-text/' },
@@ -77,6 +78,7 @@ const ROUTE_HEADS = [
   })),
   { seo: 'tourMode', urls: { tr: '/tur/', en: '/en/tour/' }, howTo: 'tour' },
   { seo: 'download', urls: { tr: '/indir/', en: '/en/download/' } },
+  { seo: 'party', urls: { tr: '/parti/', en: '/en/party/' } },
   { seo: 'drawLobby', urls: { tr: '/ciz/', en: '/en/draw/' }, howTo: 'draw' },
   { seo: 'creatorModeCompose', urls: { tr: '/quiz-olustur/', en: '/en/create-quiz/' }, howTo: 'creator' },
   {

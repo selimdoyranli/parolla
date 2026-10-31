@@ -1,0 +1,263 @@
+// vivid "on air" green, brighter than the success token so the live state pops in both themes
+$live-green: #1ee36b;
+
+.party-live-demo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 22px 14px 14px;
+  text-align: left;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-02);
+  border-radius: 18px;
+  box-shadow: var(--box-shadow-01);
+
+  &__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 12px;
+    color: #fff;
+    font-weight: 800;
+    font-size: var(--font-size-text-11);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    text-transform: uppercase;
+    background: var(--color-brand-02);
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border-02);
+  }
+
+  &__live {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: $live-green;
+    font-weight: 800;
+    font-size: var(--font-size-text-10);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    background: $live-green;
+    border-radius: 50%;
+    animation: party-live-demo-pulse 1.6s ease-out infinite;
+  }
+
+  &__code {
+    padding: 3px 8px;
+    color: var(--color-text-02);
+    font-weight: 700;
+    font-size: var(--font-size-text-10);
+    letter-spacing: 0.12em;
+    background: var(--color-ui-03);
+    border-radius: 8px;
+  }
+
+  &__quiz {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--color-text-03);
+    font-size: var(--font-size-text-10);
+
+    svg {
+      color: var(--color-brand-02);
+    }
+
+    strong {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-9);
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 6px 10px;
+    background: var(--color-ui-01);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    transition: border-color 0.3s, background 0.3s;
+
+    &--hit {
+      background: color-mix(in sRGB, var(--color-success-01) 10%, var(--color-ui-01));
+      border-color: color-mix(in sRGB, var(--color-success-01) 40%, transparent);
+    }
+  }
+
+  &__name {
+    overflow: hidden;
+    font-weight: 700;
+    font-size: var(--font-size-text-9);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__score {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    margin-left: auto;
+    font-weight: 800;
+    font-size: var(--font-size-text-9);
+    font-variant-numeric: tabular-nums;
+
+    svg {
+      color: var(--color-warning-01);
+    }
+  }
+
+  &__waiting {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    color: var(--color-text-03);
+    font-weight: 600;
+    font-size: var(--font-size-text-10);
+    border: 1px dashed var(--color-border-02);
+    border-radius: 12px;
+  }
+
+  &__ticker {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    font-size: var(--font-size-text-10);
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 12px;
+
+    svg {
+      flex: none;
+      color: var(--color-brand-02);
+    }
+  }
+
+  &__event {
+    overflow: hidden;
+    color: var(--color-text-02);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__timer {
+    margin-left: auto;
+    color: var(--color-brand-02);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__floats {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &__float {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 26px;
+    line-height: 1;
+    animation: party-live-demo-float 2.6s ease-out forwards;
+
+    small {
+      margin-top: 2px;
+      padding: 1px 6px;
+      color: var(--color-text-01);
+      font-weight: 700;
+      font-size: 10px;
+      line-height: 1.4;
+      background: var(--color-ui-02);
+      border: 1px solid var(--color-border-02);
+      border-radius: 999px;
+    }
+  }
+}
+
+// rows re-rank with a slide when scores change
+.party-live-demo-row-move {
+  transition: transform 0.45s ease;
+}
+
+.party-live-demo-row-enter-active {
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+.party-live-demo-row-enter {
+  transform: translateY(8px);
+  opacity: 0;
+}
+
+.party-live-demo-fade-enter-active,
+.party-live-demo-fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.party-live-demo-fade-enter,
+.party-live-demo-fade-leave-to {
+  opacity: 0;
+}
+
+@keyframes party-live-demo-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($live-green, 0.7);
+  }
+
+  100% {
+    box-shadow: 0 0 0 10px rgba($live-green, 0);
+  }
+}
+
+@keyframes party-live-demo-float {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+
+  15% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-300px) scale(1);
+    opacity: 0;
+  }
+}

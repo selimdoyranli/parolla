@@ -16,6 +16,10 @@ const redirects = `
 /muzik/  /muzik/sarki-tahmin-et/  301
 /en/music  /en/music/guess-the-song/  301
 /en/music/  /en/music/guess-the-song/  301
+/party  /parti/  301
+/party/*  /parti/:splat  301
+/en/parti  /en/party/  301
+/en/parti/*  /en/party/:splat  301
 `.trim()
 
 const headers = `

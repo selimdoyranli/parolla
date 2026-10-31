@@ -37,6 +37,17 @@ Dialog.dialog.dialog--scene.play-intro(
       AppIcon(name="tabler:player-play-filled" :width="20" :height="20")
       span {{ $t('playIntro.play') }}
 
+    template(v-if="canParty")
+      button.play-intro__party(type="button" :aria-expanded="String(partyOpen)" @click="toggleParty")
+        span.play-intro__party-icon
+          AppIcon(name="tabler:confetti" :width="22" :height="22")
+        span.play-intro__party-text
+          strong {{ $t('party.intro.title') }}
+          small {{ $t('party.intro.sub') }}
+        AppIcon(:name="partyOpen ? 'tabler:chevron-up' : 'tabler:chevron-down'" :width="18" :height="18")
+      //- set up in place; /party/new stays only as a deep-link fallback
+      PartyIntroSetup(v-if="partyOpen" :room-id="isCreator ? room.roomId : mode")
+
     //- daily / unlimited: right under the play button, where the old how-to-play dialog kept it
     DialogAd.play-intro__ad(v-if="!isCreator" :ad-slot="8953141720")
 
@@ -187,6 +198,20 @@ export default defineComponent({
         (room.value.isListed || (!room.value.isAnon && room.value.user?.id === me.value.id))
     )
     const isQa = computed(() => isCreator.value && (!room.value.quizType || room.value.quizType === quizTypeEnum.QA))
+    // party supports QA and Choices quizzes (never flashcards) and the daily / unlimited word-game sets (party room id = mode)
+    const canParty = computed(
+      () =>
+        !props.inGame &&
+        (['daily', 'unlimited'].includes(props.mode) ||
+          (isCreator.value && [quizTypeEnum.QA, quizTypeEnum.CHOICES].includes(room.value.quizType || quizTypeEnum.QA)))
+    )
+    const partyOpen = ref(false)
+    const sfx = useSfx()
+    // ACS drawer sounds, like the app's drawers opening / closing
+    const toggleParty = () => {
+      partyOpen.value = !partyOpen.value
+      sfx.play(partyOpen.value ? 'drawer-open' : 'drawer-close')
+    }
     const minutes = computed(() =>
       Math.round((isCreator.value && room.value.gameTimeLimit ? room.value.gameTimeLimit : GAME_TIME_LIMIT) / 60000)
     )
@@ -323,6 +348,9 @@ export default defineComponent({
       room,
       isCreator,
       isQa,
+      canParty,
+      partyOpen,
+      toggleParty,
       coverLabel,
       coverSublabel,
       stats,

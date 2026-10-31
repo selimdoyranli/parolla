@@ -1,0 +1,94 @@
+.party-remote-dialog {
+  &__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 24px 20px 20px;
+    color: var(--color-text-01);
+    text-align: center;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: var(--color-text-02);
+    background: var(--color-ui-03);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    background: var(--color-brand-02);
+    border-radius: 50%;
+  }
+
+  &__title {
+    color: var(--color-brand-02);
+    font-size: var(--font-size-text-8);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__text {
+    margin: 0;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+    line-height: 1.5;
+  }
+
+  // QR always on white so it scans in dark mode
+  &__qr {
+    width: 180px;
+    height: 180px;
+    padding: 8px;
+    background: #fff;
+    border-radius: 12px;
+  }
+
+  &__link {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px;
+    color: var(--color-text-01);
+    font: inherit;
+    background: var(--color-ui-01);
+    border: 1px solid var(--color-border-02);
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  &__url {
+    max-width: 100%;
+    overflow: hidden;
+    font-weight: 700;
+    font-size: var(--font-size-text-10);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__copy {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--color-brand-02);
+    font-weight: 700;
+    font-size: var(--font-size-text-11);
+  }
+}

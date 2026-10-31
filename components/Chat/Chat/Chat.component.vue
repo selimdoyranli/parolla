@@ -2,8 +2,19 @@
 .chat
   .chat__messages(ref="messagesRef")
     template(v-if="chatMessages?.length > 0")
-      .chat__message(v-for="message in chatMessages" :key="message.timestamp" :class="{ 'chat__message--system': message.isSystem }")
-        PlayerAvatar(v-if="!message.isSystem" with-username player-actions-context="tour" :user="buildAvatarUser(message)" :size="24")
+      .chat__message(
+        v-for="message in chatMessages"
+        :key="`${message.timestamp}-${message.playerId}`"
+        :class="{ 'chat__message--system': message.isSystem }"
+      )
+        PlayerAvatar(
+          v-if="!message.isSystem"
+          with-username
+          :player-actions-context="playerActionsContext"
+          :open-player-dialog-on-click="openPlayerDialogOnClick"
+          :user="buildAvatarUser(message)"
+          :size="24"
+        )
           template(#append)
             .chat__message-time {{ isoToHumanDate(message.timestamp) }}
         .chat__message-content
@@ -12,7 +23,7 @@
             | &nbsp;&nbsp;: &nbsp;{{ message.message }}
           .chat__message-text(v-else v-longpress="() => openReport(message)")
             | : {{ censorBadwords(message.message) }}
-            span.chat__message-report(auth-control @click="openReport(message)")
+            span.chat__message-report(v-if="!messages || reportable" auth-control @click="openReport(message)")
               AppIcon(name="tabler:flag" color="var(--color-text-03)" :width="12" :height="12")
 
     template(v-else)
@@ -26,12 +37,14 @@
       @closed="isOpenReportDialog = false"
     )
 
-  .chat__input(auth-control)
+  //- an outside feed (party) lets guests type, so no login gate there
+  .chat__input(:auth-control="messages ? false : ''")
     Field(
       v-model="messageText"
-      :placeholder="$t('chat.messageField.placeholder')"
+      :placeholder="placeholder || $t('chat.messageField.placeholder')"
       :border="false"
-      :readonly="!$auth.loggedIn"
+      :readonly="!messages && !$auth.loggedIn"
+      :disabled="disabled"
       @keypress.enter="handleEnterSend"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -41,14 +54,14 @@
           color="var(--color-brand-02)"
           icon="guide-o"
           size="small"
-          :inert="messageText.length <= 0"
-          :disabled="messageText.length <= 0"
+          :inert="disabled || messageText.length <= 0"
+          :disabled="disabled || messageText.length <= 0"
           @click="sendMessage"
         ) {{ $t('general.send') }}
 </template>
 
 <script>
-import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useStore, onMounted, onUnmounted, watch, nextTick, useContext } from '@nuxtjs/composition-api'
 import { Field, Button, Empty } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { reportTypeEnum } from '@/enums/report-type.enum'
@@ -104,7 +117,18 @@ export default defineComponent({
     Button,
     Empty
   },
-  setup(_, { emit }) {
+  props: {
+    // an outside feed (party chat); null = the tour chat from the store + app socket. With it, sends go out as `on-send`
+    messages: { type: Array, default: null },
+    placeholder: { type: String, default: null },
+    disabled: { type: Boolean, default: false },
+    playerActionsContext: { type: String, default: 'tour' },
+    // without player actions: a tap on a sender opens their player dialog
+    openPlayerDialogOnClick: { type: Boolean, default: false },
+    // an outside feed whose messages can still be reported (party), like the tour chat
+    reportable: { type: Boolean, default: false }
+  },
+  setup(props, { emit }) {
     const { $auth } = useContext()
     const store = useStore()
 
@@ -116,7 +140,7 @@ export default defineComponent({
 
     const messageText = ref('')
 
-    const chatMessages = computed(() => store.getters['tour/chatMessages'])
+    const chatMessages = computed(() => props.messages || store.getters['tour/chatMessages'])
 
     const ws = computed(() => store.getters['app/ws'])
     const currentWs = ref(null)
@@ -173,6 +197,8 @@ export default defineComponent({
     }
 
     const attachWsListener = socket => {
+      if (props.messages) return
+
       if (currentWs.value) {
         currentWs.value.removeEventListener('message', handleWsMessage)
       }
@@ -190,7 +216,19 @@ export default defineComponent({
 
     onMounted(() => {
       attachWsListener(ws.value)
+
+      if (props.messages) scrollToBottom()
     })
+
+    // outside feed: follow new lines like the socket path does (stay put when scrolled up)
+    watch(
+      () => props.messages?.length,
+      () => {
+        if (!props.messages || !isScrollOnBottom()) return
+
+        nextTick(scrollToBottom)
+      }
+    )
 
     watch(
       ws,
@@ -220,6 +258,17 @@ export default defineComponent({
     }
 
     const sendMessage = () => {
+      if (props.messages) {
+        const text = messageText.value.trim()
+
+        if (!text || props.disabled) return
+
+        emit('on-send', text)
+        messageText.value = ''
+
+        return
+      }
+
       // While reconnecting keep the draft so it can be sent once the socket is back
       if (!messageText.value.trim() || ws.value?.readyState !== 1) return
 
@@ -260,7 +309,7 @@ export default defineComponent({
     const reportAdditional = ref(null)
 
     const openReport = message => {
-      if (!$auth.loggedIn && !$auth.user) {
+      if ((props.messages && !props.reportable) || (!$auth.loggedIn && !$auth.user)) {
         return
       }
 
@@ -296,7 +345,8 @@ export default defineComponent({
       profilePhoto: message.profilePhoto,
       avatarSource: message.avatarSource,
       loadout: message.loadout,
-      role: message.role
+      role: message.role,
+      isGuest: message.isGuest
     })
 
     const handleFocus = () => {

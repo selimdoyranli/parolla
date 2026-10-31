@@ -1,0 +1,138 @@
+.party-remote {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: var(--mobile);
+  margin: 0 auto;
+  color: var(--color-text-01);
+
+  &__state {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 24px 16px;
+    color: var(--color-text-02);
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+
+    small {
+      color: var(--color-text-03);
+    }
+  }
+
+  &__code {
+    color: var(--color-text-03);
+    font-weight: 700;
+    font-size: var(--font-size-text-11);
+    letter-spacing: 0.1em;
+  }
+
+  &__phase {
+    font-size: var(--font-size-text-6);
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    background: var(--color-ui-01);
+    border-radius: 12px;
+  }
+
+  &__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    small {
+      color: var(--color-text-03);
+    }
+  }
+
+  // explicit CTA colours: the default Vant button is white in dark mode
+  &__next.van-button {
+    color: #fff;
+    font-weight: 800;
+    background: var(--color-brand-02);
+    border: 0;
+
+    &.van-button--disabled {
+      color: var(--color-text-03);
+      background: var(--color-ui-03);
+      opacity: 0.7;
+    }
+  }
+
+  &__cancel {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    align-self: center;
+    padding: 6px 10px;
+    color: var(--color-danger-01);
+    font: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__queue {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    background: var(--color-ui-02);
+    border: 1px solid var(--color-border-02);
+    border-radius: 14px;
+
+    ol {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+
+      span {
+        flex: none;
+        color: var(--color-text-03);
+        font-weight: 700;
+      }
+
+      em {
+        overflow: hidden;
+        font-style: normal;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    small {
+      color: var(--color-text-03);
+    }
+  }
+}

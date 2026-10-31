@@ -327,4 +327,113 @@
       }
     }
   }
+
+  // Party room round (prop `party`)
+  .countdown--party {
+    gap: $spacer * 2;
+    // padding, not margin: the shared .game-scene__countdown rule unsets margins with !important
+    padding-top: $spacer * 4;
+
+    .countdown__progress,
+    .countdown__answered {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      padding: 3px 10px;
+      color: var(--color-text-02);
+      font-size: var(--font-size-text-10);
+      font-variant-numeric: tabular-nums;
+      background-color: var(--color-ui-02);
+      border-radius: 999px;
+
+      @include font-weight-semi-bold;
+    }
+  }
+
+  .countdown__ring {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      position: absolute;
+      inset: 0;
+      transform: rotate(-90deg);
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 3;
+    }
+
+    &-track {
+      stroke: var(--color-border-02);
+    }
+
+    &-fill {
+      transition: stroke-dashoffset 0.25s linear;
+      stroke: var(--color-brand-02);
+      stroke-dasharray: 100;
+      stroke-linecap: round;
+    }
+
+    &-text {
+      position: relative;
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-9);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .party-on-screen {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer;
+    align-items: center;
+    padding: $spacer * 12 var(--base-p-x) 0;
+    text-align: center;
+
+    &__title {
+      color: var(--color-text-01);
+      font-size: var(--font-size-text-6);
+    }
+
+    &__sub {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-9);
+    }
+  }
+
+  .answer-field--locked {
+    pointer-events: none;
+  }
+
+  .game-scene__fieldSection-stats--party {
+    color: var(--color-text-03);
+  }
+
+  // presenter: no answer field, so the question and the clock get the room
+  &.game-scene--partyPresenter {
+    .question {
+      height: 58vh;
+    }
+
+    .countdown--party {
+      .countdown__progress,
+      .countdown__answered {
+        font-size: var(--font-size-text-7);
+      }
+    }
+
+    .countdown__ring {
+      width: 72px;
+      height: 72px;
+
+      &-text {
+        font-size: var(--font-size-text-5);
+      }
+    }
+  }
 }

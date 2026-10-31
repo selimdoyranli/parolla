@@ -1,0 +1,20 @@
+// same coral-into-red CTA as the play intro's play button
+.party-start-button.van-button {
+  height: 46px;
+  color: #fff;
+  font-weight: 800;
+  font-size: var(--font-size-text-8);
+  letter-spacing: 0.04em;
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-02) 0%,
+    color-mix(in sRGB, var(--color-brand-02) 45%, #e60023) 55%,
+    color-mix(in sRGB, var(--color-brand-02) 15%, #c4001d) 100%
+  );
+  border: 0;
+
+  // same look as vant's disabled state, but still clickable
+  &.party-start-button--waiting {
+    opacity: 0.5;
+  }
+}

@@ -15,11 +15,14 @@ import { showToast } from '@/helpers/toast'
 
 // inlineCountdown: the scene shows a 3-2-1-GO card over its question area instead of the blocking start toast
 // introSplash: before that countdown, a title / creator splash plays with its sound (creator quizzes)
-export default ({ inlineCountdown = false, introSplash = false } = {}) => {
+// party: { submit(text), fitMax?() } — party room round: the server checks answers, so nothing is scored,
+// advanced, stored or posted here; the scene reads the creator store, so the mode is forced to CREATOR
+export default ({ inlineCountdown = false, introSplash = false, party = null } = {}) => {
   const { i18n, $ua, $auth } = useContext()
   const store = useStore()
 
-  const { activeGameMode } = useGameMode()
+  const { activeGameMode: routeGameMode } = useGameMode()
+  const activeGameMode = party ? computed(() => gameModeKeyEnum.CREATOR) : routeGameMode
   const { encodeEnglish } = useFormatter()
   const { postToNative } = useNativeBridge()
   const sfx = useSfx()
@@ -83,15 +86,16 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
       () => alphabet.value.activeIndex,
       async value => {
         await store.commit(`${activeGameMode.value}/SET_ALPHABET_ACTIVE_INDEX`, value)
-        await statsWriteToLocalStorage()
 
-        if (value === -1) {
+        if (!party) await statsWriteToLocalStorage()
+
+        if (value === -1 && !party) {
           endGame()
 
           return false
         }
 
-        carousels.alphabet.slideTo(value)
+        carousels.alphabet.slideTo?.(value)
         resetAnswerField()
         questionFitText()
       }
@@ -195,6 +199,9 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   }
 
   const handleNotStartsWithActiveChar = ({ activeChar }) => {
+    // party: the letter miss (client check or server retry) gets a cue; solo keeps its silent hint
+    if (party) sfx.play('denied')
+
     Notify({
       message: i18n.t('gameScene.error.notStartsWithActiveChar', { activeChar }),
       color: 'var(--color-text-04)',
@@ -208,10 +215,14 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     return false
   }
 
-  const handleAnswer = (manualAnswer = null) => {
+  // set while an answered question stays on screen (advanceDelayMs): no second answer or pass for it
+  let isAdvancePending = false
+
+  // advanceDelayMs: keep the answered question on screen a moment (trivia shows its right / wrong colours first)
+  const handleAnswer = (manualAnswer = null, { advanceDelayMs = 0 } = {}) => {
     const rawAnswer = typeof manualAnswer === 'string' ? manualAnswer : answer.field
 
-    if (isGameOver.value || !rawAnswer || typeof rawAnswer !== 'string' || rawAnswer.trim().length <= 0) return false
+    if (isAdvancePending || isGameOver.value || !rawAnswer || typeof rawAnswer !== 'string' || rawAnswer.trim().length <= 0) return false
 
     const item = alphabet.value.items[alphabet.value.activeIndex]
 
@@ -221,6 +232,20 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
 
     const currentQuestion = questions.value[alphabet.value.activeIndex]
     const isTrivia = currentQuestion?.answerType === answerTypeEnum.TRIVIA
+
+    // party: no pas / bitir, same letter rule, then the server decides (the question carries no answer)
+    if (party) {
+      if (!isTrivia && !answerField.startsWith(formatAnswer(item.letter || ''))) {
+        handleNotStartsWithActiveChar({ activeChar: item.letter })
+
+        return false
+      }
+
+      party.submit(rawAnswer)
+
+      return true
+    }
+
     // Trivia questions: don't split by comma as the answer itself may contain commas
     const correctAnswers = isTrivia ? [currentQuestion.answer] : currentQuestion.answer.split(',')
 
@@ -271,8 +296,20 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     })
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
-    alphabet.value.activeIndex = nextLetter()
-    focusToAnswerFieldInput()
+    const advance = () => {
+      alphabet.value.activeIndex = nextLetter()
+      focusToAnswerFieldInput()
+    }
+
+    if (advanceDelayMs > 0) {
+      isAdvancePending = true
+      setTimeout(() => {
+        isAdvancePending = false
+        advance()
+      }, advanceDelayMs)
+    } else {
+      advance()
+    }
   }
 
   const handleAnswerField = $event => {
@@ -336,14 +373,15 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
 
     if (!pressedKey || pressedKey.length !== 1) return false
 
-    if (!rootRef.value?.querySelector('.answer-field__input')) return false
+    // :not(:disabled): a party answer already sent locks the input
+    if (!rootRef.value?.querySelector('.answer-field__input:not(:disabled)')) return false
 
     answer.field = answer.field + pressedKey
     focusToAnswerFieldInput()
   }
 
   const pass = () => {
-    if (isGameOver.value) return false
+    if (isAdvancePending || isGameOver.value || party) return false
 
     alphabet.value.items[alphabet.value.activeIndex].isPassed = true
 
@@ -618,7 +656,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   }
 
   const endGame = async () => {
-    if (isGameOver.value) return
+    if (isGameOver.value || party) return
 
     postToNative('end-game', true)
 
@@ -754,7 +792,7 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
     if (activeGameMode.value === gameModeKeyEnum.CREATOR) {
       const questionsDom = rootRef.value.querySelector('.questions')
 
-      if (questionsDom.classList.contains('active-question-type-media')) {
+      if (questionsDom?.classList.contains('active-question-type-media')) {
         return false
       }
     }
@@ -806,12 +844,12 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
       textfit(activeQuestion, {
         // low floor so long questions still fit the short box left above the keyboard
         minFontSize: 12,
-        maxFontSize: 30
+        maxFontSize: party?.fitMax?.() || 30
       })
     }
 
     if (activeGameMode.value !== gameModeKeyEnum.TOUR) {
-      carousels.alphabet.update()
+      carousels.alphabet.update?.()
     }
   }
 
@@ -820,6 +858,8 @@ export default ({ inlineCountdown = false, introSplash = false } = {}) => {
   const refitQuestionOnViewportResize = () => requestAnimationFrame(() => questionFitText())
 
   const handleBeforeUnload = event => {
+    if (party) return
+
     if (activeGameMode.value && activeGameMode.value.length > 0) {
       if (isGameStarted.value && !isGameOver.value) {
         event.preventDefault()

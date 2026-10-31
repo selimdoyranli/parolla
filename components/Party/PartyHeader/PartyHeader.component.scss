@@ -1,0 +1,92 @@
+.party-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  overflow: hidden;
+  // a faint brand wash from the badge corner ties the two rows into one card
+  background: radial-gradient(120% 90% at 0 0, color-mix(in sRGB, var(--color-brand-02) 14%, transparent), transparent 60%),
+    var(--color-ui-02);
+  border: 1px solid var(--color-border-02);
+  border-radius: 16px;
+
+  &__top {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  // the code card drops its own frame inside the header; a dashed rule splits it from the title row
+  &__code {
+    padding: 12px 0 0;
+    background: none;
+    border: 0;
+    border-top: 1px dashed var(--color-border-02);
+    border-radius: 0;
+  }
+
+  &__avatar {
+    flex: none;
+  }
+
+  &__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--color-text-03);
+    font-weight: 700;
+    font-size: var(--font-size-text-11);
+    letter-spacing: 0.1em;
+  }
+
+  // up to two lines, so a long name still shows its "(GM)"
+  &__title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text-01);
+    font-weight: 800;
+    font-size: var(--font-size-text-8);
+    line-height: 1.25;
+    word-break: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  &__icon,
+  &__leave {
+    display: inline-flex;
+    flex: none;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    color: var(--color-text-02);
+    font-weight: 700;
+    font-size: var(--font-size-text-10);
+    background: var(--color-ui-03);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  &__icon {
+    width: 34px;
+  }
+
+  &__leave {
+    padding: 0 12px;
+
+    &:hover {
+      color: var(--color-danger-01);
+    }
+  }
+}

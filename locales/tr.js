@@ -315,7 +315,8 @@ export default {
         solveQuiz: 'quiz çöz',
         label: 'Bugün {count} quiz çözüldü',
         todaysQuizLabel: 'Günün quizi',
-        playButtonText: 'Tüm Quizler: Oyna'
+        playButtonText: 'Tüm Quizler: Oyna',
+        party: 'Parti'
       },
       tour: {
         title: 'TUR',
@@ -411,6 +412,7 @@ export default {
       home: 'Anasayfa',
       shop: 'Mağaza',
       quizzes: 'Quizler',
+      party: 'Parti',
       profileEdit: 'Profili düzenle',
       profileView: 'Profili görüntüle',
       myQuizzes: 'Quizlerim',
@@ -668,7 +670,8 @@ export default {
       title: 'Daha fazla ({username})',
       showProfile: 'Profili Göster',
       report: 'Raporla',
-      voteKick: 'Odadan atmak için oyla'
+      voteKick: 'Odadan atmak için oyla',
+      kick: 'Odadan at'
     },
     tourModeOnline: {
       title: 'Tur'
@@ -1245,7 +1248,13 @@ export default {
     scoreboard: 'Skor tablosu',
     pendingScoreboard: 'Skorlar getiriliyor',
     loginToBeInScoreboard: '<u>Giriş yaptıktan</u> sonra oynarsan quize ait skor tablosunda yer alırsın',
-    loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin'
+    loginToBeInScoreboardExtra: 'Giriş yapmadan oynarsan skorunu sadece sen görebilirsin',
+    points: '{score} puan',
+    answerTime: {
+      short: '{s} sn',
+      title: 'Cevap süresi',
+      info: 'Ne kadar sürede cevap verdiğini gösterir.'
+    }
   },
   community: {
     list: {
@@ -1945,6 +1954,17 @@ export default {
         keywords: 'müzik quiz, çalan şarkıyı bil, çalan şarkıyı tahmin et, şarkı tahmin oyunu'
       }
     },
+    party: {
+      title: 'Parti - Arkadaşlarla Quiz Oyna',
+      description:
+        'Arkadaşlarınla canlı quiz oyna: parti odası kur, 6 haneli kodu paylaş, 10 kişiye kadar aynı anda yarışın. Sunum modu ve telefondan kumanda var, katılmak için üyelik gerekmez.',
+      keywords:
+        'parti, parti oyunu, arkadaşlarla quiz oyna, arkadaşlarla oynanacak oyunlar, online parti oyunu, canlı quiz, çok oyunculu quiz, quiz gecesi, sınıfta quiz, oda kodu ile quiz'
+    },
+    partyRoom: {
+      title: 'Parti odası',
+      description: 'Parti odasına katıl ve arkadaşlarınla canlı quiz oyna.'
+    },
     download: {
       title: 'Uygulamayı İndir',
       description: 'parolla mobil uygulamasını iOS ve Android için ücretsiz indir. Kelime oyunu, quizler ve günlük sorular cebinde.',
@@ -2062,6 +2082,325 @@ export default {
         'Açarsan reklamlar ilgi alanına göre seçilir (Google AdSense çerezleri). Kapalıyken de reklam görürsün, yalnızca kişiselleştirilmez.',
       save: 'Kaydet',
       cancel: 'Vazgeç'
+    }
+  },
+  party: {
+    title: 'Parti',
+    entry: {
+      title: 'Partiye katıl',
+      hint: 'Arkadaşının paylaştığı 6 haneli oda kodunu gir',
+      placeholder: '000 000',
+      join: 'Katıl'
+    },
+    intro: {
+      title: 'Parti kur',
+      sub: 'Bir oda kur ve eş zamanlı olarak arkadaşlarınla oyna',
+      password: 'Şifreli oda',
+      showPassword: 'Şifreyi göster',
+      hidePassword: 'Şifreyi gizle',
+      create: 'Odayı kur'
+    },
+    landing: {
+      eyebrow: 'Parti',
+      title: 'Quizleri arkadaşlarınla aynı anda çöz',
+      sub: 'Bir oda kur, kodu paylaş; sorular herkese aynı anda gelir. Hızlı ve doğru olan kazanır.',
+      facts: {
+        players: '10 kişiye kadar',
+        live: 'Gerçek zamanlı',
+        noSignup: 'Katılmak için üyelik yok'
+      },
+      steps: {
+        pick: { title: 'Oyunları seç', text: 'Lobide Günlük, Limitsiz, Soru-Cevap ya da O mu bu mu? oyunlarını kuyruğa ekle.' },
+        setup: { title: 'Odayı kur', text: '“Parti Başlat”a dokun ya da bir oyunun girişinden “Parti kur”u kullan.' },
+        share: { title: 'Kodu paylaş', text: '6 haneli kodu, bağlantıyı ya da QR kodu gönder; en az 2 kişi toplanınca başlat.' }
+      },
+      featuresTitle: 'Quiz night için hazır',
+      features: {
+        presentation: { title: 'Sunum modu', text: 'Sorular senin ekranında, oyuncular telefonlarından cevaplar.' },
+        remote: { title: 'Host kumandası', text: 'QR kodu okut, oyunu telefonundan yönet.' },
+        choices: { title: 'O mu bu mu? oylaması', text: 'Herkes oy verir, çoğunluk şampiyonu seçer.' },
+        guests: { title: 'Misafirler de gelir', text: 'Arkadaşların hesap açmadan bir takma adla katılır.' },
+        leaderboard: { title: 'Canlı sıralama', text: 'Hız ve doğruluk puanı, her turdan sonra liderlik tablosu.' },
+        queue: { title: 'Oyun kuyruğu', text: 'Günlük, Limitsiz ve quizleri kuyruğa ekle, arka arkaya oyna.' },
+        chat: { title: 'Sohbet ve emoji', text: 'Lobide ve oyun boyunca sohbet et, her an emojiyle tepki ver.' },
+        password: { title: 'Şifreli oda', text: 'İstersen odanı yalnızca kodu ve şifreyi bilenlere aç.' }
+      },
+      demo: {
+        badge: 'Gerçek zamanlı',
+        live: 'Canlı lobi',
+        quiz: 'Dünya başkentleri',
+        waiting: 'Arkadaşlar bekleniyor · {count} / {capacity}',
+        joined: '{name} odaya katıldı',
+        correct: '{name} doğru bildi · +{points}'
+      },
+      ctaTitle: 'Partiyi sen başlat',
+      ctaSub: 'Giriş yap, odanı kur, oyunları lobide seç.',
+      cta: 'Parti Başlat'
+    },
+    gate: {
+      notice: 'Parti odası oluşturmak için giriş yapman gerekiyor. Arkadaşların hesapları olmadan da odana katılabilir.',
+      login: 'GİRİŞ YAP',
+      password: 'Şifre ile koru'
+    },
+    guest: { title: 'Partiye katıl' },
+    room: { code: 'Oda kodu', players: 'Oyuncular', connecting: 'Bağlanılıyor...' },
+    add: {
+      title: 'Oyun ekle',
+      inQueue: 'Kuyrukta {count} oyun',
+      search: 'Quizlerde ara…',
+      empty: 'Quiz bulunamadı',
+      added: 'Kuyrukta',
+      addedToast: '{title} kuyruğa eklendi',
+      full: 'Kuyruk dolu (en fazla 20 oyun)',
+      modes: {
+        daily: { title: 'Günlük', text: 'Bugünün soru seti' },
+        unlimited: { title: 'Limitsiz', text: 'Her seferinde yeni set' }
+      }
+    },
+    lobby: {
+      eyebrow: 'PARTİ LOBİSİ',
+      roomOf: "{name}'{suffix} odası",
+      help: 'Nasıl oynanır?',
+      helpText:
+        'Kodu ya da bağlantıyı arkadaşlarınla paylaş. Herkes toplanınca kurucu oyunu başlatır; sorular herkese aynı anda gelir, doğru ve hızlı cevap daha çok puan kazandırır.',
+      leave: 'Çıkış',
+      leaveConfirm: 'Odadan çıkmak istediğine emin misin?',
+      leaveYes: 'Çık',
+      lobby: 'Lobi',
+      copy: 'Bağlantıyı kopyala',
+      copied: 'Bağlantı kopyalandı',
+      share: 'Paylaş',
+      shareText: 'parolla partisine katıl birlikte quiz çözelim! {url}',
+      qrHint: 'Kamerayla tara, partiye katıl',
+      close: 'Kapat',
+      next: 'Sıradaki oyun',
+      start: 'Oyunu başlat',
+      minPlayers: 'Oyunu başlatmak için en az 2 kişi gerekli',
+      remote: 'Kumanda',
+      waitingHost: 'Kurucu bekleniyor',
+      waitingHostSub: 'Oyun başlayınca otomatik geçeceksin',
+      presentationNotice: 'Sunum modu: sorular kurucunun ekranında görünür, sen kendi cihazından cevaplarsın.',
+      presentationHost: 'Sunum modu: sorular senin ekranında görünür, oyuncular kendi cihazından cevaplar.',
+      emptyQueue: 'Kuyrukta oyun yok',
+      emptyQueueHint: 'Başlamak için kuyruğa bir oyun ekle',
+      types: { qa: 'Soru-Cevap', choices: 'O mu bu mu?', daily: 'Günlük', unlimited: 'Limitsiz' },
+      host: 'Kurucu',
+      presenting: 'Sunuyor',
+      you: 'Sen',
+      offline: 'Bağlantı koptu',
+      emptySlots: '{count} boş yer, oyuncular bekleniyor.',
+      manage: 'Oyuncuları yönet',
+      kick: 'Odadan çıkar',
+      kickHint: 'Odadan çıkarmak istediğin oyuncuyu seç',
+      kickConfirm: '{name} odadan çıkarılsın mı?',
+      noOthers: 'Odada başka oyuncu yok',
+      cancel: 'Vazgeç',
+      queueEyebrow: 'Sırada',
+      queue: 'Oyun kuyruğu',
+      nextBadge: 'Sıradaki',
+      play: 'Oyna',
+      moveUp: 'Yukarı taşı',
+      moveDown: 'Aşağı taşı',
+      remove: 'Kaldır',
+      addGame: 'Oyun ekle',
+      addGameSub: 'Odanın sıradaki oyununu kuyruğa ekle',
+      settings: {
+        eyebrow: 'Kurulum',
+        title: 'Oda ayarları',
+        inGame: 'Oyun sürerken sadece oto mod değiştirilebilir.',
+        listed: 'Listede göster',
+        presentationListed: 'Listede gösterilen odalarda sunum modu kullanılamaz.',
+        listedSub: 'Arkadaşın yoksa üzülme, bu parti odası herkese listelenir ve biri seninle oynamak için katılabilir',
+        lock: 'Odayı kilitle',
+        lockSub: 'Oyun başlayana kadar kodu veya bağlantısı olan herkes katılabilir; oyun başlayınca oda kendiliğinden kilitlenir.',
+        chat: 'Oyun sırasında sohbet',
+        chatSub: 'Lobide sohbet her zaman açık; bu ayar oyun ekranındaki sohbeti açar veya kapatır.',
+        duration: 'Tur süresi',
+        durationSub: 'Herkesin her soruya cevap vermek için sahip olduğu süre.',
+        seconds: '{n}sn',
+        passwordSub: 'Katılmak isteyenlerden şifre istenir.',
+        passwordPlaceholder: 'Şifre belirle',
+        save: 'Kaydet',
+        advanced: 'Gelişmiş',
+        auto: 'Oto mod',
+        autoSub: '5 saniye sonra otomatik olarak sonraki tura geçer.',
+        presentation: 'Sunum modu',
+        presentationSub: 'Sorular senin ekranında görünür, oyuncular kendi cihazından cevaplar.',
+        leaderboard: 'Liderlik tablosu',
+        leaderboardSub: 'Oyuncuların sıralamayı ne zaman göreceği.',
+        board: { always: 'Her zaman', end: 'Oyun sonunda', never: 'Hiçbir zaman' },
+        capacity: '{n} kişilik',
+        protected: 'Şifreli'
+      },
+      chat: {
+        eyebrow: 'Oda',
+        title: 'Sohbet',
+        empty: 'Henüz mesaj yok',
+        emptySub: 'Herkes toplanırken bir merhaba de.',
+        placeholder: 'Mesaj yaz...',
+        off: 'Sohbet kapalı',
+        send: 'Gönder',
+        system: {
+          host_changed: '{name} artık kurucu',
+          joined: '{name} odaya katıldı',
+          left: '{name} odadan ayrıldı',
+          kicked: '{name} kurucu tarafından odadan atıldı',
+          vote_kick: '{name} için atılma oyu verildi ({count}/{total})',
+          vote_kicked: '{name} oylama sonucu odadan atıldı'
+        }
+      }
+    },
+    game: {
+      answered: '{answered}/{total} cevapladı',
+      sent: 'Cevabın gönderildi · diğerleri bekleniyor',
+      onScreen: 'Soru ekranda',
+      onScreenSub: 'Büyük ekrana bak, cevabını buraya yaz',
+      correct: 'DOĞRU!',
+      wrong: 'YANLIŞ!',
+      answer: 'Cevap',
+      yourAnswer: 'Senin cevabın',
+      correctAnswer: 'Doğru cevap',
+      points: '+{n}',
+      leaderboard: 'Liderlik tablosu',
+      top: 'İlk {n}',
+      score: 'Puanın',
+      correctCount: '{n} doğru',
+      nextQuestion: 'Sıradaki soru',
+      toResults: 'Sonuçlar geliyor',
+      waitingNext: 'Kurucu sonraki turu başlatacak',
+      settings: 'Ayarlar',
+      autoAdvance: 'Oto ilerleme',
+      autoAdvanceSub: 'Her sonuçtan 5 saniye sonra kendiliğinden devam eder.',
+      next: 'Sonraki tur',
+      cancel: 'Oyunu iptal et',
+      cancelConfirm: 'Oyun iptal edilsin mi? Bu oyun için puan verilmez.',
+      cancelYes: 'İptal et',
+      close: 'Kapat'
+    },
+    choices: {
+      champion: 'Şampiyon',
+      challenger: 'Meydan okuyan',
+      mine: 'Senin oyun',
+      winner: 'Kazanan',
+      votes: '{n} OY',
+      voted: '{voters}/{total} oy verdi',
+      pick: 'Seçimini yap',
+      pickSub: 'Süre bitene kadar oyunu değiştirebilirsin',
+      locked: 'Oyun verildi',
+      changed: 'Oyun değişti',
+      canChange: 'hâlâ değiştirebilirsin',
+      live: 'Oylama sürüyor',
+      won: 'Seçimin kazandı!',
+      lost: 'Oda başka karar verdi',
+      roundWinner: 'Turu kazanan',
+      byVotes: 'Oylarla karar verildi',
+      tie: 'Berabere · şampiyon kaldı',
+      tieFirst: 'Berabere · ilk seçenek devam ediyor',
+      option: 'Seçenek {n}',
+      nextRound: 'Sıradaki tur'
+    },
+    remote: {
+      title: 'Host kumandası',
+      dialogText: 'Oyunu telefondan yönetmek için QR kodu okut. Aynı hesapla giriş yapmalısın.',
+      loginNotice: 'Kumandayı kullanmak için oda sahibi hesabıyla giriş yapmalısın.',
+      notHost: 'Bu odanın kurucusu değilsin. Kumandayı kurucu hesabıyla aç.',
+      notFound: 'Oda bulunamadı veya kapandı.',
+      back: 'Partiye dön',
+      room: 'Oda {code}',
+      round: 'Tur {n}/{total}',
+      result: 'Tur sonucu · {n}/{total}',
+      final: 'Oyun bitti',
+      lobby: 'Lobide bekleniyor',
+      queue: 'Sıradaki oyunlar',
+      empty: 'Kuyrukta oyun yok'
+    },
+    lobbyIn: 'Lobiye dönülüyor',
+    final: {
+      title: 'Oyun bitti',
+      rank: '{n}. oldun',
+      hidden: 'Bu odada sıralama gizli',
+      eliminated: 'Elenme sırası',
+      backToLobby: 'Lobiye dön',
+      waitingHost: 'Kurucu lobiye dönünce yeni oyun başlar',
+      answers: 'Cevaplar',
+      answersSub: 'Oyuncuya dokun, cevaplarını gör',
+      correctAnswer: 'Doğru cevap',
+      question: '{n}. soru',
+      noAnswer: 'Cevap yok',
+      download: {
+        eyebrow: 'Sonuçları indir',
+        title: 'Sıralama ve cevaplar dosya olarak',
+        json: 'JSON indir',
+        excel: 'Excel indir',
+        seconds: '{s} sn',
+        sheets: { ranking: 'Sıralama', answers: 'Cevaplar', questions: 'Sorular', result: 'Sonuç' },
+        cols: {
+          rank: 'Sıra',
+          player: 'Oyuncu',
+          score: 'Puan',
+          correct: 'Doğru',
+          wrong: 'Yanlış',
+          no: 'No',
+          letter: 'Harf',
+          question: 'Soru',
+          correctAnswer: 'Doğru cevap',
+          choice: 'Seçenek'
+        }
+      }
+    },
+    rooms: {
+      open: 'Parti odalarını gör',
+      openSub: 'Herkese açık odalara katıl',
+      title: 'Parti odaları',
+      live: 'Canlı',
+      count: '{n} açık oda',
+      noGame: 'Henüz oyun seçilmedi',
+      inLobby: 'Lobide',
+      inGame: 'Oyunda',
+      emptyTitle: 'Şu an listelenen oda yok',
+      emptyText: 'Kendi odanı kur, ayarlardan "Listede göster"i aç; biri seninle oynamak için katılsın.',
+      failed: 'Odalar şu an getirilemiyor, birazdan tekrar denenecek.',
+      blocked: {
+        inGame: 'Oyun bitince açılır',
+        locked: 'Oda kilitli',
+        full: 'Oda dolu'
+      }
+    },
+    serverPause: {
+      title: 'Sunucu işlemi yapılıyor',
+      game: 'Bir süre bekleyin, oyun kaldığı yerden otomatik devam edecek.',
+      lobby: 'Bir süre bekleyin, oda birazdan geri gelecek.'
+    },
+    cancelled: {
+      title: 'OYUN İPTAL EDİLDİ',
+      text: 'Kurucu oyunu iptal etti. Bu oyun için puan verilmedi.'
+    },
+    emoji: {
+      open: 'Tepki gönder'
+    },
+    closed: {
+      kicked: 'Odadan çıkarıldın',
+      vote_kicked: 'Oylama sonucu odadan atıldın',
+      empty: 'Oda kapandı',
+      noHostTitle: 'Kurucu ayrıldı',
+      noHostText: 'Odada kurucu olabilecek giriş yapmış bir oyuncu kalmadı, bu parti devam edemez.',
+      backToQuizzes: 'Quizlere dön'
+    },
+    errors: {
+      room_not_found: 'Oda bulunamadı',
+      bad_password: 'Şifre yanlış',
+      room_full: 'Oda dolu',
+      vote_self: 'Kendin için oy veremezsin',
+      vote_already_voted: 'Bu oyuncu için zaten oy verdin',
+      vote_target_missing: 'Oyuncu odada bulunamadı',
+      not_enough_players: 'Oyunu başlatmak için en az 2 kişi gerekli',
+      rate_limited: 'Çok hızlı mesaj gönderiyorsun. {seconds} saniye sonra tekrar dene.',
+      room_locked: 'Oda kilitli',
+      login_required: 'Bu işlem için giriş yapmalısın',
+      already_in_room: 'Zaten bu odadasın',
+      quiz_unsupported: 'Bu quiz partide oynanamaz',
+      queue_full: 'Kuyruk dolu (en fazla 20 oyun)',
+      not_host: 'Bu işlemi sadece oda sahibi yapabilir'
     }
   }
 }
