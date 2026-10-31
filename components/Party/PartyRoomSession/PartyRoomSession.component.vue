@@ -5,7 +5,9 @@
   p.party-room-session__label(v-else) {{ $t('party.room.connecting') }}
 
   PartyHostLeftDialog(v-if="closedReason === 'no_host'")
-  SocketStatusBanner(:status="reconnectStatus" @reconnect="open")
+  //- a server restart gets the blocking overlay instead of the banner
+  SocketStatusBanner(:status="reconnectStatus === 'restarting' ? null : reconnectStatus" @reconnect="open")
+  PartyServerPause(:status="reconnectStatus")
 
   EnterPasswordDialog(:key="passwordTry" v-if="askPassword" @submit="submitPassword" @close="leave")
 </template>

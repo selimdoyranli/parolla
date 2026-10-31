@@ -2202,6 +2202,8 @@ export default {
         eyebrow: 'Kurulum',
         title: 'Oda ayarları',
         inGame: 'Oyun sürerken sadece oto mod değiştirilebilir.',
+        listed: 'Listede göster',
+        listedSub: 'Arkadaşın yoksa üzülme, bu parti odası herkese listelenir ve biri seninle oynamak için katılabilir',
         lock: 'Odayı kilitle',
         lockSub: 'Oyun başlayana kadar kodu veya bağlantısı olan herkes katılabilir; oyun başlayınca oda kendiliğinden kilitlenir.',
         chat: 'Oyun sırasında sohbet',
@@ -2318,6 +2320,29 @@ export default {
       correctAnswer: 'Doğru cevap',
       question: '{n}. soru',
       noAnswer: 'Cevap yok'
+    },
+    rooms: {
+      open: 'Parti odalarını gör',
+      openSub: 'Herkese açık odalara katıl',
+      title: 'Parti odaları',
+      live: 'Canlı',
+      count: '{n} açık oda',
+      noGame: 'Henüz oyun seçilmedi',
+      inLobby: 'Lobide',
+      inGame: 'Oyunda',
+      emptyTitle: 'Şu an listelenen oda yok',
+      emptyText: 'Kendi odanı kur, ayarlardan "Listede göster"i aç; biri seninle oynamak için katılsın.',
+      failed: 'Odalar şu an getirilemiyor, birazdan tekrar denenecek.',
+      blocked: {
+        inGame: 'Oyun bitince açılır',
+        locked: 'Oda kilitli',
+        full: 'Oda dolu'
+      }
+    },
+    serverPause: {
+      title: 'Sunucu işlemi yapılıyor',
+      game: 'Bir süre bekleyin, oyun kaldığı yerden otomatik devam edecek.',
+      lobby: 'Bir süre bekleyin, oda birazdan geri gelecek.'
     },
     cancelled: {
       title: 'OYUN İPTAL EDİLDİ',

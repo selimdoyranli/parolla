@@ -24,6 +24,19 @@
             )
             Button.party-entry__join(type="primary" round native-type="submit" :disabled="digits.length !== 6") {{ $t('party.entry.join') }}
 
+        //- no code? the public rooms (hosts who turned on "Listede göster")
+        button.party-rooms-open(type="button" @click="isRoomsOpen = true")
+          span.party-rooms-open__icon
+            AppIcon(name="tabler:world" :width="20" :height="20")
+          span.party-rooms-open__text
+            strong {{ $t('party.rooms.open') }}
+            small {{ $t('party.rooms.openSub') }}
+          span.party-rooms-open__count(v-if="roomsLoaded && rooms.length")
+            i
+            | {{ rooms.length }}
+          AppIcon.party-rooms-open__chevron(name="tabler:chevron-right" :width="18" :height="18")
+        PartyRoomsDialog(v-model="isRoomsOpen")
+
         ul.party-hero__facts
           li(v-for="fact in facts" :key="fact.key")
             AppIcon(:name="fact.icon" :width="16" :height="16")
@@ -59,9 +72,10 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, useContext, useRouter, useStore, useMeta } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, onMounted, useContext, useRouter, useStore, useMeta } from '@nuxtjs/composition-api'
 import { Button } from 'vant'
 import { usePartyCreate } from '@/composables/usePartyCreate'
+import { usePartyRooms } from '@/composables/usePartyRooms'
 
 // only what party rooms actually do (parolla-ws src/channels/party)
 const FACTS = [
@@ -97,6 +111,11 @@ export default defineComponent({
     const router = useRouter()
     const { loading, create } = usePartyCreate()
     const code = ref('')
+    const isRoomsOpen = ref(false)
+    // one load for the button's live count; the dialog polls on its own while open
+    const { rooms, loaded: roomsLoaded, load: loadRooms } = usePartyRooms()
+
+    onMounted(loadRooms)
     const digits = computed(() => code.value.replace(/\D/g, ''))
 
     useMeta(() => ({
@@ -123,7 +142,21 @@ export default defineComponent({
     // only logged-in users host; the server rejects guests too
     const startParty = () => ($auth.loggedIn ? create() : store.commit('auth/SET_AUTH_DIALOG_IS_OPEN', true))
 
-    return { code, digits, format, join, loading, startParty, facts: FACTS, steps: STEPS, ctaDecor: CTA_DECOR, features: FEATURES }
+    return {
+      code,
+      digits,
+      format,
+      join,
+      loading,
+      startParty,
+      isRoomsOpen,
+      rooms,
+      roomsLoaded,
+      facts: FACTS,
+      steps: STEPS,
+      ctaDecor: CTA_DECOR,
+      features: FEATURES
+    }
   },
   head: {}
 })
@@ -396,7 +429,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 20px 16px;
+  padding: 14px 16px;
   overflow: hidden;
   color: #fff;
   text-align: center;
@@ -423,12 +456,12 @@ export default defineComponent({
   &__title {
     margin: 0;
     font-weight: 800;
-    font-size: var(--font-size-text-6);
+    font-size: var(--font-size-text-7);
   }
 
   &__sub {
     margin: 0;
-    font-size: var(--font-size-text-9);
+    font-size: var(--font-size-text-10);
     text-wrap-style: balance;
     opacity: 0.9;
   }
@@ -437,8 +470,8 @@ export default defineComponent({
     display: inline-flex;
     gap: 8px;
     align-items: center;
-    margin-top: 6px;
-    padding: 10px 20px;
+    margin-top: 2px;
+    padding: 8px 18px;
     color: var(--color-brand-02);
     font-weight: 800;
     text-decoration: none;
@@ -452,6 +485,80 @@ export default defineComponent({
       color: var(--color-brand-02);
       opacity: 0.9;
     }
+  }
+}
+
+.party-rooms-open {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--color-text-01);
+  font: inherit;
+  text-align: left;
+  background: var(--color-ui-02);
+  border: 1px solid var(--color-border-02);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-brand-02);
+  }
+
+  &__icon {
+    display: grid;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    color: var(--color-brand-02);
+    background: color-mix(in sRGB, var(--color-brand-02) 12%, transparent);
+    border-radius: 12px;
+    place-items: center;
+  }
+
+  &__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+
+    strong {
+      font-weight: 800;
+      font-size: var(--font-size-text-9);
+    }
+
+    small {
+      color: var(--color-text-03);
+      font-size: var(--font-size-text-11);
+    }
+  }
+
+  // live count of listed rooms
+  &__count {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    padding: 3px 9px;
+    color: #1ee36b;
+    font-weight: 800;
+    font-size: var(--font-size-text-11);
+    background: color-mix(in sRGB, #1ee36b 14%, transparent);
+    border-radius: 999px;
+
+    i {
+      width: 6px;
+      height: 6px;
+      background: currentColor;
+      border-radius: 50%;
+    }
+  }
+
+  &__chevron {
+    flex: none;
+    color: var(--color-text-03);
   }
 }
 </style>

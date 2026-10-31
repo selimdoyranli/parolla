@@ -2185,6 +2185,8 @@ export default {
         eyebrow: 'Setup',
         title: 'Room settings',
         inGame: 'While a game is running only auto mode can be changed.',
+        listed: 'Show in the list',
+        listedSub: 'No friends around? No worries, this party room is listed for everyone and someone can join to play with you',
         lock: 'Lock the room',
         lockSub: 'Until the game starts anyone with the code or link can join; the room locks itself once the game starts.',
         chat: 'Chat during the game',
@@ -2301,6 +2303,29 @@ export default {
       correctAnswer: 'Correct answer',
       question: 'Question {n}',
       noAnswer: 'No answer'
+    },
+    rooms: {
+      open: 'See party rooms',
+      openSub: 'Join a public room',
+      title: 'Party rooms',
+      live: 'Live',
+      count: '{n} open rooms',
+      noGame: 'No game picked yet',
+      inLobby: 'In lobby',
+      inGame: 'Playing',
+      emptyTitle: 'No listed rooms right now',
+      emptyText: 'Start your own room and turn on "Show in the list" in its settings so someone can join you.',
+      failed: "Rooms can't be loaded right now, retrying shortly.",
+      blocked: {
+        inGame: 'Opens after the game',
+        locked: 'Room locked',
+        full: 'Room full'
+      }
+    },
+    serverPause: {
+      title: 'Server maintenance in progress',
+      game: 'Hang on, the game will continue right where it stopped.',
+      lobby: 'Hang on, the room will be back in a moment.'
     },
     cancelled: {
       title: 'GAME CANCELLED',

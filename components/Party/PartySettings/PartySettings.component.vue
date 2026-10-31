@@ -10,6 +10,19 @@ section.party-card.party-settings
   p.party-settings__locked(v-if="inGame") {{ $t('party.lobby.settings.inGame') }}
 
   .party-settings__group
+    //- public room list (/parti → "Parti odalarını gör")
+    .party-settings__row
+      AppIcon.party-settings__icon(name="tabler:world" :width="18" :height="18")
+      .party-settings__text
+        strong {{ $t('party.lobby.settings.listed') }}
+        small {{ $t('party.lobby.settings.listedSub') }}
+      VanSwitch(
+        :value="settings.listed"
+        size="20px"
+        active-color="var(--color-brand-02)"
+        :disabled="inGame"
+        @input="patch({ listed: $event })"
+      )
     .party-settings__row
       AppIcon.party-settings__icon(name="tabler:lock" :width="18" :height="18")
       .party-settings__text

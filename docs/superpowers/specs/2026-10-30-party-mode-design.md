@@ -157,3 +157,8 @@ Reuse Draw mode's guest identity (`store/draw/guest`, `helpers/guest-identity`, 
 - Wrong-letter answer → retry like solo; `pas`/`bitir` not commands in party.
 - Leaderboard "Hiçbir zaman" → own score only, also on the final screen.
 - No ads on party screens.
+
+## Restart survival and public list (added 2026-10-31)
+
+- No Redis. parolla-ws writes every room to a snapshot file (at most once a second, and on SIGTERM); a new process restores them with all seats offline and running games frozen. Clients keep the page, reconnect on their own and show a blocking "Sunucu işlemi yapılıyor" overlay; the game resumes with the time it had left once everyone is back (or after 20 s). One ws instance at a time (stop-then-start deploys); the snapshot dir must be a volume.
+- "Listede göster" (default off, above "Odayı kilitle") lists the room publicly. `/parti` has a "Parti odalarını gör" button under the join box; its dialog polls `GET /party/rooms` every 4 s while open (viewers aren't in a room, so no socket). Rooms in a game, locked or full show why they can't be joined.

@@ -25,16 +25,7 @@ import { defineComponent, computed, inject, useStore, useContext, useRouter } fr
 import { Dialog } from 'vant'
 import { wsTypeEnum } from '@/enums/wsType.enum'
 import { usePartyUser } from '@/composables/usePartyUser'
-
-// Turkish genitive suffix by vowel harmony: selim'in, murat'ın, doğu'nun, gül'ün
-const genitive = name => {
-  const lower = String(name).toLocaleLowerCase('tr')
-  const vowels = lower.match(/[aeıioöuü]/g)
-  const last = vowels ? vowels[vowels.length - 1] : 'i'
-  const vowel = { a: 'ı', ı: 'ı', e: 'i', i: 'i', o: 'u', u: 'u', ö: 'ü', ü: 'ü' }[last]
-
-  return /[aeıioöuü]$/.test(lower) ? `n${vowel}n` : `${vowel}n`
-}
+import { genitiveSuffix as genitive } from '@/helpers/genitive'
 
 export default defineComponent({
   setup() {

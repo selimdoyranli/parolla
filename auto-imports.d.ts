@@ -38,6 +38,7 @@ declare global {
   const useGmActions: typeof import('./composables/useGmActions.js')['default']
   const useNativeBridge: typeof import('./composables/useNativeBridge.js')['useNativeBridge']
   const usePartyCreate: typeof import('./composables/usePartyCreate.js')['usePartyCreate']
+  const usePartyRooms: typeof import('./composables/usePartyRooms.js')['usePartyRooms']
   const usePartySfx: typeof import('./composables/usePartySfx.js')['usePartySfx']
   const usePartySocket: typeof import('./composables/usePartySocket.js')['usePartySocket']
   const usePartyUser: typeof import('./composables/usePartyUser.js')['usePartyUser']
