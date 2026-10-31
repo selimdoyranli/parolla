@@ -113,6 +113,7 @@
           TriviaOptionList(
             :options="getActiveQuestion().triviaOptions"
             :selected="partyMyAnswer"
+            :reveal="triviaReveal"
             @on-option-select="handleTriviaOptionSelect"
           )
 
@@ -352,10 +353,26 @@ export default defineComponent({
       return item.letter
     }
 
-    const handleTriviaOptionSelect = option => {
-      if (isPartyLocked.value) return
+    // solo: the picked option goes red when wrong and the right one green, for a second before the next question
+    // (with the alphabet hidden, e.g. media + trivia, nothing else would say how it went)
+    const TRIVIA_REVEAL_MS = 1000
+    const triviaReveal = ref(null)
 
-      handleAnswer(option.text)
+    const handleTriviaOptionSelect = option => {
+      if (isPartyLocked.value || triviaReveal.value) return
+
+      if (props.party) {
+        handleAnswer(option.text)
+
+        return
+      }
+
+      const correct = getActiveQuestion().answer
+
+      if (handleAnswer(option.text, { advanceDelayMs: TRIVIA_REVEAL_MS }) === false) return
+
+      triviaReveal.value = { picked: option.text, correct }
+      setTimeout(() => (triviaReveal.value = null), TRIVIA_REVEAL_MS)
     }
 
     const answerFieldPlaceholder = computed(() => {
@@ -552,6 +569,7 @@ export default defineComponent({
       getActiveQuestionAnswerType,
       alphabetItemLetter,
       handleTriviaOptionSelect,
+      triviaReveal,
       answerFieldPlaceholder,
       gameSceneClasses,
       questionClasses

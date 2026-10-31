@@ -215,10 +215,14 @@ export default ({ inlineCountdown = false, introSplash = false, party = null } =
     return false
   }
 
-  const handleAnswer = (manualAnswer = null) => {
+  // set while an answered question stays on screen (advanceDelayMs): no second answer or pass for it
+  let isAdvancePending = false
+
+  // advanceDelayMs: keep the answered question on screen a moment (trivia shows its right / wrong colours first)
+  const handleAnswer = (manualAnswer = null, { advanceDelayMs = 0 } = {}) => {
     const rawAnswer = typeof manualAnswer === 'string' ? manualAnswer : answer.field
 
-    if (isGameOver.value || !rawAnswer || typeof rawAnswer !== 'string' || rawAnswer.trim().length <= 0) return false
+    if (isAdvancePending || isGameOver.value || !rawAnswer || typeof rawAnswer !== 'string' || rawAnswer.trim().length <= 0) return false
 
     const item = alphabet.value.items[alphabet.value.activeIndex]
 
@@ -292,8 +296,20 @@ export default ({ inlineCountdown = false, introSplash = false, party = null } =
     })
     window.localStorage.setItem(`${activeGameMode.value}MyAnswers`, JSON.stringify(myAnswers.value))
 
-    alphabet.value.activeIndex = nextLetter()
-    focusToAnswerFieldInput()
+    const advance = () => {
+      alphabet.value.activeIndex = nextLetter()
+      focusToAnswerFieldInput()
+    }
+
+    if (advanceDelayMs > 0) {
+      isAdvancePending = true
+      setTimeout(() => {
+        isAdvancePending = false
+        advance()
+      }, advanceDelayMs)
+    } else {
+      advance()
+    }
   }
 
   const handleAnswerField = $event => {
@@ -365,7 +381,7 @@ export default ({ inlineCountdown = false, introSplash = false, party = null } =
   }
 
   const pass = () => {
-    if (isGameOver.value || party) return false
+    if (isAdvancePending || isGameOver.value || party) return false
 
     alphabet.value.items[alphabet.value.activeIndex].isPassed = true
 

@@ -171,6 +171,17 @@
   // the leaderboard routes' board on the overlay's background
   &__board {
     width: 100%;
+
+    // only the pinned "your rank" row lives here: no scroll box, scrollbar or fade
+    /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+    ::v-deep .player-list {
+      max-height: none;
+      overflow: visible;
+
+      &::after {
+        display: none;
+      }
+    }
   }
 
   &__hidden {
