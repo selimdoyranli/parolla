@@ -43,18 +43,21 @@
     position: relative;
   }
 
-  // same height as the chat so switching tabs doesn't resize the dialog; the tab scrolls, not the list
+  // same height as the chat so switching tabs doesn't resize the dialog
   &__tab {
     height: calc(50vh + 66px);
-    overflow-y: auto;
 
-    // PlayerList's own 50vh box + fade (meant for the page background) would end mid-dialog in a band
+    // the list fills the tab and scrolls in it; its bottom fade takes the dialog's colour, so it only shows
+    // over rows that scroll under it (the page-coloured fade made a band where a short list ended)
     .player-list {
+      height: 100%;
       max-height: none;
-      overflow-y: visible;
+      overflow-y: auto;
 
       &::after {
-        display: none;
+        z-index: 4; // over the rows (avatar layers go up to 3)
+        background: linear-gradient(to top, var(--color-ui-02), transparent);
+        pointer-events: none;
       }
     }
   }
