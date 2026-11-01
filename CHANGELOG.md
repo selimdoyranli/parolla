@@ -1,5 +1,104 @@
 # Changelog
 
+## v3.11.0
+
+[compare changes](https://github.com/selimdoyranli/parolla/compare/v3.10.0...v3.11.0)
+
+
+### 🚀 Enhancements
+
+  - **leaderboard:** Cache delay note and season year in page titles ([ff826114](https://github.com/selimdoyranli/parolla/commit/ff826114))
+  - **leaderboard:** Clearer cache note, per-period delay on wordblock ([2ba5a91a](https://github.com/selimdoyranli/parolla/commit/2ba5a91a))
+  - **party:** Store, socket and routes ([8055ede9](https://github.com/selimdoyranli/parolla/commit/8055ede9))
+  - **party:** Intro entry, join and guest flow ([cb48184a](https://github.com/selimdoyranli/parolla/commit/cb48184a))
+  - **party:** Lobby ([aa6a3899](https://github.com/selimdoyranli/parolla/commit/aa6a3899))
+  - **party:** Add-to-queue dialog ([c35e3c4b](https://github.com/selimdoyranli/parolla/commit/c35e3c4b))
+  - **party:** Qa rounds in the creator scene ([bf807b6b](https://github.com/selimdoyranli/parolla/commit/bf807b6b))
+  - **party:** Choices voting rounds ([806e14cd](https://github.com/selimdoyranli/parolla/commit/806e14cd))
+  - **party:** Final results, cancel and host-left flows ([4cd625a6](https://github.com/selimdoyranli/parolla/commit/4cd625a6))
+  - **party:** Host remote ([f2872244](https://github.com/selimdoyranli/parolla/commit/f2872244))
+  - **party:** Set up the room inside the quiz intro ([ed140acf](https://github.com/selimdoyranli/parolla/commit/ed140acf))
+  - **party:** Resync the choices countdown when the round is cut short ([42bbc104](https://github.com/selimdoyranli/parolla/commit/42bbc104))
+  - **party:** Quiz reveal before the start, landing page, host back cancels ([3ebc6c74](https://github.com/selimdoyranli/parolla/commit/3ebc6c74))
+  - **party:** Sound effects and lobby settings hint ([ec0c79b4](https://github.com/selimdoyranli/parolla/commit/ec0c79b4))
+  - **party:** Tour start sound on each new round ([11df60ad](https://github.com/selimdoyranli/parolla/commit/11df60ad))
+  - **party:** Drawer sound on the intro party toggle ([add389eb](https://github.com/selimdoyranli/parolla/commit/add389eb))
+  - **party:** Party seo, noindex rooms, /parti redirect, no 'mode' wording ([e72bc6f4](https://github.com/selimdoyranli/parolla/commit/e72bc6f4))
+  - **party:** Back button on the party landing header ([74cbcd17](https://github.com/selimdoyranli/parolla/commit/74cbcd17))
+  - **party:** Live lobby demo on the landing, cta above features ([5cd0b28b](https://github.com/selimdoyranli/parolla/commit/5cd0b28b))
+  - **party:** Daily and unlimited word games in party ([f7ac2ef9](https://github.com/selimdoyranli/parolla/commit/f7ac2ef9))
+  - **party:** Start a party from the landing, 2-player minimum, mode covers, drawer item ([9df1f1fc](https://github.com/selimdoyranli/parolla/commit/9df1f1fc))
+  - **party:** Tr /parti route, shared quiz list head, pink mode covers ([9bea6299](https://github.com/selimdoyranli/parolla/commit/9bea6299))
+  - **party:** Room code inside the lobby header, presentation out of advanced, new share text ([7be02414](https://github.com/selimdoyranli/parolla/commit/7be02414))
+  - **party:** Host avatar in the header, GM marks and player dialog for users ([27fbbd4b](https://github.com/selimdoyranli/parolla/commit/27fbbd4b))
+  - **party:** In-game chat setting, host-led return to lobby and answer review on the final screen ([821333ad](https://github.com/selimdoyranli/parolla/commit/821333ad))
+  - **party:** In-game chat in a dialog from the app header, like tour ([14614a07](https://github.com/selimdoyranli/parolla/commit/14614a07))
+  - **party:** Landing chat feature copy covers in-game chat ([0c3e1dc7](https://github.com/selimdoyranli/parolla/commit/0c3e1dc7))
+  - **party:** Lobby chat always on, the chat setting switches in-game chat ([ff44d41f](https://github.com/selimdoyranli/parolla/commit/ff44d41f))
+  - **party:** Emoji cooldown ring, localized chat spam toast like tour ([0f06d0b8](https://github.com/selimdoyranli/parolla/commit/0f06d0b8))
+  - **party:** Final leaderboard uses the leaderboard routes' board, top 5 with own row pinned ([3788fba7](https://github.com/selimdoyranli/parolla/commit/3788fba7))
+  - **party:** Final answers as the creator stats scoreboard, one row per player ([c446bb51](https://github.com/selimdoyranli/parolla/commit/c446bb51))
+  - **party:** Final podium only, the scoreboard below lists everyone ([612b3185](https://github.com/selimdoyranli/parolla/commit/612b3185))
+  - **party:** Own rank pinned under the final podium, like the leaderboard routes ([a00c03e2](https://github.com/selimdoyranli/parolla/commit/a00c03e2))
+  - **party:** Chat dialog tabs like tour: chat, online players, last answers ([7ecb3f4b](https://github.com/selimdoyranli/parolla/commit/7ecb3f4b))
+  - **party:** Desktop chat panel split like tour, last answers on top ([8ffe8df6](https://github.com/selimdoyranli/parolla/commit/8ffe8df6))
+  - **party:** Joined / left / kicked system lines in the chat ([a2a8837e](https://github.com/selimdoyranli/parolla/commit/a2a8837e))
+  - **party:** Tour's player menu with vote kick, host kick, lobby chat button ([e5d863e6](https://github.com/selimdoyranli/parolla/commit/e5d863e6))
+  - **party:** Server pause overlay, listed rooms dialog on /parti, listed setting ([5067a3f1](https://github.com/selimdoyranli/parolla/commit/5067a3f1))
+  - **party:** Download final results as JSON or Excel ([77cbc90e](https://github.com/selimdoyranli/parolla/commit/77cbc90e))
+  - **party:** Answer time on the final scoreboard and in the JSON / Excel reports ([76191578](https://github.com/selimdoyranli/parolla/commit/76191578))
+  - **party:** Remote button only with presentation; presentation off in listed rooms ([c1b26ac3](https://github.com/selimdoyranli/parolla/commit/c1b26ac3))
+  - **quiz:** Solo trivia shows right and wrong for a second, party lock neutral ([4735428c](https://github.com/selimdoyranli/parolla/commit/4735428c))
+
+### 🩹 Fixes
+
+  - **party:** Socket mode switch, stale close, join replay, chat dedupe ([d9e123e2](https://github.com/selimdoyranli/parolla/commit/d9e123e2))
+  - **party:** No wrong-password toast before first attempt ([d9512a4c](https://github.com/selimdoyranli/parolla/commit/d9512a4c))
+  - **party:** Add dialog feedback and loading ([082ec573](https://github.com/selimdoyranli/parolla/commit/082ec573))
+  - **party:** Reset game over and guard double send ([0a1420d0](https://github.com/selimdoyranli/parolla/commit/0a1420d0))
+  - **party:** Choices result after reconnect ([8afe6a82](https://github.com/selimdoyranli/parolla/commit/8afe6a82))
+  - **party:** Remote button dark mode and dead codes ([a9885c58](https://github.com/selimdoyranli/parolla/commit/a9885c58))
+  - **party:** Host rejoin, dead rejoin exits, reconnect result ([0b0ff79a](https://github.com/selimdoyranli/parolla/commit/0b0ff79a))
+  - **party:** Compact layout, start countdown, leave confirm, add dialog ([73b1e986](https://github.com/selimdoyranli/parolla/commit/73b1e986))
+  - **party:** Tour chat parity and full-width lobby cards ([86a0532d](https://github.com/selimdoyranli/parolla/commit/86a0532d))
+  - **party:** Cover initials, centered host sheet, players dialog, add dialog polish ([10691d23](https://github.com/selimdoyranli/parolla/commit/10691d23))
+  - **party:** Pick a quiz card instead of opening it ([7be1b36c](https://github.com/selimdoyranli/parolla/commit/7be1b36c))
+  - **party:** Winner keeps its side, steady tick-tock, no all-voted sound ([f4501de7](https://github.com/selimdoyranli/parolla/commit/f4501de7))
+  - **party:** Use the app's 'O mu bu mu?' name ([17efbed8](https://github.com/selimdoyranli/parolla/commit/17efbed8))
+  - **party:** Demo lobby avatars match the names ([dee54888](https://github.com/selimdoyranli/parolla/commit/dee54888))
+  - **party:** Add-game cards share the row height ([bf8cb631](https://github.com/selimdoyranli/parolla/commit/bf8cb631))
+  - **party:** Less space above the chat dialog's input ([a2c21a9e](https://github.com/selimdoyranli/parolla/commit/a2c21a9e))
+  - **party:** Chat dialog width and tab bar like tour's online dialog ([5ea3e59c](https://github.com/selimdoyranli/parolla/commit/5ea3e59c))
+  - **party:** No list fade band in the chat dialog tabs ([09be4346](https://github.com/selimdoyranli/parolla/commit/09be4346))
+  - **party:** Chat dialog list fade only over rows that scroll under it ([914db7e1](https://github.com/selimdoyranli/parolla/commit/914db7e1))
+  - **party:** Scoreboard answer rows centred, score spacing; quizzes intro gets a Parti button ([4cea0dbc](https://github.com/selimdoyranli/parolla/commit/4cea0dbc))
+  - **party:** Last answers without colours, full-width final column ([72936b1c](https://github.com/selimdoyranli/parolla/commit/72936b1c))
+
+### 💅 Refactors
+
+  - **party:** One chat setting for the lobby and games ([210594ce](https://github.com/selimdoyranli/parolla/commit/210594ce))
+
+### 📖 Documentation
+
+  - Party mode spec and plan ([9b2eb62c](https://github.com/selimdoyranli/parolla/commit/9b2eb62c))
+  - Party mode notes ([026740c7](https://github.com/selimdoyranli/parolla/commit/026740c7))
+  - Party plays daily and unlimited sets ([e220c500](https://github.com/selimdoyranli/parolla/commit/e220c500))
+  - **party:** Public list in the join paths ([a93e1c60](https://github.com/selimdoyranli/parolla/commit/a93e1c60))
+
+### 🎨 Styles
+
+  - **party:** Drop cta subtitle max-width ([fb650bf6](https://github.com/selimdoyranli/parolla/commit/fb650bf6))
+  - **party:** Drop hero title/subtitle max-width ([2d5bfe2e](https://github.com/selimdoyranli/parolla/commit/2d5bfe2e))
+  - **party:** Two-column landing hero, vivid live dot, fixed 5/10 demo lobby ([0a85c816](https://github.com/selimdoyranli/parolla/commit/0a85c816))
+  - **party:** Host cta inside the left hero column, level with the demo ([39b17e22](https://github.com/selimdoyranli/parolla/commit/39b17e22))
+  - **party:** One-line hero facts, icon pattern on the host cta ([903e6429](https://github.com/selimdoyranli/parolla/commit/903e6429))
+  - **party:** Level hero blocks, balanced cta subtitle ([16f9b536](https://github.com/selimdoyranli/parolla/commit/16f9b536))
+  - **party:** Add-game dialog at the layout width, two-column grid ([0d7df77e](https://github.com/selimdoyranli/parolla/commit/0d7df77e))
+
+### ❤️  Contributors
+
+- Selimdoyranli ([@selimdoyranli](http://github.com/selimdoyranli))
+
 ## v3.10.0
 
 [compare changes](https://github.com/selimdoyranli/parolla/compare/v3.9.0...v3.10.0)
