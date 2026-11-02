@@ -102,6 +102,7 @@ export default {
     s.error = err
   },
   RESET(s) {
-    Object.assign(s, state())
+    // status / myId belong to the shared socket, which can outlive the room page (it never re-sends `connected`)
+    Object.assign(s, state(), { status: s.status, myId: s.myId })
   }
 }
