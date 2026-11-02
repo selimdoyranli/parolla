@@ -60,6 +60,33 @@ export default {
     })
   },
 
+  // Tag-only AI job; replaces the room's tags when it runs
+  queueRoomAiTags(_, { documentId, locale }) {
+    return this.$appFetch({
+      path: `moderation/rooms/${documentId}/ai-tag`,
+      method: 'POST',
+      data: { locale },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  setRoomTags(_, { documentId, locale, tags }) {
+    return this.$appFetch({
+      path: `moderation/rooms/${documentId}/tags`,
+      method: 'PUT',
+      data: { locale, tags },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
+  fetchRoomTagSuggestions(_, { q }) {
+    return this.$appFetch({
+      path: 'moderation/room-tags',
+      query: { q },
+      headers: { Authorization: `${this.$auth.strategy.token.get()}` }
+    })
+  },
+
   dismissRoomAiFlag(_, { documentId, locale }) {
     return this.$appFetch({
       path: `moderation/rooms/${documentId}/dismiss-ai-flag`,

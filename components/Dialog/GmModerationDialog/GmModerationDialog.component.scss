@@ -6,6 +6,24 @@
   &__optionIcon {
     margin-inline-end: 8px;
     color: var(--color-danger-01);
+
+    &--neutral {
+      color: var(--color-text-02);
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__suggestion {
+    cursor: pointer;
+  }
+
+  &__tag::before {
+    content: '#';
   }
 
   &__content {
