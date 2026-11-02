@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  //- step 1: pick an action (one for now)
+  //- step 1: pick an action
   Dialog.dialog.gm-moderation-dialog(
     :value="isOpen"
     show-cancel-button
@@ -14,6 +14,17 @@ div
       Cell(is-link center :title="actionLabel" @click="openForm")
         template(#icon)
           AppIcon.gm-moderation-dialog__optionIcon(name="tabler:eye-off" :width="20" :height="20")
+      template(v-if="target === 'room'")
+        Cell(is-link center :title="$t('gmModeration.queueAiTags')" @click="queueAiTags")
+          template(#icon)
+            AppIcon.gm-moderation-dialog__optionIcon.gm-moderation-dialog__optionIcon--neutral(
+              name="tabler:sparkles"
+              :width="20"
+              :height="20"
+            )
+        Cell(is-link center :title="$t('gmModeration.editTags')" @click="openTags")
+          template(#icon)
+            AppIcon.gm-moderation-dialog__optionIcon.gm-moderation-dialog__optionIcon--neutral(name="tabler:tags" :width="20" :height="20")
 
   //- step 2: note + optional ban, then send
   Dialog.dialog.gm-moderation-dialog(
@@ -41,21 +52,51 @@ div
           VanSwitch(v-model="form.blockOwner" size="22px" :disabled="form.isBusy")
       Button.gm-moderation-dialog__send(type="danger" block round native-type="button" :loading="form.isBusy" @click="send")
         | {{ $t('gmModeration.send') }}
+
+  //- manual tags: same format as the creator form, existing tags suggested while typing
+  Dialog.dialog.gm-moderation-dialog(
+    v-if="target === 'room'"
+    v-model="tagForm.isOpen"
+    show-cancel-button
+    :show-confirm-button="false"
+    :title="$t('gmModeration.editTags')"
+    :cancel-button-text="$t('general.cancel')"
+    :close-on-click-overlay="!tagForm.isBusy"
+    width="min(92vw, 400px)"
+  )
+    .gm-moderation-dialog__content
+      Field.gm-moderation-dialog__note(
+        v-model="tagForm.input"
+        :placeholder="$t('form.creatorModeCompose.room.tag.placeholder')"
+        maxlength="64"
+        :disabled="tagForm.isBusy || tagForm.tags.length >= ROOM_TAGS_MAX"
+        @input="onTagInput"
+        @keydown.enter.prevent="addTag(tagForm.input)"
+      )
+      .gm-moderation-dialog__tags(v-if="tagForm.suggestions.length")
+        Tag.gm-moderation-dialog__suggestion(v-for="tag in tagForm.suggestions" :key="tag" type="primary" plain @click="addTag(tag)") {{ tag }}
+      .gm-moderation-dialog__tags
+        Tag.gm-moderation-dialog__tag(v-for="tag in tagForm.tags" :key="tag" type="primary" closeable @close="removeTag(tag)") {{ tag }}
+      Button.gm-moderation-dialog__save(type="primary" block round native-type="button" :loading="tagForm.isBusy" @click="saveTags")
+        | {{ $t('gmModeration.saveTags') }}
 </template>
 
 <script>
 import { defineComponent, computed, reactive, useStore, useContext } from '@nuxtjs/composition-api'
-import { Dialog, CellGroup, Cell, Field, Switch, Button } from 'vant'
+import { Dialog, CellGroup, Cell, Field, Switch, Button, Tag } from 'vant'
 import { showToast } from '@/helpers/toast'
+import { ROOM_TAG_REGEX } from '@/system/constant'
+
+const ROOM_TAGS_MAX = 5
 
 export default defineComponent({
   name: 'GmModerationDialog',
-  components: { Dialog: Dialog.Component, CellGroup, Cell, Field, VanSwitch: Switch, Button },
+  components: { Dialog: Dialog.Component, CellGroup, Cell, Field, VanSwitch: Switch, Button, Tag },
   props: {
     isOpen: { type: Boolean, default: false },
     // 'room': unlist from the public list, 'community': hide from the site
     target: { type: String, required: true, validator: value => ['room', 'community'].includes(value) },
-    // room needs documentId + locale, community documentId
+    // room needs documentId + locale (+ roomTags for the tag editor), community documentId
     item: { type: Object, required: true }
   },
   emits: ['update:isOpen', 'done'],
@@ -95,7 +136,102 @@ export default defineComponent({
       emit('done')
     }
 
-    return { form, actionLabel, openForm, send }
+    const tagForm = reactive({ isOpen: false, input: '', tags: [], suggestions: [], isBusy: false })
+    // tags saved in this session win over the (stale) prop
+    let savedTags = null
+    let suggestTimer = null
+
+    const queueAiTags = async () => {
+      emit('update:isOpen', false)
+
+      const { error } = await store.dispatch('gm/queueRoomAiTags', { documentId: props.item.documentId, locale: props.item.locale })
+
+      if (error) showToast.fail(error.message || i18n.t('error.anErrorOccurred'))
+      else showToast.success(i18n.t('gmModeration.aiTagsQueued'))
+    }
+
+    const openTags = () => {
+      emit('update:isOpen', false)
+      Object.assign(tagForm, {
+        isOpen: true,
+        input: '',
+        suggestions: [],
+        tags: savedTags || (props.item.roomTags || []).map(tag => tag.title)
+      })
+    }
+
+    const onTagInput = value => {
+      tagForm.input = value.replace(ROOM_TAG_REGEX, '')
+      clearTimeout(suggestTimer)
+
+      const q = tagForm.input.toLocaleLowerCase('tr')
+
+      if (!q) {
+        tagForm.suggestions = []
+
+        return
+      }
+
+      suggestTimer = setTimeout(async () => {
+        const { data } = await store.dispatch('gm/fetchRoomTagSuggestions', { q })
+
+        // drop late replies for an older input
+        if (tagForm.input.toLocaleLowerCase('tr') === q) tagForm.suggestions = (data?.data || []).filter(tag => !tagForm.tags.includes(tag))
+      }, 250)
+    }
+
+    const addTag = value => {
+      const tag = value.replace(ROOM_TAG_REGEX, '').toLocaleLowerCase('tr')
+
+      if (tag && tagForm.tags.length < ROOM_TAGS_MAX && !tagForm.tags.includes(tag)) tagForm.tags.push(tag)
+
+      tagForm.input = ''
+      tagForm.suggestions = []
+    }
+
+    const removeTag = tag => {
+      tagForm.tags = tagForm.tags.filter(t => t !== tag)
+    }
+
+    const saveTags = async () => {
+      if (tagForm.isBusy) return
+
+      tagForm.isBusy = true
+
+      const { data, error } = await store.dispatch('gm/setRoomTags', {
+        documentId: props.item.documentId,
+        locale: props.item.locale,
+        tags: tagForm.tags
+      })
+
+      tagForm.isBusy = false
+
+      if (error) {
+        showToast.fail(error.message || i18n.t('error.anErrorOccurred'))
+
+        return
+      }
+
+      savedTags = data?.tags || tagForm.tags
+      tagForm.isOpen = false
+      showToast.success(i18n.t('gmModeration.tagsSaved'))
+      emit('done')
+    }
+
+    return {
+      ROOM_TAGS_MAX,
+      form,
+      actionLabel,
+      openForm,
+      send,
+      tagForm,
+      queueAiTags,
+      openTags,
+      onTagInput,
+      addTag,
+      removeTag,
+      saveTags
+    }
   }
 })
 </script>

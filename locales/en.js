@@ -1469,7 +1469,12 @@ export default {
     banOwner: 'Ban the player',
     send: 'Send',
     unlistedDone: 'Room removed from the list',
-    hiddenDone: 'Community removed from the site'
+    hiddenDone: 'Community removed from the site',
+    queueAiTags: 'Queue for AI tagging',
+    aiTagsQueued: 'Added to the AI tagging queue',
+    editTags: 'Edit tags manually',
+    saveTags: 'Save tags',
+    tagsSaved: 'Tags updated'
   },
   gmPanel: {
     communities: {

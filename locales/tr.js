@@ -1487,7 +1487,12 @@ export default {
     banOwner: 'Oyuncuyu banla',
     send: 'Gönder',
     unlistedDone: 'Oda listeden çıkarıldı',
-    hiddenDone: 'Topluluk sistemden kaldırıldı'
+    hiddenDone: 'Topluluk sistemden kaldırıldı',
+    queueAiTags: 'Etiketleme için AI kuyruğuna ekle',
+    aiTagsQueued: 'AI etiketleme kuyruğuna eklendi',
+    editTags: 'Manuel etiket ekle',
+    saveTags: 'Etiketleri kaydet',
+    tagsSaved: 'Etiketler güncellendi'
   },
   gmPanel: {
     communities: {
