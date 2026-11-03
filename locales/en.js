@@ -2404,6 +2404,7 @@ export default {
       already_in_room: 'You are already in this room',
       quiz_unsupported: 'This quiz cannot be played in a party',
       queue_full: 'Queue is full (max 20 games)',
+      request_vote_cooldown: 'You are voting too fast. Try again in {seconds} seconds.',
       request_limit: 'You can have up to 3 pending requests. Add a new one once one is approved or removed.',
       no_approved_game: 'No approved game in the queue. Approve a request or add a game first.',
       not_host: 'Only the host can do this'
