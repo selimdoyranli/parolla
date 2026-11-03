@@ -942,6 +942,9 @@ export default {
           label: 'Description',
           placeholder: 'Short description about the quiz...'
         },
+        createdAt: {
+          label: 'Quiz date'
+        },
         moderation: {
           note: 'Moderation note',
           source: 'Source',

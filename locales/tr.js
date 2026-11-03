@@ -946,6 +946,9 @@ export default {
           label: 'Açıklama',
           placeholder: 'Quiz hakkında kısa bir açıklama...'
         },
+        createdAt: {
+          label: 'Quiz tarihi'
+        },
         moderation: {
           note: 'Moderasyon notu',
           source: 'Kaynak',

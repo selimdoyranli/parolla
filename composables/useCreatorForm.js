@@ -66,6 +66,8 @@ export default function useCreatorForm(props, { roomBasicInfoRef } = {}) {
         : [],
     gameTimeLimit: props.room?.gameTimeLimit || GAME_TIME_LIMIT,
     description: props.room?.description || '',
+    // mod only, new quizzes: backdates the quiz (datetime-local value)
+    createdAt: null,
     coverPhoto: props.room?.coverPhoto || null,
     coverPhotoFile: null,
     coverPhotoRemoved: false

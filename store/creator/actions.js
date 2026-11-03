@@ -27,6 +27,8 @@ export default {
         ...(this.$auth.loggedIn ? { community: form.community || null } : {}),
         title: form.roomTitle,
         description: form.description?.trim() || null,
+        // the API rejects the key for non-mods, so send it only when set
+        ...(form.createdAt ? { createdAt: new Date(form.createdAt).toISOString() } : {}),
         quizType: form.quizType,
         qaList: (form.qaList || []).map(item => {
           const qaItem = {
