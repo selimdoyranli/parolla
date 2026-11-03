@@ -76,6 +76,15 @@
         small.creator-mode-compose-form__optionalHint
           | {{ $t('form.optionalHint') }}
 
+    Field(
+      v-if="!room && user?.role?.type === 'mod'"
+      v-model="form.createdAt"
+      name="createdAt"
+      type="datetime-local"
+      :label="$t('form.creatorModeCompose.room.createdAt.label')"
+      left-icon="calendar-o"
+    )
+
     .room-choices
       span.room-choices__title {{ $t('form.creatorModeCompose.room.visibility.label') }}
       //- stacked on phones, side by side from tablet up
