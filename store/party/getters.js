@@ -5,6 +5,9 @@ export default {
   me: s => ((s.room && s.room.players) || []).find(p => p.id === s.myId) || null,
   players: s => (s.room && s.room.players) || [],
   queue: s => (s.room && s.room.queue) || [],
+  // players' requests wait below the approved games until the host approves them; start only plays approved ones
+  approvedQueue: s => ((s.room && s.room.queue) || []).filter(q => !q.request),
+  myRequestCount: s => ((s.room && s.room.queue) || []).filter(q => q.request && String(q.request.by.id) === String(s.myId)).length,
   settings: s => (s.room && s.room.settings) || {},
   game: s => (s.room && s.room.game) || null,
   // in-game chat on (the host's setting; the lobby always chats): the game screen gets the header chat button

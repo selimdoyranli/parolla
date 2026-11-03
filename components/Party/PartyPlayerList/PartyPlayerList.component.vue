@@ -14,8 +14,12 @@ section.party-card.party-player-list
       :key="player.id"
       :class="{ 'party-player-list__item--me': player.id === myId, 'party-player-list__item--offline': !player.connected }"
     )
-      PlayerAvatar(:user="toUser(player)" :size="30" :open-player-dialog-on-click="!isGuest(player)")
-      span.party-player-list__name.party-user-name(:class="{ 'is-link': !isGuest(player) }" @click="openPlayer(player)")
+      //- same "more" menu as tour / the chat dialog's online list
+      PlayerAvatar(player-actions-context="party" :user="toUser(player)" :size="30")
+      span.party-player-list__name.party-user-name(
+        :class="{ 'is-link': !isGuest(player) || player.id !== myId }"
+        @click="openPlayerActions(player)"
+      )
         | {{ player.name }}
         span.gm-username-extra(v-if="isGm(player)") &nbsp;(GM)
       span.party-pill.party-pill--brand(v-if="player.isHost")
@@ -85,7 +89,7 @@ export default defineComponent({
 
     const others = computed(() => players.value.filter(p => p.id !== myId.value))
 
-    const { toUser, isGuest, isGm, openPlayer } = usePartyUser()
+    const { toUser, isGuest, isGm, openPlayer, openPlayerActions } = usePartyUser()
 
     const confirmKick = player => {
       Dialog.confirm({
@@ -111,6 +115,7 @@ export default defineComponent({
       isGuest,
       isGm,
       openPlayer,
+      openPlayerActions,
       confirmKick
     }
   }

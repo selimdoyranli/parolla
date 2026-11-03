@@ -54,7 +54,7 @@ export default defineComponent({
 
     const room = computed(() => store.state.party.room)
     const game = computed(() => store.getters['party/game'])
-    const queue = computed(() => store.getters['party/queue'])
+    const queue = computed(() => store.getters['party/approvedQueue'])
     const autoAdvance = computed(() => Boolean(store.getters['party/settings'].autoAdvance))
     const closedReason = computed(() => store.state.party.closedReason)
     const prettyCode = computed(() => `${props.code.slice(0, 3)} ${props.code.slice(3)}`)

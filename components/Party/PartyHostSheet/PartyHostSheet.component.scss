@@ -39,6 +39,12 @@
     border-radius: 12px;
   }
 
+  &__state {
+    flex: none;
+    color: var(--color-text-02);
+    font-size: var(--font-size-text-10);
+  }
+
   &__icon {
     flex: none;
     color: var(--color-brand-02);

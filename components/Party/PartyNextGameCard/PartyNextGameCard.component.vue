@@ -47,7 +47,7 @@ export default defineComponent({
     const store = useStore()
     const isHost = computed(() => store.getters['party/isHost'])
     const settings = computed(() => store.getters['party/settings'])
-    const next = computed(() => store.getters['party/queue'][0] || null)
+    const next = computed(() => store.getters['party/approvedQueue'][0] || null)
 
     const hasPhoto = room => Boolean(room.coverPhoto && room.coverPhoto.url)
     const initialsOf = room => getInitials(room.title)
