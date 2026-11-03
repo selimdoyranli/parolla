@@ -103,6 +103,18 @@ section.party-card.party-settings
           :disabled="inGame"
           @input="patch({ chat: $event })"
         )
+      //- players' game requests; like auto advance, the server takes it during games too
+      .party-settings__row
+        AppIcon.party-settings__icon(name="tabler:hand-stop" :width="18" :height="18")
+        .party-settings__text
+          strong {{ $t('party.lobby.settings.requests') }}
+          small {{ $t('party.lobby.settings.requestsSub') }}
+        VanSwitch(
+          :value="settings.requests !== false"
+          size="20px"
+          active-color="var(--color-brand-02)"
+          @input="patch({ requests: $event })"
+        )
       .party-settings__row.party-settings__row--stack
         AppIcon.party-settings__icon(name="tabler:trophy" :width="18" :height="18")
         .party-settings__text

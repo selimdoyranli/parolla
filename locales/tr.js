@@ -2231,6 +2231,8 @@ export default {
         lock: 'Odayı kilitle',
         lockSub: 'Oyun başlayana kadar kodu veya bağlantısı olan herkes katılabilir; oyun başlayınca oda kendiliğinden kilitlenir.',
         chat: 'Oyun sırasında sohbet',
+        requests: 'Oyun istekleri',
+        requestsSub: 'Oyuncular kuyruğa oyun isteyebilir; sen onaylarsan sıraya girer.',
         chatSub: 'Lobide sohbet her zaman açık; bu ayar oyun ekranındaki sohbeti açar veya kapatır.',
         duration: 'Tur süresi',
         durationSub: 'Herkesin her soruya cevap vermek için sahip olduğu süre.',
@@ -2422,6 +2424,7 @@ export default {
       quiz_unsupported: 'Bu quiz partide oynanamaz',
       queue_full: 'Kuyruk dolu (en fazla 20 oyun)',
       request_vote_cooldown: 'Çok hızlı oy veriyorsun. {seconds} saniye sonra tekrar dene.',
+      requests_off: 'Kurucu oyun isteklerini kapattı',
       request_limit: 'En fazla 3 bekleyen isteğin olabilir. Biri onaylanınca ya da silinince yenisini ekleyebilirsin.',
       no_approved_game: 'Kuyrukta onaylı oyun yok. Önce bir isteği onayla ya da oyun ekle.',
       not_host: 'Bu işlemi sadece oda sahibi yapabilir'

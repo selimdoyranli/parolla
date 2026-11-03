@@ -2214,6 +2214,8 @@ export default {
         lock: 'Lock the room',
         lockSub: 'Until the game starts anyone with the code or link can join; the room locks itself once the game starts.',
         chat: 'Chat during the game',
+        requests: 'Game requests',
+        requestsSub: 'Players can request games for the queue; they join it once you approve.',
         chatSub: 'The lobby chat is always on; this turns the chat on the game screen on or off.',
         duration: 'Round time',
         durationSub: 'How long everyone has to answer each question.',
@@ -2405,6 +2407,7 @@ export default {
       quiz_unsupported: 'This quiz cannot be played in a party',
       queue_full: 'Queue is full (max 20 games)',
       request_vote_cooldown: 'You are voting too fast. Try again in {seconds} seconds.',
+      requests_off: 'The host turned game requests off',
       request_limit: 'You can have up to 3 pending requests. Add a new one once one is approved or removed.',
       no_approved_game: 'No approved game in the queue. Approve a request or add a game first.',
       not_host: 'Only the host can do this'

@@ -54,8 +54,8 @@ section.party-card.party-queue
         Button.party-queue__play(color="var(--color-brand-02)" icon="play" size="mini" round :disabled="locked" @click="play(index)")
           | {{ $t('party.lobby.play') }}
 
-  //- players request games; the host adds them straight away
-  button.party-queue__add(type="button" :disabled="locked" @click="openAdd")
+  //- players request games (while the host allows it); the host adds them straight away
+  button.party-queue__add(v-if="isHost || requestsOn" type="button" :disabled="locked" @click="openAdd")
     span.party-queue__add-icon
       AppIcon(name="tabler:plus" :width="20" :height="20")
     span.party-queue__add-text
@@ -138,6 +138,7 @@ export default defineComponent({
     const send = inject('partySend')
     const queue = computed(() => store.getters['party/queue'])
     const isHost = computed(() => store.getters['party/isHost'])
+    const requestsOn = computed(() => store.getters['party/settings'].requests !== false)
     // the server ignores queue edits outside the lobby
     const locked = computed(() => store.state.party.room.state !== 'lobby')
 
@@ -184,6 +185,7 @@ export default defineComponent({
     return {
       queue,
       isHost,
+      requestsOn,
       locked,
       approved,
       requests,
