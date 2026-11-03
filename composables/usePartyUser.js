@@ -34,5 +34,18 @@ export const usePartyUser = () => {
     store.commit('profile/SET_PLAYER_DIALOG_IS_OPEN', true)
   }
 
-  return { toUser, isGuest, isGm, openPlayer }
+  // the live-room "more" menu (profile / report / kick), as PlayerAvatar opens it; a guest's own row has nothing to offer
+  const openPlayerActions = p => {
+    const { id, username, diceBear } = partyToUser(p)
+
+    if (isGuest(p) && String(id) === String(store.state.party.myId)) return
+
+    store.commit('profile/SET_PLAYER_ACTIONS_DIALOG', {
+      isOpen: true,
+      player: { id, username, diceBear, isGuest: isGuest(p) },
+      context: 'party'
+    })
+  }
+
+  return { toUser, isGuest, isGm, openPlayer, openPlayerActions }
 }

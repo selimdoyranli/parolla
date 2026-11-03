@@ -59,14 +59,14 @@
             span.party-badge.party-badge--mine(v-if="partyMySide === item.side")
               AppIcon(name="tabler:check" :width="12" :height="12")
               | {{ $t('party.choices.mine') }}
-          span.party-choice__count {{ partyTally[item.side] }}
+          span.party-choice__count(v-if="isPartyVoteBar") {{ partyTally[item.side] }}
 
         .versus-divider
           .versus-divider__badge
             span VS
 
-      //- live vote bar (final tally once the round is over)
-      .party-votes
+      //- live vote bar (final tally once the round is over); the host can hide it while players vote
+      .party-votes(v-if="isPartyVoteBar")
         .party-votes__row
           span.party-votes__side.party-votes__side--left {{ partyPercent.left }}% · {{ partyTally.left }}
           span.party-votes__total {{ $tc('party.choices.votes', partyTally.left + partyTally.right) }}
@@ -218,6 +218,7 @@ export default defineComponent({
     const partyRound = computed(() => store.state.party.round || { index: 0, total: 0, durationMs: 1, remainingMs: 0 })
     const partyRoundEnd = computed(() => (props.party ? store.state.party.roundEnd : null))
     const isPartyHost = computed(() => store.getters['party/isHost'])
+    const isPartyVoteBar = computed(() => store.getters['party/settings'].voteBar !== false || !!partyRoundEnd.value)
     const isPartyPresenter = computed(() => props.party && store.getters['party/isPresenter'])
     const isPartyCompact = computed(() => Boolean(partyGame.value.presenterId) && !isPartyPresenter.value)
     const partySides = computed(() => {
@@ -398,6 +399,7 @@ export default defineComponent({
       partyRound,
       partyRoundEnd,
       isPartyHost,
+      isPartyVoteBar,
       isPartyPresenter,
       isPartyCompact,
       partySides,

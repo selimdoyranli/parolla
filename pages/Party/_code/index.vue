@@ -20,9 +20,9 @@
       //- chat on: like tour, the AppHeader chat button opens it in a dialog; tour's fixed panel
       //- too when it fits beside the game column
       template(v-if="isGameChat")
-        //- tour's split panel: who has answered this round on top, the chat below
-        ChatPanel.chat-panel--split.party-game__chat(:title="`${$t('chat.chat')} (${playerCount})`")
-          template(#content-prepend)
+        //- tour's split panel: who has answered this round on top, the chat below (choices has no answers: chat only)
+        ChatPanel.party-game__chat(:class="{ 'chat-panel--split': isQaGame }" :title="`${$t('chat.chat')} (${playerCount})`")
+          template(v-if="isQaGame" #content-prepend)
             .section-title {{ $t('tourMode.lastAnswers.title') }}
             .last-answers
               PlayerList(:items="lastAnswers" player-actions-context="party")
@@ -62,6 +62,7 @@ import {
   ref,
   computed,
   watch,
+  onMounted,
   onBeforeUnmount,
   useContext,
   useRouter,
@@ -118,6 +119,11 @@ export default defineComponent({
     const isChoicesGame = computed(() => game.value?.quizType === quizTypeEnum.CHOICES)
     const isGame = computed(() => isQaGame.value || isChoicesGame.value)
     const isGameChat = computed(() => store.getters['party/gameChat'])
+
+    // the shared .layout__main keeps the previous page's scroll (landing / rooms list scrolled down)
+    const { layoutScrollToTop } = useScroll()
+
+    onMounted(layoutScrollToTop)
     const lastAnswers = computed(() => store.getters['party/lastAnswers'])
 
     // same reveal, steps, timings and sounds as the solo creator start (useGameScene: 200 ms + 2800 ms reveal, then

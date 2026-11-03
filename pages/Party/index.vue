@@ -116,6 +116,11 @@ export default defineComponent({
     const { rooms, loaded: roomsLoaded, load: loadRooms } = usePartyRooms()
 
     onMounted(loadRooms)
+
+    // the shared .layout__main keeps the previous page's scroll (e.g. home scrolled down to the party intro)
+    const { layoutScrollToTop } = useScroll()
+
+    onMounted(layoutScrollToTop)
     const digits = computed(() => code.value.replace(/\D/g, ''))
 
     useMeta(() => ({

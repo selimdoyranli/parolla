@@ -45,11 +45,11 @@
           template(v-if="$scopedSlots['card-extra']" #extra)
             slot(name="card-extra" :room="cell.room")
 
-  InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" @infinite="handleInfiniteLoading")
+  InfiniteLoading(v-if="isActiveInfiniteLoading && list.items.length >= 10" :identifier="infiniteId" @infinite="handleInfiniteLoading")
 </template>
 
 <script>
-import { defineComponent, useContext, useRouter, useStore, reactive, computed, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, useRouter, useStore, ref, reactive, computed, watch } from '@nuxtjs/composition-api'
 import { useDebounceFn } from '@vueuse/core'
 import { Search, List, Cell, Button, Empty, Loading, Dialog, Notify, Tag, Toast } from 'vant'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -105,6 +105,13 @@ export default defineComponent({
     const fetchActionName = computed(() => (props.userScoped ? 'creator/fetchUserRooms' : 'creator/fetchRooms'))
 
     const pagination = computed(() => store.getters[paginationGetter.value])
+
+    // a page-1 refetch (type / sort / tag / search) starts a new list: a finished "no more data" must not carry over
+    const infiniteId = ref(0)
+
+    watch(pagination, value => {
+      if (value?.page === 1) infiniteId.value++
+    })
 
     // Scoped (profile) lists honour owner-only filters when the auth user is
     // looking at their own quizzes — drafts and unlisted rooms come through.
@@ -352,6 +359,7 @@ export default defineComponent({
       list,
       cells,
       pagination,
+      infiniteId,
       handleInfiniteLoading,
       form,
       handleSearchRoom,

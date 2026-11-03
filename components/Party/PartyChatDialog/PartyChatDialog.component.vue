@@ -28,7 +28,8 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
       .party-chat-dialog__tab
         PlayerList(:items="onlinePlayers" player-actions-context="party")
 
-    Tab(name="last-answers")
+    //- choices rounds have votes, not answers
+    Tab(v-if="!isChoicesGame" name="last-answers")
       template(#title)
         .stats-dialog-tab-title
           AppIcon.stats-dialog-tab-title__icon(name="tabler:pencil-question" :width="20" :height="20")
@@ -44,6 +45,7 @@ Dialog.stats-dialog.dialog.party-chat-dialog(
 import { defineComponent, ref, computed, watch, nextTick, useStore } from '@nuxtjs/composition-api'
 import { Dialog, Tabs, Tab, Empty } from 'vant'
 import { usePartyUser } from '@/composables/usePartyUser'
+import { quizTypeEnum } from '@/enums/quiz.enum'
 
 export default defineComponent({
   components: { Dialog: Dialog.Component, Tabs, Tab, Empty },
@@ -58,6 +60,7 @@ export default defineComponent({
     const players = computed(() => store.getters['party/players'])
     const onlinePlayers = computed(() => players.value.filter(p => p.connected).map(toUser))
     const lastAnswers = computed(() => store.getters['party/lastAnswers'])
+    const isChoicesGame = computed(() => store.getters['party/game']?.quizType === quizTypeEnum.CHOICES)
 
     const setOpen = open => store.commit('party/SET_CHAT_DIALOG_OPEN', open)
     const scrollToEnd = () => partyChatRef.value?.scrollToEnd()
@@ -67,12 +70,17 @@ export default defineComponent({
       if (open) store.commit('party/SET_CHAT_SEEN', n)
     })
 
+    // the answers tab disappears when a choices game starts
+    watch(isChoicesGame, choices => {
+      if (choices && activeTab.value === 'last-answers') activeTab.value = 'chat'
+    })
+
     // back on the chat tab: the list was hidden, land on the latest message
     watch(activeTab, tab => {
       if (tab === 'chat') nextTick(scrollToEnd)
     })
 
-    return { partyChatRef, isChatFocused, activeTab, isOpen, onlinePlayers, lastAnswers, setOpen, scrollToEnd }
+    return { partyChatRef, isChatFocused, activeTab, isOpen, onlinePlayers, lastAnswers, isChoicesGame, setOpen, scrollToEnd }
   }
 })
 </script>
