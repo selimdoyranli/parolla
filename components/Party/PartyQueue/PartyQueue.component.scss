@@ -21,6 +21,11 @@
       border-color: color-mix(in sRGB, var(--color-brand-02) 55%, transparent);
     }
 
+    &--request {
+      border-color: color-mix(in sRGB, var(--color-info-01) 50%, transparent);
+      border-style: dashed;
+    }
+
     // controls wrap under the title on narrow phones
     @include media-breakpoint-down(mobile) {
       flex-wrap: wrap;
@@ -78,6 +83,24 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+  }
+
+  &__requestPill {
+    color: var(--color-info-01);
+  }
+
+  &__request {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    align-items: center;
+    font-size: var(--font-size-text-10);
+  }
+
+  &__votes {
+    display: flex;
+    gap: 2px;
+    align-items: center;
   }
 
   &__controls {

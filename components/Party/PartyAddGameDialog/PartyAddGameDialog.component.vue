@@ -85,6 +85,7 @@ export default defineComponent({
     const store = useStore()
     const send = inject('partySend')
     const queue = computed(() => store.getters['party/queue'])
+    const isHost = computed(() => store.getters['party/isHost'])
     const addedIds = computed(() => new Set(queue.value.map(item => String(item.roomId))))
 
     // same defaults as the quizzes page: every kind, newest first
@@ -205,7 +206,11 @@ export default defineComponent({
       () => queue.value.length,
       (now, before) => {
         if (pendingTitle && now > before) {
-          Notify({ message: i18n.t('party.add.addedToast', { title: pendingTitle }), type: 'success', duration: 1500 })
+          Notify({
+            message: i18n.t(isHost.value ? 'party.add.addedToast' : 'party.add.requestedToast', { title: pendingTitle }),
+            type: 'success',
+            duration: 1500
+          })
           settle()
         }
       }
@@ -222,7 +227,7 @@ export default defineComponent({
       settle()
       pendingTitle = room.title
       pendingTimer = setTimeout(settle, 4000)
-      send(wsTypeEnum.PARTY_QUEUE_ADD, { roomId: room.roomId, locale: i18n.locale })
+      send(isHost.value ? wsTypeEnum.PARTY_QUEUE_ADD : wsTypeEnum.PARTY_QUEUE_REQUEST, { roomId: room.roomId, locale: i18n.locale })
       emit('input', false)
     }
 

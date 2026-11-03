@@ -52,7 +52,8 @@
       .party-lobby__dock
         PartyChat(compact)
         PartyStartButton(v-if="isHost")
-      PartyAddGameDialog(v-if="isHost" v-model="isAddGameOpen")
+      //- players get it too: their picks become requests the host approves
+      PartyAddGameDialog(v-model="isAddGameOpen")
       PartyRemoteDialog(v-if="isHost" v-model="isRemoteOpen")
 </template>
 

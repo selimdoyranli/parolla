@@ -2156,6 +2156,7 @@ export default {
       empty: 'Quiz bulunamadı',
       added: 'Kuyrukta',
       addedToast: '{title} kuyruğa eklendi',
+      requestedToast: '{title} istek olarak kuyruğa eklendi',
       full: 'Kuyruk dolu (en fazla 20 oyun)',
       modes: {
         daily: { title: 'Günlük', text: 'Bugünün soru seti' },
@@ -2209,6 +2210,14 @@ export default {
       remove: 'Kaldır',
       addGame: 'Oyun ekle',
       addGameSub: 'Odanın sıradaki oyununu kuyruğa ekle',
+      request: {
+        badge: 'İstek oyun',
+        add: 'Oyun iste',
+        addSub: 'Kurucu onaylarsa kuyruğa girer',
+        like: 'Beğen',
+        dislike: 'Kötü',
+        approve: 'İsteği onayla'
+      },
       settings: {
         eyebrow: 'Kurulum',
         title: 'Oda ayarları',
@@ -2409,6 +2418,8 @@ export default {
       already_in_room: 'Zaten bu odadasın',
       quiz_unsupported: 'Bu quiz partide oynanamaz',
       queue_full: 'Kuyruk dolu (en fazla 20 oyun)',
+      request_limit: 'En fazla 3 bekleyen isteğin olabilir. Biri onaylanınca ya da silinince yenisini ekleyebilirsin.',
+      no_approved_game: 'Kuyrukta onaylı oyun yok. Önce bir isteği onayla ya da oyun ekle.',
       not_host: 'Bu işlemi sadece oda sahibi yapabilir'
     }
   }

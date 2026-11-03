@@ -26,7 +26,7 @@ export default defineComponent({
     const { i18n } = useContext()
     const store = useStore()
     const send = inject('partySend')
-    const canStart = computed(() => store.getters['party/queue'].length > 0 && store.state.party.room.state === 'lobby')
+    const canStart = computed(() => store.getters['party/approvedQueue'].length > 0 && store.state.party.room.state === 'lobby')
 
     const hasPlayers = computed(() => store.getters['party/players'].length >= MIN_PLAYERS)
 
