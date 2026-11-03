@@ -2211,6 +2211,9 @@ export default {
       addGame: 'Oyun ekle',
       addGameSub: 'Odanın sıradaki oyununu kuyruğa ekle',
       request: {
+        title: 'İstek oyunlar',
+        sortHint: 'En çok beğenilen üstte',
+        by: 'İstek yapan:',
         badge: 'İstek oyun',
         add: 'Oyun iste',
         addSub: 'Kurucu onaylarsa kuyruğa girer',

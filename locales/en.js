@@ -2194,6 +2194,9 @@ export default {
       addGame: 'Add game',
       addGameSub: "Add the room's next game to the queue",
       request: {
+        title: 'Requested games',
+        sortHint: 'Most liked first',
+        by: 'Requested by:',
         badge: 'Requested',
         add: 'Request a game',
         addSub: 'It joins the queue once the host approves',
