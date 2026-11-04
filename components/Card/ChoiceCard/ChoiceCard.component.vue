@@ -45,7 +45,12 @@ export default defineComponent({
       const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&]{11})/)
 
       if (videoIdMatch && videoIdMatch[1]) {
-        return `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1&mute=1&controls=1&modestbranding=1&showinfo=1`
+        // Clip range from the stored url (start/t and end, in seconds)
+        const start = Number(url.match(/[?&](?:start|t)=(\d+)/)?.[1]) || 0
+        const end = Number(url.match(/[?&]end=(\d+)/)?.[1]) || 0
+        const clip = (start ? `&start=${start}` : '') + (end > start ? `&end=${end}` : '')
+
+        return `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1&mute=1&controls=1&modestbranding=1&showinfo=1${clip}`
       }
 
       return ''
